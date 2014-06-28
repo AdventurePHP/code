@@ -15,32 +15,33 @@ class SMSAccessCtrlPageDec extends SMSAbstractPageDec {
 
 
    /**
-    * @var string
+    * @var string $providerServiceNamespace
     */
    protected $providerServiceNamespace;
 
 
    /**
-    * @var string
+    * @var string $providerServiceName
     */
    protected $providerServiceName;
 
 
    /**
-    * @var mixed
+    * @var mixed $permissionName
+    *
     * @since v0.2
     */
    protected $permissionName;
 
 
    /**
-    * @var SMSAccessCtrlProvider
+    * @var SMSAccessCtrlProvider $provider
     */
    protected $provider;
 
 
    /**
-    * @var array
+    * @var array $mapVars
     */
    public static $mapVars = array(
          'providerServiceNamespace' => 'APF\extensions\apfelsms\pages\decorators\provider',

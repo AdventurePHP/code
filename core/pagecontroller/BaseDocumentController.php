@@ -44,7 +44,9 @@ use InvalidArgumentException;
 abstract class BaseDocumentController extends APFObject implements DocumentController {
 
    /**
-    * @var Document References the document, the document controller is responsible for transformation.
+    * References the document, the document controller is responsible for transformation.
+    *
+    * @var Document $document
     */
    protected $document;
 

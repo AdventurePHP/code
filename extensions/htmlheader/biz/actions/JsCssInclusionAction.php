@@ -43,12 +43,14 @@ use InvalidArgumentException;
 final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
 
    /**
+    * TimeToLive for cache headers in seconds
+    *
     * 60 = 1 minute
     * 60 * 60 (3600) = 1 hour
     * 60 * 60 * 24 (86400) = 1 day
     * 60 * 60 * 24 * 7 (604800) = 7 days
     *
-    * @var int TimeToLive for cache headers in seconds
+    * @var int $ttl
     */
    protected $ttl = 604800;
 

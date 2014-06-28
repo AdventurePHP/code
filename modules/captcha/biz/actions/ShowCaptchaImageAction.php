@@ -35,7 +35,9 @@ use APF\tools\http\HeaderManager;
 class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
 
    /**
-    * @var array Defines the installed fonts.
+    * Defines the installed fonts.
+    *
+    * @var array $fonts
     */
    private $fonts = array('XFILES.TTF');
 

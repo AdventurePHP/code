@@ -35,30 +35,38 @@ use InvalidArgumentException;
 class GenericDomainObject implements GenericORMapperDataObject {
 
    /**
-    * @var GenericORRelationMapper Data component, that can be used to lazy load attributes.
+    * Data component, that can be used to lazy load attributes.
     * To set the member, use setDataComponent().
+    *
+    * @var GenericORRelationMapper $dataComponent
     */
    private $dataComponent = null;
 
    /**
-    * private
+    * Name of the object (see mapping table!).
     *
-    * @var string Name of the object (see mapping table!).
+    * @var string $objectName
     */
    protected $objectName = null;
 
    /**
-    * @var string[] Properties of a domain object.
+    * Properties of a domain object.
+    *
+    * @var string[] $properties
     */
    protected $properties = array();
 
    /**
-    * @var GenericORMapperDataObject[] Objects related to the current object. Sorted by composition or association key.
+    * Objects related to the current object. Sorted by composition or association key.
+    *
+    * @var GenericORMapperDataObject[] $relatedObjects
     */
    protected $relatedObjects = array();
 
    /**
-    * @var string Timestamp value of relation-creation.
+    * Timestamp value of relation-creation.
+    *
+    * @var string $relationCreationTimestamp
     */
    private $relationCreationTimestamp = null;
 

@@ -37,7 +37,7 @@ use APF\tools\request\RequestHandler;
 class NewsManager extends APFObject {
 
    /**
-    * @var GenericORRelationMapper
+    * @var GenericORRelationMapper $ORM
     */
    protected $ORM = null;
 

@@ -35,8 +35,11 @@ use APF\tools\form\validator\AbstractFormValidator;
 abstract class FormControlObserverBase extends AbstractFormControl {
 
    /**
+    * The name of the attribute, that specifies the validator type.
+    *
+    * @var string $TYPE_ATTRIBUTE_NAME
+    *
     * @since 1.12
-    * @var string The name of the attribute, that specifies the validator type.
     */
    private static $TYPE_ATTRIBUTE_NAME = 'type';
 

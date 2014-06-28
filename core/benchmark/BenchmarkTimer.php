@@ -48,32 +48,44 @@ use InvalidArgumentException;
 final class BenchmarkTimer {
 
    /**
-    * @var BenchmarkProcess The benchmark root process.
+    * The benchmark root process.
+    *
+    * @var BenchmarkProcess $rootProcess
     */
    private $rootProcess = null;
 
    /**
-    * @var BenchmarkProcess[] The process table, that contains all running processes (hash table).
+    * The process table, that contains all running processes (hash table).
+    *
+    * @var BenchmarkProcess[] $runningProcesses
     */
    private $runningProcesses = array();
 
    /**
-    * @var BenchmarkProcess References the current parent process (=last process created).
+    * References the current parent process (=last process created).
+    *
+    * @var BenchmarkProcess $currentParent
     */
    private $currentParent = null;
 
    /**
-    * @var int Stores the process count.
+    * Stores the process count.
+    *
+    * @var int $currentProcessId
     */
    private $currentProcessId = 0;
 
    /**
-    * @var float Defines the critical time for the benchmark report.
+    * Defines the critical time for the benchmark report.
+    *
+    * @var float $criticalTime
     */
    private $criticalTime = 0.5;
 
    /**
-    * @var int Line counter for the report.
+    * Line counter for the report.
+    *
+    * @var int $lineCounter
     */
    private $lineCounter = 0;
 
@@ -81,8 +93,9 @@ final class BenchmarkTimer {
 
    /**
     * Indicator, that defines, if the benchmarker is enabled or not (for performance reasons!)
+    * <em>true</em> in case, the benchmarker is enabled, <em>false</em> otherwise.
     *
-    * @var boolean <em>true</em> in case, the benchmarker is enabled, <em>false</em> otherwise.
+    * @var boolean $enabled
     */
    private $enabled = true;
 

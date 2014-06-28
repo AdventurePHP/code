@@ -15,7 +15,7 @@ class SMSTitleTag extends Document {
 
 
    /**
-    * @var string
+    * @var string $titleTemplate
     */
    protected static $titleTemplate = '<title>{PAGETITLE} - {SITETITLE}</title>';
 

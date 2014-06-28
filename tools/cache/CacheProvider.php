@@ -64,8 +64,6 @@ interface CacheProvider {
    public function read(CacheKey $cacheKey);
 
    /**
-    * @since 0.2
-    *
     * Interface definition of the provider's clear() method. Delete the dedicated cache item
     * specified by the cache key, or the whole namespace, if the cache key is null. Returns true
     * on success and false otherwise.
@@ -73,6 +71,8 @@ interface CacheProvider {
     * @param CacheKey $cacheKey the application's cache key.
     *
     * @return bool True in case of success, otherwise false.
+    *
+    * @since 0.2
     *
     * @author Christian Achatz
     * @version

@@ -31,7 +31,9 @@ namespace APF\core\pagecontroller;
 final class XmlParser {
 
    /**
-    * @var int Let's you define the maximum number of attributes allows before the parser stops executions to prevent an endless loop.
+    * Let's you define the maximum number of attributes allows before the parser stops executions to prevent an endless loop.
+    *
+    * @var int $maxParserLoops
     */
    public static $maxParserLoops = 20;
 

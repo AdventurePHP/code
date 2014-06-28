@@ -36,7 +36,9 @@ use InvalidArgumentException;
 final class CacheManagerFabric extends APFObject {
 
    /**
-    * @var CacheManager[] Contains the cache manager instances.
+    * Contains the cache manager instances.
+    *
+    * @var CacheManager[] $cacheManagerCache
     */
    private $cacheManagerCache = array();
 

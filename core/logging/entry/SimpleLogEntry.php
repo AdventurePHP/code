@@ -32,27 +32,37 @@ use APF\core\logging\LogEntry;
 class SimpleLogEntry implements LogEntry {
 
    /**
-    * @var string Date of the message.
+    * Date of the message.
+    *
+    * @var string $date
     */
    protected $date;
 
    /**
-    * @var string Time of the message.
+    * Time of the message.
+    *
+    * @var string $time
     */
    protected $time;
 
    /**
-    * @var string Message text.
+    * Message text.
+    *
+    * @var string $message
     */
    protected $message;
 
    /**
-    * @var string Message type.
+    * Message type.
+    *
+    * @var string $severity
     */
    protected $severity;
 
    /**
-    * @var string The log target (here: the body of the log file name)
+    * The log target (here: the body of the log file name)
+    *
+    * @var string $target
     */
    protected $target;
 

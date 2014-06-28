@@ -14,10 +14,20 @@ abstract class SMSBaseNavTagController extends BaseDocumentController {
 
 
    /**
-    * @const string
-    * @desc Key for "keepRequestParams"-Parameter, which keeps all parameters
+    * Key for "keepRequestParams"-Parameter, which keeps all parameters
+    *
+    * @var string KEEPALLPARAMSKEY
+    *
+    * @deprecated use KEEP_ALL_PARAMS_KEY instead
     */
    const KEEPALLPARAMSKEY = '__SMS-ALL__';
+
+   /**
+    * Key for "keepRequestParams"-Parameter, which keeps all parameters
+    *
+    * @var string KEEP_ALL_PARAMS_KEY
+    */
+   const KEEP_ALL_PARAMS_KEY = '__SMS-ALL__';
 
 
    /**

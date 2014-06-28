@@ -31,32 +31,44 @@ namespace APF\modules\guestbook2009\biz;
 final class User {
 
    /**
-    * @var string The user name.
+    * The user name.
+    *
+    * @var string $username
     */
    private $username;
 
    /**
-    * @var string The user's password.
+    * The user's password.
+    *
+    * @var string $password
     */
    private $password;
 
    /**
-    * @var string The user's name.
+    * The user's name.
+    *
+    * @var string $name
     */
    private $name;
 
    /**
-    * @var string The user's email address.
+    * The user's email address.
+    *
+    * @var string $email
     */
    private $email;
 
    /**
-    * @var string The user's website.
+    * The user's website.
+    *
+    * @var string $website
     */
    private $website;
 
    /**
-    * @var string Contains the id of the entry used to identify on update/delete.
+    * Contains the id of the entry used to identify on update/delete.
+    *
+    * @var string $id
     */
    private $id;
 

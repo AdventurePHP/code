@@ -57,7 +57,9 @@ use APF\core\configuration\Configuration;
 class IniConfigurationProvider extends BaseConfigurationProvider implements ConfigurationProvider {
 
    /**
-    * @var string The sub key delimiter.
+    * The sub key delimiter.
+    *
+    * @var string $NAMESPACE_DELIMITER
     */
    private static $NAMESPACE_DELIMITER = '.';
 

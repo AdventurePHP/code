@@ -50,7 +50,7 @@ class ValidationListenerTag extends AbstractFormControl {
    /**
     * Indicates, whether the listener is notified or not.
     *
-    * @var boolean Notification flag.
+    * @var boolean $isNotified
     */
    protected $isNotified = false;
 

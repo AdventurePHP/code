@@ -49,7 +49,9 @@ use APF\core\singleton\Singleton;
 class ChainedStandardInputFilter implements ChainedContentFilter {
 
    /**
-    * @var string Defines the action keyword.
+    * Defines the action keyword.
+    *
+    * @var string $FC_ACTION_KEYWORD
     */
    protected static $FC_ACTION_KEYWORD = '-action';
 

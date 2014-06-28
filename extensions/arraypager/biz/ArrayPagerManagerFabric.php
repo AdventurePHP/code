@@ -38,7 +38,9 @@ use APF\extensions\arraypager\biz\ArrayPagerManager;
 final class ArrayPagerManagerFabric extends APFObject {
 
    /**
-    * @var ArrayPagerManager[] Cache list if concrete pager manager instances.
+    * Cache list if concrete pager manager instances.
+    *
+    * @var ArrayPagerManager[] $pagers
     */
    private $pagers = array();
 

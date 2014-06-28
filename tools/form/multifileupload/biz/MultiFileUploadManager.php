@@ -50,7 +50,7 @@ class MultiFileUploadManager extends APFObject {
    private $tmpUploadPath = 'APF\tools\form\multifileupload\uploaddir';
 
    /**
-    * @var Session
+    * @var Session $session
     */
    private $session;
 

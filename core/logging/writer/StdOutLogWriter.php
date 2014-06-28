@@ -32,7 +32,9 @@ use APF\core\logging\LogWriter;
 class StdOutLogWriter implements LogWriter {
 
    /**
-    * @var string The log target identifier.
+    * The log target identifier.
+    *
+    * @var string $target
     */
    protected $target;
 

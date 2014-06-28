@@ -42,24 +42,34 @@ use APF\core\service\ServiceManager;
 abstract class APFObject implements APFDIService {
 
    /**
-    * @var string The context of the current object within the application.
+    * The context of the current object within the application.
+    *
+    * @var string $context
     */
    protected $context = null;
 
    /**
-    * @var string The language of the current object within the application.
+    * The language of the current object within the application.
+    *
+    * @var string $language
     */
    protected $language = 'de';
 
    /**
+    * Contains the service type, if the object was created with the ServiceManager.
+    *
+    * @var string $serviceType
+    *
     * @since 0.3
-    * @var string Contains the service type, if the object was created with the ServiceManager.
     */
    protected $serviceType = null;
 
    /**
+    * Stores the internal initialization status of the present APFDIService.
+    *
+    * @var bool $isInitialized
+    *
     * @since 1.15
-    * @var bool Stores the internal initialization status of the present APFDIService.
     */
    protected $isInitialized = false;
 

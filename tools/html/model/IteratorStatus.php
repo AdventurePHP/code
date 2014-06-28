@@ -35,12 +35,16 @@ namespace APF\tools\html\model;
 class IteratorStatus {
 
    /**
-    * @var bool <em>True</em>, in case current loop outputs the first element of the list, <em>false</em> otherwise.
+    * <em>True</em>, in case current loop outputs the first element of the list, <em>false</em> otherwise.
+    *
+    * @var bool $isFirst
     */
    private $isFirst;
 
    /**
-    * @var bool <em>True</em>, in case current loop outputs the last element of the list, <em>false</em> otherwise.
+    * <em>True</em>, in case current loop outputs the last element of the list, <em>false</em> otherwise.
+    *
+    * @var bool $isLast
     */
    private $isLast;
 
@@ -55,7 +59,9 @@ class IteratorStatus {
    private $counter;
 
    /**
-    * @var string Css class tailored to the current loop run (first, middle, last).
+    * Css class tailored to the current loop run (first, middle, last).
+    *
+    * @var string $cssClass
     */
    private $cssClass;
 

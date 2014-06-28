@@ -16,35 +16,34 @@ class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
 
 
    /**
-    * @const string
+    * @var string SESSION_NAMESPACE
     */
    const SESSION_NAMESPACE = 'APF\extensions\apfelsms\actions';
 
 
    /**
-    * @const string
+    * @var string SESSION_LOOPCOUNT_NAME
     */
    const SESSION_LOOPCOUNT_NAME = 'redirectLoopCount';
 
 
    /**
-    * @const integer
+    * @var integer MAX_LOOPS
     */
    const MAX_LOOPS = 10;
 
 
    /**
-    * @var string
+    * @var string $type
     */
    protected $type = self::TYPE_PRE_PAGE_CREATE;
 
 
    /**
-    * @desc Checks for 404 and 403 errors and redirects to error pages.
-    *       If error page is current page, status code is adjusted.
+    * Checks for 404 and 403 errors and redirects to error pages.
+    * If error page is current page, status code is adjusted.
     */
    public function run() {
-
 
       // check loop counter (to protect against infinite redirect loops)
       if (!$this->checkLoopsOK()) {

@@ -18,13 +18,18 @@ class SMSUmgtAccessCtrlProvider extends APFObject implements SMSAccessCtrlProvid
 
 
    /**
-    * @var bool[] Caches protection status for each permissionName to gain performance
+    * Caches protection status for each permissionName to gain performance
+    *
+    * @var bool[] $cache
     */
    protected $cache = array();
 
 
    /**
-    * @var bool If true, access is not protected for no user being logged in.
+    * If true, access is not protected for no user being logged in.
+    *
+    * @var bool $anonymousAccess
+    *
     * @since v0.2
     */
    protected $anonymousAccess = false;

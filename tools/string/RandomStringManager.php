@@ -40,13 +40,13 @@ class RandomStringManager extends APFObject {
    private $delimiter;
 
    /**
-    * @var string The database connection key.
+    * The database connection key.
+    *
+    * @var string $connectionKey
     */
    private $connectionKey;
 
    /**
-    * @pubic
-    *
     * @param string $chars Chars set by user via config in *_serviceobjects.ini
     */
    public function setChars($chars) {

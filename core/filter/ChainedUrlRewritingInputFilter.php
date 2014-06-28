@@ -48,18 +48,23 @@ use APF\core\singleton\Singleton;
 class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implements ChainedContentFilter {
 
    /**
-    * @var string Defines the url parameter that is passed the
-    *             current request url by an apache rewrite rule.
+    * Defines the url parameter that is passed the current request url by an apache rewrite rule.
+    *
+    * @var string $REWRITE_QUERY_PARAM
     */
    protected static $REWRITE_QUERY_PARAM = 'apf-rewritten-query';
 
    /**
-    * @var string Defines the global URL rewriting delimiter.
+    * Defines the global URL rewriting delimiter.
+    *
+    * @var string $REWRITE_URL_DELIMITER
     */
    protected static $REWRITE_URL_DELIMITER = '/';
 
    /**
-    * @var string Delimiter between params and action strings.
+    * Delimiter between params and action strings.
+    *
+    * @var string $ACTION_TO_PARAM_DELIMITER
     */
    protected static $ACTION_TO_PARAM_DELIMITER = '/~/';
 

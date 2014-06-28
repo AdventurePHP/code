@@ -15,7 +15,9 @@ class SMSUmgtLoggedInAccessCtrlProvider extends APFObject implements SMSAccessCt
 
 
    /**
-    * @var boolean If true, page is protected if user is logged in instead of protecting if no user is logged in.
+    * If true, page is protected if user is logged in instead of protecting if no user is logged in.
+    *
+    * @var boolean $accessProtectedOnLogin
     */
    protected $accessProtectedOnLogin = false;
 

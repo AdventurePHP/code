@@ -41,12 +41,14 @@ final class ConfigurationManager {
     * Contains the registered providers as an associative array mapping the file extension
     * to the appropriate provider.
     *
-    * @var ConfigurationProvider[] The configuration provider instances.
+    * @var ConfigurationProvider[] $PROVIDER
     */
    private static $PROVIDER = array();
 
    /**
-    * @var Configuration[] The configuration files, that have been requested before.
+    * The configuration files, that have been requested before.
+    *
+    * @var Configuration[] $CONFIG_CACHE
     */
    private static $CONFIG_CACHE = array();
 

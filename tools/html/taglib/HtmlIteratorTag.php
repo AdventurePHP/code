@@ -47,33 +47,45 @@ use InvalidArgumentException;
 class HtmlIteratorTag extends Document {
 
    /**
-    * @const Defines the "normal" fallback mode (fallback content is displayed additionally).
+    * Defines the "normal" fallback mode (fallback content is displayed additionally).
+    *
+    * @var string FALLBACK_MODE_NORMAL
     */
    const FALLBACK_MODE_NORMAL = 'normal';
 
    /**
-    * @const Defines the "extended" fallback mode (fallback content is displayed instead).
+    * Defines the "extended" fallback mode (fallback content is displayed instead).
+    *
+    * @var string FALLBACK_MODE_REPLACE
     */
    const FALLBACK_MODE_REPLACE = 'replace';
 
    /**
-    * @const Defines default CSS class for first item.
+    * Defines default CSS class for first item.
+    *
+    * @var string DEFAULT_CSS_CLASS_FIRST
     */
    const DEFAULT_CSS_CLASS_FIRST = 'first';
 
    /**
-    * @const Defines default CSS class for "normal" items.
+    * Defines default CSS class for "normal" items.
+    *
+    * @var string DEFAULT_CSS_CLASS_MIDDLE
     */
    const DEFAULT_CSS_CLASS_MIDDLE = 'middle';
 
    /**
-    * @const Defines default CSS class for last item.
+    * Defines default CSS class for last item.
+    *
+    * @var string DEFAULT_CSS_CLASS_LAST
     */
    const DEFAULT_CSS_CLASS_LAST = 'last';
 
    /**
     * Data container. Array with numeric or associative offsets
     * or a list of objects.
+    *
+    * @var array $dataContainer
     */
    protected $dataContainer = array();
 

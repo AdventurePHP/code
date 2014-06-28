@@ -33,8 +33,11 @@ namespace APF\core\pagecontroller;
 class PlaceHolderTag extends Document {
 
    /**
+    * Replacement strings for string place holders.
+    *
+    * @var string[] $stringReplacement
+    *
     * @since 1.17
-    * @var string[] Replacement strings for string place holders.
     */
    protected $stringReplacement = array();
 

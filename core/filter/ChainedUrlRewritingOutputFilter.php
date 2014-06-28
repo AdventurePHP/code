@@ -41,7 +41,9 @@ use APF\core\singleton\Singleton;
 class ChainedUrlRewritingOutputFilter implements ChainedContentFilter {
 
    /**
-    * @var string[][] The link rewrite replace pattern definition.
+    * The link rewrite replace pattern definition.
+    *
+    * @var string[] $REPLACE_PATTERN
     */
    private static $REPLACE_PATTERN = array(
          '/?'    => '/',
@@ -53,7 +55,9 @@ class ChainedUrlRewritingOutputFilter implements ChainedContentFilter {
    );
 
    /**
-    * @var string The link rewrite deactivation indicator.
+    * The link rewrite deactivation indicator.
+    *
+    * @var string $REWRITE_DEACTIVATE_PATTERN
     */
    private static $REWRITE_DEACTIVATE_PATTERN = '/linkrewrite="false"/i';
    private static $REWRITE_CONTROL_PATTERN = '/linkrewrite="([A-Za-z]+)"/i';

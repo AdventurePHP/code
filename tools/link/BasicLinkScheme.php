@@ -38,7 +38,9 @@ abstract class BasicLinkScheme {
    const REWRITE_PARAM_TO_ACTION_DELIMITER = '/~/';
 
    /**
-    * @var boolean Indicates whether to encode ampersands or not.
+    * Indicates whether to encode ampersands or not.
+    *
+    * @var boolean $encodeAmpersands
     */
    private $encodeAmpersands;
 

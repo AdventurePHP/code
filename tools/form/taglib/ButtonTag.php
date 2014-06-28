@@ -42,9 +42,9 @@ class ButtonTag extends AbstractFormControl {
    }
 
    /**
-    * @since 0.2
-    *
     * Indicates, if the form was sent.
+    *
+    * @since 0.2
     *
     * @author Christian Schäfer
     * @version

@@ -25,37 +25,43 @@ class SMSManager extends APFObject {
 
 
    /**
-    * @var SMSMapper Used data mapper
+    * Used data mapper
+    *
+    * @var SMSMapper $mapper
     */
    protected $mapper;
 
 
    /**
-    * @var SMSSite Used website domain object
+    * Used website domain object
+    *
+    * @var SMSSite $site
     */
    protected $site;
 
 
    /**
-    * @var SMSPageStore Auxilary object storing pages
+    * Auxiliary object storing pages
+    *
+    * @var SMSPageStore $pageStore
     */
    protected $pageStore;
 
 
    /**
-    * @var string
+    * @var string $pageServiceName
     */
    protected $pageServiceName = 'StdPage';
 
 
    /**
-    * @var string
+    * @var string $pageRequestParamName
     */
    protected $pageRequestParamName = 'page';
 
 
    /**
-    * @desc Set up current page ID
+    * Set up current page ID
     */
    public function setup() {
 
@@ -182,7 +188,6 @@ class SMSManager extends APFObject {
 
 
    /**
-    * @desc
     * Create new page decorator object with DIServiceManager and map with properties.
     *
     * @param string $type Decorator type name
@@ -230,7 +235,6 @@ class SMSManager extends APFObject {
 
 
    /**
-    * @desc
     * Load page type from mapper, create new page object with DIServiceManager.
     * Map page with pageDecorators and properties.
     *

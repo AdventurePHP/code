@@ -46,7 +46,9 @@ register_shutdown_function(function () {
 class ApplicationSingleton {
 
    /**
-    * @var string[] Stores the objects, that are requested as singletons.
+    * Stores the objects, that are requested as singletons.
+    *
+    * @var string[] $CACHE
     */
    private static $CACHE = array();
 

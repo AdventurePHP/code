@@ -31,17 +31,23 @@ namespace APF\core\loader;
 class StandardClassLoader implements ClassLoader {
 
    /**
-    * @var string The vendor name this class loader is registered for.
+    * The vendor name this class loader is registered for.
+    *
+    * @var string $vendorName
     */
    private $vendorName;
 
    /**
-    * @var string The root path to load classes/templates from.
+    * The root path to load classes/templates from.
+    *
+    * @var string $rootPath
     */
    private $rootPath;
 
    /**
-    * @var string The root path to load configurations from.
+    * The root path to load configurations from.
+    *
+    * @var string $configRootPath
     */
    private $configRootPath;
 

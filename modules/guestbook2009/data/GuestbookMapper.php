@@ -45,12 +45,14 @@ class GuestbookMapper extends APFObject {
    /**
     * The database connection name.
     *
-    * @var string
+    * @var string $connectionName
     */
    private $connectionName;
 
    /**
-    * @var GenericORRelationMapper The GORM instance.
+    * The GORM instance.
+    *
+    * @var GenericORRelationMapper $orm
     */
    private $orm;
 

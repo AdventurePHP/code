@@ -38,71 +38,93 @@ use InvalidArgumentException;
 class Document extends APFObject {
 
    /**
-    * @const
     * Attribute name for service name of document controller
+    *
+    * @var string CONTROLLER_ATTR_SERVICE_NAME
     */
    const CONTROLLER_ATTR_SERVICE_NAME = 'service';
 
    /**
-    * @const
     * Attribute name for service namespace of document controller
+    *
+    * @var string CONTROLLER_ATTR_SERVICE_NAMESPACE
     */
    const CONTROLLER_ATTR_SERVICE_NAMESPACE = 'namespace';
 
    /**
-    * @const
     * Attribute name for fully qualified class name of document controller
+    *
+    * @var string CONTROLLER_ATTR_CLASS
     */
    const CONTROLLER_ATTR_CLASS = 'class';
 
    /**
-    * @var string Unique object identifier.
+    * Unique object identifier.
+    *
+    * @var string $objectId
     */
    protected $objectId = null;
 
    /**
-    * @var Document Reference to the parent object.
+    * Reference to the parent object.
+    *
+    * @var Document $parentObject
     */
    protected $parentObject = null;
 
    /**
-    * @var string[] The attributes of an object (merely the XML tag attributes).
+    * The attributes of an object (merely the XML tag attributes).
+    *
+    * @var string[] $attributes
     */
    protected $attributes = array();
 
    /**
-    * @var string The content of the tag. Example:
+    * The content of the tag. Example:
     * <pre>&lt;foo:bar&gt;This is the content of the tag.&lt;/foo:bar&gt;</pre>
+    *
+    * @var string $content
     */
    protected $content;
 
    /**
-    * @var DocumentController The instance of the document controller to use at transformation time.
+    * The instance of the document controller to use at transformation time.
+    *
+    * @var DocumentController $documentController
     */
    protected $documentController = null;
 
    /**
-    * @var Document[] List of the children of the current object.
+    * List of the children of the current object.
+    *
+    * @var Document[] $children
     */
    protected $children = array();
 
    /**
-    * @var string[][] Data attributes of the current DOM document (similar to Java Script).
+    * Data attributes of the current DOM document (similar to Java Script).
+    * @var string[][] $data
     */
    protected $data = array();
 
    /**
-    * @var TagLib[] List of known tags the APF parser uses to create tag instances during analysis phase.
+    * List of known tags the APF parser uses to create tag instances during analysis phase.
+    *
+    * @var TagLib[] $knownTags
     */
    protected static $knownTags = array();
 
    /**
-    * @var TagLib[] List of known tags for a dedicated DOM node the APF parser uses to create tag instances during analysis phase.
+    * List of known tags for a dedicated DOM node the APF parser uses to create tag instances during analysis phase.
+    *
+    * @var TagLib[] $knownInstanceTags
     */
    protected $knownInstanceTags = array();
 
    /**
-    * @var int The maximum number of parser loops taken to analyze tags within a document. Used to protect against infinite loops.
+    * The maximum number of parser loops taken to analyze tags within a document. Used to protect against infinite loops.
+    *
+    * @var int $maxParserLoops
     */
    public static $maxParserLoops = 500;
 
@@ -783,12 +805,16 @@ class Document extends APFObject {
    protected function extractTagLibTags() {
 
       /**
-       * @var array The list of parsed tags within the current document.
+       * The list of parsed tags within the current document.
+       *
+       * @var array
        */
       $tags = array();
 
       /**
-       * @var int The number of tokens within the current document (introduced also for performance reasons).
+       * The number of tokens within the current document (introduced also for performance reasons).
+       *
+       * @var int
        */
       $count = 0;
 
@@ -799,7 +825,9 @@ class Document extends APFObject {
       $t->start($benchId);
 
       /**
-       * @var int Position pointer for tag search. Introduced for performance reasons to skip stuff that we already searched in.
+       * Position pointer for tag search. Introduced for performance reasons to skip stuff that we already searched in.
+       *
+       * @var int
        */
       $offset = 0;
 

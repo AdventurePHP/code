@@ -33,17 +33,23 @@ namespace APF\core\pagecontroller;
 final class TagLib {
 
    /**
-    * @var string The class name of the tag implementation .
+    * The class name of the tag implementation .
+    *
+    * @var string $class
     */
    private $class;
 
    /**
-    * @var string The prefix of the tag (e.g. <em>core</em> for tag <em>&lt;core:importdesign /&gt;</em>).
+    * The prefix of the tag (e.g. <em>core</em> for tag <em>&lt;core:importdesign /&gt;</em>).
+    *
+    * @var string $prefix
     */
    private $prefix;
 
    /**
-    * @var string The name of the tag (e.g. <em>importdesign</em> for tag <em>&lt;core:importdesign /&gt;</em>).
+    * The name of the tag (e.g. <em>importdesign</em> for tag <em>&lt;core:importdesign /&gt;</em>).
+    *
+    * @var string $name
     */
    private $name;
 

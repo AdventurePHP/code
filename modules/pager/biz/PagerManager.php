@@ -45,70 +45,93 @@ use InvalidArgumentException;
 final class PagerManager extends APFObject {
 
    /**
-    * @var string Contains the desired anchor name.
+    * Contains the desired anchor name.
+    *
+    * @var string $anchorName
     */
    private $anchorName = null;
 
    /**
-    * @var int The number of entries to display per page
+    * The number of entries to display per page
+    *
+    * @var int $entriesPerPage
     */
    private $entriesPerPage = 10;
 
    /**
-    * @var string The name of the url parameter indicating which page to load.
+    * The name of the url parameter indicating which page to load.
+    *
+    * @var string $pageUrlParameterName
     */
    private $pageUrlParameterName = 'page';
 
    /**
-    * @var string The name of the url parameter indicating how much entries to load.
+    * The name of the url parameter indicating how much entries to load.
+    *
+    * @var string $countUrlParameterName
     */
    private $countUrlParameterName = 'count';
 
    /**
-    * @var string The namespace where the pager searches for count and entries selection
-    * statements to execute using a DatabaseConnection.
+    * The namespace where the pager searches for count and entries selection statements to execute using a DatabaseConnection.
+    *
+    * @var string $statementNamespace
     */
    private $statementNamespace;
 
    /**
-    * @var string The name of the file containing the SQL statement to retrieve the total entries count.
+    * The name of the file containing the SQL statement to retrieve the total entries count.
+    *
+    * @var string $countStatementFile
     */
    private $countStatementFile;
 
    /**
-    * @var string The name of the file containing the SQL statement to retrieve the entries to display.
+    * The name of the file containing the SQL statement to retrieve the entries to display.
+    *
+    * @var string $entriesStatementFile
     */
    private $entriesStatementFile;
 
    /**
-    * @var string Static SQL statement parameters to be used to retrieve the total entries count.
+    * Static SQL statement parameters to be used to retrieve the total entries count.
+    *
+    * @var string $statementParameters
     */
    private $statementParameters;
 
    /**
-    * @var string Namespace of the pager UI component.
+    * Namespace of the pager UI component.
+    *
+    * @var string $pagerUiNamespace
     */
    private $pagerUiNamespace;
 
    /**
-    * @var string Template name of the pager UI component.
+    * Template name of the pager UI component.
+    *
+    * @var string $pagerUiTemplate
     */
    private $pagerUiTemplate;
 
    /**
-    * @var string The name of the database connection to use.
+    * The name of the database connection to use.
+    *
+    * @var string $databaseConnectionName
     */
    private $databaseConnectionName;
 
    /**
-    * @var string Activates (true) or deactivates (false) dynamic amount of entries per page to be
-    * managed via URL (potentially less secure!).
+    * Activates (true) or deactivates (false) dynamic amount of entries per page to be managed via URL (potentially less secure!).
+    *
+    * @var string $allowDynamicEntriesPerPage
     */
    private $allowDynamicEntriesPerPage = 'false';
 
    /**
-    * @var string Indicates whether pager statement results should be cached within
-    * session (true) or not (false).
+    * Indicates whether pager statement results should be cached within session (true) or not (false).
+    *
+    * @var string $cacheInSession
     */
    private $cacheInSession = 'false';
 
@@ -165,9 +188,9 @@ final class PagerManager extends APFObject {
    }
 
    /**
-    * @deprecated Use DI container initialization instead!
-    *
     * Initializes the pager. Loads the desired config section.
+    *
+    * @deprecated Use DI container initialization instead!
     *
     * @param string $initParam the name of the config section.
     *

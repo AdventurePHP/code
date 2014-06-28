@@ -52,7 +52,9 @@ use APF\tools\form\validator\TextFieldValidator;
 class FieldCompareValidator extends TextFieldValidator {
 
    /**
-    * @var AbstractFormControl The reference form control.
+    * The reference form control.
+    *
+    * @var AbstractFormControl $refControl
     */
    protected $refControl = null;
 

@@ -36,7 +36,9 @@ use Exception;
 abstract class DefaultPasswordHashProvider extends APFObject implements PasswordHashProvider, APFService {
 
    /**
-    * @var string Indicates the default hard-coded salt.
+    * Indicates the default hard-coded salt.
+    *
+    * @var string $DEFAULT_HARDCODED_SALT
     */
    private static $DEFAULT_HARDCODED_SALT = 'AdventurePHPFramework';
 

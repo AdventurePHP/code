@@ -4,16 +4,18 @@ namespace APF\extensions\apfelsms\biz\pages\decorators;
 use APF\tools\link\Url;
 
 /**
+ * Adds request params to page URL
+ *
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version : v0.1 (21.06.12)
- * @desc    : Adds request params to page URL
- *
  */
 class SMSRequestPageDec extends SMSAbstractPageDec {
 
 
    /**
-    * @var array Request parameter storage
+    * Request parameter storage
+    *
+    * @var array $requestParams
     */
    protected $requestParams = array();
 

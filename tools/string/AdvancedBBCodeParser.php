@@ -36,8 +36,9 @@ use APF\core\singleton\Singleton;
 final class BBCodeParserDefinition {
 
    /**
-    * @var string Represents the class name of the parser provider an thus the file name
-    * (without extension!).
+    * Represents the class name of the parser provider an thus the file name (without extension!).
+    *
+    * @var string $class
     */
    private $class;
 

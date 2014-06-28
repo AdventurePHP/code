@@ -34,22 +34,30 @@ use APF\core\logging\LoggerException;
 class FileLogWriter implements LogWriter {
 
    /**
-    * @var string The host prefix that is added to the log file name to distinguish between different hosts.
+    * The host prefix that is added to the log file name to distinguish between different hosts.
+    *
+    * @var string $hostPrefix
     */
    protected $hostPrefix = null;
 
    /**
-    * @var string Directory, where log files are stored.
+    * Directory, where log files are stored.
+    *
+    * @var string $logDir
     */
    protected $logDir;
 
    /**
-    * @var string Permission that is applied to a newly created log folder.
+    * Permission that is applied to a newly created log folder.
+    *
+    * @var string $logFolderPermissions
     */
    protected $logFolderPermissions = 0777;
 
    /**
-    * @var string The log target identifier.
+    * The log target identifier.
+    *
+    * @var string $target
     */
    protected $target;
 

@@ -31,37 +31,51 @@ namespace APF\core\benchmark;
 final class BenchmarkProcess {
 
    /**
-    * @var int ID of the process.
+    * ID of the process.
+    *
+    * @var int $processId
     */
    private $processId;
 
    /**
-    * @var string Name of the process.
+    * Name of the process.
+    *
+    * @var string $processName
     */
    private $processName;
 
    /**
-    * @var int Level of the process.
+    * Level of the process.
+    *
+    * @var int $processLevel
     */
    private $processLevel;
 
    /**
-    * @var int Start time of the process.
+    * Start time of the process.
+    *
+    * @var int $processStartTime
     */
    private $processStartTime = null;
 
    /**
-    * @var int Stop time of the process.
+    * Stop time of the process.
+    *
+    * @var int $processStopTime
     */
    private $processStopTime = null;
 
    /**
-    * @var BenchmarkProcess Reference on the process' parent.
+    * Reference on the process' parent.
+    *
+    * @var BenchmarkProcess $parentProcess
     */
    private $parentProcess = null;
 
    /**
-    * @var BenchmarkProcess[] List of child processes.
+    * List of child processes.
+    *
+    * @var BenchmarkProcess[] $processes
     */
    private $processes = array();
 

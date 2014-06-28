@@ -11,7 +11,7 @@ use APF\tools\string\StringAssistant;
 class SMSBreadcrumbNavTagController extends SMSBaseNavTagController {
 
    /**
-    * @var SMSManager
+    * @var SMSManager $SMSM
     */
    protected $SMSM;
 

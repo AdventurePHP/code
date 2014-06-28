@@ -56,27 +56,37 @@ use APF\tools\media\taglib\MediaInclusionTag;
 class SocialBookmarkBarManager extends APFObject {
 
    /**
-    * @var string Url of the page to bookmark.
+    * Url of the page to bookmark.
+    *
+    * @var string $url
     */
    private $url = '';
 
    /**
-    * @var string Title of the page to bookmark.
+    * Title of the page to bookmark.
+    *
+    * @var string $title
     */
    private $title = '';
 
    /**
-    * @var string Width of the bookmark icons.
+    * Width of the bookmark icons.
+    *
+    * @var string $imageWidth
     */
    private $imageWidth = '20';
 
    /**
-    * @var string Height of the bookmark icons.
+    * Height of the bookmark icons.
+    *
+    * @var string $imageHeight
     */
    private $imageHeight = '20';
 
    /**
-    * @var SocialBookmarkItem[] The configured bookmark services.
+    * The configured bookmark services.
+    *
+    * @var SocialBookmarkItem[] $bookmarkServices
     */
    private $bookmarkServices = array();
 

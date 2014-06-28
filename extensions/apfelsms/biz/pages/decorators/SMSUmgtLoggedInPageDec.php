@@ -15,7 +15,10 @@ class SMSUmgtLoggedInPageDec extends SMSAbstractPageDec {
 
 
    /**
-    * @var boolean If true, page is hidden if user is logged in instead of hiding if no user is logged in.
+    * If true, page is hidden if user is logged in instead of hiding if no user is logged in.
+    *
+    * @var boolean $hiddenOnLogin
+    *
     * @since v0.2
     */
    protected $hiddenOnLogin = false;

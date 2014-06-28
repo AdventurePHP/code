@@ -46,17 +46,23 @@ use APF\tools\form\taglib\AbstractFormControl;
 class ReCaptchaTag extends AbstractFormControl {
 
    /**
-    * @const The name of the challenge identifier url parameter.
+    * The name of the challenge identifier url parameter.
+    *
+    * @var string RE_CAPTCHA_CHALLENGE_FIELD_IDENTIFIER
     */
    const RE_CAPTCHA_CHALLENGE_FIELD_IDENTIFIER = 'recaptcha_challenge_field';
 
    /**
-    * @const The name of the challenge answer identifier url parameter.
+    * The name of the challenge answer identifier url parameter.
+    *
+    * @var string RE_CAPTCHA_CHALLENGE_ANSWER_IDENTIFIER
     */
    const RE_CAPTCHA_CHALLENGE_ANSWER_IDENTIFIER = 'recaptcha_response_field';
 
    /**
-    * @var string The error message key to display within the reCaptcha control.
+    * The error message key to display within the reCaptcha control.
+    *
+    * @var string $errorMessageKey
     */
    private $errorMessageKey;
 

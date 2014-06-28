@@ -30,12 +30,16 @@ use APF\modules\genericormapper\data\GenericDomainObject;
 class TreeItem extends GenericDomainObject {
 
    /**
-    * @var GenericDomainObject The parent object of this navigation node
+    * The parent object of this navigation node
+    *
+    * @var GenericDomainObject $parentItem
     */
    protected $parentItem = null;
 
    /**
-    * @var GenericDomainObject The children of this navigation node
+    * The children of this navigation node
+    *
+    * @var GenericDomainObject $children
     */
    protected $children = array();
 

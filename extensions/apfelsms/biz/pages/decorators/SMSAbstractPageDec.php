@@ -15,19 +15,23 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
 
 
    /**
-    * @var SMSPage Page or PageDec object the decorator is wrapped around
+    * Page or PageDec object the decorator is wrapped around
+    *
+    * @var SMSPage $SMSPage
     */
    protected $SMSPage;
 
 
    /**
-    * @var string Decorator type name
+    * Decorator type name
+    *
+    * @var string $type
     */
    protected $type;
 
 
    /**
-    * @var array
+    * @var array $mapVars
     */
    public static $mapVars = array();
 
@@ -79,15 +83,12 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
     */
    public function getDecoratorTypes(array $giveThrough = array()) {
 
-
       $giveThrough[] = $this->getDecType();
 
       $page = $this->SMSPage;
 
       if ($page instanceof SMSPageDec) {
-         /**
-          * @var SMSPageDec $page
-          */
+
          return $page->getDecoratorTypes($giveThrough);
       }
 
@@ -109,6 +110,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
 
       if ($page instanceof SMSPageDec) {
          /**
+          *
           * @var SMSPageDec $page
           */
          return $page->getAllDecorators($giveThrough);
@@ -149,6 +151,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
       $page = $this->SMSPage;
 
       if ($page instanceof SMSPageDec) {
+
          /**
           * @var SMSPageDec $page
           */
@@ -230,9 +233,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
 
 
    /**
-    * @param $lvl
-    *
-    * @return mixed
+    * @param int $lvl
     */
    public function setLevel($lvl) {
 

@@ -42,12 +42,16 @@ use APF\tools\link\Url;
 final class GuestbookService extends APFObject {
 
    /**
-    * @var PagerManager Stores the pager instance for further usage.
+    * Stores the pager instance for further usage.
+    *
+    * @var PagerManager $pager
     */
    private $pager = null;
 
    /**
-    * @var string Defines the name of the pager config section.
+    * Defines the name of the pager config section.
+    *
+    * @var string $pagerConfigSection
     */
    private $pagerConfigSection;
 

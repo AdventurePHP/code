@@ -5,11 +5,11 @@ use APF\extensions\apfelsms\biz\pages\SMSPage;
 use APF\tools\link\Url;
 
 /**
+ * Adds an anchor and uses template name of parent page
+ * This is a combination of the anchor decorator and the alias decorator with reference to the parent
+ *
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version : v0.1 (22.11.2013)
- * @desc    : Adds an anchor and uses template name of parent page
- *            This is a combination of the anchor decorator and the alias decorator with reference to the parent
- *
  */
 class SMSParentAnchorPageDec extends SMSAnchorPageDec {
 

@@ -4,15 +4,16 @@ namespace APF\extensions\apfelsms\biz\pages\decorators;
 use APF\tools\link\Url;
 
 /**
+ * Returns an external URL as page URL.
+ *
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version : v0.1 (19.08.12)
- * @desc    . Returns an external URL as page URL.
  */
 class SMSExternalURLPageDec extends SMSAbstractPageDec {
 
 
    /**
-    * @var string
+    * @var string $externalURL
     */
    protected $externalURL = '';
 

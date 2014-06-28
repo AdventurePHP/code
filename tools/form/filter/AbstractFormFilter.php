@@ -37,7 +37,7 @@ abstract class AbstractFormFilter extends AbstractFilter {
    /**
     * Includes a reference on the control to filter.
     *
-    * @var AbstractFormControl The control to filter.
+    * @var AbstractFormControl $control
     */
    protected $control;
 
@@ -45,7 +45,7 @@ abstract class AbstractFormFilter extends AbstractFilter {
     * Includes a reference on the button of the form,
     * that initiates the validation event.
     *
-    * @var AbstractFormControl The button that triggers the event.
+    * @var AbstractFormControl $button
     */
    protected $button;
 

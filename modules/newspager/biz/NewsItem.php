@@ -31,22 +31,30 @@ namespace APF\modules\newspager\biz;
 class NewsItem {
 
    /**
-    * @var string Headline of a news page.
+    * Headline of a news page.
+    *
+    * @var string $headline
     */
    private $headline;
 
    /**
-    * @var string Sub headline of a news page.
+    * Sub headline of a news page.
+    *
+    * @var string $subHeadline
     */
    private $subHeadline;
 
    /**
-    * @var string Content of a news page.
+    * Content of a news page.
+    *
+    * @var string $content
     */
    private $content;
 
    /**
-    * @var int Number of news pages.
+    * Number of news pages.
+    *
+    * @var int $newsCount
     */
    private $newsCount;
 

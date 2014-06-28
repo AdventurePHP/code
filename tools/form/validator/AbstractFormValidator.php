@@ -34,13 +34,19 @@ use APF\tools\form\taglib\AbstractFormControl;
 abstract class AbstractFormValidator extends APFObject {
 
    /**
-    * @var string The default css class to mark invalid form controls.
+    * The default css class to mark invalid form controls.
+    *
+    * @var string $DEFAULT_MARKER_CLASS
+    *
     * @since 1.12
     */
    public static $DEFAULT_MARKER_CLASS = 'apf-form-error';
 
    /**
-    * @var string The attribute, that can be used to define custom marker classes.
+    * The attribute, that can be used to define custom marker classes.
+    *
+    * @var string $CUSTOM_MARKER_CLASS_ATTRIBUTE
+    *
     * @since 1.12
     */
    public static $CUSTOM_MARKER_CLASS_ATTRIBUTE = 'valmarkerclass';
@@ -48,7 +54,7 @@ abstract class AbstractFormValidator extends APFObject {
    /**
     * Includes a reference on the control to validate.
     *
-    * @var AbstractFormControl The control to validate.
+    * @var AbstractFormControl $control
     */
    protected $control;
 
@@ -56,7 +62,7 @@ abstract class AbstractFormValidator extends APFObject {
     * Includes a reference on the button of the form,
     * that initiates the validation event.
     *
-    * @var AbstractFormControl The button that triggers the event.
+    * @var AbstractFormControl $button
     */
    protected $button;
 
@@ -66,13 +72,16 @@ abstract class AbstractFormValidator extends APFObject {
     * the <em>validator</em> attribute specified should be notified.
     *
     * @since 1.12
-    * @var string The validator type.
+    * @var string $type
     */
    protected $type = null;
 
    /**
+    * Indicates the special validator behaviour.
+    *
+    * @var string $SPECIAL_VALIDATOR_INDICATOR
+    *
     * @since 1.12
-    * @var string Indicates the special validator behaviour.
     */
    protected static $SPECIAL_VALIDATOR_INDICATOR = 'special';
 

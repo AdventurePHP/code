@@ -87,22 +87,30 @@ use InvalidArgumentException;
 final class DIServiceManager {
 
    /**
-    * @var array Injection call cache to avoid circular injections.
+    * Injection call cache to avoid circular injections.
+    *
+    * @var array $INJECTION_CALL_CACHE
     */
    private static $INJECTION_CALL_CACHE = array();
 
    /**
-    * @var array Contains the service objects, that were already configured.
+    * Contains the service objects, that were already configured.
+    *
+    * @var array $SERVICE_OBJECT_CACHE
     */
    private static $SERVICE_OBJECT_CACHE = array();
 
    /**
-    * @var array Contains the configuration of already delivered services
+    * Contains the configuration of already delivered services
+    *
+    * @var array $SERVICE_CONFIG_CACHE
     */
    private static $SERVICE_CONFIG_CACHE = array();
 
    /**
-    * @var array Contains the cached service types
+    * Contains the cached service types
+    *
+    * @var array $SERVICE_TYPE_CACHE
     */
    private static $SERVICE_TYPE_CACHE = array();
 

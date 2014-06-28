@@ -44,27 +44,37 @@ use APF\core\logging\LoggerException;
 class GraphiteLogWriter implements LogWriter {
 
    /**
-    * @var string The Graphite server address (IP or DNS name).
+    * The Graphite server address (IP or DNS name).
+    *
+    * @var string $host
     */
    protected $host;
 
    /**
-    * @var string The Graphite server port.
+    * The Graphite server port.
+    *
+    * @var string $port
     */
    protected $port;
 
    /**
-    * @var string Defines the separator between multiple log entries sent to the server within one call (bulk).
+    * Defines the separator between multiple log entries sent to the server within one call (bulk).
+    *
+    * @var string $entrySeparator
     */
    protected $entrySeparator = "\n";
 
    /**
-    * @var string The log target identifier.
+    * The log target identifier.
+    *
+    * @var string $target
     */
    protected $target;
 
    /**
-    * @var bool Specifies if multiple LogEntries will be written in one datagram (true) or not (false) (pystatsd doesn't support multiple metrics in one datagram).
+    * Specifies if multiple LogEntries will be written in one datagram (true) or not (false) (pystatsd doesn't support multiple metrics in one datagram).
+    *
+    * @var bool $batchWrites
     */
    protected $batchWrites;
 

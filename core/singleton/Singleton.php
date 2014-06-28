@@ -44,7 +44,7 @@ class Singleton {
    /**
     * Stores the objects, that are requested as singletons.
     *
-    * @var APFObject[] The singleton cache.
+    * @var APFObject[] $CACHE
     */
    private static $CACHE = array();
 

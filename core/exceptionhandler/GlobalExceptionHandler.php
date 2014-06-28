@@ -45,7 +45,9 @@ use Exception;
 abstract class GlobalExceptionHandler {
 
    /**
-    * @var ExceptionHandler|null The instance of the exception handler to use.
+    * The instance of the exception handler to use.
+    *
+    * @var ExceptionHandler|null $HANDLER
     */
    private static $HANDLER;
 

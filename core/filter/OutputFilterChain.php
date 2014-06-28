@@ -32,7 +32,7 @@ use APF\core\filter\AbstractFilterChain;
 class OutputFilterChain extends AbstractFilterChain {
 
    /**
-    * @var OutputFilterChain
+    * @var OutputFilterChain $CHAIN
     */
    private static $CHAIN;
 

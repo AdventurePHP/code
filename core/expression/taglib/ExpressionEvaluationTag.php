@@ -42,7 +42,9 @@ use APF\core\pagecontroller\Document;
 class ExpressionEvaluationTag extends Document {
 
    /**
-    * @const string The expression attribute name.
+    * The expression attribute name.
+    *
+    * @var string EXPRESSION
     */
    const EXPRESSION = 'expression';
 

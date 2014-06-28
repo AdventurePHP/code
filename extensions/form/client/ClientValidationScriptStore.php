@@ -34,19 +34,19 @@ class ClientValidationScriptStore extends APFObject {
    /**
     * Contains all validators which need to be added.
     *
-    * @var array
+    * @var array $scriptStore
     */
    protected $scriptStore = array();
    /**
     * Contains all valmarkerclasses
     *
-    * @var array
+    * @var array $valmarkerclassStore
     */
    protected $valmarkerclassStore = array();
    /**
     * Contains all options for the controls
     *
-    * @var array
+    * @var array $optionsStore
     */
    protected $optionsStore = array();
 

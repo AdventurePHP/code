@@ -33,7 +33,9 @@ namespace APF\core\errorhandler;
 class ConfigurableErrorHandler extends DefaultErrorHandler {
 
    /**
-    * @var int The error threshold level.
+    * The error threshold level.
+    *
+    * @var int $errorThresholdLevel
     */
    private $errorThresholdLevel;
 

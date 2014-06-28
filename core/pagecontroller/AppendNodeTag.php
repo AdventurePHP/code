@@ -41,8 +41,10 @@ use InvalidArgumentException;
 class AppendNodeTag extends Document {
 
    /**
-    * @var string Indicates, whether the static content of an included templates
+    * Indicates, whether the static content of an included templates
     * should be appended to the target template (<em>true</em>) or not (<em>false</em>).
+    *
+    * @var string $INCLUDE_STATIC_CONTENT_ATTRIBUTE_NAME
     */
    protected static $INCLUDE_STATIC_CONTENT_ATTRIBUTE_NAME = 'includestatic';
 

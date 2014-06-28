@@ -45,12 +45,16 @@ namespace APF\core\errorhandler;
 abstract class GlobalErrorHandler {
 
    /**
-    * @var ErrorHandler|null The instance of the error handler to use.
+    * The instance of the error handler to use.
+    *
+    * @var ErrorHandler|null $HANDLER
     */
    private static $HANDLER;
 
    /**
-    * @var bool Indicates whether or not fatal errors are handled by the GlobalErrorHandler.
+    * Indicates whether or not fatal errors are handled by the GlobalErrorHandler.
+    *
+    * @var bool $catchFatalErrors
     */
    private static $catchFatalErrors = true;
 

@@ -50,36 +50,52 @@ abstract class AbstractFormControl extends Document implements FormControl {
          'contenteditable', 'contextmenu', 'dir', 'draggable', 'dropzone');
 
    /**
+    * Indicates, whether the form control is valid or not.
+    *
+    * @var boolean $controlIsValid
+    *
     * @since 1.11
-    * @var boolean Indicates, whether the form control is valid or not.
     */
    protected $controlIsValid = true;
 
    /**
+    * Indicates, whether the form is sent or not.
+    *
+    * @var boolean $controlIsSent
+    *
     * @since 1.11
-    * @var boolean Indicates, whether the form is sent or not.
     */
    protected $controlIsSent = false;
 
    /**
+    * Indicates, whether the control will be displayed or not (this is *not* visibility state)
+    *
+    * @var bool $isVisible
+    *
     * @since 1.17
-    * @var bool Indicates, whether the control will be displayed or not (this is *not* visibility state)
     */
    protected $isVisible = true;
 
    /**
-    * @var AbstractFormValidator[] The list of validators registered for the current control.
+    * The list of validators registered for the current control.
+    *
+    * @var AbstractFormValidator[] $validators
     */
    protected $validators = array();
 
    /**
-    * @var AbstractFormFilter[] The list of validators registered for the current control.
+    * The list of validators registered for the current control.
+    *
+    * @var AbstractFormFilter[] $filters
     */
    protected $filters = array();
 
    /**
+    * The attributes, that are allowed to render into the XHTML/1.1 strict document.
+    *
+    * @var string[] $attributeWhiteList
+    *
     * @since 1.12
-    * @var array{string} The attributes, that are allowed to render into the XHTML/1.1 strict document.
     */
    protected $attributeWhiteList = array(
       // core attributes
@@ -315,12 +331,11 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @since 1.11
-    *
     * Executes the given form validator in context of the current form element.
     *
     * @param AbstractFormValidator $validator The desired validator.
     *
+    * @since 1.11
     * @author Christian Achatz
     * @version
     * Version 0.1, 24.08.2009<br />
@@ -614,13 +629,12 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @since 2.1
-    *
     * Allows you to retrieve all registered validators for this form control added within this form
     * instance. May be used to generate client-side validation rules.
     *
     * @return AbstractFormValidator[] The validators registered for the current control.
     *
+    * @since 2.1
     * @author Christian Achatz
     * @version
     * Version 0.1, 27.03.2014 (see ID#166)<br />

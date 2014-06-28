@@ -42,78 +42,112 @@ use APF\core\singleton\Singleton;
 class BaseMapper extends APFObject {
 
    /**
-    * @var string Namespace, where the configuration files are located.
+    * Namespace, where the configuration files are located.
+    *
+    * @var string $configNamespace
     */
    protected $configNamespace = null;
 
    /**
-    * @var string Name affix of the configuration files.
+    * Name affix of the configuration files.
+    *
+    * @var string $configNameAffix
     */
    protected $configNameAffix = null;
 
    /**
-    * @var AbstractDatabaseHandler Instance of the database driver.
+    * Instance of the database driver.
+    *
+    * @var AbstractDatabaseHandler $dbDriver
     */
    protected $dbDriver = null;
 
    /**
-    * @since 1.12
     * Stores the connection name to be able to restore the connection on wakeup.
-    * @var string The name of the connection to use.
+    *
+    * @var string $connectionName
+    *
+    * @since 1.12
     */
    protected $connectionName = null;
 
    /**
-    * @var string[] Object mapping table.
+    * Object mapping table.
+    *
+    * @var string[] $mappingTable
     */
    protected $mappingTable = array();
 
    /**
+    * Additional indices for the object tables.
+    *
+    * @var string[] $mappingIndexTable
+    *
     * @since 1.12
-    * @var string[] Additional indices for the object tables.
     */
    protected $mappingIndexTable = array();
 
    /**
+    * Storage Engine for the object tables.
+    *
+    * @var string[] $mappingStorageEngineTable
+    *
     * @since 2.1
-    * @var string[] Storage Engine for the object tables.
     */
    protected $mappingStorageEngineTable = array();
 
    /**
+    * Storage Engine for the relation tables.
+    *
+    * @var string[] $relationStorageEngineTable
+    *
     * @since 2.1
-    * @var string[] Storage Engine for the relation tables.
     */
    protected $relationStorageEngineTable = array();
+
    /**
-    * @var array Object relation table.
+    * Object relation table.
+    *
+    * @var array $relationTable
     */
    protected $relationTable = array();
 
    /**
+    * Domain object table
+    *
+    * @var string[] $domainObjectsTable
+    *
     * @since 1.14
-    * @var string[] Domain object table
     */
    protected $domainObjectsTable = array();
 
    /**
-    * @var string[] Indicates, if a additional configuration was already imported.
+    * Indicates, if a additional configuration was already imported.
+    *
+    * @var string[] $importedConfigCache
     */
    protected $importedConfigCache = array();
 
    /**
-    * @var boolean Indicates, whether the generated statements should be logged for debugging purposes.
+    * Indicates, whether the generated statements should be logged for debugging purposes.
+    *
+    * @var boolean $logStatements
     */
    protected $logStatements = false;
 
    /**
+    * Defines the config file extension the GORM instance uses.
+    *
+    * @var string $configFileExtension
+    *
     * @since 1.14
-    * @var string Defines the config file extension the GORM instance uses.
     */
    private $configFileExtension = 'ini';
 
    /**
-    * @var string Identifies the param that defines additional indices relevant for database setup.
+    * Identifies the param that defines additional indices relevant for database setup.
+    *
+    * @var string $ADDITIONAL_INDICES_INDICATOR
     */
    protected static $ADDITIONAL_INDICES_INDICATOR = 'AddIndices';
 
@@ -186,10 +220,10 @@ class BaseMapper extends APFObject {
    }
 
    /**
-    * @since 1.12
-    *
     * Initializes the database connection. This is used on creation of the mapper
     * and on wakeup after session de-serialization.
+    *
+    * @since 1.12
     *
     * @author Christian Achatz
     * @version

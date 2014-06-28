@@ -36,7 +36,9 @@ use APF\core\pagecontroller\APFObject;
 class HtmlHeaderManager extends APFObject {
 
    /**
-    * @var HeaderNode[] The list of header nodes.
+    * The list of header nodes.
+    *
+    * @var HeaderNode[] $nodes
     */
    protected $nodes = array();
 

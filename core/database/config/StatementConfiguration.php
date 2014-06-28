@@ -35,7 +35,9 @@ use APF\core\configuration\provider\BaseConfiguration;
 class StatementConfiguration extends BaseConfiguration implements Configuration {
 
    /**
-    * @var string The statement content.
+    * The statement content.
+    *
+    * @var string $statement
     */
    private $statement;
 

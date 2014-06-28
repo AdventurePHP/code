@@ -19,55 +19,55 @@ class SMSStdPage extends APFObject implements SMSPage {
 
 
    /**
-    * @var string
+    * @var string $id
     */
    protected $id;
 
 
    /**
-    * @var integer
+    * @var integer $level
     */
    protected $level;
 
 
    /**
-    * @var string
+    * @var string $title
     */
    protected $title = '';
 
 
    /**
-    * @var string|null
+    * @var string|null $navTitle
     */
    protected $navTitle = null;
 
 
    /**
-    * @var array
+    * @var array $js
     */
    protected $js = array();
 
 
    /**
-    * @var array
+    * @var array $css
     */
    protected $css = array();
 
 
    /**
-    * @var SMSPage|null
+    * @var SMSPage|null $parent
     */
    protected $parent = null;
 
 
    /**
-    * @var SMSPage[]
+    * @var SMSPage[] $children
     */
    protected $children = array();
 
 
    /**
-    * @var array
+    * @var array $mapVars
     */
    public static $mapVars = array(
          'title'    => '',
@@ -108,7 +108,7 @@ class SMSStdPage extends APFObject implements SMSPage {
 
 
    /**
-    * @param $level
+    * @param int $level
     */
    public function setLevel($level) {
 

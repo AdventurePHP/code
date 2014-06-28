@@ -35,7 +35,9 @@ use APF\core\singleton\Singleton;
 class MySQLiHandler extends AbstractDatabaseHandler {
 
    /**
-    * @var int The number of rows, that are affected within a bind statement execution.
+    * The number of rows, that are affected within a bind statement execution.
+    *
+    * @var int $bindNumRows
     */
    private $bindNumRows = 0;
 

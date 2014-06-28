@@ -38,7 +38,9 @@ use APF\tools\link\Url;
 class ArticleCommentManager extends APFObject {
 
    /**
-    * @var string Category key.
+    * Category key.
+    *
+    * @var string $categoryKey
     */
    protected $categoryKey;
 

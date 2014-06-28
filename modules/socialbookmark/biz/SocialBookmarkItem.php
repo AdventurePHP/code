@@ -31,32 +31,44 @@ namespace APF\modules\socialbookmark\biz;
 class SocialBookmarkItem {
 
    /**
-    * @var string Basis-URL des Bookmark-Services.
+    * Basis-URL des Bookmark-Services.
+    *
+    * @var string $serviceBaseUrl
     */
    private $serviceBaseUrl;
 
    /**
-    * @var string Name of the url parameter for the url to bookmark.
+    * Name of the url parameter for the url to bookmark.
+    *
+    * @var string $urlParamName
     */
    private $urlParamName;
 
    /**
-    * @var string Name of the utl parameter for the title to bookmark.
+    * Name of the utl parameter for the title to bookmark.
+    *
+    * @var string $titleParamName
     */
    private $titleParamName;
 
    /**
-    * @var string Title of the bookmark entry (e.g. used as link title or alt text).
+    * Title of the bookmark entry (e.g. used as link title or alt text).
+    *
+    * @var string $title
     */
    private $title;
 
    /**
-    * @var string Name of the bookmark icon without it's extension.
+    * Name of the bookmark icon without it's extension.
+    *
+    * @var string $imageUrl
     */
    private $imageUrl;
 
    /**
-    * @var string File extension of the bookmark icon.
+    * File extension of the bookmark icon.
+    *
+    * @var string $imageExt
     */
    private $imageExt;
 

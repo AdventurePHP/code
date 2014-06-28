@@ -16,31 +16,31 @@ class SMSStdSite extends APFObject implements SMSSite {
 
 
    /**
-    * @var string
+    * @var string $websiteTitle
     */
    protected $websiteTitle = '';
 
 
    /**
-    * @var string|integer
+    * @var string|integer $currentPageId
     */
    protected $currentPageId = null;
 
 
    /**
-    * @var string|integer
+    * @var string|integer $startPageId
     */
    protected $startPageId = null;
 
 
    /**
-    * @var string|integer
+    * @var string|integer $forbiddenPageId
     */
    protected $forbiddenPageId = null;
 
 
    /**
-    * @var string|integer
+    * @var string|integer $notFoundPageId
     */
    protected $notFoundPageId = null;
 

@@ -35,7 +35,9 @@ use APF\tools\form\validator\AbstractFormValidator;
 class SelectBoxTag extends AbstractFormControl {
 
    /**
-    * @var boolean Marks the field as dynamic to do special presetting on transformation time.
+    * Marks the field as dynamic to do special presetting on transformation time.
+    *
+    * @var boolean $isDynamicField
     */
    protected $isDynamicField = false;
 
@@ -359,11 +361,11 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * @since 1.11
-    *
     * Re-implements the addValidator() method for select fields.
     *
     * @param AbstractFormValidator $validator The desired validator.
+    *
+    * @since 1.11
     *
     * @author Christian Achatz
     * @version

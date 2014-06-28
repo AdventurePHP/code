@@ -38,22 +38,30 @@ use APF\core\singleton\Singleton;
 class DefaultErrorHandler implements ErrorHandler {
 
    /**
-    * @var int Error number.
+    * Error number.
+    *
+    * @var int $errorNumber
     */
    protected $errorNumber;
 
    /**
-    * @var string Error message,
+    * Error message,
+    *
+    * @var string $errorMessage
     */
    protected $errorMessage;
 
    /**
-    * @var string Error file.
+    * Error file.
+    *
+    * @var string $errorFile
     */
    protected $errorFile;
 
    /**
-    * @var int Error line.
+    * Error line.
+    *
+    * @var int $errorLine
     */
    protected $errorLine;
 

@@ -38,7 +38,9 @@ use InvalidArgumentException;
 final class Registry {
 
    /**
-    * @var string[] Stores the registry content.
+    * Stores the registry content.
+    *
+    * @var string[] $REGISTRY_STORE
     */
    private static $REGISTRY_STORE = array();
 

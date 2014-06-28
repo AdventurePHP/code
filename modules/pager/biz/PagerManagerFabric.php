@@ -24,13 +24,13 @@ use APF\core\pagecontroller\APFObject;
 use APF\core\service\APFService;
 
 /**
- * @deprecated Please use initialization of the PagerManager via the DIServiceManager instead.
- *
  * Implements the factory of the pager manager. Initializes concrete PagerManager
  * instances and caches them for further usage.
  * Application sample:
  * <pre>$pMF = &$this->getServiceObject('APF\modules\pager\biz\PagerManagerFabric');
  * $pM = &$pMF->getPagerManager('{ConfigSection}',{AdditionalParamArray});</pre>
+ *
+ * @deprecated Please use initialization of the PagerManager via the DIServiceManager instead.
  *
  * @author Christian Achatz
  * @version

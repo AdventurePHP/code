@@ -31,12 +31,16 @@ namespace APF\core\expression;
 abstract class EvaluationExpressionBase {
 
    /**
-    * @var string The expression to execute.
+    * The expression to execute.
+    *
+    * @var string $expression
     */
    protected $expression;
 
    /**
-    * @var mixed The previous expression execution result (e.g. an object or array).
+    * The previous expression execution result (e.g. an object or array).
+    *
+    * @var mixed $previousResult
     */
    protected $previousResult;
 

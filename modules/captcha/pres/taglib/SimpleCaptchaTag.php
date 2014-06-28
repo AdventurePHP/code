@@ -43,17 +43,23 @@ use APF\tools\link\LinkGenerator;
 class SimpleCaptchaTag extends AbstractFormControl {
 
    /**
-    * @var AbstractFormControl Contains the instance of the captcha text field.
+    * Contains the instance of the captcha text field.
+    *
+    * @var AbstractFormControl $textField
     */
    protected $textField = null;
 
    /**
-    * @var string Contains the name of the captcha text field.
+    * Contains the name of the captcha text field.
+    *
+    * @var string $textFieldName
     */
    protected $textFieldName = null;
 
    /**
-    * @var string The captcha string of the current request.
+    * The captcha string of the current request.
+    *
+    * @var string $captchaString
     */
    protected $captchaString = null;
 
@@ -73,13 +79,13 @@ class SimpleCaptchaTag extends AbstractFormControl {
    }
 
    /**
-    * @since 1.11
-    *
     * Re-implements the addFiler() method for the captcha taglib.
     * Can be used to add the shipped filter or a custom one
     * directly within the form definition.
     *
     * @param AbstractFormFilter $filter The desired filter.
+    *
+    * @since 1.11
     *
     * @author Christian Achatz
     * @version
@@ -90,8 +96,6 @@ class SimpleCaptchaTag extends AbstractFormControl {
    }
 
    /**
-    * @pubic
-    *
     * Re-implements the isValid() method for this special case.
     *
     * @return boolean The validation status of the inner text field.

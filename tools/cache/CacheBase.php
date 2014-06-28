@@ -36,7 +36,9 @@ use InvalidArgumentException;
 abstract class CacheBase extends APFObject {
 
    /**
-    * @var Configuration Cache configuration options.
+    * Cache configuration options.
+    *
+    * @var Configuration $configuration
     */
    private $configuration;
 

@@ -13,13 +13,15 @@ class SMSJSIncludesTag extends Document {
 
 
    /**
-    * @var string HTML-Template for JS includes
+    * HTML-Template for JS includes
+    *
+    * @var string $JSIncludeTemplate
     */
    protected static $JSIncludeTemplate = '<script type="text/javascript" src="{URL}"></script>';
 
 
    /**
-    * @var string
+    * @var string $newLine
     */
    protected static $newLine = "\n";
 

@@ -36,37 +36,51 @@ namespace APF\modules\genericormapper\data;
 final class GenericCriterionObject {
 
    /**
-    * @var string[] Stores the relation indicators.
+    * Stores the relation indicators.
+    *
+    * @var string[] $relations
     */
    private $relations = array();
 
    /**
-    * @var string[] Stores an uniqid per relation name.
+    * Stores an uniqid per relation name.
+    *
+    * @var string[] $uniqueRelationIds
     */
    private $uniqueRelationIds = array('source' => array(), 'target' => array());
 
    /**
-    * @var string[] Stores the limit indicator.
+    * Stores the limit indicator.
+    *
+    * @var string[] $limit
     */
    private $limit = array();
 
    /**
-    * @var string[] Stores the property indicator.
+    * Stores the property indicator.
+    *
+    * @var string[] $properties
     */
    private $properties = array();
 
    /**
-    * @var string[] Stores the current logical operator.
+    * Stores the current logical operator.
+    *
+    * @var string[] $logicalOperator
     */
    private $logicalOperator = 'AND';
 
    /**
-    * @var string[] Stores the properties to load into the object.
+    * Stores the properties to load into the object.
+    *
+    * @var string[] $loadedProperties
     */
    private $loadedProperties = array();
 
    /**
-    * @var string[] Stores the order indicator.
+    * Stores the order indicator.
+    *
+    * @var string[] $orders
     */
    private $orders = array();
 

@@ -47,7 +47,9 @@ use InvalidArgumentException;
 class LanguageLabelTag extends Document {
 
    /**
-    * @var array A list of place holder names and values.
+    * A list of place holder names and values.
+    *
+    * @var array $placeHolders
     */
    private $placeHolders = array();
 

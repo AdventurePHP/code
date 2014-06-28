@@ -46,7 +46,9 @@ namespace APF\tools\link;
 final class LinkGenerator {
 
    /**
-    * @var LinkScheme The link scheme to generate the links with.
+    * The link scheme to generate the links with.
+    *
+    * @var LinkScheme $LINK_SCHEME
     */
    private static $LINK_SCHEME;
 

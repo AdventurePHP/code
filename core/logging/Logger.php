@@ -64,27 +64,37 @@ class Logger {
    );
 
    /**
-    * @var array Defines the severity types that are written to the log file.
+    * Defines the severity types that are written to the log file.
+    *
+    * @var array $logThreshold
     */
    protected $logThreshold;
 
    /**
-    * @var LogEntry[][] Log entry store.
+    * Log entry store.
+    *
+    * @var LogEntry[][] $logEntries
     */
    protected $logEntries = array();
 
    /**
-    * @var int The maximum number of log entries before the log buffer is flushed automatically.
+    * The maximum number of log entries before the log buffer is flushed automatically.
+    *
+    * @var int $maxBufferLength
     */
    protected $maxBufferLength = 300;
 
    /**
-    * @var int Counter for log file entries to handle the buffer length.
+    * Counter for log file entries to handle the buffer length.
+    *
+    * @var int $logEntryCount
     */
    protected $logEntryCount = 0;
 
    /**
-    * @var LogWriter[] The list of registered log writers.
+    * The list of registered log writers.
+    *
+    * @var LogWriter[] $writers
     */
    protected $writers = array();
 

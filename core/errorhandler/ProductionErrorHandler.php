@@ -42,7 +42,9 @@ namespace APF\core\errorhandler;
 class ProductionErrorHandler extends DefaultErrorHandler {
 
    /**
-    * @var string The url the user is redirected to in case of errors.
+    * The url the user is redirected to in case of errors.
+    *
+    * @var string $errorRedirectUrl
     */
    private $errorRedirectUrl;
 

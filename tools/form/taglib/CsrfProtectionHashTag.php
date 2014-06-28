@@ -35,7 +35,9 @@ use APF\tools\form\validator\CSRFHashValidator;
 class CsrfProtectionHashTag extends AbstractFormControl {
 
    /**
-    * @var string The generated hash.
+    * The generated hash.
+    *
+    * @var string $hash
     */
    protected $hash;
 

@@ -46,7 +46,9 @@ use APF\modules\usermanagement\pres\condition\UserDependentContentConditionSet;
 class UmgtImportTemplateTag extends ImportTemplateTag {
 
    /**
-    * @var boolean Indicates, whether the referred template should be displayed or not.
+    * Indicates, whether the referred template should be displayed or not.
+    *
+    * @var boolean $display
     */
    protected $display = false;
 

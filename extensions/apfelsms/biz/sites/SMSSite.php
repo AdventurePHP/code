@@ -42,8 +42,6 @@ interface SMSSite {
 
 
    /**
-    * @param
-    *
     * @return string|integer
     */
    public function getStartPageId();

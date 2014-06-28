@@ -18,7 +18,7 @@ interface SMSPage {
 
 
    /**
-    * @param $id string|integer
+    * @param string|integer $id
     */
    public function setId($id);
 
@@ -30,7 +30,7 @@ interface SMSPage {
 
 
    /**
-    * @param integer $lvl
+    * @param int $lvl
     */
    public function setLevel($lvl);
 

@@ -16,19 +16,19 @@ class SMSExternalURLRedirectAction extends AbstractFrontcontrollerAction {
 
 
    /**
-    * @var string
+    * @var string $type
     */
    protected $type = self::TYPE_PRE_PAGE_CREATE;
 
 
    /**
-    * @const string
+    * @var string DECORATOR_TYPE
     */
    const DECORATOR_TYPE = 'externalURL';
 
 
    /**
-    * @desc Checks if current page is decorated with externalURL pageDec and redirects to external URL if applicable.
+    * Checks if current page is decorated with externalURL pageDec and redirects to external URL if applicable.
     */
    public function run() {
 

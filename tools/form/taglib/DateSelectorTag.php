@@ -38,12 +38,16 @@ namespace APF\tools\form\taglib;
 class DateSelectorTag extends AbstractFormControl {
 
    /**
-    * @var string[] Start and end of the year range.
+    * Start and end of the year range.
+    *
+    * @var string[] $yearRange
     */
    protected $yearRange;
 
    /**
-    * @var string[] Names of the offsets for day, month and year.
+    * Names of the offsets for day, month and year.
+    *
+    * @var string[] $offsetNames
     */
    protected $offsetNames;
 

@@ -57,7 +57,9 @@ use Exception;
 class UserDependentContentConditionSet extends APFObject {
 
    /**
-    * @var array The registered conditions
+    * The registered conditions
+    *
+    * @var array $conditions
     */
    private $conditions = array();
 

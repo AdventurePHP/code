@@ -35,7 +35,9 @@ namespace APF\core\pagecontroller;
 class Page extends APFObject {
 
    /**
-    * @var Document Container for the root <em>Document</em> of the page.
+    * Container for the root <em>Document</em> of the page.
+    *
+    * @var Document $document
     */
    private $document;
 

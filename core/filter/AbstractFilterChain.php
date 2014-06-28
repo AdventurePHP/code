@@ -32,17 +32,23 @@ use APF\core\filter\FilterChain;
 abstract class AbstractFilterChain implements FilterChain {
 
    /**
-    * @var ChainedContentFilter[] The filter stack.
+    * The filter stack.
+    *
+    * @var ChainedContentFilter[] $filters
     */
    private $filters = array();
 
    /**
-    * @var int Marks the offset of the filter that is currently executed.
+    * Marks the offset of the filter that is currently executed.
+    *
+    * @var int $offset
     */
    private $offset = 0;
 
    /**
-    * @var int The number of filters on the stack.
+    * The number of filters on the stack.
+    *
+    * @var int $count
     */
    private $count = 0;
 

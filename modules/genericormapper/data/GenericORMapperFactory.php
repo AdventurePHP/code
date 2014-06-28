@@ -25,8 +25,6 @@ use APF\core\service\APFService;
 use APF\modules\genericormapper\data\GenericORRelationMapper;
 
 /**
- * @deprecated Please use the GORM with the DIServiceManager instead of this factory to initialize the desired instance!
- *
  * Implements a factory for creating GenericORRelationMapper instances. Automatically
  * configures the desired instance using the given params.
  * <p/>
@@ -41,6 +39,8 @@ use APF\modules\genericormapper\data\GenericORRelationMapper;
  * $gormFact = &$this->getServiceObject('APF\modules\genericormapper\data\GenericORMapperFactory', APFService::SERVICE_TYPE_NORMAL);
  * $gormFact = &$this->getServiceObject('APF\modules\genericormapper\data\GenericORMapperFactory', APFService::SERVICE_TYPE_SESSION_SINGLETON);</pre>
  *
+ * @deprecated Please use the GORM with the DIServiceManager instead of this factory to initialize the desired instance!
+ *
  * @author Christian Achatz
  * @version
  * Version 0.1, 23.06.2008<br />
@@ -48,13 +48,18 @@ use APF\modules\genericormapper\data\GenericORRelationMapper;
 final class GenericORMapperFactory extends APFObject {
 
    /**
-    * @var GenericORRelationMapper[] Stores the o/r mapper instances.
+    * Stores the o/r mapper instances.
+    *
+    * @var GenericORRelationMapper[] $orMapperCache
     */
    private $orMapperCache = array();
 
    /**
+    * Defines the config file extension the GORM instance uses.
+    *
+    * @var string $configFileExtension
+    *
     * @since 1.14
-    * @var string Defines the config file extension the GORM instance uses.
     */
    private $configFileExtension = 'ini';
 

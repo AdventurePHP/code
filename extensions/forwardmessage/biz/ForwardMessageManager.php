@@ -35,7 +35,9 @@ use Exception;
 class ForwardMessageManager extends APFObject {
 
    /**
-    * @var ForwardMessage[] Stores the status messages.
+    * Stores the status messages.
+    *
+    * @var ForwardMessage[] $messages
     */
    private $messages = array();
 

@@ -37,7 +37,9 @@ use APF\tools\cache\key\AdvancedCacheKey;
 class ApcCacheProvider extends CacheBase implements CacheProvider {
 
    /**
-    * @var string The delimiter between namespace, key, and sub-key.
+    * The delimiter between namespace, key, and sub-key.
+    *
+    * @var string CACHE_KEY_DELIMITER
     */
    const CACHE_KEY_DELIMITER = '#';
 

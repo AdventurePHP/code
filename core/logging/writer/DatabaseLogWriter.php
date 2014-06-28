@@ -56,17 +56,23 @@ use APF\core\pagecontroller\APFObject;
 class DatabaseLogWriter extends APFObject implements LogWriter {
 
    /**
-    * @var string The log target identifier.
+    * The log target identifier.
+    *
+    * @var string $target
     */
    protected $target;
 
    /**
-    * @var string The database connection name.
+    * The database connection name.
+    *
+    * @var string $connectionName
     */
    protected $connectionName = null;
 
    /**
-    * @var string The name of the table to write the log entries to.
+    * The name of the table to write the log entries to.
+    *
+    * @var string $logTable
     */
    protected $logTable;
 

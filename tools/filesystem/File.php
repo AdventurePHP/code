@@ -29,17 +29,23 @@ use APF\tools\http\HeaderManager;
 class File extends FilesystemItem {
 
    /**
-    * @var resource A file pointer resource
+    * A file pointer resource
+    *
+    * @var resource $fileHandle
     */
    protected $fileHandle = null;
 
    /**
-    * @var string The content of the file
+    * The content of the file
+    *
+    * @var string $content
     */
    protected $content = null;
 
    /**
-    * @var string The mime type of the file
+    * The mime type of the file
+    *
+    * @var string $mimeType
     */
    protected $mimeType = null;
 

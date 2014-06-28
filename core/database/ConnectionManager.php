@@ -63,7 +63,9 @@ use InvalidArgumentException;
 final class ConnectionManager extends APFObject {
 
    /**
-    * @var AbstractDatabaseHandler[] Cache for existing database connections.
+    * Cache for existing database connections.
+	*
+    * @var AbstractDatabaseHandler[]
     */
    private $connections = array();
    private static $STATEMENT_FILE_EXTENSION = 'sql';

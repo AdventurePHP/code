@@ -53,12 +53,16 @@ use APF\core\pagecontroller\APFObject;
 final class GenericORMapperDIDomainObjectsConfiguration extends APFObject {
 
    /**
-    * @var string The configuration namespace of the additional GORM domain object mapping configuration.
+    * The configuration namespace of the additional GORM domain object mapping configuration.
+    *
+    * @var string $configNamespace
     */
    private $configNamespace;
 
    /**
-    * @var string The configuration affix of the additional GORM domain object mapping configuration.
+    * The configuration affix of the additional GORM domain object mapping configuration.
+    *
+    * @var string $configAffix
     */
    private $configAffix;
 

@@ -34,7 +34,9 @@ use APF\tools\form\validator\TextFieldValidator;
 class UserOrGroupActivatedValidator extends TextFieldValidator {
 
    /**
-    * @var MultiSelectBoxTag The alternative control to validate.
+    * The alternative control to validate.
+    *
+    * @var MultiSelectBoxTag $alternativeControl
     */
    private $alternativeControl;
 

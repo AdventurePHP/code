@@ -34,7 +34,9 @@ use InvalidArgumentException;
 class RootClassLoader {
 
    /**
-    * @var ClassLoader[] The registered class loaders.
+    * The registered class loaders.
+    *
+    * @var ClassLoader[] $loaders
     */
    private static $loaders = array();
 

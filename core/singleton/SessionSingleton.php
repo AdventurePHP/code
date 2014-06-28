@@ -48,12 +48,16 @@ register_shutdown_function(function () {
 class SessionSingleton extends Singleton {
 
    /**
-    * @var string[] Stores the objects, that are requested as singletons.
+    * Stores the objects, that are requested as singletons.
+    *
+    * @var string[] $CACHE
     */
    private static $CACHE = array();
 
    /**
-    * @var Session The session instance to retrieve the session objects from.
+    * The session instance to retrieve the session objects from.
+    *
+    * @var Session $SESSION
     */
    private static $SESSION;
 

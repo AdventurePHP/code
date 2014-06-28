@@ -47,27 +47,37 @@ use APF\core\logging\LogEntry;
 class GraphiteLogEntry implements LogEntry {
 
    /**
-    * @var string The desired log target to write this log entry to.
+    * The desired log target to write this log entry to.
+    *
+    * @var string $target
     */
    protected $target;
 
    /**
-    * @var string The metric descriptor (e.g. <em>services.web.rendering-time</em>).
+    * The metric descriptor (e.g. <em>services.web.rendering-time</em>).
+    *
+    * @var string $metric
     */
    protected $metric;
 
    /**
-    * @var string The unit of the metric.
+    * The unit of the metric.
+    *
+    * @var string $unit
     */
    protected $unit;
 
    /**
-    * @var string The value of the current log entry (a.k.a. metric).
+    * The value of the current log entry (a.k.a. metric).
+    *
+    * @var string $value
     */
    protected $value;
 
    /**
-    * @var string The severity of this entry.
+    * The severity of this entry.
+    *
+    * @var string $severity
     */
    protected $severity;
 

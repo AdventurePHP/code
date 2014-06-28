@@ -36,17 +36,23 @@ use APF\core\pagecontroller\APFObject;
 abstract class AbstractFrontcontrollerAction extends APFObject implements Action {
 
    /**
-    * @var string The namespace of the action.
+    * The namespace of the action.
+    *
+    * @var string $actionNamespace
     */
    protected $actionNamespace;
 
    /**
-    * @var string The name of the action (used to identify the action within the action stack).
+    * The name of the action (used to identify the action within the action stack).
+    *
+    * @var string $actionName
     */
    protected $actionName;
 
    /**
-    * @var FrontcontrollerInput Input object of the action.
+    * Input object of the action.
+    *
+    * @var FrontcontrollerInput $input
     */
    protected $input;
 
@@ -62,12 +68,16 @@ abstract class AbstractFrontcontrollerAction extends APFObject implements Action
    protected $type = self::TYPE_PRE_PAGE_CREATE;
 
    /**
-    * @var boolean Indicates, if the action should be included in the URL. Values: true | false.
+    * Indicates, if the action should be included in the URL. Values: true | false.
+    *
+    * @var boolean $keepInUrl
     */
    private $keepInUrl = false;
 
    /**
-    * @var Frontcontroller The front controller instance the action belongs to.
+    * The front controller instance the action belongs to.
+    *
+    * @var Frontcontroller $frontController
     */
    private $frontController;
 

@@ -33,7 +33,9 @@ use APF\tools\cookie\Cookie;
 class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
 
    /**
-    * @const Defines the cookie name for the user's permanent auth token.
+    * Defines the cookie name for the user's permanent auth token.
+    *
+    * @var string AUTO_LOGIN_COOKIE_NAME
     */
    const AUTO_LOGIN_COOKIE_NAME = 'umgt-auth-token';
 

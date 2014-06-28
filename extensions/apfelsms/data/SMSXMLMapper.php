@@ -37,13 +37,15 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
 
    /**
-    * @var string
+    * @var string $XMLFilename
     */
    protected $XMLFilename = '';
 
 
    /**
-    * @var string Namespace to determine path of XMl file _with_ trailing backslash
+    * Namespace to determine path of XMl file _with_ trailing backslash
+    *
+    * @var string $XMLFileNamespace
     */
    protected $XMLFileNamespace = 'APF\\';
 

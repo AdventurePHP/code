@@ -33,7 +33,9 @@ use APF\core\logging\LogEntry;
 class PDOHandler extends AbstractDatabaseHandler {
 
    /**
-    * @var string Database type for pdo connection
+    * Database type for pdo connection
+    *
+    * @var string $dbPDO
     */
    protected $dbPDO = null;
 

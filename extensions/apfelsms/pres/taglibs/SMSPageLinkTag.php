@@ -2,6 +2,7 @@
 namespace APF\extensions\apfelsms\pres\taglibs;
 
 use APF\core\pagecontroller\Document;
+use APF\extensions\apfelsms\biz\pages\SMSPage;
 use APF\extensions\apfelsms\biz\SMSException;
 use APF\extensions\apfelsms\biz\SMSManager;
 use APF\tools\link\Url;
@@ -126,7 +127,7 @@ class SMSPageLinkTag extends Document {
                   return '';
                }
 
-               /** @var $visibleSiblings \APF\extensions\apfelsms\biz\pages\SMSPage[] */
+               /** @var SMSPage[] $visibleSiblings */
                $visibleSiblings = array();
                foreach ($siblings AS $sibling) {
                   if ($sibling->isHidden()) {

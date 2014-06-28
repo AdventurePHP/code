@@ -53,12 +53,16 @@ use APF\core\pagecontroller\APFObject;
 class GenericORMapperDIRelationConfiguration extends APFObject {
 
    /**
-    * @var string The configuration namespace of the additional GORM relation configuration.
+    * The configuration namespace of the additional GORM relation configuration.
+    *
+    * @var string $configNamespace
     */
    private $configNamespace;
 
    /**
-    * @var string The configuration affix of the additional GORM relation configuration.
+    * The configuration affix of the additional GORM relation configuration.
+    *
+    * @var string $configAffix
     */
    private $configAffix;
 

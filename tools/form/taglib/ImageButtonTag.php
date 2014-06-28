@@ -41,10 +41,10 @@ class ImageButtonTag extends ButtonTag {
    }
 
    /**
-    * @since 1.17
-    *
     * Re-implements the onParseTime() method of the ButtonTag to respect the difference
     * between buttons and normal buttons (name + _x/_y in request).
+    *
+    * @since 1.17
     *
     * @author Christian Achatz
     * @version

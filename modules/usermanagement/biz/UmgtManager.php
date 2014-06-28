@@ -52,35 +52,44 @@ use APF\modules\usermanagement\biz\provider\UserFieldEncryptionProvider;
 class UmgtManager extends APFObject {
 
    /**
-    * @const string The name of the umgt manager's main config section.
+    * The name of the umgt manager's main config section.
+    *
+    * @var string CONFIG_SECTION_NAME
     */
    const CONFIG_SECTION_NAME = 'Default';
 
    /**
-    * @const int Cookie life-time in seconds.
+    * Cookie life-time in seconds.
+    *
+    * @var int AUTO_LOGIN_COOKIE_LIFETIME
     */
    const AUTO_LOGIN_COOKIE_LIFETIME = 2592000;
 
    /**
-    * @var int Indicates the id of the current application/project.
+    * Indicates the id of the current application/project.
+    *
+    * @var int $applicationId
     */
    private $applicationId = 1;
 
    /**
     * Stores the providers, that hashes the user's password.
     *
-    * @var PasswordHashProvider[] The password hash providers.
+    * @var PasswordHashProvider[] $passwordHashProviders
     */
    protected $passwordHashProviders = array();
 
    /**
-    * @var array Marks all password hash providers used within this instance. This marker is
-    * used as reminder for session wake-up, too.
+    * Marks all password hash providers used within this instance. This marker is used as reminder for session wake-up, too.
+    *
+    * @var array $passwordHashProviderList
     */
    protected $passwordHashProviderList = array();
 
    /**
-    * @var GenericORRelationMapper The current instance of the generic o/r mapper.
+    * The current instance of the generic o/r mapper.
+    *
+    * @var GenericORRelationMapper $orm
     */
    protected $orm;
 

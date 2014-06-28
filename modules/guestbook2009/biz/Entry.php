@@ -32,32 +32,44 @@ use APF\modules\guestbook2009\biz\User;
 final class Entry {
 
    /**
-    * @var string The title of the entry.
+    * The title of the entry.
+    *
+    * @var string $title
     */
    private $title;
 
    /**
-    * @var string The text of the entry.
+    * The text of the entry.
+    *
+    * @var string $text
     */
    private $text;
 
    /**
-    * @var string The creation timestamp of the entry.
+    * The creation timestamp of the entry.
+    *
+    * @var string $creationTimestamp
     */
    private $creationTimestamp;
 
    /**
-    * @var string The modification timestamp of the entry.
+    * The modification timestamp of the entry.
+    *
+    * @var string $modificationTimestamp
     */
    private $modificationTimestamp;
 
    /**
-    * @var User The creator of the entry.
+    * The creator of the entry.
+    *
+    * @var User $user
     */
    private $user;
 
    /**
-    * @var string Contains the id of the entry used to identify on update/delete.
+    * Contains the id of the entry used to identify on update/delete.
+    *
+    * @var string $id
     */
    private $id;
 

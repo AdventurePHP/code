@@ -90,79 +90,107 @@ use APF\core\singleton\Singleton;
 abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConnection {
 
    /**
-    * @var boolean Indicates, whether the handler is already initialized or not.
+    * Indicates, whether the handler is already initialized or not.
+    *
+    * @var boolean $isInitialized
     */
    protected $isInitialized = false;
 
    /**
-    * @var string Database server.
+    * Database server.
+    *
+    * @var string $dbHost
     */
    protected $dbHost = null;
 
    /**
-    * @var string Database user.
+    * Database user.
+    *
+    * @var string $dbUser
     */
    protected $dbUser = null;
 
    /**
-    * @var string Password for the database.
+    * Password for the database.
+    *
+    * @var string $dbPass
     */
    protected $dbPass = null;
 
    /**
-    * @var string Name of the database.
+    * Name of the database.
+    *
+    * @var string $dbName
     */
    protected $dbName = null;
 
    /**
-    * @var string Port for connection.
+    * Port for connection.
+    *
+    * @var string $dbPort
     */
    protected $dbPort = null;
 
    /**
-    * @var string Socket for connection.
+    * Socket for connection.
+    *
+    * @var string $dbSocket
     */
    protected $dbSocket = null;
 
    /**
-    * @var boolean Indicates, if the handler runs in debug mode. This means, that all
+    * Indicates, if the handler runs in debug mode. This means, that all
     * statements executed are written into a dedicated logfile.
+    *
+    * @var boolean $dbDebug
     */
    protected $dbDebug = false;
 
    /**
-    * @var resource Database connection resource.
+    * Database connection resource.
+    *
+    * @var resource $dbConn
     */
    protected $dbConn = null;
 
    /**
-    * @var Logger Instance of the logger.
+    * Instance of the logger.
+    *
+    * @var Logger $dbLog
     */
    protected $dbLog = null;
 
    /**
-    * @var string Name of the log target. Must be defined within the implementation class!
+    * Name of the log target. Must be defined within the implementation class!
+    *
+    * @var string $dbLogTarget
     */
    protected $dbLogTarget;
 
    /**
-    * @var int Auto increment id of the last insert.
+    * Auto increment id of the last insert.
+    *
+    * @var int $lastInsertId
     */
    protected $lastInsertId;
 
    /**
-    * @var string Indicates the charset of the database connection.
+    * Indicates the charset of the database connection.
     *
     * For mysql databases, see http://dev.mysql.com/doc/refman/5.0/en/charset-connection.html
     * for more details.
+    *
+    * @var string $dbCollation
     */
    protected $dbCollation = null;
 
    /**
-    * @var string Indicates the collation of the database connection.
+    * Indicates the collation of the database connection.
     *
     * For mysql databases, see http://dev.mysql.com/doc/refman/5.0/en/charset-connection.html
     * for more details.
+    *
+    * @var string $dbCharset
     */
    protected $dbCharset = null;
 

@@ -13,18 +13,22 @@ class SMSCSSIncludesTag extends Document {
 
 
    /**
-    * @var string HTML-Template for CSS includes
+    * HTML-Template for CSS includes
+    *
+    * @var string $CSSIncludeTemplate
     */
    protected static $CSSIncludeTemplate = '<link rel="stylesheet" type="text/css" media="{MEDIA}" href="{URL}" />';
 
 
    /**
-    * @var string
+    * @var string $newLine
     */
    protected static $newLine = "\n";
 
 
    /**
+    * @inheritdoc
+    *
     * @return string
     */
    public function transform() {

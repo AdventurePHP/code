@@ -32,22 +32,30 @@ use APF\tools\filesystem\FilesystemException;
 abstract class FilesystemItem extends APFObject {
 
    /**
-    * @var string The name of the FilesystemItem
+    * The name of the FilesystemItem
+    *
+    * @var string $name
     */
    protected $name = null;
 
    /**
-    * @var string The base path of the FilesystemItem
+    * The base path of the FilesystemItem
+    *
+    * @var string $basePath
     */
    protected $basePath = null;
 
    /**
-    * @var int The permissions of the FilesystemItem
+    * The permissions of the FilesystemItem
+    *
+    * @var int $permissions
     */
    protected $permissions = null;
 
    /**
-    * @var int The user-id of the file-owner
+    * The user-id of the file-owner
+    *
+    * @var int $owner
     */
    protected $owner = null;
 

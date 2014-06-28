@@ -31,12 +31,16 @@ namespace APF\extensions\forwardmessage\biz;
 class ForwardMessage {
 
    /**
-    * @var string The message content.
+    * The message content.
+    *
+    * @var string $message
     */
    private $message;
 
    /**
-    * @var bool True, in case this message is visible, false otherwise.
+    * True, in case this message is visible, false otherwise.
+    *
+    * @var bool $visible
     */
    private $visible;
 

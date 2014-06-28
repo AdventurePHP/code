@@ -53,7 +53,9 @@ class HtmlFormTag extends Document {
    public static $METHOD_POST_VALUE_NAME = 'post';
 
    /**
-    * @var boolean Indicates, whether the form should be transformed at it'd place of definition or not.
+    * Indicates, whether the form should be transformed at it'd place of definition or not.
+    *
+    * @var boolean $transformOnPlace
     */
    private $transformOnPlace = false;
 
@@ -426,11 +428,11 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @since 2.0
-    *
     * Adds an additional attribute to the white list of the form.
     *
     * @param string $name The attribute which should be added to the white list.
+    *
+    * @since 2.0
     *
     * @author Ralf Schubert, Christian Achatz
     * @version

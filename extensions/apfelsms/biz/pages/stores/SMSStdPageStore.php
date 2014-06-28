@@ -13,7 +13,7 @@ class SMSStdPageStore extends APFObject implements SMSPageStore {
 
 
    /**
-    * @var SMSPage[]
+    * @var SMSPage[] $pages
     */
    protected $pages = array();
 

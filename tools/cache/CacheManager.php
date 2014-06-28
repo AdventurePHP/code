@@ -38,12 +38,16 @@ use APF\core\service\APFService;
 final class CacheManager extends CacheBase {
 
    /**
-    * @const string Name of the cache configuration sub section.
+    * Name of the cache configuration sub section.
+    *
+    * @var string CACHE_CONFIG_SECTION_NAME
     */
    const CACHE_CONFIG_SECTION_NAME = 'Cache';
 
    /**
-    * @var CacheProvider The current cache provider.
+    * The current cache provider.
+    *
+    * @var CacheProvider $provider
     */
    private $provider = null;
 
@@ -51,8 +55,9 @@ final class CacheManager extends CacheBase {
     * Indicates, if the cache is active. Can be influenced by set('Active') or the
     * cache configuration file. The cache is off by default to avoid strange behavior, if the
     * config value is not set properly.
+    * True, in case the cache is active, false otherwise.
     *
-    * @var boolean True, in case the cache is active, false otherwise.
+    * @var boolean $active
     */
    private $active = false;
 

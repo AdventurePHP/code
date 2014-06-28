@@ -53,12 +53,16 @@ use APF\core\pagecontroller\APFObject;
 class WsdlObjectMapping extends APFObject {
 
    /**
-    * @var string The name of the WSDL type.
+    * The name of the WSDL type.
+    *
+    * @var string $wsdlType
     */
    private $wsdlType;
 
    /**
-    * @var string The name of the PHP class.
+    * The name of the PHP class.
+    *
+    * @var string $phpClassName
     */
    private $phpClassName;
 

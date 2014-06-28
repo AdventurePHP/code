@@ -62,12 +62,16 @@ use APF\core\service\ServiceManager;
 class DbConfigurationProvider extends BaseConfigurationProvider implements ConfigurationProvider {
 
    /**
-    * @var string $connectionName The name of the connection to create.
+    * The name of the connection to create.
+    *
+    * @var string $connectionName
     */
    private $connectionName;
 
    /**
-    * @var string The file extension registered with this provider.
+    * The file extension registered with this provider.
+    *
+    * @var string $extension
     */
    protected $extension;
 

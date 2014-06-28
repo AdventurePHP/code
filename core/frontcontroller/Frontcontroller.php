@@ -52,62 +52,84 @@ use InvalidArgumentException;
 class Frontcontroller extends APFObject {
 
    /**
-    * @var Action[] The front controller's action stack.
+    * The front controller's action stack.
+    *
+    * @var Action[] $actionStack
     */
    protected $actionStack = array();
 
    /**
-    * @var string The keyword used in the url to indicate an action.
+    * The keyword used in the url to indicate an action.
+    *
+    * @var string $actionKeyword
     */
    private $actionKeyword = 'action';
 
    /**
-    * @var string Namespace delimiter within the action definition in url.
+    * Namespace delimiter within the action definition in url.
+    *
+    * @var string $namespaceURLDelimiter
     */
    private $namespaceURLDelimiter = '_';
 
    /**
-    * @var string Namespace to action keyword delimiter within the action definition in url.
+    * Namespace to action keyword delimiter within the action definition in url.
+    *
+    * @var string $namespaceKeywordDelimiter
     */
    private $namespaceKeywordDelimiter = '-';
 
    /**
-    * @var string Delimiter between action keyword and action class within the action definition in url.
+    * Delimiter between action keyword and action class within the action definition in url.
+    *
+    * @var string $keywordClassDelimiter
     */
    private $keywordClassDelimiter = ':';
 
    /**
-    * @var string Delimiter between action keyword and action class within the action definition in url (url rewriting case!)
+    * Delimiter between action keyword and action class within the action definition in url (url rewriting case!)
+    *
+    * @var string $urlRewritingKeywordClassDelimiter
     */
    private $urlRewritingKeywordClassDelimiter = '/';
 
    /**
-    * @var string Delimiter between input value couples.
+    * Delimiter between input value couples.
+    *
+    * @var string $inputDelimiter
     */
    private $inputDelimiter = '|';
 
    /**
-    * @var string Delimiter between input value couples (url rewriting case!).
+    * Delimiter between input value couples (url rewriting case!).
+    *
+    * @var string $urlRewritingInputDelimiter
     */
    private $urlRewritingInputDelimiter = '/';
 
    /**
-    * @var string Delimiter between input param name and value.
+    * Delimiter between input param name and value.
+    *
+    * @var string $keyValueDelimiter
     */
    private $keyValueDelimiter = ':';
 
    /**
-    * @var string Delimiter between input param name and value (url rewrite case!).
+    * Delimiter between input param name and value (url rewrite case!).
+    *
+    * @var string $urlRewritingKeyValueDelimiter
     */
    private $urlRewritingKeyValueDelimiter = '/';
 
    /**
-    * @var string[][] The registered URL mappings for actions accessible via token.
+    * The registered URL mappings for actions accessible via token.
+    * @var string[][] $urlMappingsByToken
     */
    private $urlMappingsByToken = array();
 
    /**
-    * @var string[][] The registered URL mappings for actions accessible via namespace and name.
+    * The registered URL mappings for actions accessible via namespace and name.
+    * @var string[][] $urlMappingsByNamespaceAndName
     */
    private $urlMappingsByNamespaceAndName = array();
 

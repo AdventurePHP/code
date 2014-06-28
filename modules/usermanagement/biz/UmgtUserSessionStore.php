@@ -44,7 +44,9 @@ use InvalidArgumentException;
 class UmgtUserSessionStore extends APFObject {
 
    /**
-    * @var array The application-key-dependent session store.
+    * The application-key-dependent session store.
+    *
+    * @var array $store
     */
    private $store;
 

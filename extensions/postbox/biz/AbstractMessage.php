@@ -34,8 +34,9 @@ abstract class AbstractMessage extends GenericDomainObject {
 
    /**
     * Cache for the channel's author.
+    * Can be a string or GenericORMapperDataObject
     *
-    * @var mixed Can be a string or GenericORMapperDataObject
+    * @var mixed $Author
     */
    protected $Author = null;
 

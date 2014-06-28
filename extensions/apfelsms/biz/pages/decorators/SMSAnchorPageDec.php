@@ -4,16 +4,18 @@ namespace APF\extensions\apfelsms\biz\pages\decorators;
 use APF\tools\link\Url;
 
 /**
+ * Adds an anchor to page URL
+ *
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version : v0.1 (22.11.2013)
- * @desc    : Adds an anchor to page URL
- *
  */
 class SMSAnchorPageDec extends SMSAbstractPageDec {
 
 
    /**
-    * @var string The anchor
+    * The anchor
+    *
+    * @var string $anchor
     */
    protected $anchor = '';
 

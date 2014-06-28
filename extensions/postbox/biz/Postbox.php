@@ -42,12 +42,12 @@ use InvalidArgumentException;
 class Postbox extends APFObject {
 
    /**
-    * @var GenericORRelationMapper
+    * @var GenericORRelationMapper $ORM
     */
    protected $ORM = null;
 
    /**
-    * @var GenericORMapperDataObject
+    * @var GenericORMapperDataObject $User
     */
    protected $User = null;
 

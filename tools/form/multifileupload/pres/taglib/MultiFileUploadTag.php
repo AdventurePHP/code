@@ -44,17 +44,21 @@ use APF\tools\form\taglib\AbstractFormControl;
 class MultiFileUploadTag extends AbstractFormControl {
 
    /**
-    * @var MultiFileUploadManager
+    * @var MultiFileUploadManager $manager
     */
    private $manager;
 
    /**
-    * @var Configuration Language-dependent labels.
+    * Language-dependent labels.
+    *
+    * @var Configuration $languageConfig
     */
    private $languageConfig;
 
    /**
-    * @var Configuration Upload configuration.
+    * Upload configuration.
+    *
+    * @var Configuration $MFUConfig
     */
    private $MFUConfig;
 

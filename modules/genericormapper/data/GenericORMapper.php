@@ -36,16 +36,20 @@ use InvalidArgumentException;
 class GenericORMapper extends BaseMapper {
 
    /**
-    * @var string The identifier, that marks a property as BIT type.
+    * The identifier, that marks a property as BIT type.
+    *
+    * @var string $BIT_FIELD_IDENTIFIER
     */
    private static $BIT_FIELD_IDENTIFIER = 'BIT';
 
    /**
+    * Identifies fields, that can contain null values.
+    *
     * Bug 289: This identifier is used to distinguish between fiels, that can
     * contain null values. This is necessary, because the MySQL client libs
     * map MySQL NULL values to empty PHP strings.
     *
-    * @var string Identifies fields, that can contain null values.
+    * @var string $NULL_FIELD_IDENTIFIER
     */
    private static $NULL_FIELD_IDENTIFIER = 'NULL DEFAULT NULL';
 

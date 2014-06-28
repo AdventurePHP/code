@@ -38,7 +38,9 @@ use APF\tools\form\validator\TextFieldValidator;
 class TimeCaptchaValidator extends TextFieldValidator {
 
    /**
-    * @var int The default time in seconds before form gets valid.
+    * The default time in seconds before form gets valid.
+    *
+    * @var int $defaultSeconds
     */
    protected $defaultSeconds = 2;
 

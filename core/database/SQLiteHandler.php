@@ -33,12 +33,16 @@ use APF\core\logging\LogEntry;
 class SQLiteHandler extends AbstractDatabaseHandler {
 
    /**
-    * @var int File system permission mode of the database.
+    * File system permission mode of the database.
+    *
+    * @var int $dbMode
     */
    protected $dbMode = 0666;
 
    /**
-    * @var string Error tracking container for SQLite errors.
+    * Error tracking container for SQLite errors.
+    *
+    * @var string $dbError
     */
    protected $dbError = null;
 

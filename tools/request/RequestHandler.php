@@ -31,17 +31,23 @@ namespace APF\tools\request;
 final class RequestHandler {
 
    /**
-    * @const string Defines to use only content from the $_GET super-global.
+    * Defines to use only content from the $_GET super-global.
+    *
+    * @var string USE_GET_PARAMS
     */
    const USE_GET_PARAMS = 'GET';
 
    /**
-    * @const string Defines to use only content from the $_POST super-global.
+    * Defines to use only content from the $_POST super-global.
+    *
+    * @var string USE_POST_PARAMS
     */
    const USE_POST_PARAMS = 'POST';
 
    /**
-    * @const string Defines to use only content from the $_REQUEST super-global (default behaviour).
+    * Defines to use only content from the $_REQUEST super-global (default behaviour).
+    *
+    * @var string USE_REQUEST_PARAMS
     */
    const USE_REQUEST_PARAMS = 'REQUEST';
 
