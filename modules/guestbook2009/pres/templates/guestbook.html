@@ -1,10 +1,12 @@
-<@controller class="APF\modules\guestbook2009\pres\controller\GuestbookController" @>
+<@controller
+   class="APF\modules\guestbook2009\pres\controller\GuestbookController"
+@>
 <div class="gb--main">
    <div class="gb--main-heading">
-      <html:placeholder name="title"/>
+      ${title}
    </div>
    <div class="gb--main-text">
-      <html:placeholder name="description"/>
+      ${description}
    </div>
    <core:importdesign
          namespace="APF\modules\guestbook2009\pres\templates"

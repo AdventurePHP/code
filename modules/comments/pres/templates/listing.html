@@ -1,32 +1,32 @@
 <@controller class="APF\modules\comments\pres\controller\CommentListingController" @>
 <div class="cm--list">
    <div class="cm--list-head">
-      <html:getstring namespace="APF\modules\comments" config="language.ini" entry="listing.text.1" /> <a rel="nofollow" href="<html:placeholder name="Link" />#comments" title="<html:getstring namespace="APF\modules\comments" config="language.ini" entry="listing.text.2.title" />"><strong><html:getstring namespace="APF\modules\comments" config="language.ini" entry="listing.text.2" /></strong></a> <html:getstring namespace="APF\modules\comments" config="language.ini" entry="listing.text.3" />
+      <html:getstring namespace="APF\modules\comments" config="language.ini" entry="listing.text.1" /> <a rel="nofollow" href="${Link}#comments" title="<html:getstring namespace="APF\modules\comments" config="language.ini" entry="listing.text.2.title" />"><strong><html:getstring namespace="APF\modules\comments" config="language.ini" entry="listing.text.2" /></strong></a> <html:getstring namespace="APF\modules\comments" config="language.ini" entry="listing.text.3" />
    </div>
    <div class="cm--list-pager">
-      <html:placeholder name="Pager" />
+      ${Pager}
    </div>
    <div class="cm--list-items">
-      <html:placeholder name="Content" />
+      ${Content}
    </div>
 </div>
 <html:template name="ArticleComment">
    <div class="cm--list-item">
       <div class="cm--list-item-head">
-         <div class="cm--list-item-head-num"><template:placeholder name="Number" /></div>
+         <div class="cm--list-item-head-num">${Number}</div>
          <div class="cm--list-item-head-date">
-            <span><template:placeholder name="Name" /></span>
-            <em><template:placeholder name="Date" />, <template:placeholder name="Time" /></em>
+            <span>${Name}</span>
+            <em>${Date}, ${Time}</em>
          </div>
          <div style="clear: left;"></div>
       </div>
       <div class="cm--list-item-body">
-         <template:placeholder name="Comment" />
+         ${Comment}
       </div>
    </div>
 </html:template>
 <html:template name="NoEntries">
    <div class="cm--list-noentries">
-      <template:getstring namespace="APF\modules\comments" config="language.ini" entry="noentries.text" />
+      <html:getstring namespace="APF\modules\comments" config="language.ini" entry="noentries.text" />
    </div>
 </html:template>

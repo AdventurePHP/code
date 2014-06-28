@@ -1,11 +1,12 @@
-<@controller class="APF\modules\guestbook2009\pres\controller\GuestbookLoginController" @>
-<core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form"/>
+<@controller
+   class="APF\modules\guestbook2009\pres\controller\GuestbookLoginController"
+@>
 <div class="gb--login">
-   Please log in to administrate the guestbook.
+   Please log in to administrate the guest book.
    <br/>
    <br/>
    <html:form name="login" method="post">
-      <form:placeholder name="error"/>
+      ${error}
       <label class="gb--login-label-user">Username:</label>
       <form:text
             maxlength="100"
@@ -21,7 +22,6 @@
             />
       <br/>
       <br/>
-
       <div class="gb--login-button-placer">
          <form:button name="login" value="Login" class="gb--login-button-login"/>
       </div>

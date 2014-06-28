@@ -1,73 +1,75 @@
-<@controller class="APF\modules\pager\pres\documentcontroller\AdvancedPagerController" @>
+<@controller
+   class="APF\modules\pager\pres\documentcontroller\AdvancedPagerController"
+@>
 <html:template name="content">
    <div class="apf-pager">
       <div class="apf-pages">
-          <template:placeholder name="FirstPage"/><template:placeholder name="PreviousPage" /><template:placeholder name="Content" /><template:placeholder name="NextPage" /><template:placeholder name="LastPage"/>
+          ${FirstPage}${PreviousPage}${Content}${NextPage}${LastPage}
       </div>
-      <template:placeholder name="DynamicPageSize" />
+      ${DynamicPageSize}
    </div>
 </html:template>
 
 <html:template name="DynamicPageSize">
    <div class="apf-page-size">
-      <span><template:placeholder name="EntriesPerPage_Display" /></span>&nbsp;|<template:placeholder name="EntriesPerPage" />
+      <span>${EntriesPerPage_Display}</span>&nbsp;|${EntriesPerPage}
    </div>
 </html:template>
 
 <html:template name="FirstPage_de">
-   <a href="<template:placeholder name="Link" />" title="Erste Seite anzeigen!"><<</a>
+   <a href="${Link}" title="Erste Seite anzeigen!"><<</a>
 </html:template>
 
 <html:template name="FirstPage_en">
-    <a href="<template:placeholder name="Link" />" title="Display first page"><template:placeholder name="Page" />&laquo;&laquo;</a>
+    <a href="${Link}" title="Display first page">${Page}&laquo;&laquo;</a>
 </html:template>
 
 <html:template name="LastPage_de">
-   <a href="<template:placeholder name="Link" />" title="Letzte Seite anzeigen!">>></a>
+   <a href="${Link}" title="Letzte Seite anzeigen!">>></a>
 </html:template>
 
 <html:template name="LastPage_en">
-   <a href="<template:placeholder name="Link" />" title="Display last page">&raquo;&raquo;</a>
+   <a href="${Link}" title="Display last page">&raquo;&raquo;</a>
 </html:template>
 
 <html:template name="FirstPage_Active_de">
-    <a href="<template:placeholder name="Link" />" title="Erste Seite anzeigen!">&laquo; &laquo;</a>&nbsp;&nbsp;
+    <a href="${Link}" title="Erste Seite anzeigen!">&laquo; &laquo;</a>&nbsp;&nbsp;
 </html:template>
 
 <html:template name="FirstPage_Active_en">
-    <a href="<template:placeholder name="Link" />" title="Display first page!">&laquo; &laquo;</a>&nbsp;&nbsp;
+    <a href="${Link}" title="Display first page!">&laquo; &laquo;</a>&nbsp;&nbsp;
 </html:template>
 
 <html:template name="LastPage_Active_de">
-    <a href="<template:placeholder name="Link" />" title="Letzte Seite anzeigen!">&raquo; &raquo;</a>&nbsp;&nbsp;
+    <a href="${Link}" title="Letzte Seite anzeigen!">&raquo; &raquo;</a>&nbsp;&nbsp;
 </html:template>
 
 <html:template name="LastPage_Active_en">
-    <a href="<template:placeholder name="Link" />" title="Display last page!">&raquo; &raquo;</a>&nbsp;&nbsp;
+    <a href="${Link}" title="Display last page!">&raquo; &raquo;</a>&nbsp;&nbsp;
 </html:template>
 
 <html:template name="Page_Selected_de">
-   <a class="active" href="<template:placeholder name="Link" />" title="Seite <template:placeholder name="Page" /> anzeigen"><template:placeholder name="Page" /></a>&nbsp;&nbsp;
+   <a class="active" href="${Link}" title="Seite ${Page} anzeigen">${Page}</a>&nbsp;&nbsp;
 </html:template>
 
 <html:template name="Page_Selected_en">
-   <a class="active" href="<template:placeholder name="Link" />" title="Display page <template:placeholder name="Page" />"><template:placeholder name="Page" /></a>&nbsp;&nbsp;
+   <a class="active" href="${Link}" title="Display page ${Page}">${Page}</a>&nbsp;&nbsp;
 </html:template>
 
 <html:template name="Page_de">
-   <a href="<template:placeholder name="Link" />" title="Seite <template:placeholder name="Page" /> anzeigen"><template:placeholder name="Page" /></a>&nbsp;&nbsp;
+   <a href="${Link}" title="Seite ${Page} anzeigen">${Page}</a>&nbsp;&nbsp;
 </html:template>
 
 <html:template name="Page_en">
-   <a href="<template:placeholder name="Link" />" title="Display page <template:placeholder name="Page" />"><template:placeholder name="Page" /></a>&nbsp;&nbsp;
+   <a href="${Link}" title="Display page ${Page}">${Page}</a>&nbsp;&nbsp;
 </html:template>
 
 <html:template name="PreviousPage_Active_de">
-   <a href="<template:placeholder name="Link" />" title="Vorherige Seite anzeigen!">&laquo;</a>&nbsp;&nbsp;
+   <a href="${Link}" title="Vorherige Seite anzeigen!">&laquo;</a>&nbsp;&nbsp;
 </html:template>
 
 <html:template name="PreviousPage_Active_en">
-   <a href="<template:placeholder name="Link" />" title="Display previous page!">&laquo;</a>&nbsp;&nbsp;
+   <a href="${Link}" title="Display previous page!">&laquo;</a>&nbsp;&nbsp;
 </html:template>
 
 <html:template name="PreviousPage_Inactive">
@@ -75,11 +77,11 @@
 </html:template>
 
 <html:template name="NextPage_Active_de">
-   <a href="<template:placeholder name="Link" />" title="N&auml;chste Seite anzeigen!"><span>&raquo;</span></a>
+   <a href="${Link}" title="N&auml;chste Seite anzeigen!"><span>&raquo;</span></a>
 </html:template>
 
 <html:template name="NextPage_Active_en">
-   <a href="<template:placeholder name="Link" />" title="Display next page!"><span>&raquo;</span></a>
+   <a href="${Link}" title="Display next page!"><span>&raquo;</span></a>
 </html:template>
 
 <html:template name="NextPage_Inactive">
@@ -87,19 +89,19 @@
 </html:template>
 
 <html:template name="EntriesPerPage_Active_de">
-   <a href="<template:placeholder name="Link" />" title="<template:placeholder name="Count" /> Eintr&auml;ge pro Seite anzeigen"><strong><template:placeholder name="Count" /></strong></a> |
+   <a href="${Link}" title="${Count} Eintr&auml;ge pro Seite anzeigen"><strong>${Count}</strong></a> |
 </html:template>
 
 <html:template name="EntriesPerPage_Active_en">
-   <a href="<template:placeholder name="Link" />" title="Display <template:placeholder name="Count" /> entries per page"><strong><template:placeholder name="Count" /></strong></a> |
+   <a href="${Link}" title="Display ${Count} entries per page"><strong>${Count}</strong></a> |
 </html:template>
 
 <html:template name="EntriesPerPage_Inactive_de">
-   <a href="<template:placeholder name="Link" />" title="<template:placeholder name="Count" /> Eintr&auml;ge pro Seite anzeigen"><template:placeholder name="Count" /></a> |
+   <a href="${Link}" title="${Count} Eintr&auml;ge pro Seite anzeigen">${Count}</a> |
 </html:template>
 
 <html:template name="EntriesPerPage_Inactive_en">
-   <a href="<template:placeholder name="Link" />" title="Display <template:placeholder name="Count" /> entries per page"><template:placeholder name="Count" /></a> |
+   <a href="${Link}" title="Display ${Count} entries per page">${Count}</a> |
 </html:template>
 
 <html:template name="EntriesPerPage_de">Eintr&auml;ge/Seite:</html:template>

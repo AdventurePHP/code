@@ -1,22 +1,24 @@
-<@controller class="APF\modules\pager\pres\documentcontroller\SimplePagerController" @>
+<@controller
+   class="APF\modules\pager\pres\documentcontroller\SimplePagerController"
+@>
 <div style="width: 100%; border: 0 solid black; text-align: right;">
-  <html:placeholder name="Page" /> | <html:placeholder name="Content" />
+  ${Page} | ${Content}
 </div>
 
 <html:template name="Page_Selected_de">
-   <a href="<template:placeholder name="Link" />" title="Seite <template:placeholder name="Page" />"><span><template:placeholder name="Page" /></span></a> |
+   <a href="${Link}" title="Seite ${Page}"><span>${Page}</span></a> |
 </html:template>
 
 <html:template name="Page_Selected_en">
-   <a href="<template:placeholder name="Link" />" title="Page <template:placeholder name="Page" />"><span><template:placeholder name="Page" /></span></a> |
+   <a href="${Link}" title="Page ${Page}"><span>${Page}</span></a> |
 </html:template>
 
 <html:template name="Page_Normal_de">
-   <a href="<template:placeholder name="Link" />" title="Seite <template:placeholder name="Page" />"><template:placeholder name="Page" /></a> |
+   <a href="${Link}" title="Seite ${Page}">${Page}</a> |
 </html:template>
 
 <html:template name="Page_Normal_en">
-   <a href="<template:placeholder name="Link" />" title="Page <template:placeholder name="Page" />"><template:placeholder name="Page" /></a> |
+   <a href="${Link}" title="Page ${Page}">${Page}</a> |
 </html:template>
 
 <html:template name="Page_de">Seite</html:template>

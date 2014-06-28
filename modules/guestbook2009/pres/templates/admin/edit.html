@@ -1,4 +1,6 @@
-<@controller class="APF\modules\guestbook2009\pres\controller\admin\GuestbookEditEntryController" @>
+<@controller
+   class="APF\modules\guestbook2009\pres\controller\admin\GuestbookEditEntryController"
+@>
 Please select an entry to edit!
 <br/>
 <br/>
@@ -6,7 +8,6 @@ Please select an entry to edit!
       namespace="APF\modules\guestbook2009\pres\templates\admin"
       template="choose"
       />
-<core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form"/>
 <div class="gb--admin-edit">
    <div class="gb--admin-edit-form">
       <html:form name="edit_entry" method="post">
@@ -50,7 +51,6 @@ Please select an entry to edit!
                />
          <br/>
          <br/>
-
          <div class="gb--admin-edit-button-placer">
             <form:button class="gb--admin-edit-button-save" name="send" value="Save"/>
          </div>
