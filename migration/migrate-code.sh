@@ -31,6 +31,9 @@ $PHP_BINARY $SCRIPT_DIR/migrate_extract_add_tag_statements.php
 echo "* Switch to new place holder logic ..."
 $PHP_BINARY $SCRIPT_DIR/migrate_update_place_holders_to_expression_notation.php
 
+echo "* Migrate iterator item place holders ..."
+$PHP_BINARY $SCRIPT_DIR/migrate_iterator_place_holders.php
+
 echo
 echo "#############################################"
 echo

@@ -38,7 +38,7 @@
                   entry="frontend.user.details.group-img.label"
                />
             </umgt:media>
-            <html:placeholder getter="getDisplayName" />
+            ${item->getDisplayName()}
          </li>
       </iterator:item>
    </ul>
@@ -87,19 +87,19 @@
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.user.details.app-obj-id.label"/>
-         <strong><html:placeholder getter="getAppObjectId" /></strong>
+         <strong>${item->getAppObjectId()}</strong>
 
          <html:getstring
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
             entry="frontend.user.details.proxy-id.label" />
-         <strong><html:placeholder getter="getObjectId" /></strong>
+         <strong>${item->getObjectId()}</strong>
 
          <html:getstring
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
             entry="frontend.user.details.permissions.label" />
-         <strong><html:placeholder getter="getReadPermission" /></strong>/<strong><html:placeholder getter="getWritePermission" /></strong>/<strong><html:placeholder getter="getLinkPermission" /></strong>/<strong><html:placeholder getter="getDeletePermission" /></strong>
+         <strong>${item->getReadPermission()}</strong>/<strong>${item->getWritePermission()}</strong>/<strong>${item->getLinkPermission()}</strong>/<strong>${item->getDeletePermission()}</strong>
       </li>
    </iterator:item>
    </ul>
