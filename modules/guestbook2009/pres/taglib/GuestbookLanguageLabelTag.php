@@ -47,7 +47,7 @@ class GuestbookLanguageLabelTag extends LanguageLabelTag {
     */
    public function __construct() {
       $this->setAttribute('namespace', 'APF\modules\guestbook2009\pres');
-      $this->setAttribute('config', 'language');
+      $this->setAttribute('config', 'language.ini');
    }
 
 }
