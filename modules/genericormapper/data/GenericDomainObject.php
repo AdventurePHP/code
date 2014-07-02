@@ -144,7 +144,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * Deletes the current mapper instance (usefull for debugging).
+    * Deletes the current mapper instance (useful for debugging).
     *
     * @author Tobias Lückel (megger)
     * @version
@@ -332,7 +332,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * Returns the entire relation structur of the current domain object. This method
+    * Returns the entire relation structure of the current domain object. This method
     * *should* only be used internally. Unfortunately, PHP does not provide a package
     * view visibility setting.
     *
