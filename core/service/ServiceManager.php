@@ -1,6 +1,4 @@
 <?php
-namespace APF\core\service;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,10 +18,11 @@ namespace APF\core\service;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\core\service;
 
-use APF\core\singleton\Singleton;
-use APF\core\singleton\SessionSingleton;
 use APF\core\singleton\ApplicationSingleton;
+use APF\core\singleton\SessionSingleton;
+use APF\core\singleton\Singleton;
 use InvalidArgumentException;
 
 /**

@@ -1,6 +1,4 @@
 <?php
-namespace APF\modules\socialbookmark\biz;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,6 +18,7 @@ namespace APF\modules\socialbookmark\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\modules\socialbookmark\biz;
 
 /**
  * @package APF\modules\socialbookmark\biz

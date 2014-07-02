@@ -1,5 +1,4 @@
 <?php
-namespace APF\modules\usermanagement\pres\taglib;
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -19,6 +18,8 @@ namespace APF\modules\usermanagement\pres\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\modules\usermanagement\pres\taglib;
+
 use APF\core\loader\RootClassLoader;
 use APF\core\pagecontroller\Document;
 

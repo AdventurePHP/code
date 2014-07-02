@@ -1,6 +1,4 @@
 <?php
-namespace APF\tools\form\multifileupload\pres\taglib;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,12 +18,13 @@ namespace APF\tools\form\multifileupload\pres\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\tools\form\multifileupload\pres\taglib;
+
 use APF\core\configuration\Configuration;
 use APF\core\service\APFService;
-use APF\extensions\htmlheader\biz\HtmlHeaderManager;
-
-use APF\extensions\htmlheader\biz\JsContentNode;
 use APF\extensions\htmlheader\biz\CssContentNode;
+use APF\extensions\htmlheader\biz\HtmlHeaderManager;
+use APF\extensions\htmlheader\biz\JsContentNode;
 use APF\tools\form\multifileupload\biz\MultiFileUploadManager;
 use APF\tools\form\taglib\AbstractFormControl;
 

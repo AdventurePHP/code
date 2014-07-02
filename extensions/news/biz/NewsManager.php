@@ -1,6 +1,4 @@
 <?php
-namespace APF\extensions\news\biz;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,8 +18,9 @@ namespace APF\extensions\news\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\extensions\news\biz;
+
 use APF\core\pagecontroller\APFObject;
-use APF\extensions\news\biz\News;
 use APF\extensions\postbox\biz\Postbox;
 use APF\modules\genericormapper\data\GenericCriterionObject;
 use APF\modules\genericormapper\data\GenericORRelationMapper;

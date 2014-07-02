@@ -1,19 +1,4 @@
 <?php
-namespace APF\modules\usermanagement\pres\condition;
-
-/**
- * @package APF\modules\usermanagement\pres\condition
- * @class UserDependentContentCondition
- *
- * Defines the structure of a user dependent content condition for the user
- * mangement module.
- *
- * @author Christian Achatz
- * @version
- * Version 0.1, 01.06.2011
- */
-use APF\modules\usermanagement\biz\model\UmgtUser;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -33,6 +18,22 @@ use APF\modules\usermanagement\biz\model\UmgtUser;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\modules\usermanagement\pres\condition;
+
+/**
+ * @package APF\modules\usermanagement\pres\condition
+ * @class UserDependentContentCondition
+ *
+ * Defines the structure of a user dependent content condition for the user
+ * mangement module.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 01.06.2011
+ */
+use APF\modules\usermanagement\biz\model\UmgtUser;
+
+
 interface UserDependentContentCondition {
 
    /**

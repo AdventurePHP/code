@@ -1,6 +1,4 @@
 <?php
-namespace APF\core\benchmark;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,6 +18,7 @@ namespace APF\core\benchmark;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\core\benchmark;
 
 /**
  * @package APF\core\benchmark

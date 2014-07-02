@@ -1,6 +1,4 @@
 <?php
-namespace APF\modules\guestbook2009\biz;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,14 +18,16 @@ namespace APF\modules\guestbook2009\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\modules\guestbook2009\biz;
+
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\pagecontroller\APFObject;
+use APF\core\session\Session;
 use APF\core\singleton\Singleton;
 use APF\modules\guestbook2009\data\GuestbookMapper;
 use APF\modules\pager\biz\PagerManager;
 use APF\modules\pager\biz\PagerManagerFabric;
 use APF\tools\http\HeaderManager;
-use APF\core\session\Session;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 

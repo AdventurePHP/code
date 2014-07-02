@@ -1,6 +1,4 @@
 <?php
-namespace APF\tools\cache\provider;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,6 +18,8 @@ namespace APF\tools\cache\provider;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\tools\cache\provider;
+
 use APF\tools\cache\CacheKey;
 use APF\tools\cache\key\AdvancedCacheKey;
 use APF\tools\filesystem\FileException;

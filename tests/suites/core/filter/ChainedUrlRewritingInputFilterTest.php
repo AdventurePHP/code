@@ -1,6 +1,4 @@
 <?php
-namespace APF\tests\suites\core\filter;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,6 +18,8 @@ namespace APF\tests\suites\core\filter;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\tests\suites\core\filter;
+
 use APF\core\configuration\ConfigurationManager;
 use APF\core\configuration\provider\ini\IniConfiguration;
 use APF\core\configuration\provider\ini\IniConfigurationProvider;

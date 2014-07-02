@@ -1,6 +1,4 @@
 <?php
-namespace APF\extensions\postbox\biz;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,12 +18,12 @@ namespace APF\extensions\postbox\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\pagecontroller\APFObject;
+namespace APF\extensions\postbox\biz;
 
+use APF\core\pagecontroller\APFObject;
 use APF\modules\genericormapper\data\GenericCriterionObject;
 use APF\modules\genericormapper\data\GenericORMapperDataObject;
 use APF\modules\genericormapper\data\GenericORRelationMapper;
-
 use InvalidArgumentException;
 
 /**

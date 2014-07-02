@@ -1,6 +1,4 @@
 <?php
-namespace APF\extensions\news\pres\documentcontroller;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,6 +18,8 @@ namespace APF\extensions\news\pres\documentcontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\extensions\news\pres\documentcontroller;
+
 use APF\core\pagecontroller\BaseDocumentController;
 use APF\extensions\news\biz\NewsManager;
 

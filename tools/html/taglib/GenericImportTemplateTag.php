@@ -1,6 +1,4 @@
 <?php
-namespace APF\tools\html\taglib;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,9 +18,11 @@ namespace APF\tools\html\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\tools\html\taglib;
+
+use APF\core\frontcontroller\Frontcontroller;
 use APF\core\pagecontroller\ImportTemplateTag;
 use APF\core\singleton\Singleton;
-use APF\core\frontcontroller\Frontcontroller;
 use InvalidArgumentException;
 
 /**

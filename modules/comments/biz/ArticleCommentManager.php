@@ -1,6 +1,4 @@
 <?php
-namespace APF\modules\comments\biz;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,6 +18,8 @@ namespace APF\modules\comments\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\modules\comments\biz;
+
 use APF\core\pagecontroller\APFObject;
 use APF\modules\comments\data\ArticleCommentMapper;
 use APF\modules\pager\biz\PagerManager;

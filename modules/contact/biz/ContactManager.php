@@ -1,6 +1,4 @@
 <?php
-namespace APF\modules\contact\biz;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,13 +18,15 @@ namespace APF\modules\contact\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\modules\contact\biz;
+
 use APF\core\configuration\ConfigurationException;
 use APF\core\loader\RootClassLoader;
 use APF\core\pagecontroller\APFObject;
 use APF\core\pagecontroller\IncludeException;
 use APF\modules\contact\data\ContactMapper;
-use APF\tools\link\LinkGenerator;
 use APF\tools\http\HeaderManager;
+use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 use APF\tools\mail\mailSender;
 

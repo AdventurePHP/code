@@ -1,6 +1,4 @@
 <?php
-namespace APF\tools\form\validator;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,9 +18,10 @@ namespace APF\tools\form\validator;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\tools\form\validator;
+
 use APF\tools\form\provider\csrf\CSRFHashProvider;
 use APF\tools\form\taglib\AbstractFormControl;
-use APF\tools\form\validator\TextFieldValidator;
 
 /**
  * @package APF\tools\form\validator

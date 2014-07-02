@@ -1,6 +1,4 @@
 <?php
-namespace APF\modules\contact\data;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,6 +18,8 @@ namespace APF\modules\contact\data;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\modules\contact\data;
+
 use APF\core\pagecontroller\APFObject;
 use APF\modules\contact\biz\ContactFormRecipient;
 

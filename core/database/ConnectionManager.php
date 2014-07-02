@@ -1,6 +1,4 @@
 <?php
-namespace APF\core\database;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,10 +18,11 @@ namespace APF\core\database;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\configuration\ConfigurationManager;
-use APF\core\pagecontroller\APFObject;
+namespace APF\core\database;
 
+use APF\core\configuration\ConfigurationManager;
 use APF\core\database\config\StatementConfigurationProvider;
+use APF\core\pagecontroller\APFObject;
 use APF\core\registry\Registry;
 use APF\core\service\APFService;
 use InvalidArgumentException;

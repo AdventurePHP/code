@@ -1,6 +1,4 @@
 <?php
-namespace APF\modules\guestbook2009\data;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,16 +18,18 @@ namespace APF\modules\guestbook2009\data;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\modules\guestbook2009\data;
+
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\pagecontroller\APFObject;
 use APF\core\singleton\Singleton;
 use APF\modules\genericormapper\data\GenericCriterionObject;
 use APF\modules\genericormapper\data\GenericDomainObject;
 use APF\modules\genericormapper\data\GenericORRelationMapper;
-use APF\modules\guestbook2009\biz\GuestbookModel;
-use APF\modules\guestbook2009\biz\User;
 use APF\modules\guestbook2009\biz\Entry;
 use APF\modules\guestbook2009\biz\Guestbook;
+use APF\modules\guestbook2009\biz\GuestbookModel;
+use APF\modules\guestbook2009\biz\User;
 use InvalidArgumentException;
 
 /**

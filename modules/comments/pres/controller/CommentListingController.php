@@ -1,6 +1,4 @@
 <?php
-namespace APF\modules\comments\pres\controller;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,11 +18,13 @@ namespace APF\modules\comments\pres\controller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\modules\comments\pres\controller;
+
 use APF\modules\comments\biz\ArticleComment;
 use APF\modules\comments\biz\ArticleCommentManager;
+use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 use APF\tools\string\AdvancedBBCodeParser;
-use APF\tools\link\LinkGenerator;
 
 /**
  * @package APF\modules\comments\pres\controller

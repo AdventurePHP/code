@@ -1,6 +1,4 @@
 <?php
-namespace APF\modules\genericormapper\data;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,6 +18,8 @@ namespace APF\modules\genericormapper\data;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\modules\genericormapper\data;
+
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\configuration\ConfigurationException;
 use APF\core\database\AbstractDatabaseHandler;

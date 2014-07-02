@@ -1,6 +1,4 @@
 <?php
-namespace APF\extensions\arraypager\biz;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,6 +18,8 @@ namespace APF\extensions\arraypager\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\extensions\arraypager\biz;
+
 use APF\core\configuration\ConfigurationException;
 use APF\core\pagecontroller\APFObject;
 use APF\core\pagecontroller\Page;

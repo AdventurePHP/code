@@ -1,6 +1,4 @@
 <?php
-namespace APF\modules\usermanagement\pres\documentcontroller\login;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,23 +18,25 @@ namespace APF\modules\usermanagement\pres\documentcontroller\login;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\modules\usermanagement\pres\documentcontroller\login;
+
 use APF\core\configuration\ConfigurationException;
 use APF\core\logging\LogEntry;
+use APF\core\logging\Logger;
 use APF\core\pagecontroller\BaseDocumentController;
 use APF\core\service\APFService;
 use APF\core\singleton\Singleton;
-use APF\modules\usermanagement\biz\UmgtManager;
-use APF\modules\usermanagement\biz\UmgtUserSessionStore;
+use APF\modules\usermanagement\biz\login\UmgtAutoLoginAction;
 use APF\modules\usermanagement\biz\login\UmgtRedirectUrlProvider;
 use APF\modules\usermanagement\biz\model\UmgtAuthToken;
 use APF\modules\usermanagement\biz\model\UmgtUser;
+use APF\modules\usermanagement\biz\UmgtManager;
+use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 use APF\tools\cookie\Cookie;
 use APF\tools\form\validator\AbstractFormValidator;
-use APF\tools\link\LinkGenerator;
 use APF\tools\http\HeaderManager;
-use APF\modules\usermanagement\biz\login\UmgtAutoLoginAction;
+use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
-use APF\core\logging\Logger;
 use Exception;
 
 /**

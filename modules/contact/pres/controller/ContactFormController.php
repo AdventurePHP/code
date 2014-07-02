@@ -1,6 +1,4 @@
 <?php
-namespace APF\modules\contact\pres\controller;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,6 +18,8 @@ namespace APF\modules\contact\pres\controller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\modules\contact\pres\controller;
+
 use APF\core\pagecontroller\BaseDocumentController;
 use APF\modules\contact\biz\ContactFormData;
 use APF\modules\contact\biz\ContactManager;

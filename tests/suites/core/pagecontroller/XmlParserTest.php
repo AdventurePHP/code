@@ -1,6 +1,4 @@
 <?php
-namespace APF\tests\suites\core\pagecontroller;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,8 +18,10 @@ namespace APF\tests\suites\core\pagecontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\pagecontroller\XmlParser;
+namespace APF\tests\suites\core\pagecontroller;
+
 use APF\core\pagecontroller\ParserException;
+use APF\core\pagecontroller\XmlParser;
 
 /**
  * @package APF\tests\suites\core\pagecontroller

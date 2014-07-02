@@ -1,6 +1,4 @@
 <?php
-namespace APF\extensions\htmlheader\biz;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,12 +18,13 @@ namespace APF\extensions\htmlheader\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\extensions\htmlheader\biz;
+
 use APF\core\configuration\Configuration;
 use APF\core\configuration\ConfigurationException;
 use APF\core\loader\RootClassLoader;
 use APF\core\pagecontroller\APFObject;
 use APF\core\pagecontroller\IncludeException;
-
 use APF\extensions\htmlheader\biz\filter\JsCssInclusionFilterChain;
 use APF\tools\cache\CacheManagerFabric;
 use APF\tools\cache\key\SimpleCacheKey;

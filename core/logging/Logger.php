@@ -1,6 +1,4 @@
 <?php
-namespace APF\core\logging;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,9 +18,11 @@ namespace APF\core\logging;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\registry\Registry;
+namespace APF\core\logging;
+
 use APF\core\logging\entry\SimpleLogEntry;
 use APF\core\logging\writer\FileLogWriter;
+use APF\core\registry\Registry;
 
 /**
  * @package APF\core\logging

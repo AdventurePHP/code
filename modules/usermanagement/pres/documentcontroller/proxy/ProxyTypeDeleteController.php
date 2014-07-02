@@ -1,6 +1,4 @@
 <?php
-namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,6 +18,8 @@ namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
+
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;

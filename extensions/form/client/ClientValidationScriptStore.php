@@ -1,6 +1,4 @@
 <?php
-namespace APF\extensions\form\client;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,6 +18,8 @@ namespace APF\extensions\form\client;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\extensions\form\client;
+
 use APF\core\pagecontroller\APFObject;
 
 /**

@@ -1,6 +1,4 @@
 <?php
-namespace APF\extensions\htmlheader\biz\actions;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,6 +18,8 @@ namespace APF\extensions\htmlheader\biz\actions;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\extensions\htmlheader\biz\actions;
+
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\extensions\htmlheader\biz\JsCssPackager;
 use APF\tools\http\HeaderManager;

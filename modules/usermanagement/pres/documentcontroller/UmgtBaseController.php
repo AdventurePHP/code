@@ -1,6 +1,4 @@
 <?php
-namespace APF\modules\usermanagement\pres\documentcontroller;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,10 +18,11 @@ namespace APF\modules\usermanagement\pres\documentcontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\modules\usermanagement\pres\documentcontroller;
+
 use APF\core\pagecontroller\BaseDocumentController;
 use APF\core\pagecontroller\TemplateTag;
 use APF\modules\usermanagement\biz\UmgtManager;
-
 use APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;

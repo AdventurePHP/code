@@ -1,6 +1,4 @@
 <?php
-namespace APF\tools\form\multifileupload\biz;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,14 +18,15 @@ namespace APF\tools\form\multifileupload\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\tools\form\multifileupload\biz;
+
 use APF\core\loader\RootClassLoader;
 use APF\core\pagecontroller\APFObject;
 use APF\core\session\Session;
-use APF\tools\link\LinkGenerator;
-use APF\tools\form\FormException;
-
 use APF\tools\filesystem\File;
 use APF\tools\filesystem\Folder;
+use APF\tools\form\FormException;
+use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**

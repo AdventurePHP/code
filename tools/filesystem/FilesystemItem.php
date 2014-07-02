@@ -1,6 +1,4 @@
 <?php
-namespace APF\tools\filesystem;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,8 +18,9 @@ namespace APF\tools\filesystem;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\tools\filesystem;
+
 use APF\core\pagecontroller\APFObject;
-use APF\tools\filesystem\FilesystemException;
 
 /**
  * @abstract

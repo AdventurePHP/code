@@ -1,6 +1,4 @@
 <?php
-namespace APF\modules\usermanagement\pres\documentcontroller\registration;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,15 +18,16 @@ namespace APF\modules\usermanagement\pres\documentcontroller\registration;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\modules\usermanagement\pres\documentcontroller\registration;
+
 use APF\core\configuration\ConfigurationException;
 use APF\core\logging\LogEntry;
+use APF\core\logging\Logger;
 use APF\core\singleton\Singleton;
-use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\biz\model\UmgtGroup;
 use APF\modules\usermanagement\biz\model\UmgtRole;
+use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
-
-use APF\core\logging\Logger;
 use Exception;
 
 /**

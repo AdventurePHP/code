@@ -1,6 +1,4 @@
 <?php
-namespace APF\extensions\forwardmessage\biz;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,8 +18,9 @@ namespace APF\extensions\forwardmessage\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\pagecontroller\APFObject;
+namespace APF\extensions\forwardmessage\biz;
 
+use APF\core\pagecontroller\APFObject;
 use Exception;
 
 /**

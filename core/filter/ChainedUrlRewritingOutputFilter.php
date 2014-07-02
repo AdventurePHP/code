@@ -1,6 +1,4 @@
 <?php
-namespace APF\core\filter;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,8 +18,9 @@ namespace APF\core\filter;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\core\filter;
+
 use APF\core\benchmark\BenchmarkTimer;
-use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 
 /**

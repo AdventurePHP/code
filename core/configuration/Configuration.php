@@ -1,6 +1,4 @@
 <?php
-namespace APF\core\configuration;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,6 +18,7 @@ namespace APF\core\configuration;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\core\configuration;
 
 /**
  * @package APF\core\configuration
@@ -41,6 +40,7 @@ interface Configuration {
     *
     * @param string $name The name of the attribute.
     * @param string $defaultValue The default value.
+    *
     * @return string The desired configuration value.
     *
     * @author Christian Achatz
@@ -55,6 +55,7 @@ interface Configuration {
     * Returns the desired configuration section.
     *
     * @param string $name The name of the attribute.
+    *
     * @return Configuration The desired configuration section.
     *
     * @author Christian Achatz

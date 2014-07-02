@@ -1,6 +1,4 @@
 <?php
-namespace APF\core\logging\writer;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,8 +18,10 @@ namespace APF\core\logging\writer;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\logging\LogWriter;
+namespace APF\core\logging\writer;
+
 use APF\core\logging\LoggerException;
+use APF\core\logging\LogWriter;
 
 /**
  * @package APF\core\logging\writer

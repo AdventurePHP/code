@@ -1,6 +1,4 @@
 <?php
-namespace APF\tools\form\provider\csrf;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,6 +18,7 @@ namespace APF\tools\form\provider\csrf;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\tools\form\provider\csrf;
 
 /**
  * @package APF\tools\form\provider\csrf

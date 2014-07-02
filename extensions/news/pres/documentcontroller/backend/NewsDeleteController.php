@@ -1,6 +1,4 @@
 <?php
-namespace APF\extensions\news\pres\documentcontroller\backend;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,10 +18,12 @@ namespace APF\extensions\news\pres\documentcontroller\backend;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\extensions\news\pres\documentcontroller\backend;
+
 use APF\extensions\news\pres\documentcontroller\NewsBaseController;
+use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 use APF\tools\request\RequestHandler;
-use APF\tools\link\LinkGenerator;
 
 /**
  * @package APF\extensions\news\pres\documentcontroller\backend

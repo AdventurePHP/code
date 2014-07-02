@@ -1,6 +1,4 @@
 <?php
-namespace APF\modules\usermanagement\pres\condition;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,8 +18,9 @@ namespace APF\modules\usermanagement\pres\condition;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\modules\usermanagement\pres\condition;
+
 use APF\modules\usermanagement\biz\model\UmgtUser;
-use APF\modules\usermanagement\pres\condition\UserDependentContentCondition;
 
 /**
  * @package APF\modules\usermanagement\pres\condition

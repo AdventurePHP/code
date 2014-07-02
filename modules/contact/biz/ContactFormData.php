@@ -1,6 +1,4 @@
 <?php
-namespace APF\modules\contact\biz;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,6 +18,7 @@ namespace APF\modules\contact\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\modules\contact\biz;
 
 /**
  * @package APF\modules\contact\biz

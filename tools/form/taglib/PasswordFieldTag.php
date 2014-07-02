@@ -1,6 +1,4 @@
 <?php
-namespace APF\tools\form\taglib;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,7 +18,7 @@ namespace APF\tools\form\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\tools\form\taglib\TextFieldTag;
+namespace APF\tools\form\taglib;
 
 /**
  * @package APF\tools\form\taglib

@@ -1,6 +1,4 @@
 <?php
-namespace APF\extensions\htmlheader\pres\filter;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,14 +18,16 @@ namespace APF\extensions\htmlheader\pres\filter;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\extensions\htmlheader\pres\filter;
+
 use APF\core\filter\ChainedContentFilter;
 use APF\core\filter\FilterChain;
 use APF\core\pagecontroller\APFObject;
-use APF\extensions\htmlheader\biz\HtmlHeaderManager;
 use APF\extensions\htmlheader\biz\HeaderNode;
+use APF\extensions\htmlheader\biz\HtmlHeaderManager;
 use APF\extensions\htmlheader\biz\HtmlNode;
-use APF\extensions\htmlheader\pres\taglib\HtmlHeaderGetHeadTag;
 use APF\extensions\htmlheader\pres\taglib\HtmlHeaderGetBodyJsTag;
+use APF\extensions\htmlheader\pres\taglib\HtmlHeaderGetHeadTag;
 
 /**
  * @package APF\extensions\htmlheader\pres\filter

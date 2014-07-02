@@ -1,6 +1,4 @@
 <?php
-namespace APF\tools\form\multifileupload\actions;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,10 +18,12 @@ namespace APF\tools\form\multifileupload\actions;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\tools\form\multifileupload\actions;
+
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\tools\form\FormException;
 use APF\tools\form\multifileupload\biz\MultiFileUploadManager;
 use APF\tools\http\HeaderManager;
-use APF\tools\form\FormException;
 
 /**
  * @package APF\tools\form\multifileupload\actions

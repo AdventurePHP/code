@@ -1,6 +1,4 @@
 <?php
-namespace APF\tests\suites\tools\form\taglib;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,7 +18,8 @@ namespace APF\tests\suites\tools\form\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\tools\form\taglib\AbstractFormControl;
+namespace APF\tests\suites\tools\form\taglib;
+
 use APF\tools\form\taglib\DateSelectorTag;
 
 /**

@@ -1,6 +1,4 @@
 <?php
-namespace APF\tools\media\actions;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,6 +18,8 @@ namespace APF\tools\media\actions;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\tools\media\actions;
+
 session_cache_limiter('none');
 
 use APF\core\configuration\ConfigurationException;

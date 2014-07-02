@@ -1,6 +1,4 @@
 <?php
-namespace APF\modules\socialbookmark\biz;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,14 +18,14 @@ namespace APF\modules\socialbookmark\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\modules\socialbookmark\biz;
+
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\pagecontroller\APFObject;
-use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
+use APF\tools\link\DefaultLinkScheme;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
-use APF\tools\link\DefaultLinkScheme;
-use APF\modules\socialbookmark\biz\SocialBookmarkItem;
 use APF\tools\media\taglib\MediaInclusionTag;
 
 /**

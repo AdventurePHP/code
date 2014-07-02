@@ -1,6 +1,4 @@
 <?php
-namespace APF\modules\captcha\pres\taglib;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,16 +18,18 @@ namespace APF\modules\captcha\pres\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\modules\captcha\pres\taglib;
+
 use APF\core\pagecontroller\XmlParser;
+use APF\core\session\Session;
 use APF\tools\form\filter\AbstractFormFilter;
 use APF\tools\form\taglib\AbstractFormControl;
 use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\form\taglib\TextFieldTag;
 use APF\tools\form\validator\AbstractFormValidator;
+use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 use APF\tools\string\StringAssistant;
-use APF\core\session\Session;
-use APF\tools\link\LinkGenerator;
 
 /**
  * @package APF\modules\captcha\pres\taglib

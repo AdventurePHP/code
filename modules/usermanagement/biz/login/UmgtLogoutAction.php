@@ -1,6 +1,4 @@
 <?php
-namespace APF\modules\usermanagement\biz\login;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,13 +18,14 @@ namespace APF\modules\usermanagement\biz\login;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+namespace APF\modules\usermanagement\biz\login;
+
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\core\service\APFService;
 use APF\modules\usermanagement\biz\UmgtUserSessionStore;
+use APF\tools\cookie\Cookie;
 use APF\tools\http\HeaderManager;
 use APF\tools\link\LinkGenerator;
-use APF\tools\cookie\Cookie;
-use APF\modules\usermanagement\biz\login\UmgtAutoLoginAction;
 use APF\tools\link\Url;
 
 /**
