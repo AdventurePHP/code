@@ -21,9 +21,6 @@
 namespace APF\tools\form\taglib;
 
 /**
- * @package APF\tools\form\taglib
- * @class FormErrorDisplayTag
- *
  * Implements a taglib, that outputs it's content, in case the form, the
  * tag is defined in, is sent but not valid. This let's you easily define
  * form error messages. The definition of the tag is as follows:
@@ -43,8 +40,6 @@ namespace APF\tools\form\taglib;
 class FormErrorDisplayTag extends AbstractFormControl {
 
    /**
-    * @public
-    *
     * Overwrites the parent's method, because there is nothing to do except
     * analyzing the child tags.
     *
@@ -57,8 +52,6 @@ class FormErrorDisplayTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Overwrites the parent's method, because there is nothing to do here.
     *
     * @author Christian Achatz
@@ -69,8 +62,6 @@ class FormErrorDisplayTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Outputs the content of the tag, if the form, the tag is
     * defined in is sent but invalid!
     *

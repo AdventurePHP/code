@@ -24,9 +24,6 @@ use APF\modules\usermanagement\biz\model\UmgtGroup;
 use APF\modules\usermanagement\biz\model\UmgtUser;
 
 /**
- * @package APF\modules\usermanagement\pres\condition
- * @class UmgtGroupCondition
- *
  * Implements the decision logic, whether a user is part of the groups
  * given in the options array.
  *
@@ -47,6 +44,7 @@ class UmgtGroupCondition extends UserDependentContentConditionBase implements Us
             return true;
          }
       }
+
       return false;
    }
 
@@ -56,6 +54,7 @@ class UmgtGroupCondition extends UserDependentContentConditionBase implements Us
 
    /**
     * @param UmgtUser $user
+    *
     * @return UmgtGroup[]
     */
    private function getGroups(UmgtUser $user) {

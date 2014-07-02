@@ -21,9 +21,6 @@
 namespace APF\core\errorhandler;
 
 /**
- * @package APF\core\errorhandler
- * @class CLIErrorHandler
- *
  * Implements a cli error handler. Logs errors to a logfile and displays
  * output to cli.
  *
@@ -50,8 +47,6 @@ class CLIErrorHandler extends DefaultErrorHandler {
    }
 
    /**
-    * @protected
-    *
     * Creates the error output.
     *
     * @return string The APF error output.

@@ -23,9 +23,6 @@ namespace APF\core\configuration\provider;
 use APF\core\configuration\Configuration;
 
 /**
- * @package APF\core\configuration\provider
- * @class BaseConfiguration
- *
  * Provides base functionality for the concrete configuration object implementations.
  *
  * @author Christian Achatz
@@ -35,12 +32,16 @@ use APF\core\configuration\Configuration;
 abstract class BaseConfiguration {
 
    /**
-    * @var array Stores the values of the current configuration/section.
+    * Stores the values of the current configuration/section.
+    *
+    * @var array $values
     */
    private $values = array();
 
    /**
-    * @var Configuration[] Stores the sections of the current config.
+    * Stores the sections of the current config.
+    *
+    * @var Configuration[] $sections
     */
    private $sections = array();
 

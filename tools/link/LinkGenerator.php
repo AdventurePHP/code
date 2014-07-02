@@ -21,9 +21,6 @@
 namespace APF\tools\link;
 
 /**
- * @package APF\tools\link
- * @class LinkGenerator
- *
  * The <em>LinkGenerator</em> is a generic link generation tool that can be configured
  * by different link scheme implementations. Normally, configuration is done globally
  * within the bootstrap file, but can be overwritten on each single link generation
@@ -48,7 +45,9 @@ namespace APF\tools\link;
 final class LinkGenerator {
 
    /**
-    * @var LinkScheme The link scheme to generate the links with.
+    * The link scheme to generate the links with.
+    *
+    * @var LinkScheme $LINK_SCHEME
     */
    private static $LINK_SCHEME;
 
@@ -60,8 +59,6 @@ final class LinkGenerator {
    }
 
    /**
-    * @public
-    *
     * Let's you retrieve the current link scheme, that has been configured
     * for global usage within the bootstrap file.
     *
@@ -76,8 +73,6 @@ final class LinkGenerator {
    }
 
    /**
-    * @public
-    *
     * Let's you retrieve a clone of the current link scheme for further
     * configuration and explicit use.
     *

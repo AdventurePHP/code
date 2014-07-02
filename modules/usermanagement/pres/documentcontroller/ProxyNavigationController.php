@@ -21,9 +21,6 @@
 namespace APF\modules\usermanagement\pres\documentcontroller;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller
- * @class ProxyNavigationController
- *
  * Implements the documentcontroller to display the role sub menu.
  *
  * @author Christian Achatz

@@ -26,9 +26,6 @@ use APF\tools\http\HeaderManager;
 use InvalidArgumentException;
 
 /**
- * @package APF\extensions\htmlheader\biz\actions
- * @class JsCssInclusionAction
- *
  * Implements an FC-action which returns .css and .js files
  *
  * @example
@@ -46,12 +43,14 @@ use InvalidArgumentException;
 final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
 
    /**
+    * TimeToLive for cache headers in seconds
+    *
     * 60 = 1 minute
     * 60 * 60 (3600) = 1 hour
     * 60 * 60 * 24 (86400) = 1 day
     * 60 * 60 * 24 * 7 (604800) = 7 days
     *
-    * @var int TimeToLive for cache headers in seconds
+    * @var int $ttl
     */
    protected $ttl = 604800;
 
@@ -71,6 +70,7 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
       if (!empty($PackageName)) {
          return 'package';
       }
+
       return 'file';
    }
 
@@ -93,7 +93,7 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
 
    protected function getSanitizedNamespace($namespace) {
       $namespace = str_replace('_', '\\', // resolve url notation for namespaces
-         preg_replace('/[^A-Za-z0-9\-_\.]/', '', $namespace)
+            preg_replace('/[^A-Za-z0-9\-_\.]/', '', $namespace)
       );
 
       // Changing to higher directories is not allowed, either!

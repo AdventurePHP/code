@@ -25,9 +25,6 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\http\HeaderManager;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller
- * @class PermissionAddController
- *
  * Implements the controller to add a permission.
  *
  * @author Christian Achatz
@@ -38,9 +35,9 @@ class PermissionAddController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $uM = &$this->getManager();
+      $uM = & $this->getManager();
 
-      $form = &$this->getForm('PermissionAdd');
+      $form = & $this->getForm('PermissionAdd');
 
       if ($form->isSent() == true && $form->isValid() == true) {
 

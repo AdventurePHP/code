@@ -27,9 +27,6 @@ use APF\tools\request\RequestHandler;
 use InvalidArgumentException;
 
 /**
- * @package APF\tools\html\taglib
- * @class HtmlIteratorTag
- *
  * Implements a taglib, that can display a list of objects (arrays with numeric offsets)
  * or associative arrays by defining a iterator with items and place holders within the
  * items. For convenience, the iterator can contain additional (html) content.
@@ -50,46 +47,55 @@ use InvalidArgumentException;
 class HtmlIteratorTag extends Document {
 
    /**
-    * @const Defines the "normal" fallback mode (fallback content is displayed additionally).
+    * Defines the "normal" fallback mode (fallback content is displayed additionally).
+    *
+    * @var string FALLBACK_MODE_NORMAL
     */
    const FALLBACK_MODE_NORMAL = 'normal';
 
    /**
-    * @const Defines the "extended" fallback mode (fallback content is displayed instead).
+    * Defines the "extended" fallback mode (fallback content is displayed instead).
+    *
+    * @var string FALLBACK_MODE_REPLACE
     */
    const FALLBACK_MODE_REPLACE = 'replace';
 
    /**
-    * @const Defines default CSS class for first item.
+    * Defines default CSS class for first item.
+    *
+    * @var string DEFAULT_CSS_CLASS_FIRST
     */
    const DEFAULT_CSS_CLASS_FIRST = 'first';
 
    /**
-    * @const Defines default CSS class for "normal" items.
+    * Defines default CSS class for "normal" items.
+    *
+    * @var string DEFAULT_CSS_CLASS_MIDDLE
     */
    const DEFAULT_CSS_CLASS_MIDDLE = 'middle';
 
    /**
-    * @const Defines default CSS class for last item.
+    * Defines default CSS class for last item.
+    *
+    * @var string DEFAULT_CSS_CLASS_LAST
     */
    const DEFAULT_CSS_CLASS_LAST = 'last';
 
    /**
-    * @protected
     * Data container. Array with numeric or associative offsets
     * or a list of objects.
+    *
+    * @var array $dataContainer
     */
    protected $dataContainer = array();
 
    /**
-    * @protected
     * Indicates, whether the iterator template should be displayed
     * at it's definition place (transform-on-place feature).
     */
    protected $transformOnPlace = false;
 
    /**
-    * @protected
     * The iteration number
     */
    protected $iterationNumber = 0;
@@ -103,8 +109,6 @@ class HtmlIteratorTag extends Document {
    }
 
    /**
-    * @public
-    *
     * This method allows you to fill the data container. Arrays with associative
     * keys are allowed as well as lists of objects (arrays with numeric offsets).
     *
@@ -119,8 +123,6 @@ class HtmlIteratorTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Activates the transform-on-place feature for the iterator tag.
     *
     * @author Christian Achatz
@@ -132,8 +134,6 @@ class HtmlIteratorTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Sets the value of the iterationNumber-Object-Attribute
     *
     * @param integer $number The number of iterationNumber
@@ -147,8 +147,6 @@ class HtmlIteratorTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Creates the output of the iterator. Can be called manually to use the output within
     * a document controller or surrounding taglib or automatically using the
     * transform-on-place feature.
@@ -330,8 +328,6 @@ class HtmlIteratorTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Implements the transform method for the iterator tag.
     *
     * @return string Content of the tag or an empty string.
@@ -349,8 +345,6 @@ class HtmlIteratorTag extends Document {
    }
 
    /**
-    * @protected
-    *
     * Returns the first iterator item, that is found in the children list.
     * All other occurrences are ignored, due to the fact, that it is not
     * allowed to define more that one iterator item.
@@ -379,8 +373,6 @@ class HtmlIteratorTag extends Document {
    }
 
    /**
-    * @protected
-    *
     * Returns the fallback content template object id if found in the children list.
     * All other occurrences are ignored, due to the fact, that it is not
     * allowed to define more that one fallback content.
@@ -403,8 +395,6 @@ class HtmlIteratorTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Returns the fallback content template in case defined for the present iterator.
     *
     * @return TemplateTag|null Fallback template or <em>null</em> in case nothing is defined.

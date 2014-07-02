@@ -21,9 +21,6 @@
 namespace APF\core\frontcontroller;
 
 /**
- * @package APF\core\frontcontroller
- * @class ActionParameters
- *
  * Defines the structure of a front controller action parameter instance.
  *
  * @author Christian Achatz

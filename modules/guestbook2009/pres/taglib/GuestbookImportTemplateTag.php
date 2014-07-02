@@ -25,9 +25,6 @@ use APF\modules\guestbook2009\biz\GuestbookModel;
 use InvalidArgumentException;
 
 /**
- * @package APF\modules\guestbook2009\pres\taglib
- * @class GuestbookImportTemplateTag
- *
  * Implements the taglib class to include the guestbook and to fill the model
  * with the appropriate information.
  *
@@ -38,8 +35,6 @@ use InvalidArgumentException;
 class GuestbookImportTemplateTag extends ImportTemplateTag {
 
    /**
-    * @public
-    *
     * Fills the model information and includes the guest book's main template.
     *
     * @author Christian Achatz
@@ -53,7 +48,7 @@ class GuestbookImportTemplateTag extends ImportTemplateTag {
       $guestbookId = $this->getAttribute('gbid');
 
       // do not include the guestbook, if gbid is not set/existent
-      if ($guestbookId == null || ((int)$guestbookId) == 0) {
+      if ($guestbookId == null || ((int) $guestbookId) == 0) {
          throw new InvalidArgumentException('[GuestbookImportTemplateTag::onParseTime()] The attribute '
                . '"gbid" is empty or not present or the value is not an id. Please specify the '
                . 'attribute correctly in order to include the guestbook module!');

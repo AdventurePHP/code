@@ -24,10 +24,6 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @abstract
- * @package APF\extensions\htmlheader\biz
- * @class PackageNode
- *
  * Provides basic functionality for css and js package nodes
  *
  * @author Ralf Schubert
@@ -39,8 +35,8 @@ abstract class PackageNode extends HtmlNode {
 
    public function __construct($url, $name) {
       $this->setAttribute($this->getLocationAttributeName(), $this->buildPackageLink(
-         $url,
-         $name
+            $url,
+            $name
       ));
    }
 
@@ -56,8 +52,9 @@ abstract class PackageNode extends HtmlNode {
 
       // Generate url if not given
       $url = ($url === null) ? Url::fromCurrent(true) : Url::fromString($url);
+
       return LinkGenerator::generateActionUrl($url, 'APF\extensions\htmlheader', 'JsCss', array(
-         'package' => $name . '.' . $this->getTypeIndicator()
+            'package' => $name . '.' . $this->getTypeIndicator()
       ));
    }
 

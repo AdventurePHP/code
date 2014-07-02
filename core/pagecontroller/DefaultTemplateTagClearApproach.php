@@ -21,9 +21,6 @@
 namespace APF\core\pagecontroller;
 
 /**
- * @package APF\core\pagecontroller
- * @class DefaultTemplateTagClearApproach
- *
  * Implements the default clear mechanism that resets the content of the place holders
  * defines within the TemplateTag instance.
  * <p/>

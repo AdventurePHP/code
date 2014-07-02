@@ -23,29 +23,30 @@ namespace APF\extensions\apfelsms\biz\pages\decorators;
 use APF\tools\link\Url;
 
 /**
+ * Adds request params to page URL
  *
- * @package APF\extensions\apfelsms
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version : v0.1 (21.06.12)
- * @desc    : Adds request params to page URL
- *
  */
 class SMSRequestPageDec extends SMSAbstractPageDec {
 
 
    /**
-    * @var array Request parameter storage
+    * Request parameter storage
+    *
+    * @var array $requestParams
     */
    protected $requestParams = array();
 
 
    public static $mapVars = array(
-      'requestParam' => array()
+         'requestParam' => array()
    );
 
 
    /**
     * @param Url $url
+    *
     * @return string
     */
    public function getLink(Url $url) {
@@ -72,6 +73,7 @@ class SMSRequestPageDec extends SMSAbstractPageDec {
     * Overwrites thw current parameter array with new values
     *
     * @param array $params
+    *
     * @return array The new request parameter array
     */
    public function setRequestParams(array $params) {
@@ -85,6 +87,7 @@ class SMSRequestPageDec extends SMSAbstractPageDec {
     * Merge thw new parameter array with the current one
     *
     * @param array $params
+    *
     * @return array The new, merged parameter array
     */
    public function mergeRequestParams(array $params) {
@@ -98,6 +101,7 @@ class SMSRequestPageDec extends SMSAbstractPageDec {
     * Remove a parameter. Returns null if parameter is not existing. Otherwise returns the value of the deleted parameter.
     *
     * @param string $paramName
+    *
     * @return string|null
     */
    public function removeRequestParam($paramName) {
@@ -123,6 +127,7 @@ class SMSRequestPageDec extends SMSAbstractPageDec {
     * @param string $paramName
     * @param string $paramValue
     * @param bool $forceOverwrite
+    *
     * @return array|null
     */
    public function addRequestParam($paramName, $paramValue, $forceOverwrite = false) {
@@ -142,6 +147,7 @@ class SMSRequestPageDec extends SMSAbstractPageDec {
     * Returns the value of request parameter with name $paramName or null, if parameter is not set.
     *
     * @param string $paramName
+    *
     * @return string|null
     */
    public function getRequestParam($paramName) {

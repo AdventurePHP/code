@@ -26,9 +26,6 @@ use APF\tools\form\multifileupload\biz\MultiFileUploadManager;
 use APF\tools\http\HeaderManager;
 
 /**
- * @package APF\tools\form\multifileupload\actions
- * @class MultiFileUploadAction
- *
  * This action tales the files uploaded via form and saves them.
  *
  * @author Werner Liemberger <wpublicmail@gmail.com>
@@ -50,8 +47,8 @@ class MultiFileUploadAction extends AbstractFrontcontrollerAction {
 
          /* @var $manager MultiFileUploadManager */
          $manager = & $this->getAndInitServiceObject(
-            'APF\tools\form\multifileupload\biz\MultiFileUploadManager',
-            array('formname' => $formName, 'name' => $fieldName)
+               'APF\tools\form\multifileupload\biz\MultiFileUploadManager',
+               array('formname' => $formName, 'name' => $fieldName)
          );
          if (!empty($_FILES[$fieldName])) {
             $fileInfo = $manager->addFile($_FILES[$fieldName]);

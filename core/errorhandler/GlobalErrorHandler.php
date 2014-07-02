@@ -21,9 +21,6 @@
 namespace APF\core\errorhandler;
 
 /**
- * @package APF\core\errorhandler
- * @class GlobalErrorHandler
- *
  * This is the APF error handler automatically registered to handle errors.
  * <p/>
  * In case you want to register your custom error handler, use the <em>registerErrorHandler()</em>
@@ -47,19 +44,20 @@ namespace APF\core\errorhandler;
 abstract class GlobalErrorHandler {
 
    /**
-    * @var ErrorHandler|null The instance of the error handler to use.
+    * The instance of the error handler to use.
+    *
+    * @var ErrorHandler|null $HANDLER
     */
    private static $HANDLER;
 
    /**
-    * @var bool Indicates whether or not fatal errors are handled by the GlobalErrorHandler.
+    * Indicates whether or not fatal errors are handled by the GlobalErrorHandler.
+    *
+    * @var bool $catchFatalErrors
     */
    private static $catchFatalErrors = true;
 
    /**
-    * @public
-    * @static
-    *
     * Let's you register an error handler.
     *
     * @param ErrorHandler $handler The error handler that is delegated the error processing.
@@ -73,9 +71,6 @@ abstract class GlobalErrorHandler {
    }
 
    /**
-    * @public
-    * @static
-    *
     * This method is used as the central entry point to the APF's error management. It delegates the
     * error handling to the registered handler. In case no handler is registered or the mechanism is
     * disables, nothing will happen.
@@ -106,9 +101,6 @@ abstract class GlobalErrorHandler {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Disables the APF error handling mechanism. From this point in time, the PHP default
     * error handler will be used to handle the error.
     *
@@ -126,9 +118,6 @@ abstract class GlobalErrorHandler {
    }
 
    /**
-    * @public
-    * @static
-    *
     * (Re-)enables the APF error handling mechanism. In case no error handler has been
     * registered, the APF default error handler is used.
     *
@@ -155,9 +144,6 @@ abstract class GlobalErrorHandler {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Shutdown function registered during enabling the GlobalErrorHandler to catch fatal errors
     * and handle identically to other errors caught by <em>handleError()</em>.
     *

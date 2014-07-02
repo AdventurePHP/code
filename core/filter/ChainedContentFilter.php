@@ -21,9 +21,6 @@
 namespace APF\core\filter;
 
 /**
- * @package APF\core\filter
- * @class ChainedContentFilter
- *
  * Defines the structure of an APF filter that is executed with a
  * filter chain.
  * <p/>
@@ -37,13 +34,12 @@ namespace APF\core\filter;
 interface ChainedContentFilter {
 
    /**
-    * @public
-    *
     * This method must be implemented by each single chained filter to
     * influence the result of the filter chain execution.
     *
     * @param FilterChain $chain The instance of the current filter chain.
     * @param string $input The current input to filter.
+    *
     * @return string The result of the filter execution.
     */
    public function filter(FilterChain &$chain, $input = null);

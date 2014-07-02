@@ -26,9 +26,6 @@ use APF\extensions\htmlheader\biz\StaticJsNode;
 use InvalidArgumentException;
 
 /**
- * @package APF\extensions\htmlheader\pres\taglib
- * @class HtmlHeaderAddStaticJsTag
- *
  * Taglib for adding static java script to the html header.
  *
  * @example
@@ -46,14 +43,14 @@ use InvalidArgumentException;
 class HtmlHeaderAddStaticJsTag extends Document {
 
    public function transform() {
-      $header = &$this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
+      $header = & $this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
       /* @var $header HtmlHeaderManager */
 
       $file = $this->getAttribute('file');
       if ($file == null) {
          throw new InvalidArgumentException('[' . get_class($this) . '::onParseTime()] Please '
-                  . 'provide the "file" attribute in order to add a static stylesheet.',
-            E_USER_ERROR);
+               . 'provide the "file" attribute in order to add a static stylesheet.',
+               E_USER_ERROR);
       }
 
       $node = new StaticJsNode($file);

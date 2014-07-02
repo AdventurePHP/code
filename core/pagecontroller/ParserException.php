@@ -23,9 +23,6 @@ namespace APF\core\pagecontroller;
 use Exception;
 
 /**
- * @package APF\core\pagecontroller
- * @class ParserException
- *
  * Represents a APF parser exception.
  *
  * @author Christian Achatz

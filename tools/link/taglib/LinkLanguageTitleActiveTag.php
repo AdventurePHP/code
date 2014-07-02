@@ -23,9 +23,6 @@ namespace APF\tools\link\taglib;
 use APF\core\pagecontroller\LanguageLabelTag;
 
 /**
- * @package APF\tools\link\taglib
- * @class LinkLanguageTitleActiveTag
- *
  * Re-implements the language label tag for the link tags. This title attribute
  * will only be set, of the link is active.
  *

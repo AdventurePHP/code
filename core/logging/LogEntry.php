@@ -21,9 +21,6 @@
 namespace APF\core\logging;
 
 /**
- * @package APF\core\logging
- * @class LogEntry
- *
  * Defines the scheme of a log entry.
  *
  * @author Christian Achatz
@@ -44,8 +41,6 @@ interface LogEntry {
    const SEVERITY_FATAL = 'FATAL';
 
    /**
-    * @public
-    *
     * Returns the message string used to write into a log file.
     *
     * @return string Complete error message including date and time.
@@ -57,8 +52,6 @@ interface LogEntry {
    public function __toString();
 
    /**
-    * @public
-    *
     * Returns the target identifier of this log entry. Merely, - but depending
     * on the LogWriter implementation - this is the name of the log file or at
     * least the main part of it.
@@ -72,8 +65,6 @@ interface LogEntry {
    public function getLogTarget();
 
    /**
-    * @public
-    *
     * Returns the severity of this log entry.
     *
     * @return string The log entry's severity.

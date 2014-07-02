@@ -1,19 +1,19 @@
 <@controller class="APF\modules\weather\pres\documentcontroller\Weather2Controller" @>
 <html:template name="Information">
-  <div class="weather">
-    <h3>${City}</h3>
-    <span class="condition">${Condition}</span><br />
-    <span class="temp">${Temp} °C</span>
-  </div>
+   <div class="weather">
+      <h3>${City}</h3>
+      <span class="condition">${Condition}</span><br/>
+      <span class="temp">${Temp} °C</span>
+   </div>
 </html:template>
 
 <html:template name="NoEntries_de">
-  <h3>Fehler</h3>
-  Es konnten leider keine Informationen unter <strong>${Source}</strong>
-  abgerufen werden.
+   <h3>Fehler</h3>
+   Es konnten leider keine Informationen unter <strong>${Source}</strong>
+   abgerufen werden.
 </html:template>
 
 <html:template name="NoEntries_en">
-  <h3>Error</h3>
-  The information cannot be obtained from <strong>${Source}</strong>.
+   <h3>Error</h3>
+   The information cannot be obtained from <strong>${Source}</strong>.
 </html:template>

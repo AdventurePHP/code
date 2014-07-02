@@ -21,9 +21,6 @@
 namespace APF\tools\form\filter;
 
 /**
- * @package APF\tools\form\filter
- * @class NoSpecialCharactersFilter
- *
  * Implements a filter, that removes all "special" character
  * except "0-9A-Za-z-_\.& ".
  *

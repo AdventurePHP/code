@@ -21,9 +21,6 @@
 namespace APF\core\pagecontroller;
 
 /**
- * @package APF\core\pagecontroller
- * @class PlaceHolderTag
- *
  * Represents a place holder within a template file. Can be filled within a document controller
  * using the setPlaceHolder() method.
  *
@@ -35,14 +32,15 @@ namespace APF\core\pagecontroller;
 class PlaceHolderTag extends Document {
 
    /**
+    * Replacement strings for string place holders.
+    *
+    * @var string[] $stringReplacement
+    *
     * @since 1.17
-    * @var string[] Replacement strings for string place holders.
     */
    protected $stringReplacement = array();
 
    /**
-    * @public
-    *
     * Let's you set a string replacement to the current place holder instance.
     * <p/>
     * Please note, that the keys must be specified in uppercase letters.
@@ -60,8 +58,6 @@ class PlaceHolderTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Implements the transform() method. Returns the content of the tag, that is set by a
     * document controller using the BaseDocumentController's setPlaceHolder() method.
     *

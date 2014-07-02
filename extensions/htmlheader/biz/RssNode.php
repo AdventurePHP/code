@@ -21,9 +21,6 @@
 namespace APF\extensions\htmlheader\biz;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class RssNode
- *
  * Represents an RSS reference within the HTML header area.
  *
  * @author Coach83, Christian Achatz

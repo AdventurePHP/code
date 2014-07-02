@@ -23,9 +23,6 @@ namespace APF\core\exceptionhandler;
 use Exception;
 
 /**
- * @package APF\core\exceptionhandler
- * @class CLIExceptionHandler
- *
  * Implements a cli exception handler for uncaught exceptions.
  *
  * @author Tobias Lückel
@@ -54,8 +51,6 @@ class CLIExceptionHandler extends DefaultExceptionHandler {
    }
 
    /**
-    * @protected
-    *
     * Creates the exception output.
     *
     * @return string the exception output.

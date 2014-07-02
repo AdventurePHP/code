@@ -21,9 +21,6 @@
 namespace APF\tools\form\taglib;
 
 /**
- * @package APF\tools\form\taglib
- * @class FormLabelTag
- *
  * Represents a &lt;label /&gt; form tag that is APF parser sensitive in terms of visibility management.
  * The definition of the tag is as follows:
  * <pre>

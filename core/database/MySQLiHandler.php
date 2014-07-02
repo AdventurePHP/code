@@ -25,9 +25,6 @@ use APF\core\logging\LogEntry;
 use APF\core\singleton\Singleton;
 
 /**
- * @package APF\core\database
- * @class MySQLiHandler
- *
  * This class implements a connection handler for the ConnectionManager
  * to use with mysqli extension.
  *
@@ -38,7 +35,9 @@ use APF\core\singleton\Singleton;
 class MySQLiHandler extends AbstractDatabaseHandler {
 
    /**
-    * @var int The number of rows, that are affected within a bind statement execution.
+    * The number of rows, that are affected within a bind statement execution.
+    *
+    * @var int $bindNumRows
     */
    private $bindNumRows = 0;
 
@@ -93,8 +92,6 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Executes a statement stored within a statement file.
     *
     * @param string $namespace Namespace of the statement file.
@@ -142,8 +139,6 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Executes a statement with bind param support located within a statement file. The place
     * holders contained in the file are replaced by the given values.
     *
@@ -242,8 +237,6 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Executes a statement provided using mysqli's bind feature.
     *
     * @param string $statement The statement to execute.
@@ -324,8 +317,6 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @private
-    *
     * Creates a MySQLi statement representation by the given statement string.
     *
     * @param string $statement The statement to create the statement instance of.
@@ -353,8 +344,6 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @private
-    *
     * Binds the given params to the presented prepared statement.
     *
     * @param \MYSQLi_STMT $query The prepared query to bind the params to.
@@ -386,8 +375,6 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @private
-    *
     * Fetches the result from a prepared query.
     *
     * @param \MYSQLi_STMT $query The prepared query to fetch the result from.
@@ -436,8 +423,6 @@ class MySQLiHandler extends AbstractDatabaseHandler {
 
 
    /**
-    * @public
-    *
     * Quotes data for use in MySQL statements.
     *
     * @param string $value String to quote.
@@ -453,8 +438,6 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Fetches a record from the database using the given result resource.
     *
     * @param resource $resultCursor The result resource returned by executeStatement() or executeTextStatement().
@@ -489,8 +472,6 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Sets the data pointer to the given offset using the result resource.
     *
     * @param resource $result The statement execution result.
@@ -505,8 +486,6 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Returns the amount of rows, that are affected by a previous update or delete call.
     *
     * @param resource $resultCursor The result resource pointer.
@@ -522,8 +501,6 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Returns the number of selected rows by the given result resource.
     *
     * @param resource $result the mysql result resource.
@@ -540,8 +517,6 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Executes a statement applied as a string to the method and returns the
     * result pointer.
     *
@@ -584,8 +559,6 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Returns the version of the database server.
     *
     * @return string The mysql server information.
@@ -603,8 +576,6 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Returns the name of the current database.
     *
     * @return string The database name.

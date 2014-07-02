@@ -26,9 +26,6 @@ use APF\tools\filesystem\File;
 use APF\tools\filesystem\Folder;
 
 /**
- * @package APF\modules\genericormapper\data\tools
- * @class GenericORMapperDomainObjectGenerator
- *
  * Automatically generates DomainObjects for the GenericORMapper
  * which are defined in <em>*_domainobjects.ini</em>.
  *
@@ -40,8 +37,6 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
    protected static $DEFAULT_BASE_CLASS = 'APF\modules\genericormapper\data\GenericDomainObject';
 
    /**
-    * @public
-    *
     * Generates all service objects which are defined in *_domainobjects.ini
     *
     * @author Ralf Schubert
@@ -135,8 +130,6 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
    }
 
    /**
-    * @protected
-    *
     * Creates a new file for each the base class and the DO class with the code for
     * the object with the given name. Will overwrite existing file!
     *
@@ -214,8 +207,6 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
    }
 
    /**
-    * @protected
-    *
     * Generates the PHP code for the base object for the object with the given name.
     *
     * @param string $name The object's name.

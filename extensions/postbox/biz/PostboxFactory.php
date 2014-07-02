@@ -24,9 +24,6 @@ use APF\core\pagecontroller\APFObject;
 use APF\modules\genericormapper\data\GenericORMapperDataObject;
 
 /**
- * @package APF\extensions\postbox\biz
- * @class PostboxFactory
- *
  * This factory generates the Postbox-objects for given users.
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>
@@ -38,11 +35,13 @@ class PostboxFactory extends APFObject {
     * Returns the Postbox for the given user.
     *
     * @param GenericORMapperDataObject $user
+    *
     * @return Postbox
     */
    public function getPostbox(GenericORMapperDataObject &$user) {
       /* @var $postbox Postbox */
       $postbox = & $this->getDIServiceObject('APF\extensions\postbox', 'Postbox');
+
       return $postbox->setUser($user);
    }
 

@@ -26,9 +26,6 @@ use APF\core\service\APFService;
 use InvalidArgumentException;
 
 /**
- * @package APF\tools\cache
- * @class CacheManagerFabric
- *
  * Fabric for the cache manager. Must be created singleton using the service manager.
  * Returns a cache manager instance by providing the desired config section.
  *
@@ -39,17 +36,17 @@ use InvalidArgumentException;
 final class CacheManagerFabric extends APFObject {
 
    /**
-    * @private
-    * @var CacheManager[] Contains the cache manager instances.
+    * Contains the cache manager instances.
+    *
+    * @var CacheManager[] $cacheManagerCache
     */
    private $cacheManagerCache = array();
 
    /**
-    * @public
-    *
     * Returns the cache manager instance by the desired config section.
     *
     * @param string $configSection the config section.
+    *
     * @return CacheManager The desired cache manager instance.
     * @throws InvalidArgumentException In case the given config section cannot be resolved.
     *

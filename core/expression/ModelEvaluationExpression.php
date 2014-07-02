@@ -24,9 +24,6 @@ use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\ParserException;
 
 /**
- * @package APF\core\expression
- * @class ModelEvaluationExpression
- *
  * Evaluates a model access - merely involved as a first step accessing data attributes of a DOM node.
  *
  * @author Christian Achatz
@@ -51,6 +48,7 @@ class ModelEvaluationExpression extends EvaluationExpressionBase implements Eval
 
       /* @var $document Document */
       $document = $this->previousResult;
+
       return $document->getData($name);
    }
 

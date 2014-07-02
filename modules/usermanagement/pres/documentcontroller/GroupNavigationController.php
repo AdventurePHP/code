@@ -21,9 +21,6 @@
 namespace APF\modules\usermanagement\pres\documentcontroller;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller
- * @class GroupNavigationController
- *
  * Displays the group sub menu.
  *
  * @author Christian Achatz

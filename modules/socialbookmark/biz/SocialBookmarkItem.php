@@ -21,9 +21,6 @@
 namespace APF\modules\socialbookmark\biz;
 
 /**
- * @package APF\modules\socialbookmark\biz
- * @class SocialBookmarkItem
- *
  * Represents a single bookmark service (e.g. google, technorati, ...).
  *
  * @author Christian W. Schafer
@@ -33,44 +30,48 @@ namespace APF\modules\socialbookmark\biz;
 class SocialBookmarkItem {
 
    /**
-    * @protected
-    * @var string Basis-URL des Bookmark-Services.
+    * Basis-URL des Bookmark-Services.
+    *
+    * @var string $serviceBaseUrl
     */
    private $serviceBaseUrl;
 
    /**
-    * @protected
-    * @var string Name of the url parameter for the url to bookmark.
+    * Name of the url parameter for the url to bookmark.
+    *
+    * @var string $urlParamName
     */
    private $urlParamName;
 
    /**
-    * @protected
-    * @var string Name of the utl parameter for the title to bookmark.
+    * Name of the utl parameter for the title to bookmark.
+    *
+    * @var string $titleParamName
     */
    private $titleParamName;
 
    /**
-    * @protected
-    * @var string Title of the bookmark entry (e.g. used as link title or alt text).
+    * Title of the bookmark entry (e.g. used as link title or alt text).
+    *
+    * @var string $title
     */
    private $title;
 
    /**
-    * @protected
-    * @var string Name of the bookmark icon without it's extension.
+    * Name of the bookmark icon without it's extension.
+    *
+    * @var string $imageUrl
     */
    private $imageUrl;
 
    /**
-    * @protected
-    * @var string File extension of the bookmark icon.
+    * File extension of the bookmark icon.
+    *
+    * @var string $imageExt
     */
    private $imageExt;
 
    /**
-    * @public
-    *
     * @param string $baseURL Base url of the bookmark service.
     * @param string $bookmarkURL Name of the url parameter for the url to bookmark.
     * @param string $bookmarkTitle Name of the url parameter of the title.

@@ -21,9 +21,6 @@
 namespace APF\tools\form\taglib;
 
 /**
- * @package APF\tools\form\taglib
- * @class HiddenFieldTag
- *
  * Represents a HTML hidden field within the APF form tags.
  *
  * @author Christian Schäfer
@@ -39,8 +36,6 @@ class HiddenFieldTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns the HTML code of the hidden field.
     *
     * @return string The HTML code of the hidden field.

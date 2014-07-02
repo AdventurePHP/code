@@ -1,30 +1,38 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\permission\PermissionListController"
+class="APF\modules\usermanagement\pres\documentcontroller\permission\PermissionListController"
 @>
 <table class="vis-def">
    <thead>
-      <tr>
-         <td>&nbsp;</td>
-         <td><html:getstring
-                namespace="APF\modules\usermanagement\pres"
-                config="labels.ini"
-                entry="frontend.permission.list.display-name.label"/></td>
-         <td><html:getstring
-                namespace="APF\modules\usermanagement\pres"
-                config="labels.ini"
-                entry="frontend.permission.list.name.label"/></td>
-         <td><html:getstring
-                namespace="APF\modules\usermanagement\pres"
-                config="labels.ini"
-                entry="frontend.permission.list.value.label"/></td>
-         <td><html:getstring
-                namespace="APF\modules\usermanagement\pres"
-                config="labels.ini"
-                entry="frontend.permission.list.actions.label"/></td>
-      </tr>
+   <tr>
+      <td>&nbsp;</td>
+      <td>
+         <html:getstring
+               namespace="APF\modules\usermanagement\pres"
+               config="labels.ini"
+               entry="frontend.permission.list.display-name.label"/>
+      </td>
+      <td>
+         <html:getstring
+               namespace="APF\modules\usermanagement\pres"
+               config="labels.ini"
+               entry="frontend.permission.list.name.label"/>
+      </td>
+      <td>
+         <html:getstring
+               namespace="APF\modules\usermanagement\pres"
+               config="labels.ini"
+               entry="frontend.permission.list.value.label"/>
+      </td>
+      <td>
+         <html:getstring
+               namespace="APF\modules\usermanagement\pres"
+               config="labels.ini"
+               entry="frontend.permission.list.actions.label"/>
+      </td>
+   </tr>
    </thead>
    <tbody>
-      ${ListPermissions}
+   ${ListPermissions}
    </tbody>
 </table>
 <html:template name="Permission">
@@ -32,9 +40,9 @@
       <td>
          <umgt:media filename="permission.png">
             <media:getstring
-                namespace="APF\modules\usermanagement\pres"
-                config="labels.ini"
-                entry="frontend.permission.list.permission-icon.label"/>
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.permission.list.permission-icon.label"/>
          </umgt:media>
       </td>
       <td>
@@ -50,17 +58,17 @@
          <a href="${permission_edit}">
             <umgt:media filename="edit.png">
                <media:getstring
-                   namespace="APF\modules\usermanagement\pres"
-                   config="labels.ini"
-                   entry="frontend.permission.list.action.edit.label"/>
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.permission.list.action.edit.label"/>
             </umgt:media>
          </a>
          <a href="${permission_delete}">
             <umgt:media filename="delete.png">
                <media:getstring
-                   namespace="APF\modules\usermanagement\pres"
-                   config="labels.ini"
-                   entry="frontend.permission.list.action.delete.label"/>
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.permission.list.action.delete.label"/>
             </umgt:media>
          </a>
       </td>

@@ -24,9 +24,6 @@ use APF\tools\form\taglib\AbstractFormControl;
 use APF\tools\form\taglib\HtmlFormTag;
 
 /**
- * @package APF\extensions\form\client
- * @class ClientValidationListenerTag
- *
  *  This taglib adds an client listener, which can be displayed by client-side form validation.
  *
  * @author Ralf Schubert  <ralf.schubert@the-screeze.de>

@@ -23,9 +23,6 @@ namespace APF\tools\form\taglib;
 use APF\tools\form\FormException;
 
 /**
- * @package APF\tools\form\taglib
- * @class TimeSelectorTag
- *
  * Represents a APF form time control.
  *
  * @author Werner Liemberger
@@ -40,8 +37,6 @@ class TimeSelectorTag extends AbstractFormControl {
    protected $showSeconds = true;
 
    /**
-    * @public
-    *
     * Initializes the member variables.
     *
     * @author Werner Liemberger
@@ -61,8 +56,6 @@ class TimeSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Creates the children select fields for the time control.
     *
     * @author Werner Liemberger
@@ -176,8 +169,6 @@ class TimeSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @private
-    *
     * Returns the id of the time element. In case the developer does not
     * provide the <em>id</em> attribute within the tag definition, the
     * <em>name</em> attribute is used instead.
@@ -198,8 +189,6 @@ class TimeSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Generated the HTML code of the time control.
     *
     * @return string The HTML code of the time control.
@@ -238,8 +227,6 @@ class TimeSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns the time with the pattern HH:MM:SS or if ShowSeconds is false with HH:MM
     *
     * @return string Time with pattern HH:MM:SS or if ShowSeconds is false with HH:MM.
@@ -276,8 +263,6 @@ class TimeSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Allows you to initialize the time control with a given time (e.g. "08:31" or "08:31:20" or "2011-02-21 08:31:00").
     *
     * @param string $time The time to initialize the control with.
@@ -305,8 +290,6 @@ class TimeSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns a reference on the hours control of the time control.
     *
     * @return SelectBoxTag The hours control.
@@ -320,8 +303,6 @@ class TimeSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns a reference on the minutes control of the time control.
     *
     * @return SelectBoxTag The minutes control.
@@ -335,8 +316,6 @@ class TimeSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns a reference on the seconds control of the date control.
     *
     * @return SelectBoxTag The seconds control.
@@ -350,8 +329,6 @@ class TimeSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @protected
-    *
     * Initializes the hours range to display.
     *
     * @author Werner Liemberger
@@ -373,8 +350,6 @@ class TimeSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @protected
-    *
     * Initializes the offset names of the fields.
     *
     * @author Werner Liemberger
@@ -404,8 +379,6 @@ class TimeSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @protected
-    *
     * Appends a zero for hours, minutes or seconds numbers without leading zeros.
     *
     * @param int $input The hour, minute or second number.
@@ -421,8 +394,6 @@ class TimeSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Re-implements the retrieving of values for time controls
     *
     * @return string The current value or content of the control.
@@ -438,8 +409,6 @@ class TimeSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Re-implements the setting of values for time controls
     *
     * @param string $value

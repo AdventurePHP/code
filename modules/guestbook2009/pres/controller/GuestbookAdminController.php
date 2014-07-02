@@ -24,9 +24,6 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package APF\modules\guestbook2009\pres\controller
- * @class GuestbookAdminController
- *
  * Implements the document controller for the admin main view. Generates the links
  * for the subviews to edit or delete an entry.
  *
@@ -43,20 +40,20 @@ class GuestbookAdminController extends GuestbookBaseController {
 
       // generate the admin menu links to be able to include the module in either page.
       $editLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
-         'gbview' => 'admin',
-         'adminview' => 'edit'
+            'gbview'    => 'admin',
+            'adminview' => 'edit'
       )));
       $this->setPlaceHolder('editLink', $editLink);
 
       $deleteLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
-         'gbview' => 'admin',
-         'adminview' => 'delete'
+            'gbview'    => 'admin',
+            'adminview' => 'delete'
       )));
       $this->setPlaceHolder('deleteLink', $deleteLink);
 
       $logoutLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
-         'gbview' => 'admin',
-         'adminview' => 'logout'
+            'gbview'    => 'admin',
+            'adminview' => 'logout'
       )));
       $this->setPlaceHolder('logoutLink', $logoutLink);
    }

@@ -26,9 +26,6 @@ use APF\core\configuration\ConfigurationManager;
 use APF\core\configuration\ConfigurationProvider;
 
 /**
- * @package APF\core\configuration\provider\memcached
- * @class MemcachedConfigurationProvider
- *
  * Implements a configuration provider to store a configuration within a memcached store.
  * This is done by using another configuration provider to read the persistent configuration
  * from.
@@ -40,28 +37,34 @@ use APF\core\configuration\ConfigurationProvider;
 class MemcachedConfigurationProvider implements ConfigurationProvider {
 
    /**
-    * @var string The file extension, the provider is registered with.
+    * The file extension, the provider is registered with.
+    *
+    * @var string $extension
     */
    protected $extension;
 
    /**
-    * @var ConfigurationProvider The configuration provider to read the persistent configuration from.
+    * The configuration provider to read the persistent configuration from.
+    *
+    * @var ConfigurationProvider $persistenceProviderExtension
     */
    private $persistenceProviderExtension; // perhaps we do not need it!
 
    /**
-    * @var \Memcache The memcached service.
+    * The memcached service.
+    *
+    * @var \Memcache
     */
    private $memcachedService;
 
    /**
-    * @var int Expires time in seconds. This is the time, the config is refreshed from the persistent file.
+    * Expires time in seconds. This is the time, the config is refreshed from the persistent file.
+    *
+    * @var int $expireTime
     */
    private $expireTime = 3600;
 
    /**
-    * @public
-    *
     * Initializes the memcached configuration provider.
     *
     * @param string $persistenceProviderExtension The name of the extension of the provider to use to load the persistent config with.
@@ -109,12 +112,11 @@ class MemcachedConfigurationProvider implements ConfigurationProvider {
    }
 
    /**
-    * @private
-    *
     * Remaps the configuration file name to the extension of the persistent configuration
     * file to be able to load and store the physical file.
     *
     * @param string $name The given in-memory configuration file name.
+    *
     * @return string The remapped configuration file name.
     *
     * @author Christian Achatz
@@ -153,6 +155,7 @@ class MemcachedConfigurationProvider implements ConfigurationProvider {
     * @param string $language The current application's language.
     * @param string $environment The environment, the applications runs on.
     * @param string $name The name of the configuration to delete including it's extension.
+    *
     * @throws ConfigurationException In case the file cannot be deleted.
     *
     * @author Tobias Lückel

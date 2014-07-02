@@ -24,9 +24,6 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class RefreshNode
- *
  * Implements a meta node that introduces the browser to redirect
  * to another page after a given time.
  *
@@ -38,6 +35,7 @@ class RefreshNode extends HtmlNode implements MetaNode {
 
    /**
     * Receives information and configures node.
+    *
     * @param string $target The refresh target.
     * @param string $time The time to wait until to reload the page.
     * @param array $additionalParameters Optional. Array of url parameters.

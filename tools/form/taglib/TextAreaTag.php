@@ -21,9 +21,6 @@
 namespace APF\tools\form\taglib;
 
 /**
- * @package APF\tools\form\taglib
- * @class TextAreaTag
- *
  * Represents a APF text area.
  *
  * @author Christian Schäfer
@@ -42,8 +39,6 @@ class TextAreaTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns the HTML source code of the text area.
     *
     * @return string HTML code of the text area.
@@ -57,14 +52,13 @@ class TextAreaTag extends AbstractFormControl {
    public function transform() {
       if ($this->isVisible) {
          return '<textarea ' . $this->getSanitizedAttributesAsString($this->attributes) . '>'
-               . $this->content . '</textarea>';
-   }
+         . $this->content . '</textarea>';
+      }
+
       return '';
    }
 
    /**
-    * @protected
-    *
     * Implements the presetting method for the text area.
     *
     * @author Christian Schäfer
@@ -79,8 +73,6 @@ class TextAreaTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Re-implements the retrieving of values for text area, because
     * the text area contains it's value in the content, not in an
     * attribute.
@@ -98,13 +90,12 @@ class TextAreaTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Re-implements the setting of values for text area, because
     * the text area contains it's value in the content, not in an
     * attribute.
     *
     * @param string $value
+    *
     * @return AbstractFormControl
     *
     * @since 1.14
@@ -115,12 +106,11 @@ class TextAreaTag extends AbstractFormControl {
     */
    public function setValue($value) {
       $this->content = $value;
+
       return $this;
    }
 
    /**
-    * @public
-    *
     * Let's check if the form:area was filled with content.
     *
     * @return bool True in case the control is filled, false otherwise.

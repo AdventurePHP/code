@@ -26,9 +26,6 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\group
- * @class GroupEditController
- *
  * Implements the controller to edit a group.
  *
  * @author Christian Achatz
@@ -41,14 +38,14 @@ class GroupEditController extends UmgtBaseController {
 
       $groupId = RequestHandler::getValue('groupid');
 
-      $form = &$this->getForm('GroupEdit');
-      $groupIdField = &$form->getFormElementByName('groupid');
+      $form = & $this->getForm('GroupEdit');
+      $groupIdField = & $form->getFormElementByName('groupid');
       $groupIdField->setAttribute('value', $groupId);
 
-      $displayName = &$form->getFormElementByName('DisplayName');
-      $description = &$form->getFormElementByName('Description');
+      $displayName = & $form->getFormElementByName('DisplayName');
+      $description = & $form->getFormElementByName('Description');
 
-      $uM = &$this->getManager();
+      $uM = & $this->getManager();
 
       if ($form->isSent() == true) {
 

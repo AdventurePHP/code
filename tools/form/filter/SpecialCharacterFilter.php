@@ -21,9 +21,6 @@
 namespace APF\tools\form\filter;
 
 /**
- * @package APF\tools\form\filter
- * @class SpecialCharacterFilter
- *
  * Implements a filter, that removes all characters except
  * "0-9A-Za-z-_\.& !,:\?\+\(\)\/%$\"\'".
  *

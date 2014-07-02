@@ -21,11 +21,6 @@
 namespace APF\tools\http;
 
 /**
- * @package APF\tools\http
- * @class HeaderManager
- * @see http://forum.adventure-php-framework.org/viewtopic.php?p=243#p243
- * @see http://tracker.adventure-php-framework.org/view.php?id=72
- *
  * The HeaderManager implements a wrapper of PHP's header() function and let's
  * you easily forward or send generic headers.
  * <p/>
@@ -44,6 +39,9 @@ namespace APF\tools\http;
  * false                     | false             | -
  * </pre>
  *
+ * @see http://forum.adventure-php-framework.org/viewtopic.php?p=243#p243
+ * @see http://tracker.adventure-php-framework.org/view.php?id=72
+ *
  * @author Christian Achatz
  * @version
  * Version 0.1, 09.10.2008<br />
@@ -52,7 +50,9 @@ namespace APF\tools\http;
 class HeaderManager {
 
    /**
-    * @var bool True in case code execution is stopped after forward() or redirect(), false otherwise.
+    * True in case code execution is stopped after forward() or redirect(), false otherwise.
+    *
+    * @var bool $EXIT_AFTER_FORWARD
     */
    private static $EXIT_AFTER_FORWARD = true;
 
@@ -60,9 +60,6 @@ class HeaderManager {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Activates behaviour to stop code execution after forward() or redirect().
     *
     * @author Christian Achatz
@@ -74,9 +71,6 @@ class HeaderManager {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Deactivates behaviour to stop code execution after forward() or redirect().
     *
     * @author Christian Achatz
@@ -88,8 +82,6 @@ class HeaderManager {
    }
 
    /**
-    * @public
-    * @static
     * @see http://www.faqs.org/rfcs/rfc2616 (section 10.3.4 303 See Other)
     *
     * Forwards to a given target.
@@ -112,15 +104,13 @@ class HeaderManager {
    }
 
    /**
-    * @public
-    * @static
-    * @see http://www.faqs.org/rfcs/rfc2616 (sections 10.3.2 301 Moved Permanently and 10.3.3 302 Found)
-    *
     * Redirects to a given target.
     *
     * @param string $url The target URL.
     * @param bool $permanent indicates, if the redirect is permanent (true) or not (false)
     * @param bool $exitAfterForward True in case code execution is stopped after this action, false otherwise.
+    *
+    * @see http://www.faqs.org/rfcs/rfc2616 (sections 10.3.2 301 Moved Permanently and 10.3.3 302 Found)
     *
     * @author Christian Achatz
     * @version
@@ -135,15 +125,13 @@ class HeaderManager {
    }
 
    /**
-    * @public
-    * @static
-    * @see http://www.faqs.org/rfcs/rfc2616
-    *
     * Sends a generic header.
     *
     * @param string $content The content of the header.
     * @param bool $replacePrevHeaders Indicates, if previous headers should be overwritten.
     * @param int|bool $httpStatus The HTTP status code.
+    *
+    * @see http://www.faqs.org/rfcs/rfc2616
     *
     * @author Christian Achatz
     * @version
@@ -158,9 +146,6 @@ class HeaderManager {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Sends a 404 answer back to the client.
     *
     * @param bool $exitAfterForward True in case code execution is stopped after this action, false otherwise.
@@ -178,9 +163,6 @@ class HeaderManager {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Sends an 500 answer back to the client.
     *
     * @param bool $exitAfterForward True in case code execution is stopped after this action, false otherwise.

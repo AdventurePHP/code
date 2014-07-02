@@ -21,9 +21,6 @@
 namespace APF\tools\form\taglib;
 
 /**
- * @package APF\tools\form\taglib
- * @class CheckBoxTag
- *
  * Represents an APF form checkbox.
  *
  * @author Christian Schäfer
@@ -43,8 +40,6 @@ class CheckBoxTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Sets the checked attribute, if the checkbox name exists in the request.
     *
     * @author Christian Schäfer
@@ -72,8 +67,6 @@ class CheckBoxTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns the HTML code of the checkbox.
     *
     * @return string The HTML code of the checkbox.
@@ -88,6 +81,7 @@ class CheckBoxTag extends AbstractFormControl {
       if ($this->isVisible) {
          return '<input type="checkbox" ' . $this->getSanitizedAttributesAsString($this->attributes) . ' />';
       }
+
       return '';
    }
 

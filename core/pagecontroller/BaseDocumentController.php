@@ -31,10 +31,6 @@ use Exception;
 use InvalidArgumentException;
 
 /**
- * @package APF\core\pagecontroller
- * @class BaseDocumentController
- * @abstract
- *
  * Defines the base class for all document controller classes. To add custom logic, implement
  * the {@link transformContent} method.
  *
@@ -48,7 +44,9 @@ use InvalidArgumentException;
 abstract class BaseDocumentController extends APFObject implements DocumentController {
 
    /**
-    * @var Document References the document, the document controller is responsible for transformation.
+    * References the document, the document controller is responsible for transformation.
+    *
+    * @var Document $document
     */
    protected $document;
 
@@ -61,8 +59,6 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    }
 
    /**
-    * @public
-    *
     * Sets the given value as the content of the specified place holder.
     *
     * @param string $name The name of the place holder to fill.
@@ -88,8 +84,6 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    }
 
    /**
-    * @protected
-    *
     * Convenience method to replace string place holders.
     * <p/>
     * Template:
@@ -123,8 +117,6 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    }
 
    /**
-    * @protected
-    *
     * This method is for convenient setting of multiple place holders. The applied
     * array must contain a structure like this:
     * <code>
@@ -154,8 +146,6 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    }
 
    /**
-    * @protected
-    *
     * Set's a place holder in case it exists. Otherwise it is ignored.
     *
     * @param string $name The name of the place holder.
@@ -188,8 +178,6 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    }
 
    /**
-    * @protected
-    *
     * This method is for convenient setting of multiple place holders in case they exist within
     * the current document. See <em>BaseDocumentController::setPlaceHolderIfExist()</em> for details.
     *
@@ -208,8 +196,6 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    }
 
    /**
-    * @protected
-    *
     * Returns the instance of the form specified by the given name. This method can be used to
     * access a form object within a document controller.
     *
@@ -234,8 +220,6 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    }
 
    /**
-    * @protected
-    *
     * Returns the instance of the template specified by the given name. This method can be used
     * to access a html template object within a document controller.
     *
@@ -262,8 +246,6 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    }
 
    /**
-    * @protected
-    *
     * Let's you retrieve an instance of the LanguageLabelTag label instance to
     * fill a place holder.
     *
@@ -283,8 +265,6 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    }
 
    /**
-    * @protected
-    *
     * Checks, if a place holder exists within the current document.
     *
     * @param string $name The name of the place holder.
@@ -308,8 +288,6 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    }
 
    /**
-    * @protected
-    *
     * Checks, if a place holder exists within the given template.
     *
     * @param TemplateTag $template The instance of the template to check.
@@ -334,8 +312,6 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    }
 
    /**
-    * @protected
-    *
     * Returns a reference on the desired iterator.
     *
     * @param string $name Name of the iterator.
@@ -359,8 +335,6 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    }
 
    /**
-    * @public
-    *
     * Allows you to set data attributes to the DOM node this document controller is responsible for.
     *
     * @param string $name The reference name of the data field to set/add.
@@ -375,8 +349,6 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    }
 
    /**
-    * @public
-    *
     * Allows you to retrieve a data attribute from the DOM node this document controller is responsible for.
     *
     * @param string $name The reference name of the data field to set/add.

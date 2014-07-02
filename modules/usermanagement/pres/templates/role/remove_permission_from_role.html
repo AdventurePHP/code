@@ -1,10 +1,12 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\role\RemovePermissionFromRoleController"
+class="APF\modules\usermanagement\pres\documentcontroller\role\RemovePermissionFromRoleController"
 @>
-<h3><html:getstring
-     namespace="APF\modules\usermanagement\pres"
-     config="labels.ini"
-     entry="frontend.role.remove-permission-from-role.headline"/></h3>
+<h3>
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.role.remove-permission-from-role.headline"/>
+</h3>
 <html:form name="Permissions" method="post">
    <div>
       <form:addvalidator

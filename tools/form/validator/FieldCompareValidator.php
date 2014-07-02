@@ -25,9 +25,6 @@ use APF\tools\form\taglib\AbstractFormControl;
 use APF\tools\form\taglib\HtmlFormTag;
 
 /**
- * @package APF\tools\form\validator
- * @class FieldCompareValidator
- *
  * Implements a validator, that compares the content of two text fields. In
  * order to apply the validator, the form element that is added the validator
  * must specify the <em>ref</em> attribute to specify the reference field.
@@ -54,7 +51,9 @@ use APF\tools\form\taglib\HtmlFormTag;
 class FieldCompareValidator extends TextFieldValidator {
 
    /**
-    * @var AbstractFormControl The reference form control.
+    * The reference form control.
+    *
+    * @var AbstractFormControl $refControl
     */
    protected $refControl = null;
 
@@ -66,11 +65,10 @@ class FieldCompareValidator extends TextFieldValidator {
    }
 
    /**
-    * @public
-    *
     * Validates the values of the main and the reference control against each other.
     *
     * @param string $input The input of the *main* password field.
+    *
     * @return bool True, in case both controls are equal, false otherwise.
     *
     * @author Christian Achatz
@@ -82,12 +80,11 @@ class FieldCompareValidator extends TextFieldValidator {
       if ($input === $refValue) {
          return true;
       }
+
       return false;
    }
 
    /**
-    * @public
-    *
     * Re-implements the notify() method to both mark the main field as well as the
     * reference field as invalid and notify both control's listeners.
     *
@@ -105,8 +102,6 @@ class FieldCompareValidator extends TextFieldValidator {
    }
 
    /**
-    * @private
-    *
     * Initializes the reference control field for the validator. Takes
     * care, that the main field specifies the "ref" attribute.
     *
@@ -122,11 +117,11 @@ class FieldCompareValidator extends TextFieldValidator {
          $form = & $this->control->getParentObject();
          $formName = $form->getAttribute('name');
          throw new FormException('[FieldCompareValidator::initializeReferenceControl()] The main field '
-                  . 'definition does not include the "ref" attribute. This attribute must be specified '
-                  . 'to tell the validator, which form control can be used as reference. Please '
-                  . 'check taglib definition of control "' . $this->control->getAttribute('name') . '" '
-                  . 'within form "' . $formName . '"!',
-            E_USER_ERROR);
+               . 'definition does not include the "ref" attribute. This attribute must be specified '
+               . 'to tell the validator, which form control can be used as reference. Please '
+               . 'check taglib definition of control "' . $this->control->getAttribute('name') . '" '
+               . 'within form "' . $formName . '"!',
+               E_USER_ERROR);
       }
 
       $form = & $this->control->getParentObject();

@@ -21,9 +21,6 @@
 namespace APF\core\pagecontroller;
 
 /**
- * @package APF\core\pagecontroller
- * @class Page
- *
  * The Page object represents the root node of  a web page. It is used as a container for the
  * initial document (root document) and is responsible for creating and transforming the root
  * document.
@@ -37,13 +34,13 @@ namespace APF\core\pagecontroller;
 class Page extends APFObject {
 
    /**
-    * @var Document Container for the root <em>Document</em> of the page.
+    * Container for the root <em>Document</em> of the page.
+    *
+    * @var Document $document
     */
    private $document;
 
    /**
-    * @public
-    *
     * Returns the root document of the APF DOM tree.
     *
     * @return Document The root document of the page controller's APF DOM tree.
@@ -57,8 +54,6 @@ class Page extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Creates the initial document (root) of the page object and loads the initial template. If
     * no context was set before, the namespace of the initial template is taken instead.
     *
@@ -100,8 +95,6 @@ class Page extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Transforms the APF DOM tree of the current page. Returns the content of the transformed document.
     *
     * @return string The content of the transformed page

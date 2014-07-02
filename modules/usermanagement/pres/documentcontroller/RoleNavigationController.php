@@ -21,9 +21,6 @@
 namespace APF\modules\usermanagement\pres\documentcontroller;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller
- * @class RoleNavigationController
- *
  * Implements the document controller to display the role sub menu.
  *
  * @author Christian Achatz

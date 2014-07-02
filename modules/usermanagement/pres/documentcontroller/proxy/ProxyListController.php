@@ -25,9 +25,6 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\SelectBoxTag;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\proxy
- * @class ProxyListController
- *
  * Implements the controller listing the existing proxy objects.
  *
  * @author Christian Achatz
@@ -48,9 +45,9 @@ class ProxyListController extends UmgtBaseController {
 
       // add default option that deletes any filter
       $select->addOption(
-         $this->getConfiguration('APF\modules\usermanagement\pres', 'labels.ini')
-               ->getSection($this->getLanguage())
-               ->getValue('frontend.proxy.list.delete-filter.label'), 0);
+            $this->getConfiguration('APF\modules\usermanagement\pres', 'labels.ini')
+                  ->getSection($this->getLanguage())
+                  ->getValue('frontend.proxy.list.delete-filter.label'), 0);
 
       foreach ($types as $type) {
          $select->addOption($type->getAppObjectName(), $type->getObjectId());
@@ -71,7 +68,7 @@ class ProxyListController extends UmgtBaseController {
          $proxies = $uM->getPagedVisibilityDefinitionList();
       }
 
-      $buffer = (string)'';
+      $buffer = (string) '';
       $template = & $this->getTemplate('Proxy');
       foreach ($proxies as $proxy) {
 
@@ -111,6 +108,7 @@ class ProxyListController extends UmgtBaseController {
       foreach ($users as $user) {
          $userList .= '<li>' . $user->getUsername() . '</li>';
       }
+
       return $userList . '</ul>';
    }
 
@@ -125,6 +123,7 @@ class ProxyListController extends UmgtBaseController {
       foreach ($groups as $group) {
          $groupList .= '<li>' . $group->getDisplayName() . '</li>';
       }
+
       return $groupList . '</ul>';
    }
 

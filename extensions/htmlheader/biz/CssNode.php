@@ -21,9 +21,6 @@
 namespace APF\extensions\htmlheader\biz;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @Class CssNode
- *
  * This interface specifies a <em>&lt;link /&gt;</em> or <em>&lt;style /&gt;</em> tag.
  *
  * @author Ralf Schubert, Christian Achatz
@@ -33,4 +30,5 @@ namespace APF\extensions\htmlheader\biz;
  * Version 0.3, 20.08.2010 (Class is now an interface)<br />
  */
 interface CssNode extends HeaderNode {
+
 }

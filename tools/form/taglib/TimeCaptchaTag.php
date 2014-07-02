@@ -23,9 +23,6 @@ namespace APF\tools\form\taglib;
 use APF\core\session\Session;
 
 /**
- * @package APF\tools\form\taglib
- * @class TimeCaptchaTag
- *
  * Implements, in combination with TimeCaptchaValidator, a non-visual captcha
  * which tries to identify bots by the time they need to fill in the data in a
  * form.
@@ -37,8 +34,6 @@ use APF\core\session\Session;
 class TimeCaptchaTag extends AbstractFormControl {
 
    /**
-    * @public
-    *
     * Overwrites the parent's method, because there is nothing to do here.
     *
     * @author Ralf Schubert
@@ -49,8 +44,6 @@ class TimeCaptchaTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Saves an unix_timestamp in session, which can be used from TimeCaptchaValidator.
     *
     * @return string Empty string, because we need no html.

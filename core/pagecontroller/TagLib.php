@@ -21,9 +21,6 @@
 namespace APF\core\pagecontroller;
 
 /**
- * @package APF\core\pagecontroller
- * @class TagLib
- *
  * This class represents a taglib and thus is used as a taglib definition. Each time,
  * you add a known taglib to a DOM node, an instance of the TagLib class is added to
  * the node.
@@ -35,23 +32,27 @@ namespace APF\core\pagecontroller;
 final class TagLib {
 
    /**
-    * @var string The class name of the tag implementation .
+    * The class name of the tag implementation .
+    *
+    * @var string $class
     */
    private $class;
 
    /**
-    * @var string The prefix of the tag (e.g. <em>core</em> for tag <em>&lt;core:importdesign /&gt;</em>).
+    * The prefix of the tag (e.g. <em>core</em> for tag <em>&lt;core:importdesign /&gt;</em>).
+    *
+    * @var string $prefix
     */
    private $prefix;
 
    /**
-    * @var string The name of the tag (e.g. <em>importdesign</em> for tag <em>&lt;core:importdesign /&gt;</em>).
+    * The name of the tag (e.g. <em>importdesign</em> for tag <em>&lt;core:importdesign /&gt;</em>).
+    *
+    * @var string $name
     */
    private $name;
 
    /**
-    * @public
-    *
     * Defines a taglib.
     *
     * @param string $class The fully qualified class name of the tag implementation.
@@ -70,8 +71,6 @@ final class TagLib {
    }
 
    /**
-    * @public
-    *
     * Returns the prefix of the taglib.
     *
     * @return string The prefix of the taglib.
@@ -85,8 +84,6 @@ final class TagLib {
    }
 
    /**
-    * @public
-    *
     * Returns the class of the taglib.
     *
     * @return string The class of the taglib.
@@ -100,8 +97,6 @@ final class TagLib {
    }
 
    /**
-    * @public
-    *
     * @return string The name of the tag.
     *
     * @author Christian Achatz

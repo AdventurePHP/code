@@ -41,7 +41,7 @@ class ProxyDetailsController extends UmgtBaseController {
 
       // load visibility permission list for the current permission
       $template = & $this->getTemplate('listitem');
-      $buffer = (string)'';
+      $buffer = (string) '';
       $list = $uM->loadUsersAndGroupsWithVisibilityDefinition($proxy);
 
       // sort list with respect to the display name of the current element
@@ -71,15 +71,15 @@ class ProxyDetailsController extends UmgtBaseController {
 
          // insert links
          $template->setPlaceHolder(
-            'delete_link',
-            $this->generateLink(
-               array(
-                  'proxyview' => 'proxyrevokeaccess',
-                  'proxyid' => $proxyId,
-                  'objectid' => $item->getObjectId(),
-                  'objecttype' => $item->getObjectName()
+               'delete_link',
+               $this->generateLink(
+                     array(
+                           'proxyview'  => 'proxyrevokeaccess',
+                           'proxyid'    => $proxyId,
+                           'objectid'   => $item->getObjectId(),
+                           'objecttype' => $item->getObjectName()
+                     )
                )
-            )
          );
 
          $buffer .= $template->transformTemplate();

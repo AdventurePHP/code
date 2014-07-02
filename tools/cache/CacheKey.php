@@ -21,9 +21,6 @@
 namespace APF\tools\cache;
 
 /**
- * @package APF\tools\cache
- * @class CacheKey
- *
  * Describes the requirements of a cache key, a selection criterion for cache items..
  *
  * @author Christian Achatz
@@ -33,8 +30,6 @@ namespace APF\tools\cache;
 interface CacheKey {
 
    /**
-    * @public
-    *
     * Returns the cache key.
     *
     * @return string The cache key to identify the cache entry with.
@@ -46,8 +41,6 @@ interface CacheKey {
    public function getKey();
 
    /**
-    * @public
-    *
     * Returns the time-to-live of the current cache key.
     *
     * @return int The time to live for the cache entry in seconds.

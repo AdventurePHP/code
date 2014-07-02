@@ -33,7 +33,7 @@ use APF\core\filter\AbstractFilterChain;
 class JsCssInclusionFilterChain extends AbstractFilterChain {
 
    /**
-    * @var JsCssInclusionFilterChain
+    * @var JsCssInclusionFilterChain $CHAIN
     */
    private static $CHAIN;
 
@@ -47,6 +47,7 @@ class JsCssInclusionFilterChain extends AbstractFilterChain {
       if (self::$CHAIN === null) {
          self::$CHAIN = new JsCssInclusionFilterChain();
       }
+
       return self::$CHAIN;
    }
 

@@ -23,9 +23,6 @@ namespace APF\core\database;
 use APF\core\logging\LogEntry;
 
 /**
- * @package APF\core\database
- * @class MySQLxHandler
- *
  * This class implements a connection handler for the ConnectionManager to use with mysql
  * databases using the mysql extension.
  *
@@ -41,8 +38,6 @@ class MySQLxHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @protected
-    *
     * Initiates the database connection and preselects the desired database.
     *
     * @author Christian Achatz
@@ -63,10 +58,10 @@ class MySQLxHandler extends AbstractDatabaseHandler {
       // the mysqli extension triggers an error instead of throwing an exception. thus we have
       // to add an ugly "@" sign to convert this error into an exception. :(
       $this->dbConn = mysql_connect(
-         $this->getServerHost(),
-         $this->dbUser,
-         $this->dbPass,
-         true);
+            $this->getServerHost(),
+            $this->dbUser,
+            $this->dbPass,
+            true);
 
       if (!is_resource($this->dbConn)) {
          throw new DatabaseHandlerException('[MySQLxHandler->connect()] Database connection '
@@ -79,8 +74,8 @@ class MySQLxHandler extends AbstractDatabaseHandler {
       if ($this->dbCharset !== null) {
          if (!mysql_set_charset($this->dbCharset, $this->dbConn)) {
             throw new DatabaseHandlerException(
-               '[MySQLiHandler->connect()] Error loading character set ' . $this->dbCharset .
-               ' (' . mysql_error($this->dbConn) . ')!'
+                  '[MySQLiHandler->connect()] Error loading character set ' . $this->dbCharset .
+                  ' (' . mysql_error($this->dbConn) . ')!'
             );
          }
       }
@@ -100,12 +95,11 @@ class MySQLxHandler extends AbstractDatabaseHandler {
       if ($this->dbPort !== null) {
          return $this->dbHost . ':' . $this->dbPort;
       }
+
       return $this->dbHost;
    }
 
    /**
-    * @protected
-    *
     * Closes the database connection.
     *
     * @author Christian Schäfer
@@ -122,15 +116,13 @@ class MySQLxHandler extends AbstractDatabaseHandler {
 
       if (!$result) {
          throw new DatabaseHandlerException('[MySQLxHandler->close()] An error occurred during '
-                  . 'closing of the database connection (' . mysql_errno() . ': ' . mysql_error() . ')!',
-            E_USER_WARNING);
+               . 'closing of the database connection (' . mysql_errno() . ': ' . mysql_error() . ')!',
+               E_USER_WARNING);
       }
 
    }
 
    /**
-    * @public
-    *
     * Executes a statement, located within a statement file. The place holders contained in the
     * file are replaced by the given values.
     *
@@ -138,6 +130,7 @@ class MySQLxHandler extends AbstractDatabaseHandler {
     * @param string $statementFile Name of the statement file (filebody!).
     * @param string[] $params A list of statement parameters.
     * @param bool $logStatement Indicates, if the statement is logged for debug purposes.
+    *
     * @return resource The database result resource.
     * @throws DatabaseHandlerException In case the statement cannot be executed.
     *
@@ -187,11 +180,10 @@ class MySQLxHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Quotes data for use in mysql statements.
     *
     * @param string $value string to quote.
+    *
     * @return string Quoted string.
     *
     * @author Christian Achatz
@@ -204,12 +196,11 @@ class MySQLxHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Fetches a record from the database using the given result resource.
     *
     * @param resource $resultCursor The result resource returned by executeStatement() or executeTextStatement().
     * @param int $type The type the returned data should have. Use the static *_FETCH_MODE constants.
+    *
     * @return string[] The associative result array. Returns false if no row was found.
     *
     * @author Christian Achatz
@@ -228,8 +219,6 @@ class MySQLxHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Sets the data pointer to the given offset using the result resource.
     *
     * @author Christian Schäfer
@@ -241,11 +230,10 @@ class MySQLxHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Returns the amount of rows, that are affected by a previous update or delete call.
     *
     * @param resource $resultCursor The result resource pointer.
+    *
     * @return int The number of affected rows.
     *
     * @author Christian Schäfer
@@ -258,11 +246,10 @@ class MySQLxHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Returns the number of selected rows by the given result resource.
     *
     * @param resource $result The mysql result resource.
+    *
     * @return int The number of selected rows.
     *
     * @author Christian Schäfer
@@ -274,14 +261,13 @@ class MySQLxHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Executes a statement applied as a string to the method and returns the
     * result pointer.
     *
     * @param string $statement The statement string.
     * @param boolean $logStatement Indicates, whether the given statement should be
     *                              logged for debug purposes.
+    *
     * @return resource The database result resource.
     * @throws DatabaseHandlerException In case of any database error.
     *
@@ -318,8 +304,6 @@ class MySQLxHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Returns the version of the database server.
     *
     * @return string The server information.
@@ -338,8 +322,6 @@ class MySQLxHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Returns the name of the current database.
     *
     * @return string The name of the database.

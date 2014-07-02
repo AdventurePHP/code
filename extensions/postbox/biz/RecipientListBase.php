@@ -28,9 +28,6 @@ namespace APF\extensions\postbox\biz;
  */
 
 /**
- * @package APF\extensions\postbox\biz
- * @class RecipientListBase
- *
  * This class provides the descriptive getter and setter methods for the "APF\extensions\postbox\biz\RecipientList" domain object.
  */
 abstract class RecipientListBase extends AbstractRecipientList {

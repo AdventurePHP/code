@@ -32,9 +32,6 @@ use Exception;
 use InvalidArgumentException;
 
 /**
- * @package APF\core\frontcontroller
- * @class Frontcontroller
- *
  * Implements the APF front controller. It enables the developer to execute actions
  * defined within the bootstrap file or the url to enrich a page controller application
  * with business logic.
@@ -55,72 +52,84 @@ use InvalidArgumentException;
 class Frontcontroller extends APFObject {
 
    /**
-    * @protected
-    * @var Action[] The front controller's action stack.
+    * The front controller's action stack.
+    *
+    * @var Action[] $actionStack
     */
    protected $actionStack = array();
 
    /**
-    * @protected
-    * @var string The keyword used in the url to indicate an action.
+    * The keyword used in the url to indicate an action.
+    *
+    * @var string $actionKeyword
     */
    private $actionKeyword = 'action';
 
    /**
-    * @protected
-    * @var string Namespace delimiter within the action definition in url.
+    * Namespace delimiter within the action definition in url.
+    *
+    * @var string $namespaceURLDelimiter
     */
    private $namespaceURLDelimiter = '_';
 
    /**
-    * @protected
-    * @var string Namespace to action keyword delimiter within the action definition in url.
+    * Namespace to action keyword delimiter within the action definition in url.
+    *
+    * @var string $namespaceKeywordDelimiter
     */
    private $namespaceKeywordDelimiter = '-';
 
    /**
-    * @protected
-    * @var string Delimiter between action keyword and action class within the action definition in url.
+    * Delimiter between action keyword and action class within the action definition in url.
+    *
+    * @var string $keywordClassDelimiter
     */
    private $keywordClassDelimiter = ':';
 
    /**
-    * @protected
-    * @var string Delimiter between action keyword and action class within the action definition in url (url rewriting case!)
+    * Delimiter between action keyword and action class within the action definition in url (url rewriting case!)
+    *
+    * @var string $urlRewritingKeywordClassDelimiter
     */
    private $urlRewritingKeywordClassDelimiter = '/';
 
    /**
-    * @protected
-    * @var string Delimiter between input value couples.
+    * Delimiter between input value couples.
+    *
+    * @var string $inputDelimiter
     */
    private $inputDelimiter = '|';
 
    /**
-    * @protected
-    * @var string Delimiter between input value couples (url rewriting case!).
+    * Delimiter between input value couples (url rewriting case!).
+    *
+    * @var string $urlRewritingInputDelimiter
     */
    private $urlRewritingInputDelimiter = '/';
 
    /**
-    * @protected
-    * @var string Delimiter between input param name and value.
+    * Delimiter between input param name and value.
+    *
+    * @var string $keyValueDelimiter
     */
    private $keyValueDelimiter = ':';
 
    /**
-    * @protected
-    * @var string Delimiter between input param name and value (url rewrite case!).
+    * Delimiter between input param name and value (url rewrite case!).
+    *
+    * @var string $urlRewritingKeyValueDelimiter
     */
    private $urlRewritingKeyValueDelimiter = '/';
 
    /**
-    * @var string[][] The registered URL mappings for actions accessible via token.
+    * The registered URL mappings for actions accessible via token.
+    * @var string[][] $urlMappingsByToken
     */
    private $urlMappingsByToken = array();
 
    /**
-    * @var string[][] The registered URL mappings for actions accessible via namespace and name.
+    * The registered URL mappings for actions accessible via namespace and name.
+    * @var string[][] $urlMappingsByNamespaceAndName
     */
    private $urlMappingsByNamespaceAndName = array();
 
@@ -161,8 +170,6 @@ class Frontcontroller extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Executes the desired actions and creates the page output.
     *
     * @param string $namespace Namespace of the templates.
@@ -222,8 +229,6 @@ class Frontcontroller extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns the action specified by the input param.
     *
     * @param string $actionName The name of the action to return.
@@ -256,8 +261,6 @@ class Frontcontroller extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns the action stack.
     *
     * @return Action[] The front controller action stack.
@@ -271,8 +274,6 @@ class Frontcontroller extends APFObject {
    }
 
    /**
-    * @private
-    *
     * Creates the url representation of a given namespace.
     *
     * @param string $namespaceUrlRepresentation The url string.
@@ -288,8 +289,6 @@ class Frontcontroller extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Registers an action with the front controller. This includes action configuration using
     * the action params defined within the action mapping. Each action definition is expected
     * to be stored in the <em>{ENVIRONMENT}_actionconfig.ini</em> file under the namespace
@@ -348,8 +347,6 @@ class Frontcontroller extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Adds an action to the front controller action stack. Please note, that the namespace of
     * the namespace of the action config is added the current context. The name of the
     * config file is concatenated by the current environment and the string
@@ -480,8 +477,6 @@ class Frontcontroller extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Registers an action URL mapping with the front controller.
     * <p/>
     * Action mappings allow to shorten action instructions within the URL from e.g.
@@ -500,8 +495,6 @@ class Frontcontroller extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Registers multiple action URL mappings with the front controller defined within a
     * configuration file specified by it's namespace and name.
     * <p/>
@@ -527,8 +520,6 @@ class Frontcontroller extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns the list of registered URL tokens that are registered with the front controller.
     *
     * @return string[] The list of registered URL tokens.
@@ -542,8 +533,6 @@ class Frontcontroller extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns the action URL mapping either by URL token or action namespace and name:
     * <code>
     * $fC->getActionUrlMapping('url-token');
@@ -571,8 +560,6 @@ class Frontcontroller extends APFObject {
    }
 
    /**
-    * @private
-    *
     * Compares two actions to allow sorting of actions.
     * <p/>
     * Actions with a lower priority returned by <em>Action::getPriority()</em>
@@ -600,8 +587,6 @@ class Frontcontroller extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Create an array from a input param string (scheme: <code>a:b|c:d</code>).
     *
     * @param string $inputConfig The config string contained in the action config.
@@ -638,8 +623,6 @@ class Frontcontroller extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Executes all actions with the given type. Possible types are
     * <ul>
     * <li>prepagecreate</li>

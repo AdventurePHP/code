@@ -21,9 +21,6 @@
 namespace APF\extensions\htmlheader\biz;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class CssContentNode
- *
  * Represents a css node with explicit content.
  *
  * @author Christian Achatz

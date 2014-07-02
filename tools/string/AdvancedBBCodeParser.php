@@ -26,9 +26,6 @@ use APF\core\service\APFService;
 use APF\core\singleton\Singleton;
 
 /**
- * @package APF\tools\string
- * @class BBCodeParserDefinition
- *
  * Internal representation of an BBCodeParserProvider. Nearly the same as the TagLib class for
  * each Document class.
  *
@@ -39,15 +36,13 @@ use APF\core\singleton\Singleton;
 final class BBCodeParserDefinition {
 
    /**
-    * @private
-    * @var string Represents the class name of the parser provider an thus the file name
-    * (without extension!).
+    * Represents the class name of the parser provider an thus the file name (without extension!).
+    *
+    * @var string $class
     */
    private $class;
 
    /**
-    * @public
-    *
     * Initializes the BBCodeParser definition.
     *
     * @param string $class the class name of the parser
@@ -67,10 +62,6 @@ final class BBCodeParserDefinition {
 }
 
 /**
- * @abstract
- * @package APF\tools\string
- * @class BBCodeParserProvider
- *
  * The interface for all concrete implementations of the parser provider.
  *
  * @author Christian Achatz
@@ -80,12 +71,10 @@ final class BBCodeParserDefinition {
 abstract class BBCodeParserProvider extends APFObject {
 
    /**
-    * @public
-    * @abstract
-    *
     * Interface method for each BBCodeParserProvider, that is called by the AdvancedBBCodeParser.
     *
     * @param string $string the content to parse
+    *
     * @return string $parsedString the parsed content
     *
     * @author Christian Achatz
@@ -97,9 +86,6 @@ abstract class BBCodeParserProvider extends APFObject {
 }
 
 /**
- * @package APF\tools\string
- * @class AdvancedBBCodeParser
- *
  * Implements the advanced bbcode parser for the adventure php framework.
  * Usage:
  * <pre>$bP = &$this->getServiceObject('APF\tools\string\AdvancedBBCodeParser');
@@ -115,14 +101,11 @@ abstract class BBCodeParserProvider extends APFObject {
 class AdvancedBBCodeParser extends APFObject {
 
    /**
-    * @private
     *  Represents the list of provider.
     */
    private $provider = array();
 
    /**
-    * @public
-    *
     *  Sets up the default parser provider. To modify / delete them use the addProvider() or
     *  removeProvider() methods.
     *
@@ -138,8 +121,6 @@ class AdvancedBBCodeParser extends APFObject {
    }
 
    /**
-    * @public
-    *
     * This method enables you to add/modify a parsing provider. If a provider already exists with
     * the desired name it will be overwritten.
     *
@@ -155,8 +136,6 @@ class AdvancedBBCodeParser extends APFObject {
    }
 
    /**
-    * @public
-    *
     * This method removes a parsing provider.
     *
     * @param string $name short name of the provider, that is intended to address it
@@ -170,8 +149,6 @@ class AdvancedBBCodeParser extends APFObject {
    }
 
    /**
-    * @private
-    *
     * Sets up the provider to be ready for use. Converts each BBCodeParserDefinition into
     * it's real implementation. If a provider was added / removed the converter is going to
     * notice this fact.
@@ -203,11 +180,10 @@ class AdvancedBBCodeParser extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Parses the given string using the provider configured before.
     *
     * @param string $string the string, that should be parsed
+    *
     * @return string $parsedString the parsed string
     *
     * @author Christian Achatz

@@ -24,9 +24,6 @@ use APF\core\pagecontroller\BaseDocumentController;
 use APF\core\registry\Registry;
 
 /**
- * @package APF\core\errorhandler\documentcontroller
- * @class ErrorPageController
- *
  * Implements the error page's document controller.
  *
  * @author Christian Schäfer
@@ -36,8 +33,6 @@ use APF\core\registry\Registry;
 class ErrorPageController extends BaseDocumentController {
 
    /**
-    * @public
-    *
     * Displays the error page.
     *
     * @author Christian Schäfer
@@ -49,7 +44,7 @@ class ErrorPageController extends BaseDocumentController {
 
       // build stack trace
       $errors = array_reverse(debug_backtrace());
-      $buffer = (string)'';
+      $buffer = (string) '';
 
       $errorEntry = & $this->getTemplate('ErrorEntry');
 

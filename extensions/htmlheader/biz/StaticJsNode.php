@@ -21,9 +21,6 @@
 namespace APF\extensions\htmlheader\biz;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class StaticJsNode
- *
  * Represents a node for static js inclusion.
  *
  * @author Christian Achatz

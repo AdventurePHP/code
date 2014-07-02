@@ -27,9 +27,6 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller
- * @class GroupAddUserController
- *
  * Implements the controller to list the groups.
  *
  * @author Christian Achatz
@@ -41,13 +38,13 @@ class GroupAddUserController extends UmgtBaseController {
    public function transformContent() {
 
       // initialize form
-      $form = &$this->getForm('User');
-      $userControl = &$form->getFormElementByName('User');
+      $form = & $this->getForm('User');
+      $userControl = & $form->getFormElementByName('User');
 
       /* @var $userControl MultiSelectBoxTag */
       $groupId = RequestHandler::getValue('groupid');
 
-      $uM = &$this->getManager();
+      $uM = & $this->getManager();
       $group = $uM->loadGroupById($groupId);
 
       $users = $uM->loadUsersNotWithGroup($group);
@@ -55,10 +52,11 @@ class GroupAddUserController extends UmgtBaseController {
 
       // display hint, if group has associated all users
       if ($count == 0) {
-         $template = &$this->getTemplate('NoMoreUser');
+         $template = & $this->getTemplate('NoMoreUser');
          $template->getLabel('message-1')->setPlaceHolder('display-name', $group->getDisplayName());
          $template->getLabel('message-2')->setPlaceHolder('group-view-link', $this->generateLink(array('mainview' => 'group', 'groupview' => null, 'groupid' => null)));
          $template->transformOnPlace();
+
          return;
       }
 
@@ -69,7 +67,7 @@ class GroupAddUserController extends UmgtBaseController {
 
       if ($form->isSent() && $form->isValid()) {
 
-         $options = &$userControl->getSelectedOptions();
+         $options = & $userControl->getSelectedOptions();
          $count = count($options);
 
          $newUsers = array();

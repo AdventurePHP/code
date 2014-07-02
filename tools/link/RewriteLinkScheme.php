@@ -21,9 +21,6 @@
 namespace APF\tools\link;
 
 /**
- * @package APF\tools\link
- * @class RewriteLinkScheme
- *
  * This link scheme implementation is intended to handle rewritten urls
  * that have a generic path structure encoding params and their values.
  * <p/>

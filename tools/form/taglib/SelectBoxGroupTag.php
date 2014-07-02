@@ -23,9 +23,6 @@ namespace APF\tools\form\taglib;
 use APF\core\pagecontroller\XmlParser;
 
 /**
- * @package APF\tools\form\taglib
- * @class SelectBoxGroupTag
- *
  * Represents a select option group of an APF select field.
  *
  * @author Christian Achatz
@@ -40,8 +37,6 @@ class SelectBoxGroupTag extends AbstractFormControl {
    }
 
    /**
-    * @protected
-    *
     * Overwrites the <em>onParseTime()</em> method, because we have to parse
     * the options included in this group.
     *
@@ -54,8 +49,6 @@ class SelectBoxGroupTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Adds an option to the select field.
     *
     * @param string $displayName The display text of the option.
@@ -80,8 +73,6 @@ class SelectBoxGroupTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Adds an option to the select field (OO style).
     *
     * @param SelectBoxOptionTag $option The option to add.
@@ -110,8 +101,6 @@ class SelectBoxGroupTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Pre-selects an option by a given display name or value.
     *
     * @param string $displayNameOrValue The display name or the value of the option to pre-select.
@@ -131,8 +120,6 @@ class SelectBoxGroupTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns the selected options.
     *
     * @return SelectBoxOptionTag[] The selected options.
@@ -156,8 +143,6 @@ class SelectBoxGroupTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns the selected option.
     *
     * @return SelectBoxOptionTag The selected option.
@@ -180,8 +165,6 @@ class SelectBoxGroupTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns the HTML code of the option group.
     *
     * @return string The HTML source code.

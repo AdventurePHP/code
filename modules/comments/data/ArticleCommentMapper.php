@@ -27,9 +27,6 @@ use APF\modules\comments\biz\ArticleComment;
 use InvalidArgumentException;
 
 /**
- * @package APF\modules\comments\date
- * @class ArticleCommentMapper
- *
  * Represents the data layer component of the comment function. Loads and saves entries.
  *
  * @author Christian W. Schäfer
@@ -39,11 +36,10 @@ use InvalidArgumentException;
 class ArticleCommentMapper extends APFObject {
 
    /**
-    * @public
-    *
     * Loads an article comment object by id. Can be used by the pager.
     *
     * @param string $commentId ID of the entry.
+    *
     * @return ArticleComment The comment object.
     *
     * @author Christian W. Schäfer
@@ -57,12 +53,11 @@ class ArticleCommentMapper extends APFObject {
                     FROM article_comments
                     WHERE ArticleCommentID = \'' . $commentId . '\';';
       $result = $SQL->executeTextStatement($select);
+
       return $this->mapArticleComment2DomainObject($SQL->fetchData($result));
    }
 
    /**
-    * @public
-    *
     * Saves a new comment.
     *
     * @param ArticleComment $comment The domain object to save.
@@ -84,8 +79,6 @@ class ArticleCommentMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns the initialized database connection (reference!) for the
     * current application instance.
     *
@@ -104,19 +97,19 @@ class ArticleCommentMapper extends APFObject {
       $connectionKey = $config->getSection('Default')->getValue('Database.ConnectionKey');
       if ($connectionKey == null) {
          throw new InvalidArgumentException('[ArticleCommentMapper::getConnection()] The module\'s '
-                  . 'configuration file does not contain a valid database connection key. Please '
-                  . 'specify the database configuration according to the example configuration files!',
-            E_USER_ERROR);
+               . 'configuration file does not contain a valid database connection key. Please '
+               . 'specify the database configuration according to the example configuration files!',
+               E_USER_ERROR);
       }
+
       return $cM->getConnection($connectionKey);
    }
 
    /**
-    * @private
-    *
     * Maps a database result set into s domain object.
     *
     * @param string[] $resultSet MySQL (database) result array.
+    *
     * @return ArticleComment A initialized domain object.
     *
     * @author Christian W.Schäfer
@@ -131,6 +124,7 @@ class ArticleCommentMapper extends APFObject {
       $comment->setComment($resultSet['Comment']);
       $comment->setDate($resultSet['Date']);
       $comment->setTime($resultSet['Time']);
+
       return $comment;
    }
 

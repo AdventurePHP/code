@@ -25,9 +25,6 @@ use APF\extensions\htmlheader\biz\CssContentNode;
 use APF\extensions\htmlheader\biz\HtmlHeaderManager;
 
 /**
- * @package APF\extensions\htmlheader\pres\taglib
- * @class HtmlHeaderAddCssContentTag
- *
  * Taglib for adding stylesheets content to the html header.
  *
  * @example

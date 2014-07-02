@@ -1,27 +1,31 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\role\RoleDetailsController
+class="APF\modules\usermanagement\pres\documentcontroller\role\RoleDetailsController
 @>
-<h3><html:getstring
-      name="display-name"
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.role.details.headline"/></h3>
+<h3>
+   <html:getstring
+         name="display-name"
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.role.details.headline"/>
+</h3>
 <p>
    ${Description}
 </p>
-<h4><html:getstring
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.role.details.permissions.label"/></h4>
+<h4>
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.role.details.permissions.label"/>
+</h4>
 <html:iterator name="Permissions">
    <ul>
       <iterator:item>
          <li>
             <umgt:media filename="permission.png">
                <media:getstring
-                  namespace="APF\modules\usermanagement\pres"
-                  config="labels.ini"
-                  entry="frontend.role.details.permission-img.label"/>
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.role.details.permission-img.label"/>
             </umgt:media>
             ${item->getDisplayName()}
             (<em>${item->getName()}=${item->getValue()}</em>)
@@ -30,19 +34,21 @@
    </ul>
 </html:iterator>
 
-<h4><html:getstring
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.role.details.users.label"/></h4>
+<h4>
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.role.details.users.label"/>
+</h4>
 <html:iterator name="Users">
    <ul>
       <iterator:item>
          <li>
             <umgt:media filename="user.png">
                <media:getstring
-                  namespace="APF\modules\usermanagement\pres"
-                  config="labels.ini"
-                  entry="frontend.role.details.user-img.label"/>
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.role.details.user-img.label"/>
             </umgt:media>
             ${item->getFirstName()}, ${item->getLastName()}
          </li>
@@ -50,19 +56,21 @@
    </ul>
 </html:iterator>
 
-<h4><html:getstring
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.role.details.groups.label"/></h4>
+<h4>
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.role.details.groups.label"/>
+</h4>
 <html:iterator name="Groups">
    <ul>
       <iterator:item>
          <li>
             <umgt:media filename="group.png">
                <media:getstring
-                  namespace="APF\modules\usermanagement\pres"
-                  config="labels.ini"
-                  entry="frontend.role.details.group-img.label"/>
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.role.details.group-img.label"/>
             </umgt:media>
             ${item->getDisplayName()}
          </li>

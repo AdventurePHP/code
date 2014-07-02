@@ -26,9 +26,6 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\user
- * @class UserEditController
- *
  * Implements the edit controller for a user.
  *
  * @author Christian Achatz
@@ -38,8 +35,6 @@ use APF\tools\request\RequestHandler;
 class UserEditController extends UmgtBaseController {
 
    /**
-    * @public
-    *
     * Displays and handles the user edit form.
     *
     * @author Christian Achatz

@@ -24,9 +24,6 @@ use APF\core\pagecontroller\XmlParser;
 use APF\tools\form\validator\AbstractFormValidator;
 
 /**
- * @package APF\tools\form\taglib
- * @class SelectBoxTag
- *
  * Represents an APF select field.
  *
  * @author Christian Schäfer
@@ -38,13 +35,13 @@ use APF\tools\form\validator\AbstractFormValidator;
 class SelectBoxTag extends AbstractFormControl {
 
    /**
-    * @var boolean Marks the field as dynamic to do special presetting on transformation time.
+    * Marks the field as dynamic to do special presetting on transformation time.
+    *
+    * @var boolean $isDynamicField
     */
    protected $isDynamicField = false;
 
    /**
-    * @public
-    *
     * Initializes the allowed child tags.
     *
     * @author Christian Schäfer
@@ -61,8 +58,6 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Parses the options and initializes the select field.
     *
     * @author Christian Schäfer
@@ -78,8 +73,6 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Adds an option to the select field.
     *
     * @param string $displayName The display text of the option.
@@ -102,8 +95,6 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Adds an option to the select field (OO style).
     *
     * @param SelectBoxOptionTag $tag The option to add to the select box.
@@ -133,8 +124,6 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Adds an option to a group specified by the applied label.
     *
     * @param string $groupLabel The name of the group's label.
@@ -159,8 +148,6 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Adds an option to a group specified by the applied label (OO-style).
     *
     * @param string $groupLabel The name of the group.
@@ -181,8 +168,6 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns - or lazily creates - a desired option group.
     *
     * @param string $groupLabel The name of the group.
@@ -221,8 +206,6 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns the desired group by a given group label.
     *
     * @param string $label The label of the group to return.
@@ -248,8 +231,6 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns the selected option.
     *
     * @return SelectBoxOptionTag The selected option.
@@ -290,8 +271,6 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Pre-selects an option by a given display name or value.
     *
     * @param string $displayNameOrValue The display name or the value of the option to pre-select.
@@ -326,8 +305,6 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * @protected
-    *
     * Un-selects all other option to do not have interference with the currently selected option!
     * This is only necessary within the simple select field - not multi select.
     *
@@ -348,8 +325,6 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Generates the HTML code of the select field.
     *
     * @return string The HTML code of the select field.
@@ -386,12 +361,11 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    * @since 1.11
-    *
     * Re-implements the addValidator() method for select fields.
     *
     * @param AbstractFormValidator $validator The desired validator.
+    *
+    * @since 1.11
     *
     * @author Christian Achatz
     * @version
@@ -423,8 +397,6 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * @protected
-    *
     * Returns the value of the present form control from the request.
     * Enables sub-elements of form controls (date control!).
     *
@@ -463,8 +435,6 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Re-implements the retrieving of values for select controls
     *
     * @return SelectBoxOptionTag The selected option.
@@ -480,8 +450,6 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Re-implements the setting of values for select controls
     *
     * @param string $value The display name or the value of the option to pre-select.
@@ -501,8 +469,6 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Let's check if something was selected in form:select.
     *
     * @return bool True in case the control is selected, false otherwise.

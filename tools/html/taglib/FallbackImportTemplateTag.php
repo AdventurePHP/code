@@ -25,9 +25,6 @@ use APF\core\pagecontroller\IncludeException;
 use APF\tools\http\HeaderManager;
 
 /**
- * @package APF\tools:html:taglib
- * @class FallbackImportTemplateTag
- *
  * This class mainly implements the functionality of the core::importdesign tag. It generates a sub node
  * from the template specified by the tag's attributes within the current APF DOM tree. Each
  * importdesign tag can compose further tags. Additionally you can catch inclusion errors e.g.
@@ -40,8 +37,6 @@ use APF\tools\http\HeaderManager;
 class FallbackImportTemplateTag extends ImportTemplateTag {
 
    /**
-    * @public
-    *
     * Implements the onParseTime() method from the Document class. Includes the desired template
     * as a new DOM node into the current APF DOM tree.
     *

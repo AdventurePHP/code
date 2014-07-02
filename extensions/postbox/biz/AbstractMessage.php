@@ -24,9 +24,6 @@ use APF\modules\genericormapper\data\GenericDomainObject;
 use APF\modules\genericormapper\data\GenericORMapperDataObject;
 
 /**
- * @package APF\extensions\postbox\biz\abstractdomainobjects
- * @class AbstractMessage
- *
  * This is the base class for "Message" from the Postbox-Extension.
  * For further information visit the extension's documentation.
  *
@@ -37,7 +34,9 @@ abstract class AbstractMessage extends GenericDomainObject {
 
    /**
     * Cache for the channel's author.
-    * @var mixed Can be a string or GenericORMapperDataObject
+    * Can be a string or GenericORMapperDataObject
+    *
+    * @var mixed $Author
     */
    protected $Author = null;
 
@@ -49,10 +48,12 @@ abstract class AbstractMessage extends GenericDomainObject {
     * Marks the message as unread for the given user.
     *
     * @param GenericORMapperDataObject $User
+    *
     * @return AbstractMessage Returns itself (fluent-interface)
     */
    public function setUnreadForUser(GenericORMapperDataObject &$User) {
       $this->addRelatedObject('User2UnreadMessage', $User);
+
       return $this;
    }
 
@@ -60,12 +61,14 @@ abstract class AbstractMessage extends GenericDomainObject {
     * Sets the author of the message (Does NOT save the object).
     *
     * @param GenericORMapperDataObject $User
+    *
     * @return AbstractMessage Returns itself (fluent-interface)
     */
    public function setAuthor(GenericORMapperDataObject &$User) {
       $this->Author = $User;
       $this->addRelatedObject('Author2Message', $User);
       $this->setAuthorNameFallback($User->getProperty('Username'));
+
       return $this;
    }
 
@@ -81,6 +84,7 @@ abstract class AbstractMessage extends GenericDomainObject {
             $this->Author = $this->getAuthorNameFallback();
          }
       }
+
       return $this->Author;
    }
 
@@ -88,6 +92,7 @@ abstract class AbstractMessage extends GenericDomainObject {
     * Saves the message.
     *
     * @param bool $saveTree Optional. Default: true. If set to false only the message will be saved, and not the relation-tree
+    *
     * @return AbstractMessage Returns itself (fluent-interface)
     * @throws \BadFunctionCallException
     */
@@ -96,6 +101,7 @@ abstract class AbstractMessage extends GenericDomainObject {
          throw new \BadFunctionCallException('[Message::save()] DataComponent is not set, if the object was not loaded by ORM, you need to set it manually!');
       }
       $this->getDataComponent()->saveObject($this, $saveTree);
+
       return $this;
    }
 

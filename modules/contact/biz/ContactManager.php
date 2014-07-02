@@ -31,9 +31,6 @@ use APF\tools\link\Url;
 use APF\tools\mail\mailSender;
 
 /**
- * @package APF\modules\contact\biz
- * @class ContactManager
- *
  * Implements the business component for the contact form.
  *
  * @author Christian Schäfer
@@ -43,8 +40,6 @@ use APF\tools\mail\mailSender;
 class ContactManager extends APFObject {
 
    /**
-    * @public
-    *
     * Sends the contact form and displays the thanks page.
     *
     * @param ContactFormData $formData The form's content.
@@ -69,16 +64,16 @@ class ContactManager extends APFObject {
 
       $mail->setRecipient($recipient->getEmailAddress(), $recipient->getName());
       $mail->setContent(
-         $this->getNotificationText(
-            array(
-               'sender-name' => $formData->getSenderName(),
-               'sender-email' => $formData->getSenderEmail(),
-               'sender-subject' => $formData->getSubject(),
-               'sender-message' => $formData->getMessage(),
-               'recipient-name' => $recipient->getName(),
-               'recipient-email' => $recipient->getEmailAddress()
+            $this->getNotificationText(
+                  array(
+                        'sender-name'     => $formData->getSenderName(),
+                        'sender-email'    => $formData->getSenderEmail(),
+                        'sender-subject'  => $formData->getSubject(),
+                        'sender-message'  => $formData->getMessage(),
+                        'recipient-name'  => $recipient->getName(),
+                        'recipient-email' => $recipient->getEmailAddress()
+                  )
             )
-         )
       );
 
       $mail->setSubject($formData->getSubject());
@@ -93,16 +88,16 @@ class ContactManager extends APFObject {
       $mail->setRecipient($formData->getSenderEmail(), $formData->getSenderName());
 
       $mail->setContent(
-         $this->getConfirmationText(
-            array(
-               'sender-name' => $formData->getSenderName(),
-               'sender-email' => $formData->getSenderEmail(),
-               'sender-subject' => $formData->getSubject(),
-               'sender-message' => $formData->getMessage(),
-               'recipient-name' => $recipient->getName(),
-               'recipient-email' => $recipient->getEmailAddress()
+            $this->getConfirmationText(
+                  array(
+                        'sender-name'     => $formData->getSenderName(),
+                        'sender-email'    => $formData->getSenderEmail(),
+                        'sender-subject'  => $formData->getSubject(),
+                        'sender-message'  => $formData->getMessage(),
+                        'recipient-name'  => $recipient->getName(),
+                        'recipient-email' => $recipient->getEmailAddress()
+                  )
             )
-         )
       );
 
       $mail->setSubject($formData->getSubject());
@@ -116,8 +111,6 @@ class ContactManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads the configuration of the recipients.
     *
     * @return ContactFormRecipient[] The contact reasons.
@@ -139,8 +132,6 @@ class ContactManager extends APFObject {
    }
 
    /**
-    * @private
-    *
     * Allows you to set these place holders (including the brackets!) within your text:
     * <ul>
     * <li>{sender-name}</li>
@@ -152,6 +143,7 @@ class ContactManager extends APFObject {
     * </ul>
     *
     * @param array $values An associative array of place holders and their value to be included within the text.
+    *
     * @return string The notification text sent to the contact person to inform about the complaint.
     * @throws ConfigurationException In case the language configuration section is missing.
     *
@@ -170,17 +162,15 @@ class ContactManager extends APFObject {
       }
 
       return $this->fillPlaceHolders(
-         $this->getEmailTemplateContent(
-            $section->getValue('notification.namespace'),
-            $section->getValue('notification.template')
-         ),
-         $values
+            $this->getEmailTemplateContent(
+                  $section->getValue('notification.namespace'),
+                  $section->getValue('notification.template')
+            ),
+            $values
       );
    }
 
    /**
-    * @private
-    *
     * Allows you to set these place holders (including the brackets!) within your text:
     * <ul>
     * <li>{sender-name}</li>
@@ -192,6 +182,7 @@ class ContactManager extends APFObject {
     * </ul>
     *
     * @param array $values An associative array of place holders and their value to be included within the text.
+    *
     * @return string The notification text sent to the originator to confirm the submission.
     * @throws ConfigurationException In case the language configuration section is missing.
     *
@@ -209,21 +200,20 @@ class ContactManager extends APFObject {
       }
 
       return $this->fillPlaceHolders(
-         $this->getEmailTemplateContent(
-            $section->getValue('confirmation.namespace'),
-            $section->getValue('confirmation.template')
-         ),
-         $values
+            $this->getEmailTemplateContent(
+                  $section->getValue('confirmation.namespace'),
+                  $section->getValue('confirmation.template')
+            ),
+            $values
       );
    }
 
    /**
-    * @private
-    *
     * Fills the applied place holders within the given text.
     *
     * @param string $text The text to fill the place holders in.
     * @param array $values An associative array of place holders and their value to be included within the text.
+    *
     * @return string The text with filled place holders.
     *
     * @author Christian Achatz
@@ -234,16 +224,16 @@ class ContactManager extends APFObject {
       foreach ($values as $key => $value) {
          $text = str_replace('{' . $key . '}', $value, $text);
       }
+
       return $text;
    }
 
    /**
-    * @private
-    *
     * Loads the email template regarding the configuration.
     *
     * @param string $namespace The namespace of the template.
     * @param string $template The name of the template.
+    *
     * @return string The mail template content.
     * @throws IncludeException In case the template file cannot be loaded.
     *

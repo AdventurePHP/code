@@ -23,9 +23,6 @@ namespace APF\modules\genericormapper\data;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package APF\modules\genericormapper\data
- * @class GenericORMapperDIRelationConfiguration
- *
  * Represents a configuration service to be able to add a further relation configuration to
  * the generic or mapper with the <em>DIServiceManager</em>. In order to do so, a service
  * section must be created for this configuration that looks as follows:
@@ -56,12 +53,16 @@ use APF\core\pagecontroller\APFObject;
 class GenericORMapperDIRelationConfiguration extends APFObject {
 
    /**
-    * @var string The configuration namespace of the additional GORM relation configuration.
+    * The configuration namespace of the additional GORM relation configuration.
+    *
+    * @var string $configNamespace
     */
    private $configNamespace;
 
    /**
-    * @var string The configuration affix of the additional GORM relation configuration.
+    * The configuration affix of the additional GORM relation configuration.
+    *
+    * @var string $configAffix
     */
    private $configAffix;
 

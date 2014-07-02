@@ -27,13 +27,15 @@ use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 use APF\tools\cookie\Cookie;
 
 /**
- * @package APF\modules\usermanagement\biz\login
- * @class UmgtAutoLoginAction
+
+
  */
 class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
 
    /**
-    * @const Defines the cookie name for the user's permanent auth token.
+    * Defines the cookie name for the user's permanent auth token.
+    *
+    * @var string AUTO_LOGIN_COOKIE_NAME
     */
    const AUTO_LOGIN_COOKIE_NAME = 'umgt-auth-token';
 
@@ -49,6 +51,7 @@ class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
     */
    public function isActive() {
       $requestedMimeType = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : '';
+
       return strpos($requestedMimeType, 'text/html') !== false;
    }
 

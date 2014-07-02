@@ -21,9 +21,6 @@
 namespace APF\modules\contact\biz;
 
 /**
- * @package APF\modules\contact\biz
- * @class ContactFormData
- *
  * Implements a DTO to communicate between the presentation and the business layer.
  *
  * @author Christian Schäfer

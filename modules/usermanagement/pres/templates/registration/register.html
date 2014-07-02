@@ -1,5 +1,5 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\registration\RegistrationController"
+class="APF\modules\usermanagement\pres\documentcontroller\registration\RegistrationController"
 @>
 <html:form class="umgt-fe-reg" name="register" method="post">
    <div>
@@ -83,7 +83,7 @@
                   config="labels.ini"
                   entry="register.password.label"/>
          </label>
-         <form:password id="umgt-fe-reg-pass" name="password" maxlength="100" ref="repeat" />
+         <form:password id="umgt-fe-reg-pass" name="password" maxlength="100" ref="repeat"/>
          <form:addvalidator
                class="APF\tools\form\validator\FieldCompareValidator"
                button="sendFormRegistration"

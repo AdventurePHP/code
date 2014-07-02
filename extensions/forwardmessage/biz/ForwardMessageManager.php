@@ -24,9 +24,6 @@ use APF\core\pagecontroller\APFObject;
 use Exception;
 
 /**
- * @package APF\extensions\forwardmessage\biz
- * @class ForwardMessageManager
- *
  * Stores the status messages.
  *
  * @author Daniel Seemaier, Werner Liemberger
@@ -37,13 +34,13 @@ use Exception;
 class ForwardMessageManager extends APFObject {
 
    /**
-    * @var ForwardMessage[] Stores the status messages.
+    * Stores the status messages.
+    *
+    * @var ForwardMessage[] $messages
     */
    private $messages = array();
 
    /**
-    * @public
-    *
     * Adds a status message.
     *
     * @param string $name The name of the message. Needed to show/hide the message
@@ -65,12 +62,11 @@ class ForwardMessageManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Shows a message.
     *
     * @param string $name The name of the message to show.
     * @param string $group The group of the message.
+    *
     * @throws Exception
     *
     * @author Daniel Seemaier, Werner Liemberger
@@ -90,12 +86,11 @@ class ForwardMessageManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Hides a message.
     *
     * @param string $name The name of the message to hide.
     * @param string $group The group of the message.
+    *
     * @throws Exception
     *
     * @author Daniel Seemaier, Werner Liemberger
@@ -115,11 +110,10 @@ class ForwardMessageManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Gets and deletes the added messages.
     *
     * @param array $groups The groups which should be displayed.
+    *
     * @return string[] All added messages.
     *
     * @author Daniel Seemaier, Werner Liemberger
@@ -148,6 +142,7 @@ class ForwardMessageManager extends APFObject {
             }
          }
       }
+
       return $messages;
    }
 

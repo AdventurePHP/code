@@ -21,9 +21,6 @@
 namespace APF\core\errorhandler;
 
 /**
- * @package APF\core\errorhandler
- * @class ConfigurableErrorHandler
- *
  * Implements a configurable error handler, that ignores errors underneath the configured
  * error level. This handler can be used, if you want to ignore certain errors due to
  * whatever reason.
@@ -35,13 +32,13 @@ namespace APF\core\errorhandler;
 class ConfigurableErrorHandler extends DefaultErrorHandler {
 
    /**
-    * @var int The error threshold level.
+    * The error threshold level.
+    *
+    * @var int $errorThresholdLevel
     */
    private $errorThresholdLevel;
 
    /**
-    * @public
-    *
     * Let's you define the error threshold level. Errors below this level are ignored and
     * errors above are handled as known by the <em>DefaultErrorHandler</em>.
     *

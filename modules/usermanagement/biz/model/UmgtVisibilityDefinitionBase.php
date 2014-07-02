@@ -29,9 +29,6 @@ namespace APF\modules\usermanagement\biz\model;
 use APF\modules\genericormapper\data\GenericDomainObject;
 
 /**
- * @package APF\modules\usermanagement\biz\model
- * @class UmgtVisibilityDefinitionBase
- *
  * This class provides the descriptive getter and setter methods for the "APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition" domain object.
  */
 abstract class UmgtVisibilityDefinitionBase extends GenericDomainObject {

@@ -21,9 +21,6 @@
 namespace APF\tools\form\validator;
 
 /**
- * @package APF\tools\form\validator
- * @class PhoneAndFaxValidator
- *
  * Validates a given form control to contain a syntactically correct
  * phone or fax number.
  *
@@ -37,6 +34,7 @@ class PhoneAndFaxValidator extends TextFieldValidator {
       if (preg_match('/^[0-9\-\+\(\)\/ ]{6,}$/', trim($input))) {
          return true;
       }
+
       return false;
    }
 

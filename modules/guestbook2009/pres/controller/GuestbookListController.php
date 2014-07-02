@@ -24,9 +24,6 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package APF\modules\guestbook2009\pres\controller
- * @class GuestbookListController
- *
  * Implements the document controller for the guestbook's list view.
  *
  * @author Christian Achatz
@@ -42,7 +39,7 @@ class GuestbookListController extends GuestbookBaseController {
       $entryList = $gS->loadPagedEntryList();
 
       $tmpl_entry = & $this->getTemplate('entry');
-      $buffer = (string)'';
+      $buffer = (string) '';
       foreach ($entryList as $entry) {
 
          $editor = $entry->getEditor();

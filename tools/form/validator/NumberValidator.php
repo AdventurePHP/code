@@ -21,9 +21,6 @@
 namespace APF\tools\form\validator;
 
 /**
- * @package APF\tools\form\validator
- * @class NumberValidator
- *
  * Validates a given form control to contain a number.
  *
  * @author Christian Achatz

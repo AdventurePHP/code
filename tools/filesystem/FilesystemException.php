@@ -23,9 +23,6 @@ namespace APF\tools\filesystem;
 use Exception;
 
 /**
- * @package APF\tools\filesystem
- * @class FilesystemException
- *
  * Defines a custom exception thrown by the filesystem.
  *
  * @author  Nicolas Pecher

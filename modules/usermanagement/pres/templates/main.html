@@ -1,37 +1,41 @@
 <!DOCTYPE html>
 <html>
-   <head>
-      <title><html:getstring
+<head>
+   <title>
+      <html:getstring
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="frontend.main.title"/></title>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-      <core:addtaglib
+            entry="frontend.main.title"/>
+   </title>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+   <core:addtaglib
          class="APF\modules\usermanagement\pres\taglib\UmgtIncludeCssTag"
          prefix="umgt"
          name="includecss"
-      />
-      <umgt:includecss/>
-   </head>
-   <body>
-      <h1 class="umgt-header"><html:getstring
-                  namespace="APF\modules\usermanagement\pres"
-                  config="labels.ini"
-                  entry="frontend.main.title"/></h1>
-
-      <core:importdesign namespace="APF\modules\usermanagement\pres\templates" template="menu"/>
-
-      <div class="umgt-content">
-         <core:addtaglib
-            class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag"
-            prefix="umgt"
-            name="media"
          />
-         <core:importdesign
-               namespace="APF\modules\usermanagement\pres\templates"
-               template="[mainview = user]"
-               incparam="mainview"
-            />
-      </div>
-   </body>
+   <umgt:includecss/>
+</head>
+<body>
+<h1 class="umgt-header">
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.main.title"/>
+</h1>
+
+<core:importdesign namespace="APF\modules\usermanagement\pres\templates" template="menu"/>
+
+<div class="umgt-content">
+   <core:addtaglib
+         class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag"
+         prefix="umgt"
+         name="media"
+         />
+   <core:importdesign
+         namespace="APF\modules\usermanagement\pres\templates"
+         template="[mainview = user]"
+         incparam="mainview"
+         />
+</div>
+</body>
 </html>

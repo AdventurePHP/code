@@ -21,9 +21,6 @@
 namespace APF\tools\form\filter;
 
 /**
- * @package APF\tools\form\filter
- * @class OnlyLettersFilter
- *
  * Implements a filter, that only accepts character.
  *
  * @author Christian Achatz

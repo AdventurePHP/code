@@ -21,9 +21,6 @@
 namespace APF\tools\form\taglib;
 
 /**
- * @package APF\tools\form\taglib
- * @class SelectBoxOptionTag
- *
  * Represents a select option of an APF select field.
  *
  * @author Christian Schäfer
@@ -42,8 +39,6 @@ class SelectBoxOptionTag extends AbstractFormControl {
    }
 
    /**
-    * @protected
-    *
     * Overwrites the <em>onParseTime()</em> method, because here is nothing to do.
     *
     * @author Christian Achatz
@@ -54,8 +49,6 @@ class SelectBoxOptionTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns the HTML code of the option.
     *
     * @return string The HTML source code.
@@ -66,7 +59,7 @@ class SelectBoxOptionTag extends AbstractFormControl {
     */
    public function transform() {
       return '<option ' . $this->getSanitizedAttributesAsString($this->attributes) . '>'
-            . $this->content . '</option>';
+      . $this->content . '</option>';
    }
 
 }

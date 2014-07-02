@@ -21,9 +21,6 @@
 namespace APF\tools\form\taglib;
 
 /**
- * @package APF\tools\form\filter
- * @class AddFormControlFilterTag
- *
  * Implements the taglib, that lets you add a form element filter to
  * the desired element.
  *
@@ -34,8 +31,6 @@ namespace APF\tools\form\taglib;
 class AddFormControlFilterTag extends FormControlObserverBase {
 
    /**
-    * @public
-    *
     * Adds the desired filter to the given form element.
     *
     * @author Christian Achatz

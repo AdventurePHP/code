@@ -21,9 +21,6 @@
 namespace APF\tools\form\filter;
 
 /**
- * @package APF\tools\form\filter
- * @class OnlyIntegersFilter
- *
  * Implements a filter, that only accepts integer values.
  *
  * @author Christian Achatz

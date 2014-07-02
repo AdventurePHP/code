@@ -51,8 +51,9 @@ class ProxyAddGroupsController extends UmgtPermissionBaseController {
                ->setPlaceHolder('app-object-id', $proxy->getAppObjectId())
                ->setPlaceHolder('object-type', $proxyType->getObjectName());
          $tmpl->getLabel('message-2')->setPlaceHolder('proxy-view-link',
-            $this->generateLink(array('mainview' => 'proxy', 'proxyview' => null, 'proxyid' => null)));
+               $this->generateLink(array('mainview' => 'proxy', 'proxyview' => null, 'proxyid' => null)));
          $tmpl->transformOnPlace();
+
          return;
       }
 
@@ -68,12 +69,12 @@ class ProxyAddGroupsController extends UmgtPermissionBaseController {
          $uM->attachGroups2VisibilityDefinition($proxy, $this->mapSelectedOptions2DomainObjects('groups', 'UmgtGroup'));
 
          HeaderManager::forward(
-            $this->generateLink(
-               array(
-                  'mainview' => 'proxy',
-                  'proxyview' => null,
-                  'proxyid' => null)
-            )
+               $this->generateLink(
+                     array(
+                           'mainview'  => 'proxy',
+                           'proxyview' => null,
+                           'proxyid'   => null)
+               )
          );
 
       }

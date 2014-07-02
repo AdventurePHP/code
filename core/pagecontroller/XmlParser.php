@@ -21,9 +21,6 @@
 namespace APF\core\pagecontroller;
 
 /**
- * @package APF\core\pagecontroller
- * @class XmlParser
- *
  * Static parser for XML / XSL Strings.
  *
  * @author Christian Schäfer
@@ -33,7 +30,9 @@ namespace APF\core\pagecontroller;
 final class XmlParser {
 
    /**
-    * @var int Let's you define the maximum number of attributes allows before the parser stops executions to prevent an endless loop.
+    * Let's you define the maximum number of attributes allows before the parser stops executions to prevent an endless loop.
+    *
+    * @var int $maxParserLoops
     */
    public static $maxParserLoops = 20;
 
@@ -41,9 +40,6 @@ final class XmlParser {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Extracts attributes and content from an XML tag string.
     *
     * @param string $prefix The prefix of the tag definition.
@@ -110,9 +106,6 @@ final class XmlParser {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Extracts XML attributes from an attributes string. Returns an associative array with the attributes as keys and the values.
     * <pre>
     *   $array['ATTRIBUTE_NAME'] = 'ATTRIBUTE_VALUE';
@@ -172,9 +165,6 @@ final class XmlParser {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Generates a unique id, that is used as the object id for the APF DOM tree.
     *
     * @return string The unique id used as GUID for the APF DOM tree.

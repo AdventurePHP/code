@@ -24,13 +24,11 @@ use APF\extensions\apfelsms\biz\pages\SMSPage;
 use APF\tools\link\Url;
 
 /**
+ * Adds request params and uses template name of parent page
+ * This is a combination of the request decorator and the alias decorator with reference to the parent
  *
- * @package APF\extensions\apfelsms
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version : v0.1 (21.06.12)
- * @desc    : Adds request params and uses template name of parent page
- *            This is a combination of the request decorator and the alias decorator with reference to the parent
- *
  */
 class SMSParentRequestPageDec extends SMSRequestPageDec {
 
@@ -47,6 +45,7 @@ class SMSParentRequestPageDec extends SMSRequestPageDec {
 
    /**
     * @param Url $url
+    *
     * @return string
     */
    public function getLink(Url $url) {

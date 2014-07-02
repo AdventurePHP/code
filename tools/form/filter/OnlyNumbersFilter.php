@@ -21,9 +21,6 @@
 namespace APF\tools\form\filter;
 
 /**
- * @package APF\tools\form\filter
- * @class OnlyNumbersFilter
- *
  * Implements a filter, that only accepts numbers.
  *
  * @author Christian Achatz

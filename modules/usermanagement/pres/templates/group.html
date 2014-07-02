@@ -1,21 +1,26 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\GroupNavigationController"
+class="APF\modules\usermanagement\pres\documentcontroller\GroupNavigationController"
 @>
 <div class="umgt-menu">
    <a href="${manage_groups}" title="<html:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.group.navi.list.label"/>"><html:getstring
-                           namespace="APF\modules\usermanagement\pres"
-                           config="labels.ini"
-                           entry="frontend.group.navi.list.label"/></a>
+               namespace=" APF\modules\usermanagement\pres"
+   config="labels.ini"
+   entry="frontend.group.navi.list.label"/>">
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.group.navi.list.label"/>
+   </a>
    &nbsp;|&nbsp;
    <a href="${add_group}" title="<html:getstring
-                  namespace="APF\modules\usermanagement\pres"
-                  config="labels.ini"
-                  entry="frontend.group.navi.add.label"/>"><html:getstring
-                                 namespace="APF\modules\usermanagement\pres"
-                                 config="labels.ini"
-                                 entry="frontend.group.navi.add.label"/></a>
+                  namespace=" APF\modules\usermanagement\pres"
+   config="labels.ini"
+   entry="frontend.group.navi.add.label"/>">
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.group.navi.add.label"/>
+   </a>
 </div>
-<core:importdesign namespace="APF\modules\usermanagement\pres\templates\group" template="[groupview = list]" incparam="groupview" />
+<core:importdesign namespace="APF\modules\usermanagement\pres\templates\group" template="[groupview = list]"
+                   incparam="groupview"/>

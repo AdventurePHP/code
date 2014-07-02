@@ -21,9 +21,6 @@
 namespace APF\extensions\htmlheader\biz;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class SimpleTitleNode
- *
  * Implements title node.
  *
  * @author Christian Achatz

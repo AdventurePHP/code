@@ -25,9 +25,6 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\http\HeaderManager;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller
- * @class GroupAddController
- *
  * Implements the controller to add a group.
  *
  * @author Christian Achatz
@@ -38,17 +35,17 @@ class GroupAddController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $form = &$this->getForm('GroupAdd');
+      $form = & $this->getForm('GroupAdd');
       if ($form->isSent() == true && $form->isValid() == true) {
 
-         $uM = &$this->getManager();
+         $uM = & $this->getManager();
 
          $group = new UmgtGroup();
 
-         $displayName = &$form->getFormElementByName('DisplayName');
+         $displayName = & $form->getFormElementByName('DisplayName');
          $group->setDisplayName($displayName->getValue());
 
-         $description = &$form->getFormElementByName('Description');
+         $description = & $form->getFormElementByName('Description');
          $group->setDescription($description->getValue());
 
          $uM->saveGroup($group);

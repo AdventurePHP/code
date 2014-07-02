@@ -27,7 +27,7 @@
 (function ($) {
     $(document).ready(function () {
         jQuery.APFFormValidator.addClientValidator('SimpleBirthdayValidator', {
-            validate:function (control, options) {
+            validate: function (control, options) {
                 var ctrlvalue = control.attr('value');
                 ctrlvalue = $.trim(ctrlvalue);
 

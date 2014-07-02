@@ -23,9 +23,6 @@ namespace APF\modules\genericormapper\data;
 use InvalidArgumentException;
 
 /**
- * @package APF\modules\genericormapper\data
- * @class GenericDomainObject
- *
  * Generic class for all domain objects handled by the abstract or mapper.
  *
  * @author Christian Achatz
@@ -38,42 +35,46 @@ use InvalidArgumentException;
 class GenericDomainObject implements GenericORMapperDataObject {
 
    /**
-    * @private
-    * @var GenericORRelationMapper Data component, that can be used to lazy load attributes.
+    * Data component, that can be used to lazy load attributes.
     * To set the member, use setDataComponent().
+    *
+    * @var GenericORRelationMapper $dataComponent
     */
    private $dataComponent = null;
 
    /**
-    * private
-    * @var string Name of the object (see mapping table!).
+    * Name of the object (see mapping table!).
+    *
+    * @var string $objectName
     */
    protected $objectName = null;
 
    /**
-    * @private
-    * @var string[] Properties of a domain object.
+    * Properties of a domain object.
+    *
+    * @var string[] $properties
     */
    protected $properties = array();
 
    /**
-    * @private
-    * @var GenericORMapperDataObject[] Objects related to the current object. Sorted by composition or association key.
+    * Objects related to the current object. Sorted by composition or association key.
+    *
+    * @var GenericORMapperDataObject[] $relatedObjects
     */
    protected $relatedObjects = array();
 
    /**
-    * @private
-    * @var string Timestamp value of relation-creation.
+    * Timestamp value of relation-creation.
+    *
+    * @var string $relationCreationTimestamp
     */
    private $relationCreationTimestamp = null;
 
    /**
-    * @public
-    *
     * Constructor of the generic domain object. Sets the object name if desired.
     *
     * @param string $objectName name of the domain object.
+    *
     * @throws InvalidArgumentException In case the constructor argument is no valid object name.
     *
     * @author Christian Achatz
@@ -90,8 +91,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Returns the name of the object as given during creation of the object
     * or loading of the object by the GORM.
     *
@@ -106,8 +105,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Convenience function to retrieve the object id depending on the object type.
     *
     * @return int The object's internal id (id of the object in database).
@@ -121,8 +118,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Convenience function to set the object id depending on the object type.
     *
     * @param int $id The object's internal id (id of the object in database).
@@ -136,8 +131,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Injects the current mapper instance for further usage (load related objects).
     *
     * @param GenericORRelationMapper $orm The current mapper instance.
@@ -147,12 +140,10 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * Version 0.1, 11.10.2009<br />
     */
    public function setDataComponent(GenericORRelationMapper &$orm) {
-      $this->dataComponent = &$orm;
+      $this->dataComponent = & $orm;
    }
 
    /**
-    * @public
-    *
     * Deletes the current mapper instance (usefull for debugging).
     *
     * @author Tobias Lückel (megger)
@@ -164,8 +155,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Returns the current mapper instance for further usage (load related objects).
     *
     * @return GenericORRelationMapper The current mapper instance.
@@ -179,12 +168,11 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Load one related object.
     *
     * @param string $relationName name of the desired relation
     * @param GenericCriterionObject $criterion criterion object
+    *
     * @return GenericORMapperDataObject object that is related with the current object or null.
     * @throws GenericORMapperException In case the data component is not initialized.
     *
@@ -208,12 +196,11 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Loads a list of related objects.
     *
     * @param string $relationName name of the desired relation
     * @param GenericCriterionObject $criterion criterion object
+    *
     * @return GenericORMapperDataObject[] List of objects that are related with the current object or null.
     * @throws GenericORMapperException In case the data component is not initialized.
     *
@@ -240,13 +227,12 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Convenience method to create an association to another object without invoking the
     * GenericORMapper directly.
     *
     * @param string $relationName The relation to create.
     * @param GenericORMapperDataObject $targetObject The object to relate the current domain object to.
+    *
     * @throws GenericORMapperException In case the data component is not initialized.
     *
     * @author Christian Achatz, Ralf Schubert
@@ -269,13 +255,12 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Convenience method to delete an association to another object without invoking the
     * GenericORMapper directly.
     *
     * @param string $relationName The relation to delete.
     * @param GenericORMapperDataObject $targetObject The object to delete the current domain object's relation from.
+    *
     * @throws GenericORMapperException In case the data component is not initialized.
     *
     * @author Christian Achatz, Ralf Schubert
@@ -298,12 +283,11 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Convenience method to delete all association to another object without invoking the
     * GenericORMapper directly.
     *
     * @param string $relationName The relation to create.
+    *
     * @throws GenericORMapperException In case the data component is not initialized.
     *
     * @author Christian Achatz, Ralf Schubert
@@ -326,11 +310,10 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Returns the reference on the list of related objects manually added to the object.
     *
     * @param string $relationName name of the desired relation
+    *
     * @return GenericORMapperDataObject[] A list of referenced objects that are related with the current object or null
     *
     * @author Christian Achatz
@@ -343,13 +326,12 @@ class GenericDomainObject implements GenericORMapperDataObject {
          return $this->relatedObjects[$relationName];
       } else {
          $null = null;
+
          return $null;
       }
    }
 
    /**
-    * @public
-    *
     * Returns the entire relation structur of the current domain object. This method
     * *should* only be used internally. Unfortunately, PHP does not provide a package
     * view visibility setting.
@@ -365,8 +347,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Add a related object.
     *
     * @param string $relationName name of the desired relation
@@ -384,8 +364,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Abstract method to set a domain object's simple property.
     *
     * @param string $name name of the specified domain object property
@@ -400,11 +378,10 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Abstract method to get a domain object's simple property.
     *
     * @param string $name name of the specified domain object property
+    *
     * @return string Value of the specified domain object property
     *
     * @author Christian Achatz
@@ -421,8 +398,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Abstract method to set all domain object's simple properties.
     *
     * @param string[] $properties list of defined properties to apply to the domain object
@@ -438,8 +413,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Abstract method to get all domain object's simple properties.
     *
     * @return string[] List of defined domain object properties.
@@ -453,8 +426,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Removes an attribute from the list.
     *
     * @param string $name The name of the property to delete.
@@ -468,8 +439,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Implements the toString() method for the generic domain object.
     *
     * @return string The domain object's string representation.
@@ -482,12 +451,12 @@ class GenericDomainObject implements GenericORMapperDataObject {
     */
    public function toString() {
 
-      $stringRep = (string)'[' . get_class($this) . ' ';
+      $stringRep = (string) '[' . get_class($this) . ' ';
 
       $properties = array_merge(array('ObjectName' => $this->getObjectName()), $this->properties);
 
       $propCount = count($properties);
-      $current = (int)1;
+      $current = (int) 1;
 
       foreach ($properties as $name => $value) {
 
@@ -503,12 +472,11 @@ class GenericDomainObject implements GenericORMapperDataObject {
 
          $current++;
       }
+
       return $stringRep . ']';
    }
 
    /**
-    * @public
-    *
     * Implements the PHP wrapper for generating the string
     * representation of the current domain object.
     *
@@ -523,8 +491,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Implements php's magic __sleep() method to indicate, which class vars have to be serialized.
     *
     * @return string[] List of serializable properties.
@@ -539,8 +505,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Implement event functions
     *
     * @author Ralf Schubert
@@ -552,8 +516,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Implement event functions
     *
     * @author Ralf Schubert
@@ -565,8 +527,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Implement event functions
     *
     * @author Ralf Schubert
@@ -578,8 +538,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Extract relation-timestamps
     *
     * @author Lutz Mahlstedt
@@ -594,8 +552,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * @public
-    *
     * Abstract method to get object's relation creation-timestamp.
     *
     * @return string Creation-timestamp of the relation.

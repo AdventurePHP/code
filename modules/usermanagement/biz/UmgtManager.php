@@ -37,9 +37,6 @@ use APF\modules\usermanagement\biz\provider\PasswordHashProvider;
 use APF\modules\usermanagement\biz\provider\UserFieldEncryptionProvider;
 
 /**
- * @package APF\modules\usermanagement\biz
- * @class UmgtManager
- *
  * Business component of the user management module. In standard case the component uses a crypt
  * based provider to create password hashes. But you can add other providers to ensure compatibility
  * with older versions. Hashes will then get updated to your configured default provider on-the-fly.
@@ -55,41 +52,48 @@ use APF\modules\usermanagement\biz\provider\UserFieldEncryptionProvider;
 class UmgtManager extends APFObject {
 
    /**
-    * @const string The name of the umgt manager's main config section.
+    * The name of the umgt manager's main config section.
+    *
+    * @var string CONFIG_SECTION_NAME
     */
    const CONFIG_SECTION_NAME = 'Default';
 
    /**
-    * @const int Cookie life-time in seconds.
+    * Cookie life-time in seconds.
+    *
+    * @var int AUTO_LOGIN_COOKIE_LIFETIME
     */
    const AUTO_LOGIN_COOKIE_LIFETIME = 2592000;
 
    /**
-    * @var int Indicates the id of the current application/project.
+    * Indicates the id of the current application/project.
+    *
+    * @var int $applicationId
     */
    private $applicationId = 1;
 
    /**
     * Stores the providers, that hashes the user's password.
     *
-    * @var PasswordHashProvider[] The password hash providers.
+    * @var PasswordHashProvider[] $passwordHashProviders
     */
    protected $passwordHashProviders = array();
 
    /**
-    * @var array Marks all password hash providers used within this instance. This marker is
-    * used as reminder for session wake-up, too.
+    * Marks all password hash providers used within this instance. This marker is used as reminder for session wake-up, too.
+    *
+    * @var array $passwordHashProviderList
     */
    protected $passwordHashProviderList = array();
 
    /**
-    * @var GenericORRelationMapper The current instance of the generic o/r mapper.
+    * The current instance of the generic o/r mapper.
+    *
+    * @var GenericORRelationMapper $orm
     */
    protected $orm;
 
    /**
-    * @public
-    *
     * DI initialization method to setup and re-initialize (on session restore!) the password hash providers.
     *
     * @author Christian Achatz, Ralf Schubert
@@ -165,8 +169,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * When serialising in session, password hash providers need to be imported
     * to avoid incomplete object bug. Thus, "isInitialized" is not serialized.
     *
@@ -187,8 +189,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Implements the comparing of stored hash with given password,
     * supporting fallback hash-providers and on-the-fly updating
     * of hashes in database to new providers.
@@ -236,8 +236,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Implements the central dynamic salt method. If you desire to use another
     * dynamic salt, extend the UmgtManager and re-implement this method! Be sure,
     * to keep all other methods untouched.
@@ -265,8 +263,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Hashes the password for the given user with the first configured
     * hash provider, which represents the current default provider.
     * If you desire to use another hash algo, implement a PasswordHashProvider
@@ -286,8 +282,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Returns an initialized Application object.
     *
     * @return UmgtApplication Current application domain object.
@@ -304,8 +298,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns the configured instance of the generic o/r mapper the user management
     * business component is currently using.
     * <p/>
@@ -325,8 +317,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Let's you inject the o/r mapper instance to use (used for DI configuration).
     *
     * @param GenericORRelationMapper $orm The o/r mapper instance to use.
@@ -340,8 +330,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Saves a user object within the current application.
     *
     * @param UmgtUser $user current user.
@@ -396,8 +384,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Saves an application object.
     *
     * @param UmgtApplication $app The application object to save.
@@ -413,8 +399,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Saves a group object within the current application.
     *
     * @param UmgtGroup $group current group.
@@ -433,8 +417,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Saves a role object within the current application.
     *
     * @param UmgtRole $role current role.
@@ -453,8 +435,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Saves a permission object within the current application.
     *
     * @param UmgtPermission $permission the permission.
@@ -475,8 +455,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns a list of users concerning the current page.
     *
     * @return UmgtUser[] List of users.
@@ -497,8 +475,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns a list of groups concerning the current page.
     *
     * @return UmgtGroup[] List of groups.
@@ -518,8 +494,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns a list of roles concerning the current page.
     *
     * @return UmgtRole[] List of roles.
@@ -539,8 +513,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns a list of permissions concerning the current page.
     *
     * @return UmgtPermission[] List of permissions.
@@ -560,8 +532,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns the whole list of permissions.
     *
     * @return UmgtPermission[] A list of all permissions.
@@ -577,8 +547,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns a user domain object.
     *
     * @param int $userId id of the desired user
@@ -594,8 +562,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns a user domain object by it'd username and password.
     *
     * @param string $username the user's username.
@@ -621,8 +587,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads a user by it's display name.
     *
     * @param string $displayName The desired user's display name.
@@ -652,8 +616,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads a user by it's display name and password.
     *
     * @param string $displayName The desired user's display name.
@@ -676,8 +638,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads a user object by a given first name.
     *
     * @param string $firstName The first name of the user to load.
@@ -708,8 +668,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads a user object by a given last name.
     *
     * @param string $lastName The last name of the user to load.
@@ -740,8 +698,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads a user object by a given email.
     *
     * @param string $email The email of the user to load.
@@ -772,8 +728,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads a user object by a first and last name.
     *
     * @param string $firstName The first name of the user to load.
@@ -809,8 +763,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads a user object by a user name.
     *
     * @param string $username The user name of the user to load.
@@ -841,8 +793,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns a user domain object by it'd email and password.
     *
     * @param string $email the user's email
@@ -867,8 +817,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Implements the central method to create the display name of a user object. If you desire
     * to use another algorithm, extend the UmgtManager and re-implement this method! Be sure, to keep
     * all other methods untouched.
@@ -890,8 +838,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns a list of Permission domain objects for the given user.
     *
     * @param UmgtUser $user the user object
@@ -944,8 +890,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns a group domain object.
     *
     * @param int $groupId id of the desired group
@@ -961,8 +905,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads a group by a given name.
     *
     * @param string $groupName The name of the group to load
@@ -981,8 +923,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns a role domain object.
     *
     * @param int $roleId id of the desired role
@@ -998,8 +938,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns a role domain object identified by it's display name.
     *
     * @param string $name The name of the role to load.
@@ -1018,8 +956,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads a permission by it's id.
     *
     * @param int $permissionId the permission's id
@@ -1035,8 +971,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Deletes a user.
     *
     * @param UmgtUser $user The user to delete
@@ -1050,8 +984,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Deletes a group.
     *
     * @param UmgtGroup $group The group to delete
@@ -1065,8 +997,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     *  Deletes a role.
     *
     * @param UmgtRole $role the role to delete
@@ -1080,8 +1010,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     *  Deletes a Permission.
     *
     * @param UmgtPermission $permission the permission
@@ -1095,8 +1023,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     *  Associates a user with a list of groups.
     *
     * @param UmgtUser $user the user
@@ -1118,8 +1044,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     *  Associates users with a group.
     *
     * @param UmgtUser[] $users the user list
@@ -1137,8 +1061,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Associates a role with a list of users.
     *
     * @param UmgtUser[] $users The user list.
@@ -1156,8 +1078,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Associates a role with a list of users.
     *
     * @param UmgtUser $user The user.
@@ -1174,8 +1094,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads all groups, that are assigned to a given user.
     *
     * @param UmgtUser $user the user
@@ -1192,8 +1110,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads the groups that are assigned to the given role.
     *
     * @param UmgtRole $role The role to load the assigned groups.
@@ -1213,8 +1129,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads the groups that are *not* assigned to the given role.
     *
     * @param UmgtRole $role The role to load the *not* assigned groups.
@@ -1256,8 +1170,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads all groups, that are not assigned to a given user.
     *
     * @param UmgtUser $user the user
@@ -1277,8 +1189,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     *  Loads all users, that are assigned to a given group.
     *
     * @param UmgtGroup $group the group
@@ -1299,8 +1209,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     *  Loads all users, that are not assigned to a given group.
     *
     * @param UmgtGroup $group the group
@@ -1320,8 +1228,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     *  Loads all roles, that are assigned to a given user.
     *
     * @param UmgtUser $user the user
@@ -1341,8 +1247,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     *  Loads all roles, that are not assigned to a given user.
     *
     * @param UmgtUser $user the user
@@ -1362,8 +1266,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     *  Loads a list of users, that have a certail role.
     *
     * @param UmgtRole $role the role, the users should have
@@ -1383,8 +1285,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads a list of users, that don't have the given role.
     *
     * @param UmgtRole $role The role, the users should not have
@@ -1405,8 +1305,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads all roles, that are *not* assigned the applied group.
     *
     * @param UmgtGroup $group The group to load the roles with.
@@ -1426,8 +1324,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads all roles, that are assigned the applied group
     *
     * @param UmgtGroup $group The group to load the roles with.
@@ -1447,8 +1343,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     *  Detaches a user from a role.
     *
     * @param UmgtUser $user The user.
@@ -1463,8 +1357,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     *  Detaches a user from one or more roles.
     *
     * @param UmgtUser $user The user.
@@ -1481,8 +1373,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     *  Detaches users from a role.
     *
     * @param UmgtUser[] $users a list of users
@@ -1499,8 +1389,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     *  Removes a user from the given groups.
     *
     * @param UmgtUser $user the desired user
@@ -1515,8 +1403,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     *  Removes a user from the given groups.
     *
     * @param UmgtUser $user the desired user
@@ -1533,8 +1419,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Removes users from a given group.
     *
     * @param UmgtUser[] $users a list of users
@@ -1553,8 +1437,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * @return UmgtRole[] The list of all permissions.
     *
     * @author Christian Achatz
@@ -1568,8 +1450,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads the permission associated to the given role.
     *
     * @param UmgtRole $role The role to load it's permissions.
@@ -1585,8 +1465,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads the permission *not* associated to the given role.
     *
     * @param UmgtRole $role The role to load it's *not* associated permissions.
@@ -1606,8 +1484,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads all roles that are connected to the applied permission.
     *
     * @param UmgtPermission $permission The permission to load the roles.
@@ -1623,8 +1499,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads all roles that are *not* connected to the applied permission.
     *
     * @param UmgtPermission $permission The permission to load the roles.
@@ -1693,8 +1567,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Assigns a group to a list of roles.
     *
     * @param UmgtGroup $group The group to add to the applied roles.
@@ -1712,8 +1584,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Removes a group from a list of roles.
     *
     * @param UmgtGroup $group The group to remove from the applied roles.
@@ -1731,8 +1601,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Creates a visibility definition relating an application proxy object to the users and
     * groups, that should have access to the object.
     *
@@ -1789,8 +1657,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Deletes a visibility definition including all associations.
     *
     * @param UmgtVisibilityDefinition $definition The visibility definition to delete.
@@ -1804,8 +1670,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Revokes access of the passed users to the given application proxy object.
     *
     * @param UmgtVisibilityDefinition $definition The application proxy object.
@@ -1823,8 +1687,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Revokes access of the passed groups to the given application proxy object.
     *
     * @param UmgtVisibilityDefinition $definition The application proxy object.
@@ -1842,8 +1704,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Adds a given list of users to the applied visibility definition.
     *
     * @param UmgtVisibilityDefinition $definition The desired visibility definition.
@@ -1861,8 +1721,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Adds a given list of groups to the applied visibility definition.
     *
     * @param UmgtVisibilityDefinition $definition The desired visibility definition.
@@ -1880,8 +1738,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns a list of all visibility definitions for the current application.
     *
     * @param UmgtVisibilityDefinitionType $type An optional visibility definitioyn type marker to limit the result.
@@ -1908,8 +1764,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads the list of users, that have visibility permissions on the given proxy object.
     *
     * @param UmgtVisibilityDefinition $proxy The proxy object.
@@ -1925,8 +1779,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads the list of groups, that have visibility permissions on the given proxy object.
     *
     * @param UmgtVisibilityDefinition $proxy The proxy object.
@@ -1942,8 +1794,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads a mixed list of users and groups, that have access to a given proxy.
     * Sorts the result according to the display name of the user and group.
     *
@@ -1963,8 +1813,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads the list of users, that do not have visibility permissions on the given application proxy.
     *
     * @param UmgtVisibilityDefinition $definition The appropriate visibility definition.
@@ -1984,8 +1832,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads the list of groups, that do not have visibility permissions on the given application proxy.
     *
     * @param UmgtVisibilityDefinition $definition The appropriate visibility definition.
@@ -2005,8 +1851,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads the list of visibility definitions for the given type.
     *
     * @param UmgtVisibilityDefinitionType $type The visibility definition type.
@@ -2022,8 +1866,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads all visibility definitions for the current user and it's group restricted by the
     * given visibility definition type (e.g. <em>Page</em>).
     *
@@ -2049,8 +1891,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads all visibility definition for the given user restricted by the
     * given visibility definition type (e.g. <em>Page</em>).
     *
@@ -2076,8 +1916,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads all visibility definition for the given group restricted by the
     * given visibility definition type (e.g. <em>Page</em>).
     *
@@ -2103,8 +1941,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads a visibility definition by it's object id.
     *
     * @param string $id The of the visibility definition.
@@ -2120,8 +1956,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads a visibility definition by it's application object id and the type.
     * Providing the type is necessary due to the fact, that app objct id is not
     * unique throughout the system but the combination with the type is.
@@ -2143,8 +1977,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Saves a visibility definition type used to categorize an application object.
     *
     * @param UmgtVisibilityDefinitionType $proxyType The type to save.
@@ -2163,8 +1995,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Recursively deletes the proxy type and it's descendants (proxies + associations).
     *
     * @param UmgtVisibilityDefinitionType $proxyType The proxy type to delete.
@@ -2183,8 +2013,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns a proxy type object specified by the given id.
     *
     * @param int $id The id of the proxy type.
@@ -2212,8 +2040,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns the type associated to the given application proxy object.
     *
     * @param UmgtVisibilityDefinition $proxy The proxy object to load the type of.
@@ -2232,8 +2058,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns a list of proxy type objects. They represent a certain
     * data type (=class) within the application the user management
     * module is integrated in. Managing visibility, proxy types in
@@ -2254,8 +2078,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Fetches the token representation by a given token string.
     * <p/>
     * This method is used to resolve the user by the current cookie.
@@ -2272,8 +2094,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Resolves the appropriate user from the given auth token.
     *
     * @param UmgtAuthToken $token The current auth token.
@@ -2288,8 +2108,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Creates/saves an auto-login token for the given user.
     *
     * @param UmgtUser $user The user to create the token for.
@@ -2301,8 +2119,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns the life time of the auto login cookie.
     *
     * @return int The life time of the auto login cookie.

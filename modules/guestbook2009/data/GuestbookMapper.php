@@ -33,9 +33,6 @@ use APF\modules\guestbook2009\biz\User;
 use InvalidArgumentException;
 
 /**
- * @package APF\modules\guestbook2009\data
- * @class GuestbookMapper
- *
  * Implements the data mapper for the guestbook module. Translates the single-language
  * domain model into a multi-language database layout.
  *
@@ -47,18 +44,19 @@ class GuestbookMapper extends APFObject {
 
    /**
     * The database connection name.
-    * @var string
+    *
+    * @var string $connectionName
     */
    private $connectionName;
 
    /**
-    * @var GenericORRelationMapper The GORM instance.
+    * The GORM instance.
+    *
+    * @var GenericORRelationMapper $orm
     */
    private $orm;
 
    /**
-    * @public
-    *
     * Loads the list of Entries
     *
     * @return Entry[] The desired entries for the current guestbook.
@@ -73,15 +71,14 @@ class GuestbookMapper extends APFObject {
       $crit->addOrderIndicator('CreationTimestamp', 'DESC');
 
       $gb = $this->getCurrentGuestbook();
+
       return $this->mapGenericEntries2DomainObjects(
-         $gb->loadRelatedObjects('Guestbook2Entry', $crit)
+            $gb->loadRelatedObjects('Guestbook2Entry', $crit)
       );
 
    }
 
    /**
-    * @public
-    *
     * Returns the list of all entries for filling a selection field.
     *
     * @return Entry[] The desired entry list.
@@ -95,17 +92,16 @@ class GuestbookMapper extends APFObject {
       $sortCrit = new GenericCriterionObject();
       $sortCrit->addOrderIndicator('CreationTimestamp', 'DESC');
       $gb = $this->getCurrentGuestbook();
+
       return $this->mapGenericEntries2DomainObjects(
-         $gb->loadRelatedObjects('Guestbook2Entry', $sortCrit),
-         false
+            $gb->loadRelatedObjects('Guestbook2Entry', $sortCrit),
+            false
       );
 
    }
 
 
    /**
-    * @public
-    *
     * Returns the current guestbook domain object.
     *
     * @return Guestbook The desired guestbook.
@@ -116,17 +112,17 @@ class GuestbookMapper extends APFObject {
     */
    public function loadGuestbook() {
       $gb = $this->getCurrentGuestbook();
+
       return $this->mapGenericGuestbook2DomainObject($gb);
    }
 
 
    /**
-    * @private
-    *
     * Translates the generic guestbook object into the guestbook's
     * equivalent domain object.
     *
     * @param GenericDomainObject $guestbook The generic domain object.
+    *
     * @return Entry The guestbook's domain object.
     * @throws InvalidArgumentException In case the guestbook entry cannot be loaded.
     *
@@ -168,11 +164,10 @@ class GuestbookMapper extends APFObject {
 
 
    /**
-    * @public
-    *
     * Loads a single entry with it's editor to perform an update.
     *
     * @param int $id The id of the entry.
+    *
     * @return Entry The desired entry.
     *
     * @author Christian Achatz
@@ -185,14 +180,13 @@ class GuestbookMapper extends APFObject {
       $crit->addPropertyIndicator('EntryID', $id);
       $gb = $this->getCurrentGuestbook();
       $entryList = $this->mapGenericEntries2DomainObjects(
-         $gb->loadRelatedObjects('Guestbook2Entry', $crit)
+            $gb->loadRelatedObjects('Guestbook2Entry', $crit)
       );
+
       return $entryList[0];
    }
 
    /**
-    * @public
-    *
     * Saves the new / edited guestbook entry.
     *
     * @param Entry $entry The guestbook entry to save.
@@ -207,8 +201,6 @@ class GuestbookMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Deletes the given entry from the database.
     *
     * @param Entry $domEntry The guestbook entry to delete.
@@ -241,11 +233,10 @@ class GuestbookMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Checks the user's credentials.
     *
     * @param User $user The user to authenticate.
+    *
     * @return boolean True in case, the user is allowed to login, false otherwise.
     *
     * @author Christian Achatz
@@ -257,16 +248,16 @@ class GuestbookMapper extends APFObject {
       $authCrit->addPropertyIndicator('Username', $user->getUsername());
       $authCrit->addPropertyIndicator('Password', md5($user->getPassword()));
       $gbUser = $this->orm->loadObjectByCriterion('User', $authCrit);
+
       return $gbUser !== null;
    }
 
 
    /**
-    * @private
-    *
     * Maps a domain object to a GenericDomainObject to prepare the entry for saving it.
     *
     * @param Entry $domEntry The Entry domain object.
+    *
     * @return GenericDomainObject The generic domain object representing the Entry object.
     *
     * @author Christian Achatz
@@ -317,13 +308,12 @@ class GuestbookMapper extends APFObject {
    }
 
    /**
-    * @private
-    *
     * Try to load an existing  attribute. If possible, merge the attributes to not
     * generate new objects in database. Otherwise return a new generic domain object.
     *
     * @param Entry $domEntry The entry domain object.
     * @param string $name The name of the generic attribute to return.
+    *
     * @return GenericDomainObject The attribute's data layer representation.
     *
     * @author Christian Achatz
@@ -349,12 +339,11 @@ class GuestbookMapper extends APFObject {
    }
 
    /**
-    * @private
-    *
     * Returns the desired instance of the GenericORMapper configured for this application case.
     *
     * @param GenericDomainObject[] A list of generic entries.
     * @param boolean $addEditor Indicates, if the editor should be mapped to the entry object.
+    *
     * @return Entry[] A list of guestbook domain objects.
     *
     * @author Christian Achatz
@@ -423,12 +412,11 @@ class GuestbookMapper extends APFObject {
       }
 
       $t->stop('mapGenericEntries2DomainObjects()');
+
       return $gbEntries;
    }
 
    /**
-    * @public
-    *
     * Initializer method for usage with the DIServiceManager. Sets the database
     * connection name.
     *
@@ -443,8 +431,6 @@ class GuestbookMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Injects the GenericORRelationMapper into the guestbook mapper.
     *
     * @param GenericORRelationMapper $orm The generic o/r mapper instance.
@@ -458,8 +444,6 @@ class GuestbookMapper extends APFObject {
    }
 
    /**
-    * @private
-    *
     * @return GenericDomainObject The active language's representation object.
     *
     * @author Christian Achatz
@@ -469,12 +453,11 @@ class GuestbookMapper extends APFObject {
    private function getCurrentLanguage() {
       $crit = new GenericCriterionObject();
       $crit->addPropertyIndicator('ISOCode', $this->language);
+
       return $this->orm->loadObjectByCriterion('Language', $crit);
    }
 
    /**
-    * @private
-    *
     * Returns the current instance of the guestbook.
     *
     * @return GenericDomainObject The current instance of the guestbook.
@@ -486,6 +469,7 @@ class GuestbookMapper extends APFObject {
    private function getCurrentGuestbook() {
       /* @var $model GuestbookModel */
       $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
+
       return $this->orm->loadObjectByID('Guestbook', $model->getGuestbookId());
    }
 

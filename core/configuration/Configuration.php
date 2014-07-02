@@ -21,9 +21,6 @@
 namespace APF\core\configuration;
 
 /**
- * @package APF\core\configuration
- * @class Configuration
- *
  * Defines the scheme, a APF configuration object must have. Each configuration
  * provider can define it's own configuration instance based on this interface.
  *
@@ -34,8 +31,6 @@ namespace APF\core\configuration;
 interface Configuration {
 
    /**
-    * @public
-    *
     * Returns the desired configuration key's value.
     *
     * @param string $name The name of the attribute.
@@ -50,8 +45,6 @@ interface Configuration {
    public function getValue($name, $defaultValue = null);
 
    /**
-    * @public
-    *
     * Returns the desired configuration section.
     *
     * @param string $name The name of the attribute.
@@ -69,8 +62,6 @@ interface Configuration {
    public function setSection($name, Configuration $section);
 
    /**
-    * @public
-    *
     * Enumerates the names of the current configuration keys.
     *
     * @return array The names of the config keys.
@@ -82,8 +73,6 @@ interface Configuration {
    public function getValueNames();
 
    /**
-    * @public
-    *
     * Enumerates the names of the current configuration sections.
     *
     * @return array The names of the section keys.
@@ -95,8 +84,6 @@ interface Configuration {
    public function getSectionNames();
 
    /**
-    * @public
-    *
     * Removes the section with the given name from the configuration.
     * This can be used to manipulate configuration files for saving.
     *
@@ -109,8 +96,6 @@ interface Configuration {
    public function removeSection($name);
 
    /**
-    * @public
-    *
     * Removes the value with the given name from the configuration.
     * This can be used to manipulate configuration files for saving.
     *

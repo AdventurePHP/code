@@ -26,10 +26,6 @@ use APF\core\registry\Registry;
 use InvalidArgumentException;
 
 /**
- * @package APF\tools\cache
- * @class CacheBase
- * @abstract
- *
  * Implements an abstract base class for the cache provider and the cache manager. Includes
  * a generic access method to the cache configuration attributes.
  *
@@ -40,7 +36,9 @@ use InvalidArgumentException;
 abstract class CacheBase extends APFObject {
 
    /**
-    * @var Configuration Cache configuration options.
+    * Cache configuration options.
+    *
+    * @var Configuration $configuration
     */
    private $configuration;
 
@@ -49,8 +47,6 @@ abstract class CacheBase extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Returns the value of the cache config attribute or throws an exception,
     * in case the attribute is not given within the attributes array.
     *
@@ -79,8 +75,6 @@ abstract class CacheBase extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Let's you retrieve the validity time of the cache entries.
     *
     * @param CacheKey $cacheKey The current cache key.

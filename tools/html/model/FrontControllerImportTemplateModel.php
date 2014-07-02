@@ -21,9 +21,6 @@
 namespace APF\tools\html\model;
 
 /**
- * @package APF\tools\html\model
- * @class FrontControllerImportTemplateModel
- *
  * Defines the model structure that your implementation must comply with using
  * the <em>FrontControllerImportTemplateTag</em> tag in combination with a
  * front controller action.

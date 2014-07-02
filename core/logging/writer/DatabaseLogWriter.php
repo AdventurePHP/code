@@ -27,9 +27,6 @@ use APF\core\logging\LogWriter;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package APF\core\logging\writer
- * @class DatabaseLogWriter
- *
  * Implements a log writer to persist the applied entries to a database table.
  * <p/>
  * In order to correctly write the log entries, please create a table with the
@@ -59,23 +56,27 @@ use APF\core\pagecontroller\APFObject;
 class DatabaseLogWriter extends APFObject implements LogWriter {
 
    /**
-    * @var string The log target identifier.
+    * The log target identifier.
+    *
+    * @var string $target
     */
    protected $target;
 
    /**
-    * @var string The database connection name.
+    * The database connection name.
+    *
+    * @var string $connectionName
     */
    protected $connectionName = null;
 
    /**
-    * @var string The name of the table to write the log entries to.
+    * The name of the table to write the log entries to.
+    *
+    * @var string $logTable
     */
    protected $logTable;
 
    /**
-    * @public
-    *
     * Initializes the DatabaseLogWriter with it's database connection name.
     *
     * @param string $connectionName The database connection name.
@@ -91,8 +92,6 @@ class DatabaseLogWriter extends APFObject implements LogWriter {
    }
 
    /**
-    * @public
-    *
     * Let's you set the database connection name that refers to a configuration
     * section within the <em>config/core/database/{CONTEXT}/{ENVIRONMENT}_connections.ini</em>
     * configuration file. For details, please refer to the database configuration chapter
@@ -109,8 +108,6 @@ class DatabaseLogWriter extends APFObject implements LogWriter {
    }
 
    /**
-    * @public
-    *
     * Let's you set the database table name the log entries are written to.
     *
     * @param string $logTable The name of the table to write the log entries to.
@@ -129,6 +126,7 @@ class DatabaseLogWriter extends APFObject implements LogWriter {
    private function &getDatabaseConnection() {
       /* @var $cM ConnectionManager */
       $cM = & $this->getServiceObject('APF\core\database\ConnectionManager');
+
       return $cM->getConnection($this->connectionName);
    }
 

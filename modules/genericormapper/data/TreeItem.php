@@ -21,9 +21,6 @@
 namespace APF\modules\genericormapper\data;
 
 /**
- * @package APF\modules\genericormapper\data
- * @class TreeItem
- *
  * @author Nicolas Pecher
  * @version
  * Version 0.1, 23.04.2012
@@ -31,18 +28,20 @@ namespace APF\modules\genericormapper\data;
 class TreeItem extends GenericDomainObject {
 
    /**
-    * @var GenericDomainObject The parent object of this navigation node
+    * The parent object of this navigation node
+    *
+    * @var GenericDomainObject $parentItem
     */
    protected $parentItem = null;
 
    /**
-    * @var GenericDomainObject The children of this navigation node
+    * The children of this navigation node
+    *
+    * @var GenericDomainObject $children
     */
    protected $children = array();
 
    /**
-    * @public
-    *
     * Sets the parent object
     *
     * @param TreeItem $parentItem The parent object
@@ -56,8 +55,6 @@ class TreeItem extends GenericDomainObject {
    }
 
    /**
-    * @public
-    *
     * Returns the parent object
     *
     * @return TreeItem The parent object
@@ -71,8 +68,6 @@ class TreeItem extends GenericDomainObject {
    }
 
    /**
-    * @public
-    *
     * Adds a child object
     *
     * @param TreeItem $child An child object
@@ -86,8 +81,6 @@ class TreeItem extends GenericDomainObject {
    }
 
    /**
-    * @public
-    *
     * Adds an array of child objects
     *
     * @param array $children An array of child items
@@ -103,8 +96,6 @@ class TreeItem extends GenericDomainObject {
    }
 
    /**
-    * @public
-    *
     * Returns all child objects
     *
     * @return TreeItem[] A list of the child objects

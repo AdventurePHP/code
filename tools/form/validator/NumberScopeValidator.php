@@ -21,9 +21,6 @@
 namespace APF\tools\form\validator;
 
 /**
- * @package APF\tools\form\validator
- * @class NumberScopeValidator
- *
  * Validates a given form control to contain a number within a defined scope.
  * The default min value is 0, the default max value 65535 (maximum value in
  * 16-bit integer). Define the upper/lower limit by using the attributes
@@ -45,12 +42,11 @@ class NumberScopeValidator extends TextFieldValidator {
    private static $ONLY_INTEGER_ATTRIBUTE_VALUE = 'yes';
 
    /**
-    * @public
-    *
     * Re-implements the <em>validate()</em> method for the number scope validator.
     * Supports min and max value definition of the number to validate.
     *
     * @param string $input The number to validate.
+    *
     * @return boolean true, in case the control to validate is considered valid, false otherwise.
     *
     * @author Jan Wiese
@@ -63,12 +59,12 @@ class NumberScopeValidator extends TextFieldValidator {
       if ($this->onlyIntegers()) {
 
          // check for integer
-         if (!($input === ((string)(int)$input))) {
+         if (!($input === ((string) (int) $input))) {
             return false;
          }
 
          // convert input from string to int
-         $input = (int)$input;
+         $input = (int) $input;
 
       } else {
 
@@ -78,7 +74,7 @@ class NumberScopeValidator extends TextFieldValidator {
          }
 
          // convert input from string to float
-         $input = (float)$input;
+         $input = (float) $input;
 
       }
 
@@ -105,8 +101,6 @@ class NumberScopeValidator extends TextFieldValidator {
    }
 
    /**
-    * @protected
-    *
     * Returns the min number value, that must be defined within the target control.
     * Tries to load the min value from the <em>minvalue</em> attribute within the
     * target form control definition. Default value is 0. Infinite lower limit is
@@ -128,13 +122,11 @@ class NumberScopeValidator extends TextFieldValidator {
          return null;
       }
 
-      return (float)$minValue;
+      return (float) $minValue;
    }
 
 
    /**
-    * @protected
-    *
     * Returns the max number value, that must be defined within the target control.
     * Tries to load the max value from the <em>maxvalue</em> attribute within the
     * target form control definition. Default value is 65535. Infinite upper limit is
@@ -157,13 +149,11 @@ class NumberScopeValidator extends TextFieldValidator {
          return null;
       }
 
-      return (float)$maxValue;
+      return (float) $maxValue;
    }
 
 
    /**
-    * @protected
-    *
     * Returns if only integers are accepted as target control value.
     * Tries to load from the <em>integers</em> attribute within the target control
     * definition. Default
@@ -176,7 +166,7 @@ class NumberScopeValidator extends TextFieldValidator {
     */
    protected function onlyIntegers() {
       return $this->control->getAttribute(self::$ONLY_INTEGER_ATTRIBUTE_NAME)
-            == self::$ONLY_INTEGER_ATTRIBUTE_VALUE;
+      == self::$ONLY_INTEGER_ATTRIBUTE_VALUE;
    }
 
 }

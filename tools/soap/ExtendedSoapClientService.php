@@ -23,9 +23,6 @@ namespace APF\tools\soap;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package APF\tools\soap
- * @class ExtendedSoapClientService
- *
  * Implements a wrapper class for PHP's SoapClient service to have a more convenient service and to
  * be able to create it using the APF's DI service manager implementation.
  *
@@ -36,12 +33,16 @@ use APF\core\pagecontroller\APFObject;
 class ExtendedSoapClientService extends APFObject {
 
    /**
-    * @var string[] The options of the SoapClient instance.
+    * The options of the SoapClient instance.
+    *
+    * @var string[] $options
     */
    private $options = array();
 
    /**
-    * @var string The url of the WSDL.
+    * The url of the WSDL.
+    *
+    * @var string $wsdlUrl
     */
    private $wsdlUrl;
 
@@ -51,8 +52,6 @@ class ExtendedSoapClientService extends APFObject {
    private $client = null;
 
    /**
-    * @public
-    *
     * Creates the instance of the APF SoapClient wrapper.
     *
     * @author Christian Achatz
@@ -68,29 +67,27 @@ class ExtendedSoapClientService extends APFObject {
           * The soap_version option specifies whether to use SOAP 1.1 (default), or SOAP 1.2 client.
           * Default to be able to evaluate headers
           */
-         'soap_version' => SOAP_1_2,
+            'soap_version' => SOAP_1_2,
 
          /**
           * Use UTF-8 encoding to be compatible with most of the services (e.g. JAVA services).
           */
-         'encoding' => 'UTF-8',
+            'encoding'     => 'UTF-8',
 
          /**
           * Setting the boolean trace option enables use of the methods SoapClient->__getLastRequest,
           * SoapClient->__getLastRequestHeaders, SoapClient->__getLastResponse and SoapClient->__getLastResponseHeaders.
           */
-         'trace' => TRUE,
+            'trace'        => true,
 
          /**
           * The exceptions option is a boolean value defining whether soap errors throw exceptions of type SoapFault.
           */
-         'exceptions' => TRUE
+            'exceptions'   => true
       );
    }
 
    /**
-    * @protected
-    *
     * Factory method for the PHP SoapClient.
     *
     * @return \SoapClient The instance of the soap client.
@@ -103,12 +100,11 @@ class ExtendedSoapClientService extends APFObject {
       if ($this->client === null) {
          $this->client = new \SoapClient($this->wsdlUrl, $this->options);
       }
+
       return $this->client;
    }
 
    /**
-    * @public
-    *
     * This method provides a method call to a SOAP method. In order to execute the call you have
     * to provide the name of the method (action) and an associative array including the input
     * parameters. The parameters are directly mapped to the SOAP request structured defined within
@@ -165,6 +161,7 @@ class ExtendedSoapClientService extends APFObject {
     *
     * @param string $action The name of the SOAP method.
     * @param array $arguments The SPA method's input parameters (usually an associative array).
+    *
     * @return mixed The response of the call (string or a response object).
     * @throws \SoapFault In case of any SOAP call error.
     *
@@ -191,8 +188,6 @@ class ExtendedSoapClientService extends APFObject {
    }
 
    /**
-    * @public
-    *
     * This method provides a low level method to call a SOAP method. In order to execute the call
     * you have to provide the name of the method (action) and the SOAP request (input) as a string.
     * <p/>
@@ -217,6 +212,7 @@ class ExtendedSoapClientService extends APFObject {
     * @param string $action The WSDL method's name.
     * @param string $request The SOAP request string.
     * @param boolean $oneWay True in case no answer is expected.
+    *
     * @return \SimpleXMLElement|null The answer of the request or null in case $oneWay is set to TRUE.
     * @throws \SoapFault In case of any SOAP call error.
     *
@@ -231,6 +227,7 @@ class ExtendedSoapClientService extends APFObject {
 
       if ($oneWay === true) {
          $client->__doRequest($request, $this->options['location'], $action, $this->getSoapVersion());
+
          return null;
       } else {
          $response = $client->__doRequest($request, $this->options['location'], $action, $this->getSoapVersion(), $oneWay);
@@ -255,6 +252,7 @@ class ExtendedSoapClientService extends APFObject {
 
    /**
     * @param string $location The location of the SOAP service.
+    *
     * @return ExtendedSoapClientService This instance for further usage.
     *
     * @author Christian Achatz
@@ -303,6 +301,7 @@ class ExtendedSoapClientService extends APFObject {
     * Configures the The HTTP BASE AUTH user name for protected SOAP resources.
     *
     * @param string $username The HTTP BASE AUTH user name.
+    *
     * @return ExtendedSoapClientService This instance for further usage.
     *
     * @author Christian Achatz
@@ -322,6 +321,7 @@ class ExtendedSoapClientService extends APFObject {
     * Configures the The HTTP BASE AUTH password for protected SOAP resources.
     *
     * @param string $password The HTTP BASE AUTH password.
+    *
     * @return ExtendedSoapClientService This instance for further usage.
     *
     * @author Christian Achatz
@@ -339,6 +339,7 @@ class ExtendedSoapClientService extends APFObject {
 
    /**
     * @param int $compression The compression to use/accept.
+    *
     * @return ExtendedSoapClientService This instance for further usage.
     *
     * @author Christian Achatz
@@ -355,7 +356,8 @@ class ExtendedSoapClientService extends APFObject {
    }
 
    /**
-    * @var int The connection_timeout option defines a timeout in seconds for the connection to the SOAP service. This option does not define a timeout for services with slow responses. To limit the time to wait for calls to finish the default_socket_timeout setting is available.
+    * @param int The connection_timeout option defines a timeout in seconds for the connection to the SOAP service. This option does not define a timeout for services with slow responses. To limit the time to wait for calls to finish the default_socket_timeout setting is available.
+    *
     * @return ExtendedSoapClientService This instance for further usage.
     *
     * @author Christian Achatz
@@ -372,7 +374,8 @@ class ExtendedSoapClientService extends APFObject {
    }
 
    /**
-    * @var int The cache_wsdl option is one of WSDL_CACHE_NONE, WSDL_CACHE_DISK, WSDL_CACHE_MEMORY or WSDL_CACHE_BOTH.
+    * @param int The cache_wsdl option is one of WSDL_CACHE_NONE, WSDL_CACHE_DISK, WSDL_CACHE_MEMORY or WSDL_CACHE_BOTH.
+    *
     * @return ExtendedSoapClientService This instance for further usage.
     *
     * @author Christian Achatz
@@ -390,6 +393,7 @@ class ExtendedSoapClientService extends APFObject {
 
    /**
     * @param string $encoding The encoding to use.
+    *
     * @return ExtendedSoapClientService This instance for further usage.
     *
     * @author Christian Achatz
@@ -407,6 +411,7 @@ class ExtendedSoapClientService extends APFObject {
 
    /**
     * @param int $version The soap version.
+    *
     * @return ExtendedSoapClientService This instance for further usage.
     */
    public function setSoapVersion($version) {
@@ -440,6 +445,7 @@ class ExtendedSoapClientService extends APFObject {
     * For further details, please see http://de.php.net/manual/en/soapclient.soapclient.php.
     *
     * @param int $mask The bit mask of the feature to enable.
+    *
     * @return ExtendedSoapClientService This instance for further usage.
     */
    public function enableFeature($mask) {
@@ -458,6 +464,7 @@ class ExtendedSoapClientService extends APFObject {
 
    /**
     * @param WsdlObjectMapping $mapping The object mapping of WSDL types to PHP objects.
+    *
     * @return ExtendedSoapClientService This instance for further usage.
     *
     * @author Christian Achatz
@@ -555,6 +562,7 @@ class ExtendedSoapClientService extends APFObject {
 
    /**
     * @param mixed $headers The soap headers to set for the subsequent calls.
+    *
     * @return boolean True in case of success, false otherwise.
     *
     * @author Christian Achatz
@@ -567,6 +575,7 @@ class ExtendedSoapClientService extends APFObject {
 
    /**
     * @param string $host The proxy host.
+    *
     * @return ExtendedSoapClientService This instance for further usage.
     *
     * @author Christian Achatz
@@ -584,6 +593,7 @@ class ExtendedSoapClientService extends APFObject {
 
    /**
     * @param string $port The proxy port.
+    *
     * @return ExtendedSoapClientService This instance for further usage.
     *
     * @author Christian Achatz
@@ -601,6 +611,7 @@ class ExtendedSoapClientService extends APFObject {
 
    /**
     * @param string $username The proxy user name.
+    *
     * @return ExtendedSoapClientService This instance for further usage.
     *
     * @author Christian Achatz
@@ -618,6 +629,7 @@ class ExtendedSoapClientService extends APFObject {
 
    /**
     * @param string $password The proxy password.
+    *
     * @return ExtendedSoapClientService This instance for further usage.
     *
     * @author Christian Achatz
@@ -635,6 +647,7 @@ class ExtendedSoapClientService extends APFObject {
 
    /**
     * @param string $userAgent The user agent to send along with the SOAP request.
+    *
     * @return ExtendedSoapClientService This instance for further usage.
     *
     * @author Christian Achatz

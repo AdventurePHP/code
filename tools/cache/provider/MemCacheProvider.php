@@ -25,9 +25,6 @@ use APF\tools\cache\CacheKey;
 use APF\tools\cache\CacheProvider;
 
 /**
- * @package APF\tools\cache\provider
- * @class MemCacheProvider
- *
  * Implements the cache reader for serialized php objects stored in the memcached server.
  *
  * @author Christian Achatz
@@ -38,7 +35,6 @@ use APF\tools\cache\CacheProvider;
 class MemCacheProvider extends CacheBase implements CacheProvider {
 
    /**
-    * @protected
     *  Remembers the cache keys within a certain namespace to be able to clear a whole
     *  namespace.
     */
@@ -102,9 +98,11 @@ class MemCacheProvider extends CacheBase implements CacheProvider {
             if ($replace_result !== true) {
                $store_result = $mem->set($identifier, $serialized);
                $mem->close();
+
                return $store_result;
             } else {
                $mem->close();
+
                return true;
             }
 
@@ -138,11 +136,13 @@ class MemCacheProvider extends CacheBase implements CacheProvider {
             }
 
             $mem->close();
+
             return true;
 
          } else {
             $status = $mem->delete($namespace . '_' . $cacheKey->getKey());
             $mem->close();
+
             return $status;
          }
 
@@ -151,8 +151,6 @@ class MemCacheProvider extends CacheBase implements CacheProvider {
    }
 
    /**
-    * @protected
-    *
     * Returns the memcache connection (instance of PHP's Memcache class).
     *
     * @return \Memcache The desired memcache connection.

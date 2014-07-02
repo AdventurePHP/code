@@ -25,9 +25,6 @@ use APF\core\loader\RootClassLoader;
 use Exception;
 
 /**
- * @package APF\core\configuration\provider
- * @class BaseConfigurationProvider
- *
  * Provides basic configuration provider functionality.
  *
  * @author Christian Achatz
@@ -37,32 +34,44 @@ use Exception;
 abstract class BaseConfigurationProvider {
 
    /**
-    * @var boolean Set to true, the context is omitted within the configuration file path.
+    * Set to true, the context is omitted within the configuration file path.
+    *
+    * @var boolean $omitContext
     */
    protected $omitContext = false;
 
    /**
-    * @var boolean Set to true, the environment fallback will be activated.
+    * Set to true, the environment fallback will be activated.
+    *
+    * @var boolean $activateEnvironmentFallback
     */
    protected $activateEnvironmentFallback = false;
 
    /**
-    * @var boolean Set to true, the environment is omitted within the configuration file path.
+    * Set to true, the environment is omitted within the configuration file path.
+    *
+    * @var boolean $omitEnvironment
     */
    protected $omitEnvironment = false;
 
    /**
-    * @var bool Set to true, the /config sub folder is skipped from the configuration file path.
+    * Set to true, the /config sub folder is skipped from the configuration file path.
+    *
+    * @var bool $omitConfigSubFolder
     */
    protected $omitConfigSubFolder = false;
 
    /**
-    * @var string The file extension of the provider.
+    * The file extension of the provider.
+    *
+    * @var string $extension
     */
    protected $extension = null;
 
    /**
-    * @var int The file permission to use to create folders.
+    * The file permission to use to create folders.
+    *
+    * @var int $folderPermission
     */
    protected $folderPermission = 0770;
 
@@ -141,13 +150,11 @@ abstract class BaseConfigurationProvider {
       } catch (Exception $e) {
          // in order to ease debugging, we are wrapping the class loader exception to a more obvious exception message
          throw new ConfigurationException('Class loader root path for namespace "' . $namespace . '" cannot be determined.'
-            . ' Please double-check your configuration!', E_USER_ERROR, $e);
+               . ' Please double-check your configuration!', E_USER_ERROR, $e);
       }
    }
 
    /**
-    * @protected
-    *
     * Creates the configuration file's path in case if does not exist. This is used for
     * saving configurations as <em>file_put_contents()</em> does not create missing folders.
     *

@@ -23,9 +23,6 @@ namespace APF\extensions\form\client;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package APF\extensions\form\client
- * @class ClientValidationScriptStore
- *
  * A store which contains all necessary information for client validators.
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>
@@ -36,17 +33,20 @@ class ClientValidationScriptStore extends APFObject {
 
    /**
     * Contains all validators which need to be added.
-    * @var array
+    *
+    * @var array $scriptStore
     */
    protected $scriptStore = array();
    /**
     * Contains all valmarkerclasses
-    * @var array
+    *
+    * @var array $valmarkerclassStore
     */
    protected $valmarkerclassStore = array();
    /**
     * Contains all options for the controls
-    * @var array
+    *
+    * @var array $optionsStore
     */
    protected $optionsStore = array();
 
@@ -68,10 +68,10 @@ class ClientValidationScriptStore extends APFObject {
       // add each control which needs this validator to scriptStore
       foreach ($controls as $control => $DUMMY) {
          $this->scriptStore[] = array(
-            'class' => $class,
-            'button' => $button,
-            'control' => $control,
-            'onblur' => $onblur
+               'class'   => $class,
+               'button'  => $button,
+               'control' => $control,
+               'onblur'  => $onblur
          );
 
          if (!isset($this->optionsStore[$control])) {

@@ -21,9 +21,6 @@
 namespace APF\tools\link;
 
 /**
- * @package APF\tools\link
- * @class DefaultLinkScheme
- *
  * This link scheme implementation is intended to handle &quot;normal&quot; urls
  * that have a simple path followed by various request parameters.
  * <p/>

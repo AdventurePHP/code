@@ -21,9 +21,6 @@
 namespace APF\tools\form\validator;
 
 /**
- * @package APF\tools\form\validator
- * @class PhoneAndFaxValidator
- *
  * Validates a given form control to contain a syntactically correct
  * birthday date. Schema: dd.MM.YY
  *
@@ -43,7 +40,7 @@ class SimpleBirthdayValidator extends TextFieldValidator {
       }
 
       // change order and check date
-      return checkdate((int)$birthday['1'], (int)$birthday['0'], (int)$birthday['2']);
+      return checkdate((int) $birthday['1'], (int) $birthday['0'], (int) $birthday['2']);
 
    }
 

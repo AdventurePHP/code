@@ -26,7 +26,7 @@
 (function ($) {
     $(document).ready(function () {
         jQuery.APFFormValidator.addClientValidator('IntegerValidator', {
-            validate:function (control, options) {
+            validate: function (control, options) {
                 var ctrlvalue = control.attr('value');
                 ctrlvalue = $.trim(ctrlvalue);
                 return !isNaN(ctrlvalue) && parseInt(ctrlvalue) == ctrlvalue;

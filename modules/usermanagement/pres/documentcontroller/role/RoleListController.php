@@ -24,9 +24,6 @@ use APF\modules\usermanagement\biz\model\UmgtRole;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller
- * @class RoleListController
- *
  * Implements the controller list the existing roles.
  *
  * @author Christian Achatz
@@ -42,7 +39,7 @@ class RoleListController extends UmgtBaseController {
       $roleList = $uM->getPagedRoleList();
 
       // display list
-      $buffer = (string)'';
+      $buffer = (string) '';
       $template = & $this->getTemplate('Role');
       foreach ($roleList as $role) {
 
@@ -84,6 +81,7 @@ class RoleListController extends UmgtBaseController {
       foreach ($permissions as $permission) {
          $permissionList .= '<li>' . $permission->getDisplayName() . '</li>';
       }
+
       return $permissionList . '</ul>';
    }
 
@@ -99,6 +97,7 @@ class RoleListController extends UmgtBaseController {
       foreach ($users as $user) {
          $userList .= '<li>' . $user->getDisplayName() . '</li>';
       }
+
       return $userList . '</ul>';
    }
 
@@ -114,6 +113,7 @@ class RoleListController extends UmgtBaseController {
       foreach ($groups as $group) {
          $groupList .= '<li>' . $group->getDisplayName() . '</li>';
       }
+
       return $groupList . '</ul>';
    }
 

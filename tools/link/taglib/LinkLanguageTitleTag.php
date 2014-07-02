@@ -23,9 +23,6 @@ namespace APF\tools\link\taglib;
 use APF\core\pagecontroller\LanguageLabelTag;
 
 /**
- * @package APF\tools\link\taglib
- * @class LinkLanguageTitleTag
- *
  * Re-implements the language label tag for the link tags.
  *
  * @author Werner Liemberger wpublicmail [at] gmail DOT com

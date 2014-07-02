@@ -29,9 +29,6 @@ use APF\tools\http\HeaderManager;
 use Exception;
 
 /**
- * @package APF\tools\media\actions
- * @class StreamMediaAction
- *
  * Implementation of the streamMedia action, that streams various media files (css, image, ...)
  * to the client. This action is the "backend" for the <*:mediastream /> tags.
  *
@@ -115,8 +112,6 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
    }
 
    /**
-    * @private
-    *
     * Removes un-allowed parts from the namespace (e.g. config namespace).
     *
     * @return string The namespace of the resource to load.
@@ -143,8 +138,6 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
    }
 
    /**
-    * @private
-    *
     * Cleans up the file body.
     *
     * @return string The file body of the resource to load.
@@ -158,8 +151,6 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
    }
 
    /**
-    * @private
-    *
     * Cleans up the file extension parameter.
     *
     * @return string The extension of the resource to load.
@@ -173,8 +164,6 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
    }
 
    /**
-    * @private
-    *
     * Returns the list of allowed extensions along with their MIME types.
     * Falls back to internal values in case the optional configuration
     * file is not present.
@@ -201,8 +190,6 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
    }
 
    /**
-    * @private
-    *
     * Loads the configuration file that defines the allowed extensions.
     * <p/>
     * In order to define a custom set of allowed file extensions along with their MIME type,

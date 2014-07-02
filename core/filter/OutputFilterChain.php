@@ -21,9 +21,6 @@
 namespace APF\core\filter;
 
 /**
- * @package APF\core\filter
- * @class OutputFilterChain
- *
  * Represents the singleton instance of the output filter chain.
  *
  * @author Christian Achatz
@@ -33,7 +30,7 @@ namespace APF\core\filter;
 class OutputFilterChain extends AbstractFilterChain {
 
    /**
-    * @var OutputFilterChain
+    * @var OutputFilterChain $CHAIN
     */
    private static $CHAIN;
 
@@ -47,6 +44,7 @@ class OutputFilterChain extends AbstractFilterChain {
       if (self::$CHAIN === null) {
          self::$CHAIN = new OutputFilterChain();
       }
+
       return self::$CHAIN;
    }
 

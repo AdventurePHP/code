@@ -1,10 +1,12 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\role\RemoveUserFromRolesController"
+class="APF\modules\usermanagement\pres\documentcontroller\role\RemoveUserFromRolesController"
 @>
-<h3><html:getstring
-       namespace="APF\modules\usermanagement\pres"
-       config="labels.ini"
-       entry="frontend.user.remove-user-from-role.headline"/></h3>
+<h3>
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.user.remove-user-from-role.headline"/>
+</h3>
 <html:form name="Roles" method="post">
    <div>
       <form:addvalidator

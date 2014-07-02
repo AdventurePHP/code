@@ -25,9 +25,6 @@ use APF\core\logging\writer\FileLogWriter;
 use APF\core\registry\Registry;
 
 /**
- * @package APF\core\logging
- * @class Logger
- *
  * Implements a generic logger used in the framework's core components and your applications. The
  * class must be initialized singleton! Flushing is done automatically ba shutdown function after
  * a request.
@@ -40,60 +37,68 @@ use APF\core\registry\Registry;
 class Logger {
 
    public static $LOGGER_THRESHOLD_ALL = array(
-      LogEntry::SEVERITY_TRACE,
-      LogEntry::SEVERITY_DEBUG,
-      LogEntry::SEVERITY_WARNING,
-      LogEntry::SEVERITY_INFO,
-      LogEntry::SEVERITY_ERROR,
-      LogEntry::SEVERITY_FATAL
+         LogEntry::SEVERITY_TRACE,
+         LogEntry::SEVERITY_DEBUG,
+         LogEntry::SEVERITY_WARNING,
+         LogEntry::SEVERITY_INFO,
+         LogEntry::SEVERITY_ERROR,
+         LogEntry::SEVERITY_FATAL
    );
 
    public static $LOGGER_THRESHOLD_WARN = array(
-      LogEntry::SEVERITY_WARNING,
-      LogEntry::SEVERITY_INFO,
-      LogEntry::SEVERITY_ERROR,
-      LogEntry::SEVERITY_FATAL
+         LogEntry::SEVERITY_WARNING,
+         LogEntry::SEVERITY_INFO,
+         LogEntry::SEVERITY_ERROR,
+         LogEntry::SEVERITY_FATAL
    );
 
    public static $LOGGER_THRESHOLD_INFO = array(
-      LogEntry::SEVERITY_INFO,
-      LogEntry::SEVERITY_ERROR,
-      LogEntry::SEVERITY_FATAL
+         LogEntry::SEVERITY_INFO,
+         LogEntry::SEVERITY_ERROR,
+         LogEntry::SEVERITY_FATAL
    );
 
    public static $LOGGER_THRESHOLD_ERROR = array(
-      LogEntry::SEVERITY_ERROR,
-      LogEntry::SEVERITY_FATAL
+         LogEntry::SEVERITY_ERROR,
+         LogEntry::SEVERITY_FATAL
    );
 
    /**
-    * @var array Defines the severity types that are written to the log file.
+    * Defines the severity types that are written to the log file.
+    *
+    * @var array $logThreshold
     */
    protected $logThreshold;
 
    /**
-    * @var LogEntry[][] Log entry store.
+    * Log entry store.
+    *
+    * @var LogEntry[][] $logEntries
     */
    protected $logEntries = array();
 
    /**
-    * @var int The maximum number of log entries before the log buffer is flushed automatically.
+    * The maximum number of log entries before the log buffer is flushed automatically.
+    *
+    * @var int $maxBufferLength
     */
    protected $maxBufferLength = 300;
 
    /**
-    * @var int Counter for log file entries to handle the buffer length.
+    * Counter for log file entries to handle the buffer length.
+    *
+    * @var int $logEntryCount
     */
    protected $logEntryCount = 0;
 
    /**
-    * @var LogWriter[] The list of registered log writers.
+    * The list of registered log writers.
+    *
+    * @var LogWriter[] $writers
     */
    protected $writers = array();
 
    /**
-    * @public
-    *
     * Initializes the logger.
     * <p/>
     * Please be aware, that starting with release 1.15 DEBUG and TRACE statements
@@ -115,16 +120,14 @@ class Logger {
       // Please note, that the writer's target name can be configured
       // within the Registry for all framework-related log statements.
       $this->addLogWriter(
-         Registry::retrieve('APF\core', 'InternalLogTarget'),
-         new FileLogWriter(
-            str_replace('\\', '/', getcwd()) . '/logs'
-         )
+            Registry::retrieve('APF\core', 'InternalLogTarget'),
+            new FileLogWriter(
+                  str_replace('\\', '/', getcwd()) . '/logs'
+            )
       );
    }
 
    /**
-    * @public
-    *
     * Calling this method you can define the maximum number of entries
     * before auto-flush takes place.
     *
@@ -139,8 +142,6 @@ class Logger {
    }
 
    /**
-    * @public
-    *
     * Let's you set the logging threshold. This is a list of severity that are
     * written to the log. All other severity are ignored.
     *
@@ -155,8 +156,6 @@ class Logger {
    }
 
    /**
-    * @public
-    *
     * Using this method you can add a LogWriter implementation to the current logger.
     * <p/>
     * Each log writer is identified by a dedicated target name that is injected to the
@@ -189,8 +188,6 @@ class Logger {
    }
 
    /**
-    * @public
-    *
     * Removes a registered writer identified by the applied target name.
     *
     * @param string $target The log target name.
@@ -204,11 +201,10 @@ class Logger {
    }
 
    /**
-    * @public
-    *
     * Let's you retrieve a log writer identified by the applied target name.
     *
     * @param string $target The log target name.
+    *
     * @return LogWriter $writer The respective writer.
     * @throws LoggerException In case the desired log writer is not registered.
     *
@@ -224,8 +220,6 @@ class Logger {
    }
 
    /**
-    * @public
-    *
     * Returns a list of registered log targets.
     * <p/>
     * May be used for re-configuration (e.g. register a debugging log writer) or information purposes.
@@ -241,8 +235,6 @@ class Logger {
    }
 
    /**
-    * @public
-    *
     * Creates a log entry with the SimpleLogEntry type.
     * <p/>
     * In case you want to add custom log entry elements, please use the <em>addEntry()</em> method
@@ -262,8 +254,6 @@ class Logger {
    }
 
    /**
-    * @public
-    *
     * Method to create a log entry the OO-way.
     * <p/>
     * Use this method, in case you intend to add custom log entry implementations.
@@ -290,8 +280,6 @@ class Logger {
    }
 
    /**
-    * @public
-    *
     * Flushes the log buffer to the desired files.
     *
     * @throws LoggerException In case a writer cannot be retrieved.

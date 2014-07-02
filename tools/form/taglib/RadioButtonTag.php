@@ -23,9 +23,6 @@ namespace APF\tools\form\taglib;
 use APF\tools\form\FormException;
 
 /**
- * @package APF\tools\form\taglib
- * @class RadioButtonTag
- *
  * Represents a APF radio button.
  *
  * @author Christian Schäfer
@@ -46,8 +43,6 @@ class RadioButtonTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns the HTML code of the radio button.
     *
     * @return string The HTML code of the radio button
@@ -62,12 +57,11 @@ class RadioButtonTag extends AbstractFormControl {
       if ($this->isVisible) {
          return '<input type="radio" ' . $this->getSanitizedAttributesAsString($this->attributes) . ' />';
       }
+
       return '';
    }
 
    /**
-    * @protected
-    *
     * Re-implements the presetValue() method for the radio button.
     *
     * @author Christian Schäfer

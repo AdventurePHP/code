@@ -23,9 +23,6 @@ namespace APF\core\registry;
 use InvalidArgumentException;
 
 /**
- * @package APF\core\registry
- * @class Registry
- *
  * Implements the registry pattern. You can register and retrieve namespace dependent values. The
  * Registry is a static container since 1.12. This is due to performance reasons! Please use
  * <code>Registry::register(...);</code>
@@ -41,9 +38,9 @@ use InvalidArgumentException;
 final class Registry {
 
    /**
-    * @private
-    * @static
-    * @var string[] Stores the registry content.
+    * Stores the registry content.
+    *
+    * @var string[] $REGISTRY_STORE
     */
    private static $REGISTRY_STORE = array();
 
@@ -51,15 +48,13 @@ final class Registry {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Adds a registry value to the registry. If write protection is enabled a warning is displayed.
     *
     * @param string $namespace namespace of the entry.
     * @param string $name name of the entry.
     * @param string $value value of the entry.
     * @param bool $readOnly true (value is read only) | false (value can be changed).
+    *
     * @throws InvalidArgumentException In case you try to register a read-only value that has ben registered before.
     *
     * @author Christian Achatz
@@ -80,14 +75,12 @@ final class Registry {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Retrieves a registry value from the registry.
     *
     * @param string $namespace Namespace of the entry.
     * @param string $name Name of the entry.
     * @param string $default The default value to return, if no key is registered.
+    *
     * @return string The desired value.
     *
     * @author Christian Achatz

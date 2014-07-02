@@ -21,9 +21,6 @@
 namespace APF\extensions\htmlheader\biz;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class ConditionalStaticCssNode
- *
  * Implements a conditional static css node.
  *
  * @author Christian Achatz

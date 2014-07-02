@@ -24,9 +24,6 @@ use APF\tools\form\provider\csrf\CSRFHashProvider;
 use APF\tools\form\taglib\AbstractFormControl;
 
 /**
- * @package APF\tools\form\validator
- * @class CSRFHashValidator
- *
  * Checks the csrf hash from the csrfhash field.
  *
  * @author Daniel Seemaier
@@ -36,11 +33,10 @@ use APF\tools\form\taglib\AbstractFormControl;
 class CSRFHashValidator extends TextFieldValidator {
 
    /**
-    * @public
-    *
     * Validates the csrf hash.
     *
     * @param string $input The CSRF hash from the request.
+    *
     * @return string True, in case of the hash is valid, otherwise false.
     *
     * @author Daniel Seemaier
@@ -60,8 +56,6 @@ class CSRFHashValidator extends TextFieldValidator {
    }
 
    /**
-    * @protected
-    *
     * Overwrites the maker method to have no interference with the "class"
     * attribute when loading the hash provider.
     *

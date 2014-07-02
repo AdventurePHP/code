@@ -30,9 +30,6 @@ use APF\extensions\htmlheader\pres\taglib\HtmlHeaderGetBodyJsTag;
 use APF\extensions\htmlheader\pres\taglib\HtmlHeaderGetHeadTag;
 
 /**
- * @package APF\extensions\htmlheader\pres\filter
- * @class HtmlHeaderOutputFilter
- *
  * Implements an output filter that injects the content of the html header manager
  * into the HTML page.
  *
@@ -49,16 +46,16 @@ class HtmlHeaderOutputFilter extends APFObject implements ChainedContentFilter {
 
       // replace gethead-taglib
       $input = str_replace(
-         HtmlHeaderGetHeadTag::HTML_HEADER_INDICATOR,
-         $replacements[0],
-         $input
+            HtmlHeaderGetHeadTag::HTML_HEADER_INDICATOR,
+            $replacements[0],
+            $input
       );
 
       // replace getbodyjs-taglib
       $input = str_replace(
-         HtmlHeaderGetBodyJsTag::HTML_BODYJS_INDICATOR,
-         $replacements[1],
-         $input
+            HtmlHeaderGetBodyJsTag::HTML_BODYJS_INDICATOR,
+            $replacements[1],
+            $input
       );
 
       return $chain->filter($input);
@@ -110,11 +107,10 @@ class HtmlHeaderOutputFilter extends APFObject implements ChainedContentFilter {
    }
 
    /**
-    * @protected
-    *
     * Sorts the list of header nodes concerning their priority.
     *
     * @param HeaderNode[] $nodes The header nodes to sort.
+    *
     * @return HtmlNode[] The sorted header nodes.
     *
     * @author Christian Achatz
@@ -123,17 +119,16 @@ class HtmlHeaderOutputFilter extends APFObject implements ChainedContentFilter {
     */
    protected function sortNodes(array $nodes) {
       usort($nodes, array($this, 'compare'));
+
       return $nodes;
    }
 
    /**
-    * @public
-    * @static
-    *
     * Compares two header nodes concerning their priority.
     *
     * @param HeaderNode $a The first node.
     * @param HeaderNode $b The second node.
+    *
     * @return int The comparison result.
     *
     * @author Christian Achatz
@@ -144,6 +139,7 @@ class HtmlHeaderOutputFilter extends APFObject implements ChainedContentFilter {
       if ($a->getPriority() == $b->getPriority()) {
          return $a->getPriority() == 0 ? 0 : 1; // sort equals again to preserve order!
       }
+
       return $a->getPriority() > $b->getPriority() ? -1 : 1;
    }
 

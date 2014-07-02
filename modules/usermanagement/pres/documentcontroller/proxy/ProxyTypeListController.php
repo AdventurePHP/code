@@ -23,9 +23,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\proxy
- * @class ProxyTypeListController
- *
  * Displays the list of proxy types defined. Offers the possibility to
  * edit and delete a type definition.
  *
@@ -39,7 +36,7 @@ class ProxyTypeListController extends UmgtBaseController {
 
       $uM = & $this->getManager();
 
-      $buffer = (string)'';
+      $buffer = (string) '';
       $template = & $this->getTemplate('Type');
 
       $list = $uM->loadVisibilityDefinitionTypes();

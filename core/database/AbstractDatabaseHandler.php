@@ -28,10 +28,6 @@ use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 
 /**
- * @package APF\core\database
- * @class AbstractDatabaseHandler
- * @abstract
- *
  * Defines the scheme of a database handler. Forms the base class for all database
  * abstraction layer classes.
  * <p/>
@@ -94,99 +90,111 @@ use APF\core\singleton\Singleton;
 abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConnection {
 
    /**
-    * @protected
-    * @var boolean Indicates, whether the handler is already initialized or not.
+    * Indicates, whether the handler is already initialized or not.
+    *
+    * @var boolean $isInitialized
     */
    protected $isInitialized = false;
 
    /**
-    * @protected
-    * @var string Database server.
+    * Database server.
+    *
+    * @var string $dbHost
     */
    protected $dbHost = null;
 
    /**
-    * @protected
-    * @var string Database user.
+    * Database user.
+    *
+    * @var string $dbUser
     */
    protected $dbUser = null;
 
    /**
-    * @protected
-    * @var string Password for the database.
+    * Password for the database.
+    *
+    * @var string $dbPass
     */
    protected $dbPass = null;
 
    /**
-    * @protected
-    * @var string Name of the database.
+    * Name of the database.
+    *
+    * @var string $dbName
     */
    protected $dbName = null;
 
    /**
-    * @protected
-    * @var string Port for connection.
+    * Port for connection.
+    *
+    * @var string $dbPort
     */
    protected $dbPort = null;
 
    /**
-    * @protected
-    * @var string Socket for connection.
+    * Socket for connection.
+    *
+    * @var string $dbSocket
     */
    protected $dbSocket = null;
 
    /**
-    * @protected
-    * @var boolean Indicates, if the handler runs in debug mode. This means, that all
+    * Indicates, if the handler runs in debug mode. This means, that all
     * statements executed are written into a dedicated logfile.
+    *
+    * @var boolean $dbDebug
     */
    protected $dbDebug = false;
 
    /**
-    * @protected
-    * @var resource Database connection resource.
+    * Database connection resource.
+    *
+    * @var resource $dbConn
     */
    protected $dbConn = null;
 
    /**
-    * @protected
-    * @var Logger Instance of the logger.
+    * Instance of the logger.
+    *
+    * @var Logger $dbLog
     */
    protected $dbLog = null;
 
    /**
-    * @protected
-    * @var string Name of the log target. Must be defined within the implementation class!
+    * Name of the log target. Must be defined within the implementation class!
+    *
+    * @var string $dbLogTarget
     */
    protected $dbLogTarget;
 
    /**
-    * @protected
-    * @var int Auto increment id of the last insert.
+    * Auto increment id of the last insert.
+    *
+    * @var int $lastInsertId
     */
    protected $lastInsertId;
 
    /**
-    * @protected
-    * @var string Indicates the charset of the database connection.
+    * Indicates the charset of the database connection.
     *
     * For mysql databases, see http://dev.mysql.com/doc/refman/5.0/en/charset-connection.html
     * for more details.
+    *
+    * @var string $dbCollation
     */
    protected $dbCollation = null;
 
    /**
-    * @protected
-    * @var string Indicates the collation of the database connection.
+    * Indicates the collation of the database connection.
     *
     * For mysql databases, see http://dev.mysql.com/doc/refman/5.0/en/charset-connection.html
     * for more details.
+    *
+    * @var string $dbCharset
     */
    protected $dbCharset = null;
 
    /**
-    * @public
-    *
     * Defines the database host to connect to.
     * <p/>
     * Can be used for manual or DI configuration.
@@ -202,8 +210,6 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
    }
 
    /**
-    * @public
-    *
     * Defines the database port to connect to.
     * <p/>
     * Can be used for manual or DI configuration.
@@ -219,8 +225,6 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
    }
 
    /**
-    * @public
-    *
     * Defines the database name to connect to.
     * <p/>
     * Can be used for manual or DI configuration.
@@ -236,8 +240,6 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
    }
 
    /**
-    * @public
-    *
     * Defines the user that is used to connect to the database.
     * <p/>
     * Can be used for manual or DI configuration.
@@ -253,8 +255,6 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
    }
 
    /**
-    * @public
-    *
     * Defines the password used to connect to the database.
     * <p/>
     * Can be used for manual or DI configuration.
@@ -270,8 +270,6 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
    }
 
    /**
-    * @public
-    *
     * Defines the socket to connect to.
     * <p/>
     * Can be used for manual or DI configuration.
@@ -287,8 +285,6 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
    }
 
    /**
-    * @public
-    *
     * Defines the character set of the database connection.
     * <p/>
     * Can be used for manual or DI configuration.
@@ -304,8 +300,6 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
    }
 
    /**
-    * @public
-    *
     * Defines the collation of the database connection.
     * <p/>
     * Can be used for manual or DI configuration.
@@ -321,8 +315,6 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
    }
 
    /**
-    * @public
-    *
     * Enables (true) or disables (false) the internal debugging feature (=statement logging).
     * <p/>
     * Can be used for manual or DI configuration.
@@ -338,8 +330,6 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
    }
 
    /**
-    * @public
-    *
     * Defines the name of the log target for the debugging feature.
     * <p/>
     * Can be used for manual or DI configuration.
@@ -355,8 +345,6 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
    }
 
    /**
-    * @public
-    *
     * Implements an initializer method to setup derived classes using the
     * DIServiceManager.
     *
@@ -370,8 +358,6 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
    }
 
    /**
-    * @public
-    *
     * Implements the init() method, so that the derived classes can be initialized
     * by the service manager. Initializes the handler only one time.
     *
@@ -424,9 +410,6 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
    }
 
    /**
-    * @protected
-    * @abstract
-    *
     * Provides internal service to open a database connection.
     *
     * @throws DatabaseHandlerException In case of connection issues.
@@ -438,9 +421,6 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
    abstract protected function connect();
 
    /**
-    * @protected
-    * @abstract
-    *
     * Provides internal service to close a database connection.
     *
     * @throws DatabaseHandlerException In case of connection issues.
@@ -452,8 +432,6 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
    abstract protected function close();
 
    /**
-    * @public
-    *
     * Returns the last insert id generated by auto_increment or trigger.
     *
     * @return int The last insert id.
@@ -467,8 +445,6 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
    }
 
    /**
-    * @protected
-    *
     * Configures the client connection's charset and collation.
     *
     * @see http://dev.mysql.com/doc/refman/5.0/en/charset-connection.html
@@ -493,13 +469,12 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
    }
 
    /**
-    * @protected
-    *
     * Loads a statement file and auto-replaces the params applied as arguments.
     *
     * @param string $namespace The namespace of the statement file.
     * @param string $name The name of the statement's file body (e.g. load_entries.sql).
     * @param array $params An associative array with param names and their respective values.
+    *
     * @return string The prepared statement.
     * @throws DatabaseHandlerException In case the statement file cannot be loaded.
     *

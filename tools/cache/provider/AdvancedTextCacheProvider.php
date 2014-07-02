@@ -26,9 +26,6 @@ use APF\tools\filesystem\FileException;
 use APF\tools\filesystem\FilesystemManager;
 
 /**
- * @package APF\tools\cache\provider
- * @class AdvancedTextCacheProvider
- *
  * Implements the cache provider for normal text content using
  * an enhanced cache key.
  *
@@ -47,6 +44,7 @@ class AdvancedTextCacheProvider extends TextCacheProvider {
       if ($cacheKey === null) {
          try {
             FilesystemManager::deleteFolder($baseFolder . '/' . $namespace, true);
+
             return true;
          } catch (FileException $e) {
             return false; // indicate, that nothing was to delete (e.g. cache not active or empty)
@@ -66,6 +64,7 @@ class AdvancedTextCacheProvider extends TextCacheProvider {
          $key = md5($key);
          $folder = $baseFolder . '/' . $namespace . '/' . substr($key, 0, 2) . '/' . $key;
          FilesystemManager::deleteFolder($folder, true);
+
          return true;
 
       } else {
@@ -75,6 +74,7 @@ class AdvancedTextCacheProvider extends TextCacheProvider {
          $file = $this->getCacheFile($cacheKey);
          try {
             FilesystemManager::removeFile($file);
+
             return true;
          } catch (FileException $e) {
             return false;

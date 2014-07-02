@@ -21,9 +21,6 @@
 namespace APF\core\configuration;
 
 /**
- * @package APF\core\configuration
- * @class ConfigurationProvider
- *
  * Defines the scheme, a APF configuration provider must have. A configuration
  * provider represents a configuration format (e.g. ini, xml, ...) and can be
  * added to the ConfigurationManager to support multiple formats at the same time.
@@ -42,6 +39,7 @@ interface ConfigurationProvider {
     * @param string $language The current application's language.
     * @param string $environment The environment, the applications runs on.
     * @param string $name The name of the configuration to load including it's extension.
+    *
     * @return Configuration The desired configuration.
     *
     * @author Christian Achatz
@@ -59,6 +57,7 @@ interface ConfigurationProvider {
     * @param string $environment The environment, the applications runs on.
     * @param string $name The name of the configuration to load including it's extension.
     * @param Configuration $config The configuration to save.
+    *
     * @throws ConfigurationException In case the file cannot be saved.
     *
     * @author Christian Achatz
@@ -86,6 +85,7 @@ interface ConfigurationProvider {
     * @param string $language The current application's language.
     * @param string $environment The environment, the applications runs on.
     * @param string $name The name of the configuration to delete including it's extension.
+    *
     * @throws ConfigurationException In case the file cannot be deleted.
     *
     * @author Ralf Schubert

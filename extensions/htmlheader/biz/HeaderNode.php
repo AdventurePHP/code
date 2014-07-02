@@ -21,9 +21,6 @@
 namespace APF\extensions\htmlheader\biz;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class HeaderNode
- *
  * This interface specifies a tag, that is included in the <em>&lt;head /&gt;</em>
  * tag of the HTML page. It is the basis for all further node definitions and
  * implementations.

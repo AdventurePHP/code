@@ -26,9 +26,6 @@ use APF\tools\form\taglib\AbstractFormControl;
 use APF\tools\form\taglib\HtmlFormTag;
 
 /**
- * @package APF\extensions\form\client
- * @class GetClientFormValidationTag
- *
  *  This taglib generates and renders all information for client validation in the html.
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>
@@ -71,6 +68,7 @@ class GetClientFormValidationTag extends AbstractFormControl {
          $formId = 'apf-form-' . $parent->getObjectId();
          $parent->setAttribute('id', $formId);
       }
+
       return $formId;
    }
 
@@ -88,8 +86,8 @@ class GetClientFormValidationTag extends AbstractFormControl {
       // We handle all js-functions which need to be called on the form element in a
       // separate index, in order to avoid multiple selecting of the form.
       $javascript = array(
-         'general' => '',
-         'form' => '$(\'form[id=' . $this->getFormId() . ']\')'
+            'general' => '',
+            'form'    => '$(\'form[id=' . $this->getFormId() . ']\')'
       );
 
 
@@ -115,8 +113,8 @@ class GetClientFormValidationTag extends AbstractFormControl {
       // Create js which fills valmarkerclassstore
       $javascript['form'] .=
             '.addValmarkerclasses(' .
-                  $this->jsonEncodeAsObject($valmarkerclassStore) .
-                  ')';
+            $this->jsonEncodeAsObject($valmarkerclassStore) .
+            ')';
 
       return '<script type="text/javascript">' . $javascript['general'] . $javascript['form'] . ';</script>';
 
@@ -126,6 +124,7 @@ class GetClientFormValidationTag extends AbstractFormControl {
     * Generates the js-code for one validator on one control
     *
     * @param array $definition The definition from scriptStore.
+    *
     * @return string The generated javascript.
     *
     * @author Ralf Schubert
@@ -137,8 +136,8 @@ class GetClientFormValidationTag extends AbstractFormControl {
       // We handle all js-functions which need to be called on the form element in a
       // separate index, in order to avoid multiple selecting of the form.
       $output = array(
-         'general' => '',
-         'form' => ''
+            'general' => '',
+            'form'    => ''
       );
 
       // Check if we already set an event on this button
@@ -205,6 +204,7 @@ class GetClientFormValidationTag extends AbstractFormControl {
     * Encode an array as json-object. Uses JSON_FORCE_OBJECT, if php-version >= 5.3.0
     *
     * @param array $obj The Array which should be encoded
+    *
     * @return string The generated json.
     * @author Ralf Schubert
     * @version

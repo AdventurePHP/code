@@ -21,9 +21,6 @@
 namespace APF\extensions\postbox\biz;
 
 /**
- * @package APF\extensions\postbox\biz
- * @class Message
- *
  * This class represents the "APF\extensions\postbox\biz\Message" domain object.
  * <p/>
  * Please use this class to add your own functionality.

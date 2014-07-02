@@ -21,9 +21,6 @@
 namespace APF\core\service;
 
 /**
- * @package APF\core\service
- * @interface APFService
- *
  * Defines the structure of an APF service that is initialized with the <em>ServiceManager</em>.
  *
  * @author Christian Achatz
@@ -42,8 +39,6 @@ interface APFService {
    const SERVICE_TYPE_APPLICATION_SINGLETON = 'APPLICATIONSINGLETON';
 
    /**
-    * @public
-    *
     * Sets the context of the current APF object.
     *
     * @param string $context The context.
@@ -55,8 +50,6 @@ interface APFService {
    public function setContext($context);
 
    /**
-    * @public
-    *
     * Returns the context of the current APF object.
     *
     * @return string The context.
@@ -68,8 +61,6 @@ interface APFService {
    public function getContext();
 
    /**
-    * @public
-    *
     * Sets the language of the current APF object.
     *
     * @param string $lang The language.
@@ -81,8 +72,6 @@ interface APFService {
    public function setLanguage($lang);
 
    /**
-    * @public
-    *
     * Returns the language of the current APF object.
     *
     * @return string The language.
@@ -94,8 +83,6 @@ interface APFService {
    public function getLanguage();
 
    /**
-    * @public
-    *
     * Sets the service type of the current APF object.
     *
     * @param string $serviceType The service type.
@@ -107,8 +94,6 @@ interface APFService {
    public function setServiceType($serviceType);
 
    /**
-    * @public
-    *
     * Returns the service type of the current APF object.
     *
     * @return string The service type.

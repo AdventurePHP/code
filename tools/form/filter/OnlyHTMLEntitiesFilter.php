@@ -23,9 +23,6 @@ namespace APF\tools\form\filter;
 use APF\core\registry\Registry;
 
 /**
- * @package APF\tools\form\filter
- * @class OnlyHTMLEntitiesFilter
- *
  * Implements a filter, that encodes all relevant characters into their
  * html entity representation.
  *

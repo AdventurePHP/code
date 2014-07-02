@@ -21,9 +21,6 @@
 namespace APF\modules\genericormapper\data;
 
 /**
- * @package APF\modules\genericormapper\data
- * @class GenericORMapperDataObject
- *
  * Defines the Interface which must be implemented by every domain object.
  *
  * @author Ralf Schubert
@@ -56,6 +53,7 @@ interface GenericORMapperDataObject {
    /**
     * @param string $relationName The name of the relation to load the objects with.
     * @param GenericCriterionObject $criterion The criterion to limit the selection.
+    *
     * @return GenericORMapperDataObject The related object.
     */
    public function loadRelatedObject($relationName, GenericCriterionObject $criterion = null);
@@ -63,6 +61,7 @@ interface GenericORMapperDataObject {
    /**
     * @param string $relationName The name of the relation to load the objects with.
     * @param GenericCriterionObject $criterion The criterion to limit the selection.
+    *
     * @return GenericORMapperDataObject[] A list of related objects.
     */
    public function loadRelatedObjects($relationName, GenericCriterionObject $criterion = null);
@@ -75,6 +74,7 @@ interface GenericORMapperDataObject {
 
    /**
     * @param string $relationName The name of the relation to get the related objects with.
+    *
     * @return GenericORMapperDataObject[] The list of related objects.
     */
    public function &getRelatedObjects($relationName);
@@ -89,8 +89,8 @@ interface GenericORMapperDataObject {
    public function setProperty($name, $value);
 
    /**
-    * @abstract
     * @param $name
+    *
     * @return string The value of the desired property.
     */
    public function getProperty($name);

@@ -26,9 +26,6 @@ use APF\core\singleton\Singleton;
 use InvalidArgumentException;
 
 /**
- * @package APF\core\service
- * @class ServiceManager
- *
  * Provides a simple dependency injection container for objects created during application flow.
  * It initializes the service objects with the current context and language to be able to access
  * context and environment sensitive configuration at any place of your application. For details
@@ -44,8 +41,6 @@ use InvalidArgumentException;
 final class ServiceManager {
 
    /**
-    * @public
-    *
     * Returns a service object according to the current application context.
     *
     * @param string $class Fully qualified class name of the service object.
@@ -53,6 +48,7 @@ final class ServiceManager {
     * @param string $language The language, the service object has.
     * @param string $type The initializing type (see service manager for details).
     * @param string $instanceId The id of the instance to return.
+    *
     * @return APFService The desired service object.
     * @throws InvalidArgumentException In case of invalid ServiceType or if requested service does not implement the APFService interface.
     *
@@ -95,9 +91,9 @@ final class ServiceManager {
             break;
          default:
             throw new InvalidArgumentException('[ServiceManager::getServiceObject()] The given type ('
-            . $type . ') is not supported. Please provide one out of "' . APFService::SERVICE_TYPE_SINGLETON
-            . '", "' . APFService::SERVICE_TYPE_SESSION_SINGLETON . '" or "' . APFService::SERVICE_TYPE_NORMAL
-            . '"', E_USER_WARNING);
+                  . $type . ') is not supported. Please provide one out of "' . APFService::SERVICE_TYPE_SINGLETON
+                  . '", "' . APFService::SERVICE_TYPE_SESSION_SINGLETON . '" or "' . APFService::SERVICE_TYPE_NORMAL
+                  . '"', E_USER_WARNING);
       }
 
       // inject the basic set of information to the APF style service
@@ -107,16 +103,14 @@ final class ServiceManager {
          $service->setServiceType($type);
       } else {
          throw new InvalidArgumentException('[ServiceManager::getServiceObject()] The precisely '
-         . 'now created object (' . $class . ') does not implement the APFService interface! '
-         . 'So context, language and service type cannot be set correctly!', E_USER_WARNING);
+               . 'now created object (' . $class . ') does not implement the APFService interface! '
+               . 'So context, language and service type cannot be set correctly!', E_USER_WARNING);
       }
 
       return $service;
    }
 
    /**
-    * @public
-    *
     * Returns a service object, that is initialized with the given init param. The param itself
     * can be a primitive data type, an array or an object. Context and language are injected
     * as well.
@@ -129,6 +123,7 @@ final class ServiceManager {
     * @param string $initParam The initialization param for the service object.
     * @param string $type The initializing type (see service manager for details).
     * @param string $instanceId The id of the instance to return.
+    *
     * @return APFService The desired service object.
     * @throws InvalidArgumentException In case the service object does not implement the APFService interface.
     *
@@ -141,6 +136,7 @@ final class ServiceManager {
    public static function &getAndInitServiceObject($class, $context, $language, $initParam, $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
       $service = & self::getServiceObject($class, $context, $language, $type, $instanceId);
       $service->init($initParam);
+
       return $service;
    }
 

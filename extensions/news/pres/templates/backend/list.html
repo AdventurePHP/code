@@ -1,41 +1,47 @@
 <@controller
-   class="APF\extensions\news\pres\documentcontroller\backend\NewsListController"
+class="APF\extensions\news\pres\documentcontroller\backend\NewsListController"
 @>
 <core:addtaglib
-   class="APF\extensions\news\pres\taglib\NewsMediaInclusionTag"
-   prefix="news"
-   name="media"
-/>
+      class="APF\extensions\news\pres\taglib\NewsMediaInclusionTag"
+      prefix="news"
+      name="media"
+      />
 <html:iterator name="newslist">
-    <table id="news-backendlist">
-        <thead>
-            <tr>
-                <th><html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Title" /></th>
-                <th><html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Date" /></th>
-                <th><html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Action" /></th>
-            </tr>
-        </thead>
-        <tbody>
-            <iterator:item>
-                <tr>
-                    <td>${Title}</td>
-                    <td>${Date}</td>
-                    <td>
-                        <a href="${LinkEdit}">
-                            <news:media filename="edit.png" label="Edit" />
-                        </a>
-                        <a href="${LinkDelete}">
-                            <news:media filename="delete.png" label="Delete" />
-                        </a>
-                    </td>
-                </tr>
-            </iterator:item>
-        </tbody>
-    </table>
+   <table id="news-backendlist">
+      <thead>
+      <tr>
+         <th>
+            <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Title"/>
+         </th>
+         <th>
+            <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Date"/>
+         </th>
+         <th>
+            <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Action"/>
+         </th>
+      </tr>
+      </thead>
+      <tbody>
+      <iterator:item>
+         <tr>
+            <td>${Title}</td>
+            <td>${Date}</td>
+            <td>
+               <a href="${LinkEdit}">
+                  <news:media filename="edit.png" label="Edit"/>
+               </a>
+               <a href="${LinkDelete}">
+                  <news:media filename="delete.png" label="Delete"/>
+               </a>
+            </td>
+         </tr>
+      </iterator:item>
+      </tbody>
+   </table>
 </html:iterator>
 
 <html:template name="noentry">
-    <div id="news-noentry">
-        <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="NoEntry" />
-    </div>
+   <div id="news-noentry">
+      <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="NoEntry"/>
+   </div>
 </html:template>

@@ -26,9 +26,6 @@ use APF\core\configuration\ConfigurationProvider;
 use APF\core\configuration\provider\BaseConfigurationProvider;
 
 /**
- * @package APF\core\configuration\provider\ini
- * @class JsonConfigurationProvider
- *
  * Implements the configuration provider for the default APF json format. The
  * following features can be activated:
  * <ul>
@@ -74,11 +71,10 @@ class JsonConfigurationProvider extends BaseConfigurationProvider implements Con
    }
 
    /**
-    * @private
-    *
     * Maps the content of a JSON configuration file into the APF configuration representation.
     *
     * @param string $fileContent The content of the configuration file.
+    *
     * @return JsonConfiguration The configuration representation.
     *
     * @author Christian Achatz
@@ -103,11 +99,10 @@ class JsonConfigurationProvider extends BaseConfigurationProvider implements Con
    }
 
    /**
-    * @private
-    *
     * Maps a section into the configuration representation.
     *
     * @param array $section The parsed JSON array representing a section.
+    *
     * @return JsonConfiguration The configuration representation.
     *
     * @author Christian Achatz
@@ -143,12 +138,11 @@ class JsonConfigurationProvider extends BaseConfigurationProvider implements Con
    }
 
    /**
-    * @private
-    *
     * Creates a meta structure from the given configuration representation and returns the
     * json-formatted string to save.
     *
     * @param JsonConfiguration $config The config to resolve.
+    *
     * @return array The meta structure of the given configuration representation.
     *
     * @author Christian Achatz
@@ -167,11 +161,10 @@ class JsonConfigurationProvider extends BaseConfigurationProvider implements Con
    }
 
    /**
-    * @private
-    *
     * Resolves the configuration abstraction to the array meta format concerning one section.
     *
     * @param JsonConfiguration $config The config to resolve.
+    *
     * @return array The meta structure of the given configuration representation.
     *
     * @author Christian Achatz

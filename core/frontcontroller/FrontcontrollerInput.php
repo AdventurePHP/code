@@ -23,9 +23,6 @@ namespace APF\core\frontcontroller;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package APF\core\frontcontroller
- * @class FrontcontrollerInput
- *
  * Implements a base class for input parameters for front controller actions.
  *
  * @author Christian Achatz
@@ -36,12 +33,16 @@ use APF\core\pagecontroller\APFObject;
 class FrontcontrollerInput extends APFObject implements ActionParameters {
 
    /**
-    * @var Action The action the input belongs to.
+    * The action the input belongs to.
+    *
+    * @var Action $action
     */
    private $action;
 
    /**
-    * @var array Action parameters provided via configuration and/or URL.
+    * Action parameters provided via configuration and/or URL.
+    *
+    * @var array $parameters
     */
    protected $parameters = array();
 

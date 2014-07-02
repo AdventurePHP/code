@@ -23,9 +23,6 @@ namespace APF\tools\link;
 use Exception;
 
 /**
- * @package APF\tools\link
- * @class UrlFormatException
- *
  * Represents an exception that indicated illegal urls.
  *
  * @author Christian Achatz

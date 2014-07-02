@@ -29,9 +29,6 @@ use APF\core\database\ConnectionManager;
 use APF\core\service\ServiceManager;
 
 /**
- * @package APF\core\configuration\provider\db
- * @class DbConfigurationProvider
- *
  * This provider implements the APF configuration scheme for database tables. It enables
  * you to store the configuration within a table that depends on the namespace of the
  * configuration. Please note, that this provider does not support configuration deep tree
@@ -64,12 +61,16 @@ use APF\core\service\ServiceManager;
 class DbConfigurationProvider extends BaseConfigurationProvider implements ConfigurationProvider {
 
    /**
-    * @var string $connectionName The name of the connection to create.
+    * The name of the connection to create.
+    *
+    * @var string $connectionName
     */
    private $connectionName;
 
    /**
-    * @var string The file extension registered with this provider.
+    * The file extension registered with this provider.
+    *
+    * @var string $extension
     */
    protected $extension;
 
@@ -153,12 +154,11 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
    }
 
    /**
-    * @private
-    *
     * Creates the config table suffix. Since MySQL supports only a limited amount of
     * characters to be used as table name, we are sanitizing the given namespace.
     *
     * @param string $namespace The namespace the configuration is located in.
+    *
     * @return string The sanitized table name prefix.
     *
     * @author Christian Achatz
@@ -170,11 +170,10 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
    }
 
    /**
-    * @private
-    *
     * Removes the extension from the
     *
     * @param string $name The name of the configuration "file".
+    *
     * @return string The name of the configuration without the extension.
     *
     * @author Christian Achatz
@@ -186,12 +185,11 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
    }
 
    /**
-    * @private
-    *
     * Creates the database connection.
     *
     * @param string $context The current context.
     * @param string $language The current language.
+    *
     * @return AbstractDatabaseHandler The database connection to read the configuration from and store it.
     *
     * @author Christian Achatz
@@ -201,7 +199,9 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
    private function &getConnection($context, $language) {
       // create service "manually", since we have no convenience method
       $connMgr = & ServiceManager::getServiceObject('APF\core\database\ConnectionManager', $context, $language);
+
       /* @var $connMgr ConnectionManager */
+
       return $connMgr->getConnection($this->connectionName);
    }
 
@@ -213,6 +213,7 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
     * @param string $language The current application's language.
     * @param string $environment The environment, the applications runs on.
     * @param string $name The name of the configuration to delete including it's extension.
+    *
     * @throws ConfigurationException In case the row(s) cannot be deleted.
     *
     * @author Tobias Lückel

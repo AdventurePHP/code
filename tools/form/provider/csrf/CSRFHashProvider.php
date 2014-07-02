@@ -21,9 +21,6 @@
 namespace APF\tools\form\provider\csrf;
 
 /**
- * @package APF\tools\form\provider\csrf
- * @class CSRFHashProvider
- *
  * Defines the structure of a csrf hash provider.
  *
  * @author Daniel Seemaier
@@ -34,11 +31,10 @@ namespace APF\tools\form\provider\csrf;
 interface CSRFHashProvider {
 
    /**
-    * @public
-    *
     * This function is intended to deliver the form security token.
     *
     * @param string $salt The salt that is used to generate the security token.
+    *
     * @return string The form security token.
     *
     * @author Daniel Seemaier

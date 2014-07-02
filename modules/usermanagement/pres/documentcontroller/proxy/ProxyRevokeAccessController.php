@@ -28,9 +28,6 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\proxy
- * @class ProxyRevokeAccessController
- *
  * Revokes a visibility permission for a given user or group.
  *
  * @author Christian Achatz

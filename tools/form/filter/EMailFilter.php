@@ -21,9 +21,6 @@
 namespace APF\tools\form\filter;
 
 /**
- * @package APF\tools\form\filter
- * @class EMailFilter
- *
  * Implements a filter, that removes all characters, that are not
  * allowed in email addresses.
  *

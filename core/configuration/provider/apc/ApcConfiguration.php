@@ -24,9 +24,6 @@ use APF\core\configuration\Configuration;
 use APF\core\configuration\provider\BaseConfiguration;
 
 /**
- * @package APF\core\configuration\provider\apc
- * @class ApcConfiguration
- *
  * Implements the configuration interface for the default APF scheme stored within
  * an APC store.
  *
@@ -35,4 +32,5 @@ use APF\core\configuration\provider\BaseConfiguration;
  * Version 0.1, 03.01.2013<br />
  */
 class ApcConfiguration extends BaseConfiguration implements Configuration {
+
 }

@@ -24,9 +24,6 @@ use APF\core\pagecontroller\APFObject;
 use APF\modules\contact\biz\ContactFormRecipient;
 
 /**
- * @package APF\modules\contact\data
- * @class ContactMapper
- *
  * Implements the data layer component of the contact form.
  *
  * @author Christian Schäfer
@@ -37,8 +34,6 @@ use APF\modules\contact\biz\ContactFormRecipient;
 class ContactMapper extends APFObject {
 
    /**
-    * @public
-    *
     * Loads the list of recipients.
     *
     * @return ContactFormRecipient[] The list contact reasons.
@@ -62,7 +57,7 @@ class ContactMapper extends APFObject {
          $count = count($recipients);
 
          preg_match('/Contact ([0-9]+)/i', $name, $matches);
-         if(isset($matches[1])){
+         if (isset($matches[1])) {
             $recipients[$count] = new ContactFormRecipient();
             $recipients[$count]->setId($matches[1]);
             $recipients[$count]->setName($section->getValue('recipient-name'));
@@ -76,11 +71,10 @@ class ContactMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads an recipient by a given id.
     *
     * @param string $id The id if the contact reason to load.
+    *
     * @return ContactFormRecipient|null The desired contact reason.
     *
     * @author Christian Schäfer

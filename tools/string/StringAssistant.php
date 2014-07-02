@@ -23,10 +23,6 @@ namespace APF\tools\string;
 use APF\core\registry\Registry;
 
 /**
- * @package APF\tools\string
- * @class StringAssistant
- * @static
- *
  * Provides methods for string manipulation and generation.
  *
  * @author Christian Schäfer
@@ -40,12 +36,10 @@ class StringAssistant {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Escapes special characters with respect to the php.ini settings.
     *
     * @param string $string The string to escape the special characters within.
+    *
     * @return string The escaped string.
     *
     * @author Christian Schäfer
@@ -57,12 +51,10 @@ class StringAssistant {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Encodes a given string to html entities.
     *
     * @param string $string The string to encode.
+    *
     * @return string The html entity encoded string.
     *
     * @author Christian Schäfer
@@ -73,7 +65,7 @@ class StringAssistant {
 
       $content = trim($string);
 
-      $encodedContent = (string)'';
+      $encodedContent = (string) '';
 
       for ($i = 0; $i < strlen($content); $i++) {
          $encodedContent .= '&#' . ord($content[$i]) . ';';
@@ -84,12 +76,10 @@ class StringAssistant {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Generates a string that can be used as captcha competition.
     *
     * @param int $length Length of the string.
+    *
     * @return string Captcha string.
     *
     * @author Christian Achatz
@@ -103,7 +93,7 @@ class StringAssistant {
 
       $characterBase = 'ABCDEFGHJKLMNPRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
 
-      $captchaString = (string)'';
+      $captchaString = (string) '';
 
       while (strlen($captchaString) < $length) {
          $captchaString .= substr($characterBase, (rand() % (strlen($characterBase))), 1);
@@ -114,9 +104,6 @@ class StringAssistant {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Generates a random start number for the srand() function.
     *
     * @return int Random start value for the srand() function.
@@ -127,7 +114,8 @@ class StringAssistant {
     */
    public static function generateSeed() {
       list($usec, $sec) = explode(' ', microtime());
-      return (float)$sec + ((float)$usec * 100000);
+
+      return (float) $sec + ((float) $usec * 100000);
    }
 
 }

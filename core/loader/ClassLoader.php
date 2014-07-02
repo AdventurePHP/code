@@ -23,9 +23,6 @@ namespace APF\core\loader;
 use InvalidArgumentException;
 
 /**
- * @package APF\core\loader
- * @class ClassLoader
- *
  * Defines an APF class loader that is used to load classes, templates and config files.
  *
  * @author Christian Achatz
@@ -35,8 +32,6 @@ use InvalidArgumentException;
 interface ClassLoader {
 
    /**
-    * @public
-    *
     * Decision on what to do with none-vendor classes can be done by the ClassLoader itself!
     *
     * @param string $class The class to load.
@@ -50,8 +45,6 @@ interface ClassLoader {
    public function load($class);
 
    /**
-    * @public
-    *
     * Returns the vendor name the class loader represents.
     *
     * @return string The name of the vendor the class loader is attending to.
@@ -63,8 +56,6 @@ interface ClassLoader {
    public function getVendorName();
 
    /**
-    * @public
-    *
     * Returns the root path this class loader instance uses to load PHP classes.
     * <p/>
     * Further, the root path is used to load templates files. This is because the APF
@@ -81,8 +72,6 @@ interface ClassLoader {
    public function getRootPath();
 
    /**
-    * @public
-    *
     * Returns the root path this class loader instance advices the ConfigurationProvider
     * to load the config files from.
     * <p/>

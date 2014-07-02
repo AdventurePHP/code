@@ -25,9 +25,6 @@ use Exception;
 use InvalidArgumentException;
 
 /**
- * @package APF\modules\weather\pres\documentcontroller
- * @class WeatherController
- *
  * Implements an rss consumer to display current weather information.
  * Please provide the attribute "rss_source" in the core:importdesign tag that
  * includes the weather module.
@@ -39,8 +36,6 @@ use InvalidArgumentException;
 class WeatherController extends BaseDocumentController {
 
    /**
-    * @public
-    *
     *  Implements the abstract method transformContent() of the BaseDocumentController class.<br />
     *
     * @author Christian Achatz
@@ -76,7 +71,7 @@ class WeatherController extends BaseDocumentController {
 
          // Display items of current channel
          $count = count($Channel);
-         $Buffer = (string)'';
+         $Buffer = (string) '';
 
          for ($i = 0; $i < $count; $i++) {
 
@@ -107,8 +102,6 @@ class WeatherController extends BaseDocumentController {
    }
 
    /**
-    * @protected
-    *
     * Helper method to get the RSS string.<br />
     *
     * @return string Content of the RSS stream of wetter.com or null
@@ -150,7 +143,7 @@ class WeatherController extends BaseDocumentController {
             fwrite($Socket, $Query);
 
             // Fetch response
-            $response = (string)'';
+            $response = (string) '';
             while (!feof($Socket)) {
                $response .= fgets($Socket, 128);
             }
@@ -176,8 +169,6 @@ class WeatherController extends BaseDocumentController {
    }
 
    /**
-    * @protected
-    *
     * Helper method to read the attribute "rss_source" from the current object
     * (core:importdesign), that is used to include the module.
     *

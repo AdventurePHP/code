@@ -1,34 +1,42 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddController"
+class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddController"
 @>
-<h3><html:getstring
-       namespace="APF\modules\usermanagement\pres"
-       config="labels.ini"
-       entry="frontend.proxy.add-proxy.headline"/></h3>
+<h3>
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.proxy.add-proxy.headline"/>
+</h3>
 <p>
    <html:getstring
-          namespace="APF\modules\usermanagement\pres"
-          config="labels.ini"
-          entry="frontend.proxy.add-proxy.intro.text"/>
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.proxy.add-proxy.intro.text"/>
 </p>
 <html:form name="visibilitydef" method="post">
    <div>
-      <h4><html:getstring
-            namespace="APF\modules\usermanagement\pres"
-            config="labels.ini"
-            entry="frontend.proxy.add-proxy.basics.headline"/></h4>
-      <div>
-         <label for="proxytypeid"><html:getstring
+      <h4>
+         <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.proxy.add-proxy.proxy-type.label"/></label>
-         <form:select id="proxytypeid" name="proxytypeid" />
+               entry="frontend.proxy.add-proxy.basics.headline"/>
+      </h4>
+      <div>
+         <label for="proxytypeid">
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.proxy.add-proxy.proxy-type.label"/>
+         </label>
+         <form:select id="proxytypeid" name="proxytypeid"/>
       </div>
       <div>
-         <label for="appobjectid"><html:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.proxy.add-proxy.proxy-app-id.label"/></label>
+         <label for="appobjectid">
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.proxy.add-proxy.proxy-app-id.label"/>
+         </label>
          <form:text id="appobjectid" name="appobjectid" maxlength="50" minlength="1"/>
          <form:addvalidator
                class="APF\tools\form\validator\TextLengthValidator"
@@ -50,17 +58,21 @@
          </div>
       </form:listener>
       <div>
-         <label for="users"><html:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.proxy.add-proxy.users.label"/></label>
+         <label for="users">
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.proxy.add-proxy.users.label"/>
+         </label>
          <form:multiselect id="users" name="users" size="6" alt="groups"/>
       </div>
       <div>
-         <label for="groups"><html:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.proxy.add-proxy.groups.label"/></label>
+         <label for="groups">
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.proxy.add-proxy.groups.label"/>
+         </label>
          <form:multiselect id="groups" name="groups" size="6"/>
       </div>
       <form:addvalidator
@@ -68,38 +80,48 @@
             control="users"
             button="add"
             />
-      <h4><html:getstring
-            namespace="APF\modules\usermanagement\pres"
-            config="labels.ini"
-            entry="frontend.proxy.add-proxy.access.headline"/></h4>
+      <h4>
+         <html:getstring
+               namespace="APF\modules\usermanagement\pres"
+               config="labels.ini"
+               entry="frontend.proxy.add-proxy.access.headline"/>
+      </h4>
       <div class="umgt-access-perms">
          <p>
             <form:checkbox id="read-perm" name="ReadPermission"/>
-            <label for="read-perm"><html:getstring
-                  namespace="APF\modules\usermanagement\pres"
-                  config="labels.ini"
-                  entry="frontend.proxy.add-proxy.read-perm.label"/></label>
+            <label for="read-perm">
+               <html:getstring
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.proxy.add-proxy.read-perm.label"/>
+            </label>
          </p>
          <p>
             <form:checkbox id="write-perm" name="WritePermission"/>
-            <label for="write-perm"><html:getstring
-                  namespace="APF\modules\usermanagement\pres"
-                  config="labels.ini"
-                  entry="frontend.proxy.add-proxy.write-perm.label"/></label>
+            <label for="write-perm">
+               <html:getstring
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.proxy.add-proxy.write-perm.label"/>
+            </label>
          </p>
          <p>
             <form:checkbox id="link-perm" name="LinkPermission"/>
-            <label for="link-perm"><html:getstring
-                  namespace="APF\modules\usermanagement\pres"
-                  config="labels.ini"
-                  entry="frontend.proxy.add-proxy.link-perm.label"/></label>
+            <label for="link-perm">
+               <html:getstring
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.proxy.add-proxy.link-perm.label"/>
+            </label>
          </p>
          <p>
             <form:checkbox id="delete-perm" name="DeletePermission"/>
-            <label for="delete-perm"><html:getstring
-                  namespace="APF\modules\usermanagement\pres"
-                  config="labels.ini"
-                  entry="frontend.proxy.add-proxy.delete-perm.label"/></label>
+            <label for="delete-perm">
+               <html:getstring
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.proxy.add-proxy.delete-perm.label"/>
+            </label>
          </p>
       </div>
       <form:button name="add">

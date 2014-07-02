@@ -21,9 +21,6 @@
 namespace APF\tools\form\taglib;
 
 /**
- * @package APF\tools\form\taglib
- * @class TextFieldTag
- *
  * Represents a APF text field.
  *
  * @author Christian Schäfer
@@ -45,8 +42,6 @@ class TextFieldTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns the HTML source code of the text field.
     *
     * @return string HTML code of the text field
@@ -61,12 +56,11 @@ class TextFieldTag extends AbstractFormControl {
       if ($this->isVisible) {
          return '<input type="text" ' . $this->getSanitizedAttributesAsString($this->attributes) . ' />';
       }
+
       return '';
    }
 
    /**
-    * @public
-    *
     * Let's check if the form:text was filled with content.
     *
     * @return bool True in case the control is filled, false otherwise.

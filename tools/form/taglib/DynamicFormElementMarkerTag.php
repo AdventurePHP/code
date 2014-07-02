@@ -21,9 +21,6 @@
 namespace APF\tools\form\taglib;
 
 /**
- * @package APF\tools\form\taglib
- * @class DynamicFormElementMarkerTag
- *
  * Represents the <form:marker /> tag, that can be used to dynamically create forms. Please
  * have a look at the API documentation of the HtmlFormTag class for details.
  *
@@ -37,8 +34,6 @@ class DynamicFormElementMarkerTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Overwrites the onParseTime() method from the Document class, because here's nothing to do.
     *
     * @author Christian Achatz
@@ -49,8 +44,6 @@ class DynamicFormElementMarkerTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Implements the transform() method. Returns an empty string.
     *
     * @return string An empty string.

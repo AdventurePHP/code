@@ -21,9 +21,6 @@
 namespace APF\modules\pager\biz;
 
 /**
- * @package APF\modules\pager\biz
- * @class PageItem
- *
  * Represents the business object of the pager module.
  *
  * @author Christian Schäfer
@@ -34,36 +31,46 @@ namespace APF\modules\pager\biz;
 final class PageItem {
 
    /**
-    * @var int The page id.
+    * The page id.
+    *
+    * @var int $page
     */
    private $page;
 
    /**
-    * @var string Hyperlink to the current page.
+    * Hyperlink to the current page.
+    *
+    * @var string $link
     */
    private $link;
 
    /**
-    * @var boolean Indicates if the current page is selected.
+    * Indicates if the current page is selected.
+    *
+    * @var boolean $isSelected
     */
    private $isSelected;
 
    /**
-    * @var int Indicates the entries count on the current page.
+    * Indicates the entries count on the current page.
+    *
+    * @var int $entriesCount
     */
    private $entriesCount;
 
    /**
-    * @var int Indicates the total amount of pages.
+    * Indicates the total amount of pages.
+    *
+    * @var int $pageCount
     */
    private $pageCount;
 
    public function __construct() {
-      $this->page = (int)0;
-      $this->link = (string)'';
+      $this->page = (int) 0;
+      $this->link = (string) '';
       $this->isSelected = false;
-      $this->entriesCount = (int)0;
-      $this->pageCount = (int)0;
+      $this->entriesCount = (int) 0;
+      $this->pageCount = (int) 0;
    }
 
    public function getPage() {

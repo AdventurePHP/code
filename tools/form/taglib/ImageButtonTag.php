@@ -23,9 +23,6 @@ namespace APF\tools\form\taglib;
 use APF\tools\form\FormException;
 
 /**
- * @package APF\tools\form\taglib
- * @class ImageButtonTag
- *
  * Represents an image button.
  *
  * @author Christian Achatz
@@ -43,11 +40,10 @@ class ImageButtonTag extends ButtonTag {
    }
 
    /**
-    * @public
-    * @since 1.17
-    *
     * Re-implements the onParseTime() method of the ButtonTag to respect the difference
     * between buttons and normal buttons (name + _x/_y in request).
+    *
+    * @since 1.17
     *
     * @author Christian Achatz
     * @version
@@ -79,8 +75,6 @@ class ImageButtonTag extends ButtonTag {
    }
 
    /**
-    * @public
-    *
     * Generates the HTML code of the image button.
     *
     * @return string Image button html.
@@ -93,9 +87,10 @@ class ImageButtonTag extends ButtonTag {
    public function transform() {
       if ($this->isVisible) {
          return '<input type="image" '
-               . $this->getSanitizedAttributesAsString($this->attributes)
-               . ' />';
+         . $this->getSanitizedAttributesAsString($this->attributes)
+         . ' />';
       }
+
       return '';
    }
 

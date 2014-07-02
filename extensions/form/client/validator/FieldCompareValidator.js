@@ -28,7 +28,7 @@
 (function ($) {
     $(document).ready(function () {
         jQuery.APFFormValidator.addClientValidator('FieldCompareValidator', {
-            validate:function (control, options) {
+            validate: function (control, options) {
                 var form = $(control).closest('form');
                 var refField = $(form).find('input[name="' + options.ref + '"]');
 

@@ -21,9 +21,6 @@
 namespace APF\modules\usermanagement\biz\login;
 
 /**
- * @package APF\modules\usermanagement\biz\login
- * @class UmgtRedirectUrlProvider
- *
  * This interface specifies the structure of any url generation provider that is
  * used to create log-in and log-out redirect urls.
  *
@@ -34,8 +31,6 @@ namespace APF\modules\usermanagement\biz\login;
 interface UmgtRedirectUrlProvider {
 
    /**
-    * @public
-    *
     * Creates and returns the url that is used to redirect the user to
     * after both log-in and log-out actions.
     *

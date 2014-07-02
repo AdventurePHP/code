@@ -23,9 +23,6 @@ namespace APF\tools\form\validator;
 use APF\tools\form\taglib\FileUploadTag;
 
 /**
- * @package APF\tools\form\validator
- * @class MimeTypeValidator
- *
  * Implements a simple validator, that checks the uploaded file
  * to have the desired MIME type.
  *
@@ -38,11 +35,10 @@ class MimeTypeValidator extends TextFieldValidator {
    private static $ACCEPTS_ATTRIBUTE_NAME = 'accepts';
 
    /**
-    * @public
-    *
     * Validates the file control attached to.
     *
     * @param string $input The input of the file field (not relevant here).
+    *
     * @return boolean True in case the control is valid, false otherwise.
     *
     * @author Thalo, Christian Achatz
@@ -73,8 +69,6 @@ class MimeTypeValidator extends TextFieldValidator {
    }
 
    /**
-    * @private
-    *
     * Returns the list of accepted MIME types.
     *
     * @return string[] The list of accepted MIME types.
@@ -88,6 +82,7 @@ class MimeTypeValidator extends TextFieldValidator {
       if (empty($accepts)) {
          return array();
       }
+
       return explode('|', $accepts);
    }
 

@@ -87,34 +87,41 @@ use InvalidArgumentException;
 final class DIServiceManager {
 
    /**
-    * @var array Injection call cache to avoid circular injections.
+    * Injection call cache to avoid circular injections.
+    *
+    * @var array $INJECTION_CALL_CACHE
     */
    private static $INJECTION_CALL_CACHE = array();
 
    /**
-    * @var array Contains the service objects, that were already configured.
+    * Contains the service objects, that were already configured.
+    *
+    * @var array $SERVICE_OBJECT_CACHE
     */
    private static $SERVICE_OBJECT_CACHE = array();
 
    /**
-    * @var array Contains the configuration of already delivered services
+    * Contains the configuration of already delivered services
+    *
+    * @var array $SERVICE_CONFIG_CACHE
     */
    private static $SERVICE_CONFIG_CACHE = array();
 
    /**
-    * @var array Contains the cached service types
+    * Contains the cached service types
+    *
+    * @var array $SERVICE_TYPE_CACHE
     */
    private static $SERVICE_TYPE_CACHE = array();
 
    /**
-    * @public
-    *
     * Returns the initialized service object.
     *
     * @param string $configNamespace The namespace of the service object.
     * @param string $sectionName The name of the desired service object.
     * @param string $context The context of the current application.
     * @param string $language The language of the current application.
+    *
     * @return APFDIService The pre-configured service object.
     * @throws ConfigurationException In case the requested service is not existent.
     * @throws InvalidArgumentException In case of injection issues.
@@ -174,9 +181,9 @@ final class DIServiceManager {
       // Check if configuration section was complete. If not throw an exception to fail fast.
       if ($serviceType === null || $class === null) {
          throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Initialization of the service object "' .
-                  $sectionName . '" from namespace "' . $configNamespace . '" cannot be accomplished, due to missing
+               $sectionName . '" from namespace "' . $configNamespace . '" cannot be accomplished, due to missing
                or incorrect configuration! Please revise the configuration file and consult the manual!',
-            E_USER_ERROR);
+               E_USER_ERROR);
       }
 
       // Create the service object with use of the "normal" service manager. Perhaps, this
@@ -212,9 +219,9 @@ final class DIServiceManager {
                $serviceObject->$method($value);
             } else {
                throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Injection of'
-                        . ' configuration value "' . $directive->getValue('value') . '" cannot be accomplished'
-                        . ' to service object "' . $class . '"! Method ' . $method . '() is not implemented!',
-                  E_USER_ERROR);
+                     . ' configuration value "' . $directive->getValue('value') . '" cannot be accomplished'
+                     . ' to service object "' . $class . '"! Method ' . $method . '() is not implemented!',
+                     E_USER_ERROR);
             }
          }
       }
@@ -233,9 +240,9 @@ final class DIServiceManager {
             $name = $directive->getValue('name');
             if ($method === null || $namespace === null || $name === null) {
                throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Initialization of the service object "' .
-                        $sectionName . '" cannot be accomplished, due to incorrect configuration! Please revise the "' . $initKey .
-                        '" sub section and consult the manual!',
-                  E_USER_ERROR);
+                     $sectionName . '" cannot be accomplished, due to incorrect configuration! Please revise the "' . $initKey .
+                     '" sub section and consult the manual!',
+                     E_USER_ERROR);
             }
 
             // check for circular injection
@@ -254,13 +261,13 @@ final class DIServiceManager {
                }
 
                $log->addEntry(
-                  new SimpleLogEntry(
-                  // use the configured log target to allow custom configuration of APF-internal log statements
-                  // to be written to a custom file/location
-                     Registry::retrieve('APF\core', 'InternalLogTarget'),
-                        '[DIServiceManager::getServiceObject()] Injection stack trace: ' . $instructions,
-                     LogEntry::SEVERITY_TRACE
-                  )
+                     new SimpleLogEntry(
+                     // use the configured log target to allow custom configuration of APF-internal log statements
+                     // to be written to a custom file/location
+                           Registry::retrieve('APF\core', 'InternalLogTarget'),
+                           '[DIServiceManager::getServiceObject()] Injection stack trace: ' . $instructions,
+                           LogEntry::SEVERITY_TRACE
+                     )
                );
 
                // print note with shorted information
@@ -281,9 +288,9 @@ final class DIServiceManager {
                   $serviceObject->$method($miObject);
                } else {
                   throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Injection of service object "' . $name .
-                           '" from namespace "' . $namespace . '" cannot be accomplished to service object "' .
-                           $class . '" from namespace "' . $namespace . '"! Method ' . $method . '() is not implemented!',
-                     E_USER_ERROR);
+                        '" from namespace "' . $namespace . '" cannot be accomplished to service object "' .
+                        $class . '" from namespace "' . $namespace . '"! Method ' . $method . '() is not implemented!',
+                        E_USER_ERROR);
                }
             }
          }
@@ -305,10 +312,10 @@ final class DIServiceManager {
                $serviceObject->$setupMethod();
             } else {
                throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Custom service object setup '
-                        . 'method "' . $setupMethod . '()" is not implemented for given type "'
-                        . get_class($serviceObject) . '"! Please double-check your configuration '
-                        . 'for service "' . $sectionName . '" from namespace "' . $configNamespace . '."',
-                  E_USER_ERROR);
+                     . 'method "' . $setupMethod . '()" is not implemented for given type "'
+                     . get_class($serviceObject) . '"! Please double-check your configuration '
+                     . 'for service "' . $sectionName . '" from namespace "' . $configNamespace . '."',
+                     E_USER_ERROR);
             }
          }
       }
@@ -317,12 +324,11 @@ final class DIServiceManager {
 
       // add service object to cache and return it
       self::$SERVICE_OBJECT_CACHE[$cacheKey] = $serviceObject;
+
       return self::$SERVICE_OBJECT_CACHE[$cacheKey];
    }
 
    /**
-    * @private
-    *
     * Loads the service configuration.
     *
     * @param string $configNamespace The namespace of the service (a.k.a. config namespace).
@@ -330,6 +336,7 @@ final class DIServiceManager {
     * @param string $context The context of the current application.
     * @param string $language The language of the current application.
     * @param string $cacheKey The cache key to check/find configuration in configuration cache
+    *
     * @return IniConfiguration The appropriate configuration.
     *
     * @author Christian Achatz
@@ -345,11 +352,11 @@ final class DIServiceManager {
       }
 
       self::$SERVICE_CONFIG_CACHE[$cacheKey] = ConfigurationManager::loadConfiguration(
-         $configNamespace,
-         $context,
-         $language,
-         Registry::retrieve('APF\core', 'Environment'),
-         'serviceobjects.ini')
+            $configNamespace,
+            $context,
+            $language,
+            Registry::retrieve('APF\core', 'Environment'),
+            'serviceobjects.ini')
             ->getSection($sectionName);
 
       return self::$SERVICE_CONFIG_CACHE[$cacheKey];

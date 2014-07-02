@@ -31,9 +31,6 @@ use APF\tools\request\RequestHandler;
 use InvalidArgumentException;
 
 /**
- * @package APF\modules\pager\biz
- * @class PagerManager
- *
  * Represents a concrete pager.
  *
  * @author Christian Achatz
@@ -48,70 +45,93 @@ use InvalidArgumentException;
 final class PagerManager extends APFObject {
 
    /**
-    * @var string Contains the desired anchor name.
+    * Contains the desired anchor name.
+    *
+    * @var string $anchorName
     */
    private $anchorName = null;
 
    /**
-    * @var int The number of entries to display per page
+    * The number of entries to display per page
+    *
+    * @var int $entriesPerPage
     */
    private $entriesPerPage = 10;
 
    /**
-    * @var string The name of the url parameter indicating which page to load.
+    * The name of the url parameter indicating which page to load.
+    *
+    * @var string $pageUrlParameterName
     */
    private $pageUrlParameterName = 'page';
 
    /**
-    * @var string The name of the url parameter indicating how much entries to load.
+    * The name of the url parameter indicating how much entries to load.
+    *
+    * @var string $countUrlParameterName
     */
    private $countUrlParameterName = 'count';
 
    /**
-    * @var string The namespace where the pager searches for count and entries selection
-    * statements to execute using a DatabaseConnection.
+    * The namespace where the pager searches for count and entries selection statements to execute using a DatabaseConnection.
+    *
+    * @var string $statementNamespace
     */
    private $statementNamespace;
 
    /**
-    * @var string The name of the file containing the SQL statement to retrieve the total entries count.
+    * The name of the file containing the SQL statement to retrieve the total entries count.
+    *
+    * @var string $countStatementFile
     */
    private $countStatementFile;
 
    /**
-    * @var string The name of the file containing the SQL statement to retrieve the entries to display.
+    * The name of the file containing the SQL statement to retrieve the entries to display.
+    *
+    * @var string $entriesStatementFile
     */
    private $entriesStatementFile;
 
    /**
-    * @var string Static SQL statement parameters to be used to retrieve the total entries count.
+    * Static SQL statement parameters to be used to retrieve the total entries count.
+    *
+    * @var string $statementParameters
     */
    private $statementParameters;
 
    /**
-    * @var string Namespace of the pager UI component.
+    * Namespace of the pager UI component.
+    *
+    * @var string $pagerUiNamespace
     */
    private $pagerUiNamespace;
 
    /**
-    * @var string Template name of the pager UI component.
+    * Template name of the pager UI component.
+    *
+    * @var string $pagerUiTemplate
     */
    private $pagerUiTemplate;
 
    /**
-    * @var string The name of the database connection to use.
+    * The name of the database connection to use.
+    *
+    * @var string $databaseConnectionName
     */
    private $databaseConnectionName;
 
    /**
-    * @var string Activates (true) or deactivates (false) dynamic amount of entries per page to be
-    * managed via URL (potentially less secure!).
+    * Activates (true) or deactivates (false) dynamic amount of entries per page to be managed via URL (potentially less secure!).
+    *
+    * @var string $allowDynamicEntriesPerPage
     */
    private $allowDynamicEntriesPerPage = 'false';
 
    /**
-    * @var string Indicates whether pager statement results should be cached within
-    * session (true) or not (false).
+    * Indicates whether pager statement results should be cached within session (true) or not (false).
+    *
+    * @var string $cacheInSession
     */
    private $cacheInSession = 'false';
 
@@ -168,13 +188,12 @@ final class PagerManager extends APFObject {
    }
 
    /**
-    * @public
+    * Initializes the pager. Loads the desired config section.
     *
     * @deprecated Use DI container initialization instead!
     *
-    * Initializes the pager. Loads the desired config section.
-    *
     * @param string $initParam the name of the config section.
+    *
     * @throws InvalidArgumentException In case the referred configuration section is missing.
     *
     * @author Christian Achatz
@@ -197,8 +216,8 @@ final class PagerManager extends APFObject {
       // empty sections are not allowed since they produced NPE's
       if ($section === null) {
          throw new InvalidArgumentException('[PagerManager::init()] The given configuration section '
-            . '"' . $initParam . '" cannot be found within the pager configuration file. Please '
-            . 'review your setup!');
+               . '"' . $initParam . '" cannot be found within the pager configuration file. Please '
+               . 'review your setup!');
       }
 
       // translate entries per page
@@ -229,11 +248,10 @@ final class PagerManager extends APFObject {
    }
 
    /**
-    * @private
-    *
     * Returns the statement params needed by the pager's data layer.
     *
     * @param string[] $addStmtParams Additional statement parameters.
+    *
     * @return string[] A list of default statement params.
     *
     * @author Christian Achatz
@@ -255,18 +273,18 @@ final class PagerManager extends APFObject {
       }
 
       $defaultParams = array(
-         'Start' => $start,
-         'EntriesCount' => $entriesCount
+            'Start'        => $start,
+            'EntriesCount' => $entriesCount
       );
+
       return array_merge($defaultParams, $this->generateStatementParams($this->statementParameters), $addStmtParams);
    }
 
    /**
-    * @public
-    *
     * Loads the ids of the entries of the current page.
     *
     * @param string[] $addStmtParams additional statement parameters.
+    *
     * @return int[] List of entry ids for the current page.
     *
     * @author Christian Achatz
@@ -278,10 +296,11 @@ final class PagerManager extends APFObject {
     */
    public function loadEntries($addStmtParams = array()) {
       $m = & $this->getMapper();
+
       return $m->loadEntries(
-         $this->statementNamespace,
-         $this->entriesStatementFile,
-         $this->getStatementParams($addStmtParams),
+            $this->statementNamespace,
+            $this->entriesStatementFile,
+            $this->getStatementParams($addStmtParams),
             $this->cacheInSession === 'true'
       );
    }
@@ -294,13 +313,12 @@ final class PagerManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads a list of domain objects using a given data layer component.
     *
     * @param APFObject $dataComponent instance of a data component, that loads the domain objects directly
     * @param string $loadMethod name of the load method for the domain object
     * @param string[] $addStmtParams additional statement parameters
+    *
     * @return APFObject[] List of domain objects for the current page.
     * @throws InvalidArgumentException In case the data component does not have the desired get method.
     *
@@ -333,16 +351,15 @@ final class PagerManager extends APFObject {
       }
 
       throw new InvalidArgumentException('[PagerManager->loadEntriesByAppDataComponent()] '
-         . 'Given data component (' . get_class($dataComponent) . ') has no method "'
-         . $loadMethod . '"! Thus, no entries can be loaded!', E_USER_ERROR);
+            . 'Given data component (' . get_class($dataComponent) . ') has no method "'
+            . $loadMethod . '"! Thus, no entries can be loaded!', E_USER_ERROR);
    }
 
    /**
-    * @public
-    *
     * Creates the graphical output of the pagerc concerning the configured presentation layer template.
     *
     * @param array $addStmtParams list of additional statement params
+    *
     * @return string The HTML representation of the pager
     *
     * @author Christian Achatz
@@ -380,8 +397,6 @@ final class PagerManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns the name of the current URL params of the pager. The array featiures the following
     * offsets:
     * <ul>
@@ -397,17 +412,16 @@ final class PagerManager extends APFObject {
     */
    public function getPagerURLParameters() {
       return array(
-         'PageName' => $this->pageUrlParameterName,
-         'CountName' => $this->countUrlParameterName
+            'PageName'  => $this->pageUrlParameterName,
+            'CountName' => $this->countUrlParameterName
       );
    }
 
    /**
-    * @private
-    *
     * Creates a list of pager pages and returns it.
     *
     * @param string[] $addStmtParams list of additional statement params
+    *
     * @return Page[] List of pages.
     *
     * @author Christian Achatz
@@ -435,9 +449,9 @@ final class PagerManager extends APFObject {
       // initialize page delimiter params
       $m = & $this->getMapper();
       $entriesCount = $m->getEntriesCount(
-         $this->statementNamespace,
-         $this->countStatementFile,
-         $this->getStatementParams($addStmtParams),
+            $this->statementNamespace,
+            $this->countStatementFile,
+            $this->getStatementParams($addStmtParams),
             $this->cacheInSession === 'true'
       );
 
@@ -474,19 +488,19 @@ final class PagerManager extends APFObject {
       }
 
       $t->stop('PagerManager::createPages4PagerDisplay()');
+
       return $pages;
 
    }
 
    /**
-    * @private
-    *
     * Returns a param array, that contains the initialized params from the page configuration
     * file. The initialization is done by the url params. Default values are taken from the
     * configuration offset *.Params. If no value is contained in the URL, the default ones are
     * taken.
     *
     * @param string $configString the param-value-string from the configuration (e.g.: param1:value1|param2:value2)
+    *
     * @return string[] A list of statement parameters
     *
     * @author Christian Achatz
@@ -522,11 +536,10 @@ final class PagerManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns the count of pages.
     *
     * @param string[] $addStmtParams list of additional statement params
+    *
     * @return int The count of pages.
     *
     * @author Daniel Seemaier
@@ -539,9 +552,9 @@ final class PagerManager extends APFObject {
       // initialize page delimiter params
       $m = & $this->getMapper();
       $entriesCount = $m->getEntriesCount(
-         $this->statementNamespace,
-         $this->countStatementFile,
-         $this->getStatementParams($addStmtParams),
+            $this->statementNamespace,
+            $this->countStatementFile,
+            $this->getStatementParams($addStmtParams),
             $this->cacheInSession === 'true'
       );
 
@@ -549,8 +562,6 @@ final class PagerManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns the count of entries per page.
     *
     * @return int The count of entries per page.
@@ -575,12 +586,11 @@ final class PagerManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Generates the link to a given page.
     *
     * @param int $page The number of the page.
     * @param string $baseURI The base URI. Default = REQUEST_URI
+    *
     * @return string The link to the given page.
     *
     * @author Daniel Seemaier
@@ -601,8 +611,6 @@ final class PagerManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Evaluates, whether the config attribute <em>Pager.AllowDynamicEntriesPerPage</em>
     * is present and set to <em>true</em> to activate the dynamic page size feature.
     *

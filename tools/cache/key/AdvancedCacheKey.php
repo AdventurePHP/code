@@ -21,9 +21,6 @@
 namespace APF\tools\cache\key;
 
 /**
- * @package APF\tools\cache\key
- * @class AdvancedCacheKey
- *
  * Describes an enhanced cache key, that addresses a cache item using a
  * cache key and a sub key, that can be used for items, that differ only
  * a little from the original one. Usage is recommended or CMS pages
@@ -38,8 +35,6 @@ class AdvancedCacheKey extends SimpleCacheKey {
    private $subKey;
 
    /**
-    * @public
-    *
     * Creates an advanced cache key including an additional sub key.
     *
     * @param string $cacheKey The cache key.

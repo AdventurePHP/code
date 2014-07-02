@@ -32,7 +32,6 @@ use APF\extensions\apfelsms\biz\SMSWrongDataException;
 use APF\extensions\apfelsms\biz\SMSWrongParameterException;
 
 /**
- * @package APF\extensions\apfelsms
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version :  v0.1 (06.06.2012)
  *             v0.2 (28.04.2013) Added getPageType()-method to support multiple page types in one application
@@ -57,13 +56,15 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
 
    /**
-    * @var string
+    * @var string $XMLFilename
     */
    protected $XMLFilename = '';
 
 
    /**
-    * @var string Namespace to determine path of XMl file _with_ trailing backslash
+    * Namespace to determine path of XMl file _with_ trailing backslash
+    *
+    * @var string $XMLFileNamespace
     */
    protected $XMLFileNamespace = 'APF\\';
 
@@ -105,6 +106,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
    /**
     * @param SMSPage $page
+    *
     * @return SMSPage
     * @throws SMSException
     * @version :  v0.1
@@ -181,6 +183,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
    /**
     * @param SMSPage $page
+    *
     * @return SMSPage
     * @throws SMSWrongParameterException
     * @throws SMSUnknownTypeException
@@ -220,6 +223,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
    /**
     * @param SMSPageDec $pageDec
     * @param string|integer $pageId
+    *
     * @return SMSPageDec
     * @throws SMSWrongDataException
     * @version :  v0.1
@@ -277,6 +281,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
     * @param array $varArray
     * @param \DOMElement $nodeInXML
     * @param string|integer $pageId
+    *
     * @return array
     * @throws SMSWrongDataException
     * @version :  v0.1
@@ -353,6 +358,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
    /**
     * @param string|integer $pageId
+    *
     * @return string The page type. String is empty if no page type attribute exists.
     * @throws SMSException
     * @since v0.2
@@ -374,6 +380,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
    /**
     * @param SMSPage $page
+    *
     * @return array
     * @throws SMSWrongParameterException
     * @version :  v0.1
@@ -417,6 +424,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
    /**
     * @param SMSPage $page
+    *
     * @return array
     * @throws SMSWrongParameterException
     * @version :  v0.1
@@ -464,6 +472,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
    /**
     * @param SMSPage $page
+    *
     * @return string|null
     * @throws SMSWrongParameterException
     * @version :  v0.1
@@ -507,6 +516,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
    /**
     * @param string $filename Filename of XML data-source file
+    *
     * @version :  v0.1
     */
    public function setXMLFilename($filename) {

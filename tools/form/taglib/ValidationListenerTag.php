@@ -21,9 +21,6 @@
 namespace APF\tools\form\taglib;
 
 /**
- * @package APF\tools\form\taglib
- * @class ValidationListenerTag
- *
  * Implements a taglib, that outputs it's content, in case you notify
  * the taglib to do so. This mechanism can be used within validator
  * implementations to inject special style or class information into the
@@ -52,13 +49,11 @@ class ValidationListenerTag extends AbstractFormControl {
    /**
     * Indicates, whether the listener is notified or not.
     *
-    * @var boolean Notification flag.
+    * @var boolean $isNotified
     */
    protected $isNotified = false;
 
    /**
-    * @public
-    *
     * Notifies the listener to output the content of the taglib on transform time.
     *
     * @author Christian Achatz
@@ -70,8 +65,6 @@ class ValidationListenerTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Overwrites the parent's method, because there is nothing to do here.
     *
     * @author Christian Achatz
@@ -83,8 +76,6 @@ class ValidationListenerTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Overwrites the parent's method, because there is nothing to do here.
     *
     * @author Christian Achatz
@@ -95,8 +86,6 @@ class ValidationListenerTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Outputs the content of the tag, if notified.
     *
     * @return string The content of the tag.

@@ -21,9 +21,6 @@
 namespace APF\core\service;
 
 /**
- * @package APF\core\service
- * @interface APFDIService
- *
  * Defines the structure of an APF service that is initialized with the <em>DIServiceManager</em>.
  *
  * @author Christian Achatz
@@ -33,8 +30,6 @@ namespace APF\core\service;
 interface APFDIService extends APFService {
 
    /**
-    * @public
-    *
     * Marks the service as initialized.
     *
     * @author Christian Achatz
@@ -44,8 +39,6 @@ interface APFDIService extends APFService {
    public function markAsInitialized();
 
    /**
-    * @public
-    *
     * Marks the service as *not* initialized or *no more* initialized. This causes the DIServiceManager
     * to initialize or re-initialize the service on next access.
     *
@@ -56,8 +49,6 @@ interface APFDIService extends APFService {
    public function markAsPending();
 
    /**
-    * @public
-    *
     * Returns the initialization of the present service. In case the service is initialized,
     * the DIServiceManager to omit the call of the setup method defined within the DI service
     * object definition section.

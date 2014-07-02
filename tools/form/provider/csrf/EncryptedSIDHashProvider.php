@@ -23,9 +23,6 @@ namespace APF\tools\form\provider\csrf;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package APF\tools\form\provider\csrf
- * @class EncryptedSIDHashProvider
- *
  * Generates a hash based on the user's SID.
  *
  * @author Daniel Seemaier
@@ -35,11 +32,10 @@ use APF\core\pagecontroller\APFObject;
 class EncryptedSIDHashProvider extends APFObject implements CSRFHashProvider {
 
    /**
-    * @public
-    *
     * Generates a SID based hash.
     *
     * @param string $salt The salt.
+    *
     * @return string The SID based hash.
     *
     * @author Daniel Seemaier

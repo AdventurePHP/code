@@ -23,9 +23,6 @@ namespace APF\core\configuration;
 use Exception;
 
 /**
- * @package APF\core\configuration
- * @class ConfigurationException
- *
  * Represents a specialized exception for configuration errors.
  *
  * @author Christian Achatz

@@ -24,9 +24,6 @@ use APF\core\configuration\Configuration;
 use APF\core\service\APFService;
 
 /**
- * @package APF\tools\cache
- * @class CacheManager
- *
  * Implements the cache manager component. Due to the generic implementation, all forms of
  * caches can be implemented. For this reason, various targets and cache types are supported
  * by the included reader and writer concept. For application examples, please refer to the
@@ -41,28 +38,30 @@ use APF\core\service\APFService;
 final class CacheManager extends CacheBase {
 
    /**
-    * @const string Name of the cache configuration sub section.
+    * Name of the cache configuration sub section.
+    *
+    * @var string CACHE_CONFIG_SECTION_NAME
     */
    const CACHE_CONFIG_SECTION_NAME = 'Cache';
 
    /**
-    * @private
-    * @var CacheProvider The current cache provider.
+    * The current cache provider.
+    *
+    * @var CacheProvider $provider
     */
    private $provider = null;
 
    /**
-    * @private
     * Indicates, if the cache is active. Can be influenced by set('Active') or the
     * cache configuration file. The cache is off by default to avoid strange behavior, if the
     * config value is not set properly.
-    * @var boolean True, in case the cache is active, false otherwise.
+    * True, in case the cache is active, false otherwise.
+    *
+    * @var boolean $active
     */
    private $active = false;
 
    /**
-    * @public
-    *
     * Implements the init() method used by the service manager. Initializes the cache
     * manager with the corresponding cache configuration section.
     *
@@ -98,8 +97,6 @@ final class CacheManager extends CacheBase {
    }
 
    /**
-    * @public
-    *
     * Returns the content from the cache. If the content is not found in cache,
     * the provider returns null.
     * <p/>
@@ -123,8 +120,6 @@ final class CacheManager extends CacheBase {
    }
 
    /**
-    * @public
-    *
     * Writes the desired content to the cache.
     *
     * @param CacheKey $cacheKey the application's cache key.
@@ -144,8 +139,6 @@ final class CacheManager extends CacheBase {
    }
 
    /**
-    * @public
-    *
     * Clears the whole cache in case the cache key is null, or the cache item specified by
     * the given cache key.
     * <p/>

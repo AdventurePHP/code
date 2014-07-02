@@ -24,9 +24,6 @@ use APF\core\pagecontroller\BaseDocumentController;
 use APF\tools\form\multifileupload\pres\taglib\MultiFileUploadTag;
 
 /**
- * @package APF\tools\form\multifileupload\pres\documentcontroller
- * @class DemoController
- *
  * Demo document controller that shows how to implement multi file upload.
  *
  * @author Werner Liemberger <wpublicmail@gmail.com>

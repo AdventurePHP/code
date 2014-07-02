@@ -21,9 +21,6 @@
 namespace APF\core\errorhandler;
 
 /**
- * @package APF\core\errorhandler
- * @class ErrorHandler
- *
  * Describes the signature of any APF error handler.
  *
  * @author Christian Achatz
@@ -33,8 +30,6 @@ namespace APF\core\errorhandler;
 interface ErrorHandler {
 
    /**
-    * @public
-    *
     * This method is intended to take the error's information and processes it.
     *
     * @param int $errorNumber The error number.

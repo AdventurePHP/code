@@ -25,9 +25,6 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package APF\extensions\news\pres\documentcontroller\backend
- * @class NewsFrontendController
- *
  * Document controller for the frontend of the news.
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>
@@ -44,11 +41,12 @@ class NewsFrontendController extends NewsBaseController {
 
       if (count($newsList) === 0) {
          $this->getTemplate('noentry')->transformOnPlace();
+
          return;
       }
 
       $Cfg = $this->getConfiguration('APF\extensions\news', 'news.ini');
-      $AllowHtml = ($Cfg->getSection('General')->getValue('AllowHtml') == 'TRUE') ? TRUE : FALSE;
+      $AllowHtml = ($Cfg->getSection('General')->getValue('AllowHtml') == 'TRUE') ? true : false;
 
       $List = $this->getIterator('list');
 
@@ -69,10 +67,10 @@ class NewsFrontendController extends NewsBaseController {
 
          $Text = $AllowHtml ? $news->getText() : htmlentities($news->getText(), ENT_QUOTES, $charset, false);
          $Data[] = array(
-            'title' => htmlentities($news->getTitle(), ENT_QUOTES, $charset, false),
-            'text' => $Text,
-            'date' => $Date->format('d.m.Y H:i:s'),
-            'author' => $Author
+               'title'  => htmlentities($news->getTitle(), ENT_QUOTES, $charset, false),
+               'text'   => $Text,
+               'date'   => $Date->format('d.m.Y H:i:s'),
+               'author' => $Author
          );
       }
 
@@ -86,6 +84,7 @@ class NewsFrontendController extends NewsBaseController {
     * Builds the html of the pager.
     *
     * @param string $appKey
+    *
     * @return string
     */
    protected function buildPager($appKey) {
@@ -104,12 +103,12 @@ class NewsFrontendController extends NewsBaseController {
       $Links = array();
       for ($x = 1; $x <= $PageCount; $x++) {
          $Link = LinkGenerator::generateUrl(
-            Url::fromCurrent()
-                  ->mergeQuery(
-               array(
-                  $PageParameter => $x
-               )
-            )
+               Url::fromCurrent()
+                     ->mergeQuery(
+                           array(
+                                 $PageParameter => $x
+                           )
+                     )
          );
          if ($Page === $x) {
             $Links[] = '<a href="' . $Link . '" class="active">' . $x . '</a>';

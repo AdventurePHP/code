@@ -26,9 +26,6 @@ use APF\tools\form\taglib\AbstractFormControl;
 use APF\tools\form\taglib\HtmlFormTag;
 
 /**
- * @package APF\extensions\form\client
- * @class AddFormControlClientValidatorTag
- *
  *  This taglib adds validators to one or more controls.
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>
@@ -42,8 +39,6 @@ class AddFormControlClientValidatorTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Adds a validator to one or more controls
     *
     * @author Ralf Schubert
@@ -67,7 +62,7 @@ class AddFormControlClientValidatorTag extends AbstractFormControl {
       /* @var $parent HtmlFormTag */
       $parent = $this->getParentObject();
       foreach ($controlsTmp as $control) {
-         if (($ref = $parent->getFormElementByName($control)->getAttribute('ref')) !== NULL) {
+         if (($ref = $parent->getFormElementByName($control)->getAttribute('ref')) !== null) {
             $controlsTmp[] = $ref;
             try {
                $refField = $parent->getFormElementByName($ref);
@@ -86,7 +81,7 @@ class AddFormControlClientValidatorTag extends AbstractFormControl {
          //Get valmarkerclass of each control
          $valmarkerclass = 'apf-form-error';
 
-         if (($val = $parent->getFormElementByName($control)->getAttribute('valmarkerclass')) !== NULL) {
+         if (($val = $parent->getFormElementByName($control)->getAttribute('valmarkerclass')) !== null) {
             $valmarkerclass = $val;
             unset($val);
          }
@@ -106,8 +101,6 @@ class AddFormControlClientValidatorTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Overwrite the parent's method, because there's nothing to do here.
     *
     * @author Ralf Schubert

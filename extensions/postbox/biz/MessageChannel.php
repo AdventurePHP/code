@@ -21,9 +21,6 @@
 namespace APF\extensions\postbox\biz;
 
 /**
- * @package APF\extensions\postbox\biz
- * @class MessageChannel
- *
  * This class represents the "APF\extensions\postbox\biz\MessageChannel" domain object.
  * <p/>
  * Please use this class to add your own functionality.

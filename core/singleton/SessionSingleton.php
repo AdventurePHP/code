@@ -30,10 +30,6 @@ register_shutdown_function(function () {
 });
 
 /**
- * @package APF\core\singleton
- * @class SessionSingleton
- * @static
- *
  * Implements the generic session singleton pattern. Can be used to create singleton objects
  * from every class. This eases unit tests, because explicit singleton implementations cause
  * side effects during unit testing. As a cache container, the $GLOBALS array is used.
@@ -52,12 +48,16 @@ register_shutdown_function(function () {
 class SessionSingleton extends Singleton {
 
    /**
-    * @var string[] Stores the objects, that are requested as singletons.
+    * Stores the objects, that are requested as singletons.
+    *
+    * @var string[] $CACHE
     */
    private static $CACHE = array();
 
    /**
-    * @var Session The session instance to retrieve the session objects from.
+    * The session instance to retrieve the session objects from.
+    *
+    * @var Session $SESSION
     */
    private static $SESSION;
 
@@ -65,9 +65,6 @@ class SessionSingleton extends Singleton {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Returns a session singleton instance of the given class. In case the object is found
     * in the session singleton cache, the cached object is returned.
     * <p/>
@@ -122,9 +119,6 @@ class SessionSingleton extends Singleton {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Implements a shutdown function to save all session singleton objects in the session.
     *
     * @author Christian Schäfer

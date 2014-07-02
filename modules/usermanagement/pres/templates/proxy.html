@@ -1,37 +1,46 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\ProxyNavigationController"
+class="APF\modules\usermanagement\pres\documentcontroller\ProxyNavigationController"
 @>
 <div class="umgt-menu">
    <a href="${display_proxy_types}" title="<html:getstring
-            namespace="APF\modules\usermanagement\pres"
-            config="labels.ini"
-            entry="frontend.proxy.navi.list-proxy.label"/>"><html:getstring
-                        namespace="APF\modules\usermanagement\pres"
-                        config="labels.ini"
-                        entry="frontend.proxy.navi.list-proxy.label"/></a>
+            namespace=" APF\modules\usermanagement\pres"
+   config="labels.ini"
+   entry="frontend.proxy.navi.list-proxy.label"/>">
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.proxy.navi.list-proxy.label"/>
+   </a>
    &nbsp;|&nbsp;
    <a href="${proxy_add}" title="<html:getstring
-            namespace="APF\modules\usermanagement\pres"
-            config="labels.ini"
-            entry="frontend.proxy.navi.add-proxy.label"/>"><html:getstring
-                           namespace="APF\modules\usermanagement\pres"
-                           config="labels.ini"
-                           entry="frontend.proxy.navi.add-proxy.label"/></a>
+            namespace=" APF\modules\usermanagement\pres"
+   config="labels.ini"
+   entry="frontend.proxy.navi.add-proxy.label"/>">
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.proxy.navi.add-proxy.label"/>
+   </a>
    &nbsp;|&nbsp;
    <a href="${proxy_type_list}" title="<html:getstring
-            namespace="APF\modules\usermanagement\pres"
-            config="labels.ini"
-            entry="frontend.proxy.navi.list-proxy-types.label"/>"><html:getstring
-                              namespace="APF\modules\usermanagement\pres"
-                              config="labels.ini"
-                              entry="frontend.proxy.navi.list-proxy-types.label"/></a>
+            namespace=" APF\modules\usermanagement\pres"
+   config="labels.ini"
+   entry="frontend.proxy.navi.list-proxy-types.label"/>">
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.proxy.navi.list-proxy-types.label"/>
+   </a>
    &nbsp;|&nbsp;
    <a href="${proxy_type_add}" title="<html:getstring
-            namespace="APF\modules\usermanagement\pres"
-            config="labels.ini"
-            entry="frontend.proxy.navi.app-proxy-type.label"/>"><html:getstring
-                                 namespace="APF\modules\usermanagement\pres"
-                                 config="labels.ini"
-                                 entry="frontend.proxy.navi.app-proxy-type.label"/></a>
+            namespace=" APF\modules\usermanagement\pres"
+   config="labels.ini"
+   entry="frontend.proxy.navi.app-proxy-type.label"/>">
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.proxy.navi.app-proxy-type.label"/>
+   </a>
 </div>
-<core:importdesign namespace="APF\modules\usermanagement\pres\templates\proxy" template="[proxyview = list]" incparam="proxyview" />
+<core:importdesign namespace="APF\modules\usermanagement\pres\templates\proxy" template="[proxyview = list]"
+                   incparam="proxyview"/>

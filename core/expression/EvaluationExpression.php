@@ -21,9 +21,6 @@
 namespace APF\core\expression;
 
 /**
- * @package APF\core\expression
- * @class EvaluationExpression
- *
  * Defines the mimic of an APF dynamic expression.
  *
  * @author Christian Achatz

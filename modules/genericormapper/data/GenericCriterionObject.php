@@ -41,9 +41,6 @@ namespace APF\modules\genericormapper\data;
     */
 
 /**
- * @package APF\modules\genericormapper\data
- * @class GenericCriterionObject
- *
  * Implements a generic criterion object, that can be used to load a domain object or domain object list.<br />
  *
  * @author Christian Achatz
@@ -58,53 +55,59 @@ namespace APF\modules\genericormapper\data;
 final class GenericCriterionObject {
 
    /**
-    * @private
-    * @var string[] Stores the relation indicators.
+    * Stores the relation indicators.
+    *
+    * @var string[] $relations
     */
    private $relations = array();
 
    /**
-    * @private
-    * @var string[] Stores an uniqid per relation name.
+    * Stores an uniqid per relation name.
+    *
+    * @var string[] $uniqueRelationIds
     */
    private $uniqueRelationIds = array('source' => array(), 'target' => array());
 
    /**
-    * @private
-    * @var string[] Stores the limit indicator.
+    * Stores the limit indicator.
+    *
+    * @var string[] $limit
     */
    private $limit = array();
 
    /**
-    * @private
-    * @var string[] Stores the property indicator.
+    * Stores the property indicator.
+    *
+    * @var string[] $properties
     */
    private $properties = array();
 
    /**
-    * @private
-    * @var string[] Stores the current logical operator.
+    * Stores the current logical operator.
+    *
+    * @var string[] $logicalOperator
     */
    private $logicalOperator = 'AND';
 
    /**
-    * @private
-    * @var string[] Stores the properties to load into the object.
+    * Stores the properties to load into the object.
+    *
+    * @var string[] $loadedProperties
     */
    private $loadedProperties = array();
 
    /**
-    * @private
-    * @var string[] Stores the order indicator.
+    * Stores the order indicator.
+    *
+    * @var string[] $orders
     */
    private $orders = array();
 
    /**
-    * @public
-    *
     * Method to set the current link between properties.
     *
     * @param string $operator The operator to use (e.g. AND).
+    *
     * @return GenericCriterionObject Returns itself.
     *
     * @author Lutz Mahlstedt
@@ -113,12 +116,11 @@ final class GenericCriterionObject {
     */
    public function setLogicalOperator($operator) {
       $this->logicalOperator = $operator;
+
       return $this;
    }
 
    /**
-    * @public
-    *
     * Method to add a relation indicator.
     * <p/>
     * Generates a 'source' and 'target' unique id for the relation name if not set.
@@ -142,12 +144,11 @@ final class GenericCriterionObject {
       if (!isset($this->uniqueRelationIds['target'][$relationName])) {
          $this->uniqueRelationIds['target'][$relationName] = md5(uniqid(mt_rand(), true));
       }
+
       return $this;
    }
 
    /**
-    * @public
-    *
     * Returns the relation definitions for the current query.
     *
     * @return string[] The relation definitions.
@@ -161,13 +162,12 @@ final class GenericCriterionObject {
    }
 
    /**
-    * @public
-    *
     * Returns a uniqid for the given relation name. If no uniqid is set, it will
     * be generated.
     *
     * @param string $relationName The given relation name
     * @param boolean $returningSource Indicates, if returning source uniqid or target uniqid. Default is true.
+    *
     * @return string The uniqid
     *
     * @author Tobias Lückel
@@ -182,12 +182,11 @@ final class GenericCriterionObject {
       if (!isset($this->uniqueRelationIds[$location][$relationName])) {
          $this->uniqueRelationIds[$location][$relationName] = md5(uniqid(mt_rand(), true));
       }
+
       return $this->uniqueRelationIds[$location][$relationName];
    }
 
    /**
-    * @public
-    *
     * Method to add a limit clause to the criterion object. If the second param is not present,
     * the first param indicates the maximum amount of objects in a list.
     *
@@ -214,8 +213,6 @@ final class GenericCriterionObject {
    }
 
    /**
-    * @public
-    *
     * Returns the defined limitations for the current query.
     *
     * @return string[] The limit definition.
@@ -229,8 +226,6 @@ final class GenericCriterionObject {
    }
 
    /**
-    * @public
-    *
     * Method to add a property to the where list.
     *
     * @param string $attributeName name of the attribute.
@@ -245,17 +240,16 @@ final class GenericCriterionObject {
     * Version 0.2, 18.07.2010 (Added "Fluent Interface" support.)<br />
     */
    public function addPropertyIndicator($attributeName, $attributeValue, $comparisonOperator = '=') {
-      $this->properties[] = array('Name' => $attributeName,
-         'Value' => $attributeValue,
-         'ComparisonOperator' => $comparisonOperator,
-         'LogicalOperator' => $this->logicalOperator
+      $this->properties[] = array('Name'               => $attributeName,
+                                  'Value'              => $attributeValue,
+                                  'ComparisonOperator' => $comparisonOperator,
+                                  'LogicalOperator'    => $this->logicalOperator
       );
+
       return $this;
    }
 
    /**
-    * @public
-    *
     * Returns the attribute restrictions defined.
     *
     * @return string[] Attribute restrictions for the current query.
@@ -269,8 +263,6 @@ final class GenericCriterionObject {
    }
 
    /**
-    * @public
-    *
     * Method to add a order indicator.
     *
     * @param string $attributeName name of the attribute
@@ -285,12 +277,11 @@ final class GenericCriterionObject {
     */
    public function addOrderIndicator($attributeName, $orderDirection = 'ASC') {
       $this->orders[$attributeName] = $orderDirection;
+
       return $this;
    }
 
    /**
-    * @public
-    *
     * Returns the order indicators for the current query.
     *
     * @return string[] The order indicators.
@@ -304,8 +295,6 @@ final class GenericCriterionObject {
    }
 
    /**
-    * @public
-    *
     * Method to add a property, that should be loaded into the result object or object list.
     *
     * @param string $propertyName Name of the desired property
@@ -319,12 +308,11 @@ final class GenericCriterionObject {
     */
    public function addLoadedProperty($propertyName) {
       $this->loadedProperties[] = $propertyName;
+
       return $this;
    }
 
    /**
-    * @public
-    *
     * Return the list of properties to load with the current query.
     *
     * @return string[] The properties to load.

@@ -27,9 +27,6 @@ use APF\modules\genericormapper\data\GenericORRelationMapper;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\extensions\news\biz
- * @class NewsManager
- *
  * Manages the news system.
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>
@@ -39,7 +36,7 @@ use APF\tools\request\RequestHandler;
 class NewsManager extends APFObject {
 
    /**
-    * @var GenericORRelationMapper
+    * @var GenericORRelationMapper $ORM
     */
    protected $ORM = null;
 
@@ -47,10 +44,12 @@ class NewsManager extends APFObject {
     * Set's the data component.
     *
     * @param GenericORRelationMapper $ORM
+    *
     * @return Postbox Returns itself.
     */
    public function setORM(GenericORRelationMapper &$ORM) {
       $this->ORM = $ORM;
+
       return $this;
    }
 
@@ -102,16 +101,18 @@ class NewsManager extends APFObject {
     * Returns the news with the given Id.
     *
     * @param int $id The news' id.
+    *
     * @return News Returns null if it wasn't found.
     */
    public function getNewsById($id) {
-      return $this->ORM->loadObjectById('News', (int)$id);
+      return $this->ORM->loadObjectById('News', (int) $id);
    }
 
    /**
     * Counts the News which exist for the given application key.
     *
     * @param string $appKey Optional. Default: Current context. The application identifier, which is used to differentiate different news instances.
+    *
     * @return int The number of existing news.
     */
    public function getNewsCount($appKey = null) {
@@ -121,6 +122,7 @@ class NewsManager extends APFObject {
 
       $crit = new GenericCriterionObject();
       $crit->addPropertyIndicator('AppKey', $appKey);
+
       return $this->ORM->loadObjectCount('News', $crit);
    }
 
@@ -138,7 +140,7 @@ class NewsManager extends APFObject {
 
       $Cfg = $this->getConfiguration('APF\extensions\news', 'news.ini');
       $Paging = $Cfg->getSection('Paging');
-      $EntriesPerPage = (int)$Paging->getValue('EntriesPerPage');
+      $EntriesPerPage = (int) $Paging->getValue('EntriesPerPage');
 
       $Start = ($page - 1) * $EntriesPerPage;
 
@@ -158,6 +160,7 @@ class NewsManager extends APFObject {
     * Counts the number of newspages.
     *
     * @param string $appKey Optional. Default: Current context. The application identifier, which is used to differentiate different news instances.
+    *
     * @return int
     */
    public function getPageCount($appKey = null) {
@@ -166,7 +169,7 @@ class NewsManager extends APFObject {
       }
 
       $Cfg = $this->getConfiguration('APF\extensions\news', 'news.ini');
-      $EntriesPerPage = (int)$Cfg->getSection('Paging')->getValue('EntriesPerPage');
+      $EntriesPerPage = (int) $Cfg->getSection('Paging')->getValue('EntriesPerPage');
       $NewsCount = $this->getNewsCount($appKey);
 
       return ceil($NewsCount / $EntriesPerPage);
@@ -188,7 +191,7 @@ class NewsManager extends APFObject {
          $page = RequestHandler::getValue($PageParameter, 1);
       }
 
-      $page = (int)$page;
+      $page = (int) $page;
       $PageCount = $this->getPageCount($appKey);
 
       if ($PageCount < $page) {

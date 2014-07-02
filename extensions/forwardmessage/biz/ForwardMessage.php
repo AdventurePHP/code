@@ -21,9 +21,6 @@
 namespace APF\extensions\forwardmessage\biz;
 
 /**
- * @package APF\extensions\forwardmessage\biz
- * @class ForwardMessageManager
- *
  * Represents a single message within the forward message extension.
  *
  * @author Christian Achatz
@@ -33,12 +30,16 @@ namespace APF\extensions\forwardmessage\biz;
 class ForwardMessage {
 
    /**
-    * @var string The message content.
+    * The message content.
+    *
+    * @var string $message
     */
    private $message;
 
    /**
-    * @var bool True, in case this message is visible, false otherwise.
+    * True, in case this message is visible, false otherwise.
+    *
+    * @var bool $visible
     */
    private $visible;
 

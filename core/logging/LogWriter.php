@@ -21,9 +21,6 @@
 namespace APF\core\logging;
 
 /**
- * @package APF\core\logging
- * @class LogWriter
- *
  * Defines the interface for a log writer that can be registered
  * with the Logger using the addLogWriter() method.
  *
@@ -34,8 +31,6 @@ namespace APF\core\logging;
 interface LogWriter {
 
    /**
-    * @public
-    *
     * Writes log entries applied by the Logger.
     *
     * @param LogEntry[] The list of log entries to write.
@@ -47,8 +42,6 @@ interface LogWriter {
    public function writeLogEntries(array $entries);
 
    /**
-    * @public
-    *
     * Method to inject the log target identifier by the Logger.
     *
     * @param string $target The log target identifier for LogWriter-internal usage.

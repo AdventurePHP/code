@@ -23,9 +23,6 @@ namespace APF\tools\form\taglib;
 use APF\tools\form\FormException;
 
 /**
- * @package APF\tools\form\taglib
- * @class ButtonTag
- *
  * Represents an APF form button.
  *
  * @author Christian Schäfer
@@ -45,10 +42,9 @@ class ButtonTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    * @since 0.2
-    *
     * Indicates, if the form was sent.
+    *
+    * @since 0.2
     *
     * @author Christian Schäfer
     * @version
@@ -83,8 +79,6 @@ class ButtonTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns the HTML code of the button.
     *
     * @return string The HTML code of the button.

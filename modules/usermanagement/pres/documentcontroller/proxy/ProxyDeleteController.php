@@ -26,9 +26,6 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\proxy
- * @class ProxyDeleteController
- *
  * Deletes a visibility definition.
  *
  * @author Christian Achatz
@@ -62,15 +59,16 @@ class ProxyDeleteController extends UmgtBaseController {
 
          $formYes->transformOnPlace();
          $formNo->transformOnPlace();
+
          return;
       }
 
       HeaderManager::forward($this->generateLink(
-            array(
-               'mainview' => 'proxy',
-               'proxyview' => null
+                  array(
+                        'mainview'  => 'proxy',
+                        'proxyview' => null
+                  )
             )
-         )
       );
 
    }

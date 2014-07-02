@@ -21,9 +21,6 @@
 namespace APF\core\errorhandler;
 
 /**
- * @package APF\core\errorhandler
- * @class ProductionErrorHandler
- *
  * Implements a live error handler, that logs the occurred error and redirects to
  * a statically configured page to hide the error from the customer (e.g. for
  * security reasons).
@@ -44,13 +41,13 @@ namespace APF\core\errorhandler;
 class ProductionErrorHandler extends DefaultErrorHandler {
 
    /**
-    * @var string The url the user is redirected to in case of errors.
+    * The url the user is redirected to in case of errors.
+    *
+    * @var string $errorRedirectUrl
     */
    private $errorRedirectUrl;
 
    /**
-    * @public
-    *
     * Let's you define the page/url the user is redirected to in case of errors.
     *
     * @param string $errorRedirectUrl The error page url.

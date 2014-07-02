@@ -31,9 +31,6 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use Exception;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\registration
- * @class RegistrationController
- *
  * This document controller handles the user registration.
  *
  * @author Christian Achatz
@@ -103,7 +100,7 @@ class RegistrationController extends UmgtBaseController {
             /* @var $l Logger */
             $l->logEntry('registration', 'Registration cannot add initial groups or roles due to the following '
                   . 'exception: ' . $e . ' This may be ok, in case you have no initial groups and/or roles specified.',
-               LogEntry::SEVERITY_INFO);
+                  LogEntry::SEVERITY_INFO);
          }
 
          try {

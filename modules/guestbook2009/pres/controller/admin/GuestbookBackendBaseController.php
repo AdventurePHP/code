@@ -27,9 +27,6 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package APF\modules\guestbook2009\pres
- * @class GuestbookBackendBaseController
- *
  * Provides basic functionality to display the selection menu for
  * editing or deleting guestbook entries.
  *
@@ -66,8 +63,8 @@ abstract class GuestbookBackendBaseController extends GuestbookBaseController {
 
       // define form action url concerning the view it is rendered in
       $action = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
-         'gbview' => 'admin',
-         'adminview' => $adminView
+            'gbview'    => 'admin',
+            'adminview' => $adminView
       )));
 
       $form->setAttribute('action', $action);

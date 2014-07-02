@@ -23,9 +23,6 @@ namespace APF\modules\usermanagement\pres\taglib;
 use APF\tools\media\taglib\MediaInclusionTag;
 
 /**
- * @package APF\modules\usermanagement\pres\taglib
- * @class UmgtMediaInclusionTag
- *
  * Implements the image displaying taglib. Based on the <*:mediastream/> taglib.
  *
  * @author Christian Achatz
@@ -35,8 +32,6 @@ use APF\tools\media\taglib\MediaInclusionTag;
 class UmgtMediaInclusionTag extends MediaInclusionTag {
 
    /**
-    * @public
-    *
     * Overwrites the parent's onParseTime().
     *
     * @author Christian Achatz
@@ -48,8 +43,6 @@ class UmgtMediaInclusionTag extends MediaInclusionTag {
    }
 
    /**
-    * @public
-    *
     * Returns the image tag, that includes the image resource (front controller action). The
     * tag definition also contains size and border instruction.
     *

@@ -27,8 +27,6 @@ use APF\extensions\apfelsms\biz\SMSWrongParameterException;
 use APF\tools\link\Url;
 
 /**
- *
- * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (03.10.12)
  *
@@ -37,37 +35,34 @@ class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
 
 
    /**
-    * @const string
+    * @var string SESSION_NAMESPACE
     */
    const SESSION_NAMESPACE = 'APF\extensions\apfelsms\actions';
 
 
    /**
-    * @const string
+    * @var string SESSION_LOOPCOUNT_NAME
     */
    const SESSION_LOOPCOUNT_NAME = 'redirectLoopCount';
 
 
    /**
-    * @const integer
+    * @var integer MAX_LOOPS
     */
    const MAX_LOOPS = 10;
 
 
    /**
-    * @var string
+    * @var string $type
     */
    protected $type = self::TYPE_PRE_PAGE_CREATE;
 
 
    /**
-    * @public
-    *
-    * @desc Checks for 404 and 403 errors and redirects to error pages.
-    *       If error page is current page, status code is adjusted.
+    * Checks for 404 and 403 errors and redirects to error pages.
+    * If error page is current page, status code is adjusted.
     */
    public function run() {
-
 
       // check loop counter (to protect against infinite redirect loops)
       if (!$this->checkLoopsOK()) {
@@ -134,7 +129,7 @@ class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
 
       $sessM = new Session(self::SESSION_NAMESPACE);
       $sessM->save(
-         self::SESSION_LOOPCOUNT_NAME,
+            self::SESSION_LOOPCOUNT_NAME,
             intval($sessM->load(self::SESSION_LOOPCOUNT_NAME, 0)) + 1
       );
    }

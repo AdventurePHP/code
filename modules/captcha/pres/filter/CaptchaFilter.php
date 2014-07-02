@@ -23,9 +23,6 @@ namespace APF\modules\captcha\pres\filter;
 use APF\tools\form\filter\AbstractFormFilter;
 
 /**
- * @package APF\modules\captcha\pres\filter
- * @class CaptchaFilter
- *
  * Implements a filter for the captcha field.
  *
  * @author Christian Achatz
@@ -35,12 +32,11 @@ use APF\tools\form\filter\AbstractFormFilter;
 class CaptchaFilter extends AbstractFormFilter {
 
    /**
-    * @public
-    *
     * Filters the content of the captcha field through an aggressive
     * filter to ensure security.
     *
     * @param string $input The content to filter.
+    *
     * @return string Filtered content.
     *
     * @author Christian Achatz

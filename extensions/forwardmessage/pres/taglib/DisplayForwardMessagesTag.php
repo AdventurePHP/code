@@ -25,11 +25,9 @@ use APF\core\service\APFService;
 use APF\extensions\forwardmessage\biz\ForwardMessageManager;
 
 /**
- * @package APF\extensions\forwardmessage\pres\taglib
- * @class DisplayForwardMessagesTag
- *
  * @param string $groups String of groups that should be displayed. Separated by "," (e.g "message,error")
  * @param string $delimiter
+ *
  * @return string Returns the added flash messages.
  *
  * @example
@@ -57,8 +55,6 @@ class DisplayForwardMessagesTag extends Document {
    }
 
    /**
-    * @protected
-    *
     * Retrieves the relevant messages from the central store.
     *
     * @return string[] The list of messages.
@@ -77,6 +73,7 @@ class DisplayForwardMessagesTag extends Document {
 
       /* @var $manager ForwardMessageManager */
       $manager = & $this->getServiceObject('APF\extensions\forwardmessage\biz\ForwardMessageManager', APFService::SERVICE_TYPE_SESSION_SINGLETON);
+
       return $manager->getMessages($groups);
    }
 

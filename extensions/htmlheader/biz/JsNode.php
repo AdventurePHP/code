@@ -21,9 +21,6 @@
 namespace APF\extensions\htmlheader\biz;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class JsNode
- *
  * This interface specifies a <em>&lt;script /&gt;</em> tag.
  *
  * @author Christian Achatz
@@ -31,4 +28,5 @@ namespace APF\extensions\htmlheader\biz;
  * Version 0.1, 20.08.2010<br />
  */
 interface JsNode extends HeaderNode {
+
 }

@@ -26,9 +26,6 @@ use APF\tools\form\multifileupload\biz\MultiFileUploadManager;
 use APF\tools\http\HeaderManager;
 
 /**
- * @package APF\tools\form\multifileupload\actions
- * @class MultiFileGetFileAction
- *
  * This action delivers a file that has been uploaded using the multi-upload feature.
  *
  * @author Werner Liemberger <wpublicmail@gmail.com>
@@ -47,8 +44,8 @@ class MultiFileGetFileAction extends AbstractFrontcontrollerAction {
 
          /* @var $manager MultiFileUploadManager */
          $manager = & $this->getAndInitServiceObject(
-            'APF\tools\form\multifileupload\biz\MultiFileUploadManager',
-            array('formname' => $formName, 'name' => $fieldName)
+               'APF\tools\form\multifileupload\biz\MultiFileUploadManager',
+               array('formname' => $formName, 'name' => $fieldName)
          );
          $file = $manager->getFile($uploadName);
          if (is_array($file)) {

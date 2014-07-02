@@ -25,9 +25,6 @@ use APF\tools\form\validator\TextFieldValidator;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\recaptcha\pres\validator
- * @class ReCaptchaValidator
- *
  * Validates a reCaptcha field.
  * <p/>
  * Using APF's ReCaptcha wrapper requires download and inclusion of Google's
@@ -53,10 +50,10 @@ class ReCaptchaValidator extends TextFieldValidator {
 
       /* @var $resp \ReCaptchaResponse */
       $resp = recaptcha_check_answer(
-         $control->getPrivateKey(),
-         $_SERVER['REMOTE_ADDR'],
-         $challengeContent,
-         $answerIdentifier
+            $control->getPrivateKey(),
+            $_SERVER['REMOTE_ADDR'],
+            $challengeContent,
+            $answerIdentifier
       );
 
       if ($resp->is_valid) {
@@ -64,13 +61,12 @@ class ReCaptchaValidator extends TextFieldValidator {
       } else {
          // inject error message key to be able to display a user hint
          $control->setErrorMessageKey($resp->error);
+
          return false;
       }
    }
 
    /**
-    * @public
-    *
     * Notifies the form control to be invalid for the reCaptcha field.
     *
     * @author Christian Achatz

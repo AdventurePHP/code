@@ -29,9 +29,6 @@ use APF\core\singleton\Singleton;
 use Exception;
 
 /**
- * @package APF\core\exceptionhandler
- * @class DefaultExceptionHandler
- *
  * Implements the default APF exception handler for uncaught exceptions.
  *
  * @author Christian Achatz
@@ -41,32 +38,44 @@ use Exception;
 class DefaultExceptionHandler implements ExceptionHandler {
 
    /**
-    * @var int The number of the exception.
+    * The number of the exception.
+    *
+    * @var int $exceptionNumber
     */
    protected $exceptionNumber = null;
 
    /**
-    * @var string The message of the exception.
+    * The message of the exception.
+    *
+    * @var string $exceptionMessage
     */
    protected $exceptionMessage = null;
 
    /**
-    * @var string The file, the exception occurs in.
+    * The file, the exception occurs in.
+    *
+    * @var string $exceptionFile
     */
    protected $exceptionFile = null;
 
    /**
-    * @var int The line, the exception occurs in.
+    * The line, the exception occurs in.
+    *
+    * @var int $exceptionLine
     */
    protected $exceptionLine = null;
 
    /**
-    * @var string The exception type (name of the class).
+    * The exception type (name of the class).
+    *
+    * @var string $exceptionType
     */
    protected $exceptionType = null;
 
    /**
-    * @var string[] The exception trace.
+    * The exception trace.
+    *
+    * @var string[] $exceptionTrace
     */
    protected $exceptionTrace = array();
 
@@ -88,8 +97,6 @@ class DefaultExceptionHandler implements ExceptionHandler {
    }
 
    /**
-    * @private
-    *
     * Creates a log entry containing the exception occurred.
     *
     * @author Christian Achatz
@@ -113,8 +120,6 @@ class DefaultExceptionHandler implements ExceptionHandler {
    }
 
    /**
-    * @private
-    *
     * Creates the exception page.
     *
     * @return string the exception page content.
@@ -151,8 +156,6 @@ class DefaultExceptionHandler implements ExceptionHandler {
    }
 
    /**
-    * @private
-    *
     * Generates the exception id.
     *
     * @return string The unique exception id.

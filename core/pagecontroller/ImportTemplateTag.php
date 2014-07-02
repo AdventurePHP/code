@@ -21,9 +21,6 @@
 namespace APF\core\pagecontroller;
 
 /**
- * @package APF\core\pagecontroller
- * @class ImportTemplateTag
- *
  * This class implements the functionality of the core::importdesign tag. It generates a sub node
  * from the template specified by the tag's attributes within the current APF DOM tree. Each
  * importdesign tag can compose further tags.
@@ -35,8 +32,6 @@ namespace APF\core\pagecontroller;
 class ImportTemplateTag extends Document {
 
    /**
-    * @public
-    *
     * Implements the onParseTime() method from the Document class. Includes the desired template
     * as a new DOM node into the current APF DOM tree.
     *

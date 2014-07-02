@@ -30,9 +30,6 @@ use APF\tools\filesystem\FilesystemManager;
 use InvalidArgumentException;
 
 /**
- * @package APF\tools\cache\provider
- * @class TextCacheProvider
- *
  * Implements the cache provider for normal text content.
  *
  * @author Christian Achatz
@@ -87,13 +84,12 @@ class TextCacheProvider extends CacheBase implements CacheProvider {
       $fH = fopen($cacheFile, 'w+');
       fwrite($fH, $content);
       fclose($fH);
+
       return true;
 
    }
 
    /**
-    * @protected
-    *
     * Returns the complete cache file name. Due to filesystem performance reasons,
     * the cache key folder is separated into several parts:
     * <ul>
@@ -107,6 +103,7 @@ class TextCacheProvider extends CacheBase implements CacheProvider {
     * </ul>
     *
     * @param CacheKey $cacheKey the application's cache key.
+    *
     * @return string The cache file name.
     *
     * @author Christian Achatz
@@ -125,6 +122,7 @@ class TextCacheProvider extends CacheBase implements CacheProvider {
       if ($cacheKey instanceof AdvancedCacheKey) {
          $subKey = md5($cacheKey->getSubKey());
          $subFolder = substr($subKey, 0, 2);
+
          return $baseFolder . '/' . $namespace . '/' . $folder . '/' . $key . '/' . $subFolder . '/' . $subKey . '.apfc';
       } else {
          return $baseFolder . '/' . $namespace . '/' . $folder . '/' . $key . '.apfc';

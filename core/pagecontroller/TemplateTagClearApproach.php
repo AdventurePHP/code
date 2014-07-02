@@ -21,9 +21,6 @@
 namespace APF\core\pagecontroller;
 
 /**
- * @package APF\core\pagecontroller
- * @class TemplateTagClearApproach
- *
  * Defines the way a TemplateTag instance can be cleared using it within a loop
  * before displaying the next item.
  * <p/>
@@ -38,8 +35,6 @@ namespace APF\core\pagecontroller;
 interface TemplateTagClearApproach {
 
    /**
-    * @public
-    *
     * Clears the applied TemplateTag according to the implementation.
     *
     * @param TemplateTag $node The current TemplateTag node.

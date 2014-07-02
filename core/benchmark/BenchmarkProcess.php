@@ -21,9 +21,6 @@
 namespace APF\core\benchmark;
 
 /**
- * @package APF\core\benchmark
- * @class BenchmarkProcess
- *
  * Represents a benchmark process node within the benchmark tree.
  *
  * @author Christian Schäfer
@@ -33,37 +30,51 @@ namespace APF\core\benchmark;
 final class BenchmarkProcess {
 
    /**
-    * @var int ID of the process.
+    * ID of the process.
+    *
+    * @var int $processId
     */
    private $processId;
 
    /**
-    * @var string Name of the process.
+    * Name of the process.
+    *
+    * @var string $processName
     */
    private $processName;
 
    /**
-    * @var int Level of the process.
+    * Level of the process.
+    *
+    * @var int $processLevel
     */
    private $processLevel;
 
    /**
-    * @var int Start time of the process.
+    * Start time of the process.
+    *
+    * @var int $processStartTime
     */
    private $processStartTime = null;
 
    /**
-    * @var int Stop time of the process.
+    * Stop time of the process.
+    *
+    * @var int $processStopTime
     */
    private $processStopTime = null;
 
    /**
-    * @var BenchmarkProcess Reference on the process' parent.
+    * Reference on the process' parent.
+    *
+    * @var BenchmarkProcess $parentProcess
     */
    private $parentProcess = null;
 
    /**
-    * @var BenchmarkProcess[] List of child processes.
+    * List of child processes.
+    *
+    * @var BenchmarkProcess[] $processes
     */
    private $processes = array();
 
@@ -108,7 +119,7 @@ final class BenchmarkProcess {
    }
 
    public function setParentProcess(BenchmarkProcess &$process) {
-      $this->parentProcess = &$process;
+      $this->parentProcess = & $process;
    }
 
    public function &getParentProcess() {
@@ -129,8 +140,6 @@ final class BenchmarkProcess {
    }
 
    /**
-    * @public
-    *
     * Returns the process' runtime.
     *
     * @return string The runtime of the process in seconds.
@@ -143,6 +152,7 @@ final class BenchmarkProcess {
       if ($this->processStopTime == null) {
          return '--------------------';
       }
+
       return number_format($this->processStopTime - $this->processStartTime, 10);
    }
 

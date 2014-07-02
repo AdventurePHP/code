@@ -26,9 +26,6 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package APF\extensions\news\pres\documentcontroller\backend
- * @class NewsListController
- *
  * Document controller for listing the news in the backend with links for editing
  * and deleting.
  *
@@ -49,6 +46,7 @@ class NewsListController extends NewsBaseController {
 
       if (count($NewsList) === 0) {
          $this->getTemplate('noentry')->transformOnPlace();
+
          return;
       }
 
@@ -59,22 +57,22 @@ class NewsListController extends NewsBaseController {
 
       foreach ($NewsList as &$News) {
          $DataArray[] = array(
-            'Title' => htmlentities($News->getTitle(), ENT_QUOTES, $charset, false),
-            'Date' => $News->getProperty('CreationTimestamp'),
-            'LinkEdit' => LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
-                  array(
-                     'backendview' => 'edit',
-                     'editnewsid' => (int)$News->getObjectId()
-                  )
-               )
-            ),
-            'LinkDelete' => LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
-                  array(
-                     'backendview' => 'delete',
-                     'deletenewsid' => (int)$News->getObjectId()
-                  )
-               )
-            )
+               'Title'      => htmlentities($News->getTitle(), ENT_QUOTES, $charset, false),
+               'Date'       => $News->getProperty('CreationTimestamp'),
+               'LinkEdit'   => LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
+                                 array(
+                                       'backendview' => 'edit',
+                                       'editnewsid'  => (int) $News->getObjectId()
+                                 )
+                           )
+                     ),
+               'LinkDelete' => LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
+                                 array(
+                                       'backendview'  => 'delete',
+                                       'deletenewsid' => (int) $News->getObjectId()
+                                 )
+                           )
+                     )
          );
       }
 

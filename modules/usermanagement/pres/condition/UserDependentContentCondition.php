@@ -21,11 +21,8 @@
 namespace APF\modules\usermanagement\pres\condition;
 
 /**
- * @package APF\modules\usermanagement\pres\condition
- * @class UserDependentContentCondition
- *
  * Defines the structure of a user dependent content condition for the user
- * mangement module.
+ * management module.
  *
  * @author Christian Achatz
  * @version
@@ -39,6 +36,7 @@ interface UserDependentContentCondition {
    /**
     * @param string $conditionKey The name of the condition.
     * @param UmgtUser $user The current user.
+    *
     * @return boolean true in case the condition matches, false otherwise.
     */
    public function matches($conditionKey, UmgtUser $user = null);

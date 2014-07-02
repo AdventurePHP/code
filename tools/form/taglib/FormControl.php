@@ -21,9 +21,6 @@
 namespace APF\tools\form\taglib;
 
 /**
- * @package APF\tools\form\taglib
- * @class FormControl
- *
  * Defines the basic structure/functionality of an APF form control.
  * <p/>
  * It contains the basic methods the APF form tag needs to operate on.
@@ -35,8 +32,6 @@ namespace APF\tools\form\taglib;
 interface FormControl {
 
    /**
-    * @public
-    *
     * Returns the sending status of a form control. Since the framework does not know about
     * custom tags, this status is queried from all controls but it is only relevant for
     * buttons.
@@ -50,8 +45,6 @@ interface FormControl {
    public function isSent();
 
    /**
-    * @public
-    *
     * Returns the validity status of a form control. Since the framework does not know about
     * custom tags, this status is queried from all controls but it is only relevant for
     * input controls.

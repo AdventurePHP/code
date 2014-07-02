@@ -1,10 +1,10 @@
 <@controller
-   class="APF\modules\pager\pres\documentcontroller\AdvancedPagerController"
+class="APF\modules\pager\pres\documentcontroller\AdvancedPagerController"
 @>
 <html:template name="content">
    <div class="apf-pager">
       <div class="apf-pages">
-          ${FirstPage}${PreviousPage}${Content}${NextPage}${LastPage}
+         ${FirstPage}${PreviousPage}${Content}${NextPage}${LastPage}
       </div>
       ${DynamicPageSize}
    </div>
@@ -21,7 +21,7 @@
 </html:template>
 
 <html:template name="FirstPage_en">
-    <a href="${Link}" title="Display first page">${Page}&laquo;&laquo;</a>
+   <a href="${Link}" title="Display first page">${Page}&laquo;&laquo;</a>
 </html:template>
 
 <html:template name="LastPage_de">
@@ -33,19 +33,19 @@
 </html:template>
 
 <html:template name="FirstPage_Active_de">
-    <a href="${Link}" title="Erste Seite anzeigen!">&laquo; &laquo;</a>&nbsp;&nbsp;
+   <a href="${Link}" title="Erste Seite anzeigen!">&laquo; &laquo;</a>&nbsp;&nbsp;
 </html:template>
 
 <html:template name="FirstPage_Active_en">
-    <a href="${Link}" title="Display first page!">&laquo; &laquo;</a>&nbsp;&nbsp;
+   <a href="${Link}" title="Display first page!">&laquo; &laquo;</a>&nbsp;&nbsp;
 </html:template>
 
 <html:template name="LastPage_Active_de">
-    <a href="${Link}" title="Letzte Seite anzeigen!">&raquo; &raquo;</a>&nbsp;&nbsp;
+   <a href="${Link}" title="Letzte Seite anzeigen!">&raquo; &raquo;</a>&nbsp;&nbsp;
 </html:template>
 
 <html:template name="LastPage_Active_en">
-    <a href="${Link}" title="Display last page!">&raquo; &raquo;</a>&nbsp;&nbsp;
+   <a href="${Link}" title="Display last page!">&raquo; &raquo;</a>&nbsp;&nbsp;
 </html:template>
 
 <html:template name="Page_Selected_de">

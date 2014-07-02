@@ -21,9 +21,6 @@
 namespace APF\extensions\htmlheader\biz;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class BaseNode
- *
  * This interface specifies a <em>&lt;base /&gt;</em> tag.
  *
  * @author Christian Achatz
@@ -31,4 +28,5 @@ namespace APF\extensions\htmlheader\biz;
  * Version 0.1, 20.08.2010<br />
  */
 interface BaseNode extends HeaderNode {
+
 }

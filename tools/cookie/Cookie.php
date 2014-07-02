@@ -23,9 +23,6 @@ namespace APF\tools\cookie;
 use InvalidArgumentException;
 
 /**
- * @package APF\tools\cookie
- * @class Cookie
- *
  * The Cookie is a tool, that provides sophisticated cookie handling. The methods included allow you to
  * create, update and delete cookies using a clean API. Usage:
  * <pre>$c = new Cookie('my_cookie');
@@ -40,48 +37,62 @@ use InvalidArgumentException;
 class Cookie {
 
    /**
-    * @const string Default path of the Cookie.
+    * Default path of the Cookie.
+    *
+    * @var string DEFAULT_PATH
     */
    const DEFAULT_PATH = '/';
 
    /**
-    * @const int Default expiration time of the cookie (=1 day).
+    * Default expiration time of the cookie (=1 day).
+    *
+    * @var int DEFAULT_EXPIRATION_TIME
     */
    const DEFAULT_EXPIRATION_TIME = 86400;
 
    /**
-    * @var string The name of the cookie.
+    * The name of the cookie.
+    *
+    * @var string $name
     */
    protected $name;
 
    /**
-    * @var string The domain the cookie is valid for.
+    * The domain the cookie is valid for.
+    *
+    * @var string $domain
     */
    protected $domain;
 
    /**
-    * @var string $path The path the cookie s valid for.
+    * $path The path the cookie s valid for.
+    *
+    * @var string $path
     */
    protected $path;
 
    /**
-    * @var bool True in case the cookie is only valid for HTTPS transmission, false otherwise.
+    * True in case the cookie is only valid for HTTPS transmission, false otherwise.
+    *
+    * @var bool $secure
     */
    protected $secure = false;
 
    /**
-    * @var bool True in case the cookie can only be modified via HTTP, false otherwise.
+    * True in case the cookie can only be modified via HTTP, false otherwise.
+    *
+    * @var bool $httpOnly
     */
    protected $httpOnly = false;
 
    /**
-    * @var int Defines the default expiration time in seconds.
+    * Defines the default expiration time in seconds.
+    *
+    * @var int $expireTime
     */
    protected $expireTime;
 
    /**
-    * @public
-    *
     * Let's you create a Cookie.
     *
     * @param string $name The name of the cookie.
@@ -113,8 +124,6 @@ class Cookie {
    }
 
    /**
-    * @public
-    *
     * Defines the value of the cookie.
     *
     * @param string $value The value of the cookie,
@@ -131,8 +140,6 @@ class Cookie {
    }
 
    /**
-    * @public
-    *
     * Returns the value of the desired key within the current namespace.
     *
     * @param string $default The default value in case the cookie is not existing.
@@ -150,8 +157,6 @@ class Cookie {
    }
 
    /**
-    * @public
-    *
     * Deletes the Cookie.
     *
     * @return bool True in case the operation has been successful, false otherwise.

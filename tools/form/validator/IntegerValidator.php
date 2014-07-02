@@ -21,9 +21,6 @@
 namespace APF\tools\form\validator;
 
 /**
- * @package APF\tools\form\validator
- * @class IntegerValidator
- *
  * Validates a given form control to contain an integer.
  *
  * @author Ralf Schubert
@@ -34,9 +31,10 @@ class IntegerValidator extends TextFieldValidator {
 
    public function validate($input) {
       $input = trim($input);
-      if ($input === (string)(int)$input) {
+      if ($input === (string) (int) $input) {
          return true;
       }
+
       return false;
    }
 

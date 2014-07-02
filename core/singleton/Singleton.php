@@ -24,10 +24,6 @@ use APF\core\pagecontroller\APFObject;
 use Exception;
 
 /**
- * @package APF\core\singleton
- * @class Singleton
- * @static
- *
  * Implements the generic singleton pattern. Can be used to create singleton objects from
  * every class. This eases unit tests, because explicit singleton implementations cause side
  * effects during unit testing. As a cache container, the $GLOBALS array is used.
@@ -47,7 +43,8 @@ class Singleton {
 
    /**
     * Stores the objects, that are requested as singletons.
-    * @var APFObject[] The singleton cache.
+    *
+    * @var APFObject[] $CACHE
     */
    private static $CACHE = array();
 
@@ -55,9 +52,6 @@ class Singleton {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Returns a singleton instance of the given class. In case the object is found in the
     * singleton cache, the cached object is returned.
     * <p/>
@@ -69,6 +63,7 @@ class Singleton {
     *
     * @param string $class The name of the class, that should be created a singleton instance from.
     * @param string $instanceId The id of the instance to return.
+    *
     * @return APFObject The desired object's singleton instance.
     * @throws Exception In case the implementation class cannot be found.
     *

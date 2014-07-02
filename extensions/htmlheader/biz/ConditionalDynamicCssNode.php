@@ -21,9 +21,6 @@
 namespace APF\extensions\htmlheader\biz;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class ConditionalDynamicCssNode
- *
  * Implements a conditional dynamic css node.
  *
  * @author Christian Achatz

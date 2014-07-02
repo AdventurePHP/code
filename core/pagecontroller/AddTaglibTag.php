@@ -21,9 +21,6 @@
 namespace APF\core\pagecontroller;
 
 /**
- * @package APF\core\pagecontroller
- * @class AddTaglibTag
- *
  * Represents the functionality of the core:addtaglib tag. Adds a further taglib to the known
  * tags of the tag's parent object. This can be used to enhance the known tag list if a
  * desired APF DOM node.
@@ -35,8 +32,6 @@ namespace APF\core\pagecontroller;
 class AddTaglibTag extends Document {
 
    /**
-    * @public
-    *
     * Implements the onParseTime() method of the Document class. Adds the desired
     * taglib to the parent object.
     *
@@ -79,8 +74,6 @@ class AddTaglibTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Implements the Document's transform() method. Returns an empty string, because the addtaglib
     * tag generates no output.
     *

@@ -31,12 +31,10 @@ use APF\tools\request\RequestHandler;
 use InvalidArgumentException;
 
 /**
- * @desc
  * Please configure the SMSManager as DIService in namespace 'extensions::apfelsms' with name 'Manager'.
  * You need to inject an SMSMapper using setMapper() and a site using setSite().
  * Please also configure setup() as setupmethod in your DIService configuration.
  *
- * @package APF\extensions\apfelsms
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version :  v0.1 (06.06.12)
  *             v0.2 (20.06.12) Added language support in getInstance() and Constructor
@@ -46,37 +44,43 @@ class SMSManager extends APFObject {
 
 
    /**
-    * @var SMSMapper Used data mapper
+    * Used data mapper
+    *
+    * @var SMSMapper $mapper
     */
    protected $mapper;
 
 
    /**
-    * @var SMSSite Used website domain object
+    * Used website domain object
+    *
+    * @var SMSSite $site
     */
    protected $site;
 
 
    /**
-    * @var SMSPageStore Auxilary object storing pages
+    * Auxiliary object storing pages
+    *
+    * @var SMSPageStore $pageStore
     */
    protected $pageStore;
 
 
    /**
-    * @var string
+    * @var string $pageServiceName
     */
    protected $pageServiceName = 'StdPage';
 
 
    /**
-    * @var string
+    * @var string $pageRequestParamName
     */
    protected $pageRequestParamName = 'page';
 
 
    /**
-    * @desc Set up current page ID
+    * Set up current page ID
     */
    public function setup() {
 
@@ -203,7 +207,6 @@ class SMSManager extends APFObject {
 
 
    /**
-    * @desc
     * Create new page decorator object with DIServiceManager and map with properties.
     *
     * @param string $type Decorator type name
@@ -251,7 +254,6 @@ class SMSManager extends APFObject {
 
 
    /**
-    * @desc
     * Load page type from mapper, create new page object with DIServiceManager.
     * Map page with pageDecorators and properties.
     *

@@ -24,8 +24,6 @@ use APF\core\service\APFService;
 use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 
 /**
- *
- * @package APF\extensions\apfelsms
  * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version v0.1 (19.01.13)
  *          v0.2 (08.03.13) Added hiddenOnLogin option. Renamed from SMSUmgtLoggedInOrHiddenPageDec to SMSUmgtLoggedInPageDec.
@@ -36,7 +34,10 @@ class SMSUmgtLoggedInPageDec extends SMSAbstractPageDec {
 
 
    /**
-    * @var boolean If true, page is hidden if user is logged in instead of hiding if no user is logged in.
+    * If true, page is hidden if user is logged in instead of hiding if no user is logged in.
+    *
+    * @var boolean $hiddenOnLogin
+    *
     * @since v0.2
     */
    protected $hiddenOnLogin = false;
@@ -67,6 +68,7 @@ class SMSUmgtLoggedInPageDec extends SMSAbstractPageDec {
 
    /**
     * @param boolean $hiddenOnLogin
+    *
     * @since v0.2
     */
    public function setHiddenOnLogin($hiddenOnLogin) {

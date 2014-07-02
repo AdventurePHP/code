@@ -26,9 +26,6 @@ use APF\extensions\htmlheader\biz\HtmlHeaderManager;
 use APF\extensions\htmlheader\biz\JsPackageNode;
 
 /**
- * @package APF\extensions\htmlheader\pres\taglib
- * @class HtmlHeaderAddPackageTag
- *
  * Enables you to add a package of combined CSS or JS files.
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>

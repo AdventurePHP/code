@@ -21,9 +21,6 @@
 namespace APF\modules\guestbook2009\biz;
 
 /**
- * @package APF\modules\guestbook2009\biz
- * @class Guestbook
- *
  * Represents the Guestbook domain object of the guestbook.
  *
  * @author Christian Achatz
@@ -33,17 +30,23 @@ namespace APF\modules\guestbook2009\biz;
 final class Guestbook {
 
    /**
-    * @var string The title of the guestbook.
+    * The title of the guestbook.
+    *
+    * @var string $title
     */
    private $title;
 
    /**
-    * @var string The description of the guestbook.
+    * The description of the guestbook.
+    *
+    * @var string $description
     */
    private $description;
 
    /**
-    * @var Entry[] The entries of the guestbook.
+    * The entries of the guestbook.
+    *
+    * @var Entry[] $entries
     */
    private $entries = array();
 

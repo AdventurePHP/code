@@ -1,10 +1,12 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\permission\PermissionAddController"
+class="APF\modules\usermanagement\pres\documentcontroller\permission\PermissionAddController"
 @>
-<h3><html:getstring
+<h3>
+   <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.permission.add.headline"/></h3>
+         entry="frontend.permission.add.headline"/>
+</h3>
 <html:form name="PermissionAdd" method="post">
    <div>
       <form:addvalidator
@@ -19,24 +21,30 @@
                entry="frontend.permission.add.intro.text"/>
       </p>
       <p>
-         <label><html:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.permission.add.display-name.label"/></label>
+         <label>
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.permission.add.display-name.label"/>
+         </label>
          <form:text name="DisplayName" maxlength="100"/>
       </p>
       <p>
-         <label><html:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.permission.add.name.label"/></label>
+         <label>
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.permission.add.name.label"/>
+         </label>
          <form:text name="Name" maxlength="100"/>
       </p>
       <p>
-         <label><html:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.permission.add.value.label"/></label>
+         <label>
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.permission.add.value.label"/>
+         </label>
          <form:text name="Value" maxlength="100"/>
       </p>
       <p>

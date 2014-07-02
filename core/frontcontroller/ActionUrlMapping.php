@@ -21,9 +21,6 @@
 namespace APF\core\frontcontroller;
 
 /**
- * @package APF\core\frontcontroller
- * @class ActionUrlMapping
- *
  * Represents an action url mapping to simplify and prettify URLs.
  *
  * @author Christian Achatz
@@ -33,17 +30,23 @@ namespace APF\core\frontcontroller;
 class ActionUrlMapping {
 
    /**
-    * @var string The URL shortcut for the action.
+    * The URL shortcut for the action.
+    *
+    * @var string $urlToken
     */
    private $urlToken;
 
    /**
-    * @var string The action namespace.
+    * The action namespace.
+    *
+    * @var string $namespace
     */
    private $namespace;
 
    /**
-    * @var string The action name.
+    * The action name.
+    *
+    * @var string $name
     */
    private $name;
 

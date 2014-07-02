@@ -21,9 +21,6 @@
 namespace APF\modules\usermanagement\biz\model;
 
 /**
- * @package APF\modules\usermanagement\biz\model
- * @class UmgtGroup
- *
  * This class represents the "APF\modules\usermanagement\biz\model\UmgtGroup" domain object.
  * <p/>
  * Please use this class to add your own functionality.

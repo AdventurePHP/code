@@ -21,11 +21,12 @@
 namespace APF\extensions\apfelsms\pres\documentcontroller;
 
 use APF\extensions\apfelsms\biz\pages\SMSPage;
+use APF\extensions\apfelsms\biz\sites\SMSSite;
+use APF\extensions\apfelsms\biz\SMSManager;
 use APF\tools\string\StringAssistant;
 
 
 /**
- * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version:   v0.1 (08.08.2012)
  *             v.02 (15.05.2013) Added support to keep certain request parameters in url
@@ -34,18 +35,18 @@ use APF\tools\string\StringAssistant;
 class SMSNavTagController extends SMSBaseNavTagController {
 
    /**
-    * @var \APF\extensions\apfelsms\biz\SMSManager
+    * @var SMSManager $SMSM
     */
    protected $SMSM;
 
    /**
-    * @var bool
+    * @var bool $autoDepth
     */
    protected $autoDepth = false;
 
    public function transformContent() {
 
-      /** @var $SMSM \APF\extensions\apfelsms\biz\SMSManager */
+      /** @var $SMSM SMSManager */
       $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
       $this->SMSM = $SMSM;
 
@@ -61,7 +62,7 @@ class SMSNavTagController extends SMSBaseNavTagController {
       if (!empty($basePageId)) {
          $basePage = $this->SMSM->getPage($basePageId);
       } else {
-         /** @var $SMSS \APF\extensions\apfelsms\biz\sites\SMSSite */
+         /** @var $SMSS SMSSite */
          $SMSS = $this->SMSM->getSite();
          $basePage = $SMSS->getCurrentPage();
       }

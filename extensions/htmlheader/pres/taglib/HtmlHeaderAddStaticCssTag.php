@@ -26,9 +26,6 @@ use APF\extensions\htmlheader\biz\StaticCssNode;
 use InvalidArgumentException;
 
 /**
- * @package APF\extensions\htmlheader\pres\taglib
- * @class HtmlHeaderAddStaticCssTag
- *
  * Taglib for adding static stylesheets to the html header.
  *
  * @example
@@ -51,8 +48,8 @@ class HtmlHeaderAddStaticCssTag extends Document {
       $file = $this->getAttribute('file');
       if ($file == null) {
          throw new InvalidArgumentException('[' . get_class($this) . '::onParseTime()] Please '
-            . 'provide the "file" attribute in order to add a static stylesheet.',
-            E_USER_ERROR);
+               . 'provide the "file" attribute in order to add a static stylesheet.',
+               E_USER_ERROR);
       }
 
       $node = new StaticCssNode($file, $this->getAttribute('media'));

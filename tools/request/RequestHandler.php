@@ -21,9 +21,6 @@
 namespace APF\tools\request;
 
 /**
- * @package APF\tools\request
- * @class RequestHandler
- *
  * This component let's you easily retrieve values from the request.
  *
  * @author Christian Achatz
@@ -33,17 +30,23 @@ namespace APF\tools\request;
 final class RequestHandler {
 
    /**
-    * @const string Defines to use only content from the $_GET super-global.
+    * Defines to use only content from the $_GET super-global.
+    *
+    * @var string USE_GET_PARAMS
     */
    const USE_GET_PARAMS = 'GET';
 
    /**
-    * @const string Defines to use only content from the $_POST super-global.
+    * Defines to use only content from the $_POST super-global.
+    *
+    * @var string USE_POST_PARAMS
     */
    const USE_POST_PARAMS = 'POST';
 
    /**
-    * @const string Defines to use only content from the $_REQUEST super-global (default behaviour).
+    * Defines to use only content from the $_REQUEST super-global (default behaviour).
+    *
+    * @var string USE_REQUEST_PARAMS
     */
    const USE_REQUEST_PARAMS = 'REQUEST';
 
@@ -51,9 +54,6 @@ final class RequestHandler {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Retrieves the desired content from the request. If the request offset does not exist, the
     * given default value is taken. Usage:
     * <pre>$value = RequestHandler::getValue('foo','bar');</pre>
@@ -61,6 +61,7 @@ final class RequestHandler {
     * @param string $name name of the request offset
     * @param string $defaultValue the default value
     * @param string $type The type of parameter set to request.
+    *
     * @return string The desired value.
     *
     * @author Christian Achatz
@@ -71,23 +72,22 @@ final class RequestHandler {
     */
    public static function getValue($name, $defaultValue = null, $type = self::USE_REQUEST_PARAMS) {
       $lookupTable = $GLOBALS['_' . $type];
+
       return isset($lookupTable[$name])
       // avoid issues with "0" values being skipped due to empty() check
-      && (!empty($lookupTable[$name]) || (string)$lookupTable[$name] === '0')
+      && (!empty($lookupTable[$name]) || (string) $lookupTable[$name] === '0')
             ? $lookupTable[$name]
             : $defaultValue;
    }
 
    /**
-    * @public
-    * @static
-    *
     * Retrieves the desired values from the request. If one request offset does not exist, the
     * given default value or null is taken. Usage:
     * <pre>$values = RequestHandler::getValues(array('foo' => 'bar','baz'));</pre>
     *
     * @param array $namesWithDefaults an input array with names and default values.
     * @param string $type The type of parameter set to request.
+    *
     * @return array The desired values.
     *
     * @author Christian Achatz

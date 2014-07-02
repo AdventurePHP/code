@@ -1,48 +1,50 @@
 <@controller
-   class="APF\extensions\news\pres\documentcontroller\NewsFrontendController"
+class="APF\extensions\news\pres\documentcontroller\NewsFrontendController"
 @>
 <html:iterator name="list">
-    <div id="news">
-        
-        <div id="news-entries">
-            <iterator:item>
-                <div class="news-entry">
-                    <div class="news-entry-title">
-                        ${title}
-                    </div>
-                    <div class="news-entry-info">
+   <div id="news">
+
+      <div id="news-entries">
+         <iterator:item>
+            <div class="news-entry">
+               <div class="news-entry-title">
+                  ${title}
+               </div>
+               <div class="news-entry-info">
                         <span class="news-entry-date">
                             ${date}
                         </span>
-                        ${author}
-                    </div>
-                    <div class="news-entry-text">
-                        ${text}
-                    </div>
-                </div>
-            </iterator:item>
-        </div>
-        
-        ${pager}
-        
-    </div>
+                  ${author}
+               </div>
+               <div class="news-entry-text">
+                  ${text}
+               </div>
+            </div>
+         </iterator:item>
+      </div>
+
+      ${pager}
+
+   </div>
 </html:iterator>
 
 <html:template name="author">
     <span class="news-entry-author">
-        <span class="label"><html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Author" />: </span>
+        <span class="label"><html:getstring namespace="APF\extensions\news" config="labels.ini"
+                                            entry="Author"/>: </span>
         ${authorname}
     </span>
 </html:template>
 
 <html:template name="pager">
-    <div id="news-pager">
-        <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Page" />: ${pages}
-    </div>
+   <div id="news-pager">
+      <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Page"/>
+      : ${pages}
+   </div>
 </html:template>
 
 <html:template name="noentry">
-    <div id="news-noentry">
-        <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="NoEntry" />
-    </div>
+   <div id="news-noentry">
+      <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="NoEntry"/>
+   </div>
 </html:template>

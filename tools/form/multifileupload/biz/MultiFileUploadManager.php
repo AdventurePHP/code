@@ -30,9 +30,6 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package APF\tools\form\multifileupload\biz
- * @class MultiFileUploadManager
- *
  * Business component for the multi file upload extension.
  *
  * @author Werner Liemberger <wpublicmail@gmail.com>
@@ -52,14 +49,15 @@ class MultiFileUploadManager extends APFObject {
    private $tmpUploadPath = 'APF\tools\form\multifileupload\uploaddir';
 
    /**
-    * @var Session
+    * @var Session $session
     */
    private $session;
 
    /**
     * Initiert das Service. Es werden die nötigen Parameter name und formname erwartet.
     *
-    * @param array $param('formname'=>'Formularname', 'name'=>'Name_mit_dem_der_Taglib_eingebaut_wurde')
+    * @param array $param ('formname'=>'Formularname', 'name'=>'Name_mit_dem_der_Taglib_eingebaut_wurde')
+    *
     * @throws FormException In case the init params are missing/incomplete.
     *
     * @author Werner Liemberger <wpublicmail@gmail.com>
@@ -110,6 +108,7 @@ class MultiFileUploadManager extends APFObject {
     */
    public function getFiles() {
       $this->checkSessionFiles();
+
       return $this->session->load('files');
    }
 
@@ -170,6 +169,7 @@ class MultiFileUploadManager extends APFObject {
     *
     * @param array $file
     * @param boolean $js True, in case of java script upload, false otherwise.
+    *
     * @return boolean
     * @throws FormException
     *
@@ -258,6 +258,7 @@ class MultiFileUploadManager extends APFObject {
     * Liefert das Array der angeforderten Datei
     *
     * @param string $uploadname - Dateiname
+    *
     * @return array
     *
     * @author Werner Liemberger <wpublicmail@gmail.com>
@@ -273,6 +274,7 @@ class MultiFileUploadManager extends APFObject {
             }
          }
       }
+
       return false;
    }
 
@@ -392,8 +394,9 @@ class MultiFileUploadManager extends APFObject {
       $scheme = LinkGenerator::cloneLinkScheme();
       $scheme->setEncodeAmpersands(false);
       $link = LinkGenerator::generateActionUrl(Url::fromCurrent(), 'APF\tools\form\multifileupload', 'multifileupload', array(
-         'formname' => $this->formName,
-         'name' => $this->name), $scheme);
+            'formname' => $this->formName,
+            'name'     => $this->name), $scheme);
+
       return $link;
    }
 
@@ -401,6 +404,7 @@ class MultiFileUploadManager extends APFObject {
     * Erstellt den Link um anhand des übergebenen Dateinamen diese zu löschen
     *
     * @param string $uploadname
+    *
     * @return string
     *
     * @author Werner Liemberger <wpublicmail@gmail.com>
@@ -410,9 +414,10 @@ class MultiFileUploadManager extends APFObject {
       $scheme = LinkGenerator::cloneLinkScheme();
       $scheme->setEncodeAmpersands(false);
       $link = LinkGenerator::generateActionUrl(Url::fromCurrent(), 'APF\tools\form\multifileupload', 'multifiledelete', array(
-         'formname' => $this->formName,
-         'name' => $this->name,
-         'uploadname' => $uploadname), $scheme);
+            'formname'   => $this->formName,
+            'name'       => $this->name,
+            'uploadname' => $uploadname), $scheme);
+
       return $link;
    }
 
@@ -420,6 +425,7 @@ class MultiFileUploadManager extends APFObject {
     * Funktion die die übermittelte Größe in Byte auf eine komfortable einheit umrechnet.
     *
     * @param integer $size
+    *
     * @return string
     *
     * @author Werner Liemberger <wpublicmail@gmail.com>
@@ -429,6 +435,7 @@ class MultiFileUploadManager extends APFObject {
       $units = array(' B', ' KB', ' MB', ' GB', ' TB');
       for ($i = 0; $size >= 1024 && $i < 4; $i++)
          $size /= 1024;
+
       return round($size, 2) . $units[$i];
    }
 
@@ -472,6 +479,7 @@ class MultiFileUploadManager extends APFObject {
     * Erzeugt den Link mit dem Dateien angezeigt werden können.
     *
     * @param string $uploadname
+    *
     * @return string
     *
     * @author Werner Liemberger <wpublicmail@gmail.com>
@@ -482,10 +490,10 @@ class MultiFileUploadManager extends APFObject {
       $scheme->setEncodeAmpersands(true);
 
       return LinkGenerator::generateActionUrl(
-         Url::fromCurrent(), 'APF\tools\form\multifileupload', 'multifilegetfile', array(
-         'formname' => $this->formName,
-         'name' => $this->name,
-         'uploadname' => $uploadname), $scheme);
+            Url::fromCurrent(), 'APF\tools\form\multifileupload', 'multifilegetfile', array(
+            'formname'   => $this->formName,
+            'name'       => $this->name,
+            'uploadname' => $uploadname), $scheme);
    }
 
    /**

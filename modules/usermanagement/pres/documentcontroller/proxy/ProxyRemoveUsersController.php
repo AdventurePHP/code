@@ -26,9 +26,6 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\proxy
- * @class ProxyRemoveUsersController
- *
  * Document controller to remove users from an existing visibility definition.
  *
  * @author Christian Achatz
@@ -61,8 +58,9 @@ class ProxyRemoveUsersController extends UmgtPermissionBaseController {
                ->setPlaceHolder('app-object-id', $proxy->getAppObjectId())
                ->setPlaceHolder('object-type', $proxyType->getObjectName());
          $tmpl->getLabel('message-2')->setPlaceHolder('proxy-view-link',
-            $this->generateLink(array('mainview' => 'proxy', 'proxyview' => null, 'proxyid' => null)));
+               $this->generateLink(array('mainview' => 'proxy', 'proxyview' => null, 'proxyid' => null)));
          $tmpl->transformOnPlace();
+
          return;
       }
 
@@ -78,12 +76,12 @@ class ProxyRemoveUsersController extends UmgtPermissionBaseController {
          $uM->detachUsersFromVisibilityDefinition($proxy, $this->mapSelectedOptions2DomainObjects('users', 'UmgtUser'));
 
          HeaderManager::forward(
-            $this->generateLink(
-               array(
-                  'mainview' => 'proxy',
-                  'proxyview' => null,
-                  'proxyid' => null)
-            )
+               $this->generateLink(
+                     array(
+                           'mainview'  => 'proxy',
+                           'proxyview' => null,
+                           'proxyid'   => null)
+               )
          );
 
       }

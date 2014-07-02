@@ -23,9 +23,6 @@ namespace APF\core\database;
 use APF\core\logging\LogEntry;
 
 /**
- * @package APF\core\database
- * @class SQLiteHandler
- *
  * This class provides APF-style access to sqlite databases.
  *
  * @author Christian Achatz
@@ -35,14 +32,16 @@ use APF\core\logging\LogEntry;
 class SQLiteHandler extends AbstractDatabaseHandler {
 
    /**
-    * @protected
-    * @var int File system permission mode of the database.
+    * File system permission mode of the database.
+    *
+    * @var int $dbMode
     */
    protected $dbMode = 0666;
 
    /**
-    * @protected
-    * @var string Error tracking container for SQLite errors.
+    * Error tracking container for SQLite errors.
+    *
+    * @var string $dbError
     */
    protected $dbError = null;
 
@@ -51,8 +50,6 @@ class SQLiteHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @protected
-    *
     * Implements the connect method to create a connection to the desired sqlite database.
     *
     * @throws DatabaseHandlerException In case the database connection cannot be established.
@@ -72,8 +69,6 @@ class SQLiteHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @protected
-    *
     * Implements the close method for the sqlite database.
     *
     * @author Christian Achatz
@@ -86,14 +81,13 @@ class SQLiteHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Executes a statement applied as a string to the method and returns the
     * result pointer.
     *
     * @param string $statement The statement string.
     * @param boolean $logStatement Indicates, whether the given statement should be
     *                              logged for debug purposes.
+    *
     * @return resource The database result resource.
     *
     * @author Christian Achatz
@@ -121,8 +115,6 @@ class SQLiteHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Executes a statement, located within a statement file. The place holders contained in the
     * file are replaced by the given values.
     *
@@ -130,6 +122,7 @@ class SQLiteHandler extends AbstractDatabaseHandler {
     * @param string $statementName Name of the statement file (filebody!).
     * @param string[] $params A list of statement parameters.
     * @param bool $logStatement Indicates, if the statement is logged for debug purposes.
+    *
     * @return resource The database result resource.
     * @throws DatabaseHandlerException In case the statement file does not exist.
     *
@@ -161,12 +154,11 @@ class SQLiteHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Fetches a record from the database using the given result resource.
     *
     * @param resource $resultCursor The result resource returned by executeStatement() or executeTextStatement().
     * @param int $type The type the returned data should have. Use the static *_FETCH_MODE constants.
+    *
     * @return string[] The associative result array.
     *
     * @author Christian Achatz
@@ -185,11 +177,10 @@ class SQLiteHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Escapes given values to be SQL injection save.
     *
     * @param string $value The un-escaped value.
+    *
     * @return string The escaped string.
     *
     * @author Christian Achatz
@@ -201,11 +192,10 @@ class SQLiteHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Returns the amount of rows, that are affected by a previous update or delete call.
     *
     * @param resource $resultCursor The result resource pointer.
+    *
     * @return int The number of affected rows.
     *
     * @author Christian Achatz
@@ -217,11 +207,10 @@ class SQLiteHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Returns the number of selected rows by the given result resource.
     *
     * @param resource $result The sqlite result resource.
+    *
     * @return int The number of selected rows.
     *
     * @author Christian Achatz

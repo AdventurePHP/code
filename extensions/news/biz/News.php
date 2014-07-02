@@ -21,9 +21,6 @@
 namespace APF\extensions\news\biz;
 
 /**
- * @package APF\extensions\news\biz
- * @class News
- *
  * This class represents the "APF\extensions\news\biz\News" domain object.
  * <p/>
  * Please use this class to add your own functionality.

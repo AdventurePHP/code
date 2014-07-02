@@ -31,9 +31,6 @@ use APF\tools\cache\key\SimpleCacheKey;
 use InvalidArgumentException;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class JsCssPackager
- *
  * A packager which can deliver multiple css and js files to client.
  * Caching and shrinking is supported, but must be configured.
  * <p/>
@@ -61,6 +58,7 @@ class JsCssPackager extends APFObject {
     *
     * @param string $name The package name.
     * @param bool $gZip Return package compressed with gzip.
+    *
     * @throws InvalidArgumentException In case the package configuration section does not exist.
     *
     * @return String The complete package.
@@ -82,7 +80,7 @@ class JsCssPackager extends APFObject {
       }
 
       /* If ServerCacheMinutes is not 0, we use a file cache */
-      if ((int)$ServerCacheMinutes !== 0) {
+      if ((int) $ServerCacheMinutes !== 0) {
          /* @var $cMF CacheManagerFabric */
          $cMF = & $this->getServiceObject('APF\tools\cache\CacheManagerFabric');
          $cM = & $cMF->getCacheManager('jscsspackager_cache');
@@ -117,17 +115,17 @@ class JsCssPackager extends APFObject {
 
       /* We generate the package new, because we don't use a cache */
       $pack = $this->generatePackage($cfgPack, $name);
+
       return $gZip ? gzencode($pack, 9) : $pack;
    }
 
    /**
-    * @protected
-    *
     * Generates a package from it's single files.
     * Will Shrink output, if enabled.
     *
     * @param Configuration $cfgPack The package configuration
     * @param string $name The package name
+    *
     * @return string All files put together to one string.
     *
     * @author Ralf Schubert
@@ -168,9 +166,9 @@ class JsCssPackager extends APFObject {
 
       if (!file_exists($filePath)) {
          throw new IncludeException('[JsCssPackager::getFile()] The requested file "' . $file . '.'
-            . $type . '" cannot be found in namespace "' . str_replace('_', '\\', $path) . '" (FilePath: "' . $filePath . '"). Please '
-            . 'check your taglib definition for tag &lt;htmlheader:add* /&gt;!',
-            E_USER_ERROR);
+               . $type . '" cannot be found in namespace "' . str_replace('_', '\\', $path) . '" (FilePath: "' . $filePath . '"). Please '
+               . 'check your taglib definition for tag &lt;htmlheader:add* /&gt;!',
+               E_USER_ERROR);
       }
 
       $this->initFilterChain($type);
@@ -206,6 +204,7 @@ class JsCssPackager extends APFObject {
     * extension documentation.
     *
     * @param string $input The javascript which should be shrinked.
+    *
     * @return string The minified javascript.
     *
     * @author Ralf Schubert
@@ -220,6 +219,7 @@ class JsCssPackager extends APFObject {
     * Shrinks a string containing css
     *
     * @param string $input The css which should be shrinked.
+    *
     * @return string The minified css.
     *
     * @author Ralf Schubert
@@ -236,6 +236,7 @@ class JsCssPackager extends APFObject {
       $input = str_replace(', ', ',', $input);
       $input = str_replace('} ', '}', $input);
       $input = str_replace(';}', '}', $input);
+
       return trim($input);
    }
 
@@ -244,6 +245,7 @@ class JsCssPackager extends APFObject {
     * Default is 0 (no client caching)
     *
     * @param String $name The package name.
+    *
     * @return int The period the package should be cached by client in days.
     *
     * @author Ralf Schubert
@@ -252,8 +254,9 @@ class JsCssPackager extends APFObject {
     */
    public function getClientCachePeriod($name) {
       if (($CCP = $this->getPackageConfiguration()->getSection($name)->getValue('ClientCacheDays')) !== null) {
-         return (int)$CCP;
+         return (int) $CCP;
       }
+
       return 0;
    }
 
@@ -264,6 +267,7 @@ class JsCssPackager extends APFObject {
     * @param string $file The name of the file.
     * @param string $ext The extension of the file.
     * @param string $packageName The name of the package, which contains the file.
+    *
     * @return string The content of the file.
     * @throws IncludeException In case the file identified by the applied params cannot be found.
     *
@@ -281,8 +285,8 @@ class JsCssPackager extends APFObject {
       }
 
       throw new IncludeException('[JsCssPackager::loadSingleFile()] The requested file "' . $file . '.' . $ext
-      . '" cannot be found in namespace "' . $namespace . '". Please check the configuration of package "'
-      . $packageName . '"!');
+            . '" cannot be found in namespace "' . $namespace . '". Please check the configuration of package "'
+            . $packageName . '"!');
    }
 
    /**
@@ -310,6 +314,7 @@ class JsCssPackager extends APFObject {
 
    protected function removeVendorOfNamespace($namespace) {
       $start = strpos($namespace, '\\');
+
       return substr($namespace, $start + 1);
    }
 

@@ -27,11 +27,9 @@ use APF\modules\genericormapper\data\GenericORRelationMapper;
 use InvalidArgumentException;
 
 /**
- * @package APF\extensions\postbox\biz
- * @class Postbox
- *
  * Represents a Postbox for a defined User. Must be loaded through PostboxFactory!
  * This is the central component of the extension.
+ *
  * @example:
  * $PostboxFactory = $this->getServiceObject('APF\extensions\postbox\biz\PostboxFactory');
  * $Postbox = $PostboxFactory->getPostbox($User);
@@ -42,28 +40,33 @@ use InvalidArgumentException;
 class Postbox extends APFObject {
 
    /**
-    * @var GenericORRelationMapper
+    * @var GenericORRelationMapper $ORM
     */
    protected $ORM = null;
 
    /**
-    * @var GenericORMapperDataObject
+    * @var GenericORMapperDataObject $User
     */
    protected $User = null;
 
    /**
     * Set's the data component.
+    *
     * @param GenericORRelationMapper $ORM
+    *
     * @return Postbox Returns itself.
     */
    public function setORM(GenericORRelationMapper &$ORM) {
       $this->ORM = $ORM;
+
       return $this;
    }
 
    /**
     * Set's the user who's postbox this will be.
+    *
     * @param GenericORMapperDataObject $User
+    *
     * @return Postbox Returns itself.
     */
    public function setUser(GenericORMapperDataObject &$User) {
@@ -71,6 +74,7 @@ class Postbox extends APFObject {
          $User->setDataComponent($this->ORM);
       }
       $this->User = $User;
+
       return $this;
    }
 
@@ -83,6 +87,7 @@ class Postbox extends APFObject {
       if ($this->User->loadRelatedObject('User2UnreadMessageChannel') === null) {
          return false;
       }
+
       return true;
    }
 
@@ -90,11 +95,13 @@ class Postbox extends APFObject {
     * Returns a folder which is related to the postbox and has the given name.
     *
     * @param string $Name The name of the folder.
+    *
     * @return PostboxFolder
     */
    public function getPostboxFolderByName($Name) {
       $crit = new GenericCriterionObject();
       $crit->addPropertyIndicator('Name', $Name);
+
       return $this->User->loadRelatedObject('User2PostboxFolder', $crit);
    }
 
@@ -102,6 +109,7 @@ class Postbox extends APFObject {
     * Returns a folder which is related to the postbox and has the given ID
     *
     * @param string $ID The folder's ID
+    *
     * @return PostboxFolder
     */
    public function getPostboxFolderByID($ID) {
@@ -109,6 +117,7 @@ class Postbox extends APFObject {
       if ($Folder === null || !$this->ORM->isComposed('User2PostboxFolder', $Folder, $this->User)) {
          return null;
       }
+
       return $Folder;
    }
 
@@ -117,6 +126,7 @@ class Postbox extends APFObject {
     * Creates a new folder with the given name in the postbox.
     *
     * @param string $Name The name of the Folder
+    *
     * @return PostboxFolder The new created folder
     * @throws InvalidArgumentException
     */
@@ -169,8 +179,8 @@ class Postbox extends APFObject {
          // author could have been added as reader as well, let's filter this possibility
          // and check if reader is blocking the current user
          if (
-            $Reader->getObjectId() !== $this->User->getObjectId() &&
-            !$this->isOnUsersBlacklist($Reader)
+               $Reader->getObjectId() !== $this->User->getObjectId() &&
+               !$this->isOnUsersBlacklist($Reader)
          ) {
             $RealReadersPresent = true;
             $Channel->addRelatedObject('User2MessageChannel', $Reader);
@@ -184,6 +194,7 @@ class Postbox extends APFObject {
       }
 
       $Channel->setDataComponent($this->ORM);
+
       return $Channel->save();
    }
 
@@ -194,9 +205,10 @@ class Postbox extends APFObject {
     */
    public function countChannelsWithoutFolder() {
       $result = $this->ORM->getDBDriver()->executeStatement('extensions::postbox', 'Postbox_countChannelsWithoutFolder.sql', array(
-         'UserID' => (int)$this->User->getObjectId()
+            'UserID' => (int) $this->User->getObjectId()
       ));
-      return (int)$this->ORM->getDBDriver()->getNumRows($result);
+
+      return (int) $this->ORM->getDBDriver()->getNumRows($result);
    }
 
    /**
@@ -205,15 +217,18 @@ class Postbox extends APFObject {
     *
     * @param int $Page The number of the current page.
     * @param int $ChannelsPerPage How many channels should be shown per page?
+    *
     * @return MessageChannel[] A list of message channels.
     */
    public function getChannelsWithoutFolderByPage($Page = 1, $ChannelsPerPage = 15) {
-      $start = ((int)$Page - 1) * (int)$ChannelsPerPage;
-      return $this->getChannelsWithoutFolder($start, (int)$ChannelsPerPage);
+      $start = ((int) $Page - 1) * (int) $ChannelsPerPage;
+
+      return $this->getChannelsWithoutFolder($start, (int) $ChannelsPerPage);
    }
 
    /**
     * Loads a list of MessageChannels
+    *
     * @param int $start The number of the first channel which should be returned (SQL LIMIT)
     * @param int $count The number of channels which should be returned (SQL LIMIT)
     *
@@ -221,9 +236,9 @@ class Postbox extends APFObject {
     */
    public function getChannelsWithoutFolder($start = 0, $count = 15) {
       return $this->ORM->loadObjectListByStatement('MessageChannel', 'extensions::postbox', 'Postbox_getChannelsWithoutFolder.sql', array(
-         'UserID' => (int)$this->User->getObjectId(),
-         'Start' => (int)$start,
-         'Count' => (int)$count
+            'UserID' => (int) $this->User->getObjectId(),
+            'Start'  => (int) $start,
+            'Count'  => (int) $count
       ));
    }
 
@@ -232,11 +247,12 @@ class Postbox extends APFObject {
     * If the user is not a reader of the channel NULL will be returned.
     *
     * @param int $ChannelID The ID of the channel which should be loaded.
+    *
     * @return MessageChannel
     */
    public function getChannelByID($ChannelID) {
       $crit = new GenericCriterionObject();
-      $crit->addPropertyIndicator('MessageChannelID', (int)$ChannelID);
+      $crit->addPropertyIndicator('MessageChannelID', (int) $ChannelID);
 
       return $this->User->loadRelatedObject('User2MessageChannel', $crit);
    }
@@ -254,11 +270,13 @@ class Postbox extends APFObject {
     * Loads the RecipientList with the given ID, if it belongs to the user.
     *
     * @param int $ID The RecipientList's id
+    *
     * @return RecipientList
     */
    public function getRecipientListByID($ID) {
       $crit = new GenericCriterionObject();
-      $crit->addPropertyIndicator('RecipientListID', (int)$ID);
+      $crit->addPropertyIndicator('RecipientListID', (int) $ID);
+
       return $this->User->loadRelatedObject('User2RecipientList', $crit);
    }
 
@@ -266,11 +284,13 @@ class Postbox extends APFObject {
     * Loads the RecipientList with the given name, which belongs to the user.
     *
     * @param string $Name The name of the list which should be loaded
+    *
     * @return RecipientList
     */
    public function getRecipientListByName($Name) {
       $crit = new GenericCriterionObject();
       $crit->addPropertyIndicator('Name', $Name);
+
       return $this->User->loadRelatedObject('User2RecipientList', $crit);
    }
 
@@ -278,11 +298,13 @@ class Postbox extends APFObject {
     * Adds the given RecipientList to the postbox and saves everything.
     *
     * @param RecipientList $RecipientList
+    *
     * @return Postbox Returns itself.
     */
    public function addRecipientList(RecipientList $RecipientList) {
       $this->User->addRelatedObject('User2RecipientList', $RecipientList);
       $this->ORM->saveObject($this->User, true);
+
       return $this;
    }
 
@@ -291,12 +313,14 @@ class Postbox extends APFObject {
     * add the current user to any channel anymore.
     *
     * @param GenericORMapperDataObject $User The user which should be blocked.
+    *
     * @return Postbox Returns itself.
     */
    public function addUserToBlacklist(GenericORMapperDataObject &$User) {
       if (!$this->hasUserOnBlacklist($User)) {
          $this->ORM->createAssociation('User2BlockedUser', $this->User, $User);
       }
+
       return $this;
    }
 
@@ -304,6 +328,7 @@ class Postbox extends APFObject {
     * Checks if the current user is blocking the given user.
     *
     * @param GenericORMapperDataObject $User The user which is maybe blocked by the current user.
+    *
     * @return bool
     */
    public function hasUserOnBlacklist(GenericORMapperDataObject &$User) {
@@ -314,6 +339,7 @@ class Postbox extends APFObject {
     * Checks if the current user is being blocked by the given user.
     *
     * @param GenericORMapperDataObject $User
+    *
     * @return bool
     */
    public function isOnUsersBlacklist(GenericORMapperDataObject &$User) {

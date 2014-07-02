@@ -21,9 +21,6 @@
 namespace APF\tools\form\taglib;
 
 /**
- * @package APF\tools\html\taglib
- * @class ResetButtonTag
- *
  * Implements the APF wrapper taglib for the HTML form reset button. Renders
  * various additional attributes, so you can specify css and style attributes
  * as desired.
@@ -56,6 +53,7 @@ class ResetButtonTag extends AbstractFormControl {
       if ($this->isVisible) {
          return '<input type="reset" ' . $this->getSanitizedAttributesAsString($this->attributes) . ' />';
       }
+
       return '';
    }
 

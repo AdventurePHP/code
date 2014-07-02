@@ -26,9 +26,6 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package APF\modules\comments\pres\controller
- * @class CommentCreateEntryController
- *
  * Implements the document controller for the 'form.html' template.
  *
  * @author Christian Achatz
@@ -38,8 +35,6 @@ use APF\tools\link\Url;
 class CommentCreateEntryController extends CommentBaseDocumentController {
 
    /**
-    * @public
-    *
     * Displays and handles the form view.
     *
     * @author Christian Achatz
@@ -51,23 +46,23 @@ class CommentCreateEntryController extends CommentBaseDocumentController {
     */
    public function transformContent() {
 
-      $form = &$this->getForm('AddComment');
+      $form = & $this->getForm('AddComment');
 
       if ($form->isSent() == true) {
 
          /* @var $m ArticleCommentManager */
-         $m = &$this->getAndInitServiceObject('APF\modules\comments\biz\ArticleCommentManager', $this->getCategoryKey());
+         $m = & $this->getAndInitServiceObject('APF\modules\comments\biz\ArticleCommentManager', $this->getCategoryKey());
 
          if ($form->isValid() == true) {
 
             $articleComment = new ArticleComment();
-            $name = &$form->getFormElementByName('Name');
+            $name = & $form->getFormElementByName('Name');
             $articleComment->setName($name->getAttribute('value'));
 
-            $email = &$form->getFormElementByName('EMail');
+            $email = & $form->getFormElementByName('EMail');
             $articleComment->setEmail($email->getAttribute('value'));
 
-            $comment = &$form->getFormElementByName('Comment');
+            $comment = & $form->getFormElementByName('Comment');
             $articleComment->setComment($comment->getContent());
 
             $m->saveEntry($articleComment);
@@ -80,8 +75,6 @@ class CommentCreateEntryController extends CommentBaseDocumentController {
    }
 
    /**
-    * @private
-    *
     * Generates the comment form.
     *
     * @author Christian Achatz
@@ -92,11 +85,11 @@ class CommentCreateEntryController extends CommentBaseDocumentController {
     */
    private function buildForm() {
 
-      $form = &$this->getForm('AddComment');
+      $form = & $this->getForm('AddComment');
       $form->setAttribute('action', $_SERVER['REQUEST_URI'] . '#comments');
 
       $config = $this->getConfiguration('APF\modules\comments', 'language.ini');
-      $button = &$form->getFormElementByName('Save');
+      $button = & $form->getFormElementByName('Save');
       $button->setAttribute('value', $config->getSection($this->getLanguage())->getValue('form.button'));
 
       $form->transformOnPlace();

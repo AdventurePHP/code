@@ -28,9 +28,6 @@ use APF\core\session\Session;
 use APF\core\singleton\Singleton;
 
 /**
- * @package APF\modules\pager\data
- * @class PagerMapper
- *
  * Represents the data layer of the pager.
  *
  * @author Christian Achatz
@@ -42,14 +39,11 @@ use APF\core\singleton\Singleton;
 final class PagerMapper extends APFObject {
 
    /**
-    * @protected
     * Defines the database connection key. Must be filled within the init() method.
     */
    protected $connectionKey = null;
 
    /**
-    * @public
-    *
     * Initializes the connection key of the mapper.
     *
     * @param string $initParam the database connection key
@@ -67,18 +61,19 @@ final class PagerMapper extends APFObject {
     */
    private function &getConnection() {
       $cM = & $this->getServiceObject('APF\core\database\ConnectionManager');
+
       /* @var $cM ConnectionManager */
+
       return $cM->getConnection($this->connectionKey);
    }
 
    /**
-    * @private
-    *
     * Returns the session key for the current statement and params.
     *
     * @param string $namespace namespace of the statement
     * @param string $statement name of the statement file
     * @param array $params statement params
+    *
     * @return string $sessionKey the desired session key
     *
     * @author Christian Achatz
@@ -90,14 +85,13 @@ final class PagerMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns the number of entries of the current object.
     *
     * @param string $namespace the namespace of the statement
     * @param string $statement the name of the statement file
     * @param array $params additional params for the statement
     * @param bool $cache decides if caching is active or not (true = yes, false = no)
+    *
     * @return string $entriesCount the number of entries
     *
     * @author Christian Achatz
@@ -140,18 +134,18 @@ final class PagerMapper extends APFObject {
       }
 
       $t->stop('PagerMapper::getEntriesCount()');
+
       return $entriesCount;
    }
 
    /**
-    * @public
-    *
     * Returns a list of the object ids, that should be loaded for the current page.
     *
     * @param string $namespace the namespace of the statement
     * @param string $statement the name of the statement file
     * @param array $params additional params for the statement
     * @param bool $cache decides if caching is active or not (true = yes, false = no)
+    *
     * @return array $entries a list of entry ids
     *
     * @author Christian Achatz
@@ -206,11 +200,13 @@ final class PagerMapper extends APFObject {
       }
 
       $t->stop('PagerMapper::loadEntries()');
+
       return $entryIds;
    }
 
    /**
     * @param array $params The list of pager statement parameters.
+    *
     * @return array The sanitized list of pager statement parameters.
     */
    private function sanitizeParameters(array $params = array()) {
@@ -218,6 +214,7 @@ final class PagerMapper extends APFObject {
       foreach ($params as $key => $value) {
          $params[$conn->escapeValue($key)] = $conn->escapeValue($value);
       }
+
       return $params;
    }
 

@@ -24,9 +24,6 @@ use APF\core\pagecontroller\APFObject;
 use InvalidArgumentException;
 
 /**
- * @package APF\tools\string
- * @class RandomStringManager
- *
  * This class creates a random string.
  *
  * @author dave
@@ -43,13 +40,13 @@ class RandomStringManager extends APFObject {
    private $delimiter;
 
    /**
-    * @var string The database connection key.
+    * The database connection key.
+    *
+    * @var string $connectionKey
     */
    private $connectionKey;
 
    /**
-    * @pubic
-    *
     * @param string $chars Chars set by user via config in *_serviceobjects.ini
     */
    public function setChars($chars) {
@@ -57,17 +54,13 @@ class RandomStringManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * @param string $length Length set by user via config in *_serviceobjects.ini
     */
    public function setLength($length) {
-      $this->length = (int)$length;
+      $this->length = (int) $length;
    }
 
    /**
-    * @public
-    *
     * @param string $connectionKey Connection key set by user via config in *_serviceobjects.ini
     */
    public function setConnectionKey($connectionKey) {
@@ -75,8 +68,6 @@ class RandomStringManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * @param string $scheme Scheme set by user via config in *_serviceobjects.ini
     */
    public function setScheme($scheme) {
@@ -84,8 +75,6 @@ class RandomStringManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * @param string $delimiter Delimiter set by user via config in *_serviceobjects.ini
     */
    public function setDelimiter($delimiter) {
@@ -93,8 +82,6 @@ class RandomStringManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Initializes the component.
     *
     * @param array $initParam The parameter to use for creating a random string.
@@ -111,9 +98,9 @@ class RandomStringManager extends APFObject {
          $this->chars = $initParam['chars'];
       }
       if (empty($initParam['length'])) {
-         $this->length = (int)16;
+         $this->length = (int) 16;
       } else {
-         $this->length = (int)$initParam['length'];
+         $this->length = (int) $initParam['length'];
       }
       if (empty($initParam['scheme'])) {
          $this->scheme = 'XXX9-XX99-X99X-99XX';
@@ -128,8 +115,6 @@ class RandomStringManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Creates a RandomString using the parameters set by init-function.
     *
     * @return string The created random string.
@@ -148,17 +133,17 @@ class RandomStringManager extends APFObject {
       for ($i = 0; $i < $this->length; $i++) {
          $this->randomString .= $chars[mt_rand(0, $charactersCount - 1)];
       }
+
       return $this->randomString;
    }
 
    /**
-    * @public
-    *
     * Creates a RandomString using the parameters set by init-function
     * until there was no corresponding string in the database found.
     *
     * @param string $select The SQL query to check, if the string is already in use.
     * @param string $connectionKey The database connection key.
+    *
     * @return string The created RandomString
     * @throws InvalidArgumentException In case of mis-configuration.
     *
@@ -197,8 +182,6 @@ class RandomStringManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Creates a serial number by using the given scheme via configuration
     *
     * @return string The created serial number
@@ -232,11 +215,10 @@ class RandomStringManager extends APFObject {
    }
 
    /**
-    * @private
-    *
     * Converting characters into UTF-8 conform format (for example: §%#).
     *
     * @param string $string The characters to convert.
+    *
     * @return array The converted characters as array.
     *
     * @author dave
@@ -251,16 +233,16 @@ class RandomStringManager extends APFObject {
          $string = mb_substr($string, 1, $strLen, "UTF-8");
          $strLen = mb_strlen($string);
       }
+
       return $array;
    }
 
    /**
-    * @private
-    *
     * Method returns one random char of all available chars.
     *
     * @param boolean $OnlyNumeric Option to return only numeric character
     * @param boolean $OnlyBigLetter Option to return only a big letter, otherwise small letters will be returned
+    *
     * @return string One random char from all available chars set by user
     *
     * @author dave

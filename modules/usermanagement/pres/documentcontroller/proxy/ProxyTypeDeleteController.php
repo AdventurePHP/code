@@ -25,8 +25,8 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\proxy
- * @class ProxyTypeDeleteController
+
+
  */
 class ProxyTypeDeleteController extends UmgtBaseController {
 
@@ -44,6 +44,7 @@ class ProxyTypeDeleteController extends UmgtBaseController {
             $uM->deleteVisibilityDefinitionType($proxyType);
          }
          HeaderManager::redirect($this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typelist', 'proxytypeid' => null)));
+
          return;
       }
 

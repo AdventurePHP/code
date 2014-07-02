@@ -21,9 +21,6 @@
 namespace APF\extensions\htmlheader\biz;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class JsContentNode
- *
  * Represents a js node with explicit content.
  *
  * @author Christian Achatz

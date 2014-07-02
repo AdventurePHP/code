@@ -32,9 +32,6 @@ use APF\tools\link\Url;
 use APF\tools\string\StringAssistant;
 
 /**
- * @package APF\modules\captcha\pres\taglib
- * @class SimpleCaptchaTag
- *
  * Implements a CAPTCHA-Taglib to extend a form's features. Inherits from AbstractFormControl
  * in order to be a fully qualified form element.
  *
@@ -46,26 +43,27 @@ use APF\tools\string\StringAssistant;
 class SimpleCaptchaTag extends AbstractFormControl {
 
    /**
-    * @protected
-    * @var AbstractFormControl Contains the instance of the captcha text field.
+    * Contains the instance of the captcha text field.
+    *
+    * @var AbstractFormControl $textField
     */
    protected $textField = null;
 
    /**
-    * @protected
-    * @var string Contains the name of the captcha text field.
+    * Contains the name of the captcha text field.
+    *
+    * @var string $textFieldName
     */
    protected $textFieldName = null;
 
    /**
-    * @protected
-    * @var string The captcha string of the current request.
+    * The captcha string of the current request.
+    *
+    * @var string $captchaString
     */
    protected $captchaString = null;
 
    /**
-    * @public
-    *
     * Re-implements the addValidator() method for the captcha taglib.
     * Can be used to add the shipped validator or a custom one
     * directly within the form definition.
@@ -81,14 +79,13 @@ class SimpleCaptchaTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    * @since 1.11
-    *
     * Re-implements the addFiler() method for the captcha taglib.
     * Can be used to add the shipped filter or a custom one
     * directly within the form definition.
     *
     * @param AbstractFormFilter $filter The desired filter.
+    *
+    * @since 1.11
     *
     * @author Christian Achatz
     * @version
@@ -99,8 +96,6 @@ class SimpleCaptchaTag extends AbstractFormControl {
    }
 
    /**
-    * @pubic
-    *
     * Re-implements the isValid() method for this special case.
     *
     * @return boolean The validation status of the inner text field.
@@ -114,8 +109,6 @@ class SimpleCaptchaTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Implements the onAfterAppend method from the ui_element class.
     *
     * @author Christian Achatz, Stephan Spiess
@@ -172,8 +165,6 @@ class SimpleCaptchaTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns the current captcha string to be able to validate it
     * against the user input.
     *
@@ -188,8 +179,6 @@ class SimpleCaptchaTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns a reference on the captcha control's text field.
     *
     * @return TextFieldTag The captcha's text field.
@@ -203,8 +192,6 @@ class SimpleCaptchaTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Generate and return HTML code of the captcha tag.
     *
     * @author Christian Achatz
@@ -224,7 +211,7 @@ class SimpleCaptchaTag extends AbstractFormControl {
 
       // create desired media url
       $captchaUrl = LinkGenerator::generateActionUrl(Url::fromCurrent(), 'APF\modules\captcha\biz', 'showCaptcha', array(
-         'name' => $this->textFieldName
+            'name' => $this->textFieldName
       ));
 
       // initialize captcha source
@@ -260,10 +247,10 @@ class SimpleCaptchaTag extends AbstractFormControl {
       // concatenate the html code and return it
       if ($disableInlineStyle === true) {
          return $captchaCode . '/><div>'
-               . $this->textField->transform() . '</div></div>';
+         . $this->textField->transform() . '</div></div>';
       } else {
          return $captchaCode . '/><div style="line-height: 40px; float: left; margin-left: 20px;">'
-               . $this->textField->transform() . '</div><div style="clear: left;"></div></div>';
+         . $this->textField->transform() . '</div><div style="clear: left;"></div></div>';
       }
 
    }

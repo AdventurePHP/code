@@ -24,9 +24,6 @@ use APF\modules\guestbook2009\biz\Entry;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\guestbook2009\pres
- * @class GuestbookDeleteEntryController
- *
  * Implements the document controller to handle the delete flow.
  *
  * @author Christian Achatz

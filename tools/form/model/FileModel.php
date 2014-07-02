@@ -21,9 +21,6 @@
 namespace APF\tools\form\model;
 
 /**
- * @package APF\tools\form\model
- * @class FileModel
- *
  * Represents a file object created during http file upload.
  *
  * @author Thalo
@@ -33,27 +30,37 @@ namespace APF\tools\form\model;
 final class FileModel {
 
    /**
-    * @var string The name of the file.
+    * The name of the file.
+    *
+    * @var string $name
     */
    private $name;
 
    /**
-    * @var string The size of the file in <em>bytes</em>.
+    * The size of the file in <em>bytes</em>.
+    *
+    * @var string $size
     */
    private $size;
 
    /**
-    * @var string The extension of the file.
+    * The extension of the file.
+    *
+    * @var string $extension
     */
    private $extension;
 
    /**
-    * @var string The MIME type - if applicable.
+    * The MIME type - if applicable.
+    *
+    * @var string $mimeType
     */
    private $mimeType;
 
    /**
-    * @var string The name of the uploaded temporary file.
+    * The name of the uploaded temporary file.
+    *
+    * @var string $temporaryName
     */
    private $temporaryName;
 
@@ -70,7 +77,7 @@ final class FileModel {
    }
 
    public function setSize($size) {
-      $this->size = (int)$size;
+      $this->size = (int) $size;
    }
 
    public function getExtension() {

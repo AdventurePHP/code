@@ -21,9 +21,6 @@
 namespace APF\extensions\htmllist\taglib;
 
 /**
- * @package APF\extensions\htmllist\taglib
- * @class UnorderedListTag
- *
  * Represents a HTMLList unordered list.
  *
  * @author Florian Horn

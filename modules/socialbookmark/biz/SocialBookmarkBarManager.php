@@ -29,9 +29,6 @@ use APF\tools\link\Url;
 use APF\tools\media\taglib\MediaInclusionTag;
 
 /**
- * @package APF\modules\socialbookmark\biz
- * @class SocialBookmarkBarManager
- *
  * Generates the HTML code of the bookmark bar. In order to add new services you can use the <em><addBookmarkService()/em>
  * method. This class must be instantiated via the ServiceManager.
  * <p/>
@@ -57,33 +54,41 @@ use APF\tools\media\taglib\MediaInclusionTag;
 class SocialBookmarkBarManager extends APFObject {
 
    /**
-    * @var string Url of the page to bookmark.
+    * Url of the page to bookmark.
+    *
+    * @var string $url
     */
    private $url = '';
 
    /**
-    * @var string Title of the page to bookmark.
+    * Title of the page to bookmark.
+    *
+    * @var string $title
     */
    private $title = '';
 
    /**
-    * @var string Width of the bookmark icons.
+    * Width of the bookmark icons.
+    *
+    * @var string $imageWidth
     */
    private $imageWidth = '20';
 
    /**
-    * @var string Height of the bookmark icons.
+    * Height of the bookmark icons.
+    *
+    * @var string $imageHeight
     */
    private $imageHeight = '20';
 
    /**
-    * @var SocialBookmarkItem[] The configured bookmark services.
+    * The configured bookmark services.
+    *
+    * @var SocialBookmarkItem[] $bookmarkServices
     */
    private $bookmarkServices = array();
 
    /**
-    * @public
-    *
     * Let's you add a bookmark service.
     *
     * @param SocialBookmarkItem $service The bookmark entry to add.
@@ -113,8 +118,6 @@ class SocialBookmarkBarManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Generates the bookmark bar HTML code.
     *
     * @return string HTML code of the configured bookmarks.
@@ -145,16 +148,16 @@ class SocialBookmarkBarManager extends APFObject {
          $service = $services->getSection($serviceName);
          $this->bookmarkServices[] =
                new SocialBookmarkItem(
-                  $service->getValue('BookmarkService.BaseURL'),
-                  $service->getValue('BookmarkService.Param.URL'),
-                  $service->getValue('BookmarkService.Param.Title'),
-                  $service->getValue('BookmarkService.Display.Title'),
-                  $service->getValue('BookmarkService.Display.Image'),
-                  $service->getValue('BookmarkService.Display.ImageExt')
+                     $service->getValue('BookmarkService.BaseURL'),
+                     $service->getValue('BookmarkService.Param.URL'),
+                     $service->getValue('BookmarkService.Param.Title'),
+                     $service->getValue('BookmarkService.Display.Title'),
+                     $service->getValue('BookmarkService.Display.Image'),
+                     $service->getValue('BookmarkService.Display.ImageExt')
                );
       }
 
-      $output = (string)'';
+      $output = (string) '';
 
       for ($i = 0; $i < count($this->bookmarkServices); $i++) {
          $output .= $this->generateBookmarkEntry($this->bookmarkServices[$i]);
@@ -162,15 +165,15 @@ class SocialBookmarkBarManager extends APFObject {
       }
 
       $t->stop($id);
+
       return $output;
    }
 
    /**
-    * @protected
-    *
     * Generates the HTML code of a single bookmark entry.
     *
     * @param SocialBookmarkItem $bookmarkEntry Bookmark item.
+    *
     * @return string HTML code of the applied bookmark entry.
     *
     * @author Christian Achatz
@@ -186,10 +189,10 @@ class SocialBookmarkBarManager extends APFObject {
 
       $code = '<a rel="nofollow" href="';
       $code .= LinkGenerator::generateUrl(
-         Url::fromString($bookmarkEntry->getServiceBaseUrl())->mergeQuery(array(
-            $bookmarkEntry->getUrlParamName() => $this->url,
-            $bookmarkEntry->getTitleParamName() => $this->title
-         )), new DefaultLinkScheme(true));
+            Url::fromString($bookmarkEntry->getServiceBaseUrl())->mergeQuery(array(
+                  $bookmarkEntry->getUrlParamName()   => $this->url,
+                  $bookmarkEntry->getTitleParamName() => $this->title
+            )), new DefaultLinkScheme(true));
       $code .= '" title="';
       $code .= $bookmarkEntry->getTitle();
       $code .= '" linkrewrite="false"><img src="';
@@ -210,6 +213,7 @@ class SocialBookmarkBarManager extends APFObject {
       $media->setContent($this->getContext());
       $media->setLanguage($this->getLanguage());
       $media->onParseTime();
+
       return $media->transform();
    }
 

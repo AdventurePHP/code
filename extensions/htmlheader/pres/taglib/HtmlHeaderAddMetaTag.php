@@ -25,9 +25,6 @@ use APF\extensions\htmlheader\biz\HtmlHeaderManager;
 use APF\extensions\htmlheader\biz\SimpleMetaNode;
 
 /**
- * @package APF\extensions\htmlheader\pres\taglib
- * @class HtmlHeaderAddMetaTag
- *
  * Taglib for adding meta nodes to htmlheader.
  *
  * @example
@@ -44,11 +41,12 @@ class HtmlHeaderAddMetaTag extends Document {
       $header = $this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
 
       $header->addNode(
-         new SimpleMetaNode(
-            $this->getAttribute('name'),
-            $this->getAttribute('content')
-         )
+            new SimpleMetaNode(
+                  $this->getAttribute('name'),
+                  $this->getAttribute('content')
+            )
       );
+
       return '';
    }
 

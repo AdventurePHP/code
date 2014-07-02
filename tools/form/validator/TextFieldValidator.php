@@ -25,10 +25,6 @@ use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\form\taglib\ValidationListenerTag;
 
 /**
- * @package APF\tools\form\validator
- * @class TextFieldValidator
- * @abstract
- *
  * Implements a base class for all text field validators.
  *
  * @author Christian Achatz
@@ -38,8 +34,6 @@ use APF\tools\form\taglib\ValidationListenerTag;
 abstract class TextFieldValidator extends AbstractFormValidator {
 
    /**
-    * @public
-    *
     * Notifies the form control to be invalid.
     *
     * @author Christian Achatz
@@ -53,8 +47,6 @@ abstract class TextFieldValidator extends AbstractFormValidator {
    }
 
    /**
-    * @public
-    *
     * Notifies all validation listeners, who's control attribute is the same
     * as the name of the present control. This enables you to insert listener
     * tags, that output special content if notified. Hence, you can realize
@@ -89,7 +81,7 @@ abstract class TextFieldValidator extends AbstractFormValidator {
          // indicate, that we want a "normal" listener (=no special listener) to be
          // notified!
          if ($listeners[$i]->getAttribute('control') === $controlName
-            && $listeners[$i]->getAttribute('validator') === $validatorName
+               && $listeners[$i]->getAttribute('validator') === $validatorName
          ) {
             $listeners[$i]->notify();
          }
@@ -98,8 +90,6 @@ abstract class TextFieldValidator extends AbstractFormValidator {
    }
 
    /**
-    * @protected
-    *
     * Evaluates the name of the validator to be used during listener notification.
     *
     * @return string Indicates the name of the special validator to notify.
@@ -112,12 +102,11 @@ abstract class TextFieldValidator extends AbstractFormValidator {
       if ($this->type === self::$SPECIAL_VALIDATOR_INDICATOR) {
          return get_class($this);
       }
+
       return null;
    }
 
    /**
-    * @protected
-    *
     * Marks a form control als invalid using a css class. See
     * http://wiki.adventure-php-framework.org/Weiterentwicklung_Formular-Validierung
     * for details.
@@ -137,11 +126,10 @@ abstract class TextFieldValidator extends AbstractFormValidator {
    }
 
    /**
-    * @protected
-    *
     * Evaluates the css class used to mark an invalid form control.
     *
     * @param AbstractFormControl $control The control to validate.
+    *
     * @return string The css marker class for validation notification.
     *
     * @since 1.12
@@ -155,6 +143,7 @@ abstract class TextFieldValidator extends AbstractFormValidator {
       if (empty($marker)) {
          $marker = self::$DEFAULT_MARKER_CLASS;
       }
+
       return $marker;
    }
 

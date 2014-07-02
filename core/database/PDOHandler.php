@@ -23,9 +23,6 @@ namespace APF\core\database;
 use APF\core\logging\LogEntry;
 
 /**
- * @package APF\core\database
- * @class PDOHandler
- *
  * This class implements a connection handler for the ConnectionManager
  * to use with pdo interface.
  *
@@ -36,14 +33,13 @@ use APF\core\logging\LogEntry;
 class PDOHandler extends AbstractDatabaseHandler {
 
    /**
-    * @protected
-    * @var string Database type for pdo connection
+    * Database type for pdo connection
+    *
+    * @var string $dbPDO
     */
    protected $dbPDO = null;
 
    /**
-    * @public
-    *
     * @author Tobias Lückel (megger)
     * @version
     * Version 0.1, 11.04.2012<br />
@@ -63,8 +59,6 @@ class PDOHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @protected
-    *
     * Provides internal service to open a database connection.
     *
     * @author Tobias Lückel (megger)
@@ -92,8 +86,6 @@ class PDOHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @protected
-    *
     * Provides internal service to close a database connection.
     *
     * @author Tobias Lückel (megger)
@@ -105,8 +97,6 @@ class PDOHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Turns off autocommit mode! Changes to the database via PDO are not
     * committed until calling commit().
     * rollBack() will roll back all changes and turns on the autocommit mode!
@@ -122,8 +112,6 @@ class PDOHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Commits a transaction and turns on the autocommit mode!
     *
     * @return boolean
@@ -137,8 +125,6 @@ class PDOHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Rolls back the current transaction
     *
     * @return boolean
@@ -152,8 +138,6 @@ class PDOHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Checks if a transaction is active
     *
     * @return boolean
@@ -167,11 +151,10 @@ class PDOHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Prepares a statement for execution and returns a PDOStatement object
     *
     * @param string $statement The statement string
+    *
     * @return \PDOStatement A PDOStatement object to work with
     *
     * @author Tobias Lückel (megger)
@@ -183,8 +166,6 @@ class PDOHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Executes a statement, located within a statement file. The place holders contained in the
     * file are replaced by the given values.
     *
@@ -192,6 +173,7 @@ class PDOHandler extends AbstractDatabaseHandler {
     * @param string $statementFile Name of the statement file (file body!).
     * @param string[] $params A list of statement parameters.
     * @param bool $logStatement Indicates, if the statement is logged for debug purposes.
+    *
     * @return \PDOStatement A PDOStatement object to work with.
     * @throws DatabaseHandlerException In case the statement execution failed.
     *
@@ -226,14 +208,13 @@ class PDOHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Executes a statement applied as a string to the method and returns the
     * result pointer.
     *
     * @param string $statement The statement string.
     * @param boolean $logStatement Indicates, whether the given statement should be
     *                              logged for debug purposes.
+    *
     * @return \PDOStatement A PDOStatement object to work with.
     * @throws DatabaseHandlerException In case the statement execution failed.
     *
@@ -265,12 +246,11 @@ class PDOHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Fetches a record from the database using the given PDOStatement.
     *
     * @param \PDOStatement $pdoStatement The PDOStatement returned by executeStatement() or executeTextStatement().
     * @param int $type The type the returned data should have. Use the static *_FETCH_MODE constants.
+    *
     * @return string[] The associative result array. Returns false if no row was found.
     *
     * @author Tobias Lückel (megger)
@@ -293,15 +273,15 @@ class PDOHandler extends AbstractDatabaseHandler {
       if ($return == null) {
          return false;
       }
+
       return $return;
    }
 
    /**
-    * @public
-    *
     * Escapes given values to be SQL injection save.
     *
     * @param string $value The un-escaped value.
+    *
     * @return string The escaped string.
     *
     * @author Tobias Lückel (megger)
@@ -310,15 +290,15 @@ class PDOHandler extends AbstractDatabaseHandler {
     */
    public function escapeValue($value) {
       $quoted = $this->dbConn->quote($value);
+
       return substr($quoted, 1, strlen($quoted) - 2);
    }
 
    /**
-    * @public
-    *
     * Returns the amount of rows, that are affected by a previous update or delete call.
     *
     * @param \PDOStatement $pdoStatement The PDOStatement.
+    *
     * @return int The number of affected rows.
     *
     * @author Tobias Lückel (megger)
@@ -330,14 +310,13 @@ class PDOHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @public
-    *
     * Returns the number of selected rows by the given PDOStatement.
     * Some databases may return the number of rows returned by a select statement.
     * However, this behaviour is not guaranteed for all databases and
     * should not be relied on for portable applications.
     *
     * @param \PDOStatement $pdoStatement The PDOStatement.
+    *
     * @return int The number of selected rows.
     *
     * @author Tobias Lückel (megger)
@@ -349,8 +328,6 @@ class PDOHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    * @private
-    *
     * Returns the data source name (DSN) for the database connection.
     * The string is build bases on the configuration parameter 'PDO'
     * Actual following db drivers are supported:
@@ -385,6 +362,7 @@ class PDOHandler extends AbstractDatabaseHandler {
             $dsn .= ';dbname=' . $this->dbName;
             break;
       }
+
       return $dsn;
    }
 }

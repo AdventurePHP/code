@@ -24,9 +24,6 @@ use APF\modules\genericormapper\data\GenericDomainObject;
 use APF\modules\genericormapper\data\GenericORMapperDataObject;
 
 /**
- * @package APF\extensions\postbox\biz\abstractdomainobjects
- * @class AbstractRecipientList
- *
  * This is the base class for "RecipientList" from the Postbox-Extension.
  * For further information visit the extension's documentation.
  *
@@ -49,10 +46,12 @@ abstract class AbstractRecipientList extends GenericDomainObject {
     * Does NOT save the list!
     *
     * @param GenericORMapperDataObject $User
+    *
     * @return AbstractRecipientList Returns itself (fluent-interface)
     */
    public function addRecipient(GenericORMapperDataObject &$User) {
       $this->addRelatedObject('RecipientList2Recipient', $User);
+
       return $this;
    }
 
@@ -61,12 +60,14 @@ abstract class AbstractRecipientList extends GenericDomainObject {
     * Does NOT save the list.
     *
     * @param array $Users
+    *
     * @return AbstractRecipientList Returns itself (fluent-interface)
     */
    public function addRecipients(array &$Users) {
       foreach ($Users as &$User) {
          $this->addRecipient($User);
       }
+
       return $this;
    }
 
@@ -74,10 +75,12 @@ abstract class AbstractRecipientList extends GenericDomainObject {
     * Removes a recipient from the list
     *
     * @param GenericORMapperDataObject $User
+    *
     * @return AbstractRecipientList Returns itself (fluent-interface)
     */
    public function removeRecipient(GenericORMapperDataObject &$User) {
       $this->getDataComponent()->deleteAssociation('RecipientList2Recipient', $this, $User);
+
       return $this;
    }
 
@@ -85,6 +88,7 @@ abstract class AbstractRecipientList extends GenericDomainObject {
     * Saves a new or changed list.
     *
     * @param bool $saveTree Optional. Default: true. If set to false only the message will be saved, and not the relation-tree
+    *
     * @return AbstractRecipientList Returns itself (fluent-interface)
     * @throws \BadFunctionCallException
     */
@@ -93,6 +97,7 @@ abstract class AbstractRecipientList extends GenericDomainObject {
          throw new \BadFunctionCallException('[AbstractRecipientList::save()] DataComponent is not set, if the object was not loaded by ORM, you need to set it manually!');
       }
       $this->getDataComponent()->saveObject($this, $saveTree);
+
       return $this;
    }
 

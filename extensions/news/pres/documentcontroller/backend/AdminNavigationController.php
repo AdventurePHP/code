@@ -37,26 +37,26 @@ class AdminNavigationController extends BaseDocumentController {
       $generalExclusion = array('deleteyes' => null, 'deletenewsid' => null, 'editnewsid' => null);
 
       $this->setPlaceHolder(
-         'list', LinkGenerator::generateUrl(
-            Url::fromCurrent()
-                  ->mergeQuery($generalExclusion)
-                  ->mergeQuery(
-               array(
-                  'backendview' => 'list'
-               )
+            'list', LinkGenerator::generateUrl(
+                  Url::fromCurrent()
+                        ->mergeQuery($generalExclusion)
+                        ->mergeQuery(
+                              array(
+                                    'backendview' => 'list'
+                              )
+                        )
             )
-         )
       );
       $this->setPlaceHolder(
-         'new', LinkGenerator::generateUrl(
-            Url::fromCurrent()
-                  ->mergeQuery($generalExclusion)
-                  ->mergeQuery(
-               array(
-                  'backendview' => 'edit'
-               )
+            'new', LinkGenerator::generateUrl(
+                  Url::fromCurrent()
+                        ->mergeQuery($generalExclusion)
+                        ->mergeQuery(
+                              array(
+                                    'backendview' => 'edit'
+                              )
+                        )
             )
-         )
       );
    }
 

@@ -40,9 +40,6 @@ use APF\tools\link\Url;
 use Exception;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\login
- * @class LoginController
- *
  * Manages the login form and authenticates the user concerning the
  * authentication method configured.
  *
@@ -120,13 +117,12 @@ class LoginController extends BaseDocumentController {
    }
 
    /**
-    * @private
-    *
     * Allows you to authenticate with email and password as well as with username and password.
     * The decision is done by an optional configuration that defines the login type.
     *
     * @param string $username The given user name.
     * @param string $password The given password.
+    *
     * @return UmgtUser The logged-in user or null.
     *
     * @author Christian Achatz

@@ -26,9 +26,6 @@ use APF\core\singleton\Singleton;
 use InvalidArgumentException;
 
 /**
- * @package APF\tools\html\taglib
- * @class GenericImportTemplateTag
- *
  * Implements a fully generic including tag. The tag retrieves both namespace and the template
  * name from the desired model object. Further, the developer is free to choose, which mode is
  * used to fetch the model object from the ServiceManager. For details on the modes, please have
@@ -56,8 +53,6 @@ use InvalidArgumentException;
 class GenericImportTemplateTag extends ImportTemplateTag {
 
    /**
-    * @public
-    *
     * Handles the tag's attributes (ses class documentation) and includes the desired template.
     *
     * @author Christian Achatz
@@ -131,15 +126,15 @@ class GenericImportTemplateTag extends ImportTemplateTag {
 
          // register action with the front controller
          /* @var $fC Frontcontroller */
-         $fC = &Singleton::getInstance('APF\core\frontcontroller\Frontcontroller');
-         $action = &$fC->getActionByName($dependentActionName);
+         $fC = & Singleton::getInstance('APF\core\frontcontroller\Frontcontroller');
+         $action = & $fC->getActionByName($dependentActionName);
          if ($action === null) {
             $fC->addAction($dependentActionNamespace, $dependentActionName, $actionParamList);
          }
       }
 
       // get model
-      $model = &$this->getServiceObject($modelClass, $modelMode);
+      $model = & $this->getServiceObject($modelClass, $modelMode);
 
       // check for the get method
       if (!method_exists($model, $getMethod)) {

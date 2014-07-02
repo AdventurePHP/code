@@ -27,9 +27,6 @@ use APF\tools\link\Url;
 use InvalidArgumentException;
 
 /**
- * @package APF\modules\newspager\pres\controller
- * @class NewsPagerController
- *
  * Document controller for the news pager module.
  *
  * @author Christian Achatz
@@ -39,8 +36,6 @@ use InvalidArgumentException;
 class NewsPagerController extends BaseDocumentController {
 
    /**
-    * @public
-    *
     * Implements the abstract transformation function of the BaseDocumentController class.
     *
     * @author Christian Achatz
@@ -55,8 +50,8 @@ class NewsPagerController extends BaseDocumentController {
       $dataDir = $this->getDocument()->getAttribute('datadir');
       if ($dataDir === null) {
          throw new InvalidArgumentException('[NewsPagerController::transformContent()] Tag '
-            . 'attribute "datadir" was not present in the &lt;core:importdesign /&gt; tag '
-            . 'definition! Please specify a news content directory!');
+               . 'attribute "datadir" was not present in the &lt;core:importdesign /&gt; tag '
+               . 'definition! Please specify a news content directory!');
       }
 
       // load default news page
@@ -73,9 +68,9 @@ class NewsPagerController extends BaseDocumentController {
 
       // set news service base url
       $url = LinkGenerator::generateActionUrl(
-         Url::fromCurrent(),
-         'APF\modules\newspager\biz',
-         'Pager'
+            Url::fromCurrent(),
+            'APF\modules\newspager\biz',
+            'Pager'
       );
       $this->setPlaceHolder('ActionUrl', $url);
 

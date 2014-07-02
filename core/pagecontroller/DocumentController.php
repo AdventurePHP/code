@@ -23,9 +23,6 @@ namespace APF\core\pagecontroller;
 use APF\core\service\APFDIService;
 
 /**
- * @package APF\core\pagecontroller
- * @class DocumentController
- *
  * Defines the interface for APF document controller implementations.
  *
  * @author Christian Achatz
@@ -37,8 +34,6 @@ use APF\core\service\APFDIService;
 interface DocumentController extends APFDIService {
 
    /**
-    * @public
-    *
     * Injects the document into the document controller. This enables the developer
     * to retrieve information and DOM elements stored in the node, the controller
     * is responsible to transform.
@@ -64,8 +59,6 @@ interface DocumentController extends APFDIService {
    public function &getDocument();
 
    /**
-    * @public
-    *
     * Interface definition of the transformContent() method. This function is applied to a
     * document controller during the transformation of a DOM node. It must be implemented by
     * each document controller to influence content generation.

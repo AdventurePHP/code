@@ -26,9 +26,6 @@ use APF\core\configuration\ConfigurationProvider;
 use APF\core\configuration\provider\BaseConfigurationProvider;
 
 /**
- * @package APF\core\configuration\provider\ini
- * @class XmlConfigurationProvider
- *
  * Implements the configuration provider for the default APF xml format. The
  * following features can be activated:
  * <ul>
@@ -56,8 +53,6 @@ use APF\core\configuration\provider\BaseConfigurationProvider;
 class XmlConfigurationProvider extends BaseConfigurationProvider implements ConfigurationProvider {
 
    /**
-    * @public
-    *
     * @version
     * Version 0.2, 27.02.2012 (Throw an exception if xml isn't well-formed - Tobias Lückel [Megger])
     */
@@ -117,8 +112,6 @@ class XmlConfigurationProvider extends BaseConfigurationProvider implements Conf
    }
 
    /**
-    * @private
-    *
     * Transforms a given config section into the applied xml structure.
     *
     * @param \SimpleXMLElement $xml The parent XML node.
@@ -148,8 +141,6 @@ class XmlConfigurationProvider extends BaseConfigurationProvider implements Conf
    }
 
    /**
-    * @private
-    *
     * @param Configuration $config
     * @param \SimpleXMLElement $section
     *
@@ -158,13 +149,12 @@ class XmlConfigurationProvider extends BaseConfigurationProvider implements Conf
     * Version 0.1, 09.10.2010<br />
     */
    private function parseSection(Configuration $config, \SimpleXMLElement $section) {
-      $config->setSection((string)$section->attributes()->name, $this->parseXmlElement($section));
+      $config->setSection((string) $section->attributes()->name, $this->parseXmlElement($section));
    }
 
    /**
-    * @private
-    *
     * @param \SimpleXMLElement $element The current XML node.
+    *
     * @return XmlConfiguration The configuration representing the current XML node.
     *
     * @author Christian Achatz
@@ -177,7 +167,7 @@ class XmlConfigurationProvider extends BaseConfigurationProvider implements Conf
 
       // parse properties
       foreach ($element->xpath('property') as $property) {
-         $config->setValue((string)$property->attributes()->name, (string)$property);
+         $config->setValue((string) $property->attributes()->name, (string) $property);
       }
 
       // parse sections

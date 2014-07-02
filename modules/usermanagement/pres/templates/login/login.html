@@ -1,67 +1,67 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\login\LoginController"
+class="APF\modules\usermanagement\pres\documentcontroller\login\LoginController"
 @>
 <html:form class="umgt-fe-login" autocomplete="off" name="login" method="post">
    <div>
       ${login-error}
       <label for="umgt-fe-login-user">
          <html:getstring
-            namespace="APF\modules\usermanagement\pres"
-            config="labels.ini"
-            entry="login.form.username.label" />
+               namespace="APF\modules\usermanagement\pres"
+               config="labels.ini"
+               entry="login.form.username.label"/>
       </label>
-      <form:text id="umgt-fe-login-user" name="username" />
+      <form:text id="umgt-fe-login-user" name="username"/>
       <label for="umgt-fe-login-pass">
          <html:getstring
-            namespace="APF\modules\usermanagement\pres"
-            config="labels.ini"
-            entry="login.form.password.label" />
+               namespace="APF\modules\usermanagement\pres"
+               config="labels.ini"
+               entry="login.form.password.label"/>
       </label>
-      <form:password id="umgt-fe-login-pass" name="password" />
+      <form:password id="umgt-fe-login-pass" name="password"/>
       <label for="umgt-fe-login-remember-me">
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="login.form.remember-me.label" />
+               entry="login.form.remember-me.label"/>
       </label>
-      <form:checkbox name="remember-me" id="umgt-fe-login-remember-me" value="1" />
+      <form:checkbox name="remember-me" id="umgt-fe-login-remember-me" value="1"/>
       <form:button id="umgt-fe-login-send" name="sendFormLogin">
          <button:getstring
-            namespace="APF\modules\usermanagement\pres"
-            config="labels.ini"
-            entry="login.form.button.label" />
+               namespace="APF\modules\usermanagement\pres"
+               config="labels.ini"
+               entry="login.form.button.label"/>
       </form:button>
       <form:addvalidator
-         class="APF\tools\form\validator\TextLengthValidator"
-         button="sendFormLogin"
-         control="username|password"
-      />
+            class="APF\tools\form\validator\TextLengthValidator"
+            button="sendFormLogin"
+            control="username|password"
+            />
    </div>
 </html:form>
 
 <html:template name="login-error">
    <div class="credentials-error">
       <html:getstring
-         namespace="APF\modules\usermanagement\pres"
-         config="labels.ini"
-         entry="login.credentials.error" />
+            namespace="APF\modules\usermanagement\pres"
+            config="labels.ini"
+            entry="login.credentials.error"/>
    </div>
 </html:template>
 
 <html:template name="system-error">
    <div class="system-error">
       <html:getstring
-         namespace="APF\modules\usermanagement\pres"
-         config="labels.ini"
-         entry="login.system.error" />
+            namespace="APF\modules\usermanagement\pres"
+            config="labels.ini"
+            entry="login.system.error"/>
    </div>
 </html:template>
 
 <html:template name="login-ok">
    <div class="credentials-ok">
       <html:getstring
-         namespace="APF\modules\usermanagement\pres"
-         config="labels.ini"
-         entry="login.already.logged.in" />
+            namespace="APF\modules\usermanagement\pres"
+            config="labels.ini"
+            entry="login.already.logged.in"/>
    </div>
 </html:template>

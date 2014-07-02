@@ -21,9 +21,6 @@
 namespace APF\extensions\htmlheader\biz;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class LanguageMetaNode
- *
  * Implements a language indication meta node.
  *
  * @author Werner (welworx)

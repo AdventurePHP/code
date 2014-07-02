@@ -26,9 +26,6 @@ use APF\tools\form\multifileupload\biz\MultiFileUploadManager;
 use APF\tools\http\HeaderManager;
 
 /**
- * @package APF\tools\form\multifileupload\actions
- * @class MultiFileDeleteAction
- *
  * This action deletes the given file physically and from session.
  *
  * @author Werner Liemberger <wpublicmail@gmail.com>
@@ -52,8 +49,8 @@ class MultiFileDeleteAction extends AbstractFrontcontrollerAction {
 
          /* @var $manager MultiFileUploadManager */
          $manager = & $this->getAndInitServiceObject(
-            'APF\tools\form\multifileupload\biz\MultiFileUploadManager',
-            array('formname' => $formName, 'name' => $fieldName)
+               'APF\tools\form\multifileupload\biz\MultiFileUploadManager',
+               array('formname' => $formName, 'name' => $fieldName)
          );
          if ($uploadName !== null) {
             $manager->deleteFile($uploadName);
@@ -65,10 +62,8 @@ class MultiFileDeleteAction extends AbstractFrontcontrollerAction {
          throw $e;
       }
    }
-   
+
    /**
-    * @private
-    *
     * Cleans up the upload name
     *
     * @return string The upload name of the resource to delete.

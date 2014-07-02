@@ -23,9 +23,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\permission;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\permission
- * @class PermissionListController
- *
  * Implements the controller to list the existing permissions.
  *
  * @author Christian Achatz
@@ -37,12 +34,12 @@ class PermissionListController extends UmgtBaseController {
    public function transformContent() {
 
       // load the permission list
-      $uM = &$this->getManager();
+      $uM = & $this->getManager();
       $permissionList = $uM->getPagedPermissionList();
 
       // display list
-      $buffer = (string)'';
-      $template = &$this->getTemplate('Permission');
+      $buffer = (string) '';
+      $template = & $this->getTemplate('Permission');
       foreach ($permissionList as $permission) {
          $template->setPlaceHolder('DisplayName', $permission->getDisplayName());
          $template->setPlaceHolder('Name', $permission->getName());

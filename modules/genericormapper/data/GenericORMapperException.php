@@ -23,9 +23,6 @@ namespace APF\modules\genericormapper\data;
 use Exception;
 
 /**
- * @package APF\modules\genericormapper\data
- * @class GenericORMapperException
- *
  * Defines a custom exception thrown by the generic o/r mapper.
  *
  * @author Christian Achatz

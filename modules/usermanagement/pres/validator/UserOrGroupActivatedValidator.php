@@ -25,9 +25,6 @@ use APF\tools\form\taglib\MultiSelectBoxTag;
 use APF\tools\form\validator\TextFieldValidator;
 
 /**
- * @package APF\modules\usermanagement\pres\validator
- * @class UserOrGroupActivatedValidator
- *
  * Validator for for combined user and group multi select fields within the proxy forms.
  *
  * @author Christian Achatz
@@ -37,7 +34,9 @@ use APF\tools\form\validator\TextFieldValidator;
 class UserOrGroupActivatedValidator extends TextFieldValidator {
 
    /**
-    * @var MultiSelectBoxTag The alternative control to validate.
+    * The alternative control to validate.
+    *
+    * @var MultiSelectBoxTag $alternativeControl
     */
    private $alternativeControl;
 
@@ -49,20 +48,19 @@ class UserOrGroupActivatedValidator extends TextFieldValidator {
       $altControlName = $this->control->getAttribute('alt');
 
       // initialize alternative control for marking
-      $form = &$this->control->getParentObject();
+      $form = & $this->control->getParentObject();
       /* @var $form HtmlFormTag */
-      $this->alternativeControl = &$form->getFormElementByName($altControlName);
+      $this->alternativeControl = & $form->getFormElementByName($altControlName);
 
       if (!isset($_REQUEST[$controlName]) && !isset($_REQUEST[$altControlName])) {
          return false;
       }
+
       return true;
 
    }
 
    /**
-    * @private
-    *
     * Re-implements form control marking for combined user and group multi select fields.
     *
     * @author Christian Achatz

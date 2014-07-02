@@ -28,9 +28,6 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\group
- * @class GroupAddUserToGroupsController
- *
  * Let's you add a user to one or more groups starting at the user main view.
  *
  * @author Christian Achatz
@@ -41,22 +38,23 @@ class GroupAddUserToGroupsController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $form = &$this->getForm('Groups');
+      $form = & $this->getForm('Groups');
 
-      $uM = &$this->getManager();
+      $uM = & $this->getManager();
 
       $user = $uM->loadUserByID(RequestHandler::getValue('userid'));
       $groups = $uM->loadGroupsNotWithUser($user);
 
       if (count($groups) === 0) {
-         $tmpl = &$this->getTemplate('NoMoreGroups');
+         $tmpl = & $this->getTemplate('NoMoreGroups');
          $tmpl->getLabel('message-1')->setPlaceHolder('display-name', $user->getDisplayName());
          $tmpl->getLabel('message-2')->setPlaceHolder('user-view-link', $this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
          $tmpl->transformOnPlace();
+
          return;
       }
 
-      $groupsControl = &$form->getFormElementByName('Groups');
+      $groupsControl = & $form->getFormElementByName('Groups');
       /* @var $groupsControl MultiSelectBoxTag */
       foreach ($groups as $group) {
          $groupsControl->addOption($group->getDisplayName(), $group->getObjectId());
@@ -64,7 +62,7 @@ class GroupAddUserToGroupsController extends UmgtBaseController {
 
       if ($form->isSent() && $form->isValid()) {
 
-         $options = &$groupsControl->getSelectedOptions();
+         $options = & $groupsControl->getSelectedOptions();
          $additionalGroups = array();
          foreach ($options as $option) {
             /* @var $option SelectBoxOptionTag */

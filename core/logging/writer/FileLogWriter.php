@@ -25,9 +25,6 @@ use APF\core\logging\LoggerException;
 use APF\core\logging\LogWriter;
 
 /**
- * @package APF\core\logging\writer
- * @class FileLogWriter
- *
  * Implements a log writer to persist the applied entries to log files.
  *
  * @author Christian Achatz
@@ -37,28 +34,34 @@ use APF\core\logging\LogWriter;
 class FileLogWriter implements LogWriter {
 
    /**
-    * @var string The host prefix that is added to the log file name to distinguish between different hosts.
+    * The host prefix that is added to the log file name to distinguish between different hosts.
+    *
+    * @var string $hostPrefix
     */
    protected $hostPrefix = null;
 
    /**
-    * @var string Directory, where log files are stored.
+    * Directory, where log files are stored.
+    *
+    * @var string $logDir
     */
    protected $logDir;
 
    /**
-    * @var string Permission that is applied to a newly created log folder.
+    * Permission that is applied to a newly created log folder.
+    *
+    * @var string $logFolderPermissions
     */
    protected $logFolderPermissions = 0777;
 
    /**
-    * @var string The log target identifier.
+    * The log target identifier.
+    *
+    * @var string $target
     */
    protected $target;
 
    /**
-    * @public
-    *
     * Initializes a FileLogWriter.
     *
     * @param string $logDir The directory to write the logs to.
@@ -72,8 +75,6 @@ class FileLogWriter implements LogWriter {
    }
 
    /**
-    * @public
-    *
     * Let's you change the log directory.
     *
     * @param string $logDir The directory to write the logs to.
@@ -87,8 +88,6 @@ class FileLogWriter implements LogWriter {
    }
 
    /**
-    * @public
-    *
     * Let's you configure a host name prefix for all log files.
     * <p/>
     * This may be used in clustered hosting environments to reduce file lock overhead.
@@ -104,8 +103,6 @@ class FileLogWriter implements LogWriter {
    }
 
    /**
-    * @public
-    *
     * Let's you re-configure the folder permission for newly created log folders.
     *
     * @param string $logFolderPermissions Permission that is applied to a newly created log folder.
@@ -119,8 +116,6 @@ class FileLogWriter implements LogWriter {
    }
 
    /**
-    * @protected
-    *
     * Returns the name of the log file by the body of the name. Each log file will be named
     * like jjjj_mm_dd__[host-prefix_]{filename}.log.
     * <p/>
@@ -128,6 +123,7 @@ class FileLogWriter implements LogWriter {
     * to write log files for different hosts on clustered hosting environments.
     *
     * @param string $fileName Name of the log file
+    *
     * @return string Complete file name, that contains a date prefix and an file extension
     *
     * @author Christian Achatz

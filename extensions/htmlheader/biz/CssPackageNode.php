@@ -21,9 +21,6 @@
 namespace APF\extensions\htmlheader\biz;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class CssPackageNode
- *
  * Implements a css node, that loads a css package.
  *
  * @author Christian Achatz

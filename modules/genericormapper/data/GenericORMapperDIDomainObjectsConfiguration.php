@@ -23,9 +23,6 @@ namespace APF\modules\genericormapper\data;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package APF\modules\genericormapper\data
- * @class GenericORMapperDIDomainObjectsConfiguration
- *
  * Represents a configuration service to be able to add a further domain object mapping configuration to
  * the generic or mapper with the <em>DIServiceManager</em>. In order to do so, a service
  * section must be created for this configuration that looks as follows:
@@ -56,12 +53,16 @@ use APF\core\pagecontroller\APFObject;
 final class GenericORMapperDIDomainObjectsConfiguration extends APFObject {
 
    /**
-    * @var string The configuration namespace of the additional GORM domain object mapping configuration.
+    * The configuration namespace of the additional GORM domain object mapping configuration.
+    *
+    * @var string $configNamespace
     */
    private $configNamespace;
 
    /**
-    * @var string The configuration affix of the additional GORM domain object mapping configuration.
+    * The configuration affix of the additional GORM domain object mapping configuration.
+    *
+    * @var string $configAffix
     */
    private $configAffix;
 

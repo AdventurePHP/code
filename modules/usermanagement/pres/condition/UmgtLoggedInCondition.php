@@ -23,9 +23,6 @@ namespace APF\modules\usermanagement\pres\condition;
 use APF\modules\usermanagement\biz\model\UmgtUser;
 
 /**
- * @package APF\modules\usermanagement\pres\condition
- * @class UmgtLoggedInCondition
- *
  * Implements the decision logic, whether a user is logged in.
  *
  * @author Christian Achatz

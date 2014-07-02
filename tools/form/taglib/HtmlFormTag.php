@@ -30,9 +30,6 @@ use APF\tools\form\FormException;
 use InvalidArgumentException;
 
 /**
- * @package APF\tools\form\taglib
- * @class HtmlFormTag
- *
  * Represents a APF form element (DOM node).
  *
  * @author Christian Schäfer
@@ -56,13 +53,13 @@ class HtmlFormTag extends Document {
    public static $METHOD_POST_VALUE_NAME = 'post';
 
    /**
-    * @var boolean Indicates, whether the form should be transformed at it'd place of definition or not.
+    * Indicates, whether the form should be transformed at it'd place of definition or not.
+    *
+    * @var boolean $transformOnPlace
     */
    private $transformOnPlace = false;
 
    /**
-    * @public
-    *
     * Initializes the known taglibs.
     *
     * @author Christian Schäfer
@@ -117,8 +114,6 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Indicates, whether the form has been sent or not. Retrieves the status
     * directly from the form controls. Overwrites the parent's method.
     *
@@ -147,8 +142,6 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Indicates, whether the form is valid or not. Retrieves the status
     * directly from the form controls. Overwrites the parent's method.
     *
@@ -177,8 +170,6 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Adds a new form element at the end of the form. This method is intended to dynamically generate forms.
     *
     * @param string $elementType Type of the element (e.g. "form:text")
@@ -214,8 +205,6 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Adds content at the end of the form. This method is intended to dynamically generate forms.
     *
     * @param string $content The desired content
@@ -229,8 +218,6 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Adds content in front of a form marker. This method is intended to dynamically generate forms.
     *
     * @param string $markerName the desired marker name
@@ -253,8 +240,6 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Adds content behind a form marker. This method is intended to dynamically generate forms.
     *
     * @param string $markerName the desired marker name
@@ -277,8 +262,6 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Adds a new form element in front of a form marker. This method is intended to dynamically generate forms.
     *
     * @param string $markerName the desired marker name
@@ -318,8 +301,6 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Adds a new form element after a form marker. This method is intended to dynamically generate forms.
     *
     * @param string $markerName the desired marker name
@@ -361,8 +342,6 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @protected
-    *
     * Adds a new form element to the child list.
     *
     * @param string $elementType Type of the element (e.g. "form:text")
@@ -413,8 +392,6 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @protected
-    *
     * Returns a reference on the desired marker or null.
     *
     * @param string $markerName The desired marker's name.
@@ -438,8 +415,6 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Sets the action url of the form.
     *
     * @param string $action The action URL of the form.
@@ -453,12 +428,11 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @public
-    * @since 2.0
-    *
     * Adds an additional attribute to the white list of the form.
     *
     * @param string $name The attribute which should be added to the white list.
+    *
+    * @since 2.0
     *
     * @author Ralf Schubert, Christian Achatz
     * @version
@@ -470,8 +444,6 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Returns a reference on the form element identified by the given name.
     *
     * @param string $name The name of the desired form element.
@@ -505,8 +477,6 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Returns a list of form controls with the given name.
     *
     * @param string $name The name of the form elements to collect (e.g. for radio buttons).
@@ -531,8 +501,6 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Returns a reference on the form element identified by the given id.
     *
     * @param string $id The ID of the desired form element.
@@ -563,8 +531,6 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Returns a reference on a form element addressed by it's internal object id.
     *
     * @param string $objectId The object id of of the desired form element.
@@ -593,8 +559,6 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Returns a list of form elements addressed by their tag name.
     *
     * @param string $tagName The tag name of the desired form element (e.g. "form:text").
@@ -633,8 +597,6 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @private
-    *
     * Returns the name of the tag implementation that refers to the applied tag name.
     *
     * @param string $tagName The name of the tag (e.g. form:listener).
@@ -667,8 +629,6 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Let's you retrieve an &lt;form:getstring /&gt; tag instance with the specified name.
     *
     * @param string $name The name of the form label to return.
@@ -691,8 +651,6 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Returns the content of the transformed form.
     *
     * @return string The content of the transformed form.
@@ -744,8 +702,6 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Defines, whether the form should be transformed at the definition place.
     *
     * @author Christian Achatz
@@ -757,8 +713,6 @@ class HtmlFormTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Re-implements the {@link transform} method for the form taglib.
     *
     * @return string The content of the form (in case of transformOnPlace) or an empty string.

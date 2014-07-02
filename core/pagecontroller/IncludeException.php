@@ -23,9 +23,6 @@ namespace APF\core\pagecontroller;
 use Exception;
 
 /**
- * @package APF\core\pagecontroller
- * @class IncludeException
- *
  * This exception represents an error loading resources (modules,
  * templates, ...) within the page controller.
  *

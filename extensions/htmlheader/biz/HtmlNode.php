@@ -25,10 +25,6 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @abstract
- * @package APF\extensions\htmlheader\biz
- * @class HtmlNode
- *
  * General node for HtmlHeaderManagers data.
  *
  * @author Ralf Schubert
@@ -39,12 +35,16 @@ use APF\tools\link\Url;
 abstract class HtmlNode extends Document implements HeaderNode {
 
    /**
-    * @var int The priority of the header node.
+    * The priority of the header node.
+    *
+    * @var int $priority
     */
    private $priority = 0;
 
    /**
-    * @var bool Defines if the taglib should be set to gethead or getjsbody taglib.
+    * Defines if the taglib should be set to gethead or getjsbody taglib.
+    *
+    * @var bool $appendToBody
     */
    private $appendToBody = false;
 
@@ -68,8 +68,6 @@ abstract class HtmlNode extends Document implements HeaderNode {
    }
 
    /**
-    * @public
-    *
     * Transforms the node to html.
     *
     * @return string The ready html code.

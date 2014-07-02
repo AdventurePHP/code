@@ -21,9 +21,6 @@
 namespace APF\modules\comments\biz;
 
 /**
- * @package APF\modules\comments\biz
- * @class ArticleComment
- *
  * Represents the business object of the article commend module
  *
  * @author Christian W. Schäfer
@@ -34,43 +31,36 @@ namespace APF\modules\comments\biz;
 class ArticleComment {
 
    /**
-    * @protected
     * Id of the entry
     */
    private $id = null;
 
    /**
-    * @protected
     * Name of the author.
     */
    private $name;
 
    /**
-    * @protected
     * Email of the author.
     */
    private $email;
 
    /**
-    * @protected
     * Comment.
     */
    private $comment;
 
    /**
-    * @protected
     * Date
     */
    private $date;
 
    /**
-    * @protected
     * Time
     */
    private $time;
 
    /**
-    * @protected
     * Category
     */
    private $categoryKey;

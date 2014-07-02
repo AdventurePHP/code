@@ -21,9 +21,6 @@
 namespace APF\tools\link;
 
 /**
- * @package APF\tools\link
- * @class LinkScheme
- *
  * Defines the structure of the APF link scheme implementations. A link scheme
  * represents a kind of url formatter that is used by the <em>LinkGenerator</em>.
  * <p/>

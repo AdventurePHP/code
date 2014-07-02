@@ -12,10 +12,10 @@ $(document).ready(function () {
     APFNP.getUrl = function (page) {
         return APFNP.actionUrl + 'page/' + page + '/lang/' + APFNP.lang + '/datadir/' + APFNP.dataDir;
     };
-    APFNP.activate = function(){
+    APFNP.activate = function () {
         APFNP.newsPager.fadeTo('fast', '1');
     };
-    APFNP.deactivate = function(){
+    APFNP.deactivate = function () {
         APFNP.newsPager.fadeTo('fast', '0.3');
     };
     APFNP.getContent = function (direction) {

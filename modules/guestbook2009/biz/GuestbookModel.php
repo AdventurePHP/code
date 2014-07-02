@@ -23,9 +23,6 @@ namespace APF\modules\guestbook2009\biz;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package APF\modules\guestbook2009\biz
- * @class GuestbookModel
- *
  * The GuestbookModel represents the application status. It is used to store the
  * id of the guestbook.
  *
@@ -36,8 +33,10 @@ use APF\core\pagecontroller\APFObject;
 final class GuestbookModel extends APFObject {
 
    /**
-    * @var int Stores the id of the guestbook. It is filled by the taglib including the
+    * Stores the id of the guestbook. It is filled by the taglib including the
     * guestbook and consumed by the service and data mapper.
+    *
+    * @var int $guestbookId
     */
    private $guestbookId;
 

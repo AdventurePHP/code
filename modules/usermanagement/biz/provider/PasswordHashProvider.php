@@ -37,6 +37,7 @@ interface PasswordHashProvider {
     *
     * @param string $password The password to create a hash from.
     * @param string $dynamicSalt Dynamic salt for the hash algorithm.
+    *
     * @return string The password hash.
     *
     * @author Tobias Lückel

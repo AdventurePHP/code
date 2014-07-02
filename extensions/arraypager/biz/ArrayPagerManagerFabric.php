@@ -24,9 +24,6 @@ use APF\core\pagecontroller\APFObject;
 use APF\core\service\APFService;
 
 /**
- * @package APF\extensions\arraypager\biz
- * @class ArrayPagerManagerFabric
- *
  * Implements the factory of the array-pager manager. Initializes concrete ArrayPagerManager
  * instances and caches them for further usage.
  * Application sample:
@@ -40,17 +37,17 @@ use APF\core\service\APFService;
 final class ArrayPagerManagerFabric extends APFObject {
 
    /**
-    * @private
-    * @var ArrayPagerManager[] Cache list if concrete pager manager instances.
+    * Cache list if concrete pager manager instances.
+    *
+    * @var ArrayPagerManager[] $pagers
     */
    private $pagers = array();
 
    /**
-    * @public
-    *
     * Returns a reference on the desired pager manager. Initializes newly created ones.
     *
     * @param string $config The configuration/initialization string (configuration section name).
+    *
     * @return ArrayPagerManager Reference on the desired PagerManager instance.
     *
     * @author Lutz Mahlstedt
@@ -65,8 +62,8 @@ final class ArrayPagerManagerFabric extends APFObject {
       // initialize desired pager lazily
       if (isset($this->pagers[$cacheKey]) === false) {
          $this->pagers[$cacheKey] = $this->getServiceObject(
-            'APF\extensions\arraypager\biz\ArrayPagerManager',
-            APFService::SERVICE_TYPE_NORMAL
+               'APF\extensions\arraypager\biz\ArrayPagerManager',
+               APFService::SERVICE_TYPE_NORMAL
          );
          $this->pagers[$cacheKey]->init($config);
       }

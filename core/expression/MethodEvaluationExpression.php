@@ -23,9 +23,6 @@ namespace APF\core\expression;
 use APF\core\pagecontroller\ParserException;
 
 /**
- * @package APF\core\expression
- * @class MethodEvaluationExpression
- *
  * Executes a method access including dynamic string or integer arguments.
  * <p/>
  * Boolean values are not supported since no explicit type cast is executed but
@@ -65,7 +62,7 @@ class MethodEvaluationExpression extends EvaluationExpressionBase implements Eva
 
       if (!method_exists($this->previousResult, $method)) {
          throw new ParserException('Instance of type "' . get_class($this->previousResult)
-            . '" has no method defined with name "' . $method . '()". Expression: "' . $this->expression . '".');
+               . '" has no method defined with name "' . $method . '()". Expression: "' . $this->expression . '".');
       }
 
       return call_user_func_array(array($this->previousResult, $method), $arguments);

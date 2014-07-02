@@ -26,7 +26,7 @@
 (function ($) {
     $(document).ready(function () {
         jQuery.APFFormValidator.addClientValidator('EMailValidator', {
-            validate:function (control, options) {
+            validate: function (control, options) {
                 var ctrlvalue = control.attr('value');
                 ctrlvalue = $.trim(ctrlvalue);
                 if ((ctrlvalue.length !== 0) && (ctrlvalue.match(/^([a-zA-Z0-9\.\_\-]+)@([a-zA-Z0-9\.\-]+\.[A-Za-z][A-Za-z]+)$/))) {

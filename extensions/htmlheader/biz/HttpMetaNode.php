@@ -21,9 +21,6 @@
 namespace APF\extensions\htmlheader\biz;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class HttpMetaNode
- *
  * Represents a http header meta tag.
  *
  * @author Christian Achatz

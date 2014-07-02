@@ -25,9 +25,6 @@ use APF\core\service\APFService;
 use APF\tools\html\model\FrontControllerImportTemplateModel;
 
 /**
- * @package APF\tools\html\taglib
- * @class FrontControllerImportTemplateTag
- *
  * Implements the functionality of the &lt;core:importdesign /&gt; tag that loads the view to display from an application
  * model. This tag can be configured for any application case using the following attributes:
  * <ul>

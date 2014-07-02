@@ -21,9 +21,6 @@
 namespace APF\extensions\htmlheader\biz;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class CanonicalNode
- *
  * Represents a canonical node (e.g. for avoiding duplicate content in search enginges)
  *
  * @author Ralf Schubert

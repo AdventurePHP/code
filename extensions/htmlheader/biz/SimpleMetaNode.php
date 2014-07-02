@@ -21,9 +21,6 @@
 namespace APF\extensions\htmlheader\biz;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class SimpleMetaNode
- *
  * Represents a simple meta tag (e.g. for keywords).
  *
  * @author Christian Achatz

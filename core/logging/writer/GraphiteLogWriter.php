@@ -24,9 +24,6 @@ use APF\core\logging\LoggerException;
 use APF\core\logging\LogWriter;
 
 /**
- * @package APF\core\logging\writer
- * @class GraphiteLogWriter
- *
  * Implements a UDP-based non-blocking log writer to be used with the statsd daemon
  * that is used with Graphite an advanced system monitoring tool.
  * <p/>
@@ -47,33 +44,41 @@ use APF\core\logging\LogWriter;
 class GraphiteLogWriter implements LogWriter {
 
    /**
-    * @var string The Graphite server address (IP or DNS name).
+    * The Graphite server address (IP or DNS name).
+    *
+    * @var string $host
     */
    protected $host;
 
    /**
-    * @var string The Graphite server port.
+    * The Graphite server port.
+    *
+    * @var string $port
     */
    protected $port;
 
    /**
-    * @var string Defines the separator between multiple log entries sent to the server within one call (bulk).
+    * Defines the separator between multiple log entries sent to the server within one call (bulk).
+    *
+    * @var string $entrySeparator
     */
    protected $entrySeparator = "\n";
 
    /**
-    * @var string The log target identifier.
+    * The log target identifier.
+    *
+    * @var string $target
     */
    protected $target;
 
    /**
-    * @var bool Specifies if multiple LogEntries will be written in one datagram (true) or not (false) (pystatsd doesn't support multiple metrics in one datagram).
+    * Specifies if multiple LogEntries will be written in one datagram (true) or not (false) (pystatsd doesn't support multiple metrics in one datagram).
+    *
+    * @var bool $batchWrites
     */
    protected $batchWrites;
 
    /**
-    * @public
-    *
     * Configures the Graphite log writer.
     *
     * @param string $host The Graphite server address (IP or DNS name).
@@ -91,8 +96,6 @@ class GraphiteLogWriter implements LogWriter {
    }
 
    /**
-    * @public
-    *
     * Let's you define the separator between multiple entries that are bulk-sent to the Grapite server.
     *
     * @param string $entrySeparator The separator between multiple log entries.
@@ -106,8 +109,6 @@ class GraphiteLogWriter implements LogWriter {
    }
 
    /**
-    * @public
-    *
     * Let's you define if batch writes should be considered.
     *
     * @param bool $batchWrites True enables batch writes, false disables multiple datagrams per connection.
@@ -131,11 +132,10 @@ class GraphiteLogWriter implements LogWriter {
    }
 
    /**
-    * @public
-    *
     * Send the actual UDP datagram to statsd.
     *
     * @param string $data The data that should be send to statsd.
+    *
     * @throws LoggerException In case the UDP connection cannot be established.
     *
     * @author Christian Achatz

@@ -28,8 +28,6 @@ use APF\extensions\apfelsms\biz\SMSManager;
 use APF\tools\link\Url;
 
 /**
- *
- * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (02.10.12)
  *           v02. (09.03.13) Changed HTTP status code on redirect to 301 (moved permanently)
@@ -39,21 +37,19 @@ class SMSRedirectAction extends AbstractFrontcontrollerAction {
 
 
    /**
-    * @var string
+    * @var string $type
     */
    protected $type = self::TYPE_PRE_PAGE_CREATE;
 
 
    /**
-    * @const string
+    * @var string DECORATOR_TYPE
     */
    const DECORATOR_TYPE = 'redirect';
 
 
    /**
-    * @public
-    *
-    * @desc Checks if current page is decorated with redirect pageDec and redirects if applicable.
+    * Checks if current page is decorated with redirect pageDec and redirects if applicable.
     */
    public function run() {
 
