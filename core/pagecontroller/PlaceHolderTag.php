@@ -32,50 +32,19 @@ namespace APF\core\pagecontroller;
 class PlaceHolderTag extends Document {
 
    /**
-    * Replacement strings for string place holders.
-    *
-    * @var string[] $stringReplacement
-    *
-    * @since 1.17
-    */
-   protected $stringReplacement = array();
-
-   /**
-    * Let's you set a string replacement to the current place holder instance.
-    * <p/>
-    * Please note, that the keys must be specified in uppercase letters.
-    *
-    * @param string $key Name of the string place holder.
-    * @param string $value Replacement value.
-    *
-    * @since 1.17
-    * @author Jan Wiese
-    * @version
-    * Version 0.1, 02.01.2013<br />
-    */
-   public function setStringReplacement($key, $value) {
-      $this->stringReplacement[strtoupper($key)] = $value;
-   }
-
-   /**
     * Implements the transform() method. Returns the content of the tag, that is set by a
     * document controller using the BaseDocumentController's setPlaceHolder() method.
     *
     * @return string The content of the place holder.
     *
-    * @author Christian Schäfer, Jan Wiese
+    * @author Christian Schäfer, Jan Wiese, Christian Achatz
     * @version
     * Version 0.1, 28.12.2006<br />
     * Version 0.2, 06.02.2013 (Added string place holder support)<br />
+    * Version 0.3, 02.07.2014 (ID#213: removed string replacement functionality. Please use extended templating syntax instead)<br />
     */
    public function transform() {
-      // preserve content to allow multiple transformation
-      $content = $this->content;
-      foreach ($this->stringReplacement as $key => $value) {
-         $content = str_replace('{' . $key . '}', $value, $content);
-      }
-
-      return $content;
+      return $this->content;
    }
 
 }
