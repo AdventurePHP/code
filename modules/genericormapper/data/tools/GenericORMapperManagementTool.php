@@ -246,7 +246,7 @@ class GenericORMapperManagementTool extends BaseMapper {
     *
     * @param boolean $updateInPlace Defines, if the update should be done for you (true) or if
     *                               the update statement should only be displayed (false).
-    *                               Default is true.
+    *                               Default is false.
     *
     * @throws GenericORMapperException In case of missing connection name.
     *
