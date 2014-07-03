@@ -27,9 +27,9 @@ namespace APF\tools\form\taglib;
  * <pre>
  * &lt;form:error&gt;
  *   The content to display, in case the form is sent, but invalid!
- *   [&lt;error:getstring namespace="" config="" key="" /&gt;]
- *   [&lt;error:placeholder name="" /&gt;]
- *   [&lt;error:addtaglib namespace="" class="" prefix="" name="" /&gt;]
+ *   [&lt;html:getstring namespace="" config="" key="" /&gt;]
+ *   [&lt;html:placeholder name="" /&gt;]
+ *   [&lt;core:addtaglib namespace="" class="" prefix="" name="" /&gt;]
  * &lt;/form:error&gt;
  * </pre>
  *

@@ -34,9 +34,9 @@ namespace APF\tools\form\taglib;
  * <pre>
  * &lt;form:listener control="..."&gt;
  *   The content to display, in case the form is sent, but the control is invalid!
- *   [&lt;listener:getstring namespace="" config="" key="" /&gt;]
- *   [&lt;listener:placeholder name="" /&gt;]
- *   [&lt;listener:addtaglib namespace="" class="" prefix="" name="" /&gt;]
+ *   [&lt;html:getstring namespace="" config="" key="" /&gt;]
+ *   [&lt;html:placeholder name="" /&gt;]
+ *   [&lt;core:addtaglib namespace="" class="" prefix="" name="" /&gt;]
  * &lt;/form:listener&gt;
  * </pre>
  *

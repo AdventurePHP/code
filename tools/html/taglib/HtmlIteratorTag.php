@@ -32,10 +32,10 @@ use InvalidArgumentException;
  * items. For convenience, the iterator can contain additional (html) content.
  * <p/>
  * Further, the
- * <pre><iterator:addtaglib /></pre>
+ * <pre><core:addtaglib /></pre>
  * tag allows you to include custom tags (e.g. for language dependent table headers). In
  * order to display language dependent values, you can use the
- * <pre><iterator:getstring /></pre>
+ * <pre><html:getstring /></pre>
  * tag.
  *
  * @author Christian Achatz

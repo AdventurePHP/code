@@ -46,10 +46,10 @@ Wir gehen ab sofort davon aus, dass wir uns im Template innerhalb eines <html:fo
 === Einbindung der Taglibs ===
 Vor der Verwendung müssen die einzelnen Taglibs noch dem Formular bekannt gemacht werden:
 <source lang="xml">
-<form:addtaglib class="APF\extensions\form\client\taglib\AddFormControlClientValidatorTag" prefix="form" name="addclientvalidator" />
-<form:addtaglib class="APF\extensions\form\client\taglib\GetClientFormValidationTag" prefix="form" name="getclientvalidator" />
-<form:addtaglib class="APF\extensions\form\client\taglib\ClientValidationListenerTag" prefix="form" name="clientlistener" />
-<form:addtaglib class="APF\extensions\form\client\taglib\FormClientErrorDisplayTag" prefix="form" name="clienterror" />
+<core:addtaglib class="APF\extensions\form\client\taglib\AddFormControlClientValidatorTag" prefix="form" name="addclientvalidator" />
+<core:addtaglib class="APF\extensions\form\client\taglib\GetClientFormValidationTag" prefix="form" name="getclientvalidator" />
+<core:addtaglib class="APF\extensions\form\client\taglib\ClientValidationListenerTag" prefix="form" name="clientlistener" />
+<core:addtaglib class="APF\extensions\form\client\taglib\FormClientErrorDisplayTag" prefix="form" name="clienterror" />
 </source>
 
 

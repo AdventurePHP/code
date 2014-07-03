@@ -27,9 +27,9 @@ namespace APF\tools\form\taglib;
  * <pre>
  * &lt;form:success&gt;
  *   The content to display, in case the form is sent *and* valid!
- *   [&lt;success:getstring namespace="" config="" key="" /&gt;]
- *   [&lt;success:placeholder name="" /&gt;]
- *   [&lt;success:addtaglib namespace="" class="" prefix="" name="" /&gt;]
+ *   [&lt;html:getstring namespace="" config="" key="" /&gt;]
+ *   [&lt;html:placeholder name="" /&gt;]
+ *   [&lt;core:addtaglib namespace="" class="" prefix="" name="" /&gt;]
  * &lt;/form:success&gt;
  * </pre>
  *

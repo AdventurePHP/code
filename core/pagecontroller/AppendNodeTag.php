@@ -24,12 +24,10 @@ use InvalidArgumentException;
 
 /**
  * Parses a template and appends the child nodes to the parent's child list. Hence, this taglib
- * can be used to swap shared templates / forms / ... Please make sure, that the imported template
- * includes the necessary "*:addtaglib" statements for the relevant tag definitions.
+ * can be used to swap shared templates / forms / ...
  * <p/>
  * Usage:
- * <pre>&lt;core:addtaglib class="APF\core\pagecontroller\AppendNodeTag" prefix="core" class="appendnode" /&gt;
- * &lt;core:appendnode namespace="..." template="..."[ includestatic="true"]/&gt;</pre>
+ * <pre>&lt;core:appendnode namespace="..." template="..."[ includestatic="true"]/&gt;</pre>
  * <p/>
  * In case the <em>includestatic</em> is present and set to <em>true</em>, the static content
  * (e.g. html markup) is included in the parent's content, too.

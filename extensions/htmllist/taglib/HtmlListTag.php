@@ -123,7 +123,7 @@ class HtmlListTag extends Document {
       } else {
          // throw error and return null as object id
          throw new InvalidArgumentException('[HtmlListTag::createList()] No list element with name "'
-               . $elementType . '" found! Maybe the tag name is mis-spelt. Please use &lt;list:addtaglib /&gt;!');
+               . $elementType . '" found! Maybe the tag name is mis-spelt. Please use &lt;core:addtaglib /&gt;!');
       }
    }
 

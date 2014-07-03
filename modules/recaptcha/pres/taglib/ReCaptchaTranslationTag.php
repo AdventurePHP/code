@@ -25,7 +25,7 @@ use APF\core\registry\Registry;
 use InvalidArgumentException;
 
 /**
- * Implements a custom <em>&lt;*:getstring /&gt;</em> tag for the <em>&lt;form:recaptcha /&gt;</em>
+ * Implements a custom <em>&lt;html:getstring /&gt;</em> tag for the <em>&lt;form:recaptcha /&gt;</em>
  * form control.
  *
  * @author Christian Achatz

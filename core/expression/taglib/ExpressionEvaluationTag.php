@@ -31,7 +31,7 @@ use APF\core\pagecontroller\Document;
  * for details on implicit usage. Besides, the tag can be used explicitly within all APF
  * templates as follows:
  * <code>
- * <*:addtaglib class="APF\expression\taglib\ExpressionEvaluationTag" prefix="dyn" name="expr" />
+ * <core:addtaglib class="APF\expression\taglib\ExpressionEvaluationTag" prefix="dyn" name="expr" />
  * <dyn:expr expression="model[0]->getFoo()" />
  * </code>
  *

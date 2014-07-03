@@ -24,7 +24,7 @@ use InvalidArgumentException;
 
 /**
  * Represents a reusable html fragment (template) within a template file. The tag's functionality
- * can be extended by the &lt;template:addtaglib /&gt; tag. Use setPlaceHolder() to set a place
+ * can be extended by the &lt;core:addtaglib /&gt; tag. Use setPlaceHolder() to set a place
  * holder's value and transformOnPlace() or transformTemplate() to generate the output.
  * <p/>
  * Besides, you may directly echo the template using it's __toString() implementation which internally
