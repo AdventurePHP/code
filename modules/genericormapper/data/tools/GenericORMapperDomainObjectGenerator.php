@@ -237,9 +237,6 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
 
       $code .= 'use ' . $baseClass . ';' . PHP_EOL . PHP_EOL .
             '/**' . PHP_EOL .
-            ' * @package ' . $namespace . PHP_EOL .
-            ' * @class ' . $className . 'Base' . PHP_EOL .
-            ' *' . PHP_EOL .
             ' * This class provides the descriptive getter and setter methods for the "' . $class . '" domain object.' . PHP_EOL .
             ' */' . PHP_EOL .
             'abstract class ' . $className . 'Base extends ' . $baseClassName . ' {' . PHP_EOL . PHP_EOL .
@@ -256,10 +253,6 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
          $code .= $this->generateSetterCode($key, $class);
          $code .= $this->generateDeleteCode($key, $class);
       }
-
-      // generate getter for the generic elements, too.
-      $code .= $this->generateGetterCode('CreationTimestamp');
-      $code .= $this->generateGetterCode('ModificationTimestamp');
 
       $code .= '}' . PHP_EOL .
             PHP_EOL .
@@ -349,9 +342,6 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
 
       return
             '/**' . PHP_EOL .
-            ' * @package ' . $namespace . PHP_EOL .
-            ' * @class ' . $className . PHP_EOL .
-            ' *' . PHP_EOL .
             ' * This class represents the "' . $class . '" domain object.' . PHP_EOL .
             ' * <p/>' . PHP_EOL .
             ' * Please use this class to add your own functionality.' . PHP_EOL .

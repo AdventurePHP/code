@@ -84,8 +84,8 @@ class GenericDomainObject implements GenericORMapperDataObject {
    public function __construct($objectName = null) {
       if (empty($objectName)) {
          throw new InvalidArgumentException('[GenericDomainObject::__construct()] Creating a '
-               . 'GenericDomainObject must include an object name specification. Otherwise, '
-               . 'the GenericORMapper cannot handle this instance.', E_USER_ERROR);
+            . 'GenericDomainObject must include an object name specification. Otherwise, '
+            . 'the GenericORMapper cannot handle this instance.', E_USER_ERROR);
       }
       $this->objectName = $objectName;
    }
@@ -128,6 +128,33 @@ class GenericDomainObject implements GenericORMapperDataObject {
     */
    public function setObjectId($id) {
       $this->setProperty($this->objectName . 'ID', $id);
+   }
+
+   /**
+    * Convenience method to retrieve the creation timestamp of an object.
+    *
+    * @return string The creation timestamp with scheme <em>YYYY-mm-dd HH:ii:ss</em>.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 03.07.2014<br />
+    */
+   public function getCreationTimestamp() {
+      return $this->getProperty('CreationTimestamp');
+   }
+
+
+   /**
+    * Convenience method to retrieve the modification timestamp of an object.
+    *
+    * @return string The modification timestamp with scheme <em>YYYY-mm-dd HH:ii:ss</em>.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 03.07.2014<br />
+    */
+   public function getModificationTimestamp() {
+      return $this->getProperty('ModificationTimestamp');
    }
 
    /**
@@ -185,10 +212,10 @@ class GenericDomainObject implements GenericORMapperDataObject {
       // check weather data component is there
       if ($this->dataComponent === null) {
          throw new GenericORMapperException('[GenericDomainObject::loadRelatedObject()] '
-               . 'The data component is not initialized, so related object cannot be loaded! '
-               . 'Please use the or mapper\'s loadRelatedObject() method or call '
-               . 'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
-               . 'object first!', E_USER_ERROR);
+            . 'The data component is not initialized, so related object cannot be loaded! '
+            . 'Please use the or mapper\'s loadRelatedObject() method or call '
+            . 'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
+            . 'object first!', E_USER_ERROR);
       }
 
       // return objects that are related to the current object
@@ -216,10 +243,10 @@ class GenericDomainObject implements GenericORMapperDataObject {
       // check weather data component is there
       if ($this->dataComponent === null) {
          throw new GenericORMapperException('[GenericDomainObject::loadRelatedObjects()] '
-               . 'The data component is not initialized, so related objects cannot be loaded! '
-               . 'Please use the or mapper\'s loadRelatedObjects() method or call '
-               . 'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
-               . 'object first!', E_USER_ERROR);
+            . 'The data component is not initialized, so related objects cannot be loaded! '
+            . 'Please use the or mapper\'s loadRelatedObjects() method or call '
+            . 'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
+            . 'object first!', E_USER_ERROR);
       }
 
       // return objects that are related to the current object
@@ -244,10 +271,10 @@ class GenericDomainObject implements GenericORMapperDataObject {
       // check weather data component is there
       if ($this->dataComponent === null) {
          throw new GenericORMapperException('[GenericDomainObject::createAssociation()] '
-               . 'The data component is not initialized, so related objects cannot be loaded! '
-               . 'Please use the or mapper\'s createAssociation() method or call '
-               . 'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
-               . 'object first!', E_USER_ERROR);
+            . 'The data component is not initialized, so related objects cannot be loaded! '
+            . 'Please use the or mapper\'s createAssociation() method or call '
+            . 'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
+            . 'object first!', E_USER_ERROR);
       }
 
       // create association as desired
@@ -272,10 +299,10 @@ class GenericDomainObject implements GenericORMapperDataObject {
       // check weather data component is there
       if ($this->dataComponent === null) {
          throw new GenericORMapperException('[GenericDomainObject::deleteAssociation()] '
-               . 'The data component is not initialized, so related objects cannot be loaded! '
-               . 'Please use the or mapper\'s createAssociation() method or call '
-               . 'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
-               . 'object first!', E_USER_ERROR);
+            . 'The data component is not initialized, so related objects cannot be loaded! '
+            . 'Please use the or mapper\'s createAssociation() method or call '
+            . 'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
+            . 'object first!', E_USER_ERROR);
       }
 
       // delete association as desired
@@ -299,10 +326,10 @@ class GenericDomainObject implements GenericORMapperDataObject {
       // check weather data component is there
       if ($this->dataComponent === null) {
          throw new GenericORMapperException('[GenericDomainObject::deleteAssociations()] '
-               . 'The data component is not initialized, so related objects cannot be loaded! '
-               . 'Please use the or mapper\'s createAssociation() method or call '
-               . 'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
-               . 'object first!', E_USER_ERROR);
+            . 'The data component is not initialized, so related objects cannot be loaded! '
+            . 'Please use the or mapper\'s createAssociation() method or call '
+            . 'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
+            . 'object first!', E_USER_ERROR);
       }
 
       // delete associations as desired
@@ -451,12 +478,12 @@ class GenericDomainObject implements GenericORMapperDataObject {
     */
    public function toString() {
 
-      $stringRep = (string) '[' . get_class($this) . ' ';
+      $stringRep = (string)'[' . get_class($this) . ' ';
 
       $properties = array_merge(array('ObjectName' => $this->getObjectName()), $this->properties);
 
       $propCount = count($properties);
-      $current = (int) 1;
+      $current = (int)1;
 
       foreach ($properties as $name => $value) {
 

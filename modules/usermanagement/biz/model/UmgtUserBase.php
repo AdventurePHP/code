@@ -388,20 +388,6 @@ abstract class UmgtUserBase extends GenericDomainObject {
       return $this;
    }
 
-   /**
-    * @return string The value for property "CreationTimestamp".
-    */
-   public function getCreationTimestamp() {
-      return $this->getProperty('CreationTimestamp');
-   }
-
-   /**
-    * @return string The value for property "ModificationTimestamp".
-    */
-   public function getModificationTimestamp() {
-      return $this->getProperty('ModificationTimestamp');
-   }
-
 }
 
 // DO NOT CHANGE THIS COMMENT! <*UmgtUserBase:end*>
