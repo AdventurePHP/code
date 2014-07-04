@@ -851,6 +851,10 @@ class Page extends APFObject {
       // load the design
       $this->document->loadDesign($namespace, $design);
       $this->document->setObjectId(XmlParser::generateUniqID());
+
+      // ID#222: support expression tags in initial document
+      $this->document->onParseTime();
+      $this->document->onAfterAppend();
    }
 
    /**
@@ -1845,6 +1849,8 @@ class Document extends APFObject {
     * Version 0.1, 28.12.2006<br />
     */
    public function onAfterAppend() {
+      // ID#222: fixed missing place holder support in main template.
+      $this->extractExpressionTags();
    }
 
    /**
@@ -2243,10 +2249,6 @@ class ImportTemplateTag extends Document {
       $this->extractTagLibTags();
    }
 
-   public function onAfterAppend() {
-      $this->extractExpressionTags();
-   }
-
 }
 
 /**
@@ -2507,10 +2509,6 @@ class TemplateTag extends Document {
     */
    public function onParseTime() {
       $this->extractTagLibTags();
-   }
-
-   public function onAfterAppend() {
-      $this->extractExpressionTags();
    }
 
    /**

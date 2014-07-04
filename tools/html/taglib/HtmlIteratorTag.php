@@ -193,10 +193,6 @@ class HtmlIteratorTag extends Document {
       $this->extractTagLibTags();
    }
 
-   public function onAfterAppend() {
-      $this->extractExpressionTags();
-   }
-
    /**
     * @public
     *
