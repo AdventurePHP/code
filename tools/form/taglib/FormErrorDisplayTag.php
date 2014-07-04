@@ -52,16 +52,6 @@ class FormErrorDisplayTag extends AbstractFormControl {
    }
 
    /**
-    * Overwrites the parent's method, because there is nothing to do here.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 03.09.2009<br />
-    */
-   public function onAfterAppend() {
-   }
-
-   /**
     * Outputs the content of the tag, if the form, the tag is
     * defined in is sent but invalid!
     *

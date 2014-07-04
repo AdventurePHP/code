@@ -109,10 +109,6 @@ class HtmlFormTag extends Document {
       $this->extractTagLibTags();
    }
 
-   public function onAfterAppend() {
-      $this->extractExpressionTags();
-   }
-
    /**
     * Indicates, whether the form has been sent or not. Retrieves the status
     * directly from the form controls. Overwrites the parent's method.

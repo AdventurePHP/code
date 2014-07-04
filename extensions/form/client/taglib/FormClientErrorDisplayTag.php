@@ -43,17 +43,7 @@ class FormClientErrorDisplayTag extends AbstractFormControl {
    }
 
    /**
-    * Overwrite the parent's method, because there's nothing to do here.
-    *
-    * @author Ralf Schubert
-    * @version
-    * Version 1.0, 18.03.2010<br />
-    */
-   public function onAfterAppend() {
-   }
-
-   /**
-    * Transforms the tags and javascript for clienterrors.
+    * Transforms the tags and javascript for client errors.
     *
     * @return string The generated html and js.
     *

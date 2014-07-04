@@ -104,10 +104,6 @@ class HtmlIteratorTag extends Document {
       $this->extractTagLibTags();
    }
 
-   public function onAfterAppend() {
-      $this->extractExpressionTags();
-   }
-
    /**
     * This method allows you to fill the data container. Arrays with associative
     * keys are allowed as well as lists of objects (arrays with numeric offsets).

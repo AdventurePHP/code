@@ -55,10 +55,6 @@ class TemplateTag extends Document {
       $this->extractTagLibTags();
    }
 
-   public function onAfterAppend() {
-      $this->extractExpressionTags();
-   }
-
    /**
     * Let's you retrieve an &lt;template:getstring /&gt; tag instance with the specified name.
     *
