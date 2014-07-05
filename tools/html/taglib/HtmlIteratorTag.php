@@ -277,19 +277,13 @@ class HtmlIteratorTag extends Document {
                      continue;
                   }
 
-                  // evaluate per-place-holder getter
-                  $localGetter = $placeHolders[$objectId]->getAttribute('getter');
-                  if ($localGetter == null) {
-                     $placeHolders[$objectId]->setContent($this->dataContainer[$i]->{
-                                 $getter
-                                 }(
-                                       $placeHolders[$objectId]->getAttribute('name'))
-                     );
-                  } else {
-                     $placeHolders[$objectId]->setContent($this->dataContainer[$i]->{
-                           $localGetter
-                           }());
-                  }
+                  // use getter defined with <iterator:item /> to retrieve appropriate value
+                  $placeHolders[$objectId]->setContent($this->dataContainer[$i]->{
+                              $getter
+                              }(
+                                    $placeHolders[$objectId]->getAttribute('name'))
+                  );
+
                }
 
                $buffer .= $iteratorItem->transform();
