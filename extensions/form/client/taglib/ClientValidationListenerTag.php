@@ -61,16 +61,6 @@ class ClientValidationListenerTag extends AbstractFormControl {
    }
 
    /**
-    * Overwrite the parent's method, because there's nothing to do here.
-    *
-    * @author Ralf Schubert
-    * @version
-    * Version 1.0, 18.03.2010<br />
-    */
-   public function onAfterAppend() {
-   }
-
-   /**
     * Transforms the tags and java scripts for client-listeners.
     *
     * @return string The generated html and js.

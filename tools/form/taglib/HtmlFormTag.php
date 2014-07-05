@@ -160,10 +160,6 @@ class HtmlFormTag extends Document {
       $this->extractTagLibTags();
    }
 
-   public function onAfterAppend() {
-      $this->extractExpressionTags();
-   }
-
    /**
     * @public
     *

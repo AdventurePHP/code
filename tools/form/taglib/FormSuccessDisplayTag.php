@@ -67,18 +67,6 @@ class FormSuccessDisplayTag extends AbstractFormControl {
    /**
     * @public
     *
-    * Overwrites the parent's method, because there is nothing to do here.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 30.12.2009<br />
-    */
-   public function onAfterAppend() {
-   }
-
-   /**
-    * @public
-    *
     * Outputs the content of the tag, if the form, the tag is
     * defined in is sent *and* valid!
     *
