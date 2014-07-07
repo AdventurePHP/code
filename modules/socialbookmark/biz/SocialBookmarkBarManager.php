@@ -148,12 +148,12 @@ class SocialBookmarkBarManager extends APFObject {
          $service = $services->getSection($serviceName);
          $this->bookmarkServices[] =
                new SocialBookmarkItem(
-                     $service->getValue('BookmarkService.BaseURL'),
-                     $service->getValue('BookmarkService.Param.URL'),
-                     $service->getValue('BookmarkService.Param.Title'),
-                     $service->getValue('BookmarkService.Display.Title'),
-                     $service->getValue('BookmarkService.Display.Image'),
-                     $service->getValue('BookmarkService.Display.ImageExt')
+                     $service->getValue('BookmarkService.BaseURL', null, '.'),
+                     $service->getValue('BookmarkService.Param.URL', null, '.'),
+                     $service->getValue('BookmarkService.Param.Title', null, '.'),
+                     $service->getValue('BookmarkService.Display.Title', null, '.'),
+                     $service->getValue('BookmarkService.Display.Image', null, '.'),
+                     $service->getValue('BookmarkService.Display.ImageExt', null, '.')
                );
       }
 

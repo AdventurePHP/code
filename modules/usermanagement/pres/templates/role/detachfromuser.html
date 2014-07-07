@@ -5,7 +5,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleRemoveUsersCo
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.role.remove-role-from-users.headline"/>
+         entry="frontend.role.remove-role-from-users.headline" delimiter="."/>
 </h3>
 <html:form name="User" method="post">
    <div>
@@ -18,7 +18,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleRemoveUsersCo
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.role.remove-role-from-users.intro.text"/>
+               entry="frontend.role.remove-role-from-users.intro.text" delimiter="."/>
       </p>
       <p>
          <form:multiselect name="User" size="4"/>
@@ -28,7 +28,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleRemoveUsersCo
             <button:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.role.remove-role-from-users.button.label"/>
+                  entry="frontend.role.remove-role-from-users.button.label" delimiter="."/>
          </form:button>
       </p>
    </div>
@@ -39,13 +39,13 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleRemoveUsersCo
             name="message-1"
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="frontend.role.remove-role-from-users.message.1"/>
+            entry="frontend.role.remove-role-from-users.message.1" delimiter="."/>
    </p>
    <p>
       <html:getstring
             name="message-2"
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="frontend.role.remove-role-from-users.message.2"/>
+            entry="frontend.role.remove-role-from-users.message.2" delimiter="."/>
    </p>
 </html:template>

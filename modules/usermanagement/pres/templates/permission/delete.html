@@ -5,14 +5,14 @@ class="APF\modules\usermanagement\pres\documentcontroller\permission\PermissionD
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.permission.delete.headline"/>
+         entry="frontend.permission.delete.headline" delimiter="."/>
 </h3>
 <p>
    <html:getstring
          name="display-name"
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.permission.delete.confirmation.text"/>
+         entry="frontend.permission.delete.confirmation.text" delimiter="."/>
 </p>
 
 <html:form name="PermissionDelNo" method="post">
@@ -21,7 +21,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\permission\PermissionD
          <button:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.permission.delete.button-no.label"/>
+               entry="frontend.permission.delete.button-no.label" delimiter="."/>
       </form:button>
    </div>
 </html:form>
@@ -32,7 +32,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\permission\PermissionD
          <button:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.permission.delete.button-yes.label"/>
+               entry="frontend.permission.delete.button-yes.label" delimiter="."/>
       </form:button>
    </div>
 </html:form>

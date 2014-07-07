@@ -5,7 +5,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddUsersCon
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.proxy.add-users-to-proxy.headline"/>
+         entry="frontend.proxy.add-users-to-proxy.headline" delimiter="."/>
 </h3>
 <html:form name="add_perm" method="post">
    <div>
@@ -14,14 +14,14 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddUsersCon
                name="intro-text"
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.proxy.add-users-to-proxy.intro.text"/>
+               entry="frontend.proxy.add-users-to-proxy.intro.text" delimiter="."/>
       </p>
       <form:listener control="users">
          <div class="error-cont">
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.proxy.add-users-to-proxy.validator.message"/>
+                  entry="frontend.proxy.add-users-to-proxy.validator.message" delimiter="."/>
          </div>
       </form:listener>
       <div>
@@ -29,7 +29,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddUsersCon
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.proxy.add-users-to-proxy.users.label"/>
+                  entry="frontend.proxy.add-users-to-proxy.users.label" delimiter="."/>
          </label>
          <form:multiselect id="users" name="users" size="6"/>
       </div>
@@ -42,7 +42,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddUsersCon
          <button:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.proxy.add-users-to-proxy.button.label"/>
+               entry="frontend.proxy.add-users-to-proxy.button.label" delimiter="."/>
       </form:button>
       <form:hidden name="proxyid"/>
    </div>
@@ -53,13 +53,13 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddUsersCon
             name="message-1"
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="frontend.proxy.add-users-to-proxy.message.1"/>
+            entry="frontend.proxy.add-users-to-proxy.message.1" delimiter="."/>
    </p>
    <p>
       <html:getstring
             name="message-2"
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="frontend.proxy.add-users-to-proxy.message.2"/>
+            entry="frontend.proxy.add-users-to-proxy.message.2" delimiter="."/>
    </p>
 </html:template>

@@ -5,14 +5,14 @@ class="APF\modules\usermanagement\pres\documentcontroller\user\UserDeleteControl
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.user.delete.headline"/>
+         entry="frontend.user.delete.headline" delimiter="."/>
 </h3>
 <p>
    <html:getstring
          name="DisplayName"
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.user.delete.confirmation.text"/>
+         entry="frontend.user.delete.confirmation.text" delimiter="."/>
 </p>
 <html:form name="UserDelNo" method="post">
    <div>
@@ -20,7 +20,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\user\UserDeleteControl
          <button:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.user.delete.button-no.label"/>
+               entry="frontend.user.delete.button-no.label" delimiter="."/>
       </form:button>
    </div>
 </html:form>
@@ -30,7 +30,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\user\UserDeleteControl
          <button:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.user.delete.button-yes.label"/>
+               entry="frontend.user.delete.button-yes.label" delimiter="."/>
       </form:button>
    </div>
 </html:form>

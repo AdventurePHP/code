@@ -148,12 +148,12 @@ class mailSender extends APFObject {
       }
 
       // set sender
-      $this->sender['Name'] = $section->getValue('Mail.SenderName');
-      $this->sender['EMail'] = $section->getValue('Mail.SenderEMail');
+      $this->sender['Name'] = $section->getValue('Mail.SenderName', null, '.');
+      $this->sender['EMail'] = $section->getValue('Mail.SenderEMail', null, '.');
 
-      $this->contentType = $section->getValue('Mail.ContentType');
+      $this->contentType = $section->getValue('Mail.ContentType', null, '.');
 
-      $this->returnPath = $section->getValue('Mail.ReturnPath');
+      $this->returnPath = $section->getValue('Mail.ReturnPath', null, '.');
 
       // reset text and recipients to avoid interference during multiple usage
       $this->clearRecipients();

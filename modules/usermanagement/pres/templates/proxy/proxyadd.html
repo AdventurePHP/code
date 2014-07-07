@@ -5,13 +5,13 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddControll
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.proxy.add-proxy.headline"/>
+         entry="frontend.proxy.add-proxy.headline" delimiter="."/>
 </h3>
 <p>
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.proxy.add-proxy.intro.text"/>
+         entry="frontend.proxy.add-proxy.intro.text" delimiter="."/>
 </p>
 <html:form name="visibilitydef" method="post">
    <div>
@@ -19,14 +19,14 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddControll
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.proxy.add-proxy.basics.headline"/>
+               entry="frontend.proxy.add-proxy.basics.headline" delimiter="."/>
       </h4>
       <div>
          <label for="proxytypeid">
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.proxy.add-proxy.proxy-type.label"/>
+                  entry="frontend.proxy.add-proxy.proxy-type.label" delimiter="."/>
          </label>
          <form:select id="proxytypeid" name="proxytypeid"/>
       </div>
@@ -35,7 +35,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddControll
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.proxy.add-proxy.proxy-app-id.label"/>
+                  entry="frontend.proxy.add-proxy.proxy-app-id.label" delimiter="."/>
          </label>
          <form:text id="appobjectid" name="appobjectid" maxlength="50" minlength="1"/>
          <form:addvalidator
@@ -54,7 +54,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddControll
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.proxy.add-proxy.validator.message"/>
+                  entry="frontend.proxy.add-proxy.validator.message" delimiter="."/>
          </div>
       </form:listener>
       <div>
@@ -62,7 +62,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddControll
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.proxy.add-proxy.users.label"/>
+                  entry="frontend.proxy.add-proxy.users.label" delimiter="."/>
          </label>
          <form:multiselect id="users" name="users" size="6" alt="groups"/>
       </div>
@@ -71,7 +71,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddControll
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.proxy.add-proxy.groups.label"/>
+                  entry="frontend.proxy.add-proxy.groups.label" delimiter="."/>
          </label>
          <form:multiselect id="groups" name="groups" size="6"/>
       </div>
@@ -84,7 +84,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddControll
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.proxy.add-proxy.access.headline"/>
+               entry="frontend.proxy.add-proxy.access.headline" delimiter="."/>
       </h4>
       <div class="umgt-access-perms">
          <p>
@@ -93,7 +93,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddControll
                <html:getstring
                      namespace="APF\modules\usermanagement\pres"
                      config="labels.ini"
-                     entry="frontend.proxy.add-proxy.read-perm.label"/>
+                     entry="frontend.proxy.add-proxy.read-perm.label" delimiter="."/>
             </label>
          </p>
          <p>
@@ -102,7 +102,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddControll
                <html:getstring
                      namespace="APF\modules\usermanagement\pres"
                      config="labels.ini"
-                     entry="frontend.proxy.add-proxy.write-perm.label"/>
+                     entry="frontend.proxy.add-proxy.write-perm.label" delimiter="."/>
             </label>
          </p>
          <p>
@@ -111,7 +111,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddControll
                <html:getstring
                      namespace="APF\modules\usermanagement\pres"
                      config="labels.ini"
-                     entry="frontend.proxy.add-proxy.link-perm.label"/>
+                     entry="frontend.proxy.add-proxy.link-perm.label" delimiter="."/>
             </label>
          </p>
          <p>
@@ -120,7 +120,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddControll
                <html:getstring
                      namespace="APF\modules\usermanagement\pres"
                      config="labels.ini"
-                     entry="frontend.proxy.add-proxy.delete-perm.label"/>
+                     entry="frontend.proxy.add-proxy.delete-perm.label" delimiter="."/>
             </label>
          </p>
       </div>
@@ -128,7 +128,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddControll
          <button:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.proxy.add-proxy.button.label"/>
+               entry="frontend.proxy.add-proxy.button.label" delimiter="."/>
       </form:button>
    </div>
 </html:form>

@@ -47,7 +47,7 @@ class ProxyListController extends UmgtBaseController {
       $select->addOption(
             $this->getConfiguration('APF\modules\usermanagement\pres', 'labels.ini')
                   ->getSection($this->getLanguage())
-                  ->getValue('frontend.proxy.list.delete-filter.label'), 0);
+                  ->getValue('frontend.proxy.list.delete-filter.label', null, '.'), 0);
 
       foreach ($types as $type) {
          $select->addOption($type->getAppObjectName(), $type->getObjectId());

@@ -6,14 +6,14 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupEditControl
          name="headline"
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.group.edit.headline"
+         entry="frontend.group.edit.headline" delimiter="."
          />
 </h3>
 <p>
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.group.edit.intro.text"
+         entry="frontend.group.edit.intro.text" delimiter="."
          />
 </p>
 <html:form name="GroupEdit" method="post">
@@ -28,7 +28,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupEditControl
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.group.edit.form.display-name.label"
+                  entry="frontend.group.edit.form.display-name.label" delimiter="."
                   />
          </label>
          <form:text name="DisplayName" maxlength="100"/>
@@ -38,7 +38,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupEditControl
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.group.edit.form.description.label"
+                  entry="frontend.group.edit.form.description.label" delimiter="."
                   />
          </label>
          <form:area name="Description"/>
@@ -47,7 +47,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupEditControl
          <button:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.group.edit.form.button.label"
+               entry="frontend.group.edit.form.button.label" delimiter="."
                />
       </form:button>
       <form:hidden name="groupid"/>

@@ -5,7 +5,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleAddController
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.role.add.headline"/>
+         entry="frontend.role.add.headline" delimiter="."/>
 </h3>
 <html:form name="RoleAdd" method="post">
    <div>
@@ -13,14 +13,14 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleAddController
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.role.add.intro.text"/>
+               entry="frontend.role.add.intro.text" delimiter="."/>
       </p>
       <p>
          <label>
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.role.add.display-name.label"/>
+                  entry="frontend.role.add.display-name.label" delimiter="."/>
          </label>
          <form:text name="DisplayName" maxlength="100"/>
          <form:addvalidator
@@ -34,7 +34,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleAddController
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.role.add.description.label"/>
+                  entry="frontend.role.add.description.label" delimiter="."/>
          </label>
          <form:area name="Description"/>
       </p>
@@ -43,7 +43,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleAddController
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.role.add.permissions.label"/>
+                  entry="frontend.role.add.permissions.label" delimiter="."/>
          </label>
          <form:multiselect name="Permission" size="4"/>
          <form:addvalidator
@@ -57,7 +57,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleAddController
             <button:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.role.add.button.label"/>
+                  entry="frontend.role.add.button.label" delimiter="."/>
          </form:button>
       </p>
    </div>

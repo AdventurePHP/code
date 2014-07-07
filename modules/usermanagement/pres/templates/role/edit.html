@@ -5,13 +5,13 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleEditControlle
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.role.edit.headline"/>
+         entry="frontend.role.edit.headline" delimiter="."/>
 </h3>
 <p>
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.role.edit.intro.text"/>
+         entry="frontend.role.edit.intro.text" delimiter="."/>
 </p>
 <html:form name="RoleEdit" method="post">
    <div>
@@ -20,7 +20,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleEditControlle
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.role.edit.display-name.label"/>
+                  entry="frontend.role.edit.display-name.label" delimiter="."/>
          </label>
          <form:text name="DisplayName" maxlength="100"/>
          <form:addvalidator
@@ -34,7 +34,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleEditControlle
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.role.edit.description.label"/>
+                  entry="frontend.role.edit.description.label" delimiter="."/>
          </label>
          <form:area name="Description"/>
       </p>
@@ -43,7 +43,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleEditControlle
             <button:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.role.edit.button.label"/>
+                  entry="frontend.role.edit.button.label" delimiter="."/>
          </form:button>
       </p>
       <form:hidden name="roleid"/>

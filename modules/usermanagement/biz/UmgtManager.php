@@ -2133,7 +2133,7 @@ class UmgtManager extends APFObject {
          $section = $config->getSection(UmgtManager::CONFIG_SECTION_NAME);
          $cookieLifeTime = $section == null
                ? self::AUTO_LOGIN_COOKIE_LIFETIME
-               : $section->getValue('cookie.lifetime', self::AUTO_LOGIN_COOKIE_LIFETIME);
+               : $section->getValue('cookie.lifetime', self::AUTO_LOGIN_COOKIE_LIFETIME, '.');
       } catch (ConfigurationException $e) {
          $cookieLifeTime = self::AUTO_LOGIN_COOKIE_LIFETIME;
       }

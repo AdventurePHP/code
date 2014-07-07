@@ -5,7 +5,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RemovePermissionF
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.role.remove-permission-from-role.headline"/>
+         entry="frontend.role.remove-permission-from-role.headline" delimiter="."/>
 </h3>
 <html:form name="Permissions" method="post">
    <div>
@@ -19,7 +19,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RemovePermissionF
                name="display-name"
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.role.remove-permission-from-role.intro.text"/>
+               entry="frontend.role.remove-permission-from-role.intro.text" delimiter="."/>
       </p>
       <p>
          <form:multiselect name="Permissions" size="4"/>
@@ -29,7 +29,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RemovePermissionF
             <button:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.role.remove-permission-from-role.button.label"/>
+                  entry="frontend.role.remove-permission-from-role.button.label" delimiter="."/>
          </form:button>
       </p>
    </div>
@@ -40,13 +40,13 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RemovePermissionF
             name="message-1"
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="frontend.role.remove-permission-from-role.message.1"/>
+            entry="frontend.role.remove-permission-from-role.message.1" delimiter="."/>
    </p>
    <p>
       <html:getstring
             name="message-2"
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="frontend.role.remove-permission-from-role.message.2"/>
+            entry="frontend.role.remove-permission-from-role.message.2" delimiter="."/>
    </p>
 </html:template>

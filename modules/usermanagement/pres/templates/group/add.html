@@ -5,14 +5,14 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupAddControll
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.group.add.headline"
+         entry="frontend.group.add.headline" delimiter="."
          />
 </h3>
 <p>
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.group.add.intro.text"
+         entry="frontend.group.add.intro.text" delimiter="."
          />
 </p>
 <html:form name="GroupAdd" method="post">
@@ -27,7 +27,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupAddControll
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.group.add.display-name.label"
+                  entry="frontend.group.add.display-name.label" delimiter="."
                   />
          </label>
          <form:text name="DisplayName" maxlength="100"/>
@@ -37,7 +37,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupAddControll
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.group.add.description.label"
+                  entry="frontend.group.add.description.label" delimiter="."
                   />
          </label>
          <form:area name="Description"/>
@@ -46,7 +46,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupAddControll
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.group.add.button.label"
+               entry="frontend.group.add.button.label" delimiter="."
                />
       </form:button>
    </div>

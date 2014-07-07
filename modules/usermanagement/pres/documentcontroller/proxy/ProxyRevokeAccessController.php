@@ -75,13 +75,13 @@ class ProxyRevokeAccessController extends UmgtBaseController {
             $object = $this->getManager()->loadUserByID($objectId);
             $label->setPlaceHolder(
                   'object-type',
-                  $labels->getValue('frontend.proxy.revoke-access.object-type.user.label')
+                  $labels->getValue('frontend.proxy.revoke-access.object-type.user.label', null, '.')
             );
          } else {
             $object = $this->getManager()->loadGroupByID($objectId);
             $label->setPlaceHolder(
                   'object-type',
-                  $labels->getValue('frontend.proxy.revoke-access.object-type.group.label')
+                  $labels->getValue('frontend.proxy.revoke-access.object-type.group.label', null, '.')
             );
          }
          $label->setPlaceHolder('display-name', $object->getDisplayName());

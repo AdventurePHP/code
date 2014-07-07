@@ -176,13 +176,13 @@ class HtmlIteratorTag extends Document {
 
             // get the number of entries per page
             $entriesPerPage = RequestHandler::getValue(
-                  $pagerConfig->getValue('Pager.ParameterCountName'),
-                  $pagerConfig->getValue('Pager.EntriesPerPage')
+                  $pagerConfig->getValue('Pager.ParameterCountName', null, '.'),
+                  $pagerConfig->getValue('Pager.EntriesPerPage', null, '.')
             );
 
             // get the number of the actual page
             $actualPage = RequestHandler::getValue(
-                  $pagerConfig->getValue('Pager.ParameterPageName'),
+                  $pagerConfig->getValue('Pager.ParameterPageName', null, '.'),
                   1
             );
 

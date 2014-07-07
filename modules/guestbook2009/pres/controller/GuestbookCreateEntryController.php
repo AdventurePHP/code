@@ -67,7 +67,7 @@ class GuestbookCreateEntryController extends GuestbookBaseController {
       // language and context information of the current
       // DOM node.
       $config = $this->getConfiguration('APF\modules\guestbook2009\pres', 'language.ini');
-      $buttonLabel = $config->getSection($this->language)->getValue('form.label.button');
+      $buttonLabel = $config->getSection($this->language)->getValue('form.label.button', null, '.');
       $button = & $form->getFormElementByName('send');
       $button->setAttribute('value', $buttonLabel);
 

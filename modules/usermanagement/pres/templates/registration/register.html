@@ -7,7 +7,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\registration\Registrat
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="register.form.hint"/>
+               entry="register.form.hint" delimiter="."/>
       </p>
       ${register-error}
       <p>
@@ -15,7 +15,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\registration\Registrat
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="register.firstname.label"/>
+                  entry="register.firstname.label" delimiter="."/>
          </label>
          <form:text id="umgt-fe-reg-firstname" name="firstname" maxlength="100"/>
       </p>
@@ -24,7 +24,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\registration\Registrat
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="register.lastname.label"/>
+                  entry="register.lastname.label" delimiter="."/>
          </label>
          <form:text id="umgt-fe-reg-lastname" name="lastname" maxlength="100"/>
       </p>
@@ -33,7 +33,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\registration\Registrat
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="register.streetandnumber.label"/>
+                  entry="register.streetandnumber.label" delimiter="."/>
          </label>
          <form:text id="umgt-fe-reg-street" name="street" maxlength="100"/>
          <form:text id="umgt-fe-reg-number" name="number" maxlength="5"/>
@@ -43,7 +43,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\registration\Registrat
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="register.zipandcity.label"/>
+                  entry="register.zipandcity.label" delimiter="."/>
          </label>
          <form:text id="umgt-fe-reg-zip" name="zip" maxlength="5"/>
          <form:text id="umgt-fe-reg-city" name="city" maxlength="100"/>
@@ -53,7 +53,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\registration\Registrat
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="register.email.label"/>
+                  entry="register.email.label" delimiter="."/>
          </label>
          <form:text id="umgt-fe-reg-email" name="email" maxlength="100"/>
          <form:addvalidator
@@ -67,7 +67,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\registration\Registrat
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="register.username.label"/>
+                  entry="register.username.label" delimiter="."/>
          </label>
          <form:text id="umgt-fe-reg-user" name="username" maxlength="100"/>
          <form:addvalidator
@@ -81,7 +81,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\registration\Registrat
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="register.password.label"/>
+                  entry="register.password.label" delimiter="."/>
          </label>
          <form:password id="umgt-fe-reg-pass" name="password" maxlength="100" ref="repeat"/>
          <form:addvalidator
@@ -95,7 +95,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\registration\Registrat
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="register.repeat.label"/>
+                  entry="register.repeat.label" delimiter="."/>
          </label>
          <form:password id="umgt-fe-reg-repeat" maxlength="100" name="repeat"/>
       </p>
@@ -104,7 +104,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\registration\Registrat
             <button:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="register.button.label"/>
+                  entry="register.button.label" delimiter="."/>
          </form:button>
       </p>
    </div>
@@ -115,7 +115,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\registration\Registrat
       <html:getstring
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="register.input.error"/>
+            entry="register.input.error" delimiter="."/>
    </div>
 </html:template>
 
@@ -124,7 +124,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\registration\Registrat
       <html:getstring
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="register.system.error"/>
+            entry="register.system.error" delimiter="."/>
    </div>
 </html:template>
 
@@ -133,6 +133,6 @@ class="APF\modules\usermanagement\pres\documentcontroller\registration\Registrat
       <html:getstring
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="register.success"/>
+            entry="register.success" delimiter="."/>
    </div>
 </html:template>

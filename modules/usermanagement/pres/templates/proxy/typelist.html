@@ -5,13 +5,13 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyTypeListCon
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.proxy.type-list.headline"/>
+         entry="frontend.proxy.type-list.headline" delimiter="."/>
 </h3>
 <p>
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.proxy.type-list.intro.text"/>
+         entry="frontend.proxy.type-list.intro.text" delimiter="."/>
 </p>
 <table class="vis-def">
    <thead>
@@ -21,13 +21,13 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyTypeListCon
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.proxy.type-list.proxy-type.label"/>
+               entry="frontend.proxy.type-list.proxy-type.label" delimiter="."/>
       </td>
       <td>
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.proxy.type-list.actions.label"/>
+               entry="frontend.proxy.type-list.actions.label" delimiter="."/>
       </td>
    </tr>
    </thead>
@@ -42,7 +42,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyTypeListCon
             <media:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.proxy.type-list.proxy-type-img.label"/>
+                  entry="frontend.proxy.type-list.proxy-type-img.label" delimiter="."/>
          </umgt:media>
       </td>
       <td>${AppObjectName}</td>
@@ -52,7 +52,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyTypeListCon
                <media:getstring
                      namespace="APF\modules\usermanagement\pres"
                      config="labels.ini"
-                     entry="frontend.proxy.type-list.action.edit.label"/>
+                     entry="frontend.proxy.type-list.action.edit.label" delimiter="."/>
             </umgt:media>
          </a>
          <a href="${type_delete}">
@@ -60,7 +60,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyTypeListCon
                <media:getstring
                      namespace="APF\modules\usermanagement\pres"
                      config="labels.ini"
-                     entry="frontend.proxy.type-list.action.delete.label"/>
+                     entry="frontend.proxy.type-list.action.delete.label" delimiter="."/>
             </umgt:media>
          </a>
       </td>

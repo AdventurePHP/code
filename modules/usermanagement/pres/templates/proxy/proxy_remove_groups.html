@@ -5,7 +5,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyRemoveGroup
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.proxy.remove-groups-from-proxy.headline"/>
+         entry="frontend.proxy.remove-groups-from-proxy.headline" delimiter="."/>
 </h3>
 <html:form name="add_perm" method="post">
    <div>
@@ -14,14 +14,14 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyRemoveGroup
                name="intro-text"
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.proxy.remove-groups-from-proxy.intro.text"/>
+               entry="frontend.proxy.remove-groups-from-proxy.intro.text" delimiter="."/>
       </p>
       <form:listener control="groups">
          <div class="error-cont">
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.proxy.remove-groups-from-proxy.validation.message"/>
+                  entry="frontend.proxy.remove-groups-from-proxy.validation.message" delimiter="."/>
          </div>
       </form:listener>
       <div>
@@ -29,7 +29,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyRemoveGroup
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.proxy.remove-groups-from-proxy.groups.label"/>
+                  entry="frontend.proxy.remove-groups-from-proxy.groups.label" delimiter="."/>
          </label>
          <form:multiselect id="groups" name="groups" size="6"/>
       </div>
@@ -42,7 +42,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyRemoveGroup
          <button:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.proxy.remove-groups-from-proxy.button.label"/>
+               entry="frontend.proxy.remove-groups-from-proxy.button.label" delimiter="."/>
       </form:button>
       <form:hidden name="proxyid"/>
    </div>
@@ -53,13 +53,13 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyRemoveGroup
             name="message-1"
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="frontend.proxy.remove-groups-from-proxy.message.1"/>
+            entry="frontend.proxy.remove-groups-from-proxy.message.1" delimiter="."/>
    </p>
    <p>
       <html:getstring
             name="message-2"
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="frontend.proxy.remove-groups-from-proxy.message.2"/>
+            entry="frontend.proxy.remove-groups-from-proxy.message.2" delimiter="."/>
    </p>
 </html:template>

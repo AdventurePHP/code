@@ -3,28 +3,28 @@ class="APF\extensions\news\pres\documentcontroller\backend\NewsDeleteController"
 @>
 <html:template name="delete">
    <div id="news-delete">
-      <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Delete.Message"/>
+      <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Delete.Message" delimiter="."/>
       <br/>
       <br/>
       <a href="${LinkYes}">
-         <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Delete.Yes"/>
+         <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Delete.Yes" delimiter="."/>
       </a>
       &nbsp;&nbsp;|&nbsp;&nbsp;
       <a href="${LinkNo}">
-         <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Delete.No"/>
+         <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Delete.No" delimiter="."/>
       </a>
    </div>
 </html:template>
 
 <html:template name="error">
    <div class="news-delete-error">
-      <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Delete.Error"/>
+      <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Delete.Error" delimiter="."/>
    </div>
 </html:template>
 
 <html:template name="success">
    <div class="news-delete-success">
-      <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Delete.Success"/>
+      <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Delete.Success" delimiter="."/>
       <br/>
    </div>
 </html:template>
