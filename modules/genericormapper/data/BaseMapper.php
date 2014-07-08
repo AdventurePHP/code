@@ -419,8 +419,8 @@ class BaseMapper extends APFObject {
                $this->relationTable[$relationName] = $this->generateRelationItem($relationName, $addRelations[$relationName]);
             }
 
-            if (isset($addObjects[$relationName][self::$STORAGE_ENGINE_INDICATOR])) {
-               $this->relationStorageEngineTable[$relationName] = $addObjects[$relationName][self::$STORAGE_ENGINE_INDICATOR];
+            if (isset($addRelations[$relationName][self::$STORAGE_ENGINE_INDICATOR])) {
+               $this->relationStorageEngineTable[$relationName] = $addRelations[$relationName][self::$STORAGE_ENGINE_INDICATOR];
             }
          }
 
