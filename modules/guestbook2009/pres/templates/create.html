@@ -97,20 +97,10 @@ class="APF\modules\guestbook2009\pres\controller\GuestbookCreateEntryController"
          <div class="gb--create-button-placer">
             <form:button class="gb--button-create" name="send"/>
          </div>
-         <form:addvalidator
-               class="APF\tools\form\validator\TextLengthValidator"
-               button="send"
-               control="name|title|text"
-               />
          <form:addfilter
                class="APF\tools\form\filter\NoSpecialCharactersFilter"
                button="send"
                control="name|title"
-               />
-         <form:addvalidator
-               class="APF\tools\form\validator\EMailValidator"
-               button="send"
-               control="email"
                />
          <form:addfilter
                class="APF\tools\form\filter\StripTagsFilter"
@@ -124,6 +114,16 @@ class="APF\modules\guestbook2009\pres\controller\GuestbookCreateEntryController"
                />
          <form:addfilter
                class="APF\tools\form\filter\EMailFilter"
+               button="send"
+               control="email"
+               />
+         <form:addvalidator
+               class="APF\tools\form\validator\TextLengthValidator"
+               button="send"
+               control="name|title|text"
+               />
+         <form:addvalidator
+               class="APF\tools\form\validator\EMailValidator"
                button="send"
                control="email"
                />

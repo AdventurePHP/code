@@ -30,13 +30,13 @@ class="APF\modules\comments\pres\controller\CommentCreateEntryController"
                name="EMail"
                class="cm--create-element-email"
                />
-         <form:addvalidator
-               class="APF\tools\form\validator\EMailValidator"
+         <form:addfilter
+               class="APF\tools\form\filter\EMailFilter"
                button="Save"
                control="EMail"
                />
-         <form:addfilter
-               class="APF\tools\form\filter\EMailFilter"
+         <form:addvalidator
+               class="APF\tools\form\validator\EMailValidator"
                button="Save"
                control="EMail"
                />
