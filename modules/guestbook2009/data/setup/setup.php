@@ -20,4 +20,4 @@ $setup->setContext($context);
 $setup->addMappingConfiguration('APF\modules\guestbook2009\data', 'guestbook2009');
 $setup->addRelationConfiguration('APF\modules\guestbook2009\data', 'guestbook2009');
 $setup->setConnectionName($connectionKey);
-$setup->run();
+$setup->run(true);

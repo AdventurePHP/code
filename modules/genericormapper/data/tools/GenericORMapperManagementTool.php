@@ -255,7 +255,7 @@ class GenericORMapperManagementTool extends BaseMapper {
     *
     * @param boolean $updateInPlace Defines, if the update should be done for you (true) or if
     *                               the update statement should only be displayed (false).
-    *                               Default is true.
+    *                               Default is false.
     *
     * @throws GenericORMapperException In case of missing connection name.
     *
@@ -285,7 +285,7 @@ class GenericORMapperManagementTool extends BaseMapper {
       // $setup->setContext('blah');
       // $setup->addMappingConfiguration('VENDOR\path\to\my\application', 'foo');
       // $setup->addMappingConfiguration('VENDOR\path\to\my\application', 'bar');
-      // $setup->run();
+      // $setup->run(true);
       if (!empty($this->configNamespace) && !empty($this->configNameAffix)) {
          $this->addMappingConfiguration($this->configNamespace, $this->configNameAffix);
          $this->addRelationConfiguration($this->configNamespace, $this->configNameAffix);
