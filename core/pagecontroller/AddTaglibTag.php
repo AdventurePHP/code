@@ -49,19 +49,16 @@ class AddTaglibTag extends Document {
 
       // add tag to parent instance in case overriding is explicitly desired
       if ($scope === 'local') {
-         $this->addInstanceTagLib(new TagLib(
-                     $this->getRequiredAttribute('class'),
-                     $this->getRequiredAttribute('prefix'),
-                     $this->getRequiredAttribute('name')
-               )
+         $this->addInstanceTagLib(
+               $this->getRequiredAttribute('class'),
+               $this->getRequiredAttribute('prefix'),
+               $this->getRequiredAttribute('name')
          );
       } else {
          self::addTagLib(
-               new TagLib(
-                     $this->getRequiredAttribute('class'),
-                     $this->getRequiredAttribute('prefix'),
-                     $this->getRequiredAttribute('name')
-               )
+               $this->getRequiredAttribute('class'),
+               $this->getRequiredAttribute('prefix'),
+               $this->getRequiredAttribute('name')
          );
       }
 

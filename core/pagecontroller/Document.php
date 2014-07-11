@@ -103,6 +103,7 @@ class Document extends APFObject {
 
    /**
     * Data attributes of the current DOM document (similar to Java Script).
+    *
     * @var string[][] $data
     */
    protected $data = array();
@@ -110,14 +111,14 @@ class Document extends APFObject {
    /**
     * List of known tags the APF parser uses to create tag instances during analysis phase.
     *
-    * @var TagLib[] $knownTags
+    * @var string[] $knownTags
     */
    protected static $knownTags = array();
 
    /**
     * List of known tags for a dedicated DOM node the APF parser uses to create tag instances during analysis phase.
     *
-    * @var TagLib[] $knownInstanceTags
+    * @var string[] $knownInstanceTags
     */
    protected $knownInstanceTags = array();
 
@@ -515,32 +516,6 @@ class Document extends APFObject {
    }
 
    /**
-    * Replaces string place holders in content of &lt;*:placeholder /&gt; tag.
-    * An example of a string place holder with key "url" is "{URL}"
-    * String place holders are always written in capital letters!
-    *
-    * @param string $name Place holder name.
-    * @param string $key Key name of string place holder.
-    * @param string $value Value, the string place holder is replaced with.
-    *
-    * @return Document This instance for further usage.
-    * @throws InvalidArgumentException In case no place holder has been found.
-    *
-    * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
-    * @version
-    * Version 0.1, 03.10.2012<br />
-    */
-   public function &setStringPlaceHolder($name, $key, $value) {
-      $nodes = & $this->getChildNodes('name', $name, 'APF\core\pagecontroller\PlaceHolderTag');
-      /* @var $nodes PlaceHolderTag[] */
-      foreach ($nodes as $node) {
-         $node->setStringReplacement($key, $value);
-      }
-
-      return $this;
-   }
-
-   /**
     * Returns the name of the document controller in case the document should
     * be transformed using an MVC controller. In case no controller is defined
     * <em>null</em> is returned instead.
@@ -558,16 +533,19 @@ class Document extends APFObject {
    /**
     * This method adds a given tag to the <em>global</em> list of known tags for the APF parser.
     *
-    * @param TagLib $tag The tag to add for the APF parser.
+    * @param string $class The fully-qualified name of the tag implementation.
+    * @param string $prefix The tag prefix.
+    * @param string $name The tag name.
     *
     * @author Christian Schäfer, Christian Achatz
     * @version
     * Version 0.1, 28.12.2006<br />
     * Version 0.2, 03.03.2007 (Removed the "&" in front of "new")<br />
     * Version 0.3, 14.02.2011 (Refactored method signature to be more type safe)<br />
+    * Version 0.4, 11.07.2014 (Removed TagLib to gain performance and simplify API)<br />
     */
-   public static function addTagLib(TagLib $tag) {
-      self::$knownTags[$tag->getPrefix() . ':' . $tag->getName()] = $tag;
+   public static function addTagLib($class, $prefix, $name) {
+      self::$knownTags[$prefix . ':' . $name] = $class;
    }
 
    /**
@@ -575,46 +553,17 @@ class Document extends APFObject {
     * <p/>
     * Using this method, you can override globally defined tags for this particular instance.
     *
-    * @param TagLib $tag The tag to add for the APF parser used for this particular instance.
+    * @param string $class The fully-qualified name of the tag implementation.
+    * @param string $prefix The tag prefix.
+    * @param string $name The tag name.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 14.02.2011 (ID#185, ID#1786: introduced local override mechanism)<br />
+    * Version 0.2, 11.07.2014 (Removed TagLib to gain performance and simplify API)<br />
     */
-   public function addInstanceTagLib(TagLib $tag) {
-      $this->knownInstanceTags[$tag->getPrefix() . ':' . $tag->getName()] = $tag;
-   }
-
-   /**
-    * This method adds a given list of tags to the list of known tags for the APF parser.
-    *
-    * @param TagLib[] $tags Tags to register for the APF parser.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 18.06.2014<br />
-    */
-   public static function addTagLibs(array $tags) {
-      foreach ($tags as $tag) {
-         self::addTagLib($tag);
-      }
-   }
-
-   /**
-    * This method adds a list of tag to the <em>local</em> list of known tags for the APF parser.
-    * <p/>
-    * Using this method, you can override globally defined tags for this particular instance.
-    *
-    * @param TagLib[] $tags Tag to add for the APF parser used for this particular instance.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 14.02.2011 (ID#185, ID#1786: introduced local override mechanism)<br />
-    */
-   public function addInstanceTagLibs(array $tags) {
-      foreach ($tags as $tag) {
-         $this->addInstanceTagLib($tag);
-      }
+   public function addInstanceTagLib($class, $prefix, $name) {
+      $this->knownInstanceTags[$prefix . ':' . $name] = $class;
    }
 
    /**
@@ -1053,9 +1002,6 @@ class Document extends APFObject {
 
    /**
     * Returns the name of the tag implementation according to the given tag prefix and name.
-    * <p/>
-    * As this method gets called with each tag, it introduces a lazy cache to return the
-    * desired class faster with each known tag (improves performance up to 4%).
     *
     * @param string $prefix The tag prefix.
     * @param string $name The tag name.
@@ -1066,18 +1012,19 @@ class Document extends APFObject {
     * @version
     * Version 0.1, 23.02.2014<br />
     * Version 0.2, 20.06.2014 (ID#186: added overriding mechanism on instance basis)<br />
+    * Version 0.3, 11.07.2014 (Removed TagLib to gain performance and simplify API)<br />
     */
    protected function getTagLibClass($prefix, $name) {
 
       // First, look at the list of tags registered for the current
       // instance to allow overriding on an instance basis.
       if (isset($this->knownInstanceTags[$prefix . ':' . $name])) {
-         return $this->knownInstanceTags[$prefix . ':' . $name]->getClass();
+         return $this->knownInstanceTags[$prefix . ':' . $name];
       }
 
       // Second, deliver tag implementation from global store.
       if (isset(self::$knownTags[$prefix . ':' . $name])) {
-         return self::$knownTags[$prefix . ':' . $name]->getClass();
+         return self::$knownTags[$prefix . ':' . $name];
       }
 
       return null;

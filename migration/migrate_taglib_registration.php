@@ -13,7 +13,7 @@ foreach ($files as $file) {
    $content = file_get_contents($file);
 
    $content = preg_replace_callback($search, function ($matches) {
-      return 'self::addTagLib(new TagLib(\'' . $matches[4] . '\', \'' . $matches[6] . '\', \'' . $matches[8] . '\'));';
+      return 'self::addTagLib(\'' . $matches[4] . '\', \'' . $matches[6] . '\', \'' . $matches[8] . '\');';
    }, $content);
 
    preg_match_all($searchArray, $content, $matches, PREG_SET_ORDER);
@@ -25,7 +25,7 @@ foreach ($files as $file) {
       $tags = array();
 
       foreach ($tagLibMatches as $tagLibMatch) {
-         $tags[] = 'self::addTagLib(new TagLib(\'' . $tagLibMatch[3] . '\', \'' . $tagLibMatch[5] . '\', \'' . $tagLibMatch[7] . '\'));';
+         $tags[] = 'self::addTagLib(\'' . $tagLibMatch[3] . '\', \'' . $tagLibMatch[5] . '\', \'' . $tagLibMatch[7] . '\');';
       }
 
       $content = str_replace($match[0], implode(PHP_EOL, $tags), $content);

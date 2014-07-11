@@ -2,12 +2,10 @@
 // Collect all <*:addtaglib /> tags, remove them from the templates, and suggest index.php
 // statements to add for custom tags.
 
-use APF\core\pagecontroller\TagLib;
 use APF\core\pagecontroller\XmlParser;
 
 include(dirname(__FILE__) . '/migrate_base.php');
 include(dirname(dirname(__FILE__)) . '/core/pagecontroller/XmlParser.php');
-include(dirname(dirname(__FILE__)) . '/core/pagecontroller/TagLib.php');
 include(dirname(dirname(__FILE__)) . '/core/bootstrap.php');
 
 \APF\core\exceptionhandler\GlobalExceptionHandler::disable();
@@ -24,9 +22,8 @@ $property->setAccessible(true);
 $registeredTags = $property->getValue();
 
 function isRegistered(array $registeredTags, $class, $prefix, $name) {
-   /* @var $tag TagLib */
-   foreach ($registeredTags as $tag) {
-      if ($tag->getClass() === $class && $tag->getPrefix() === $prefix && $tag->getName() === $name) {
+   foreach ($registeredTags as $key => $value) {
+      if ($key === $prefix . ':' . $name && $value === $class) {
          return true;
       }
    }
