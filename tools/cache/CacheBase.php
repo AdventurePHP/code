@@ -61,14 +61,13 @@ abstract class CacheBase extends APFObject {
     */
    protected function getConfigAttribute($name) {
 
-      $value = $this->configuration->getSection(CacheManager::CACHE_CONFIG_SECTION_NAME)->getValue($name);
+      $value = $this->configuration->getValue($name);
       if ($value == null) {
          $env = Registry::retrieve('APF\core', 'Environment');
          throw new InvalidArgumentException('[' . get_class($this)
-               . '::getConfigAttribute()] The configuration directive "' . CacheManager::CACHE_CONFIG_SECTION_NAME
-               . '.' . $name . '" is not ' . 'present or empty. Please check your cache configuration ("' . $env
-               . '_cacheconfig.ini") for namespace "APF\tools\cache" and context "'
-               . $this->getContext() . '" or consult the documentation!', E_USER_ERROR);
+               . '::getConfigAttribute()] The configuration directive "' . $name . '" is not present or empty. '
+               . 'Please check your cache configuration ("' . $env . '_cacheconfig.ini") for namespace '
+               . '"APF\tools\cache" and context "' . $this->getContext() . '" or consult the documentation!', E_USER_ERROR);
       }
 
       return $value;

@@ -1,10 +1,10 @@
 #!/bin/bash
 ########################################################################################################################
-# APF 2.1 automatic configuration migration script                                                                     #
+# APF 3.0 automatic configuration migration script                                                                     #
 ########################################################################################################################
 
 echo "#############################################"
-echo "# APF 2.2 automatic configuration migration #"
+echo "# APF 3.0 automatic configuration migration #"
 echo "#############################################"
 echo
 
@@ -17,6 +17,10 @@ echo
 echo "#############################################"
 echo
 echo "Starting configuration migration ..."
+
+# migrate tag lib declaration
+echo "* Migrate cache configuration ..."
+$PHP_BINARY $SCRIPT_DIR/migrate_cache_config.php
 
 echo
 echo "#############################################"

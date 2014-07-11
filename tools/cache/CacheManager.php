@@ -38,13 +38,6 @@ use APF\core\service\APFService;
 final class CacheManager extends CacheBase {
 
    /**
-    * Name of the cache configuration sub section.
-    *
-    * @var string CACHE_CONFIG_SECTION_NAME
-    */
-   const CACHE_CONFIG_SECTION_NAME = 'Cache';
-
-   /**
     * The current cache provider.
     *
     * @var CacheProvider $provider
@@ -77,8 +70,7 @@ final class CacheManager extends CacheBase {
    public function init($initParam) {
 
       /* @var $initParam Configuration */
-      $cacheConfig = $initParam->getSection(self::CACHE_CONFIG_SECTION_NAME);
-      $class = $cacheConfig->getValue('Provider');
+      $class = $initParam->getValue('Provider');
 
       /* @var $provider CacheProvider */
       $provider = $this->getServiceObject($class, APFService::SERVICE_TYPE_NORMAL);
@@ -89,7 +81,7 @@ final class CacheManager extends CacheBase {
       $this->provider = $provider;
 
       // map the active configuration key
-      $active = $cacheConfig->getValue('Active');
+      $active = $initParam->getValue('Active');
       if ($active == 'true') {
          $this->active = true;
       }
