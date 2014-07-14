@@ -32,5 +32,8 @@ foreach ($files as $file) {
 
    }
 
+   // remove use statements for TagLib as it has been removed
+   $content = str_replace('use APF\core\pagecontroller\TagLib;', '', $content);
+
    file_put_contents($file, $content);
 }
