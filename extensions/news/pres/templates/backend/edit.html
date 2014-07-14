@@ -48,15 +48,16 @@ class="APF\extensions\news\pres\documentcontroller\backend\NewsEditController"
       <form:button id="news-edit-btn" name="send" value=""/>
    </fieldset>
 
-   <form:addvalidator
-         class="APF\tools\form\validator\TextLengthValidator"
-         button="send"
-         control="news-edit-title|news-edit-text"
-         />
    <form:addfilter
          class="APF\tools\form\filter\StripTagsFilter"
          button="send"
          control="news-edit-title|news-edit-user"
+         />
+
+   <form:addvalidator
+         class="APF\tools\form\validator\TextLengthValidator"
+         button="send"
+         control="news-edit-title|news-edit-text"
          />
 
 </html:form>
