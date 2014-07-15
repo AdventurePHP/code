@@ -40,6 +40,11 @@ class="APF\modules\contact\pres\controller\ContactFormController"
             </ul>
       </div>
       </form:error>
+      <form:addfilter
+            class="APF\tools\form\filter\EMailFilter"
+            button="sendFormContact"
+            control="sender-address"
+            />
       <form:addvalidator
             class="APF\tools\form\validator\TextLengthValidator"
             button="sendFormContact"
@@ -47,11 +52,6 @@ class="APF\modules\contact\pres\controller\ContactFormController"
             />
       <form:addvalidator
             class="APF\tools\form\validator\EMailValidator"
-            button="sendFormContact"
-            control="sender-address"
-            />
-      <form:addfilter
-            class="APF\tools\form\filter\EMailFilter"
             button="sendFormContact"
             control="sender-address"
             />

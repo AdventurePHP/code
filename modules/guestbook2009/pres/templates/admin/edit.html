@@ -57,20 +57,10 @@ Please select an entry to edit!
          </div>
          <form:hidden name="entryid"/>
          <form:hidden name="editorid"/>
-         <form:addvalidator
-               class="APF\tools\form\validator\TextLengthValidator"
-               button="send"
-               control="name|title|text"
-               />
          <form:addfilter
                class="APF\tools\form\filter\NoSpecialCharactersFilter"
                button="send"
                control="name|title"
-               />
-         <form:addvalidator
-               class="APF\tools\form\validator\EMailValidator"
-               button="send"
-               control="email"
                />
          <form:addfilter
                class="APF\tools\form\filter\StripTagsFilter"
@@ -79,6 +69,16 @@ Please select an entry to edit!
                />
          <form:addfilter
                class="APF\tools\form\filter\EMailFilter"
+               button="send"
+               control="email"
+               />
+         <form:addvalidator
+               class="APF\tools\form\validator\TextLengthValidator"
+               button="send"
+               control="name|title|text"
+               />
+         <form:addvalidator
+               class="APF\tools\form\validator\EMailValidator"
                button="send"
                control="email"
                />
