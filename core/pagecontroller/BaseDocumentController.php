@@ -84,39 +84,6 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    }
 
    /**
-    * Convenience method to replace string place holders.
-    * <p/>
-    * Template:
-    * <code>
-    * <html:placeholder name="foo"/>
-    * <html:placeholder name="foo">I am an {FAN-TYPE}</html:placeholder>
-    * </code>
-    * Controller:
-    * <code>
-    * $this->setPlaceholder('foo', 'Ich bin {FAN-TYPE}');
-    * $this->setStringPlaceholder('foo', 'FAN-TYPE', 'APF-Fan!');
-    * </code>
-    *
-    * @param string $name Place holder name.
-    * @param string $key Key name of string place holder.
-    * @param string $value Value, the string place holder is replaced with.
-    *
-    * @throws InvalidArgumentException In case no place holder has been found.
-    *
-    * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
-    * @version
-    * Version 0.1, 03.10.2012<br />
-    */
-   protected function setStringPlaceHolder($name, $key, $value) {
-      try {
-         $this->getDocument()->setStringPlaceHolder($name, $key, $value);
-      } catch (InvalidArgumentException $e) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::setStringPlaceHolder()] No place holders '
-               . 'found for name "' . $name . '" in document controller "' . get_class($this) . '"!', E_USER_ERROR, $e);
-      }
-   }
-
-   /**
     * This method is for convenient setting of multiple place holders. The applied
     * array must contain a structure like this:
     * <code>
