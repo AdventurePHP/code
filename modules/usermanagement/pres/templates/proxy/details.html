@@ -5,20 +5,20 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyDetailsCont
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.proxy.details.headline"/>
+         entry="frontend.proxy.details.headline" delimiter="."/>
 </h3>
 <h4>
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.proxy.details.subline.users-and-groups"/>
+         entry="frontend.proxy.details.subline.users-and-groups" delimiter="."/>
 </h4>
 <p>
    <html:getstring
          name="intro-text"
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.proxy.details.intro.text.users-and-groups"/>
+         entry="frontend.proxy.details.intro.text.users-and-groups" delimiter="."/>
 </p>
 <table class="vis-def">
    <thead>
@@ -28,13 +28,13 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyDetailsCont
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.proxy.details.users-groups.label"/>
+               entry="frontend.proxy.details.users-groups.label" delimiter="."/>
       </td>
       <td>
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.proxy.details.actions.label"/>
+               entry="frontend.proxy.details.actions.label" delimiter="."/>
       </td>
    </tr>
    </thead>
@@ -47,14 +47,14 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyDetailsCont
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.proxy.details.subline.access"/>
+         entry="frontend.proxy.details.subline.access" delimiter="."/>
 </h4>
 <p>
    <html:getstring
          name="intro-text"
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.proxy.details.intro.text.access"/>
+         entry="frontend.proxy.details.intro.text.access" delimiter="."/>
 </p>
 <html:template name="access-perms">
    <div class="umgt-access-perms">
@@ -63,28 +63,28 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyDetailsCont
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.proxy.details.read-perm.label"/>
+               entry="frontend.proxy.details.read-perm.label" delimiter="."/>
       </p>
       <p>
          <umgt:media id="write"/>
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.proxy.details.write-perm.label"/>
+               entry="frontend.proxy.details.write-perm.label" delimiter="."/>
       </p>
       <p>
          <umgt:media id="relation"/>
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.proxy.details.link-perm.label"/>
+               entry="frontend.proxy.details.link-perm.label" delimiter="."/>
       </p>
       <p>
          <umgt:media id="delete"/>
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.proxy.details.delete-perm.label"/>
+               entry="frontend.proxy.details.delete-perm.label" delimiter="."/>
       </p>
    </div>
 </html:template>
@@ -103,7 +103,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyDetailsCont
                <media:getstring
                      namespace="APF\modules\usermanagement\pres"
                      config="labels.ini"
-                     entry="frontend.proxy.details.actions.revoke.label"/>
+                     entry="frontend.proxy.details.actions.revoke.label" delimiter="."/>
             </umgt:media>
          </a>
       </td>

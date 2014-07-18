@@ -5,7 +5,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupAddUserCont
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.group.add-users-to-group.headline"/>
+         entry="frontend.group.add-users-to-group.headline" delimiter="."/>
 </h3>
 
 <html:form name="User" method="post">
@@ -19,7 +19,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupAddUserCont
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.group.add-users-to-group.intro.text"/>
+               entry="frontend.group.add-users-to-group.intro.text" delimiter="."/>
       </p>
       <p>
          <form:multiselect name="User" size="4"/>
@@ -29,7 +29,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupAddUserCont
             <button:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.group.add-users-to-group.button.label"/>
+                  entry="frontend.group.add-users-to-group.button.label" delimiter="."/>
          </form:button>
       </p>
    </div>
@@ -40,13 +40,13 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupAddUserCont
             name="message-1"
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="frontend.group.add-users-to-group.message.1"/>
+            entry="frontend.group.add-users-to-group.message.1" delimiter="."/>
    </p>
    <p>
       <html:getstring
             name="message-2"
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="frontend.group.add-users-to-group.message.2"/>
+            entry="frontend.group.add-users-to-group.message.2" delimiter="."/>
    </p>
 </html:template>

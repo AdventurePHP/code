@@ -5,13 +5,13 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyTypeAddCont
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.proxy.add-type.headline"/>
+         entry="frontend.proxy.add-type.headline" delimiter="."/>
 </h3>
 <p>
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.proxy.add-type.intro.text"/>
+         entry="frontend.proxy.add-type.intro.text" delimiter="."/>
 </p>
 <html:form name="add" method="post">
    <div>
@@ -20,7 +20,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyTypeAddCont
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.proxy.add-type.validator.message"/>
+                  entry="frontend.proxy.add-type.validator.message" delimiter="."/>
          </div>
       </form:error>
       <p>
@@ -28,7 +28,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyTypeAddCont
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.proxy.add-type.proxy-type-name.label"/>
+                  entry="frontend.proxy.add-type.proxy-type-name.label" delimiter="."/>
          </label>
          <form:text id="proxytypename" name="proxytypename" maxlength="100"/>
          <form:addvalidator
@@ -42,7 +42,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyTypeAddCont
             <button:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.proxy.add-type.button.label"/>
+                  entry="frontend.proxy.add-type.button.label" delimiter="."/>
          </form:button>
       </p>
    </div>

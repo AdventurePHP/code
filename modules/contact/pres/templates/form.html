@@ -2,7 +2,7 @@
 class="APF\modules\contact\pres\controller\ContactFormController"
 @>
 <p>
-   <html:getstring namespace="APF\modules\contact" config="language.ini" entry="formhint.text"/>
+   <html:getstring namespace="APF\modules\contact" config="language.ini" entry="formhint.text" delimiter="."/>
 </p>
 <div class="contact-form">
    <html:form name="contact" method="post">
@@ -13,27 +13,27 @@ class="APF\modules\contact\pres\controller\ContactFormController"
          </form:error>
          <form:listener control="sender-name" id="sender-error">
             <li>
-               <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.name.error"/>
+               <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.name.error" delimiter="."/>
             </li>
          </form:listener>
          <form:listener control="sender-address" id="addr-error">
             <li>
-               <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.email.error"/>
+               <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.email.error" delimiter="."/>
             </li>
          </form:listener>
          <form:listener control="subject" id="subject-error">
             <li>
-               <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.subject.error"/>
+               <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.subject.error" delimiter="."/>
             </li>
          </form:listener>
          <form:listener control="content" id="text-error">
             <li>
-               <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.text.error"/>
+               <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.text.error" delimiter="."/>
             </li>
          </form:listener>
          <form:listener control="captcha-control" id="captcha-error">
             <li>
-               <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.captcha.error"/>
+               <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.captcha.error" delimiter="."/>
             </li>
          </form:listener>
          <form:error id="bottomerror">
@@ -56,28 +56,28 @@ class="APF\modules\contact\pres\controller\ContactFormController"
             control="sender-address"
             />
       <label for="contact-form-recipient">
-         <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.person"/>
+         <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.person" delimiter="."/>
       </label>
       <form:select id="contact-form-recipient" name="recipient"/>
       <label for="contact-form-sendername">
-         <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.name"/>
+         <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.name" delimiter="."/>
       </label>
       <form:text id="contact-form-sendername" name="sender-name"/>
       <label for="contact-form-recipient-email">
-         <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.email"/>
+         <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.email" delimiter="."/>
       </label>
       <form:text id="contact-form-recipient-email" name="sender-address"/>
       <label for="contact-form-subject">
-         <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.subject"/>
+         <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.subject" delimiter="."/>
       </label>
       <form:text id="contact-form-subject" name="subject"/>
       <label for="contact-form-textarea">
-         <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.comment"/>
+         <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.comment" delimiter="."/>
       </label>
       <form:area id="contact-form-textarea" name="content" cols="50" rows="6"/>
       <div class="fullsizebox captchabox">
          <label for="contact-form-captcha">
-            <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.captcha"/>
+            <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.captcha" delimiter="."/>
          </label>
          <form:captcha
                id="contact-form-captcha"
@@ -94,7 +94,7 @@ class="APF\modules\contact\pres\controller\ContactFormController"
       </div>
       <div class="fullsizebox buttonbox">
          <form:button name="sendFormContact" class="button">
-            <button:getstring namespace="APF\modules\contact" config="language.ini" entry="form.button"/>
+            <button:getstring namespace="APF\modules\contact" config="language.ini" entry="form.button" delimiter="."/>
          </form:button>
       </div>
 </div>

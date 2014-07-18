@@ -1,12 +1,12 @@
 <@controller class="APF\modules\comments\pres\controller\CommentListingController" @>
 <div class="cm--list">
    <div class="cm--list-head">
-      <html:getstring namespace="APF\modules\comments" config="language.ini" entry="listing.text.1"/>
+      <html:getstring namespace="APF\modules\comments" config="language.ini" entry="listing.text.1" delimiter="."/>
       <a rel="nofollow" href="${Link}#comments" title="<html:getstring namespace="APF\modules\comments"
-      config="language.ini" entry="listing.text.2.title" />"><strong>
-      <html:getstring namespace="APF\modules\comments" config="language.ini" entry="listing.text.2"/>
+      config="language.ini" entry="listing.text.2.title" delimiter="." />"><strong>
+      <html:getstring namespace="APF\modules\comments" config="language.ini" entry="listing.text.2" delimiter="."/>
    </strong></a>
-      <html:getstring namespace="APF\modules\comments" config="language.ini" entry="listing.text.3"/>
+      <html:getstring namespace="APF\modules\comments" config="language.ini" entry="listing.text.3" delimiter="."/>
    </div>
    <div class="cm--list-pager">
       ${Pager}
@@ -32,6 +32,6 @@
 </html:template>
 <html:template name="NoEntries">
    <div class="cm--list-noentries">
-      <html:getstring namespace="APF\modules\comments" config="language.ini" entry="noentries.text"/>
+      <html:getstring namespace="APF\modules\comments" config="language.ini" entry="noentries.text" delimiter="."/>
    </div>
 </html:template>

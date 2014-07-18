@@ -29,7 +29,7 @@ use APF\core\configuration\Configuration;
  * @version
  * Version 0.1, 30.10.2010<br />
  */
-abstract class BaseConfiguration {
+abstract class BaseConfiguration implements Configuration{
 
    /**
     * Stores the values of the current configuration/section.
@@ -45,36 +45,140 @@ abstract class BaseConfiguration {
     */
    private $sections = array();
 
-   public function getSection($name) {
-      return isset($this->sections[$name]) ? $this->sections[$name] : null;
+   public function getSection($name, $delimiter = null) {
+
+      if ($delimiter === null) {
+         return isset($this->sections[$name]) ? $this->sections[$name] : null;
+      }
+
+      $names = explode($delimiter, $name);
+      $depth = count($names);
+
+      return $this->getSectionByPath($depth, $names);
+
+   }
+
+   private function getSectionByPath($depth, array $names, &$foundDepth = null) {
+      $lastSection = $this;
+
+      for ($foundDepth = 0; $foundDepth < $depth; $foundDepth++) {
+
+         $nextSection = $lastSection->getSection($names[$foundDepth]);
+
+         if ($nextSection === null) {
+            return $lastSection;
+         }
+
+         $lastSection = $nextSection;
+      }
+
+      return $nextSection;
    }
 
    public function getSectionNames() {
       return array_keys($this->sections);
    }
 
-   public function getValue($name, $defaultValue = null) {
-      return isset($this->values[$name]) ? $this->values[$name] : $defaultValue;
+   public function getValue($name, $defaultValue = null, $delimiter = null) {
+      if ($delimiter === null) {
+         return isset($this->values[$name]) ? $this->values[$name] : $defaultValue;
+      }
+
+      $names = explode($delimiter, $name);
+      $depth = count($names) - 1;
+
+      $section = $this->getSectionByPath($depth, $names);
+
+      return $section->getValue($names[$depth], $defaultValue);
+
    }
 
    public function getValueNames() {
       return array_keys($this->values);
    }
 
-   public function setSection($name, Configuration $section) {
-      $this->sections[$name] = $section;
+   public function setSection($name, Configuration $section, $delimiter = null) {
+      if ($delimiter === null) {
+         $this->sections[$name] = $section;
+         return;
+      }
+
+      $names = explode($delimiter, $name);
+      $depth = count($names) - 1;
+
+      $previousSection = $this->getSectionByPath($depth, $names, $foundDepth);
+
+      if ($depth === $foundDepth) {
+         $previousSection->setSection($names[$foundDepth], $section);
+
+         return;
+      }
+      $configClass = get_class($this);
+      do {
+         $previousSection->setSection($names[$foundDepth], new $configClass());
+         $previousSection = $previousSection->getSection($names[$foundDepth++]);
+      } while ($foundDepth<$depth-1);
+
+      $previousSection->setSection($names[$foundDepth], $section);
+
    }
 
-   public function setValue($name, $value) {
-      $this->values[$name] = $value;
+   public function setValue($name, $value, $delimiter = null) {
+      if($delimiter===null){
+         $this->values[$name] = $value;
+         return;
+      }
+
+      $names = explode($delimiter, $name);
+      $depth = count($names) - 1;
+
+      $previousSection = $this->getSectionByPath($depth, $names, $foundDepth);
+
+      if ($depth === $foundDepth) {
+         $previousSection->setValue($names[$foundDepth], $value);
+
+         return;
+      }
+
+      $configClass = get_class($this);
+      do {
+         $previousSection->setSection($names[$foundDepth], new $configClass());
+         $previousSection = $previousSection->getSection($names[$foundDepth++]);
+      } while ($foundDepth<$depth-1);
+
+      $previousSection->setValue($names[$foundDepth], $value);
    }
 
-   public function removeSection($name) {
-      unset($this->sections[$name]);
+   public function removeSection($name, $delimiter = null) {
+      if($delimiter === null){
+         unset($this->sections[$name]);
+         return;
+      }
+
+      $names = explode($delimiter, $name);
+      $depth = count($names) - 1;
+
+      $previousSection = $this->getSectionByPath($depth, $names, $foundDepth);
+
+      if($depth === $foundDepth){
+         $previousSection->removeSection($names[$depth]);
+      }
    }
 
-   public function removeValue($name) {
-      unset($this->values[$name]);
+   public function removeValue($name, $delimiter = null) {
+      if($delimiter === null){
+         unset($this->values[$name]);
+         return;
+      }
+
+      $names = explode($delimiter, $name);
+      $depth = count($names) - 1;
+
+      $previousSection = $this->getSectionByPath($depth, $names, $foundDepth);
+
+      if($depth === $foundDepth){
+         $previousSection->removeValue($names[$depth]);
+      }
    }
 
 }

@@ -3,16 +3,16 @@ class="APF\modules\comments\pres\controller\CommentCreateEntryController"
 @>
 <div class="cm--create">
    <div class="cm--create-head">
-      <html:getstring namespace="APF\modules\comments" config="language.ini" entry="formhint.text.1"/>
+      <html:getstring namespace="APF\modules\comments" config="language.ini" entry="formhint.text.1" delimiter="."/>
       <a href="${back}#comments" title="<html:getstring namespace="APF\modules\comments" config="language.ini"
-      entry="formhint.text.2.title" />"><strong>
-      <html:getstring namespace="APF\modules\comments" config="language.ini" entry="formhint.text.2"/>
+      entry="formhint.text.2.title" delimiter="." />"><strong>
+      <html:getstring namespace="APF\modules\comments" config="language.ini" entry="formhint.text.2" delimiter="."/>
    </strong></a>
-      <html:getstring namespace="APF\modules\comments" config="language.ini" entry="formhint.text.3"/>
+      <html:getstring namespace="APF\modules\comments" config="language.ini" entry="formhint.text.3" delimiter="."/>
    </div>
    <div class="cm--create-form">
       <html:form name="AddComment" method="post">
-         <span><html:getstring namespace="APF\modules\comments" config="language.ini" entry="form.name"/>*</span>
+         <span><html:getstring namespace="APF\modules\comments" config="language.ini" entry="form.name" delimiter="."/>*</span>
          <form:text
                maxlength="100"
                name="Name"
@@ -24,7 +24,7 @@ class="APF\modules\comments\pres\controller\CommentCreateEntryController"
                control="Name|Comment"
                />
          <br/>
-         <span><html:getstring namespace="APF\modules\comments" config="language.ini" entry="form.email"/>*</span>
+         <span><html:getstring namespace="APF\modules\comments" config="language.ini" entry="form.email" delimiter="."/>*</span>
          <form:text
                maxlength="100"
                name="EMail"
@@ -42,7 +42,7 @@ class="APF\modules\comments\pres\controller\CommentCreateEntryController"
                />
          <br/>
          <br/>
-         <html:getstring namespace="APF\modules\comments" config="language.ini" entry="form.comment"/>
+         <html:getstring namespace="APF\modules\comments" config="language.ini" entry="form.comment" delimiter="."/>
          <br/>
          <form:area
                name="Comment"
@@ -52,7 +52,7 @@ class="APF\modules\comments\pres\controller\CommentCreateEntryController"
                />
          <br/>
          <br/>
-         <span><html:getstring namespace="APF\modules\comments" config="language.ini" entry="form.confirm"/>*</span>
+         <span><html:getstring namespace="APF\modules\comments" config="language.ini" entry="form.confirm" delimiter="."/>*</span>
          <br/>
          <br/>
 

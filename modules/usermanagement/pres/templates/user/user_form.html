@@ -10,7 +10,7 @@
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.user.edit.form.first-name.label"/>
+               entry="frontend.user.edit.form.first-name.label" delimiter="."/>
       </label>
       <form:text name="FirstName" maxlength="100"/>
 
@@ -18,7 +18,7 @@
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.user.edit.form.last-name.label"/>
+               entry="frontend.user.edit.form.last-name.label" delimiter="."/>
       </label>
       <form:text name="LastName" maxlength="100"/>
 
@@ -26,7 +26,7 @@
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.user.edit.form.street-name.label"/>
+               entry="frontend.user.edit.form.street-name.label" delimiter="."/>
       </label>
       <form:text name="StreetName" maxlength="100"/>
 
@@ -34,7 +34,7 @@
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.user.edit.form.street-number.label"/>
+               entry="frontend.user.edit.form.street-number.label" delimiter="."/>
       </label>
       <form:text name="StreetNumber" maxlength="100"/>
 
@@ -42,7 +42,7 @@
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.user.edit.form.zip.label"/>
+               entry="frontend.user.edit.form.zip.label" delimiter="."/>
       </label>
       <form:text name="ZIPCode" maxlength="100"/>
 
@@ -50,7 +50,7 @@
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.user.edit.form.city.label"/>
+               entry="frontend.user.edit.form.city.label" delimiter="."/>
       </label>
       <form:text name="City" maxlength="100"/>
 
@@ -58,7 +58,7 @@
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.user.edit.form.email.label"/>
+               entry="frontend.user.edit.form.email.label" delimiter="."/>
       </label>
       <form:text name="EMail" maxlength="100"/>
 
@@ -66,7 +66,7 @@
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.user.edit.form.mobile.label"/>
+               entry="frontend.user.edit.form.mobile.label" delimiter="."/>
       </label>
       <form:text name="Mobile" maxlength="100"/>
 
@@ -74,7 +74,7 @@
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.user.edit.form.user-name.label"/>
+               entry="frontend.user.edit.form.user-name.label" delimiter="."/>
       </label>
       <form:text name="Username" maxlength="100"/>
 
@@ -82,7 +82,7 @@
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.user.edit.form.password.label"/>
+               entry="frontend.user.edit.form.password.label" delimiter="."/>
       </label>
       <form:password name="Password" optional="true" ref="Password2" maxlength="100"/>
 
@@ -90,7 +90,7 @@
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.user.edit.form.repeat.label"/>
+               entry="frontend.user.edit.form.repeat.label" delimiter="."/>
       </label>
       <form:password name="Password2" optional="true" maxlength="100"/>
       <form:addvalidator
@@ -108,7 +108,7 @@
             <button:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.user.edit.form.button.label"
+                  entry="frontend.user.edit.form.button.label" delimiter="."
                   />
          </form:button>
          <form:hidden name="userid"/>

@@ -5,7 +5,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyRemoveUsers
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.proxy.remove-users-from-proxy.headline"/>
+         entry="frontend.proxy.remove-users-from-proxy.headline" delimiter="."/>
 </h3>
 <html:form name="add_perm" method="post">
    <div>
@@ -14,14 +14,14 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyRemoveUsers
                name="intro-text"
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.proxy.remove-users-from-proxy.intro.text"/>
+               entry="frontend.proxy.remove-users-from-proxy.intro.text" delimiter="."/>
       </p>
       <form:listener control="users">
          <div class="error-cont">
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.proxy.remove-users-from-proxy.validation.message"/>
+                  entry="frontend.proxy.remove-users-from-proxy.validation.message" delimiter="."/>
          </div>
       </form:listener>
       <div>
@@ -29,7 +29,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyRemoveUsers
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.proxy.remove-users-from-proxy.users.label"/>
+                  entry="frontend.proxy.remove-users-from-proxy.users.label" delimiter="."/>
          </label>
          <form:multiselect id="users" name="users" size="6"/>
       </div>
@@ -42,7 +42,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyRemoveUsers
          <button:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.proxy.remove-users-from-proxy.button.label"/>
+               entry="frontend.proxy.remove-users-from-proxy.button.label" delimiter="."/>
       </form:button>
       <form:hidden name="proxyid"/>
    </div>
@@ -53,13 +53,13 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyRemoveUsers
             name="message-1"
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="frontend.proxy.remove-users-from-proxy.message.1"/>
+            entry="frontend.proxy.remove-users-from-proxy.message.1" delimiter="."/>
    </p>
    <p>
       <html:getstring
             name="message-2"
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="frontend.proxy.remove-users-from-proxy.message.2"/>
+            entry="frontend.proxy.remove-users-from-proxy.message.2" delimiter="."/>
    </p>
 </html:template>

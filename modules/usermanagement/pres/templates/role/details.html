@@ -6,7 +6,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleDetailsContro
          name="display-name"
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.role.details.headline"/>
+         entry="frontend.role.details.headline" delimiter="."/>
 </h3>
 <p>
    ${Description}
@@ -15,7 +15,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleDetailsContro
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.role.details.permissions.label"/>
+         entry="frontend.role.details.permissions.label" delimiter="."/>
 </h4>
 <html:iterator name="Permissions">
    <ul>
@@ -25,7 +25,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleDetailsContro
                <media:getstring
                      namespace="APF\modules\usermanagement\pres"
                      config="labels.ini"
-                     entry="frontend.role.details.permission-img.label"/>
+                     entry="frontend.role.details.permission-img.label" delimiter="."/>
             </umgt:media>
             ${item->getDisplayName()}
             (<em>${item->getName()}=${item->getValue()}</em>)
@@ -38,7 +38,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleDetailsContro
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.role.details.users.label"/>
+         entry="frontend.role.details.users.label" delimiter="."/>
 </h4>
 <html:iterator name="Users">
    <ul>
@@ -48,7 +48,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleDetailsContro
                <media:getstring
                      namespace="APF\modules\usermanagement\pres"
                      config="labels.ini"
-                     entry="frontend.role.details.user-img.label"/>
+                     entry="frontend.role.details.user-img.label" delimiter="."/>
             </umgt:media>
             ${item->getFirstName()}, ${item->getLastName()}
          </li>
@@ -60,7 +60,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleDetailsContro
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.role.details.groups.label"/>
+         entry="frontend.role.details.groups.label" delimiter="."/>
 </h4>
 <html:iterator name="Groups">
    <ul>
@@ -70,7 +70,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleDetailsContro
                <media:getstring
                      namespace="APF\modules\usermanagement\pres"
                      config="labels.ini"
-                     entry="frontend.role.details.group-img.label"/>
+                     entry="frontend.role.details.group-img.label" delimiter="."/>
             </umgt:media>
             ${item->getDisplayName()}
          </li>

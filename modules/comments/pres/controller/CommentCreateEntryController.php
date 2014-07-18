@@ -90,7 +90,7 @@ class CommentCreateEntryController extends CommentBaseDocumentController {
 
       $config = $this->getConfiguration('APF\modules\comments', 'language.ini');
       $button = & $form->getFormElementByName('Save');
-      $button->setAttribute('value', $config->getSection($this->getLanguage())->getValue('form.button'));
+      $button->setAttribute('value', $config->getSection($this->getLanguage())->getValue('form.button', null, '.'));
 
       $form->transformOnPlace();
 

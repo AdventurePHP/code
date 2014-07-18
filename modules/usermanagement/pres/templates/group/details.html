@@ -6,14 +6,14 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupDetailsCont
          name="headline"
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.group.details.headline"
+         entry="frontend.group.details.headline" delimiter="."
          />
 </h3>
 <h4>
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.group.details.group-details.label"
+         entry="frontend.group.details.group-details.label" delimiter="."
          />
 </h4>
 <p>
@@ -24,7 +24,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupDetailsCont
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.group.details.users.label"
+         entry="frontend.group.details.users.label" delimiter="."
          />
 </h4>
 <html:iterator name="Users">
@@ -35,7 +35,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupDetailsCont
                <media:getstring
                      namespace="APF\modules\usermanagement\pres"
                      config="labels.ini"
-                     entry="frontend.group.details.user-img.label"
+                     entry="frontend.group.details.user-img.label" delimiter="."
                      />
             </umgt:media>
             ${item->getFirstName()}, ${item->getLastName()}
@@ -48,7 +48,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupDetailsCont
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.group.details.roles.label"
+         entry="frontend.group.details.roles.label" delimiter="."
          />
 </h4>
 <html:iterator name="Roles">
@@ -59,7 +59,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupDetailsCont
                <media:getstring
                      namespace="APF\modules\usermanagement\pres"
                      config="labels.ini"
-                     entry="frontend.group.details.role-img.label"
+                     entry="frontend.group.details.role-img.label" delimiter="."
                      />
             </umgt:media>
             ${item->getDisplayName()}

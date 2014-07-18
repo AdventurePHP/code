@@ -94,7 +94,7 @@ class ArticleCommentMapper extends APFObject {
       /* @var $cM ConnectionManager */
       $cM = & $this->getServiceObject('APF\core\database\ConnectionManager');
       $config = $this->getConfiguration('APF\modules\comments', 'comments.ini');
-      $connectionKey = $config->getSection('Default')->getValue('Database.ConnectionKey');
+      $connectionKey = $config->getSection('Default')->getValue('Database.ConnectionKey', null, '.');
       if ($connectionKey == null) {
          throw new InvalidArgumentException('[ArticleCommentMapper::getConnection()] The module\'s '
                . 'configuration file does not contain a valid database connection key. Please '

@@ -5,7 +5,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\permission\PermissionA
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.permission.add.headline"/>
+         entry="frontend.permission.add.headline" delimiter="."/>
 </h3>
 <html:form name="PermissionAdd" method="post">
    <div>
@@ -18,14 +18,14 @@ class="APF\modules\usermanagement\pres\documentcontroller\permission\PermissionA
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.permission.add.intro.text"/>
+               entry="frontend.permission.add.intro.text" delimiter="."/>
       </p>
       <p>
          <label>
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.permission.add.display-name.label"/>
+                  entry="frontend.permission.add.display-name.label" delimiter="."/>
          </label>
          <form:text name="DisplayName" maxlength="100"/>
       </p>
@@ -34,7 +34,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\permission\PermissionA
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.permission.add.name.label"/>
+                  entry="frontend.permission.add.name.label" delimiter="."/>
          </label>
          <form:text name="Name" maxlength="100"/>
       </p>
@@ -43,7 +43,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\permission\PermissionA
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.permission.add.value.label"/>
+                  entry="frontend.permission.add.value.label" delimiter="."/>
          </label>
          <form:text name="Value" maxlength="100"/>
       </p>
@@ -52,7 +52,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\permission\PermissionA
             <button:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.permission.add.button.label"/>
+                  entry="frontend.permission.add.button.label" delimiter="."/>
          </form:button>
          <form:hidden name="permissionsetid"/>
       </p>

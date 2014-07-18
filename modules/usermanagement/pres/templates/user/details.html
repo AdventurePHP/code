@@ -6,7 +6,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\user\UserDetailsContro
          name="headline"
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.user.details.headline"
+         entry="frontend.user.details.headline" delimiter="."
          />
 </h3>
 
@@ -15,7 +15,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\user\UserDetailsContro
          name="headline"
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.user.details.user-details.label"/>
+         entry="frontend.user.details.user-details.label" delimiter="."/>
 </h4>
 <html:template name="User">
    <p>
@@ -32,7 +32,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\user\UserDetailsContro
          name="headline"
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.user.details.groups.label"/>
+         entry="frontend.user.details.groups.label" delimiter="."/>
 </h4>
 <html:iterator name="Groups">
    <ul>
@@ -42,7 +42,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\user\UserDetailsContro
                <media:getstring
                      namespace="APF\modules\usermanagement\pres"
                      config="labels.ini"
-                     entry="frontend.user.details.group-img.label"
+                     entry="frontend.user.details.group-img.label" delimiter="."
                      />
             </umgt:media>
             ${item->getDisplayName()}
@@ -56,7 +56,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\user\UserDetailsContro
          name="headline"
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.user.details.roles.label"/>
+         entry="frontend.user.details.roles.label" delimiter="."/>
 </h4>
 <html:iterator name="Roles">
    <ul>
@@ -66,7 +66,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\user\UserDetailsContro
                <media:getstring
                      namespace="APF\modules\usermanagement\pres"
                      config="labels.ini"
-                     entry="frontend.user.details.role-img.label"
+                     entry="frontend.user.details.role-img.label" delimiter="."
                      />
             </umgt:media>
             ${item->getDisplayName()}
@@ -80,7 +80,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\user\UserDetailsContro
          name="headline"
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.user.details.objects.label"/>
+         entry="frontend.user.details.objects.label" delimiter="."/>
 </h4>
 <html:iterator name="Proxies">
    <ul>
@@ -90,26 +90,26 @@ class="APF\modules\usermanagement\pres\documentcontroller\user\UserDetailsContro
                <media:getstring
                      namespace="APF\modules\usermanagement\pres"
                      config="labels.ini"
-                     entry="frontend.user.details.proxy-img.label"
+                     entry="frontend.user.details.proxy-img.label" delimiter="."
                      />
             </umgt:media>
 
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.user.details.app-obj-id.label"/>
+                  entry="frontend.user.details.app-obj-id.label" delimiter="."/>
             <strong>${item->getAppObjectId()}</strong>
 
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.user.details.proxy-id.label"/>
+                  entry="frontend.user.details.proxy-id.label" delimiter="."/>
             <strong>${item->getObjectId()}</strong>
 
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.user.details.permissions.label"/>
+                  entry="frontend.user.details.permissions.label" delimiter="."/>
             <strong>${item->getReadPermission()}</strong>/<strong>${item->getWritePermission()}</strong>/<strong>${item->getLinkPermission()}</strong>/<strong>${item->getDeletePermission()}</strong>
          </li>
       </iterator:item>

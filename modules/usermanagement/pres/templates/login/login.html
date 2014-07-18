@@ -8,28 +8,28 @@ class="APF\modules\usermanagement\pres\documentcontroller\login\LoginController"
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="login.form.username.label"/>
+               entry="login.form.username.label" delimiter="."/>
       </label>
       <form:text id="umgt-fe-login-user" name="username"/>
       <label for="umgt-fe-login-pass">
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="login.form.password.label"/>
+               entry="login.form.password.label" delimiter="."/>
       </label>
       <form:password id="umgt-fe-login-pass" name="password"/>
       <label for="umgt-fe-login-remember-me">
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="login.form.remember-me.label"/>
+               entry="login.form.remember-me.label" delimiter="."/>
       </label>
       <form:checkbox name="remember-me" id="umgt-fe-login-remember-me" value="1"/>
       <form:button id="umgt-fe-login-send" name="sendFormLogin">
          <button:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="login.form.button.label"/>
+               entry="login.form.button.label" delimiter="."/>
       </form:button>
       <form:addvalidator
             class="APF\tools\form\validator\TextLengthValidator"
@@ -44,7 +44,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\login\LoginController"
       <html:getstring
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="login.credentials.error"/>
+            entry="login.credentials.error" delimiter="."/>
    </div>
 </html:template>
 
@@ -53,7 +53,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\login\LoginController"
       <html:getstring
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="login.system.error"/>
+            entry="login.system.error" delimiter="."/>
    </div>
 </html:template>
 
@@ -62,6 +62,6 @@ class="APF\modules\usermanagement\pres\documentcontroller\login\LoginController"
       <html:getstring
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="login.already.logged.in"/>
+            entry="login.already.logged.in" delimiter="."/>
    </div>
 </html:template>

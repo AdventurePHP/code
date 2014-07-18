@@ -88,11 +88,13 @@ class LanguageLabelTag extends Document {
                . '"entry" given in tag definition!', E_USER_ERROR);
       }
 
+      $deliminter = $this->getAttribute('delimiter', null);
+
       // get configuration values
       $config = $this->getConfiguration($namespace, $configName);
       $value = $config->getSection($this->getLanguage()) === null
             ? null
-            : $config->getSection($this->getLanguage())->getValue($entry);
+            : $config->getSection($this->getLanguage())->getValue($entry, null, $deliminter);
 
       if ($value == null) {
 

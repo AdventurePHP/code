@@ -5,7 +5,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupRemoveUserF
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.user.remove-user-from-group.headline"/>
+         entry="frontend.user.remove-user-from-group.headline" delimiter="."/>
 </h3>
 <html:form name="Groups" method="post">
    <div>
@@ -18,7 +18,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupRemoveUserF
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.user.remove-user-from-group.intro.text"/>
+               entry="frontend.user.remove-user-from-group.intro.text" delimiter="."/>
       </p>
       <p>
          <form:multiselect name="Groups" size="4"/>
@@ -28,7 +28,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupRemoveUserF
             <button:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.user.remove-user-from-group.button.label"/>
+                  entry="frontend.user.remove-user-from-group.button.label" delimiter="."/>
          </form:button>
       </p>
    </div>
@@ -40,13 +40,13 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupRemoveUserF
             name="message-1"
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="frontend.user.remove-user-from-group.message.1"/>
+            entry="frontend.user.remove-user-from-group.message.1" delimiter="."/>
    </p>
    <p>
       <html:getstring
             name="message-2"
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="frontend.user.remove-user-from-group.message.2"/>
+            entry="frontend.user.remove-user-from-group.message.2" delimiter="."/>
    </p>
 </html:template>

@@ -2,13 +2,13 @@
 class="APF\extensions\news\pres\documentcontroller\backend\AdminNavigationController"
 @>
 <div id="news-menu">
-   <a href="${list}" title="<html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Menu.List" />"
+   <a href="${list}" title="<html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Menu.List" delimiter="." />"
    class="active">
-   <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Menu.List"/>
+   <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Menu.List" delimiter="."/>
    </a>
    &nbsp;|&nbsp;
-   <a href="${new}" title="<html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Menu.New" />"
+   <a href="${new}" title="<html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Menu.New" delimiter="." />"
    class="active">
-   <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Menu.New"/>
+   <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Menu.New" delimiter="."/>
    </a>
 </div>

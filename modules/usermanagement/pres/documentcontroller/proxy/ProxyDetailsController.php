@@ -63,10 +63,10 @@ class ProxyDetailsController extends UmgtBaseController {
          $icon = & $this->getIcon($template);
          if ($item instanceof UmgtUser) {
             $icon->setAttribute('filename', 'user.png');
-            $icon->setAttribute('title', $section->getValue('frontend.proxy.details.user-img.label'));
+            $icon->setAttribute('title', $section->getValue('frontend.proxy.details.user-img.label', null, '.'));
          } else {
             $icon->setAttribute('filename', 'group.png');
-            $icon->setAttribute('title', $section->getValue('frontend.proxy.details.group-img.label'));
+            $icon->setAttribute('title', $section->getValue('frontend.proxy.details.group-img.label', null, '.'));
          }
 
          // insert links

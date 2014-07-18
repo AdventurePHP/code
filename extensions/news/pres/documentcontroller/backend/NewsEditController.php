@@ -80,7 +80,7 @@ class NewsEditController extends NewsBaseController {
       // Pre-fill form elements if an existing news should be updated
       // and take care of the right text of the button.
       if ($editId !== null && $editId !== '') {
-         $buttonValue = $lang->getValue('Form.Button.Edit');
+         $buttonValue = $lang->getValue('Form.Button.Edit', null, '.');
 
          // retrieve the charset from the registry to guarantee interoperability!
          $charset = Registry::retrieve('APF\core', 'Charset');
@@ -89,7 +89,7 @@ class NewsEditController extends NewsBaseController {
          $formUser->setAttribute('value', htmlspecialchars($news->getAuthor(), ENT_QUOTES, $charset, false));
          $formText->setContent(htmlspecialchars($news->getText(), ENT_QUOTES, $charset, false));
       } else {
-         $buttonValue = $lang->getValue('Form.Button.New');
+         $buttonValue = $lang->getValue('Form.Button.New', null, '.');
 
          // Clear form inputs
          if ($form->isSent() && $form->isValid()) {

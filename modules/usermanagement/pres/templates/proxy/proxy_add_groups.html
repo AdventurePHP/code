@@ -5,7 +5,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddGroupsCo
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.proxy.add-groups-to-proxy.headline"/>
+         entry="frontend.proxy.add-groups-to-proxy.headline" delimiter="."/>
 </h3>
 
 <html:form name="add_perm" method="post">
@@ -15,14 +15,14 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddGroupsCo
                name="intro-text"
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.proxy.add-groups-to-proxy.intro.text"/>
+               entry="frontend.proxy.add-groups-to-proxy.intro.text" delimiter="."/>
       </p>
       <form:listener control="groups">
          <div class="error-cont">
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.proxy.add-groups-to-proxy.validator.message"/>
+                  entry="frontend.proxy.add-groups-to-proxy.validator.message" delimiter="."/>
          </div>
       </form:listener>
       <div>
@@ -30,7 +30,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddGroupsCo
             <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
-                  entry="frontend.proxy.add-groups-to-proxy.groups.label"/>
+                  entry="frontend.proxy.add-groups-to-proxy.groups.label" delimiter="."/>
          </label>
          <form:multiselect id="groups" name="groups" size="6"/>
       </div>
@@ -43,7 +43,7 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddGroupsCo
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.proxy.add-groups-to-proxy.button.label"/>
+               entry="frontend.proxy.add-groups-to-proxy.button.label" delimiter="."/>
       </form:button>
       <form:hidden name="proxyid"/>
    </div>
@@ -54,13 +54,13 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddGroupsCo
             name="message-1"
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="frontend.proxy.add-groups-to-proxy.message.1"/>
+            entry="frontend.proxy.add-groups-to-proxy.message.1" delimiter="."/>
    </p>
    <p>
       <html:getstring
             name="message-2"
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
-            entry="frontend.proxy.add-groups-to-proxy.message.2"/>
+            entry="frontend.proxy.add-groups-to-proxy.message.2" delimiter="."/>
    </p>
 </html:template>
