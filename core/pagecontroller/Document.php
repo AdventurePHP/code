@@ -228,7 +228,7 @@ class Document extends APFObject {
       $attribute = $this->getAttribute($name);
       if ($attribute === null) {
          throw new InvalidArgumentException('[' . get_class($this) . '::getRequiredAttribute()] Attribute "' . $name
-               . '" has not been defined but is mandatory! Please re-check your template setup.');
+            . '" has not been defined but is mandatory! Please re-check your template setup.');
       }
 
       return $attribute;
@@ -293,21 +293,28 @@ class Document extends APFObject {
    }
 
    /**
-    * Let's you add the applied value to the given attribute.
+    * Let's you add the applied value to the given attribute. The glue parameter
+    * can be used to specify how pieces are joined together.
     * <p/>
     * Implicitly creates the attribute in case it doesn't exist.
     *
     * @param string $name The name of the attribute to add a value to.
     * @param string $value The value to add to the current attribute value.
+    * @param string $glue The glue string to join the attribute content.
     *
-    * @author Christian Schäfer
+    * @author Christian Schäfer, Christian Achatz
     * @version
     * Version 0.1, 09.01.2007<br />
     * Version 0.2, 09.02.2013 (Moved to APFObject to avoid multiple implementations)<br />
+    * Version 0.3, 21.07.2014 (Added option to define the glue)<br />
     */
-   public function addAttribute($name, $value) {
+   public function addAttribute($name, $value, $glue = '') {
       if (isset($this->attributes[$name])) {
-         $this->attributes[$name] .= $value;
+         if (empty($this->attributes[$name])) { // avoid e.g. starting blanks with CSS classes
+            $this->attributes[$name] .= $value;
+         } else {
+            $this->attributes[$name] .= $glue . $value;
+         }
       } else {
          $this->attributes[$name] = $value;
       }
@@ -381,11 +388,11 @@ class Document extends APFObject {
          }
       } else {
          throw new InvalidArgumentException('[' . get_class($this) . '::getChildNode()] Current node has no children!',
-               E_USER_ERROR);
+            E_USER_ERROR);
       }
       throw new InvalidArgumentException('[' . get_class($this) . '::getChildNode()] No child node with type "'
-            . $tagLibClass . '" and attribute selector ' . $attributeName . '="' . $value . '" composed in current '
-            . 'document!', E_USER_ERROR);
+         . $tagLibClass . '" and attribute selector ' . $attributeName . '="' . $value . '" composed in current '
+         . 'document!', E_USER_ERROR);
    }
 
    /**
@@ -419,8 +426,8 @@ class Document extends APFObject {
          }
          if (count($result) == 0) {
             throw new InvalidArgumentException('[' . get_class($this) . '::getChildNodes()] No child nodes with type "'
-                  . $tagLibClass . '" and attribute selector ' . $attributeName . '="' . $value . '" composed in current '
-                  . 'document!', E_USER_ERROR);
+               . $tagLibClass . '" and attribute selector ' . $attributeName . '="' . $value . '" composed in current '
+               . 'document!', E_USER_ERROR);
          } else {
             return $result;
          }
@@ -450,14 +457,14 @@ class Document extends APFObject {
       $count = 0;
       foreach ($this->children as $objectId => $DUMMY) {
          if ($this->children[$objectId] instanceof PlaceHolderTag
-               && $this->children[$objectId]->getAttribute('name') === $name
+            && $this->children[$objectId]->getAttribute('name') === $name
          ) {
             // false handled first, since most usages don't append --> slightly faster
             if ($append === false) {
                $this->children[$objectId]->setContent($value);
             } else {
                $this->children[$objectId]->setContent(
-                     $this->children[$objectId]->getContent() . $value
+                  $this->children[$objectId]->getContent() . $value
                );
             }
             $count++;
@@ -471,7 +478,7 @@ class Document extends APFObject {
          // within BaseDocumentController catch and rethrow the exception enriched with further
          // information.
          $message = '[' . get_class($this) . '::setPlaceHolder()] No place holder with name "' . $name
-               . '" found within document with ';
+            . '" found within document with ';
 
          $nodeName = $this->getAttribute('name');
          if (!empty($nodeName)) {
@@ -646,7 +653,7 @@ class Document extends APFObject {
       } catch (Exception $e) {
          // rethrow exception with meaningful content (class loader exception would be too misleading)
          throw new IncludeException('[' . get_class($this) . '::loadContentFromFile()] Template "' . $name
-               . '" not existent in namespace "' . $namespace . '"!', E_USER_ERROR, $e);
+            . '" not existent in namespace "' . $namespace . '"!', E_USER_ERROR, $e);
       }
 
       if (file_exists($file)) {
@@ -662,7 +669,7 @@ class Document extends APFObject {
          }
 
          throw new IncludeException('[' . get_class($this) . '::loadContentFromFile()] Template "' . $name
-               . '" not existent in namespace "' . $namespace . '" (file: "' . $file . '")!' . $code, E_USER_ERROR);
+            . '" not existent in namespace "' . $namespace . '" (file: "' . $file . '")!' . $code, E_USER_ERROR);
 
       }
    }
@@ -932,9 +939,9 @@ class Document extends APFObject {
          $tagStringLength = $tags[$i]['e'] - $tags[$i]['s'];
 
          $attributes = XmlParser::getTagAttributes(
-               $tags[$i]['p'],
-               $tags[$i]['n'],
-               substr($this->content, $tags[$i]['s'] - $offsetCorrection, $tagStringLength)
+            $tags[$i]['p'],
+            $tags[$i]['n'],
+            substr($this->content, $tags[$i]['s'] - $offsetCorrection, $tagStringLength)
          );
 
          // initialize object id, that is used to reference the object
@@ -946,7 +953,7 @@ class Document extends APFObject {
          $class = $this->getTagLibClass($tags[$i]['p'], $tags[$i]['n']);
          if ($class === null) {
             throw new ParserException('No tag definition found for prefix "' . $tags[$i]['p'] . '" and name "' . $tags[$i]['n']
-                  . '" in document with type "' . get_class($this) . '"! Template code: ' . htmlentities($this->content));
+               . '" in document with type "' . get_class($this) . '"! Template code: ' . htmlentities($this->content));
          }
 
          $this->children[$objectId] = new $class();
@@ -1060,12 +1067,12 @@ class Document extends APFObject {
 
          try {
             $docCon = $this->getDIServiceObject(
-                  $controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAMESPACE],
-                  $controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAME]
+               $controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAMESPACE],
+               $controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAME]
             );
          } catch (Exception $e) {
             throw new InvalidArgumentException('[' . get_class($this) . '::extractDocumentController()] Given document controller '
-                  . 'could not be created using the DIServiceManager. Message: ' . $e->getMessage(), $e->getCode());
+               . 'could not be created using the DIServiceManager. Message: ' . $e->getMessage(), $e->getCode());
          }
 
       } elseif (isset($controllerAttributes[self::CONTROLLER_ATTR_CLASS])) {
@@ -1082,9 +1089,9 @@ class Document extends APFObject {
 
          // no valid document controller definition given, thus interrupt execution here
          throw new ParserException('[' . get_class($this) . '::extractDocumentController()] Document '
-               . 'controller specification does not contain a valid controller class or service definition. '
-               . 'Please double check the template code and consult the documentation. '
-               . 'Template code: ' . $this->getContent());
+            . 'controller specification does not contain a valid controller class or service definition. '
+            . 'Please double check the template code and consult the documentation. '
+            . 'Template code: ' . $this->getContent());
 
       }
 
@@ -1274,7 +1281,7 @@ class Document extends APFObject {
    protected function transformChildren() {
       foreach ($this->children as $objectId => $DUMMY) {
          $this->content = str_replace(
-               '<' . $objectId . ' />', $this->children[$objectId]->transform(), $this->content
+            '<' . $objectId . ' />', $this->children[$objectId]->transform(), $this->content
          );
       }
    }
@@ -1294,7 +1301,7 @@ class Document extends APFObject {
       $content = $this->getContent();
       foreach ($this->children as $objectId => $DUMMY) {
          $content = str_replace(
-               '<' . $objectId . ' />', $this->children[$objectId]->transform(), $content
+            '<' . $objectId . ' />', $this->children[$objectId]->transform(), $content
          );
       }
 
