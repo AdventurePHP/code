@@ -22,6 +22,8 @@ namespace APF\modules\usermanagement\pres\documentcontroller\user;
 
 use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\form\taglib\AbstractFormControl;
+use APF\tools\form\validator\AbstractFormValidator;
 use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
@@ -95,8 +97,8 @@ class UserEditController extends UmgtBaseController {
                if ($pass1 !== $pass2) {
                   $passField1->markAsInvalid();
                   $passField2->markAsInvalid();
-                  $passField1->addAttribute('style', 'border: 2px solid red;');
-                  $passField2->addAttribute('style', 'border: 2px solid red;');
+                  $passField1->appendCssClass($this->getMarkerClass($passField1));
+                  $passField2->appendCssClass($this->getMarkerClass($passField2));
                   $this->setPlaceHolder('UserEdit', $form->transformForm());
                } else {
 
@@ -137,6 +139,14 @@ class UserEditController extends UmgtBaseController {
 
       }
 
+   }
+
+   private function getMarkerClass(AbstractFormControl &$control) {
+      $marker = $control->getAttribute(AbstractFormValidator::$CUSTOM_MARKER_CLASS_ATTRIBUTE);
+      if (empty($marker)) {
+         $marker = AbstractFormValidator::$DEFAULT_MARKER_CLASS;
+      }
+      return $marker;
    }
 
 }
