@@ -24,9 +24,6 @@ use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\core\frontcontroller\FrontcontrollerInput;
 
 /**
- * @package APF\tests\suites\tools\link
- * @class TestFrontControllerAction
- *
  * Implements a dummy front controller action to enable testing the link scheme.
  *
  * @author Christian Achatz

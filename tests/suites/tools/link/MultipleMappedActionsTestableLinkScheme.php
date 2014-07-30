@@ -23,9 +23,6 @@ namespace APF\tests\suites\tools\link;
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 
 /**
- * @package APF\tests\suites\tools\link
- * @class TestableActionUrlMappingLinkScheme
- *
  * Encapsulates link scheme overrides for front controller actions used for testing purposes.
  *
  * @author Christian Achatz

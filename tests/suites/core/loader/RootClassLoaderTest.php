@@ -25,9 +25,6 @@ use APF\core\loader\StandardClassLoader;
 use Exception;
 
 /**
- * @package APF\tests\suites\core\loader
- * @class RootClassLoaderTest
- *
  * Tests the capabilities of the RootClassLoader.
  *
  * @author Christian Achatz

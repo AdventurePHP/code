@@ -20,6 +20,8 @@
  */
 namespace APF\tools\form\taglib;
 
+use DateTime;
+
 /**
  * Represents a APF form date control. Please remember the following things when using the control:
  * <ul>
@@ -167,7 +169,7 @@ class DateSelectorTag extends AbstractFormControl {
       // since the onParseTime() methods directly presets the value from the request, we have
       // to correct implausible dates using the PHP DateTime API.
       if (isset($_REQUEST[$name])) {
-         $date = \DateTime::createFromFormat('Y-m-d', $_REQUEST[$name][$this->offsetNames['Year']]
+         $date = DateTime::createFromFormat('Y-m-d', $_REQUEST[$name][$this->offsetNames['Year']]
                . '-' . $_REQUEST[$name][$this->offsetNames['Month']]
                . '-' . $_REQUEST[$name][$this->offsetNames['Day']]);
          if ($date !== false) {
@@ -252,14 +254,15 @@ class DateSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * Returns the date with the pattern YYYY-MM-DD.
+    * Returns the date as DateTime instance with the pattern YYYY-MM-DD.
     *
-    * @return string Date with pattern YYYY-MM-DD.
+    * @return DateTime Instance of DateTime with pattern YYYY-MM-DD.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.08.2009<br />
     * Version 0.2, 30.04.2012 (Introduced a more fail-safe way of reading the date from the control)<br />
+    * Version 0.3, 27.07.2014 (ID#208: added DateTime support)<br />
     */
    public function getDate() {
 
@@ -274,7 +277,7 @@ class DateSelectorTag extends AbstractFormControl {
 
       // use date time API to ensure calender conforming dates (e.g. don't create implausible
       // dates such as 1937-04-31).
-      $date = \DateTime::createFromFormat('Y-m-d', $year->getValue() . '-' . $month->getValue() . '-' . $day->getValue());
+      $date = DateTime::createFromFormat('Y-m-d', $year->getValue() . '-' . $month->getValue() . '-' . $day->getValue());
 
       // In case an empty date has been submitted (e.g. because the "prepend-empty-options" attribute
       // is set) return null.
@@ -282,25 +285,29 @@ class DateSelectorTag extends AbstractFormControl {
          return null;
       }
 
-      return $date->format('Y-m-d');
+      return $date;
    }
 
    /**
-    * Allows you to initialize the date control with a given date (e.g. "2010-06-16").
+    * Allows you to initialize the date control with a given date (e.g. "2010-06-16" or the respective instance or DateTime).
     *
-    * @param string $date The date to initialize the control with.
+    * @param DateTime|string $date The date to initialize the control with (either DateTime instance or string).
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 16.06.2010<br />
     * Version 0.2, 30.04.2012 (Introduced a more fail-safe way of initializing the date)<br />
+    * Version 0.3, 27.07.2014 (ID#208: added DateTime support)<br />
     */
    public function setDate($date) {
-      $formattedDate = \DateTime::createFromFormat('Y-m-d', $date);
 
-      $this->getDayControl()->setOption2Selected($this->appendZero($formattedDate->format('d')));
-      $this->getMonthControl()->setOption2Selected($this->appendZero($formattedDate->format('m')));
-      $this->getYearControl()->setOption2Selected($formattedDate->format('Y'));
+      if (!($date instanceof DateTime)) {
+         $date = DateTime::createFromFormat('Y-m-d', $date);
+      }
+
+      $this->getDayControl()->setOption2Selected($this->appendZero($date->format('d')));
+      $this->getMonthControl()->setOption2Selected($this->appendZero($date->format('m')));
+      $this->getYearControl()->setOption2Selected($date->format('Y'));
    }
 
    /**
@@ -404,9 +411,9 @@ class DateSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * Re-implements the retrieving of values for date controls
+    * Re-implements the retrieving of values for date controls.
     *
-    * @return string The current value or content of the control.
+    * @return DateTime The current value or content of the control.
     *
     * @since 1.14
     *
@@ -421,7 +428,7 @@ class DateSelectorTag extends AbstractFormControl {
    /**
     * Re-implements the setting of values for date controls.
     *
-    * @param string $value The date to set (e.g. "2012-04-30").
+    * @param DateTime|string $value The date to set (e.g. DateTime or "2012-04-30").
     *
     * @return AbstractFormControl This control for further usage.
     *

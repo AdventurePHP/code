@@ -24,9 +24,6 @@ use APF\core\pagecontroller\ParserException;
 use APF\core\pagecontroller\XmlParser;
 
 /**
- * @package APF\tests\suites\core\pagecontroller
- * @class XmlParserTest
- *
  * Tests the XmlParser's capabilities.
  *
  * @author Christian Achatz

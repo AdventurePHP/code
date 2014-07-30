@@ -24,9 +24,6 @@ use APF\core\frontcontroller\ActionUrlMapping;
 use APF\core\frontcontroller\Frontcontroller;
 
 /**
- * @package APF\tests\suites\core\frontcontroller
- * @class FrontControllerActionMappingTest
- *
  * Tests action mapping registration with the front controller.
  *
  * @author Christian Achatz

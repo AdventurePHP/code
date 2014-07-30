@@ -21,11 +21,9 @@
 namespace APF\tests\suites\tools\form\taglib;
 
 use APF\tools\form\taglib\DateSelectorTag;
+use DateTime;
 
 /**
- * @package APF\tests\suites\tools\form\taglib
- * @class DateControlTest
- *
  * Implements tests for the DateSelectorTag control.
  *
  * @author Christian Achatz
@@ -55,8 +53,8 @@ class DateControlTest extends \PHPUnit_Framework_TestCase {
       $tag->onParseTime();
       $tag->onAfterAppend();
 
-      $today = new \DateTime();
-      assertEquals($today->format('Y-m-d'), $tag->getDate());
+      $today = new DateTime();
+      assertEquals($today, $tag->getDate());
    }
 
    public function testPresettingWithPrependEmptyOptions() {
@@ -102,8 +100,8 @@ class DateControlTest extends \PHPUnit_Framework_TestCase {
       $tag->onParseTime();
       $tag->onAfterAppend();
 
-      $expected = \DateTime::createFromFormat('Y-m-d', $year . '-' . $month . '-' . $day);
-      assertEquals($expected->format('Y-m-d'), $tag->getDate());
+      $expected = DateTime::createFromFormat('Y-m-d', $year . '-' . $month . '-' . $day);
+      assertEquals($expected, $tag->getDate());
    }
 
    public function testGetDateWithImplausibleDate() {
@@ -119,8 +117,8 @@ class DateControlTest extends \PHPUnit_Framework_TestCase {
       $tag->onParseTime();
       $tag->onAfterAppend();
 
-      $expected = \DateTime::createFromFormat('Y-m-d', '2012-02-31');
-      assertEquals($expected->format('Y-m-d'), $tag->getDate());
+      $expected = DateTime::createFromFormat('Y-m-d', '2012-02-31');
+      assertEquals($expected, $tag->getDate());
    }
 
    public function testPresettingWithImplausibleDate() {

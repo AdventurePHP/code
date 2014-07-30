@@ -24,9 +24,6 @@ use APF\core\registry\Registry;
 use InvalidArgumentException;
 
 /**
- * @package APF\tests\suites\core\registry
- * @class RegistryPositivTest
- *
  * Test methods of registry class with valid parameters<br />
  *
  * @author Florian Horn

@@ -21,6 +21,7 @@
 namespace APF\tools\form\taglib;
 
 use APF\tools\form\FormException;
+use DateTime;
 
 /**
  * Represents a APF form time control.
@@ -120,7 +121,7 @@ class TimeSelectorTag extends AbstractFormControl {
       while ($i < 60) {
          $i = $this->appendZero($i);
          $minutes->addOption($i, $i);
-         $i = $i + $this->minutesInterval;
+         $i += $this->minutesInterval;
       }
 
 
@@ -229,7 +230,7 @@ class TimeSelectorTag extends AbstractFormControl {
    /**
     * Returns the time with the pattern HH:MM:SS or if ShowSeconds is false with HH:MM
     *
-    * @return string Time with pattern HH:MM:SS or if ShowSeconds is false with HH:MM.
+    * @return DateTime DateTime instance with pattern HH:MM:SS or if showSeconds is false with HH:MM.
     *
     * @author Werner Liemberger
     * @version
@@ -247,8 +248,7 @@ class TimeSelectorTag extends AbstractFormControl {
             return null;
          }
 
-         return $hours->getValue() . ':' . $minutes->getValue();
-
+         return DateTime::createFromFormat('H:i', $hours->getValue() . ':' . $minutes->getValue());
       } else {
          $seconds = $this->getSecondsControl()->getSelectedOption();
 
@@ -257,9 +257,8 @@ class TimeSelectorTag extends AbstractFormControl {
             return null;
          }
 
-         return $hours->getValue() . ':' . $minutes->getValue() . ':' . $seconds->getValue();
+         return DateTime::createFromFormat('H:i:s', $hours->getValue() . ':' . $minutes->getValue() . ':' . $seconds->getValue());
       }
-
    }
 
    /**
@@ -275,17 +274,18 @@ class TimeSelectorTag extends AbstractFormControl {
     */
    public function setTime($time) {
 
-      $time = date_parse($time);
-      if (count($time['errors']) == 0 && count($time['warnings']) == 0) {
-         $this->getHoursControl()->setOption2Selected($this->appendZero($time['hour']));
-         $this->getMinutesControl()->setOption2Selected($this->appendZero($time['minute']));
-         if ($this->showSeconds != false) {
-            $this->getSecondsControl()->setOption2Selected($time['second']);
+      if (!($time instanceof DateTime)) {
+         if ($this->showSeconds === false) {
+            $time = DateTime::createFromFormat('H:i', $time);
+         } else {
+            $time = DateTime::createFromFormat('H:i:s', $time);
          }
-      } else {
-         throw new FormException('[TimeSelectorTag::setTime()] Given time "' . $time
-               . '" cannot be parsed (Errors: ' . implode(', ', $time['errors']) . ', warnings: '
-               . implode(', ', $time['warnings']) . ')');
+      }
+
+      $this->getHoursControl()->setOption2Selected($this->appendZero($time->format('H')));
+      $this->getMinutesControl()->setOption2Selected($this->appendZero($time->format('i')));
+      if ($this->showSeconds !== false) {
+         $this->getSecondsControl()->setOption2Selected($time->format('s'));
       }
    }
 
@@ -340,11 +340,11 @@ class TimeSelectorTag extends AbstractFormControl {
       // read the range for the hours select box
       if (isset($this->attributes['hoursrange'])) {
 
-         $hoursrange = explode('-', $this->attributes['hoursrange']);
+         $hoursRange = explode('-', $this->attributes['hoursrange']);
 
-         if (count($hoursrange) == 2) {
-            $this->hoursRange['Start'] = trim($this->appendZero($hoursrange[0]));
-            $this->hoursRange['End'] = trim($this->appendZero($hoursrange[1]));
+         if (count($hoursRange) == 2) {
+            $this->hoursRange['Start'] = trim($this->appendZero($hoursRange[0]));
+            $this->hoursRange['End'] = trim($this->appendZero($hoursRange[1]));
          }
       }
    }
@@ -396,7 +396,7 @@ class TimeSelectorTag extends AbstractFormControl {
    /**
     * Re-implements the retrieving of values for time controls
     *
-    * @return string The current value or content of the control.
+    * @return DateTime The current value of the control.
     *
     * @since 1.14
     *
@@ -411,7 +411,7 @@ class TimeSelectorTag extends AbstractFormControl {
    /**
     * Re-implements the setting of values for time controls
     *
-    * @param string $value
+    * @param DateTime|string $value The time value to set.
     *
     * @return AbstractFormControl
     *

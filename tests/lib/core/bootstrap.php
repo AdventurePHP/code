@@ -20,8 +20,6 @@
  */
 
 /**
- * @package APF\tests\lib\core
- *
  * Bootstrap to start test application environment.<br />
  *
  * @author Florian Horn

@@ -27,9 +27,6 @@ use APF\tools\link\RewriteLinkScheme;
 use APF\tools\link\Url;
 
 /**
- * @package APF\tests\suites\tools\link
- * @class LinkGeneratorTest
- *
  * Implements tests for the link generator and the url abstraction.
  *
  * @author Christian Achatz

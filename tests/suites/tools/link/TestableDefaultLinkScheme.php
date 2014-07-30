@@ -24,9 +24,6 @@ use APF\core\frontcontroller\FrontcontrollerInput;
 use APF\tools\link\DefaultLinkScheme;
 
 /**
- * @package APF\tests\suites\tools\link
- * @class TestableDefaultLinkScheme
- *
  * Implements a testable link scheme regarding front controller link
  * generation capabilities.
  *

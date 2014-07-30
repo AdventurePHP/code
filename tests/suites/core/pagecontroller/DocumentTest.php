@@ -26,9 +26,6 @@ use APF\core\pagecontroller\Document;
 use ReflectionMethod;
 
 /**
- * @package APF\tests\suites\core\pagecontroller
- * @class DocumentTest
- *
  * Tests the <em>Document::getTemplateFilePath()</em> regarding class loader usage.
  *
  * @author Christian Achatz

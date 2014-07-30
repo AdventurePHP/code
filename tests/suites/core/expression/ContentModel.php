@@ -21,9 +21,6 @@
 namespace APF\tests\suites\core\expression;
 
 /**
- * @package APF\tests\suites\core\expression
- * @class ContentModel
- *
  * Model to test Document's data attribute mechanism.
  *
  * <section class="${css-class}">

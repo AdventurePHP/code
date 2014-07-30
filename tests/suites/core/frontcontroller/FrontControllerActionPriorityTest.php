@@ -26,9 +26,6 @@ use APF\core\configuration\provider\ini\IniConfigurationProvider;
 use APF\core\frontcontroller\Frontcontroller;
 
 /**
- * @package APF\tests\suites\core\frontcontroller
- * @class FrontControllerActionPriorityTest
- *
  * Tests prioritization of front controller actions.
  *
  * @author Christian Achatz

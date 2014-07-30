@@ -28,9 +28,6 @@ use APF\core\frontcontroller\Frontcontroller;
 use APF\tests\suites\core\frontcontroller\FakeIniProvider;
 
 /**
- * @package APF\tests\suites\core\filter
- * @class ChainedStandardInputFilterTest
- *
  * Tests the action mapping capabilities of the ChainedUrlRewritingInputFilter.
  *
  * @author Christian Achatz
