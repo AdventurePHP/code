@@ -109,12 +109,7 @@ class HtmlLinkTag extends LinkGenerationTag {
 
       // if the current link is active, this taglib adds the css class active.
       if ($this->isActive()) {
-         $class = $this->getAttribute('class');
-         if (empty($class)) {
-            $this->setAttribute('class', 'active');
-         } else {
-            $this->setAttribute('class', $class . ' active');
-         }
+         $this->addAttribute('class', 'active', ' ');
       }
 
       return '<a ' . $this->getAttributesAsString($this->getAttributes()) . '>' . $content . '</a>';
@@ -130,8 +125,20 @@ class HtmlLinkTag extends LinkGenerationTag {
     * Version 0.1, 30.11.2012<br />
     */
    public function isActive() {
-      $currentUrl = LinkGenerator::generateUrl(Url::fromCurrent(true));
-      if (substr_count(str_replace('&', '&amp;', $currentUrl), $this->getAttribute(self::HREF_ATTRIBUTE_NAME)) > 0) {
+
+      $currentUrl = Url::fromCurrent(true);
+      $targetUrl = Url::fromString($this->getAttribute(self::HREF_ATTRIBUTE_NAME));
+
+      // ID#201: re-map and sort query parameters to allow parameter mixing
+      $currentQuery = $currentUrl->getQuery();
+      ksort($currentQuery);
+      $currentUrl->setQuery($currentQuery);
+
+      $targetQuery = $currentUrl->getQuery();
+      ksort($targetQuery);
+      $targetUrl->setQuery($targetQuery);
+
+      if (substr_count(LinkGenerator::generateUrl($currentUrl), LinkGenerator::generateUrl($targetUrl)) > 0) {
          return true;
       }
 
