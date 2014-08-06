@@ -72,23 +72,23 @@ final class ArrayPagerManager extends APFObject {
       }
 
       $arrayParameter = array(
-            'Pager.ParameterPage'    => 'page',
-            'Pager.ParameterEntries' => 'entries',
-            'Pager.Entries'          => 10,
-            'Pager.EntriesPossible'  => '5|10|15'
+            'ParameterPage'    => 'page',
+            'ParameterEntries' => 'entries',
+            'Entries'          => 10,
+            'EntriesPossible'  => '5|10|15'
       );
 
       $this->pagerConfig = array_merge($arrayParameter, $configParams);
 
-      if (isset($this->pagerConfig['Pager.EntriesChangeable']) === true
-            && $this->pagerConfig['Pager.EntriesChangeable'] == 'true'
+      if (isset($this->pagerConfig['EntriesChangeable']) === true
+            && $this->pagerConfig['EntriesChangeable'] == 'true'
       ) {
-         $this->pagerConfig['Pager.EntriesChangeable'] = true;
+         $this->pagerConfig['EntriesChangeable'] = true;
       } else {
-         $this->pagerConfig['Pager.EntriesChangeable'] = false;
+         $this->pagerConfig['EntriesChangeable'] = false;
       }
 
-      $this->pagerConfig['Pager.Entries'] = intval($this->pagerConfig['Pager.Entries']);
+      $this->pagerConfig['Entries'] = intval($this->pagerConfig['Entries']);
    }
 
    /**
@@ -124,7 +124,7 @@ final class ArrayPagerManager extends APFObject {
 
       if (is_array($arrayData) === true) {
          if ($integerPage === null) {
-            $integerPage = intval(RequestHandler::getValue($this->pagerConfig['Pager.ParameterPage'],
+            $integerPage = intval(RequestHandler::getValue($this->pagerConfig['ParameterPage'],
                         1
                   )
             );
@@ -135,9 +135,9 @@ final class ArrayPagerManager extends APFObject {
          }
 
          if ($integerEntries === null) {
-            if ($this->pagerConfig['Pager.EntriesChangeable'] === true) {
-               $integerEntries = intval(RequestHandler::getValue($this->pagerConfig['Pager.ParameterEntries'],
-                           $this->pagerConfig['Pager.Entries']
+            if ($this->pagerConfig['EntriesChangeable'] === true) {
+               $integerEntries = intval(RequestHandler::getValue($this->pagerConfig['ParameterEntries'],
+                           $this->pagerConfig['Entries']
                      )
                );
             } else {
@@ -145,7 +145,7 @@ final class ArrayPagerManager extends APFObject {
             }
 
             if ($integerEntries <= 0) {
-               $integerEntries = $this->pagerConfig['Pager.Entries'];
+               $integerEntries = $this->pagerConfig['Entries'];
             }
          }
 
@@ -189,21 +189,21 @@ final class ArrayPagerManager extends APFObject {
             $pager->setContext($this->getContext());
 
             // load the configured design
-            $pager->loadDesign($this->pagerConfig['Pager.DesignNamespace'],
-                  $this->pagerConfig['Pager.DesignTemplate']
+            $pager->loadDesign($this->pagerConfig['DesignNamespace'],
+                  $this->pagerConfig['DesignTemplate']
             );
 
             // add the necessary config params and pages
             $rootDoc = $pager->getRootDocument();
 
             $rootDoc->setAttribute('Config',
-                  array('ParameterPage'     => $this->pagerConfig['Pager.ParameterPage'],
-                        'ParameterEntries'  => $this->pagerConfig['Pager.ParameterEntries'],
-                        'Entries'           => intval(RequestHandler::getValue($this->pagerConfig['Pager.ParameterEntries'],
-                              $this->pagerConfig['Pager.Entries']
+                  array('ParameterPage'     => $this->pagerConfig['ParameterPage'],
+                        'ParameterEntries'  => $this->pagerConfig['ParameterEntries'],
+                        'Entries'           => intval(RequestHandler::getValue($this->pagerConfig['ParameterEntries'],
+                              $this->pagerConfig['Entries']
                         )),
-                        'EntriesPossible'   => $this->pagerConfig['Pager.EntriesPossible'],
-                        'EntriesChangeable' => $this->pagerConfig['Pager.EntriesChangeable']
+                        'EntriesPossible'   => $this->pagerConfig['EntriesPossible'],
+                        'EntriesChangeable' => $this->pagerConfig['EntriesChangeable']
                   )
             );
 
@@ -322,7 +322,7 @@ final class ArrayPagerManager extends APFObject {
    public function checkPage() {
       $booleanReturn = false;
 
-      $mixedData = RequestHandler::getValue($this->pagerConfig['Pager.ParameterPage'],
+      $mixedData = RequestHandler::getValue($this->pagerConfig['ParameterPage'],
             false
       );
 

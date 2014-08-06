@@ -18,9 +18,11 @@ echo "#############################################"
 echo
 echo "Starting configuration migration ..."
 
-# migrate tag lib declaration
 echo "* Migrate cache configuration ..."
 $PHP_BINARY $SCRIPT_DIR/migrate_cache_config.php
+
+echo "* Migrate pager configuration ..."
+$PHP_BINARY $SCRIPT_DIR/migrate_pager_config.php
 
 echo
 echo "#############################################"
