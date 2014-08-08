@@ -20,6 +20,8 @@
  */
 namespace APF\tools\form\validator;
 
+use DateTime;
+
 /**
  * Implements a simple date control validator. It expects the selected date to
  * be greater than today.
@@ -34,7 +36,7 @@ class SimpleDateControlValidator extends TextFieldValidator {
     * Validates the date contained in the date control. Checks, whether the
     * date is greater than or equal to the current date.
     *
-    * @param string $input The content of the form control (YYYY-MM-DD).
+    * @param DateTime $input The content of the form control.
     *
     * @return boolean True, in case the control is valid, false otherwise.
     *
@@ -49,10 +51,9 @@ class SimpleDateControlValidator extends TextFieldValidator {
          return false;
       }
 
-      $date = \DateTime::createFromFormat('Y-m-d', $input);
-      $today = new \DateTime();
+      $today = new DateTime();
 
-      return $today < $date;
+      return $today < $input;
    }
 
    /**
