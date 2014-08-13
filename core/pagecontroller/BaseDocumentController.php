@@ -331,4 +331,26 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
       $this->getDocument()->getData($name, $default);
    }
 
+   /**
+    * Convenience method to access a DOM node via it's <em>dom-id</em> attribute.
+    *
+    * @param string $id The id of the DOM node to return.
+    *
+    * @return Document The desired DOM node within the tree.
+    * @throws InvalidArgumentException In case no DOM node exists with the given id.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 13.08.2014<br />
+    */
+   protected function getDomById($id) {
+      try {
+         return $this->getDocument()->getNodeById($id);
+      } catch (InvalidArgumentException $e) {
+         throw new InvalidArgumentException('[' . get_class($this) . '::getDomById()] No DOM node with id "'
+               . $id . '" found in current document for document controller "' . get_class($this) . '"! '
+               . 'Perhaps review your template setup!', E_USER_ERROR, $e);
+      }
+   }
+
 }
