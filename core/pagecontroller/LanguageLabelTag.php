@@ -44,7 +44,7 @@ use InvalidArgumentException;
  * Version 0.2, 17.09.2009 (Refactored due to form taglib changes)<br />
  * Version 0.3, 11.02.2012 (Added LanguageLabelTag to core (refactoring!))
  */
-class LanguageLabelTag extends Document {
+class LanguageLabelTag extends Document implements LanguageLabel {
 
    /**
     * A list of place holder names and values.

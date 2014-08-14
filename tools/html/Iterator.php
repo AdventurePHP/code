@@ -18,39 +18,27 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-namespace APF\tools\form\taglib;
+namespace APF\tools\html;
 
 /**
- * Represents the <form:marker /> tag, that can be used to dynamically create forms. Please
- * have a look at the API documentation of the HtmlFormTag class for details.
+ * Declares the interface of an iterator implementation.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 03.09.2008<br />
+ * Version 0.1, 13.08.2014 (ID#231: Introduced interface to allow custom implementations)<br />
  */
-class DynamicFormElementMarkerTag extends AbstractFormControl {
+interface Iterator {
 
    /**
-    * Overwrites the onParseTime() method from the Document class, because here's nothing to do.
+    * This method allows you to fill the data container. Arrays with associative
+    * keys are allowed as well as lists of objects (arrays with numeric offsets).
+    *
+    * @param array $data List of objects of an associative array.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 03.09.2008<br />
+    * Version 0.1, 01.06.2008<br />
     */
-   public function onParseTime() {
-   }
+   public function fillDataContainer($data);
 
-   /**
-    * Implements the transform() method. Returns an empty string.
-    *
-    * @return string An empty string.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 03.09.2008<br />
-    */
-   public function transform() {
-      return '';
-   }
-
-}
+} 

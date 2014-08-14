@@ -27,6 +27,7 @@ use APF\core\pagecontroller\XmlParser;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 use APF\tools\form\FormException;
+use APF\tools\form\HtmlForm;
 use InvalidArgumentException;
 
 /**
@@ -47,7 +48,7 @@ use InvalidArgumentException;
  * Version 1.1, 30.12.2009 (Added the form:success tag)<br />
  * Version 1.2, 15.12.2012 (Separated from form_control and refactored tag naming to 1.16 concept)<br />
  */
-class HtmlFormTag extends Document {
+class HtmlFormTag extends Document implements HtmlForm {
 
    public static $METHOD_ATTRIBUTE_NAME = 'method';
    public static $METHOD_POST_VALUE_NAME = 'post';
@@ -60,7 +61,7 @@ class HtmlFormTag extends Document {
    private $transformOnPlace = false;
 
    /**
-    * Initializes the known taglibs.
+    * Initializes the form.
     *
     * @author Christian Schäfer
     * @version
@@ -638,7 +639,7 @@ class HtmlFormTag extends Document {
     */
    public function &getLabel($name) {
       try {
-         return $this->getChildNode('name', $name, 'APF\core\pagecontroller\LanguageLabelTag');
+         return $this->getChildNode('name', $name, 'APF\core\pagecontroller\LanguageLabel');
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[HtmlFormTag::getLabel()] No label found with name "' . $name
                . '" composed in form with name "' . $this->getAttribute('name') . '" for document controller "'

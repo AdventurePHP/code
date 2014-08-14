@@ -22,6 +22,7 @@ namespace APF\tools\html\taglib;
 
 use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\TemplateTag;
+use APF\tools\html\Iterator;
 use APF\tools\html\model\IteratorStatus;
 use APF\tools\request\RequestHandler;
 use InvalidArgumentException;
@@ -44,7 +45,7 @@ use InvalidArgumentException;
  * Version 0.2, 04.06.2008 (Replaced __getIteratorItem() with key())<br />
  * Version 0.3, 11.05.2014 (ID#187: allow template expressions within iterators)<br />
  */
-class HtmlIteratorTag extends Document {
+class HtmlIteratorTag extends Document implements Iterator {
 
    /**
     * Defines the "normal" fallback mode (fallback content is displayed additionally).
@@ -104,16 +105,6 @@ class HtmlIteratorTag extends Document {
       $this->extractTagLibTags();
    }
 
-   /**
-    * This method allows you to fill the data container. Arrays with associative
-    * keys are allowed as well as lists of objects (arrays with numeric offsets).
-    *
-    * @param array $data List of objects of an associative array.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 01.06.2008<br />
-    */
    public function fillDataContainer($data) {
       $this->dataContainer = $data;
    }

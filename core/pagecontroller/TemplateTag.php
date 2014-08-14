@@ -35,7 +35,7 @@ use InvalidArgumentException;
  * Version 0.1, 28.12.2006<br />
  * Version 0.2, 10.11.2008 (Removed the IncludedTagLib behavior, because this lead to errors when including new taglibs with template:addtaglib.)<br />
  */
-class TemplateTag extends Document {
+class TemplateTag extends Document implements Template {
 
    /**
     * Indicates, if the template should be transformed on the place of definition. Default is false.
@@ -69,7 +69,7 @@ class TemplateTag extends Document {
     */
    public function &getLabel($name) {
       try {
-         return $this->getChildNode('name', $name, 'APF\core\pagecontroller\LanguageLabelTag');
+         return $this->getChildNode('name', $name, 'APF\core\pagecontroller\LanguageLabel');
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[TemplateTag::getLabel()] No label found with name "' . $name
                . '" composed in template with name "' . $this->getAttribute('name') . '" for document controller "'

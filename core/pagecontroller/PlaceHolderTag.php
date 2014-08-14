@@ -29,7 +29,7 @@ namespace APF\core\pagecontroller;
  * Version 0.1, 28.12.2006<br />
  * Version 0.2, 02.01.2013 (Introduced string place holder mechanism)<br />
  */
-class PlaceHolderTag extends Document {
+class PlaceHolderTag extends Document implements PlaceHolder {
 
    /**
     * Implements the transform() method. Returns the content of the tag, that is set by a

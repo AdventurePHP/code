@@ -175,10 +175,11 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * @version
     * Version 0.1, 12.01.2007<br />
     * Version 0.2, 14.06.2008 (Improved error handling.)<br />
+    * Version 0.3, 13.08.2014 (ID#231: Allow custom form tag while still using this method to obtain an instance)<br />
     */
    protected function &getForm($formName) {
       try {
-         return $this->getDocument()->getChildNode('name', $formName, 'APF\tools\form\taglib\HtmlFormTag');
+         return $this->getDocument()->getChildNode('name', $formName, 'APF\tools\form\HtmlForm');
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[' . get_class($this) . '::getForm()] No form object with name "'
                . $formName . '" composed in current document for document controller "' . get_class($this)
@@ -201,10 +202,11 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * Version 0.2, 03.01.2007 (Bug fix: now not only the first template is returned)<br />
     * Version 0.3, 12.01.2006 (Renamed from "__getContentTemplate" to "__getTemplate" due to the introduction of "__getForm")<br />
     * Version 0.4, 23.04.2009 (Corrected PHP4 style object access)<br />
+    * Version 0.5, 13.08.2014 (ID#231: Allow custom form tag while still using this method to obtain an instance)<br />
     */
    protected function &getTemplate($name) {
       try {
-         return $this->getDocument()->getChildNode('name', $name, 'APF\core\pagecontroller\TemplateTag');
+         return $this->getDocument()->getChildNode('name', $name, 'APF\core\pagecontroller\Template');
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[' . get_class($this) . '::getTemplate()] No template with name "'
                . $name . '" composed in current document for document controller "' . get_class($this)
@@ -220,10 +222,15 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     *
     * @return LanguageLabelTag The instance of the desired label node.
     * @throws InvalidArgumentException In case no label node can be found.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 2012<br />
+    * Version 0.2, 13.08.2014 (ID#231: Allow custom form tag while still using this method to obtain an instance)<br />
     */
    protected function &getLabel($name) {
       try {
-         return $this->getDocument()->getChildNode('name', $name, 'APF\core\pagecontroller\LanguageLabelTag');
+         return $this->getDocument()->getChildNode('name', $name, 'APF\core\pagecontroller\LanguageLabel');
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[' . get_class($this) . '::getLabel()] No label with name "'
                . $name . '" composed in current document for document controller "' . get_class($this)
@@ -243,10 +250,11 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * Version 0.1, 11.03.2007<br />
     * Version 0.2, 23.04.2009 (Corrected PHP4 style object access)<br />
     * Version 0.3, 02.07.2011 (Renaming to fit the APF naming convention)<br />
+    * Version 0.4, 13.08.2014 (ID#231: Allow custom form tag while still using this method to obtain an instance)<br />
     */
    protected function placeHolderExists($name) {
       try {
-         $this->getDocument()->getChildNode('name', $name, 'APF\core\pagecontroller\PlaceHolderTag');
+         $this->getDocument()->getChildNode('name', $name, 'APF\core\pagecontroller\PlaceHolder');
 
          return true;
       } catch (InvalidArgumentException $e) {
@@ -267,10 +275,11 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * Version 0.1, 11.03.2007<br />
     * Version 0.2, 23.04.2009 (Corrected PHP4 style object access)<br />
     * Version 0.3, 02.07.2011 (Renaming to fit the APF naming convention)<br />
+    * Version 0.4, 13.08.2014 (ID#231: Allow custom form tag while still using this method to obtain an instance)<br />
     */
    protected function templatePlaceHolderExists(TemplateTag &$template, $name) {
       try {
-         $template->getChildNode('name', $name, 'APF\core\pagecontroller\PlaceHolderTag');
+         $template->getChildNode('name', $name, 'APF\core\pagecontroller\PlaceHolder');
 
          return true;
       } catch (InvalidArgumentException $e) {
@@ -290,10 +299,11 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * @author Christian Achatz
     * @version
     * Version 0.1, 02.06.2008<br />
+    * Version 0.2, 13.08.2014 (ID#231: Allow custom form tag while still using this method to obtain an instance)<br />
     */
    protected function &getIterator($name) {
       try {
-         return $this->getDocument()->getChildNode('name', $name, 'APF\tools\html\taglib\HtmlIteratorTag');
+         return $this->getDocument()->getChildNode('name', $name, 'APF\tools\html\Iterator');
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[' . get_class($this) . '::getIterator()] No iterator with name "'
                . $name . '" composed in current document for document controller "' . get_class($this) . '"! '
