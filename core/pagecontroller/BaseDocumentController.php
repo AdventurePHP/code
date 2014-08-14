@@ -353,7 +353,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * @version
     * Version 0.1, 13.08.2014<br />
     */
-   protected function getDomById($id) {
+   protected function getNodeById($id) {
       try {
          return $this->getDocument()->getNodeById($id);
       } catch (InvalidArgumentException $e) {
