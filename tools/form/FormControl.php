@@ -18,7 +18,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-namespace APF\tools\form\taglib;
+namespace APF\tools\form;
 
 /**
  * Defines the basic structure/functionality of an APF form control.

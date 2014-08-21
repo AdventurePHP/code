@@ -22,13 +22,13 @@ namespace APF\tools\form\taglib;
 
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\pagecontroller\Document;
-use APF\core\pagecontroller\LanguageLabelTag;
 use APF\core\pagecontroller\XmlParser;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
+use APF\tools\form\FormControl;
 use APF\tools\form\FormException;
 use APF\tools\form\HtmlForm;
-use InvalidArgumentException;
+use APF\tools\form\mixin\FormControlFinder as FormControlFinderImpl;
 
 /**
  * Represents a APF form element (DOM node).
@@ -50,15 +50,14 @@ use InvalidArgumentException;
  */
 class HtmlFormTag extends Document implements HtmlForm {
 
-   public static $METHOD_ATTRIBUTE_NAME = 'method';
-   public static $METHOD_POST_VALUE_NAME = 'post';
+   use FormControlFinderImpl;
 
    /**
     * Indicates, whether the form should be transformed at it'd place of definition or not.
     *
     * @var boolean $transformOnPlace
     */
-   private $transformOnPlace = false;
+   protected $transformOnPlace = false;
 
    /**
     * Initializes the form.
@@ -82,7 +81,7 @@ class HtmlFormTag extends Document implements HtmlForm {
    public function __construct() {
       // setup attributes within white-list
       $this->attributeWhiteList = array_merge(AbstractFormControl::$CORE_ATTRIBUTES, AbstractFormControl::$EVENT_ATTRIBUTES, AbstractFormControl::$I18N_ATTRIBUTES);
-      $this->attributeWhiteList[] = self::$METHOD_ATTRIBUTE_NAME;
+      $this->attributeWhiteList[] = self::METHOD_ATTRIBUTE_NAME;
       $this->attributeWhiteList[] = 'action';
       $this->attributeWhiteList[] = 'name'; // allowed with HTML5 again (see http://www.w3.org/html/wg/drafts/html/master/forms.html#attr-form-name)
       $this->attributeWhiteList[] = 'enctype';
@@ -97,12 +96,12 @@ class HtmlFormTag extends Document implements HtmlForm {
    public function onParseTime() {
 
       // add default method for convenience
-      $method = $this->getAttribute(self::$METHOD_ATTRIBUTE_NAME);
+      $method = $this->getAttribute(self::METHOD_ATTRIBUTE_NAME);
       if ($method === null) {
          $this->setAttribute(
-               self::$METHOD_ATTRIBUTE_NAME,
+               self::METHOD_ATTRIBUTE_NAME,
                strtolower(
-                     Registry::retrieve('APF\tools', 'FormDefaultMethod', self::$METHOD_POST_VALUE_NAME)
+                     Registry::retrieve('APF\tools', 'FormDefaultMethod', self::METHOD_POST_VALUE_NAME)
                )
          );
       }
@@ -110,16 +109,6 @@ class HtmlFormTag extends Document implements HtmlForm {
       $this->extractTagLibTags();
    }
 
-   /**
-    * Indicates, whether the form has been sent or not. Retrieves the status
-    * directly from the form controls. Overwrites the parent's method.
-    *
-    * @return boolean True, in case the form is sent, false otherwise.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 27.09.2009<br />
-    */
    public function isSent() {
 
       foreach ($this->children as $objectId => $DUMMY) {
@@ -138,16 +127,7 @@ class HtmlFormTag extends Document implements HtmlForm {
       return false;
    }
 
-   /**
-    * Indicates, whether the form is valid or not. Retrieves the status
-    * directly from the form controls. Overwrites the parent's method.
-    *
-    * @return boolean True, in case the form is valid, false otherwise.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 27.09.2009<br />
-    */
+   // TODO give it another try to refactor validation to isValid() rather than direct validation per addValidator() to streamline API
    public function isValid() {
 
       foreach ($this->children as $objectId => $DUMMY) {
@@ -185,6 +165,7 @@ class HtmlFormTag extends Document implements HtmlForm {
    public function addFormElement($elementType, array $elementAttributes = array()) {
 
       // create form element
+      // TODO respect hierarchy where form control should be created (either move to AbstractFormControl to allow addition anywhere or remove this method and only allow adding with markers (latter is better!))
       $objectId = $this->createFormElement($elementType, $elementAttributes);
 
       if ($objectId === null) {
@@ -276,6 +257,7 @@ class HtmlFormTag extends Document implements HtmlForm {
    public function addFormElementBeforeMarker($markerName, $elementType, array $elementAttributes = array()) {
 
       // create new form element
+      // TODO re-implement to allow addition in any hierarchy level (e.g. group in group)
       $objectId = $this->createFormElement($elementType, $elementAttributes);
 
       if ($objectId === null) {
@@ -353,6 +335,8 @@ class HtmlFormTag extends Document implements HtmlForm {
     * Version 0.2, 10.09.2008 (Added the $elementAttributes param)<br />
     * Version 0.3, 12.11.2008 (Bug-fix: language and context initialisation were wrong)<br />
     */
+   // TODO implementation to be adapted to respect hierarchy where form control should be created
+   // TODO Maybe implement a new Document::appendNode($objectId, Document $node);
    protected function createFormElement($elementType, array $elementAttributes = array()) {
 
       $class = $this->getTagClass($elementType);
@@ -388,38 +372,6 @@ class HtmlFormTag extends Document implements HtmlForm {
 
    }
 
-   /**
-    * Returns a reference on the desired marker or null.
-    *
-    * @param string $markerName The desired marker's name.
-    *
-    * @return DynamicFormElementMarkerTag The marker.
-    * @throws FormException In case the marker cannot be found.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 03.09.2008<br />
-    */
-   protected function &getMarker($markerName) {
-      try {
-         return $this->getChildNode('name', $markerName, 'APF\tools\form\taglib\DynamicFormElementMarkerTag');
-      } catch (InvalidArgumentException $e) {
-         throw new FormException('[HtmlFormTag::addFormContentAfterMarker()] No marker object '
-               . 'with name "' . $markerName . '" composed in current form for document controller "'
-               . ($this->getParentObject()->getDocumentController()) . '"! Please check the definition of '
-               . 'the form with name "' . $this->getAttribute('name') . '"!', E_USER_ERROR, $e);
-      }
-   }
-
-   /**
-    * Sets the action url of the form.
-    *
-    * @param string $action The action URL of the form.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 07.01.2007<br />
-    */
    public function setAction($action) {
       $this->setAttribute('action', $action);
    }
@@ -441,159 +393,6 @@ class HtmlFormTag extends Document implements HtmlForm {
    }
 
    /**
-    * Returns a reference on the form element identified by the given name.
-    *
-    * @param string $name The name of the desired form element.
-    *
-    * @return AbstractFormControl A reference on the form element.
-    * @throws FormException In case the form element cannot be found.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 07.01.2007<br />
-    * Version 0.2, 12.09.2009 (Corrected debug message)<br />
-    */
-   public function &getFormElementByName($name) {
-
-      if (count($this->children) > 0) {
-         foreach ($this->children as $objectId => $DUMMY) {
-            if ($this->children[$objectId]->getAttribute('name') == $name) {
-               return $this->children[$objectId];
-            }
-         }
-      }
-
-      // display extended debug message in case no form element was found
-      $parent = & $this->getParentObject();
-      $docCon = $parent->getDocumentController();
-      throw new FormException('[HtmlFormTag::getFormElementByName()] No form element with name "'
-            . $name . '" composed in current form "' . $this->getAttribute('name')
-            . '" in document controller "' . $docCon . '". Please double-check your taglib definitions '
-            . 'within this form (especially attributes, that are used for referencing other form '
-            . 'controls)!', E_USER_ERROR);
-   }
-
-   /**
-    * Returns a list of form controls with the given name.
-    *
-    * @param string $name The name of the form elements to collect (e.g. for radio buttons).
-    *
-    * @return AbstractFormControl[] The list of form controls with the given name.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 16.08.2010<br />
-    */
-   public function &getFormElementsByName($name) {
-      $elements = array();
-      if (count($this->children) > 0) {
-         foreach ($this->children as $objectId => $DUMMY) {
-            if ($this->children[$objectId]->getAttribute('name') == $name) {
-               $elements[] = & $this->children[$objectId];
-            }
-         }
-      }
-
-      return $elements;
-   }
-
-   /**
-    * Returns a reference on the form element identified by the given id.
-    *
-    * @param string $id The ID of the desired form element.
-    *
-    * @return AbstractFormControl A reference on the form element.
-    * @throws FormException In case the form element cannot be found.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 21.01.2007<br />
-    */
-   public function &getFormElementByID($id) {
-
-      if (count($this->children) > 0) {
-         foreach ($this->children as $objectId => $DUMMY) {
-            if ($this->children[$objectId]->getAttribute('id') == $id) {
-               return $this->children[$objectId];
-            }
-         }
-      }
-
-      // display extended debug message in case no form element was found
-      $parent = & $this->getParentObject();
-      $documentController = $parent->getDocumentController();
-      throw new FormException('[HtmlFormTag::getFormElementByID()] No form element with id "'
-            . $id . '" composed in current form "' . $this->getAttribute('name')
-            . '" in document controller "' . $documentController . '"!', E_USER_ERROR);
-   }
-
-   /**
-    * Returns a reference on a form element addressed by it's internal object id.
-    *
-    * @param string $objectId The object id of of the desired form element.
-    *
-    * @return AbstractFormControl A reference on the form element.
-    * @throws FormException In case the form element cannot be found.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 07.01.2007<br />
-    * Version 0.2, 12.01.2007 (Corrected error message)<br />
-    * Version 0.3, 06.09.2008 (Corrected error message again)<br />
-    */
-   public function &getFormElementByObjectID($objectId) {
-
-      if (isset($this->children[$objectId])) {
-         return $this->children[$objectId];
-      }
-
-      // note, that no suitable child has been found
-      $parent = & $this->getParentObject();
-      $documentController = $parent->getDocumentController();
-      throw new FormException('[HtmlFormTag::getFormElementByObjectID()] No form element with id "'
-            . $objectId . '" composed in current form "' . $this->getAttribute('name')
-            . '" in document controller "' . $documentController . '"!', E_USER_ERROR);
-   }
-
-   /**
-    * Returns a list of form elements addressed by their tag name.
-    *
-    * @param string $tagName The tag name of the desired form element (e.g. "form:text").
-    *
-    * @return AbstractFormControl[] A list of references on the form elements.
-    * @throws FormException In case the form element cannot be found or desired tag is not registered.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 14.06.2008 (API change: do use this function instead of getFormElementsByType()!)<br />
-    * Version 0.2, 12.12.2012 (Refactoring due to tag renaming)<br />
-    */
-   public function &getFormElementsByTagName($tagName) {
-
-      $tagClassName = $this->getTagClass($tagName);
-
-      if (count($this->children) > 0) {
-
-         $formElements = array();
-         foreach ($this->children as $objectId => $DUMMY) {
-
-            if ($this->children[$objectId] instanceof $tagClassName) {
-               $formElements[] = & $this->children[$objectId];
-            }
-         }
-
-         return $formElements;
-      }
-
-      // display extended debug message in case no form elements were found
-      $parent = & $this->getParentObject();
-      $documentController = $parent->getDocumentController();
-      throw new FormException('[HtmlFormTag::getFormElementsByType()] No form elements composed in ' .
-            'current form "' . $this->getAttribute('name') . '" in document controller "'
-            . $documentController . '"!', E_USER_ERROR);
-   }
-
-   /**
     * Returns the name of the tag implementation that refers to the applied tag name.
     *
     * @param string $tagName The name of the tag (e.g. form:listener).
@@ -604,8 +403,9 @@ class HtmlFormTag extends Document implements HtmlForm {
     * @author Christian Achatz
     * @version
     * Version 0.1, 12.12.2012<br />
+    * Version 0.2, 20.08.2014 (ID#198: Method is now public to be used within all FormControlFinder implementations)<br />
     */
-   private function getTagClass($tagName) {
+   public function getTagClass($tagName) {
 
       // gather tag implementation and return in case there is nothing defined
       $colon = strpos($tagName, ':');
@@ -625,39 +425,6 @@ class HtmlFormTag extends Document implements HtmlForm {
 
    }
 
-   /**
-    * Let's you retrieve an &lt;form:getstring /&gt; tag instance with the specified name.
-    *
-    * @param string $name The name of the form label to return.
-    *
-    * @return LanguageLabelTag The instance of the desired label.
-    * @throws InvalidArgumentException In case no label can be found.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 17.01.2012<br />
-    */
-   public function &getLabel($name) {
-      try {
-         return $this->getChildNode('name', $name, 'APF\core\pagecontroller\LanguageLabel');
-      } catch (InvalidArgumentException $e) {
-         throw new InvalidArgumentException('[HtmlFormTag::getLabel()] No label found with name "' . $name
-               . '" composed in form with name "' . $this->getAttribute('name') . '" for document controller "'
-               . $this->getParentObject()->getDocumentController() . '"!', E_USER_ERROR, $e);
-      }
-   }
-
-   /**
-    * Returns the content of the transformed form.
-    *
-    * @return string The content of the transformed form.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 12.01.2007<br />
-    * Version 0.2, 20.01.2007 (Changed action attribute handling)<br />
-    * Version 0.3, 27.07.2009 (Attribute "name" is not rendered into HTML tag, because of XHTML 1.1 strict)<br />
-    */
    public function transformForm() {
 
       $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');

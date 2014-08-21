@@ -21,7 +21,6 @@
 namespace APF\tools\form\validator;
 
 use APF\tools\form\taglib\AbstractFormControl;
-use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\form\taglib\ValidationListenerTag;
 
 /**
@@ -66,8 +65,7 @@ abstract class TextFieldValidator extends AbstractFormValidator {
     */
    protected function notifyValidationListeners(&$control) {
 
-      /* @var $form HtmlFormTag */
-      $form = $control->getParentObject();
+      $form = &$control->getForm();
 
       /* @var $listeners ValidationListenerTag[] */
       $listeners = & $form->getFormElementsByTagName('form:listener');

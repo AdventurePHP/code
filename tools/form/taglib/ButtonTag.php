@@ -21,6 +21,7 @@
 namespace APF\tools\form\taglib;
 
 use APF\tools\form\FormException;
+use APF\tools\form\HtmlForm;
 
 /**
  * Represents an APF form button.
@@ -63,8 +64,8 @@ class ButtonTag extends AbstractFormControl {
       // check name attribute in request to indicate, that the
       // form was sent. Mark button as sent, too. Due to potential
       // XSS issues, we distinguish between GET and POST requests
-      $method = strtolower($this->getParentObject()->getAttribute(HtmlFormTag::$METHOD_ATTRIBUTE_NAME));
-      if ($method == HtmlFormTag::$METHOD_POST_VALUE_NAME) {
+      $method = strtolower($this->getParentObject()->getAttribute(HtmlForm::METHOD_ATTRIBUTE_NAME));
+      if ($method == HtmlForm::METHOD_POST_VALUE_NAME) {
          if (isset($_POST[$buttonName])) {
             $this->controlIsSent = true;
          }

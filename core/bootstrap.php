@@ -165,6 +165,7 @@ Document::addTagLib('APF\tools\form\taglib\TextFieldTag', 'form', 'text');
 Document::addTagLib('APF\tools\form\taglib\TimeCaptchaTag', 'form', 'timecaptcha');
 Document::addTagLib('APF\tools\form\taglib\TimeSelectorTag', 'form', 'time');
 Document::addTagLib('APF\tools\form\taglib\ValidationListenerTag', 'form', 'listener');
+Document::addTagLib('APF\tools\form\taglib\FormGroupTag', 'form', 'group');
 
 Document::addTagLib('APF\tools\html\taglib\HtmlIteratorTag', 'html', 'iterator');
 Document::addTagLib('APF\core\pagecontroller\TemplateTag', 'iterator', 'fallback');

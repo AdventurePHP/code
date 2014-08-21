@@ -20,6 +20,53 @@
  */
 namespace APF\tools\form;
 
-interface HtmlForm {
+/**
+ * Represents a APF form element (DOM node).
+ * <p/>
+ * Allows custom implementations to be used with <em>BaseDocumentController::getForm()</em>.
+ *
+ * @author Christian Schäfer
+ * @version
+ * Version 0.1, 05.01.2007<br />
+ * Version 0.2, 12.01.2007 (Form is now handled as a template)<br />
+ * Version 0.3, 13.01.2007 (Added mode taglibs)
+ * Version 0.4, 15.01.2007 (Added the "form:multiselect" taglib)<br />
+ * Version 0.5, 11.02.2007 (Added the "form:validate" taglib)<br />
+ * Version 0.6, 25.06.2007 (Replaced "form:validate" with "form:valgroup")<br />
+ * Version 0.7, 14.04.2007 (Added "isSent" attribute)<br />
+ * Version 0.8, 22.09.2007 (Added the generic validator)<br />
+ * Version 0.9, 01.06.2008 (Added the getFormElementsByType() method)<br />
+ * Version 1.0, 16.06.2008 (API change: added getFormElementsByTagName())<br />
+ * Version 1.1, 30.12.2009 (Added the form:success tag)<br />
+ * Version 1.2, 15.12.2012 (Separated from form_control and refactored tag naming to 1.16 concept)<br />
+ */
+interface HtmlForm extends FormControlFinder, FormControl {
 
-} 
+   const METHOD_ATTRIBUTE_NAME = 'method';
+   const METHOD_POST_VALUE_NAME = 'post';
+
+   /**
+    * Sets the action url of the form.
+    *
+    * @param string $action The action URL of the form.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 07.01.2007<br />
+    */
+   public function setAction($action);
+
+   /**
+    * Returns the content of the transformed form.
+    *
+    * @return string The content of the transformed form.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.01.2007<br />
+    * Version 0.2, 20.01.2007 (Changed action attribute handling)<br />
+    * Version 0.3, 27.07.2009 (Attribute "name" is not rendered into HTML tag, because of XHTML 1.1 strict)<br />
+    */
+   public function transformForm();
+
+}

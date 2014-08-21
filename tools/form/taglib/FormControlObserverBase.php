@@ -82,10 +82,10 @@ abstract class FormControlObserverBase extends AbstractFormControl {
       $class = $this->getAttribute('class');
 
       /* @var $parent HtmlFormTag */
-      $parent = $this->parentObject;
+      $form = &$this->getForm();
 
       if (empty($controlDef) || empty($buttonName) || empty($class)) {
-         $formName = $parent->getAttribute('name');
+         $formName = $form->getAttribute('name');
          throw new FormException('[' . get_class($this) . '::onAfterAppend()] Required attribute '
                . '"control", "button", or "class" missing. Please review your '
                . '&lt;form:addvalidator /&gt; or &lt;form:addfilter /&gt; taglib definition in form "'
@@ -101,14 +101,12 @@ abstract class FormControlObserverBase extends AbstractFormControl {
          $controlName = trim($controlName);
 
          // retrieve elements to pass to the validator and validate them
-         /* @var $form HtmlFormTag */
-         $form = $this->getParentObject();
          $control = & $form->getFormElementByName($controlName);
          $button = & $form->getFormElementByName($buttonName);
          $type = $this->getAttribute(self::$TYPE_ATTRIBUTE_NAME);
 
          if ($control === null || $button === null) {
-            $formName = $parent->getAttribute('name');
+            $formName = $form->getAttribute('name');
             throw new FormException('[' . get_class($this) . '::onAfterAppend()] The form with name '
                   . '"' . $formName . '" does not contain a control with name "' . $controlName . '" or '
                   . 'a button with name "' . $buttonName . '". Please check your taglib definition!');

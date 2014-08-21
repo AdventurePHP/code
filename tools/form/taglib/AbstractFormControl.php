@@ -22,7 +22,9 @@ namespace APF\tools\form\taglib;
 
 use APF\core\pagecontroller\Document;
 use APF\tools\form\filter\AbstractFormFilter;
+use APF\tools\form\FormControl;
 use APF\tools\form\FormException;
+use APF\tools\form\HtmlForm;
 use APF\tools\form\validator\AbstractFormValidator;
 
 /**
@@ -657,6 +659,37 @@ abstract class AbstractFormControl extends Document implements FormControl {
     */
    public function getFilters() {
       return $this->filters;
+   }
+
+   /**
+    * Convenience method to obtain the form a control is located in. Lays the foundation for
+    * recursive form structure and form group support.
+    *
+    * @return HtmlFormTag The desired form instance.
+    *
+    * @throws FormException In case no form can be found within the document tree.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 21.08.2014<br />
+    */
+   public function &getForm() {
+
+      $form = & $this->getParentObject();
+
+      if ($form instanceof HtmlForm) {
+         return $form;
+      }
+
+      while (!$form instanceof HtmlForm) {
+         $form = $form->getParentObject();
+
+         if ($form === null) {
+            throw new FormException('Cannot find form starting at form control with name ' . $this->getAttribute('name') . '!');
+         }
+      }
+
+      return $form;
    }
 
 }
