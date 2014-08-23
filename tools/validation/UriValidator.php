@@ -18,24 +18,25 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-namespace APF\tools\form\validator;
-
-use APF\tools\validation\EMailValidator as EMailValidatorImpl;
+namespace APF\tools\validation;
 
 /**
- * Validates a given form control to contain a syntactically correct email.
+ * Implements a URI validator.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 29.08.2009<br />
- * Version 0.2, 23.08.2014 (ID#138: extracted validation to allow unit testing and easy controller validation)<br />
+ * Version 0.1, 23.08.2014<br />
  */
-class EMailValidator extends TextFieldValidator {
+class UriValidator implements Validator {
 
-   public function validate($input) {
-      $validator = new EMailValidatorImpl();
+   public function validate($subject) {
+      if (!empty($subject) &&
+            preg_match('/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i', $subject)
+      ) {
+         return true;
+      }
 
-      return $validator->validate($input);
+      return false;
    }
 
 }

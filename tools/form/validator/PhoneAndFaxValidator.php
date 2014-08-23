@@ -20,6 +20,8 @@
  */
 namespace APF\tools\form\validator;
 
+use APF\tools\validation\PhoneNumberValidator;
+
 /**
  * Validates a given form control to contain a syntactically correct
  * phone or fax number.
@@ -27,15 +29,14 @@ namespace APF\tools\form\validator;
  * @author Christian Achatz
  * @version
  * Version 0.1, 29.08.2009<br />
+ * Version 0.2, 23.08.2014 (ID#138: extracted validation to allow unit testing and easy controller validation)<br />
  */
 class PhoneAndFaxValidator extends TextFieldValidator {
 
    public function validate($input) {
-      if (preg_match('/^[0-9\-\+\(\)\/ ]{6,}$/', trim($input))) {
-         return true;
-      }
+      $validator = new PhoneNumberValidator();
 
-      return false;
+      return $validator->validate($input);
    }
 
 }

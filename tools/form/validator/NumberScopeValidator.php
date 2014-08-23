@@ -20,6 +20,8 @@
  */
 namespace APF\tools\form\validator;
 
+use APF\tools\validation\NumberScopeValidator as NumberScopeValidatorImpl;
+
 /**
  * Validates a given form control to contain a number within a defined scope.
  * The default min value is 0, the default max value 65535 (maximum value in
@@ -52,52 +54,12 @@ class NumberScopeValidator extends TextFieldValidator {
     * @author Jan Wiese
     * @version
     * Version 0.1, 02.01.2013<br />
+    * Version 0.2, 23.08.2014 (ID#138: extracted validation to allow unit testing and easy controller validation)<br />
     */
    public function validate($input) {
+      $validator = new NumberScopeValidatorImpl($this->getMinValue(), $this->getMaxValue(), $this->onlyIntegers());
 
-      // check if only integers are accepted
-      if ($this->onlyIntegers()) {
-
-         // check for integer
-         if (!($input === ((string) (int) $input))) {
-            return false;
-         }
-
-         // convert input from string to int
-         $input = (int) $input;
-
-      } else {
-
-         // check for numeric value (int/float)
-         if (!is_numeric($input)) {
-            return false;
-         }
-
-         // convert input from string to float
-         $input = (float) $input;
-
-      }
-
-
-      // get limiting values
-      $minvalue = $this->getMinValue();
-      $maxvalue = $this->getMaxValue();
-
-      // check lower limit
-      if ($minvalue !== null) {
-         if ($input < $minvalue) {
-            return false;
-         }
-      }
-
-      // check upper limit
-      if ($maxvalue !== null) {
-         if ($input > $maxvalue) {
-            return false;
-         }
-      }
-
-      return true;
+      return $validator->validate($input);
    }
 
    /**

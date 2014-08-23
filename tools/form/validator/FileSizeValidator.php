@@ -21,6 +21,7 @@
 namespace APF\tools\form\validator;
 
 use APF\tools\form\taglib\FileUploadTag;
+use APF\tools\validation\NumberScopeValidator as NumberScopeValidatorImpl;
 
 /**
  * Implements a simple validator, that checks the uploaded file
@@ -60,14 +61,13 @@ class FileSizeValidator extends TextFieldValidator {
          $size = (int) $fileModel->getSize();
          $allowed = (int) $this->getMaxSize();
          $required = (int) $this->getMinSize();
-         if ($size >= $required && $size <= $allowed) {
-            return true;
-         }
 
+         $validator = new NumberScopeValidatorImpl($required, $allowed, true, true, true);
+
+         return $validator->validate($size);
       }
 
       return false;
-
    }
 
    /**

@@ -20,23 +20,23 @@
  */
 namespace APF\tools\form\validator;
 
+use APF\tools\validation\UriValidator as UriValidatorImpl;
+
 /**
  * Validates a given form control to contain a syntactically correct uri.
  *
  * @author Ralf Schubert
  * @version
  * Version 0.1, 26.05.2013<br />
+ * Version 0.2, 23.08.2014 (ID#138: extracted validation to allow unit testing and easy controller validation)<br />
  */
 class UriValidator extends TextFieldValidator {
 
    public function validate($input) {
-      if (!empty($input) &&
-            preg_match('/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i', $input)
-      ) {
-         return true;
-      }
+      $validator = new UriValidatorImpl();
 
-      return false;
+      return $validator->validate($input);
+
    }
 
 }

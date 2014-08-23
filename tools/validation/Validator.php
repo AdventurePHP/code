@@ -18,24 +18,30 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-namespace APF\tools\form\validator;
-
-use APF\tools\validation\EMailValidator as EMailValidatorImpl;
+namespace APF\tools\validation;
 
 /**
- * Validates a given form control to contain a syntactically correct email.
+ * Defines the structure of a generic validator.
+ * <p/>
+ * Implementations are e.g. used in the APF form implementation.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 29.08.2009<br />
- * Version 0.2, 23.08.2014 (ID#138: extracted validation to allow unit testing and easy controller validation)<br />
+ * Version 0.1, 23.08.2014<br />
  */
-class EMailValidator extends TextFieldValidator {
+interface Validator {
 
-   public function validate($input) {
-      $validator = new EMailValidatorImpl();
-
-      return $validator->validate($input);
-   }
+   /**
+    * Validates a given subject (any kind of data type according to the validator implementation).
+    *
+    * @param mixed $subject The subject to validate.
+    *
+    * @return bool True in case the applied argument is valid, false otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 23.08.2014<br />
+    */
+   public function validate($subject);
 
 }

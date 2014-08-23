@@ -20,6 +20,8 @@
  */
 namespace APF\tools\form\validator;
 
+use APF\tools\validation\TextLengthValidator as TextLengthValidatorImpl;
+
 /**
  * Validates a given form control to contain a string with a defined length.
  * The default value is three, to configure the length, please specify the
@@ -51,30 +53,12 @@ class TextLengthValidator extends TextFieldValidator {
     * @author Christian Achatz
     * @version
     * Version 0.1, 06.02.2010<br />
+    * Version 0.2, 23.08.2014 (ID#138: extracted validation to allow unit testing and easy controller validation)<br />
     */
    public function validate($input) {
+      $validator = new TextLengthValidatorImpl($this->getMinLength(), $this->getMaxLength(), $this->getMode());
 
-      $minlength = $this->getMinLength();
-      $maxlength = $this->getMaxLength();
-      $mode = $this->getMode();
-
-      // mode strict needs trim() on $input
-      if ($mode === 'strict') {
-         $input = trim($input);
-      }
-
-      // the max length being null, the text may contain an infinite number of characters
-      if ($maxlength === 0) {
-         if (!empty($input) && strlen($input) >= $minlength) {
-            return true;
-         }
-      } else {
-         if (!empty($input) && strlen($input) >= $minlength && strlen($input) <= $maxlength) {
-            return true;
-         }
-      }
-
-      return false;
+      return $validator->validate($input);
    }
 
    /**
