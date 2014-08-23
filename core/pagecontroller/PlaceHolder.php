@@ -21,7 +21,7 @@
 namespace APF\core\pagecontroller;
 
 /**
- * Declares the interface of a place holder (re-usable DOM object displaxing dynamic content).
+ * Declares the interface of a place holder (re-usable DOM object displaying dynamic content).
  *
  * @author Christian Achatz
  * @version

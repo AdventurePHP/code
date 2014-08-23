@@ -20,6 +20,8 @@
  */
 namespace APF\tools\form\taglib;
 
+use APF\tools\form\FormMarker;
+
 /**
  * Represents the <form:marker /> tag, that can be used to dynamically create forms. Please
  * have a look at the API documentation of the HtmlFormTag class for details.
@@ -27,30 +29,37 @@ namespace APF\tools\form\taglib;
  * @author Christian Achatz
  * @version
  * Version 0.1, 03.09.2008<br />
+ * Version 0.2, 23.08.2014 (ID#198: added interface to re-use HtmlForm::getMarker() method with custom form implementations)<br />
  */
-class DynamicFormElementMarkerTag extends AbstractFormControl {
+class DynamicFormElementMarkerTag extends AbstractFormControl implements FormMarker {
 
-   /**
-    * Overwrites the onParseTime() method from the Document class, because here's nothing to do.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 03.09.2008<br />
-    */
    public function onParseTime() {
    }
 
-   /**
-    * Implements the transform() method. Returns an empty string.
-    *
-    * @return string An empty string.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 03.09.2008<br />
-    */
    public function transform() {
       return '';
+   }
+
+   public function &addContentBefore($content) {
+      $objectId = $this->getObjectId();
+      $this->getParentObject()->setContent(str_replace(
+                  '<' . $objectId . ' />',
+                  $content . '<' . $objectId . ' />',
+                  $this->getParentObject()->getContent())
+      );
+
+      return $this;
+   }
+
+   public function &addContentAfter($content) {
+      $objectId = $this->getObjectId();
+      $this->getParentObject()->setContent(str_replace(
+                  '<' . $objectId . ' />',
+                  '<' . $objectId . ' />' . $content,
+                  $this->getParentObject()->getContent())
+      );
+
+      return $this;
    }
 
 }

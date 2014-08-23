@@ -26,6 +26,7 @@ use APF\core\pagecontroller\XmlParser;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 use APF\tools\form\FormControl;
+use APF\tools\form\FormControlFinder;
 use APF\tools\form\FormException;
 use APF\tools\form\HtmlForm;
 use APF\tools\form\mixin\FormControlFinder as FormControlFinderImpl;
@@ -152,7 +153,7 @@ class HtmlFormTag extends Document implements HtmlForm {
     * @param string $elementType Type of the element (e.g. "form:text")
     * @param string[] $elementAttributes Associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
     *
-    * @return string Id of the new form object or null (e.g. for addressing the new element)
+    * @return AbstractFormControl The new form object or null.
     * @throws FormException In case the form element cannot be added.
     *
     * @author Christian Achatz
@@ -161,25 +162,23 @@ class HtmlFormTag extends Document implements HtmlForm {
     * Version 0.2, 05.09.2008 (The new form element now gets the current context and language)<br />
     * Version 0.3, 06.09.2008 (API change: now the tag name (e.g. "form:text") is expected as an argument)<br />
     * Version 0.4, 10.09.2008 (Added the $ElementAttributes param)<br />
+    * Version 0.5, 23.08.2014 (ID#198: added unlimited form control nesting capability)<br />
     */
-   public function addFormElement($elementType, array $elementAttributes = array()) {
+   public function &addFormElement($elementType, array $elementAttributes = array()) {
 
       // create form element
-      // TODO respect hierarchy where form control should be created (either move to AbstractFormControl to allow addition anywhere or remove this method and only allow adding with markers (latter is better!))
-      $objectId = $this->createFormElement($elementType, $elementAttributes);
+      $control = & $this->createFormElement($this, $elementType, $elementAttributes);
 
-      if ($objectId === null) {
+      if ($control === null) {
          // notify developer that object creation failed
          throw new FormException('[HtmlFormTag::addFormElement()] Form element "'
                . $elementType . '" cannot be added due to previous errors!');
       }
 
       // add position place holder to the content
-      $this->content .= '<' . $objectId . ' />';
+      $this->content .= '<' . $control->getObjectId() . ' />';
 
-      // return object id of the new form element
-      return $objectId;
-
+      return $control;
    }
 
    /**
@@ -204,17 +203,10 @@ class HtmlFormTag extends Document implements HtmlForm {
     * @author Christian Achatz
     * @version
     * Version 0.1, 03.09.2008<br />
+    * Version 0.2, 23.08.2014 (ID#198: added unlimited form control nesting capability)<br />
     */
    public function addFormContentBeforeMarker($markerName, $content) {
-
-      // get desired marker
-      $marker = & $this->getMarker($markerName);
-
-      // get the object id
-      $objectId = $marker->getObjectId();
-
-      // add the desired content before the marker
-      $this->content = str_replace('<' . $objectId . ' />', $content . '<' . $objectId . ' />', $this->content);
+      $this->getMarker($markerName)->addContentBefore($content);
    }
 
    /**
@@ -226,17 +218,10 @@ class HtmlFormTag extends Document implements HtmlForm {
     * @author Christian Achatz
     * @version
     * Version 0.1, 05.09.2008<br />
+    * Version 0.2, 23.08.2014 (ID#198: added unlimited form control nesting capability)<br />
     */
    public function addFormContentAfterMarker($markerName, $content) {
-
-      // get desired marker
-      $marker = & $this->getMarker($markerName);
-
-      // get the object id
-      $objectId = $marker->getObjectId();
-
-      // add the desired content before the marker
-      $this->content = str_replace('<' . $objectId . ' />', '<' . $objectId . ' />' . $content, $this->content);
+      $this->getMarker($markerName)->addContentAfter($content);
    }
 
    /**
@@ -253,30 +238,30 @@ class HtmlFormTag extends Document implements HtmlForm {
     * @version
     * Version 0.1, 05.09.2008<br />
     * Version 0.2, 10.09.2008 (Added the $elementAttributes param)<br />
+    * Version 0.3, 23.08.2014 (ID#198: added unlimited form control nesting capability)<br />
     */
-   public function addFormElementBeforeMarker($markerName, $elementType, array $elementAttributes = array()) {
+   public function &addFormElementBeforeMarker($markerName, $elementType, array $elementAttributes = array()) {
 
-      // create new form element
-      // TODO re-implement to allow addition in any hierarchy level (e.g. group in group)
-      $objectId = $this->createFormElement($elementType, $elementAttributes);
+      $marker = & $this->getMarker($markerName);
+      $control = &$this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);
 
-      if ($objectId === null) {
+      if ($control === null) {
          // notify developer that object creation failed
          throw new FormException('[HtmlFormTag::addFormElementBeforeMarker()] Form element "'
                . $elementType . '" cannot be added due to previous errors!');
-
       }
-
-      // get desired marker
-      $marker = & $this->getMarker($markerName);
 
       // add the position place holder to the content
       $markerId = $marker->getObjectId();
-      $this->content = str_replace('<' . $markerId . ' />', '<' . $objectId . ' /><' . $markerId . ' />', $this->content);
+      $parent = & $marker->getParentObject();
 
-      // return object id of the new form element
-      return $objectId;
+      $parent->setContent(str_replace(
+            '<' . $markerId . ' />',
+            '<' . $control->getObjectId() . ' /><' . $markerId . ' />',
+            $parent->getContent()
+      ));
 
+      return $control;
    }
 
    /**
@@ -293,40 +278,40 @@ class HtmlFormTag extends Document implements HtmlForm {
     * @version
     * Version 0.1, 05.09.2008<br />
     * Version 0.2, 10.09.2008 (Added the $ElementAttributes param)<br />
+    * Version 0.3, 23.08.2014 (ID#198: added unlimited form control nesting capability)<br />
     */
-   public function addFormElementAfterMarker($markerName, $elementType, array $elementAttributes = array()) {
+   public function &addFormElementAfterMarker($markerName, $elementType, array $elementAttributes = array()) {
 
-      // create new form element
-      $objectId = $this->createFormElement($elementType, $elementAttributes);
+      $marker = & $this->getMarker($markerName);
+      $control = $this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);
 
-      if ($objectId === null) {
+      if ($control === null) {
          // notify developer that object creation failed
          throw new FormException('[HtmlFormTag::addFormElementBeforeMarker()] Form element "'
                . $elementType . '" cannot be added due to previous errors!');
       }
 
-      // get desired marker
-      $marker = & $this->getMarker($markerName);
-
       // add the position place holder to the content
       $markerId = $marker->getObjectId();
-      $this->content = str_replace(
-            '<' . $markerId . ' />', '<' . $markerId . ' /><' . $objectId . ' />',
-            $this->content
-      );
+      $parent = & $marker->getParentObject();
 
-      // return object id of the new form element
-      return $objectId;
+      $parent->setContent(str_replace(
+            '<' . $markerId . ' />',
+            '<' . $markerId . ' /><' . $control->getObjectId() . ' />',
+            $parent->getContent()
+      ));
 
+      return $control;
    }
 
    /**
     * Adds a new form element to the child list.
     *
+    * @param Document $parent The parent document to create the object in.
     * @param string $elementType Type of the element (e.g. "form:text")
     * @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
     *
-    * @return string Id of the new form object (e.g. for addressing the new element)
+    * @return AbstractFormControl The created form element.
     * @throws FormException In case form element cannot be found.
     *
     * @author Christian Achatz
@@ -334,10 +319,9 @@ class HtmlFormTag extends Document implements HtmlForm {
     * Version 0.1, 06.09.2008<br />
     * Version 0.2, 10.09.2008 (Added the $elementAttributes param)<br />
     * Version 0.3, 12.11.2008 (Bug-fix: language and context initialisation were wrong)<br />
+    * Version 0.4, 23.08.2014 (ID#198: added unlimited form control nesting capability)<br />
     */
-   // TODO implementation to be adapted to respect hierarchy where form control should be created
-   // TODO Maybe implement a new Document::appendNode($objectId, Document $node);
-   protected function createFormElement($elementType, array $elementAttributes = array()) {
+   protected function &createFormElement(Document &$parent, $elementType, array $elementAttributes = array()) {
 
       $class = $this->getTagClass($elementType);
       if ($class === null) {
@@ -353,23 +337,21 @@ class HtmlFormTag extends Document implements HtmlForm {
 
       // add standard and user defined attributes
       $formControl->setObjectId($objectId);
-      $formControl->setLanguage($this->language);
-      $formControl->setContext($this->context);
+      $formControl->setLanguage($this->getLanguage());
+      $formControl->setContext($this->getContext());
       $formControl->setAttributes($elementAttributes);
 
       // add form element to DOM tree and call the onParseTime() method
-      $formControl->setParentObject($this);
+      $formControl->setParentObject($parent);
       $formControl->onParseTime();
 
       // add new form element to children list
-      $this->children[$objectId] = $formControl;
+      $parent->children[$objectId] = $formControl;
 
       // call the onAfterAppend() method
-      $this->children[$objectId]->onAfterAppend();
+      $parent->children[$objectId]->onAfterAppend();
 
-      // return object id for further addressing
-      return $objectId;
-
+      return $parent->children[$objectId];
    }
 
    public function setAction($action) {
