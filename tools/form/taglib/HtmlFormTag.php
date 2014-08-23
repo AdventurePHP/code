@@ -231,7 +231,7 @@ class HtmlFormTag extends Document implements HtmlForm {
     * @param string $elementType type of the element (e.g. "form:text")
     * @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
     *
-    * @return string Id of the new form object or null (e.g. for addressing the new element)
+    * @return AbstractFormControl The new form object or null (e.g. for addressing the new element).
     * @throws FormException In case object creation fails.
     *
     * @author Christian Achatz
@@ -271,7 +271,7 @@ class HtmlFormTag extends Document implements HtmlForm {
     * @param string $elementType type of the element (e.g. "form:text")
     * @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
     *
-    * @return string Id of the new form object or null (e.g. for addressing the new element)
+    * @return AbstractFormControl The new form object or null (e.g. for addressing the new element).
     * @throws FormException In case object creation fails.
     *
     * @author Christian Achatz
