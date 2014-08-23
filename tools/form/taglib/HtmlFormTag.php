@@ -243,7 +243,7 @@ class HtmlFormTag extends Document implements HtmlForm {
    public function &addFormElementBeforeMarker($markerName, $elementType, array $elementAttributes = array()) {
 
       $marker = & $this->getMarker($markerName);
-      $control = &$this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);
+      $control = & $this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);
 
       if ($control === null) {
          // notify developer that object creation failed
@@ -283,7 +283,7 @@ class HtmlFormTag extends Document implements HtmlForm {
    public function &addFormElementAfterMarker($markerName, $elementType, array $elementAttributes = array()) {
 
       $marker = & $this->getMarker($markerName);
-      $control = $this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);
+      $control = & $this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);
 
       if ($control === null) {
          // notify developer that object creation failed
@@ -332,21 +332,18 @@ class HtmlFormTag extends Document implements HtmlForm {
       $objectId = XmlParser::generateUniqID();
 
       // create new form element
-      $formControl = new $class();
+      $parent->children[$objectId] = new $class();
       /* @var $formControl AbstractFormControl */
 
       // add standard and user defined attributes
-      $formControl->setObjectId($objectId);
-      $formControl->setLanguage($this->getLanguage());
-      $formControl->setContext($this->getContext());
-      $formControl->setAttributes($elementAttributes);
+      $parent->children[$objectId]->setObjectId($objectId);
+      $parent->children[$objectId]->setLanguage($this->getLanguage());
+      $parent->children[$objectId]->setContext($this->getContext());
+      $parent->children[$objectId]->setAttributes($elementAttributes);
 
       // add form element to DOM tree and call the onParseTime() method
-      $formControl->setParentObject($parent);
-      $formControl->onParseTime();
-
-      // add new form element to children list
-      $parent->children[$objectId] = $formControl;
+      $parent->children[$objectId]->setParentObject($parent);
+      $parent->children[$objectId]->onParseTime();
 
       // call the onAfterAppend() method
       $parent->children[$objectId]->onAfterAppend();
