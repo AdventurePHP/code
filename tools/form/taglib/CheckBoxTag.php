@@ -50,8 +50,7 @@ class CheckBoxTag extends AbstractFormControl {
    public function onParseTime() {
 
       $name = $this->getAttribute('name');
-      $form = & $this->getParentObject();
-      /* @var $form HtmlFormTag */
+      $form = & $this->getForm();
       if ($form->isSent()) {
          if (isset($_REQUEST[$name])) {
             $this->check();

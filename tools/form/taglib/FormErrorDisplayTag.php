@@ -62,8 +62,7 @@ class FormErrorDisplayTag extends AbstractFormControl {
     * Version 0.1, 03.09.2009<br />
     */
    public function transform() {
-      /* @var $form HtmlFormTag */
-      $form = $this->getParentObject();
+      $form = & $this->getForm();
       if ($form->isSent() && !$form->isValid()) {
          $this->transformChildren();
 

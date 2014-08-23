@@ -65,7 +65,7 @@ class TimeCaptchaTag extends AbstractFormControl {
       }
 
       // save the new time in session.
-      $session->save('form_' . $this->getParentObject()->getAttribute('name'), time());
+      $session->save('form_' . $this->getForm()->getAttribute('name'), time());
 
       return '';
    }

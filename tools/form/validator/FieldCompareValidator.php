@@ -112,20 +112,16 @@ class FieldCompareValidator extends TextFieldValidator {
    private function initializeReferenceControl() {
 
       $refControlName = $this->control->getAttribute('ref');
+      $form = & $this->control->getForm();
       if ($refControlName === null) {
-         /* @var $form HtmlFormTag */
-         $form = & $this->control->getParentObject();
-         $formName = $form->getAttribute('name');
          throw new FormException('[FieldCompareValidator::initializeReferenceControl()] The main field '
                . 'definition does not include the "ref" attribute. This attribute must be specified '
                . 'to tell the validator, which form control can be used as reference. Please '
                . 'check taglib definition of control "' . $this->control->getAttribute('name') . '" '
-               . 'within form "' . $formName . '"!',
+               . 'within form "' . $form->getAttribute('name') . '"!',
                E_USER_ERROR);
       }
 
-      $form = & $this->control->getParentObject();
-      /* @var $form HtmlFormTag */
       $this->refControl = & $form->getFormElementByName($refControlName);
    }
 

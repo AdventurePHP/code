@@ -61,8 +61,9 @@ class TimeCaptchaValidator extends TextFieldValidator {
       }
 
       $session = new Session(get_class($this));
-      $storedTime = intval($session->load('form_' . $this->control->getParentObject()->getAttribute('name')));
-      $session->delete('form__' . $this->control->getParentObject()->getAttribute('name'));
+      $form = & $this->control->getForm();
+      $storedTime = intval($session->load('form_' . $form->getAttribute('name')));
+      $session->delete('form_' . $form->getAttribute('name'));
       unset($session);
 
       // If there is no stored time in session control is not valid.

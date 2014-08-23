@@ -400,7 +400,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
       // is only only possible for named controls!
       $controlName = $this->getAttribute('name');
       if ($controlName === null) {
-         $formName = $this->getParentObject()->getAttribute('name');
+         $formName = $this->getForm()->getAttribute('name');
          throw new FormException('[' . get_class($this) . '::presetValue()] A form control is missing '
                . ' the required tag attribute "name". Please check the taglib definition of the '
                . 'form with name "' . $formName . '"!', E_USER_ERROR);
@@ -618,8 +618,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
          return $fields;
       }
 
-      /* @var $form HtmlFormTag */
-      $form = & $this->getParentObject();
+      $form = & $this->getForm();
 
       $fields = array();
 

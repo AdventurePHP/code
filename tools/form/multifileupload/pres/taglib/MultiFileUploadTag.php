@@ -66,7 +66,7 @@ class MultiFileUploadTag extends AbstractFormControl {
 
    public function onParseTime() {
 
-      $this->formName = $this->getParentObject()->getAttribute('name');
+      $this->formName = $this->getForm()->getAttribute('name');
       $this->presetValue();
 
       // get Settings
@@ -89,8 +89,11 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 14.3.2011<br>
     */
    public function onAfterAppend() {
-      $this->getParentObject()->setAttribute('enctype', 'multipart/form-data');
-      $this->getParentObject()->setAttribute('id', $this->formName);
+      $form = & $this->getForm();
+      $form->setAttribute('enctype', 'multipart/form-data');
+
+      // ensure form has an id (required for the java script stuff)
+      $form->setAttribute('id', $this->formName);
    }
 
    /**
