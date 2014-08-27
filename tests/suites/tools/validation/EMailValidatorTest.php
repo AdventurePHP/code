@@ -18,7 +18,9 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-namespace APF\tools\validation;
+namespace APF\tests\suites\tools\validation;
+
+use APF\tools\validation\EMailValidator;
 
 class EMailValidatorTest extends \PHPUnit_Framework_TestCase {
 

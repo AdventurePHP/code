@@ -81,7 +81,7 @@ class NumberScopeValidator implements Validator {
       if ($this->onlyIntegersAccepted) {
 
          // check for integer
-         if (!($subject === ((string) (int) $subject))) {
+         if (!is_int($subject)) {
             return false;
          }
 
@@ -103,11 +103,11 @@ class NumberScopeValidator implements Validator {
       // check lower limit
       if ($this->minValue !== null) {
          if ($this->includeLowerEnd) {
-            if ($input <= $this->minValue) {
+            if ($input < $this->minValue) {
                return false;
             }
          } else {
-            if ($input < $this->minValue) {
+            if ($input <= $this->minValue) {
                return false;
             }
          }
@@ -117,11 +117,11 @@ class NumberScopeValidator implements Validator {
       // check upper limit
       if ($this->maxValue !== null) {
          if ($this->includeUpperEnd) {
-            if ($input >= $this->maxValue) {
+            if ($input > $this->maxValue) {
                return false;
             }
          } else {
-            if ($input > $this->maxValue) {
+            if ($input >= $this->maxValue) {
                return false;
             }
          }
