@@ -680,11 +680,12 @@ abstract class AbstractFormControl extends Document implements FormControl {
          return $form;
       }
 
-      while (!$form instanceof HtmlForm) {
-         $form = $form->getParentObject();
+      while (!($form instanceof HtmlForm)) {
+         $form = & $form->getParentObject();
 
          if ($form === null) {
-            throw new FormException('Cannot find form starting at form control with name ' . $this->getAttribute('name') . '!');
+            throw new FormException('Cannot find form starting at form control with name '
+                  . $this->getAttribute('name') . '! Please check your template setup.');
          }
       }
 

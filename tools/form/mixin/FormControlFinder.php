@@ -238,10 +238,10 @@ trait FormControlFinder {
 
       // display extended debug message in case no form elements were found
       $parent = & $form->getParentObject();
-      $documentController = $parent->getDocumentController();
-      throw new FormException('[' . get_class($this) . '::getFormElementsByType()] No form elements composed in ' .
-            'current form "' . $form->getAttribute('name') . '" in document controller "'
-            . $documentController . '"!', E_USER_ERROR);
+      $docCon = $parent->getDocumentController();
+      throw new FormException('[' . get_class($this) . '::getFormElementsByType()] No form elements of type "&lt;'
+            . $tagName . ' /&gt;" composed in ' . 'current form "' . $form->getAttribute('name') . '" in document controller "'
+            . $docCon . '"!', E_USER_ERROR);
    }
 
 }
