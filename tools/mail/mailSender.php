@@ -24,9 +24,7 @@ use APF\core\logging\LogEntry;
 use APF\core\logging\Logger;
 use APF\core\pagecontroller\APFObject;
 use APF\core\singleton\Singleton;
-use APF\tools\form\taglib\ButtonTag;
-use APF\tools\form\taglib\TextFieldTag;
-use APF\tools\form\validator\EMailValidator;
+use APF\tools\validation\EMailValidator;
 use InvalidArgumentException;
 
 /**
@@ -348,9 +346,7 @@ class mailSender extends APFObject {
     * @return bool True in case the email is valid, false otherwise.
     */
    private function validateEMail($email) {
-      $validator = new EMailValidator(new TextFieldTag(), new ButtonTag());
-
-      return $validator->validate($email);
+      return (new EMailValidator())->isValid($email);
    }
 
    /**
