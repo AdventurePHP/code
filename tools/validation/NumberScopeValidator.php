@@ -21,7 +21,7 @@
 namespace APF\tools\validation;
 
 /**
- * Implements a text length validator with configuration of min/max length and validation mode.
+ * Implements a number validator with configuration of min/max length and validation mode.
  *
  * @author Christian Achatz
  * @version

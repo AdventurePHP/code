@@ -53,33 +53,6 @@ class PhoneNumberValidationTest extends \PHPUnit_Framework_TestCase {
 
    }
 
-   public function testGenericPattern() {
-      $numbers = array(
-         // US
-            '(844) 207-6002',
-            '(833) 138-4854',
-            '(855) 192-5323',
-            '(811) 631-5079',
-            '(855) 769-8714',
-         // Germany
-            '0806 - 94841333',
-            '(039800) 086693',
-            '+49 (87) 69490555',
-            '+49 1671 1077835',
-         // UK
-            '(024) 3659 6672',
-            '07852 756132',
-            '0800 154 0793',
-            '0845 46 47'
-      );
-
-      $validator = new PhoneNumberValidator(PhoneNumberValidator::GENERIC);
-      foreach ($numbers as $number) {
-         $this->assertTrue($validator->isValid($number));
-      }
-
-   }
-
    public function testInternationalNumbers() {
       $numbers = array(
          // US
@@ -95,11 +68,7 @@ class PhoneNumberValidationTest extends \PHPUnit_Framework_TestCase {
 
       $validator = new PhoneNumberValidator(PhoneNumberValidator::INTERNATIONAL);
       foreach ($numbers as $number) {
-         try {
-            $this->assertTrue($validator->isValid($number));
-         } catch (\Exception $e) {
-            echo 'Validation of ' . $number . ' failed';
-         }
+         $this->assertTrue($validator->isValid($number));
       }
    }
 

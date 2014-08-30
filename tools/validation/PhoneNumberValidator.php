@@ -34,8 +34,6 @@ class PhoneNumberValidator implements Validator {
    const INTERNATIONAL = '/^\+(?:[0-9] ?){6,14}[0-9]$/';
    const INTERNATIONAL_EPP = '/^\+[0-9]{1,3}\.[0-9]{4,14}(?:x.+)?$/';
 
-   const GENERIC = '/([0-9\s\-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/';
-
    /**
     * @var string The rule to check the phone number.
     */
