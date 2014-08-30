@@ -29,7 +29,7 @@ namespace APF\tools\validation;
  */
 class IntegerValidator implements Validator {
 
-   public function validate($subject) {
+   public function isValid($subject) {
       $input = trim($subject);
       if ($input === (string) (int) $input) {
          return true;

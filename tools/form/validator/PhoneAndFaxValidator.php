@@ -36,7 +36,7 @@ class PhoneAndFaxValidator extends TextFieldValidator {
    public function validate($input) {
       $validator = new PhoneNumberValidator();
 
-      return $validator->validate($input);
+      return $validator->isValid($input);
    }
 
 }

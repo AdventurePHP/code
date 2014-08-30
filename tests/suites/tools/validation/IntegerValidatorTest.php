@@ -34,22 +34,22 @@ class IntegerValidatorTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testValidInteger() {
-      $this->assertTrue($this->validator->validate(123));
+      $this->assertTrue($this->validator->isValid(123));
    }
 
    public function testString() {
-      $this->assertTrue($this->validator->validate('123'));
-      $this->assertTrue($this->validator->validate(' 123'));
-      $this->assertTrue($this->validator->validate('123 '));
-      $this->assertTrue($this->validator->validate(' 123 '));
+      $this->assertTrue($this->validator->isValid('123'));
+      $this->assertTrue($this->validator->isValid(' 123'));
+      $this->assertTrue($this->validator->isValid('123 '));
+      $this->assertTrue($this->validator->isValid(' 123 '));
 
-      $this->assertFalse($this->validator->validate('ABC'));
-      $this->assertFalse($this->validator->validate('1%'));
+      $this->assertFalse($this->validator->isValid('ABC'));
+      $this->assertFalse($this->validator->isValid('1%'));
    }
 
    public function testFloat() {
-      $this->assertTrue($this->validator->validate(123.0));
-      $this->assertFalse($this->validator->validate(123.5));
+      $this->assertTrue($this->validator->isValid(123.0));
+      $this->assertFalse($this->validator->isValid(123.5));
    }
 
 }

@@ -59,7 +59,7 @@ class NumberScopeValidator extends TextFieldValidator {
    public function validate($input) {
       $validator = new NumberScopeValidatorImpl($this->getMinValue(), $this->getMaxValue(), $this->onlyIntegers());
 
-      return $validator->validate($input);
+      return $validator->isValid($input);
    }
 
    /**

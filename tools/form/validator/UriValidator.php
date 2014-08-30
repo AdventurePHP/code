@@ -35,7 +35,7 @@ class UriValidator extends TextFieldValidator {
    public function validate($input) {
       $validator = new UriValidatorImpl();
 
-      return $validator->validate($input);
+      return $validator->isValid($input);
 
    }
 

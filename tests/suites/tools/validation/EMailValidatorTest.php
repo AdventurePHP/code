@@ -65,7 +65,7 @@ class EMailValidatorTest extends \PHPUnit_Framework_TestCase {
    public function testValidEMailAddresses() {
       $validator = new EMailValidator();
       foreach ($this->validList as $eMail) {
-         if (!$validator->validate($eMail)) {
+         if (!$validator->isValid($eMail)) {
             $this->fail('Considered e-mail address "' . $eMail . '" as invalid though it is not!');
          }
       }
@@ -76,7 +76,7 @@ class EMailValidatorTest extends \PHPUnit_Framework_TestCase {
    public function testSpecialEMailAddresses() {
       $validator = new EMailValidator(EMailValidator::RULE_COMPLEX);
       foreach (array_merge($this->validList, $this->specialList) as $eMail) {
-         if (!$validator->validate($eMail)) {
+         if (!$validator->isValid($eMail)) {
             $this->fail('Considered e-mail address "' . $eMail . '" as invalid though it is not!');
          }
       }
@@ -87,7 +87,7 @@ class EMailValidatorTest extends \PHPUnit_Framework_TestCase {
    public function testInvalidEMailAddresses() {
       $validator = new EMailValidator();
       foreach ($this->invalidList as $eMail) {
-         if ($validator->validate($eMail)) {
+         if ($validator->isValid($eMail)) {
             $this->fail('Considered e-mail address "' . $eMail . '" as valid though it is not!');
          }
       }

@@ -58,7 +58,7 @@ class TextLengthValidator extends TextFieldValidator {
    public function validate($input) {
       $validator = new TextLengthValidatorImpl($this->getMinLength(), $this->getMaxLength(), $this->getMode());
 
-      return $validator->validate($input);
+      return $validator->isValid($input);
    }
 
    /**

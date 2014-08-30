@@ -54,7 +54,7 @@ class PhoneNumberValidator implements Validator {
       $this->rule = $rule;
    }
 
-   public function validate($subject) {
+   public function isValid($subject) {
       return preg_match($this->rule, trim($subject)) === 1;
    }
 

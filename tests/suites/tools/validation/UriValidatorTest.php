@@ -26,20 +26,20 @@ class UriValidatorTest extends \PHPUnit_Framework_TestCase {
 
    public function testValidUrl() {
       $validator = new UriValidator();
-      $this->assertTrue($validator->validate('ftp://example.com/foo/bar'));
-      $this->assertTrue($validator->validate('HTTps://example.com/foo?bar=123'));
-      $this->assertTrue($validator->validate('HtTp://images.example.com/foo/bar.png'));
-      $this->assertTrue($validator->validate('://www.example.com/?page=test'));
-      $this->assertTrue($validator->validate('www.example.com'));
-      $this->assertTrue($validator->validate('http://ex.ample.com&foo=bar'));
+      $this->assertTrue($validator->isValid('ftp://example.com/foo/bar'));
+      $this->assertTrue($validator->isValid('HTTps://example.com/foo?bar=123'));
+      $this->assertTrue($validator->isValid('HtTp://images.example.com/foo/bar.png'));
+      $this->assertTrue($validator->isValid('://www.example.com/?page=test'));
+      $this->assertTrue($validator->isValid('www.example.com'));
+      $this->assertTrue($validator->isValid('http://ex.ample.com&foo=bar'));
    }
 
    public function testInValidUrl() {
       $validator = new UriValidator();
-      $this->assertFalse($validator->validate('ftp:example.com'));
-      $this->assertFalse($validator->validate('ex-ample'));
-      $this->assertFalse($validator->validate('XyZ://ex.ample.com'));
-      $this->assertFalse($validator->validate('ht-tp://ex.ample.com'));
+      $this->assertFalse($validator->isValid('ftp:example.com'));
+      $this->assertFalse($validator->isValid('ex-ample'));
+      $this->assertFalse($validator->isValid('XyZ://ex.ample.com'));
+      $this->assertFalse($validator->isValid('ht-tp://ex.ample.com'));
 
    }
 

@@ -35,7 +35,7 @@ class EMailValidator extends TextFieldValidator {
    public function validate($input) {
       $validator = new EMailValidatorImpl();
 
-      return $validator->validate($input);
+      return $validator->isValid($input);
    }
 
 }

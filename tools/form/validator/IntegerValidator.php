@@ -35,7 +35,7 @@ class IntegerValidator extends TextFieldValidator {
    public function validate($input) {
       $validator = new IntegerValidatorImpl();
 
-      return $validator->validate($input);
+      return $validator->isValid($input);
    }
 
 }

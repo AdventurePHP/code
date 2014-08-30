@@ -26,49 +26,49 @@ class TextLengthValidatorTest extends \PHPUnit_Framework_TestCase {
 
    public function testMinLength() {
       $validator = new TextLengthValidator(3, 0);
-      $this->assertTrue($validator->validate('Lorem ipsum'));
-      $this->assertTrue($validator->validate('DJ '));
+      $this->assertTrue($validator->isValid('Lorem ipsum'));
+      $this->assertTrue($validator->isValid('DJ '));
 
-      $this->assertFalse($validator->validate('DJ'));
-      $this->assertFalse($validator->validate(''));
-      $this->assertFalse($validator->validate(null));
+      $this->assertFalse($validator->isValid('DJ'));
+      $this->assertFalse($validator->isValid(''));
+      $this->assertFalse($validator->isValid(null));
    }
 
    public function testTestMaxLength() {
       $validator = new TextLengthValidator(0, 3);
-      $this->assertFalse($validator->validate('Lorem ipsum'));
-      $this->assertFalse($validator->validate('DJ  '));
-      $this->assertFalse($validator->validate(''));
-      $this->assertFalse($validator->validate(null));
+      $this->assertFalse($validator->isValid('Lorem ipsum'));
+      $this->assertFalse($validator->isValid('DJ  '));
+      $this->assertFalse($validator->isValid(''));
+      $this->assertFalse($validator->isValid(null));
 
-      $this->assertTrue($validator->validate('DJ'));
+      $this->assertTrue($validator->isValid('DJ'));
    }
 
    public function testRange() {
       $validator = new TextLengthValidator(3, 11);
-      $this->assertTrue($validator->validate('Lorem ipsum'));
-      $this->assertTrue($validator->validate('DJ  '));
+      $this->assertTrue($validator->isValid('Lorem ipsum'));
+      $this->assertTrue($validator->isValid('DJ  '));
 
-      $this->assertFalse($validator->validate(''));
-      $this->assertFalse($validator->validate(null));
+      $this->assertFalse($validator->isValid(''));
+      $this->assertFalse($validator->isValid(null));
 
-      $this->assertFalse($validator->validate('DJ'));
-      $this->assertFalse($validator->validate('Lorem ipsum dolor'));
+      $this->assertFalse($validator->isValid('DJ'));
+      $this->assertFalse($validator->isValid('Lorem ipsum dolor'));
    }
 
    public function testRangeStrict() {
       $validator = new TextLengthValidator(3, 11, TextLengthValidator::MODE_STRICT);
-      $this->assertTrue($validator->validate('Lorem ipsum'));
-      $this->assertTrue($validator->validate('Lorem ipsum  '));
-      $this->assertTrue($validator->validate('  Lorem ipsum'));
+      $this->assertTrue($validator->isValid('Lorem ipsum'));
+      $this->assertTrue($validator->isValid('Lorem ipsum  '));
+      $this->assertTrue($validator->isValid('  Lorem ipsum'));
 
-      $this->assertFalse($validator->validate('    '));
-      $this->assertFalse($validator->validate(null));
+      $this->assertFalse($validator->isValid('    '));
+      $this->assertFalse($validator->isValid(null));
 
-      $this->assertFalse($validator->validate('DJ  '));
+      $this->assertFalse($validator->isValid('DJ  '));
 
-      $this->assertFalse($validator->validate('  DJ'));
-      $this->assertFalse($validator->validate('Lorem ipsum dolor'));
+      $this->assertFalse($validator->isValid('  DJ'));
+      $this->assertFalse($validator->isValid('Lorem ipsum dolor'));
    }
 
 }

@@ -71,7 +71,7 @@ class TextLengthValidator implements Validator {
       $this->mode = $mode;
    }
 
-   public function validate($subject) {
+   public function isValid($subject) {
 
       // mode strict needs trim() on $input
       if ($this->mode === self::MODE_STRICT) {

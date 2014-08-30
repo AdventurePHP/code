@@ -26,120 +26,120 @@ class NumberScopeValidatorTest extends \PHPUnit_Framework_TestCase {
 
    public function testHappyCase() {
       $validator = new NumberScopeValidator();
-      $this->assertTrue($validator->validate(5));
-      $this->assertTrue($validator->validate('5'));
-      $this->assertFalse($validator->validate('ABC'));
+      $this->assertTrue($validator->isValid(5));
+      $this->assertTrue($validator->isValid('5'));
+      $this->assertFalse($validator->isValid('ABC'));
    }
 
    public function testMinLength() {
       $validator = new NumberScopeValidator(5);
 
-      $this->assertTrue($validator->validate(6));
-      $this->assertTrue($validator->validate('6'));
-      $this->assertTrue($validator->validate(5.5));
-      $this->assertTrue($validator->validate(99999999999999));
+      $this->assertTrue($validator->isValid(6));
+      $this->assertTrue($validator->isValid('6'));
+      $this->assertTrue($validator->isValid(5.5));
+      $this->assertTrue($validator->isValid(99999999999999));
 
-      $this->assertFalse($validator->validate(5));
-      $this->assertFalse($validator->validate(5.0));
-      $this->assertFalse($validator->validate('ABC'));
+      $this->assertFalse($validator->isValid(5));
+      $this->assertFalse($validator->isValid(5.0));
+      $this->assertFalse($validator->isValid('ABC'));
    }
 
    public function testMaxLength() {
       $validator = new NumberScopeValidator(null, 5);
 
-      $this->assertTrue($validator->validate(4));
-      $this->assertTrue($validator->validate(4.5));
-      $this->assertTrue($validator->validate(0));
-      $this->assertTrue($validator->validate('0'));
+      $this->assertTrue($validator->isValid(4));
+      $this->assertTrue($validator->isValid(4.5));
+      $this->assertTrue($validator->isValid(0));
+      $this->assertTrue($validator->isValid('0'));
 
-      $this->assertFalse($validator->validate(5));
-      $this->assertFalse($validator->validate(5.0));
-      $this->assertFalse($validator->validate(6));
-      $this->assertFalse($validator->validate('ABC'));
+      $this->assertFalse($validator->isValid(5));
+      $this->assertFalse($validator->isValid(5.0));
+      $this->assertFalse($validator->isValid(6));
+      $this->assertFalse($validator->isValid('ABC'));
    }
 
    public function testRange() {
       $validator = new NumberScopeValidator(3, 5);
 
-      $this->assertTrue($validator->validate(4));
-      $this->assertTrue($validator->validate('4'));
-      $this->assertTrue($validator->validate(4.5));
+      $this->assertTrue($validator->isValid(4));
+      $this->assertTrue($validator->isValid('4'));
+      $this->assertTrue($validator->isValid(4.5));
 
-      $this->assertFalse($validator->validate(0));
-      $this->assertFalse($validator->validate(3));
-      $this->assertFalse($validator->validate('3'));
-      $this->assertFalse($validator->validate(3.0));
-      $this->assertFalse($validator->validate(5));
-      $this->assertFalse($validator->validate(5.0));
-      $this->assertFalse($validator->validate(6));
-      $this->assertFalse($validator->validate('ABC'));
+      $this->assertFalse($validator->isValid(0));
+      $this->assertFalse($validator->isValid(3));
+      $this->assertFalse($validator->isValid('3'));
+      $this->assertFalse($validator->isValid(3.0));
+      $this->assertFalse($validator->isValid(5));
+      $this->assertFalse($validator->isValid(5.0));
+      $this->assertFalse($validator->isValid(6));
+      $this->assertFalse($validator->isValid('ABC'));
    }
 
    public function testRangeWithLowerIncluded() {
       $validator = new NumberScopeValidator(3, 5, false, true);
 
-      $this->assertTrue($validator->validate(4));
-      $this->assertTrue($validator->validate(4.5));
-      $this->assertTrue($validator->validate(3));
-      $this->assertTrue($validator->validate('3'));
-      $this->assertTrue($validator->validate(3.0));
+      $this->assertTrue($validator->isValid(4));
+      $this->assertTrue($validator->isValid(4.5));
+      $this->assertTrue($validator->isValid(3));
+      $this->assertTrue($validator->isValid('3'));
+      $this->assertTrue($validator->isValid(3.0));
 
-      $this->assertFalse($validator->validate(0));
-      $this->assertFalse($validator->validate(5));
-      $this->assertFalse($validator->validate(5.0));
-      $this->assertFalse($validator->validate(6));
-      $this->assertFalse($validator->validate('ABC'));
+      $this->assertFalse($validator->isValid(0));
+      $this->assertFalse($validator->isValid(5));
+      $this->assertFalse($validator->isValid(5.0));
+      $this->assertFalse($validator->isValid(6));
+      $this->assertFalse($validator->isValid('ABC'));
    }
 
    public function testRangeWithUpperIncluded() {
       $validator = new NumberScopeValidator(3, 5, false, false, true);
 
-      $this->assertTrue($validator->validate(4));
-      $this->assertTrue($validator->validate(4.5));
-      $this->assertTrue($validator->validate(5));
-      $this->assertTrue($validator->validate('5'));
-      $this->assertTrue($validator->validate(5.0));
+      $this->assertTrue($validator->isValid(4));
+      $this->assertTrue($validator->isValid(4.5));
+      $this->assertTrue($validator->isValid(5));
+      $this->assertTrue($validator->isValid('5'));
+      $this->assertTrue($validator->isValid(5.0));
 
-      $this->assertFalse($validator->validate(0));
-      $this->assertFalse($validator->validate(3));
-      $this->assertFalse($validator->validate(3.0));
-      $this->assertFalse($validator->validate(6));
-      $this->assertFalse($validator->validate('ABC'));
+      $this->assertFalse($validator->isValid(0));
+      $this->assertFalse($validator->isValid(3));
+      $this->assertFalse($validator->isValid(3.0));
+      $this->assertFalse($validator->isValid(6));
+      $this->assertFalse($validator->isValid('ABC'));
    }
 
    public function testRangeWithIncludedLimits() {
       $validator = new NumberScopeValidator(3, 5, false, true, true);
 
-      $this->assertTrue($validator->validate(3));
-      $this->assertTrue($validator->validate('3'));
-      $this->assertTrue($validator->validate(3.0));
-      $this->assertTrue($validator->validate(4));
-      $this->assertTrue($validator->validate(5));
-      $this->assertTrue($validator->validate(5.0));
-      $this->assertTrue($validator->validate('5.0'));
+      $this->assertTrue($validator->isValid(3));
+      $this->assertTrue($validator->isValid('3'));
+      $this->assertTrue($validator->isValid(3.0));
+      $this->assertTrue($validator->isValid(4));
+      $this->assertTrue($validator->isValid(5));
+      $this->assertTrue($validator->isValid(5.0));
+      $this->assertTrue($validator->isValid('5.0'));
 
-      $this->assertFalse($validator->validate(0));
-      $this->assertFalse($validator->validate(6));
-      $this->assertFalse($validator->validate(6.1));
-      $this->assertFalse($validator->validate('ABC'));
+      $this->assertFalse($validator->isValid(0));
+      $this->assertFalse($validator->isValid(6));
+      $this->assertFalse($validator->isValid(6.1));
+      $this->assertFalse($validator->isValid('ABC'));
    }
 
    public function testAcceptIntegersOnly() {
       $validator = new NumberScopeValidator(3, 5, true, true, true);
 
-      $this->assertTrue($validator->validate(3));
-      $this->assertTrue($validator->validate(4));
-      $this->assertTrue($validator->validate(5));
+      $this->assertTrue($validator->isValid(3));
+      $this->assertTrue($validator->isValid(4));
+      $this->assertTrue($validator->isValid(5));
 
-      $this->assertFalse($validator->validate('4'));
+      $this->assertFalse($validator->isValid('4'));
 
-      $this->assertFalse($validator->validate(3.0));
-      $this->assertFalse($validator->validate(5.0));
-      $this->assertFalse($validator->validate(0));
-      $this->assertFalse($validator->validate(6));
-      $this->assertFalse($validator->validate('6'));
-      $this->assertFalse($validator->validate(6.1));
-      $this->assertFalse($validator->validate('ABC'));
+      $this->assertFalse($validator->isValid(3.0));
+      $this->assertFalse($validator->isValid(5.0));
+      $this->assertFalse($validator->isValid(0));
+      $this->assertFalse($validator->isValid(6));
+      $this->assertFalse($validator->isValid('6'));
+      $this->assertFalse($validator->isValid(6.1));
+      $this->assertFalse($validator->isValid('ABC'));
    }
 
 }

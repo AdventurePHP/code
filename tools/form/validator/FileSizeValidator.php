@@ -64,7 +64,7 @@ class FileSizeValidator extends TextFieldValidator {
 
          $validator = new NumberScopeValidatorImpl($required, $allowed, true, true, true);
 
-         return $validator->validate($size);
+         return $validator->isValid($size);
       }
 
       return false;

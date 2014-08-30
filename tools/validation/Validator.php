@@ -42,6 +42,6 @@ interface Validator {
     * @version
     * Version 0.1, 23.08.2014<br />
     */
-   public function validate($subject);
+   public function isValid($subject);
 
 }

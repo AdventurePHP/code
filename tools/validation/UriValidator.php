@@ -29,7 +29,7 @@ namespace APF\tools\validation;
  */
 class UriValidator implements Validator {
 
-   public function validate($subject) {
+   public function isValid($subject) {
       if (!empty($subject) &&
             preg_match('/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i', $subject)
       ) {

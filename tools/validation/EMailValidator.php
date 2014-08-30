@@ -57,7 +57,7 @@ class EMailValidator implements Validator {
       $this->rule = $rule;
    }
 
-   public function validate($subject) {
+   public function isValid($subject) {
       if (!empty($subject) && preg_match($this->rule, $subject)) {
          return true;
       }

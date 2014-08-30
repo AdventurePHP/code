@@ -75,7 +75,7 @@ class NumberScopeValidator implements Validator {
       $this->includeUpperEnd = $includeUpperEnd;
    }
 
-   public function validate($subject) {
+   public function isValid($subject) {
 
       // check if only integers are accepted
       if ($this->onlyIntegersAccepted) {
