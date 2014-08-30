@@ -124,6 +124,11 @@ class Document extends APFObject {
    protected static $knownTags = array();
 
    /**
+    * @var ExpressionCreator[]
+    */
+   public static $knownExpressions = array();
+
+   /**
     * List of known tags for a dedicated DOM node the APF parser uses to create tag instances during analysis phase.
     *
     * @var string[] $knownInstanceTags
@@ -324,8 +329,8 @@ class Document extends APFObject {
    public function addAttribute($name, $value, $glue = '') {
       if (isset($this->attributes[$name])) {
          if (empty($this->attributes[$name])) { // avoid e.g. starting blanks with CSS classes
-            $this->attributes[$name] .= $value;
-         } else {
+         $this->attributes[$name] .= $value;
+      } else {
             $this->attributes[$name] .= $glue . $value;
          }
       } else {
@@ -1169,23 +1174,23 @@ class Document extends APFObject {
 
          $token = substr($this->content, $start + 2, $end - $start - 2);
 
-         // additional check for wrong tag definition
-         /*if (strpos($token, $startToken) !== false) {
-            throw new ParserException('No closing marker "' . $endToken . '" found for advanced place holder declaration. Token string: ' . htmlentities($token));
-         }*/
-
          // create APF node to feel like being created during onParseTime()
          $objectId = XmlParser::generateUniqID();
 
-         // "real" expressions always contain method calls or array access stuff, so we can consider this an expression
-         if (strpos($token, '->') === false && strpos($token, '[') === false) {
-            $this->children[$objectId] = new PlaceHolderTag();
-            $this->children[$objectId]->setAttribute('name', $token);
-         } else {
-            $this->children[$objectId] = new ExpressionEvaluationTag();
-            $this->children[$objectId]->setAttribute(ExpressionEvaluationTag::EXPRESSION, $token);
+         /* @var $object Document */
+         $object = null;
+
+         foreach (self::$knownExpressions as $expression) {
+            if ($expression::applies($token)) {
+               $object = $expression::getDocument($token);
+            }
          }
 
+         if ($object === null) {
+            throw new ParserException('[' . get_class($this) . '::extractExpressionTags()] No expression definition found for token "' . $token . '"!', E_USER_ERROR);
+         }
+
+         $this->children[$objectId] = $object;
          $this->children[$objectId]->setObjectId($objectId);
          $this->children[$objectId]->setContext($context);
          $this->children[$objectId]->setLanguage($language);
@@ -1198,7 +1203,9 @@ class Document extends APFObject {
          // re-adjust offset for performance reasons
          $offset = $start + strlen($objectId) + 3;
 
-         // PLEASE NOTE: onParseTime() and onAfterAppend() not necessary for PlaceHolderTag and ExpressionEvaluationTag
+         $this->children[$objectId]->onParseTime();
+         $this->children[$objectId]->onAfterAppend();
+
          $loops++;
 
       }
