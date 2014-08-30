@@ -124,9 +124,9 @@ LinkGenerator::setLinkScheme(new DefaultLinkScheme());
 // included within the APF).
 InputFilterChain::getInstance()->appendFilter(new ChainedStandardInputFilter());
 
-// The 2.2 APF parser allows to globally register tags. This not only eases tag implementation and re-usage
+// The 2.2/3.0 APF parser allows to globally register tags. This not only eases tag implementation and re-usage
 // but also registration at a central place (bootstrap file). The following section registers all APF tags
-// shipped with the release to have them available for custom tags. Tags are grouped per namespace.
+// shipped with the release to have them available for custom tags. Tags are grouped per namespace and purpose.
 
 // APF\core
 Document::addTagLib('APF\core\pagecontroller\AddTaglibTag', 'core', 'addtaglib');
@@ -197,3 +197,9 @@ Document::addTagLib('APF\modules\recaptcha\pres\taglib\ReCaptchaTag', 'form', 'r
 Document::addTagLib('APF\extensions\htmllist\taglib\DefinitionListDefinitionTag', 'list', 'elem_defdef');
 Document::addTagLib('APF\extensions\htmllist\taglib\DefinitionListTermTag', 'list', 'elem_defterm');
 Document::addTagLib('APF\extensions\htmllist\taglib\ListElementTag', 'list', 'elem_list');
+
+// The 2.2/3.0 APF parser allows to globally register template expressions. This allows to register custom "short cuts"
+// for template syntax (e.g. place holders, language labels). The following section registers the default APF expressions
+// shipped with the release to have them available for all templates.
+Document::addTemplateExpression('APF\core\pagecontroller\PlaceHolderTemplateExpression');
+Document::addTemplateExpression('APF\core\pagecontroller\DynamicTemplateExpression');

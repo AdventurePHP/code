@@ -21,7 +21,6 @@
 namespace APF\core\pagecontroller;
 
 use APF\core\benchmark\BenchmarkTimer;
-use APF\core\expression\taglib\ExpressionEvaluationTag;
 use APF\core\loader\RootClassLoader;
 use APF\core\singleton\Singleton;
 use Exception;
@@ -124,9 +123,11 @@ class Document extends APFObject {
    protected static $knownTags = array();
 
    /**
-    * @var ExpressionCreator[]
+    * List of known expressions used to process APF templates.
+    *
+    * @var TemplateExpression[]
     */
-   public static $knownExpressions = array();
+   protected static $knownExpressions = array();
 
    /**
     * List of known tags for a dedicated DOM node the APF parser uses to create tag instances during analysis phase.
@@ -329,8 +330,8 @@ class Document extends APFObject {
    public function addAttribute($name, $value, $glue = '') {
       if (isset($this->attributes[$name])) {
          if (empty($this->attributes[$name])) { // avoid e.g. starting blanks with CSS classes
-         $this->attributes[$name] .= $value;
-      } else {
+            $this->attributes[$name] .= $value;
+         } else {
             $this->attributes[$name] .= $glue . $value;
          }
       } else {
@@ -589,6 +590,19 @@ class Document extends APFObject {
     */
    public function addInstanceTagLib($class, $prefix, $name) {
       $this->knownInstanceTags[$prefix . ':' . $name] = $class;
+   }
+
+   /**
+    * Add a template expressions to the <em>global</em> list of known expressions.
+    *
+    * @param string $expression The fully qualified class name of the template expression (e.g. <em>APF\core\pagecontroller\PlaceHolderTemplateExpression</em>).
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 30.08.2014 (ID#229: introduced template expressions)<br />
+    */
+   public static function addTemplateExpression($expression) {
+      self::$knownExpressions[] = $expression;
    }
 
    /**
@@ -1168,7 +1182,9 @@ class Document extends APFObject {
 
          $end = strpos($this->content, $endToken, $start);
          if ($end === false) {
-            throw new ParserException('No closing marker "' . $endToken . '" found for advanced place holder declaration. Tag string: ' . htmlentities($this->content));
+            throw new ParserException('[' . get_class($this) . '::extractExpressionTags()] No closing marker "'
+                  . $endToken . '" found for advanced place holder declaration. Tag string: '
+                  . htmlentities($this->content), E_USER_ERROR);
             break;
          }
 
@@ -1187,7 +1203,8 @@ class Document extends APFObject {
          }
 
          if ($object === null) {
-            throw new ParserException('[' . get_class($this) . '::extractExpressionTags()] No expression definition found for token "' . $token . '"!', E_USER_ERROR);
+            throw new ParserException('[' . get_class($this) . '::extractExpressionTags()] No expression definition found for token "'
+                  . $token . '"! Please check your template code and/or project setup.', E_USER_ERROR);
          }
 
          $this->children[$objectId] = $object;
