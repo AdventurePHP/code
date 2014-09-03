@@ -32,7 +32,7 @@ use APF\tools\form\mixin\FormControlFinder as FormControlFinderImpl;
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 21.08.2014 (ID#198: )<br />
+ * Version 0.1, 21.08.2014 (ID#198)<br />
  */
 class FormGroupTag extends AbstractFormControl implements FormElementGroup {
 
