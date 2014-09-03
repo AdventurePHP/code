@@ -58,7 +58,7 @@ class HtmlFormTag extends Document {
    /**
     * @var boolean Indicates, whether the form should be transformed at it'd place of definition or not.
     */
-   private $transformOnPlace = false;
+   protected $transformOnPlace = false;
 
    /**
     * @public
