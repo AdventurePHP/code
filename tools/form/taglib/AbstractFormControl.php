@@ -343,6 +343,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * Version 0.1, 24.08.2009<br />
     * Version 0.2, 01.11.2010 (Added support for optional validators)<br />
     * Version 0.3, 27.03.2014 (Filters are now collected internally to allow retrieval for e.g. client validation rule generation. See ID#166.)<br />
+    * Version 0.4, 05.09.2014 (ID#233: Added support to omit validators for hidden fields)<br />
     */
    public function addValidator(AbstractFormValidator &$validator) {
 
@@ -355,7 +356,9 @@ abstract class AbstractFormControl extends Document implements FormControl {
 
       // Check both for validator being active and for mandatory fields to allow optional
       // validation (means: field has a registered validator but is sent with empty value).
-      if ($validator->isActive() && $this->isMandatory($value)) {
+      // ID#233: add/execute validators only in case the control is visible. Otherwise, this
+      // may break the user flow with hidden mandatory fields and users end up in an endless loop.
+      if ($validator->isActive() && $this->isMandatory($value) && $this->isVisible()) {
          if (!$validator->validate($value)) {
             // Execute validator callback to allow notification and validation event propagation.
             $validator->notify();

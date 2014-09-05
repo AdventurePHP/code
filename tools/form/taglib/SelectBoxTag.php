@@ -370,6 +370,7 @@ class SelectBoxTag extends AbstractFormControl {
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.08.2009<br />
+    * Version 0.2, 05.09.2014 (ID#233: Added support to omit validators for hidden fields)<br />
     */
    public function addValidator(AbstractFormValidator &$validator) {
 
@@ -382,7 +383,9 @@ class SelectBoxTag extends AbstractFormControl {
 
       // Check both for validator being active and for mandatory fields to allow optional
       // validation (means: field has a registered validator but is sent with empty value).
-      if ($validator->isActive() && $this->isMandatory($value)) {
+      // ID#233: add/execute validators only in case the control is visible. Otherwise, this
+      // may break the user flow with hidden mandatory fields and users end up in an endless loop.
+      if ($validator->isActive() && $this->isMandatory($value) && $this->isVisible()) {
          $option = & $this->getSelectedOption();
          if ($option === null) {
             $value = null;
