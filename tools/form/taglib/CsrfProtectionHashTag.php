@@ -42,17 +42,6 @@ class CsrfProtectionHashTag extends AbstractFormControl {
    protected $hash;
 
    /**
-    * Sets the default namespace and provider class name.
-    *
-    * @author Daniel Seemaier
-    * @version
-    * Version 0.1, 06.11.2010
-    */
-   public function __construct() {
-      $this->setAttribute('class', 'APF\tools\form\provider\csrf\EncryptedSIDHashProvider');
-   }
-
-   /**
     * Generates the hash.
     *
     * @author Daniel Seemaier
@@ -61,13 +50,13 @@ class CsrfProtectionHashTag extends AbstractFormControl {
     */
    public function onParseTime() {
 
-      $class = $this->getAttribute('class');
+      $class = $this->getAttribute('class', 'APF\tools\form\provider\csrf\EncryptedSIDHashProvider');
       $salt = $this->getAttribute('salt');
 
       if ($salt === null) {
          throw new FormException('[CsrfProtectionHashTag::onParseTime()] The salt attribute is '
                . 'not present. Please refer to the documentation concerning the setup of the '
-               . '<form:csrfhash /> tag!');
+               . '&lt;form:csrfhash /&gt; tag!');
       }
 
       /* @var $provider CSRFHashProvider */

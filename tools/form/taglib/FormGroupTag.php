@@ -77,6 +77,19 @@ class FormGroupTag extends AbstractFormControl implements FormElementGroup {
       return $this;
    }
 
+   public function reset() {
+      foreach ($this->children as $objectId => $DUMMY) {
+         // Only include real form elements to avoid unnecessary
+         // implementation overhead for elements that just want to
+         // be used within forms but do not act as form elements!
+         // See http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=1387
+         // for details.
+         if ($this->children[$objectId] instanceof FormControl) {
+            $this->children[$objectId]->reset();
+         }
+      }
+   }
+
    public function &show() {
       foreach ($this->children as $objectId => $DUMMY) {
          if ($this->children[$objectId] instanceof FormControl) {

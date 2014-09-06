@@ -84,4 +84,8 @@ class CheckBoxTag extends AbstractFormControl {
       return '';
    }
 
+   public function reset() {
+      $this->uncheck();
+   }
+
 }

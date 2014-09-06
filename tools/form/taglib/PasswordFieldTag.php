@@ -31,10 +31,6 @@ namespace APF\tools\form\taglib;
  */
 class PasswordFieldTag extends TextFieldTag {
 
-   public function __construct() {
-      parent::__construct();
-   }
-
    /**
     * Returns the HTML source code of the text field.
     *

@@ -94,4 +94,8 @@ class ValidationListenerTag extends AbstractFormControl {
       return '';
    }
 
+   public function reset() {
+      // nothing to do as listener tags contain no user input
+   }
+
 }

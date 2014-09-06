@@ -62,4 +62,8 @@ class SelectBoxOptionTag extends AbstractFormControl {
       . $this->content . '</option>';
    }
 
+   public function reset() {
+      $this->deleteAttribute('selected');
+   }
+
 }

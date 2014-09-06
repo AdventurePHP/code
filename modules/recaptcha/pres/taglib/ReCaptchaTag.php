@@ -87,7 +87,7 @@ class ReCaptchaTag extends AbstractFormControl {
       if (empty($name)) {
          $form = $this->getParentObject();
          throw new FormException('ReCaptcha control within form "' . $form->getAttribute('name')
-               . '" has no "name" attribute specified! Please r-check your form definition.');
+               . '" has no "name" attribute specified! Please re-check your form definition.');
       }
 
       // parse <recaptcha:getstring /> tag.

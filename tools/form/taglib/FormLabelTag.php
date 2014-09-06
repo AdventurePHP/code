@@ -54,4 +54,8 @@ class FormLabelTag extends AbstractFormControl {
       return '';
    }
 
+   public function reset() {
+      // nothing to do as labels cannot be reset
+   }
+
 }

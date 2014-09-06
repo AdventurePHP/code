@@ -62,4 +62,8 @@ class DynamicFormElementMarkerTag extends AbstractFormControl implements FormMar
       return $this;
    }
 
+   public function reset() {
+      // nothing to do as markers don't generate output
+   }
+
 }

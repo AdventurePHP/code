@@ -190,6 +190,11 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return $this->controlIsSent;
    }
 
+   public function reset() {
+      // reset value attribute as basic implementation as it applies in several cases
+      $this->setAttribute('value', '');
+   }
+
    /**
     * Let's you check, if a radio button was checked.
     *

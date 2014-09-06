@@ -466,4 +466,11 @@ class DateSelectorTag extends AbstractFormControl {
       return null;
    }
 
+   public function reset() {
+      // rely on SelectBoxTag::reset()...
+      $this->getYearControl()->reset();
+      $this->getMonthControl()->reset();
+      $this->getDayControl()->reset();
+   }
+
 }

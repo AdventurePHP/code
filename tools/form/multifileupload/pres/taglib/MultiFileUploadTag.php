@@ -150,9 +150,9 @@ class MultiFileUploadTag extends AbstractFormControl {
             '.file_upload_progress .ui-progressbar-value {
                      background: url(' . $this->MFUConfig->getValue('loadingimage.dir') . '/' . $this->MFUConfig->getValue('loadingimage.name') . ');
                }'));
+
       /*       * ********* CSS-Code Ladbild Ende *********** */
 
-      // Ausgabe
       return $return;
    }
 
@@ -549,6 +549,15 @@ class MultiFileUploadTag extends AbstractFormControl {
             });';
 
       return $code;
+   }
+
+   public function reset() {
+      unset($_FILES[$this->uploadFieldName]);
+      $files = $this->manager->getFiles();
+      foreach ($files as $file) {
+         $this->manager->deleteFile($file);
+         $this->manager->deleteFileFromSession($file);
+      }
    }
 
 }

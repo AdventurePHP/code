@@ -57,4 +57,8 @@ class ResetButtonTag extends AbstractFormControl {
       return '';
    }
 
+   public function reset() {
+      // nothing to do as buttons contain no user input
+   }
+
 }

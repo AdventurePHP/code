@@ -490,4 +490,15 @@ class SelectBoxTag extends AbstractFormControl {
       }
    }
 
+   public function reset() {
+      foreach ($this->children as $objectId => $DUMMY) {
+         // treat groups as a special case, because a group has more options in it!
+         if ($this->children[$objectId] instanceof SelectBoxGroupTag) {
+            $this->children[$objectId]->reset();
+         } else {
+            $this->children[$objectId]->deleteAttribute('selected');
+         }
+      }
+   }
+
 }

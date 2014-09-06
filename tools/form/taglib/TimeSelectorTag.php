@@ -427,4 +427,13 @@ class TimeSelectorTag extends AbstractFormControl {
       return $this;
    }
 
+   public function reset() {
+      // rely on SelectBoxTag::reset()...
+      $this->getHoursControl()->reset();
+      $this->getMinutesControl()->reset();
+      if ($this->showSeconds !== false) {
+         $this->getSecondsControl()->reset();
+      }
+   }
+
 }

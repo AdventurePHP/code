@@ -81,4 +81,9 @@ class FormClientErrorDisplayTag extends AbstractFormControl {
 
       return $output;
    }
+
+   public function reset() {
+      // nothing to do as client errors cannot be reset
+   }
+
 }

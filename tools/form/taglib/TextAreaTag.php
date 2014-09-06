@@ -125,4 +125,8 @@ class TextAreaTag extends AbstractFormControl {
       return $this->getContent() == null ? false : true;
    }
 
+   public function reset() {
+      $this->content = null;
+   }
+
 }

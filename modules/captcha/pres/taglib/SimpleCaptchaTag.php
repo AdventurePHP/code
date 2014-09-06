@@ -255,4 +255,9 @@ class SimpleCaptchaTag extends AbstractFormControl {
 
    }
 
+   public function reset() {
+      // Delegate reset to the inner text field. Might be without any effect in case clearonformerror=true.
+      $this->textField->reset();
+   }
+
 }

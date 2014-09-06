@@ -182,4 +182,10 @@ class SelectBoxGroupTag extends AbstractFormControl {
       return $html . '</optgroup>';
    }
 
+   public function reset() {
+      foreach ($this->children as $objectId => $DUMMY) {
+         $this->children[$objectId]->deleteAttribute('selected');
+      }
+   }
+
 }

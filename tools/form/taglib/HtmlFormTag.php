@@ -26,7 +26,6 @@ use APF\core\pagecontroller\XmlParser;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 use APF\tools\form\FormControl;
-use APF\tools\form\FormControlFinder;
 use APF\tools\form\FormException;
 use APF\tools\form\HtmlForm;
 use APF\tools\form\mixin\FormControlFinder as FormControlFinderImpl;
@@ -145,6 +144,19 @@ class HtmlFormTag extends Document implements HtmlForm {
       }
 
       return true;
+   }
+
+   public function reset() {
+      foreach ($this->children as $objectId => $DUMMY) {
+         // Only include real form elements to avoid unnecessary
+         // implementation overhead for elements that just want to
+         // be used within forms but do not act as form elements!
+         // See http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=1387
+         // for details.
+         if ($this->children[$objectId] instanceof FormControl) {
+            $this->children[$objectId]->reset();
+         }
+      }
    }
 
    /**

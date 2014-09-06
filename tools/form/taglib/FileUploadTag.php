@@ -55,7 +55,6 @@ class FileUploadTag extends TextFieldTag {
     */
    public function onAfterAppend() {
       $this->getForm()->setAttribute('enctype', 'multipart/form-data');
-      $this->presetValue();
    }
 
    /**
@@ -268,6 +267,10 @@ class FileUploadTag extends TextFieldTag {
     */
    public function isMultiple() {
       return $this->getAttribute('multiple') === 'multiple';
+   }
+
+   public function reset() {
+      unset($_FILES[$this->getAttribute('name')]);
    }
 
 }

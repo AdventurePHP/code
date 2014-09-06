@@ -110,4 +110,8 @@ class AddFormControlClientValidatorTag extends AbstractFormControl {
    public function onAfterAppend() {
    }
 
+   public function reset() {
+      // nothing to do as client listeners cannot be reset
+   }
+
 }

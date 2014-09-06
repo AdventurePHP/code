@@ -75,8 +75,7 @@ class RadioButtonTag extends AbstractFormControl {
       $name = $this->getAttribute('name');
       $value = $this->getAttribute('value');
 
-      // Check for name and value beeing present. Otherwise
-      // presetting will fail!
+      // Check for name and value being present. Otherwise, presetting will fail!
       if ($name === null || $value === null) {
          $formName = $this->getForm()->getAttribute('name');
          throw new FormException('[RadioButtonTag::presetValue()] Attribute "name" and or "value" is '
@@ -95,6 +94,10 @@ class RadioButtonTag extends AbstractFormControl {
 
       }
 
+   }
+
+   public function reset() {
+      $this->uncheck();
    }
 
 }

@@ -57,4 +57,16 @@ interface FormControl {
     */
    public function isValid();
 
+   /**
+    * Allows to reset a form or form control within a document controller. In case of form and
+    * form group the reset() event is propagated to all child elements.
+    * <p/>
+    * What happens when resetting a form control is up to the dedicated implementation.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 06.09.2014 (ID#206: Added interface enhancement to allow resetting)<br />
+    */
+   public function reset();
+
 }

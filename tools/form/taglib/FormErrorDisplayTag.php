@@ -72,4 +72,8 @@ class FormErrorDisplayTag extends AbstractFormControl {
       return '';
    }
 
+   public function reset() {
+      // nothing to do as error display tags cannot be reset
+   }
+
 }

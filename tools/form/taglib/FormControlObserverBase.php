@@ -82,7 +82,7 @@ abstract class FormControlObserverBase extends AbstractFormControl {
       $class = $this->getAttribute('class');
 
       /* @var $parent HtmlFormTag */
-      $form = &$this->getForm();
+      $form = & $this->getForm();
 
       if (empty($controlDef) || empty($buttonName) || empty($class)) {
          $formName = $form->getAttribute('name');
@@ -125,6 +125,10 @@ abstract class FormControlObserverBase extends AbstractFormControl {
 
       }
 
+   }
+
+   public function reset() {
+      // nothing to do as observer tags create no visible output
    }
 
 }

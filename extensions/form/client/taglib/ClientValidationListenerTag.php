@@ -111,4 +111,8 @@ class ClientValidationListenerTag extends AbstractFormControl {
       return $output;
    }
 
+   public function reset() {
+      // nothing to do as client listeners cannot be reset
+   }
+
 }
