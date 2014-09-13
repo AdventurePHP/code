@@ -255,4 +255,18 @@ class ResponseImpl implements Response {
       return $this->isSent;
    }
 
+   /**
+    * Convenience method to dump the current response.
+    *
+    * @return string The string representation of the current response.
+    */
+   public function dump() {
+      $response = 'HTTP/ ' . $this->version . $this->getStatusCode() . self::HEADER_SEPARATOR;
+      foreach ($this->headers as $header) {
+         $response .= $header . self::HEADER_SEPARATOR;
+      }
+
+      return $response . self::HEADER_SEPARATOR . $this->body;
+   }
+
 }
