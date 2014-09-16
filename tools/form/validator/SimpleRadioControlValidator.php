@@ -20,6 +20,8 @@
  */
 namespace APF\tools\form\validator;
 
+use APF\core\http\mixins\GetRequestResponseTrait;
+
 /**
  * Implements a validator for radio buttons.
  *
@@ -28,6 +30,8 @@ namespace APF\tools\form\validator;
  * Version 0.1, 29.08.2009<br />
  */
 class SimpleRadioControlValidator extends TextFieldValidator {
+
+   use GetRequestResponseTrait;
 
    /**
     * Validates the radio button content.
@@ -46,7 +50,8 @@ class SimpleRadioControlValidator extends TextFieldValidator {
       // input we are given from the form taglib to get valid results.
       // this has to be done because of dynamic filling of radio button!
       $name = $this->control->getAttribute('name');
-      if (!isset($_REQUEST[$name]) || empty($_REQUEST[$name])) {
+      //if (!isset($_REQUEST[$name]) || empty($_REQUEST[$name])) {
+      if (self::getRequest()->getParameter($name) === null) {
          return false;
       }
 

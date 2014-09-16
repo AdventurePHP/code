@@ -20,6 +20,7 @@
  */
 namespace APF\core\pagecontroller;
 
+use APF\core\http\mixins\GetRequestResponseTrait;
 use APF\core\logging\entry\SimpleLogEntry;
 use APF\core\logging\LogEntry;
 use APF\core\logging\Logger;
@@ -42,6 +43,8 @@ use InvalidArgumentException;
  * Version 0.4, 01.04.2014 (Removed content handling passing the current document's content to the document controller)<br />
  */
 abstract class BaseDocumentController extends APFObject implements DocumentController {
+
+   use GetRequestResponseTrait;
 
    /**
     * References the document, the document controller is responsible for transformation.

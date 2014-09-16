@@ -24,7 +24,6 @@ use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\TemplateTag;
 use APF\tools\html\Iterator;
 use APF\tools\html\model\IteratorStatus;
-use APF\tools\request\RequestHandler;
 use InvalidArgumentException;
 
 /**
@@ -166,13 +165,14 @@ class HtmlIteratorTag extends Document implements Iterator {
             $pagerConfig = $this->getConfiguration('APF\modules\pager', 'pager.ini')->getSection($pager);
 
             // get the number of entries per page
-            $entriesPerPage = RequestHandler::getValue(
+            $request = & self::getRequest();
+            $entriesPerPage = $request->getParameter(
                   $pagerConfig->getValue('Pager.ParameterCountName'),
                   $pagerConfig->getValue('Pager.EntriesPerPage')
             );
 
             // get the number of the actual page
-            $actualPage = RequestHandler::getValue(
+            $actualPage = $request->getParameter(
                   $pagerConfig->getValue('Pager.ParameterPageName'),
                   1
             );

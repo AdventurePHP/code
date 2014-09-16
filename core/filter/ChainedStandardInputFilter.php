@@ -22,6 +22,7 @@ namespace APF\core\filter;
 
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\frontcontroller\Frontcontroller;
+use APF\core\http\mixins\GetRequestResponseTrait;
 use APF\core\singleton\Singleton;
 
 /**
@@ -48,6 +49,8 @@ use APF\core\singleton\Singleton;
  */
 class ChainedStandardInputFilter implements ChainedContentFilter {
 
+   use GetRequestResponseTrait;
+
    /**
     * Defines the action keyword.
     *
@@ -66,7 +69,7 @@ class ChainedStandardInputFilter implements ChainedContentFilter {
       $fC = $this->getFrontcontroller();
       $tokens = $fC->getActionUrlMappingTokens();
 
-      foreach ($_REQUEST as $key => $value) {
+      foreach (self::getRequest()->getParameters() as $key => $value) {
 
          // ID#63: re-map action instructions according to registered aliases
          if (in_array($key, $tokens)) {

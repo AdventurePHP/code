@@ -80,6 +80,7 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
       $sessionId = (string) '';
       $sessionName = ini_get('session.name');
 
+      // TODO re-implement with RequestImpl abstraction
       if (isset($_REQUEST[$sessionName])) {
          $sessionId = $_REQUEST[$sessionName];
       }
