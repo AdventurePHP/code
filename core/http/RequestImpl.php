@@ -30,9 +30,32 @@ class RequestImpl implements Request {
 
       return isset($lookupTable[$name])
       // avoid issues with "0" values being skipped due to empty() check
+      // TODO eventually switch to array_key_exists() instead of empty() as an existing offset with value "null" will be considered empty (UnitTests necessary).
       && (!empty($lookupTable[$name]) || (string) $lookupTable[$name] === '0')
             ? $lookupTable[$name]
             : $default;
+   }
+
+   public function getParameters($type = self::USE_REQUEST_PARAMS) {
+      return is_array($GLOBALS['_' . $type]) ? $GLOBALS['_' . $type] : array();
+   }
+
+
+   public function setParameter($name, $value, $type = self::USE_REQUEST_PARAMS) {
+      $GLOBALS['_' . $type][$name] = $value;
+
+      return $this;
+   }
+
+   public function setParameters($parameters = array(), $type = self::USE_REQUEST_PARAMS) {
+      $GLOBALS['_' . $type] = $parameters;
+
+      return $this;
+   }
+
+   public function deleteParameter($name, $type = self::USE_REQUEST_PARAMS) {
+      unset($GLOBALS['_' . $type][$name]); // TODO check whether really unset in e.g. $_REQUEST
+      return $this;
    }
 
    public function isSecure() {
