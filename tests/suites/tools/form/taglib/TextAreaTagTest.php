@@ -31,23 +31,25 @@ class TextAreaTagTest extends \PHPUnit_Framework_TestCase {
     * @return TextAreaTag
     */
    protected function getTextField() {
-      $field = new TextAreaTag();
-      $field->setAttribute('name', self::FIELD_NAME);
+      $area = new TextAreaTag();
+      $area->setAttribute('name', self::FIELD_NAME);
 
-      return $field;
+      return $area;
    }
 
    public function testControllerPresetting() {
 
-      $field = $this->getTextField();
+      $_REQUEST = array();
 
-      $field->onParseTime();
-      $field->onAfterAppend();
+      $area = $this->getTextField();
 
-      $field->setContent(self::FIELD_VALUE);
+      $area->onParseTime();
+      $area->onAfterAppend();
 
-      assertEquals($field->getContent(), self::FIELD_VALUE);
-      assertTrue($field->isFilled());
+      $area->setContent(self::FIELD_VALUE);
+
+      assertEquals($area->getContent(), self::FIELD_VALUE);
+      assertTrue($area->isFilled());
 
    }
 
@@ -58,24 +60,24 @@ class TextAreaTagTest extends \PHPUnit_Framework_TestCase {
       $userInput = 'This is a user input...';
       $_REQUEST[self::FIELD_NAME] = $userInput;
 
-      $field = $this->getTextField();
-      $field->setContent(self::FIELD_VALUE);
+      $area = $this->getTextField();
+      $area->setContent(self::FIELD_VALUE);
 
-      $field->onParseTime();
-      $field->onAfterAppend();
+      $area->onParseTime();
+      $area->onAfterAppend();
 
-      assertEquals($field->getContent(), $userInput);
-      assertTrue($field->isFilled());
+      assertEquals($area->getContent(), $userInput);
+      assertTrue($area->isFilled());
 
       // re-test with "0" as input in URL
       $userInput = '0';
       $_REQUEST[self::FIELD_NAME] = $userInput;
 
-      $field->onParseTime();
-      $field->onAfterAppend();
+      $area->onParseTime();
+      $area->onAfterAppend();
 
-      assertEquals($field->getContent(), $userInput);
-      assertTrue($field->isFilled());
+      assertEquals($area->getContent(), $userInput);
+      assertTrue($area->isFilled());
 
    }
 

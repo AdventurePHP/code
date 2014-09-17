@@ -39,6 +39,8 @@ class TextFieldTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testControllerPresetting() {
 
+      $_REQUEST = array();
+
       $field = $this->getTextField();
 
       $field->onParseTime();
