@@ -25,7 +25,14 @@ use APF\tools\link\UrlFormatException;
 
 class RequestImpl implements Request {
 
-   public function getParameter($name, $default = null, $type = self::USE_REQUEST_PARAMS) {
+   /**
+    * @param string $name The name of the URL parameter to get.
+    * @param string $default The default value to return in case the parameter is not present (default: <em>null</em>).
+    * @param string $type The request parameter type.
+    *
+    * @return string The value of the requested parameter.
+    */
+   protected function getGenericParameter($name, $default, $type) {
       $lookupTable = $GLOBALS['_' . $type];
 
       return isset($lookupTable[$name])
@@ -36,25 +43,176 @@ class RequestImpl implements Request {
             : $default;
    }
 
-   public function getParameters($type = self::USE_REQUEST_PARAMS) {
+   public function getParameter($name, $default = null) {
+      return $this->getGenericParameter($name, $default, self::USE_REQUEST_PARAMS);
+   }
+
+   public function getGetParameter($name, $default = null) {
+      return $this->getGenericParameter($name, $default, self::USE_GET_PARAMS);
+   }
+
+   public function getPostParameter($name, $default = null) {
+      return $this->getGenericParameter($name, $default, self::USE_POST_PARAMS);
+   }
+
+   /**
+    * @param string $type The request parameter type.
+    *
+    * @return array The request parameters of the given type.
+    */
+   protected function getGenericParameters($type) {
       return is_array($GLOBALS['_' . $type]) ? $GLOBALS['_' . $type] : array();
    }
 
+   public function getParameters() {
+      return $this->getGenericParameters(self::USE_REQUEST_PARAMS);
+   }
 
-   public function setParameter($name, $value, $type = self::USE_REQUEST_PARAMS) {
-      $GLOBALS['_' . $type][$name] = $value;
+   public function getGetParameters() {
+      return $this->getGenericParameters(self::USE_GET_PARAMS);
+   }
+
+   public function getPostParameters() {
+      return $this->getGenericParameters(self::USE_POST_PARAMS);
+   }
+
+   public function setParameter($name, $value) {
+      $_REQUEST[$name] = $value;
 
       return $this;
    }
 
-   public function setParameters($parameters = array(), $type = self::USE_REQUEST_PARAMS) {
-      $GLOBALS['_' . $type] = $parameters;
+   public function setGetParameter($name, $value) {
+      $_GET[$name] = $value;
+      $_REQUEST[$name] = $value;
 
       return $this;
    }
 
-   public function deleteParameter($name, $type = self::USE_REQUEST_PARAMS) {
-      unset($GLOBALS['_' . $type][$name]); // TODO check whether really unset in e.g. $_REQUEST
+   public function setPostParameter($name, $value) {
+      $_POST[$name] = $value;
+      $_REQUEST[$name] = $value;
+
+      return $this;
+   }
+
+   /**
+    * Convenience method to set a list of request parameters. Overwrites existing values without further notice.
+    *
+    * @param array $parameters An associative array of names with their corresponding values to set.
+    *
+    * @return $this This instance for further usage.
+    */
+   public function setParameters(array $parameters) {
+      foreach ($parameters as $name => $value) {
+         $this->setParameter($name, $value);
+      }
+
+      return $this;
+   }
+
+   /**
+    * Convenience method to set a list of GET parameters. Overwrites existing values without further notice.
+    *
+    * @param array $parameters An associative array of names with their corresponding values to set.
+    *
+    * @return $this This instance for further usage.
+    */
+   public function setGetParameters(array $parameters) {
+      foreach ($parameters as $name => $value) {
+         $this->setGetParameter($name, $value);
+      }
+
+      return $this;
+   }
+
+   /**
+    * Convenience method to set a list of POST parameters. Overwrites existing values without further notice.
+    *
+    * @param array $parameters An associative array of names with their corresponding values to set.
+    *
+    * @return $this This instance for further usage.
+    */
+   public function setPostParameters(array $parameters) {
+      foreach ($parameters as $name => $value) {
+         $this->setPostParameter($name, $value);
+      }
+
+      return $this;
+   }
+
+   public function deleteParameter($name) {
+      unset($_GET[$name]);
+      unset($_POST[$name]);
+      unset($_REQUEST[$name]);
+
+      return $this;
+   }
+
+   public function deleteGetParameter($name) {
+      if (isset($_GET[$name])) {
+         unset($_GET[$name]);
+         unset($_REQUEST[$name]);
+      }
+
+      return $this;
+   }
+
+   public function deletePostParameter($name) {
+      if (isset($_POST[$name])) {
+         unset($_POST[$name]);
+         unset($_REQUEST[$name]);
+      }
+
+      return $this;
+   }
+
+   /**
+    * Convenience method to delete a list of request parameters.
+    *
+    * @param array $names A list of parameter names to delete.
+    *
+    * @return $this This instance for further usage.
+    */
+   public function deleteParameters(array $names) {
+      foreach ($names as $name) {
+         $this->deleteParameter($name);
+      }
+
+      return $this;
+   }
+
+   /**
+    * Convenience method to delete a list of GET parameters.
+    * <p/>
+    * POST parameters will be preserved.
+    *
+    * @param array $names A list of parameter names to delete.
+    *
+    * @return $this This instance for further usage.
+    */
+   public function deleteGetParameters(array $names) {
+      foreach ($names as $name) {
+         $this->deleteParameter($name, self::USE_GET_PARAMS);
+      }
+
+      return $this;
+   }
+
+   /**
+    * Convenience method to delete a list of POST parameters.
+    * <p/>
+    * GET parameters will be preserved.
+    *
+    * @param array $names A list of parameter names to delete.
+    *
+    * @return $this This instance for further usage.
+    */
+   public function deletePostParameters(array $names) {
+      foreach ($names as $name) {
+         $this->deleteParameter($name, self::USE_POST_PARAMS);
+      }
+
       return $this;
    }
 

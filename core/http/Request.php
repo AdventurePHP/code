@@ -61,13 +61,130 @@ interface Request {
    const USE_REQUEST_PARAMS = 'REQUEST';
 
    /**
+    * Returns the value of a request parameter (both GET and POST).
+    *
     * @param string $name The name of the URL parameter to get.
     * @param string $default The default value to return in case the parameter is not present (default: <em>null</em>).
-    * @param string $type The type of parameter set to request.
     *
     * @return string|array The value of the requested parameter.
     */
-   public function getParameter($name, $default = null, $type = self::USE_REQUEST_PARAMS);
+   public function getParameter($name, $default = null);
+
+   /**
+    * Returns the value of the desired parameter if included in a GET request variable.
+    * <p/>
+    * In case it is instead included in a POST request this method will return the default
+    * value.
+    * <p/>
+    * If you intend to use the value either in GET or POST mode use getParameter() instead.
+    *
+    * @param string $name The name of the URL parameter to get.
+    * @param string $default The default value to return in case the parameter is not present (default: <em>null</em>).
+    *
+    * @return string|array The value of the requested parameter.
+    */
+   public function getGetParameter($name, $default = null);
+
+   /**
+    * Returns the value of the desired parameter if included in a POST request variable.
+    * <p/>
+    * In case it is instead included in a GET request this method will return the default
+    * value.
+    * <p/>
+    * If you intend to use the value either in GET or POST mode use getParameter() instead.
+    *
+    * @param string $name The name of the URL parameter to get.
+    * @param string $default The default value to return in case the parameter is not present (default: <em>null</em>).
+    *
+    * @return string|array The value of the requested parameter.
+    */
+   public function getPostParameter($name, $default = null);
+
+   /**
+    * Let's you retrieve the list of request parameters defined for this instance.
+    *
+    * @return array The list of request parameters.
+    */
+   public function getParameters();
+
+   /**
+    * Let's you retrieve the list of GET parameters defined for this instance.
+    *
+    * @return array The list of request parameters.
+    */
+   public function getGetParameters();
+
+   /**
+    * Let's you retrieve the list of POST parameters defined for this instance.
+    *
+    * @return array The list of request parameters.
+    */
+   public function getPostParameters();
+
+   /**
+    * Allows you to set a request parameter (both GET and POST).
+    *
+    * @param string $name The name of the URL parameter to get.
+    * @param string $value The default value to return in case the parameter is not present (default: <em>null</em>).
+    *
+    * @return $this This instance for further usage.
+    */
+   public function setParameter($name, $value);
+
+   /**
+    * Allows you to set a GET parameter.
+    * <p/>
+    * Please note that calling getPostParameter() will not return the desired value. Thus,
+    * please be sure to use the correct method.
+    *
+    * @param string $name The name of the URL parameter to get.
+    * @param string $value The default value to return in case the parameter is not present (default: <em>null</em>).
+    *
+    * @return $this This instance for further usage.
+    */
+   public function setGetParameter($name, $value);
+
+   /**
+    * Allows you to set a POST parameter.
+    * <p/>
+    * Please note that calling getGetParameter() will not return the desired value. Thus,
+    * please be sure to use the correct method.
+    *
+    * @param string $name The name of the URL parameter to get.
+    * @param string $value The default value to return in case the parameter is not present (default: <em>null</em>).
+    *
+    * @return $this This instance for further usage.
+    */
+   public function setPostParameter($name, $value);
+
+   /**
+    * Let's you delete a request parameter.
+    *
+    * @param string $name The name of the request parameter to delete.
+    *
+    * @return $this This instance for further usage.
+    */
+   public function deleteParameter($name);
+
+   /**
+    * Let's you delete a GET parameter. If contained in the POST part of the request,
+    * it will still be available.
+    *
+    * @param string $name The name of the request parameter to delete.
+    *
+    * @return $this This instance for further usage.
+    */
+   public function deleteGetParameter($name);
+
+   /**
+    * Let's you delete a GET parameter. If contained in the POST part of the request,
+    * it will still be available.
+    *
+    * @param string $name The name of the request parameter to delete.
+    *
+    * @return $this This instance for further usage.
+    */
+   public function deletePostParameter($name);
 
    /**
     * @return string Value of the <em>return $_SERVER['REQUEST_URI']</em> offset.
