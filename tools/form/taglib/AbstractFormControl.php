@@ -470,16 +470,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * Version 0.1, 03.02.2010<br />
     */
    public function appendCssClass($class) {
-
-      $attr = $this->getAttribute('class');
-
-      // initialize empty attribute
-      if (empty($attr)) {
-         $attr = $class;
-      } else {
-         $attr .= ' ' . $class;
-      }
-      $this->setAttribute('class', $attr);
+      $this->addAttribute('class', $class, ' ');
    }
 
    /**

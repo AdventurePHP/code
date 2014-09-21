@@ -233,7 +233,7 @@ class SelectBoxTag extends AbstractFormControl {
    /**
     * Returns the selected option.
     *
-    * @return SelectBoxOptionTag The selected option.
+    * @return SelectBoxOptionTag|null The selected option.
     *
     * @author Christian Achatz
     * @version
