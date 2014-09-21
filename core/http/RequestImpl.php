@@ -193,7 +193,7 @@ class RequestImpl implements Request {
     */
    public function deleteGetParameters(array $names) {
       foreach ($names as $name) {
-         $this->deleteParameter($name, self::USE_GET_PARAMS);
+         $this->deleteGetParameter($name);
       }
 
       return $this;
@@ -210,7 +210,7 @@ class RequestImpl implements Request {
     */
    public function deletePostParameters(array $names) {
       foreach ($names as $name) {
-         $this->deleteParameter($name, self::USE_POST_PARAMS);
+         $this->deletePostParameter($name);
       }
 
       return $this;
