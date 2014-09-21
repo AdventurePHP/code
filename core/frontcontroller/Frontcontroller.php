@@ -127,14 +127,12 @@ class Frontcontroller extends APFObject {
    private $urlRewritingKeyValueDelimiter = '/';
 
    /**
-    * The registered URL mappings for actions accessible via token.
-    * @var string[][] $urlMappingsByToken
+    * @var string[][] $urlMappingsByToken The registered URL mappings for actions accessible via token.
     */
    private $urlMappingsByToken = array();
 
    /**
-    * The registered URL mappings for actions accessible via namespace and name.
-    * @var string[][] $urlMappingsByNamespaceAndName
+    * @var string[][] $urlMappingsByNamespaceAndName The registered URL mappings for actions accessible via namespace and name.
     */
    private $urlMappingsByNamespaceAndName = array();
 
@@ -209,7 +207,7 @@ class Frontcontroller extends APFObject {
 
       /* @var $response ResponseImpl */
       $response = &self::getRequest();
-      $response->setContentType('text/html; charset=utf-8');
+      $response->setContentType('text/html; charset=' . Registry::retrieve('APF\core', 'Charset'));
 
       // apply input filter to process request
       $request = InputFilterChain::getInstance()->filter($request);
@@ -658,7 +656,7 @@ class Frontcontroller extends APFObject {
    protected function runActions($type = Action::TYPE_PRE_PAGE_CREATE) {
 
       /* @var $t BenchmarkTimer */
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
 
       foreach ($this->actionStack as $offset => $DUMMY) {
 
