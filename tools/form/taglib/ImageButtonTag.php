@@ -53,7 +53,7 @@ class ImageButtonTag extends ButtonTag {
    public function onParseTime() {
 
       $buttonName = $this->getAttribute('name');
-      $form = & $this->getForm();
+      $form = &$this->getForm();
       if ($buttonName === null) {
          $formName = $form->getAttribute('name');
          throw new FormException('[ImageButtonTag::onAfterAppend()] Missing required attribute '
@@ -65,12 +65,13 @@ class ImageButtonTag extends ButtonTag {
       // form was sent. Mark button as sent, too. Due to potential
       // XSS issues, we distinguish between GET and POST requests
       $method = strtolower($form->getAttribute(HtmlForm::METHOD_ATTRIBUTE_NAME));
+      $request = self::getRequest();
       if ($method == HtmlForm::METHOD_POST_VALUE_NAME) {
-         if (isset($_POST[$buttonName . '_x']) && isset($_POST[$buttonName . '_y'])) {
+         if ($request->getPostParameter($buttonName . '_x') !== null && $request->getPostParameter($buttonName . '_y') !== null) {
             $this->controlIsSent = true;
          }
       } else {
-         if (isset($_GET[$buttonName . '_x']) && isset($_GET[$buttonName . '_y'])) {
+         if ($request->getGetParameter($buttonName . '_x') !== null && $request->getGetParameter($buttonName . '_y') !== null) {
             $this->controlIsSent = true;
          }
       }

@@ -20,6 +20,7 @@
  */
 namespace APF\tools\form\validator;
 
+use APF\core\http\mixins\GetRequestResponseTrait;
 use APF\core\pagecontroller\APFObject;
 use APF\tools\form\taglib\AbstractFormControl;
 
@@ -32,6 +33,8 @@ use APF\tools\form\taglib\AbstractFormControl;
  * Version 0.1, 24.08.2009<br />
  */
 abstract class AbstractFormValidator extends APFObject {
+
+   use GetRequestResponseTrait;
 
    /**
     * The default css class to mark invalid form controls.

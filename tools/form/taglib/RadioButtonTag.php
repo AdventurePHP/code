@@ -84,11 +84,9 @@ class RadioButtonTag extends AbstractFormControl {
       }
 
       $requestValue = self::getRequest()->getParameter($name);
-      if($requestValue !== null) {
-      //if (isset($_REQUEST[$name])) {
+      if ($requestValue !== null) {
          // pre-check, whether the value is contained in the request or the
          // value is "on" for tag definitions without a value attribute.
-         //if ($_REQUEST[$name] == $value || $_REQUEST[$name] == 'on') {
          if ($requestValue == $value || $requestValue == 'on') {
             $this->check();
          } else {

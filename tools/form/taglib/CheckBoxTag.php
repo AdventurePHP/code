@@ -50,16 +50,13 @@ class CheckBoxTag extends AbstractFormControl {
    public function onParseTime() {
 
       $name = $this->getAttribute('name');
-      $form = & $this->getForm();
-      if ($form->isSent()) {
-         //if (isset($_REQUEST[$name])) {
-         if (self::getRequest()->getParameter($name) !== null) {
-            $this->check();
-         } else {
-            // Bug 626: in case the control has been checked by the so-called attribute,
-            // we must un-check the control to avoid permanent checked boxes
-            $this->uncheck();
-         }
+      // ID#236: removed check on whether form is sent or not to avoid issues with the APF 3.0 parser.
+      if (self::getRequest()->getParameter($name) !== null) {
+         $this->check();
+      } else {
+         // Bug 626: in case the control has been checked by the so-called attribute,
+         // we must un-check the control to avoid permanent checked boxes
+         $this->uncheck();
       }
 
       // preset the content of the field

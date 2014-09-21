@@ -421,11 +421,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
       if ($value !== null) {
          $this->setAttribute('value', $value);
       }
-
-
-      /*if (isset($_REQUEST[$controlName]) || (isset($_REQUEST[$controlName]) && $_REQUEST[$controlName] === '0')) {
-         $this->setAttribute('value', $_REQUEST[$controlName]);
-      }*/
    }
 
    /**

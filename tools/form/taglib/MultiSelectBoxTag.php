@@ -71,8 +71,8 @@ class MultiSelectBoxTag extends SelectBoxTag {
       // that we can address the element with it's plain name in the template.
       $name = $this->getAttribute('name');
       if (substr_count($name, '[') > 0 || substr_count($name, ']') > 0) {
-         $form = & $this->getForm();
-         $doc = & $form->getParentObject();
+         $form = &$this->getForm();
+         $doc = &$form->getParentObject();
          $docCon = $doc->getDocumentController();
          throw new FormException('[MultiSelectBoxTag::onParseTime()] The attribute "name" of the '
                . '&lt;form:multiselect /&gt; tag with name "' . $this->attributes['name']
@@ -143,13 +143,13 @@ class MultiSelectBoxTag extends SelectBoxTag {
       foreach ($this->children as $objectId => $DUMMY) {
 
          if ($this->children[$objectId] instanceof SelectBoxGroupTag) {
-            $options = & $this->children[$objectId]->getSelectedOptions();
+            $options = &$this->children[$objectId]->getSelectedOptions();
             foreach ($options as $id => $INNER_DUMMY) {
-               $selectedOptions[] = & $options[$id];
+               $selectedOptions[] = &$options[$id];
             }
          } else {
             if ($this->children[$objectId]->getAttribute('selected') === 'selected') {
-               $selectedOptions[] = & $this->children[$objectId];
+               $selectedOptions[] = &$this->children[$objectId];
             }
          }
 
@@ -186,13 +186,13 @@ class MultiSelectBoxTag extends SelectBoxTag {
     * Version 0.1, 28.08.2010<br />
     */
    protected function getRequestValues() {
-      $values = array();
       $controlName = $this->getAttribute('name');
-      if (isset($_REQUEST[$controlName])) {
-         $values = $_REQUEST[$controlName];
+      $values = self::getRequest()->getParameter($controlName);
+      if ($values !== null && is_array($values)) {
+         return $values;
       }
 
-      return $values;
+      return array();
    }
 
    /**
