@@ -22,6 +22,10 @@ namespace APF\core\pagecontroller;
 
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\loader\RootClassLoader;
+use APF\core\logging\entry\SimpleLogEntry;
+use APF\core\logging\LogEntry;
+use APF\core\logging\Logger;
+use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 use Exception;
 use InvalidArgumentException;
@@ -171,7 +175,7 @@ class Document extends APFObject {
     * Version 0.1, 20.02.2010<br />
     */
    public function setParentObject(Document &$parentObject) {
-      $this->parentObject = & $parentObject;
+      $this->parentObject = &$parentObject;
    }
 
    /**
@@ -396,7 +400,7 @@ class Document extends APFObject {
     * Version 0.2, 09.02.2013 (Now public access since DocumentController is now derived from APFObject instead of Document)<br />
     */
    public function &getChildNode($attributeName, $value, $tagLibClass) {
-      $children = & $this->getChildren();
+      $children = &$this->getChildren();
       if (count($children) > 0) {
          foreach ($children as $objectId => $DUMMY) {
             if ($children[$objectId] instanceof $tagLibClass) {
@@ -432,14 +436,14 @@ class Document extends APFObject {
     * Version 0.2, 09.02.2013 (Now public access since DocumentController is now derived from APFObject instead of Document)<br />
     */
    public function &getChildNodes($attributeName, $value, $tagLibClass) {
-      $children = & $this->getChildren();
+      $children = &$this->getChildren();
 
       if (count($children) > 0) {
          $result = array();
          foreach ($children as $objectId => $DUMMY) {
             if ($children[$objectId] instanceof $tagLibClass) {
                if ($children[$objectId]->getAttribute($attributeName) == $value) {
-                  $result[] = & $children[$objectId];
+                  $result[] = &$children[$objectId];
                }
             }
          }
@@ -538,6 +542,57 @@ class Document extends APFObject {
    public function setPlaceHolders(array $placeHolderValues, $append = false) {
       foreach ($placeHolderValues as $key => $value) {
          $this->setPlaceHolder($key, $value, $append);
+      }
+   }
+
+   /**
+    * Set's a place holder in case it exists. Otherwise it is ignored.
+    *
+    * @param string $name The name of the place holder.
+    * @param string $value The place holder's value.
+    * @param bool $append True in case the applied values should be appended, false otherwise.
+    *
+    * @author Christian Achatz, Werner Liemberger
+    * @version
+    * Version 0.1, 02.07.2011<br />
+    * Version 0.2, 06.08.2013 (Added support for appending content to place holders)<br />
+    * Version 0.3, 25.09.2104 (ID#235: moved to Document to be able to reuse in TemplateTag)<br />
+    */
+   public function setPlaceHolderIfExist($name, $value, $append = false) {
+      try {
+         $this->setPlaceHolder($name, $value, $append);
+      } catch (Exception $e) {
+         $log = &Singleton::getInstance('APF\core\logging\Logger');
+         /* @var $log Logger */
+         $log->addEntry(
+               new SimpleLogEntry(
+               // use the configured log target to allow custom configuration of APF-internal log statements
+               // to be written to a custom file/location
+                     Registry::retrieve('APF\core', 'InternalLogTarget'),
+                     'Place holder with name "' . $name . '" does not exist within the current document. '
+                     . 'Please check your setup. Details: ' . $e,
+                     LogEntry::SEVERITY_WARNING
+               )
+         );
+      }
+   }
+
+   /**
+    * This method is for convenient setting of multiple place holders in case they exist within
+    * the current document. See <em>BaseDocumentController::setPlaceHolderIfExist()</em> for details.
+    *
+    * @param array $placeHolderValues Key-value-couples to fill place holders.
+    * @param bool $append True in case the applied values should be appended, false otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 02.07.2011<br />
+    * Version 0.2, 06.08.2013 (Added support for appending content to place holders)<br />
+    * Version 0.3, 25.09.2104 (ID#235: moved to Document to be able to reuse in TemplateTag)<br />
+    */
+   public function setPlaceHoldersIfExist(array $placeHolderValues, $append = false) {
+      foreach ($placeHolderValues as $key => $value) {
+         $this->setPlaceHolderIfExist($key, $value, $append);
       }
    }
 
@@ -807,7 +862,7 @@ class Document extends APFObject {
       $count = 0;
 
       /* @var $t BenchmarkTimer */
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
 
       $benchId = '(' . get_class($this) . ') ' . $this->getObjectId() . '::onParseTime()';
       $t->start($benchId);
@@ -999,7 +1054,7 @@ class Document extends APFObject {
 
          // ID#230: add nodes defining the "dom-id" attribute to the index to allow easy access via getNodeById()
          if (isset($attributes['attributes'][self::ATTRIBUTE_DOM_ID])) {
-            self::$documentIndex[$attributes['attributes'][self::ATTRIBUTE_DOM_ID]] = & $this->children[$objectId];
+            self::$documentIndex[$attributes['attributes'][self::ATTRIBUTE_DOM_ID]] = &$this->children[$objectId];
             unset($attributes['attributes'][self::ATTRIBUTE_DOM_ID]);
          }
 
@@ -1275,7 +1330,7 @@ class Document extends APFObject {
     */
    public function transform() {
 
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $t->start('(' . get_class($this) . ') ' . $this->getObjectId() . '::transform()');
 

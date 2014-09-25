@@ -20,14 +20,8 @@
  */
 namespace APF\core\pagecontroller;
 
-use APF\core\logging\entry\SimpleLogEntry;
-use APF\core\logging\LogEntry;
-use APF\core\logging\Logger;
-use APF\core\registry\Registry;
-use APF\core\singleton\Singleton;
 use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\html\taglib\HtmlIteratorTag;
-use Exception;
 use InvalidArgumentException;
 
 /**
@@ -51,7 +45,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    protected $document;
 
    public function setDocument(Document &$document) {
-      $this->document = & $document;
+      $this->document = &$document;
    }
 
    public function &getDocument() {
@@ -123,25 +117,10 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * @version
     * Version 0.1, 02.07.2011<br />
     * Version 0.2, 06.08.2013 (Added support for appending content to place holders)<br />
+    * Version 0.3, 25.09.2104 (ID#235: moved logic to to Document to be able to reuse in TemplateTag)<br />
     */
    protected function setPlaceHolderIfExist($name, $value, $append = false) {
-      try {
-         $this->setPlaceHolder($name, $value, $append);
-      } catch (Exception $e) {
-         $log = & Singleton::getInstance('APF\core\logging\Logger');
-         /* @var $log Logger */
-         $log->addEntry(
-               new SimpleLogEntry(
-               // use the configured log target to allow custom configuration of APF-internal log statements
-               // to be written to a custom file/location
-                     Registry::retrieve('APF\core', 'InternalLogTarget'),
-                     'Place holder with name "' . $name . '" does not exist within the current document '
-                     . 'handled by document controller "' . get_class($this) . '". '
-                     . 'Please check your setup. Details: ' . $e,
-                     LogEntry::SEVERITY_WARNING
-               )
-         );
-      }
+      $this->getDocument()->setPlaceHolderIfExist($name, $value, $append);
    }
 
    /**
@@ -155,11 +134,10 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * @version
     * Version 0.1, 02.07.2011<br />
     * Version 0.2, 06.08.2013 (Added support for appending content to place holders)<br />
+    * Version 0.3, 25.09.2104 (ID#235: moved logic to to Document to be able to reuse in TemplateTag)<br />
     */
    protected function setPlaceHoldersIfExist(array $placeHolderValues, $append = false) {
-      foreach ($placeHolderValues as $key => $value) {
-         $this->setPlaceHolderIfExist($key, $value, $append);
-      }
+      $this->getDocument()->setPlaceHoldersIfExist($placeHolderValues, $append);
    }
 
    /**
