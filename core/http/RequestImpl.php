@@ -23,6 +23,15 @@ namespace APF\core\http;
 use APF\tools\link\Url;
 use APF\tools\link\UrlFormatException;
 
+/**
+ * Implementation of the Request interface.
+ * <p/>
+ * Includes several convenience methods to ease application implementation.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 12.09.2014<br />
+ */
 class RequestImpl implements Request {
 
    /**
@@ -53,6 +62,19 @@ class RequestImpl implements Request {
 
    public function getPostParameter($name, $default = null) {
       return $this->getGenericParameter($name, $default, self::USE_POST_PARAMS);
+   }
+
+   public function getSessionId() {
+      return $this->getParameter($this->getSessionName());
+   }
+
+   /**
+    * Returns the name of the session configured for the current server instance.
+    *
+    * @return string The name of the current session.
+    */
+   public function getSessionName() {
+      return ini_get('session.name');
    }
 
    /**
@@ -212,6 +234,36 @@ class RequestImpl implements Request {
       foreach ($names as $name) {
          $this->deletePostParameter($name);
       }
+
+      return $this;
+   }
+
+   public function resetParameters() {
+      $_REQUEST = array();
+      $_GET = array();
+      $_POST = array();
+
+      return $this;
+   }
+
+   public function resetGetParameters() {
+
+      foreach (array_keys($_GET) as $key) {
+         unset($_REQUEST[$key]);
+      }
+
+      $_GET = array();
+
+      return $this;
+   }
+
+   public function resetPostParameters() {
+
+      foreach (array_keys($_POST) as $key) {
+         unset($_REQUEST[$key]);
+      }
+
+      $_POST = array();
 
       return $this;
    }

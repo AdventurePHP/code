@@ -71,29 +71,25 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
    public function filter(FilterChain &$chain, $input = null) {
 
       /* @var $t BenchmarkTimer */
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
 
       $id = get_class($this);
       $t->start($id);
 
-      // extract the session id from $_REQUEST if existent
-      $sessionId = (string) '';
-      $sessionName = ini_get('session.name');
+      $request = self::getRequest();
 
-      // TODO re-implement with RequestImpl abstraction
-      if (isset($_REQUEST[$sessionName])) {
-         $sessionId = $_REQUEST[$sessionName];
-      }
+      // extract the session id from $_REQUEST if existent to re-add it after filtering
+      $sessionId = $request->getSessionId();
 
       // initialize param to analyze
-      $query = (string) '';
-      if (isset($_REQUEST[self::$REWRITE_QUERY_PARAM])) {
-         $query = $_REQUEST[self::$REWRITE_QUERY_PARAM];
-      }
+      $query = $request->getParameter(self::$REWRITE_QUERY_PARAM, '');
 
       // delete the rewrite param indicator
-      unset($_REQUEST[self::$REWRITE_QUERY_PARAM]);
-      unset($_GET[self::$REWRITE_QUERY_PARAM]);
+      $request->deleteParameter(self::$REWRITE_QUERY_PARAM);
+
+      // reset request but save POST data
+      $postData = $request->getPostParameters();
+      $request->resetParameters();
 
       // ID#63: re-map action instructions according to registered aliases
       $fC = $this->getFrontcontroller();
@@ -159,25 +155,25 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
                }
             } else {
                $paramArray = $this->createRequestArray($requestURLParts[$i]);
-               $_REQUEST = array_merge($_REQUEST, $paramArray);
+               $request->setParameters(array_merge($request->getParameters(), $paramArray));
             }
          }
 
       } else {
-         // do page controller rewriting!
+         // do page controller-style rewriting!
          $paramArray = $this->createRequestArray($query);
-         $_REQUEST = array_merge($_REQUEST, $paramArray);
+         $request->setParameters(array_merge($request->getParameters(), $paramArray));
       }
 
       // re-initialize GET params to support e.g. form submission
-      $_GET = $_REQUEST;
+      $request->setGetParameters($request->getParameters());
 
       // re-add POST params
-      $_REQUEST = array_merge($_REQUEST, $_POST);
+      $request->setParameters(array_merge($request->getParameters(), $postData));
 
       // add session id to the request again
       if (!empty($sessionId)) {
-         $_REQUEST[$sessionName] = $sessionId;
+         $request->setParameter($request->getSessionName(), $sessionId);
       }
 
       $t->stop($id);

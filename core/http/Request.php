@@ -23,6 +23,14 @@ namespace APF\core\http;
 use APF\tools\link\Url;
 use APF\tools\link\UrlFormatException;
 
+/**
+ * Defines the structure of an HTTP request that is handled by APF's Front Controller
+ * while processing the incoming request.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 12.09.2014<br />
+ */
 interface Request {
 
    const METHOD_OPTIONS = 'OPTIONS';
@@ -99,6 +107,13 @@ interface Request {
     * @return string|array The value of the requested parameter.
     */
    public function getPostParameter($name, $default = null);
+
+   /**
+    * Returns the current session id.
+    *
+    * @return string The current session id.
+    */
+   public function getSessionId();
 
    /**
     * Let's you retrieve the list of request parameters defined for this instance.
@@ -185,6 +200,27 @@ interface Request {
     * @return $this This instance for further usage.
     */
    public function deletePostParameter($name);
+
+   /**
+    * Allows to reset the entire set of request parameters.
+    *
+    * @return $this This instance for further usage.
+    */
+   public function resetParameters();
+
+   /**
+    * Allows to reset the GET parameters of this request instance.
+    *
+    * @return $this This instance for further usage.
+    */
+   public function resetGetParameters();
+
+   /**
+    * Allows to reset the POST parameters of this request instance.
+    *
+    * @return $this This instance for further usage.
+    */
+   public function resetPostParameters();
 
    /**
     * @return string Value of the <em>return $_SERVER['REQUEST_URI']</em> offset.
