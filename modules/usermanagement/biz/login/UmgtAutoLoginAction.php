@@ -21,14 +21,18 @@
 namespace APF\modules\usermanagement\biz\login;
 
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\http\Cookie;
 use APF\core\service\APFService;
 use APF\modules\usermanagement\biz\UmgtManager;
 use APF\modules\usermanagement\biz\UmgtUserSessionStore;
-use APF\tools\cookie\Cookie;
 
 /**
-
-
+ * Automatically logs in a user using an authentication token stored in a secure long-living
+ * cookie.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 03.06.2011<br />
  */
 class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
 
@@ -50,15 +54,13 @@ class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
     * @return bool True in case the action is to be considered active, false otherwise.
     */
    public function isActive() {
-      $requestedMimeType = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : '';
-
-      return strpos($requestedMimeType, 'text/html') !== false;
+      return self::getRequest()->isHtml();
    }
 
    public function run() {
 
       /* @var $sessionStore UmgtUserSessionStore */
-      $sessionStore = & $this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      $sessionStore = &$this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
 
       $appIdent = $this->getContext();
       $user = $sessionStore->getUser($appIdent);
@@ -67,7 +69,7 @@ class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
       if ($user === null) {
 
          /* @var $umgt UmgtManager */
-         $umgt = & $this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
+         $umgt = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
 
          $cookieLifeTime = $umgt->getAutoLoginCookieLifeTime();
          $cookie = new Cookie(self::AUTO_LOGIN_COOKIE_NAME, time() + $cookieLifeTime);
@@ -82,7 +84,7 @@ class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
 
                if ($user !== null) {
                   $sessionStore->setUser($appIdent, $user);
-                  $cookie->setValue($savedToken->getToken());
+                  self::getResponse()->setCookie($cookie->setValue($savedToken->getToken()));
                }
             }
          }
