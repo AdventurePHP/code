@@ -23,7 +23,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\group;
 use APF\modules\usermanagement\biz\model\UmgtGroup;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\http\HeaderManager;
-use APF\tools\request\RequestHandler;
 
 /**
  * Implements the controller to delete a group.
@@ -37,7 +36,7 @@ class GroupDeleteController extends UmgtBaseController {
    public function transformContent() {
 
       // get the group id from the request
-      $groupId = RequestHandler::getValue('groupid');
+      $groupId = self::getRequest()->getParameter('groupid');
 
       // load the current group and print the display name
       $uM = & $this->getManager();

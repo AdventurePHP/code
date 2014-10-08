@@ -21,7 +21,6 @@
 namespace APF\modules\usermanagement\pres\documentcontroller\role;
 
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
-use APF\tools\request\RequestHandler;
 
 /**
  * Implements the controller to list the existing roles.
@@ -36,7 +35,7 @@ class RoleDetailsController extends UmgtBaseController {
 
       // load data
       $uM = & $this->getManager();
-      $roleId = RequestHandler::getValue('roleid');
+      $roleId = self::getRequest()->getParameter('roleid');
       $role = $uM->loadRoleByID($roleId);
 
       // display user data

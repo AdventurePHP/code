@@ -25,7 +25,6 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\MultiSelectBoxTag;
 use APF\tools\form\taglib\SelectBoxOptionTag;
 use APF\tools\http\HeaderManager;
-use APF\tools\request\RequestHandler;
 
 /**
  * Let's you add a user to one or more groups starting at the user main view.
@@ -42,7 +41,7 @@ class GroupAddUserToGroupsController extends UmgtBaseController {
 
       $uM = & $this->getManager();
 
-      $user = $uM->loadUserByID(RequestHandler::getValue('userid'));
+      $user = $uM->loadUserByID(self::getRequest()->getParameter('userid'));
       $groups = $uM->loadGroupsNotWithUser($user);
 
       if (count($groups) === 0) {

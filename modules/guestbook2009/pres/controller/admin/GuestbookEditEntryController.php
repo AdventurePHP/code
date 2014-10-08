@@ -22,7 +22,6 @@ namespace APF\modules\guestbook2009\pres\controller\admin;
 
 use APF\modules\guestbook2009\biz\Entry;
 use APF\modules\guestbook2009\biz\User;
-use APF\tools\request\RequestHandler;
 
 /**
  * Implements the document controller to handle the edit flow.
@@ -35,7 +34,7 @@ class GuestbookEditEntryController extends GuestbookBackendBaseController {
 
    public function transformContent() {
 
-      $entryId = RequestHandler::getValue('entryid');
+      $entryId = self::getRequest()->getParameter('entryid');
       if ($entryId === null) {
          $this->displayEntrySelection('edit');
       } else {

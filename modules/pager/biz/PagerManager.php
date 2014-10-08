@@ -21,13 +21,13 @@
 namespace APF\modules\pager\biz;
 
 use APF\core\benchmark\BenchmarkTimer;
+use APF\core\http\mixins\GetRequestResponseTrait;
 use APF\core\pagecontroller\APFObject;
 use APF\core\pagecontroller\Page;
 use APF\core\singleton\Singleton;
 use APF\modules\pager\data\PagerMapper;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
-use APF\tools\request\RequestHandler;
 use InvalidArgumentException;
 
 /**
@@ -43,6 +43,8 @@ use InvalidArgumentException;
  * Version 0.6, 16.11.2013 (Introduced option to create pager by DIServiceManager)<br />
  */
 final class PagerManager extends APFObject {
+
+   use GetRequestResponseTrait;
 
    /**
     * Contains the desired anchor name.
@@ -260,13 +262,13 @@ final class PagerManager extends APFObject {
     */
    private function getStatementParams(array $addStmtParams = array()) {
       if ($this->isDynamicPageSizeActivated()) {
-         $entriesCount = (int) RequestHandler::getValue($this->countUrlParameterName, $this->entriesPerPage);
+         $entriesCount = (int) self::getRequest()->getParameter($this->countUrlParameterName, $this->entriesPerPage);
       } else {
          $entriesCount = $this->entriesPerPage;
       }
 
       // determine offset by page with respect to the first page being a special case in calculation
-      $page = RequestHandler::getValue($this->pageUrlParameterName, 1);
+      $page = self::getRequest()->getParameter($this->pageUrlParameterName, 1);
       $start = 0;
       if ($page > 1) {
          $start = ($page * $entriesCount) - $entriesCount;
@@ -444,7 +446,7 @@ final class PagerManager extends APFObject {
       $start = (int) 1;
 
       $countPerPage = $this->getCountPerPage();
-      $currentStart = (int) RequestHandler::getValue($this->pageUrlParameterName, 1) * $countPerPage;
+      $currentStart = (int) self::getRequest()->getParameter($this->pageUrlParameterName, 1) * $countPerPage;
 
       // initialize page delimiter params
       $m = & $this->getMapper();
@@ -523,7 +525,7 @@ final class PagerManager extends APFObject {
 
                // add the param with the default value of the url value
                $temp = explode(':', $params[$i]);
-               $stmtParams = array_merge($stmtParams, array(trim($temp[0]) => RequestHandler::getValue(trim($temp[1]))));
+               $stmtParams = array_merge($stmtParams, array(trim($temp[0]) => self::getRequest()->getParameter(trim($temp[1]))));
                unset($temp);
 
             }
@@ -575,7 +577,7 @@ final class PagerManager extends APFObject {
       $countPerPage = 0;
 
       if ($this->isDynamicPageSizeActivated()) {
-         $countPerPage = (int) RequestHandler::getValue($this->countUrlParameterName, 0);
+         $countPerPage = (int) self::getRequest()->getParameter($this->countUrlParameterName, 0);
       }
 
       if (!$this->isDynamicPageSizeActivated() || $countPerPage === 0) { // avoid division by zero!

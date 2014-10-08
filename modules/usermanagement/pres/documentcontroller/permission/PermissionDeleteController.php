@@ -23,7 +23,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\permission;
 use APF\modules\usermanagement\biz\model\UmgtPermission;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\http\HeaderManager;
-use APF\tools\request\RequestHandler;
 
 /**
  * Implements the delete controller for a permission.
@@ -36,7 +35,7 @@ class PermissionDeleteController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $permissionId = RequestHandler::getValue('permissionid');
+      $permissionId = self::getRequest()->getParameter('permissionid');
       $uM = & $this->getManager();
       $permission = $uM->loadPermissionByID($permissionId);
       $this->getLabel('display-name')->setPlaceHolder('display-name', $permission->getDisplayName());

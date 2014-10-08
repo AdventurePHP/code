@@ -23,14 +23,13 @@ namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
 use APF\modules\usermanagement\biz\model\UmgtGroup;
 use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
-use APF\tools\request\RequestHandler;
 
 class ProxyDetailsController extends UmgtBaseController {
 
    public function transformContent() {
 
       $uM = & $this->getManager();
-      $proxyId = RequestHandler::getValue('proxyid');
+      $proxyId = self::getRequest()->getParameter('proxyid');
       $proxy = $uM->loadVisibilityDefinitionById($proxyId);
       $type = $uM->loadVisibilityDefinitionType($proxy);
 

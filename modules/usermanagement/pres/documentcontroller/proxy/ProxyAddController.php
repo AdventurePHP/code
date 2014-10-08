@@ -28,7 +28,6 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\MultiSelectBoxTag;
 use APF\tools\form\taglib\SelectBoxTag;
 use APF\tools\http\HeaderManager;
-use APF\tools\request\RequestHandler;
 
 /**
  * Let's the user create a new visibility entry (proxy type <-> proxy <-> user+group).
@@ -45,9 +44,9 @@ class ProxyAddController extends UmgtBaseController {
       $form = & $this->getForm('visibilitydef');
 
       // pre-fill mode if "proxytypeid" and "appobjectid" are given
-      $proxyTypeId = RequestHandler::getValue('proxytypeid');
-      $appObjectId = RequestHandler::getValue('appobjectid');
-      $proxyId = RequestHandler::getValue('proxyid');
+      $proxyTypeId = self::getRequest()->getParameter('proxytypeid');
+      $appObjectId = self::getRequest()->getParameter('appobjectid');
+      $proxyId = self::getRequest()->getParameter('proxyid');
       $selectedUsers = array();
       $selectedGroups = array();
       if ($proxyTypeId != null && $appObjectId != null) {

@@ -24,7 +24,6 @@ use APF\core\pagecontroller\BaseDocumentController;
 use APF\modules\pager\biz\PageItem;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
-use APF\tools\request\RequestHandler;
 
 /**
  * Implements a document controller displaying the model information of the pager. This
@@ -159,7 +158,7 @@ class AdvancedPagerController extends BaseDocumentController {
       if ($isDynamicPageSizeActivated == true) {
 
          $entriesPerPageConfig = array(5, 10, 15, 20);
-         $entriesPerPage = RequestHandler::getValue($countUrlParameterName, $entriesPerPage);
+         $entriesPerPage = self::getRequest()->getParameter($countUrlParameterName, $entriesPerPage);
          $buffer = (string) '';
 
          foreach ($entriesPerPageConfig as $count) {

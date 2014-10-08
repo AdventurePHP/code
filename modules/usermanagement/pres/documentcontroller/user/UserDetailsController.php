@@ -21,7 +21,6 @@
 namespace APF\modules\usermanagement\pres\documentcontroller\user;
 
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
-use APF\tools\request\RequestHandler;
 
 /**
  * Implements the controller to display a user's details.
@@ -36,7 +35,7 @@ class UserDetailsController extends UmgtBaseController {
 
       // load data
       $uM = & $this->getManager();
-      $userId = RequestHandler::getValue('userid');
+      $userId = self::getRequest()->getParameter('userid');
       $user = $uM->loadUserByID($userId);
 
       // display user data

@@ -25,7 +25,6 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\MultiSelectBoxTag;
 use APF\tools\form\taglib\SelectBoxOptionTag;
 use APF\tools\http\HeaderManager;
-use APF\tools\request\RequestHandler;
 
 /**
  * Let's you remove a user from one or more roles.
@@ -42,7 +41,7 @@ class RemoveUserFromRolesController extends UmgtBaseController {
 
       $uM = & $this->getManager();
 
-      $user = $uM->loadUserByID(RequestHandler::getValue('userid'));
+      $user = $uM->loadUserByID(self::getRequest()->getParameter('userid'));
       $roles = $uM->loadRolesWithUser($user);
 
       if (count($roles) === 0) {

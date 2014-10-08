@@ -23,7 +23,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\user;
 use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\http\HeaderManager;
-use APF\tools\request\RequestHandler;
 
 /**
  * Implements the controller to delete a user.
@@ -36,7 +35,7 @@ class UserDeleteController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $userId = RequestHandler::getValue('userid');
+      $userId = self::getRequest()->getParameter('userid');
       $uM = & $this->getManager();
       $user = $uM->loadUserById($userId);
 

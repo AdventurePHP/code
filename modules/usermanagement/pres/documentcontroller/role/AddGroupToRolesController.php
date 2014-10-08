@@ -25,7 +25,6 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\MultiSelectBoxTag;
 use APF\tools\form\taglib\SelectBoxOptionTag;
 use APF\tools\http\HeaderManager;
-use APF\tools\request\RequestHandler;
 
 /**
  * Let's you add a group to one or more roles.
@@ -42,7 +41,7 @@ class AddGroupToRolesController extends UmgtBaseController {
 
       $uM = & $this->getManager();
 
-      $group = $uM->loadGroupByID(RequestHandler::getValue('groupid'));
+      $group = $uM->loadGroupByID(self::getRequest()->getParameter('groupid'));
       $roles = $uM->loadRolesNotWithGroup($group);
 
       if (count($roles) === 0) {

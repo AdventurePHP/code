@@ -23,13 +23,12 @@ namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
 use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition;
 use APF\tools\form\taglib\MultiSelectBoxTag;
 use APF\tools\http\HeaderManager;
-use APF\tools\request\RequestHandler;
 
 class ProxyAddGroupsController extends UmgtPermissionBaseController {
 
    public function transformContent() {
 
-      $proxyId = RequestHandler::getValue('proxyid');
+      $proxyId = self::getRequest()->getParameter('proxyid');
       $form = & $this->getForm(self::$FORM_NAME);
 
       $proxyIdControl = $form->getFormElementByName('proxyid');

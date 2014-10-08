@@ -25,7 +25,6 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\MultiSelectBoxTag;
 use APF\tools\form\taglib\SelectBoxOptionTag;
 use APF\tools\http\HeaderManager;
-use APF\tools\request\RequestHandler;
 
 /**
  * Let's you remove a user from one or more groups starting at the user main view.
@@ -42,7 +41,7 @@ class GroupRemoveUserFromGroupsController extends UmgtBaseController {
 
       $uM = & $this->getManager();
 
-      $user = $uM->loadUserByID(RequestHandler::getValue('userid'));
+      $user = $uM->loadUserByID(self::getRequest()->getParameter('userid'));
       $groups = $uM->loadGroupsWithUser($user);
 
       if (count($groups) === 0) {

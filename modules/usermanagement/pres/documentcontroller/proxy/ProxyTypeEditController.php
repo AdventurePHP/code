@@ -24,17 +24,12 @@ use APF\core\database\DatabaseHandlerException;
 use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinitionType;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\http\HeaderManager;
-use APF\tools\request\RequestHandler;
 
-/**
-
-
- */
 class ProxyTypeEditController extends UmgtBaseController {
 
    public function transformContent() {
       $form = & $this->getForm('add');
-      $proxyTypeId = RequestHandler::getValue('proxytypeid');
+      $proxyTypeId = self::getRequest()->getParameter('proxytypeid');
       $uM = & $this->getManager();
 
       if ($form->isSent() && $form->isValid()) {

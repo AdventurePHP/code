@@ -25,7 +25,6 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\AbstractFormControl;
 use APF\tools\form\validator\AbstractFormValidator;
 use APF\tools\http\HeaderManager;
-use APF\tools\request\RequestHandler;
 
 /**
  * Implements the edit controller for a user.
@@ -47,7 +46,7 @@ class UserEditController extends UmgtBaseController {
    public function transformContent() {
 
       // get the userid from the request
-      $userId = RequestHandler::getValue('userid');
+      $userId = self::getRequest()->getParameter('userid');
 
       // setup the form
       $form = & $this->getForm('UserForm');

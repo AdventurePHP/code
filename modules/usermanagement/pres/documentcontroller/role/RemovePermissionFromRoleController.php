@@ -25,7 +25,6 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\MultiSelectBoxTag;
 use APF\tools\form\taglib\SelectBoxOptionTag;
 use APF\tools\http\HeaderManager;
-use APF\tools\request\RequestHandler;
 
 /**
  * Let's you remove permissions to a role.
@@ -41,7 +40,7 @@ class RemovePermissionFromRoleController extends UmgtBaseController {
       $form = & $this->getForm('Permissions');
       $uM = & $this->getManager();
 
-      $role = $uM->loadRoleByID(RequestHandler::getValue('roleid'));
+      $role = $uM->loadRoleByID(self::getRequest()->getParameter('roleid'));
       $form->getLabel('display-name')->setPlaceHolder('display-name', $role->getDisplayName());
 
       $permissions = $uM->loadPermissionsWithRole($role);

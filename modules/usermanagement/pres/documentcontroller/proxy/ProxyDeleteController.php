@@ -23,7 +23,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
 use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\http\HeaderManager;
-use APF\tools\request\RequestHandler;
 
 /**
  * Deletes a visibility definition.
@@ -38,7 +37,7 @@ class ProxyDeleteController extends UmgtBaseController {
 
       $uM = & $this->getManager();
 
-      $proxyId = RequestHandler::getValue('proxyid');
+      $proxyId = self::getRequest()->getParameter('proxyid');
 
       $proxy = new UmgtVisibilityDefinition();
       $proxy->setObjectId($proxyId);

@@ -23,7 +23,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\role;
 use APF\modules\usermanagement\biz\model\UmgtRole;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\http\HeaderManager;
-use APF\tools\request\RequestHandler;
 
 /**
  * Implements the controller to edit a role.
@@ -37,7 +36,7 @@ class RoleEditController extends UmgtBaseController {
    public function transformContent() {
 
       // get the current role id
-      $roleId = RequestHandler::getValue('roleid');
+      $roleId = self::getRequest()->getParameter('roleid');
 
       // initialize the form
       $form = & $this->getForm('RoleEdit');

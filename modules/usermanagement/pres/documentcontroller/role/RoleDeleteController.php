@@ -23,7 +23,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\role;
 use APF\modules\usermanagement\biz\model\UmgtRole;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\http\HeaderManager;
-use APF\tools\request\RequestHandler;
 
 /**
  * Implements the controller to delete a role.
@@ -36,7 +35,7 @@ class RoleDeleteController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $roleId = RequestHandler::getValue('roleid');
+      $roleId = self::getRequest()->getParameter('roleid');
       $uM = & $this->getManager();
 
       $role = $uM->loadRoleById($roleId);

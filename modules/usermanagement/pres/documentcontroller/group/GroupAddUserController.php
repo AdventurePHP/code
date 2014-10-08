@@ -24,7 +24,6 @@ use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\MultiSelectBoxTag;
 use APF\tools\http\HeaderManager;
-use APF\tools\request\RequestHandler;
 
 /**
  * Implements the controller to list the groups.
@@ -42,7 +41,7 @@ class GroupAddUserController extends UmgtBaseController {
       $userControl = & $form->getFormElementByName('User');
 
       /* @var $userControl MultiSelectBoxTag */
-      $groupId = RequestHandler::getValue('groupid');
+      $groupId = self::getRequest()->getParameter('groupid');
 
       $uM = & $this->getManager();
       $group = $uM->loadGroupById($groupId);

@@ -25,7 +25,6 @@ use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\http\HeaderManager;
-use APF\tools\request\RequestHandler;
 
 /**
  * Revokes a visibility permission for a given user or group.
@@ -40,9 +39,9 @@ class ProxyRevokeAccessController extends UmgtBaseController {
 
       $uM = & $this->getManager();
 
-      $objectId = RequestHandler::getValue('objectid');
-      $objectType = RequestHandler::getValue('objecttype');
-      $proxyId = RequestHandler::getValue('proxyid');
+      $objectId = self::getRequest()->getParameter('objectid');
+      $objectType = self::getRequest()->getParameter('objecttype');
+      $proxyId = self::getRequest()->getParameter('proxyid');
 
       $proxy = new UmgtVisibilityDefinition();
       $proxy->setObjectId($proxyId);

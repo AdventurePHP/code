@@ -21,7 +21,6 @@
 namespace APF\modules\guestbook2009\pres\controller\admin;
 
 use APF\modules\guestbook2009\biz\Entry;
-use APF\tools\request\RequestHandler;
 
 /**
  * Implements the document controller to handle the delete flow.
@@ -34,7 +33,7 @@ class GuestbookDeleteEntryController extends GuestbookBackendBaseController {
 
    public function transformContent() {
 
-      $entryId = RequestHandler::getValue('entryid');
+      $entryId = self::getRequest()->getParameter('entryid');
       if ($entryId === null) {
          $this->displayEntrySelection('delete');
       } else {

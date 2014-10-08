@@ -22,7 +22,6 @@ namespace APF\modules\recaptcha\pres\validator;
 
 use APF\modules\recaptcha\pres\taglib\ReCaptchaTag;
 use APF\tools\form\validator\TextFieldValidator;
-use APF\tools\request\RequestHandler;
 
 /**
  * Validates a reCaptcha field.
@@ -45,16 +44,15 @@ class ReCaptchaValidator extends TextFieldValidator {
       $control = $this->control;
       $control->getPrivateKey();
 
-      $challengeContent = RequestHandler::getValue(ReCaptchaTag::RE_CAPTCHA_CHALLENGE_FIELD_IDENTIFIER);
-      $answerIdentifier = RequestHandler::getValue(ReCaptchaTag::RE_CAPTCHA_CHALLENGE_ANSWER_IDENTIFIER);
+      $challengeContent = self::getRequest()->getParameter(ReCaptchaTag::RE_CAPTCHA_CHALLENGE_FIELD_IDENTIFIER);
+      $answerIdentifier = self::getRequest()->getParameter(ReCaptchaTag::RE_CAPTCHA_CHALLENGE_ANSWER_IDENTIFIER);
 
       /* @var $resp \ReCaptchaResponse */
       $resp = recaptcha_check_answer(
             $control->getPrivateKey(),
             $_SERVER['REMOTE_ADDR'],
             $challengeContent,
-            $answerIdentifier
-      );
+            $answerIdentifier);
 
       if ($resp->is_valid) {
          return true;

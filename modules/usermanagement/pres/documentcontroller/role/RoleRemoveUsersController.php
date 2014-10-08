@@ -24,7 +24,6 @@ use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\MultiSelectBoxTag;
 use APF\tools\http\HeaderManager;
-use APF\tools\request\RequestHandler;
 
 /**
  * Implements the controller to detach a role from a user.
@@ -38,7 +37,7 @@ class RoleRemoveUsersController extends UmgtBaseController {
    public function transformContent() {
 
       // get the current roleid
-      $roleid = RequestHandler::getValue('roleid');
+      $roleid = self::getRequest()->getParameter('roleid');
 
       // initialize the form
       $form = & $this->getForm('User');

@@ -23,7 +23,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\permission;
 use APF\modules\usermanagement\biz\model\UmgtPermission;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\http\HeaderManager;
-use APF\tools\request\RequestHandler;
 
 /**
  * Implements the controller to edit a permission.
@@ -37,7 +36,7 @@ class PermissionEditController extends UmgtBaseController {
    public function transformContent() {
 
       // get current permission id
-      $permissionId = RequestHandler::getValue('permissionid');
+      $permissionId = self::getRequest()->getParameter('permissionid');
 
       // initialize the form
       $form = & $this->getForm('PermissionEdit');
