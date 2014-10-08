@@ -54,7 +54,7 @@ class ArrayPagerController extends BaseDocumentController {
 
       $urlParams = array($config['ParameterEntries'] => $config['Entries']);
       if ($config['EntriesChangeable'] === true) {
-         $urlParams = RequestHandler::getValues(array($config['ParameterEntries'] => $config['Entries']));
+         $urlParams = array($config['ParameterEntries'] => RequestHandler::getValue($config['Entries']));
       }
 
       // Pager leer zurückgeben, falls keine Seiten vorhanden sind.

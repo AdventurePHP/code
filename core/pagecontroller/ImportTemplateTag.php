@@ -71,14 +71,15 @@ class ImportTemplateTag extends Document {
       // check, if the inc param is present in the current request
       if (strpos($template, '[') !== false) {
 
-         if (isset($_REQUEST[$incParam]) && !empty($_REQUEST[$incParam])) {
-            $template = $_REQUEST[$incParam];
+         $value = self::getRequest()->getParameter($incParam);
+         if ($value !== null) {
+            $template = $value;
          } else {
 
             // read template attribute from inc param
-            $pagepartStartPos = strpos($template, '=');
-            $pagepartEndPos = strlen($template) - 1;
-            $template = trim(substr($template, $pagepartStartPos + 1, ($pagepartEndPos - $pagepartStartPos) - 1));
+            $pagePartStartPos = strpos($template, '=');
+            $pagePartEndPos = strlen($template) - 1;
+            $template = trim(substr($template, $pagePartStartPos + 1, ($pagePartEndPos - $pagePartStartPos) - 1));
          }
       }
 

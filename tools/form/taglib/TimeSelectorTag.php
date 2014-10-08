@@ -134,7 +134,7 @@ class TimeSelectorTag extends AbstractFormControl {
       }
 
       // preset today's time on startup
-      if (!isset($_REQUEST[$name])) {
+      if (self::getRequest()->getParameter($name) === null) {
          $hours->setOption2Selected($this->appendZero(date('G')));
          $minutes->setOption2Selected($this->appendZero(date('i')));
          if ($this->showSeconds != false) {

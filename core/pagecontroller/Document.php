@@ -21,6 +21,7 @@
 namespace APF\core\pagecontroller;
 
 use APF\core\benchmark\BenchmarkTimer;
+use APF\core\http\mixins\GetRequestResponseTrait;
 use APF\core\loader\RootClassLoader;
 use APF\core\logging\entry\SimpleLogEntry;
 use APF\core\logging\LogEntry;
@@ -40,6 +41,8 @@ use InvalidArgumentException;
  * Version 0.2, 11.08.2014 (ID#230: added support for DOM node access via dom-id attribute)<br />
  */
 class Document extends APFObject {
+
+   use GetRequestResponseTrait;
 
    /**
     * Defines the attribute to allow direct access with using <em>Document::getNodeById()</em>.

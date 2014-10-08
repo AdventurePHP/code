@@ -31,9 +31,9 @@ namespace APF\tools\form\validator;
 class MultiSelectFieldValidator extends SelectFieldValidator {
 
    /**
-    * Implements the validation method for multiselect fields.
+    * Implements the validation method for multi select fields.
     *
-    * @param string $input The input of the multiselect field.
+    * @param string $input The input of the multi select field.
     *
     * @return boolean True, in case the control is valid, false otherwise.
     *
@@ -44,7 +44,7 @@ class MultiSelectFieldValidator extends SelectFieldValidator {
    public function validate($input) {
 
       $controlName = $this->control->getAttribute('name');
-      if (!isset($_REQUEST[$controlName])) {
+      if (self::getRequest()->getParameter($controlName) === null) {
          return false;
       }
 

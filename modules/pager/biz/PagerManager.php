@@ -523,7 +523,7 @@ final class PagerManager extends APFObject {
 
                // add the param with the default value of the url value
                $temp = explode(':', $params[$i]);
-               $stmtParams = array_merge($stmtParams, RequestHandler::getValues(array(trim($temp[0]) => trim($temp[1]))));
+               $stmtParams = array_merge($stmtParams, array(trim($temp[0]) => RequestHandler::getValue(trim($temp[1]))));
                unset($temp);
 
             }

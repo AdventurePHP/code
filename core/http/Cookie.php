@@ -1,0 +1,244 @@
+<?php
+/**
+ * <!--
+ * This file is part of the adventure php framework (APF) published under
+ * http://adventure-php-framework.org.
+ *
+ * The APF is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * The APF is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+ * -->
+ */
+namespace APF\core\http;
+
+use InvalidArgumentException;
+
+/**
+ * The Cookie is a tool, that provides sophisticated cookie handling. The methods included allow you to
+ * create, update and delete cookies using a clean API. Usage:
+ * <pre>$c = new Cookie('my_cookie');
+ * $c->setValue('my_value');
+ * $c->delete();</pre>
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 08.11.2008<br />
+ * Version 0.2, 10.01.2009 (Finished implementation and testing)<br />
+ */
+class Cookie {
+
+   /**
+    * Default path of the Cookie.
+    *
+    * @var string DEFAULT_PATH
+    */
+   const DEFAULT_PATH = '/';
+
+   /**
+    * Default expiration time of the cookie (=1 day).
+    *
+    * @var int DEFAULT_EXPIRATION_TIME
+    */
+   const DEFAULT_EXPIRATION_TIME = 86400;
+
+   /**
+    * The name of the cookie.
+    *
+    * @var string $name
+    */
+   protected $name;
+
+   /**
+    * The value of the cookie.
+    *
+    * @var string $value
+    */
+   protected $value;
+
+   /**
+    * The domain the cookie is valid for.
+    *
+    * @var string $domain
+    */
+   protected $domain;
+
+   /**
+    * $path The path the cookie s valid for.
+    *
+    * @var string $path
+    */
+   protected $path;
+
+   /**
+    * True in case the cookie is only valid for HTTPS transmission, false otherwise.
+    *
+    * @var bool $secure
+    */
+   protected $secure = false;
+
+   /**
+    * True in case the cookie can only be modified via HTTP, false otherwise.
+    *
+    * @var bool $httpOnly
+    */
+   protected $httpOnly = false;
+
+   /**
+    * Defines the default expiration time in seconds.
+    *
+    * @var int $expireTime
+    */
+   protected $expireTime;
+
+   protected $useResponse = true;
+
+   protected $isDeleted = false;
+
+   /**
+    * Let's you create a Cookie.
+    *
+    * @param string $name The name of the cookie.
+    * @param int $expireTime The life time in seconds (default: 1 day).
+    * @param string $domain The domain the cookie is valid for.
+    * @param string $path The path the cookie s valid for.
+    * @param bool $secure True in case the cookie is only valid for HTTPS transmission, false otherwise.
+    * @param bool $httpOnly True in case the cookie can only be modified via HTTP, false otherwise.
+    *
+    * @throws InvalidArgumentException In case of an empty cookie name.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 08.11.2008<br />
+    * Version 0.2, 13.06.2013 (Refactoring to real domain object representation)<br />
+    */
+   public function __construct($name, $expireTime = self::DEFAULT_EXPIRATION_TIME, $domain = null, $path = null, $secure = null, $httpOnly = null) {
+
+      if (empty($name)) {
+         throw new InvalidArgumentException('Cookie cannot be created with an empty name!');
+      }
+
+      $this->name = $name;
+      $this->path = $path === null ? self::DEFAULT_PATH : $path;
+      $this->domain = $domain === null ? $_SERVER['HTTP_HOST'] : $domain;
+      $this->secure = $secure;
+      $this->httpOnly = $httpOnly;
+      $this->expireTime = $expireTime;
+   }
+
+   /**
+    * @return string The name of the cookie.
+    */
+   public function getName() {
+      return $this->name;
+   }
+
+   /**
+    * Defines the value of the cookie.
+    *
+    * @param string $value The value of the cookie,
+    *
+    * @return bool True, if cookie was set correctly, false, if something was wrong
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 08.11.2008<br />
+    * Version 0.2, 13.06.2013 (Refactoring to real domain object representation)<br />
+    */
+   public function setValue($value) {
+      if ($this->useResponse) {
+         $this->value = $value;
+
+         return true;
+      }
+
+      return setcookie($this->name, $value, $this->expireTime, $this->path, $this->domain, $this->secure, $this->httpOnly);
+   }
+
+   /**
+    * Returns the value of the desired key within the current namespace.
+    *
+    * @param string $default The default value in case the cookie is not existing.
+    *
+    * @return string Cookie value or default value.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 08.11.2008<br />
+    * Version 0.2, 10.01.2009 (Added namespace support)<br />
+    * Version 0.3, 13.06.2013 (Refactoring to real domain object representation)<br />
+    */
+   public function getValue($default = null) {
+      return isset($_COOKIE[$this->name]) ? $_COOKIE[$this->name] : $default;
+   }
+
+   /**
+    * Deletes the Cookie.
+    *
+    * @return bool True in case the operation has been successful, false otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 08.11.2008<br />
+    * Version 0.2, 10.01.2009 (Added namespace support)<br />
+    * Version 0.3, 13.06.2013 (Refactoring to real domain object representation)<br />
+    * Version 0.4, 27.05.2014 (Removed path and domain for delete as this causes issues with some browsers)<br />
+    */
+   public function delete() {
+      if ($this->useResponse) {
+         $this->isDeleted = true;
+
+         return true;
+      }
+
+      return setcookie($this->name, false, time() - self::DEFAULT_EXPIRATION_TIME);
+   }
+
+   public function isDeleted() {
+      return $this->isDeleted;
+   }
+
+   /**
+    * @return string
+    */
+   public function getDomain() {
+      return $this->domain;
+   }
+
+   /**
+    * @return int
+    */
+   public function getExpireTime() {
+      return $this->expireTime;
+   }
+
+   /**
+    * @return boolean
+    */
+   public function getHttpOnly() {
+      return $this->httpOnly;
+   }
+
+   /**
+    * @return string
+    */
+   public function getPath() {
+      return $this->path;
+   }
+
+   /**
+    * @return boolean
+    */
+   public function getSecure() {
+      return $this->secure;
+   }
+
+}

@@ -46,7 +46,7 @@ class SimpleRadioControlValidator extends TextFieldValidator {
       // input we are given from the form taglib to get valid results.
       // this has to be done because of dynamic filling of radio button!
       $name = $this->control->getAttribute('name');
-      if (!isset($_REQUEST[$name]) || empty($_REQUEST[$name])) {
+      if (self::getRequest()->getParameter($name) === null) {
          return false;
       }
 

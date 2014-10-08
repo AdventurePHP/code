@@ -21,6 +21,7 @@
 namespace APF\extensions\apfelsms\biz;
 
 use APF\core\configuration\ConfigurationException;
+use APF\core\http\mixins\GetRequestResponseTrait;
 use APF\core\pagecontroller\APFObject;
 use APF\extensions\apfelsms\biz\pages\decorators\SMSPageDec;
 use APF\extensions\apfelsms\biz\pages\SMSPage;
@@ -41,6 +42,8 @@ use InvalidArgumentException;
  *             v0.3 (25.07.12) Renamed "site" to "page" and changed serveral methods for use as DIService
  */
 class SMSManager extends APFObject {
+
+   use GetRequestResponseTrait;
 
 
    /**
@@ -91,7 +94,7 @@ class SMSManager extends APFObject {
       $startPageId = $this->site->getStartPageId(); // get start page pageId for fallback
 
       // if no pageId is present in request, use start page pageId
-      $this->site->setCurrentPageId(RequestHandler::getValue($this->pageRequestParamName, $startPageId));
+      $this->site->setCurrentPageId(self::getRequest()->getParameter($this->pageRequestParamName, $startPageId));
 
    }
 

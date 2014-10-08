@@ -20,6 +20,9 @@
  */
 namespace APF\tools\link;
 
+use APF\core\http\RequestImpl;
+use APF\core\singleton\Singleton;
+
 /**
  * This class represents a url designed to generate related urls using
  * the APF's link scheme implementations.
@@ -328,19 +331,10 @@ final class Url {
     * Version 0.2, 09.03.2013 (Now uses standard PHP variables in stead of a Registry value to allow better url input filter manipulation)<br />
     */
    public static function fromCurrent($absolute = false) {
+      /* @var $request RequestImpl */
+      $request = & Singleton::getInstance('APF\core\http\RequestImpl');
 
-      // construct url from standard PHP variables
-      $protocol = ($_SERVER['SERVER_PORT'] == '443') ? 'https://' : 'http://';
-      $currentUrlString = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-
-      $url = self::fromString($currentUrlString);
-      if ($absolute === false) {
-         $url->setScheme(null);
-         $url->setHost(null);
-         $url->setPort(null);
-      }
-
-      return $url;
+      return $request->getUrl($absolute);
    }
 
    /**
@@ -356,17 +350,10 @@ final class Url {
     * Version 0.1, 07.09.2011<br />
     */
    public static function fromReferer($absolute = false) {
-      if (isset($_SERVER['HTTP_REFERER'])) {
-         $url = self::fromString($_SERVER['HTTP_REFERER']);
-         if ($absolute === false) {
-            $url->setScheme(null);
-            $url->setHost(null);
-            $url->setPort(null);
-         }
+      /* @var $request RequestImpl */
+      $request = & Singleton::getInstance('APF\core\http\RequestImpl');
 
-         return $url;
-      }
-      throw new UrlFormatException('Empty referrer url cannot be used to create a url representation.');
+      return $request->getReferrerUrl($absolute);
    }
 
    /**

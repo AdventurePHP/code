@@ -141,7 +141,7 @@ class SelectBoxTag extends AbstractFormControl {
       $this->isDynamicField = true;
 
       // retrieve or lazily create group
-      $group = & $this->getOrCreateGroup($groupLabel);
+      $group = &$this->getOrCreateGroup($groupLabel);
 
       // add option to group
       $group->addOption($displayName, $value, $preSelected);
@@ -162,7 +162,7 @@ class SelectBoxTag extends AbstractFormControl {
       $this->isDynamicField = true;
 
       // retrieve or lazily create group
-      $group = & $this->getOrCreateGroup($groupLabel);
+      $group = &$this->getOrCreateGroup($groupLabel);
 
       $group->addOptionTag($option);
    }
@@ -179,7 +179,7 @@ class SelectBoxTag extends AbstractFormControl {
     * Version 0.1, 07.01.2014<br />
     */
    public function &getOrCreateGroup($groupLabel) {
-      $group = & $this->getGroup($groupLabel);
+      $group = &$this->getGroup($groupLabel);
       if ($group === null) {
 
          $objectId = XmlParser::generateUniqID();
@@ -199,7 +199,7 @@ class SelectBoxTag extends AbstractFormControl {
          $this->content .= '<' . $objectId . ' />';
 
          // make group available for the subsequent call
-         $group = & $this->children[$objectId];
+         $group = &$this->children[$objectId];
       }
 
       return $group;
@@ -222,7 +222,7 @@ class SelectBoxTag extends AbstractFormControl {
 
       foreach ($this->children as $objectId => $DUMMY) {
          if ($this->children[$objectId]->getAttribute('label') == $label) {
-            $group = & $this->children[$objectId];
+            $group = &$this->children[$objectId];
             break;
          }
       }
@@ -253,7 +253,7 @@ class SelectBoxTag extends AbstractFormControl {
       foreach ($this->children as $objectId => $DUMMY) {
 
          if ($this->children[$objectId] instanceof SelectBoxGroupTag) {
-            $selectedOption = & $this->children[$objectId]->getSelectedOption();
+            $selectedOption = &$this->children[$objectId]->getSelectedOption();
 
             // Bug-436: exit at the first hit to not overwrite this hit with another miss!
             if ($selectedOption !== null) {
@@ -261,7 +261,7 @@ class SelectBoxTag extends AbstractFormControl {
             }
          } else {
             if ($this->children[$objectId]->getAttribute('selected') === 'selected') {
-               $selectedOption = & $this->children[$objectId];
+               $selectedOption = &$this->children[$objectId];
                break;
             }
          }
@@ -386,7 +386,7 @@ class SelectBoxTag extends AbstractFormControl {
       // ID#233: add/execute validators only in case the control is visible. Otherwise, this
       // may break the user flow with hidden mandatory fields and users end up in an endless loop.
       if ($validator->isActive() && $this->isMandatory($value) && $this->isVisible()) {
-         $option = & $this->getSelectedOption();
+         $option = &$this->getSelectedOption();
          if ($option === null) {
             $value = null;
          } else {
@@ -412,10 +412,11 @@ class SelectBoxTag extends AbstractFormControl {
    protected function getRequestValue() {
 
       $name = $this->getAttribute('name');
-      $value = null;
 
       $subMarkerStart = '[';
       $subMarkerEnd = ']';
+
+      $request = self::getRequest();
 
       // analyze sub-elements by the start marker bracket
       if (substr_count($name, $subMarkerStart) > 0) {
@@ -425,13 +426,15 @@ class SelectBoxTag extends AbstractFormControl {
          $subName = substr($name, $startBracketPos + 1,
                $endBracketPos - $startBracketPos - strlen($subMarkerEnd)
          );
-         if (isset($_REQUEST[$mainName][$subName])) {
-            $value = $_REQUEST[$mainName][$subName];
+
+         $value = $request->getParameter($mainName);
+         if ($value !== null && isset($value[$subName])) {
+            $value = $value[$subName];
+         } else {
+            $value = null;
          }
       } else {
-         if (isset($_REQUEST[$name])) {
-            $value = $_REQUEST[$name];
-         }
+         $value = $request->getParameter($name);
       }
 
       return $value;

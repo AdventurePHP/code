@@ -155,7 +155,9 @@ class DateSelectorTag extends AbstractFormControl {
       }
 
       // preset today's date on startup if we have no empty options
-      if (!isset($_REQUEST[$name]) && $prependEmptyOption !== true) {
+      $request = self::getRequest();
+      $value = $request->getParameter($name);
+      if ($value === null && $prependEmptyOption !== true) {
          $day->setOption2Selected($this->appendZero(date('d')));
          $month->setOption2Selected($this->appendZero(date('m')));
          $year->setOption2Selected(date('Y'));
@@ -168,10 +170,10 @@ class DateSelectorTag extends AbstractFormControl {
 
       // since the onParseTime() methods directly presets the value from the request, we have
       // to correct implausible dates using the PHP DateTime API.
-      if (isset($_REQUEST[$name])) {
-         $date = DateTime::createFromFormat('Y-m-d', $_REQUEST[$name][$this->offsetNames['Year']]
-               . '-' . $_REQUEST[$name][$this->offsetNames['Month']]
-               . '-' . $_REQUEST[$name][$this->offsetNames['Day']]);
+      if ($value !== null && is_array($value)) {
+         $date = DateTime::createFromFormat('Y-m-d', $value[$this->offsetNames['Year']]
+               . '-' . $value[$this->offsetNames['Month']]
+               . '-' . $value[$this->offsetNames['Day']]);
          if ($date !== false) {
             $day->setOption2Selected($date->format('d'));
             $month->setOption2Selected($date->format('m'));

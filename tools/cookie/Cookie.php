@@ -20,7 +20,7 @@
  */
 namespace APF\tools\cookie;
 
-use InvalidArgumentException;
+use APF\core\http\Cookie as CoreCookie;
 
 /**
  * The Cookie is a tool, that provides sophisticated cookie handling. The methods included allow you to
@@ -34,142 +34,8 @@ use InvalidArgumentException;
  * Version 0.1, 08.11.2008<br />
  * Version 0.2, 10.01.2009 (Finished implementation and testing)<br />
  */
-class Cookie {
+class Cookie extends CoreCookie {
 
-   /**
-    * Default path of the Cookie.
-    *
-    * @var string DEFAULT_PATH
-    */
-   const DEFAULT_PATH = '/';
-
-   /**
-    * Default expiration time of the cookie (=1 day).
-    *
-    * @var int DEFAULT_EXPIRATION_TIME
-    */
-   const DEFAULT_EXPIRATION_TIME = 86400;
-
-   /**
-    * The name of the cookie.
-    *
-    * @var string $name
-    */
-   protected $name;
-
-   /**
-    * The domain the cookie is valid for.
-    *
-    * @var string $domain
-    */
-   protected $domain;
-
-   /**
-    * $path The path the cookie s valid for.
-    *
-    * @var string $path
-    */
-   protected $path;
-
-   /**
-    * True in case the cookie is only valid for HTTPS transmission, false otherwise.
-    *
-    * @var bool $secure
-    */
-   protected $secure = false;
-
-   /**
-    * True in case the cookie can only be modified via HTTP, false otherwise.
-    *
-    * @var bool $httpOnly
-    */
-   protected $httpOnly = false;
-
-   /**
-    * Defines the default expiration time in seconds.
-    *
-    * @var int $expireTime
-    */
-   protected $expireTime;
-
-   /**
-    * Let's you create a Cookie.
-    *
-    * @param string $name The name of the cookie.
-    * @param int $expireTime The life time in seconds (default: 1 day).
-    * @param string $domain The domain the cookie is valid for.
-    * @param string $path The path the cookie s valid for.
-    * @param bool $secure True in case the cookie is only valid for HTTPS transmission, false otherwise.
-    * @param bool $httpOnly True in case the cookie can only be modified via HTTP, false otherwise.
-    *
-    * @throws InvalidArgumentException In case of an empty cookie name.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 08.11.2008<br />
-    * Version 0.2, 13.06.2013 (Refactoring to real domain object representation)<br />
-    */
-   public function __construct($name, $expireTime = self::DEFAULT_EXPIRATION_TIME, $domain = null, $path = null, $secure = null, $httpOnly = null) {
-
-      if (empty($name)) {
-         throw new InvalidArgumentException('Cookie cannot be created with an empty name!');
-      }
-
-      $this->name = $name;
-      $this->path = $path === null ? self::DEFAULT_PATH : $path;
-      $this->domain = $domain === null ? $_SERVER['HTTP_HOST'] : $domain;
-      $this->secure = $secure;
-      $this->httpOnly = $httpOnly;
-      $this->expireTime = $expireTime;
-   }
-
-   /**
-    * Defines the value of the cookie.
-    *
-    * @param string $value The value of the cookie,
-    *
-    * @return bool True, if cookie was set correctly, false, if something was wrong
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 08.11.2008<br />
-    * Version 0.2, 13.06.2013 (Refactoring to real domain object representation)<br />
-    */
-   public function setValue($value) {
-      return setcookie($this->name, $value, $this->expireTime, $this->path, $this->domain, $this->secure, $this->httpOnly);
-   }
-
-   /**
-    * Returns the value of the desired key within the current namespace.
-    *
-    * @param string $default The default value in case the cookie is not existing.
-    *
-    * @return string Cookie value or default value.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 08.11.2008<br />
-    * Version 0.2, 10.01.2009 (Added namespace support)<br />
-    * Version 0.3, 13.06.2013 (Refactoring to real domain object representation)<br />
-    */
-   public function getValue($default = null) {
-      return isset($_COOKIE[$this->name]) ? $_COOKIE[$this->name] : $default;
-   }
-
-   /**
-    * Deletes the Cookie.
-    *
-    * @return bool True in case the operation has been successful, false otherwise.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 08.11.2008<br />
-    * Version 0.2, 10.01.2009 (Added namespace support)<br />
-    * Version 0.3, 13.06.2013 (Refactoring to real domain object representation)<br />
-    * Version 0.4, 27.05.2014 (Removed path and domain for delete as this causes issues with some browsers)<br />
-    */
-   public function delete() {
-      return setcookie($this->name, false, time() - self::DEFAULT_EXPIRATION_TIME);
-   }
+   protected $useResponse = false;
 
 }

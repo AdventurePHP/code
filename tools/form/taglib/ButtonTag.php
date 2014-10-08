@@ -54,7 +54,7 @@ class ButtonTag extends AbstractFormControl {
    public function onParseTime() {
 
       $buttonName = $this->getAttribute('name');
-      $form = & $this->getForm();
+      $form = &$this->getForm();
       if ($buttonName === null) {
          $formName = $form->getAttribute('name');
          throw new FormException('[ButtonTag::onAfterAppend()] Missing required attribute '
@@ -66,12 +66,13 @@ class ButtonTag extends AbstractFormControl {
       // form was sent. Mark button as sent, too. Due to potential
       // XSS issues, we distinguish between GET and POST requests
       $method = strtolower($form->getAttribute(HtmlForm::METHOD_ATTRIBUTE_NAME));
+      $request = self::getRequest();
       if ($method == HtmlForm::METHOD_POST_VALUE_NAME) {
-         if (isset($_POST[$buttonName])) {
+         if ($request->getPostParameter($buttonName) !== null) {
             $this->controlIsSent = true;
          }
       } else {
-         if (isset($_GET[$buttonName])) {
+         if ($request->getGetParameter($buttonName) !== null) {
             $this->controlIsSent = true;
          }
       }
