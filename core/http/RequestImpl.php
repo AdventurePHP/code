@@ -410,7 +410,21 @@ class RequestImpl implements Request {
     * @return bool <em>True</em> in case the current request is an IMAGE request, <em>false</em> otherwise.
     */
    public function isImage() {
-      return stripos($_SERVER['HTTP_ACCEPT'], 'image/') !== false;
+      $requestedMimeType = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : '';
+
+      return stripos($requestedMimeType, 'image/') !== false;
+   }
+
+   /**
+    * Convenience Method to determine whether we have an HTML request (e.g. useful for front controller
+    * actions).
+    *
+    * @return bool <em>True</em> in case the current request is an HTML request, <em>false</em> otherwise.
+    */
+   public function isHtml() {
+      $requestedMimeType = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : '';
+
+      return strpos($requestedMimeType, 'text/html') !== false;
    }
 
 }
