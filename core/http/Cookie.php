@@ -99,8 +99,11 @@ class Cookie {
     */
    protected $expireTime;
 
-   protected $useResponse = true;
-
+   /**
+    * Indicates whether the cookie should be deleted or not.
+    *
+    * @var bool $isDeleted
+    */
    protected $isDeleted = false;
 
    /**
@@ -144,9 +147,9 @@ class Cookie {
    /**
     * Defines the value of the cookie.
     *
-    * @param string $value The value of the cookie,
+    * @param string $value The value of the cookie.
     *
-    * @return bool True, if cookie was set correctly, false, if something was wrong
+    * @return Cookie This instance for further usage.
     *
     * @author Christian Achatz
     * @version
@@ -154,13 +157,9 @@ class Cookie {
     * Version 0.2, 13.06.2013 (Refactoring to real domain object representation)<br />
     */
    public function setValue($value) {
-      if ($this->useResponse) {
-         $this->value = $value;
+      $this->value = $value;
 
-         return true;
-      }
-
-      return setcookie($this->name, $value, $this->expireTime, $this->path, $this->domain, $this->secure, $this->httpOnly);
+      return $this;
    }
 
    /**
@@ -183,7 +182,7 @@ class Cookie {
    /**
     * Deletes the Cookie.
     *
-    * @return bool True in case the operation has been successful, false otherwise.
+    * @return Cookie This instance for further usage.
     *
     * @author Christian Achatz
     * @version
@@ -193,13 +192,9 @@ class Cookie {
     * Version 0.4, 27.05.2014 (Removed path and domain for delete as this causes issues with some browsers)<br />
     */
    public function delete() {
-      if ($this->useResponse) {
-         $this->isDeleted = true;
+      $this->isDeleted = true;
 
-         return true;
-      }
-
-      return setcookie($this->name, false, time() - self::DEFAULT_EXPIRATION_TIME);
+      return $this;
    }
 
    public function isDeleted() {

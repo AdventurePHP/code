@@ -21,21 +21,39 @@
 namespace APF\tools\cookie;
 
 use APF\core\http\Cookie as CoreCookie;
+use APF\core\http\mixins\GetRequestResponseTrait;
 
 /**
- * The Cookie is a tool, that provides sophisticated cookie handling. The methods included allow you to
- * create, update and delete cookies using a clean API. Usage:
- * <pre>$c = new Cookie('my_cookie');
- * $c->setValue('my_value');
- * $c->delete();</pre>
+ * Compatibility class maintain pre-3.0 state of cookie handling.
+ *
+ * @deprecated Use APF\core\http\Cookie instead.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 08.11.2008<br />
- * Version 0.2, 10.01.2009 (Finished implementation and testing)<br />
+ * Version 0.1, 08.10.2014<br />
  */
 class Cookie extends CoreCookie {
 
-   protected $useResponse = false;
+   use GetRequestResponseTrait;
+
+   /**
+    * @return bool True in case the operation has been successful, false otherwise.
+    */
+   public function delete() {
+      self::getResponse()->setCookie(parent::delete());
+
+      return true;
+   }
+
+   /**
+    * @param string $value The value of the cookie.
+    *
+    * @return bool True, if cookie was set correctly, false, if something was wrong.
+    */
+   public function setValue($value) {
+      self::getResponse()->setCookie(parent::setValue($value));
+
+      return true;
+   }
 
 }
