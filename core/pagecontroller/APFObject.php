@@ -125,7 +125,7 @@ abstract class APFObject implements APFDIService {
     * Version 0.1, 26.02.2011<br />
     */
    public function getVersion() {
-      return '2.2-GIT';
+      return '3.0-GIT';
    }
 
    /**
@@ -240,43 +240,6 @@ abstract class APFObject implements APFDIService {
    protected function deleteConfiguration($namespace, $name) {
       ConfigurationManager::deleteConfiguration(
             $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('APF\core', 'Environment'), $name);
-   }
-
-   /**
-    * Creates a string representation of the given attributes list, using a
-    * white list to especially include attributes.
-    *
-    * @param array $attributes The list of attributes to convert to an xml string.
-    * @param array $whiteList The list of attributes, the string may contain.
-    *
-    * @return string The xml attributes string.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 13.02.2010 (Replaced old implementation with the white list feature.)<br />
-    * Version 0.2, 27.11.2013 (Added default data-* attribute support to ease white list maintenance)<br />
-    */
-   protected function getAttributesAsString(array $attributes, array $whiteList = array()) {
-
-      $attributeParts = array();
-
-      // process white list entries only, when attribute is given
-      // code duplication is done here due to performance reasons!!!
-      $charset = Registry::retrieve('APF\core', 'Charset');
-      if (count($whiteList) > 0) {
-         foreach ($attributes as $name => $value) {
-            // allow "data-*" attributes by default to not deal with complicated white list configuration
-            if (strpos($name, 'data-') !== false || in_array($name, $whiteList)) {
-               $attributeParts[] = $name . '="' . htmlspecialchars($value, ENT_QUOTES, $charset, false) . '"';
-            }
-         }
-      } else {
-         foreach ($attributes as $name => $value) {
-            $attributeParts[] = $name . '="' . htmlspecialchars($value, ENT_QUOTES, $charset, false) . '"';
-         }
-      }
-
-      return implode(' ', $attributeParts);
    }
 
 }
