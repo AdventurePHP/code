@@ -25,7 +25,6 @@ use APF\core\pagecontroller\BaseDocumentController;
 use APF\core\singleton\Singleton;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
-use APF\tools\request\RequestHandler;
 
 /**
  *  Implements the document controller to display the paging bar. The bar includes:
@@ -54,7 +53,7 @@ class ArrayPagerController extends BaseDocumentController {
 
       $urlParams = array($config['ParameterEntries'] => $config['Entries']);
       if ($config['EntriesChangeable'] === true) {
-         $urlParams = array($config['ParameterEntries'] => RequestHandler::getValue($config['Entries']));
+         $urlParams = array($config['ParameterEntries'] => self::getRequest()->getParameter($config['Entries']));
       }
 
       // Pager leer zurückgeben, falls keine Seiten vorhanden sind.
@@ -75,7 +74,7 @@ class ArrayPagerController extends BaseDocumentController {
       $integerPageCount = ceil($dataCount / $integerEntriesCount);
 
       // Aktuelle Seite generieren
-      $integerCurrentPage = intval(RequestHandler::getValue($config['ParameterPage'], 1));
+      $integerCurrentPage = intval(self::getRequest()->getParameter($config['ParameterPage'], 1));
 
       // Puffer initialisieren
       $stringBuffer = '';

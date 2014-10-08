@@ -21,10 +21,10 @@
 namespace APF\extensions\arraypager\biz;
 
 use APF\core\configuration\ConfigurationException;
+use APF\core\http\mixins\GetRequestResponseTrait;
 use APF\core\pagecontroller\APFObject;
 use APF\core\pagecontroller\Page;
 use APF\extensions\arraypager\data\ArrayPagerMapper;
-use APF\tools\request\RequestHandler;
 use Exception;
 
 /**
@@ -35,6 +35,8 @@ use Exception;
  * Version 0.1, 21.12.2009<br />
  */
 final class ArrayPagerManager extends APFObject {
+
+   use GetRequestResponseTrait;
 
    private $pagerConfig = null;
    private $anchorName = null;
@@ -124,9 +126,8 @@ final class ArrayPagerManager extends APFObject {
 
       if (is_array($arrayData) === true) {
          if ($integerPage === null) {
-            $integerPage = intval(RequestHandler::getValue($this->pagerConfig['ParameterPage'],
-                        1
-                  )
+            $integerPage = intval(self::getRequest()->getParameter($this->pagerConfig['ParameterPage'],
+                        1)
             );
 
             if ($integerPage <= 0) {
@@ -136,9 +137,8 @@ final class ArrayPagerManager extends APFObject {
 
          if ($integerEntries === null) {
             if ($this->pagerConfig['EntriesChangeable'] === true) {
-               $integerEntries = intval(RequestHandler::getValue($this->pagerConfig['ParameterEntries'],
-                           $this->pagerConfig['Entries']
-                     )
+               $integerEntries = intval(self::getRequest()->getParameter($this->pagerConfig['ParameterEntries'],
+                           $this->pagerConfig['Entries'])
                );
             } else {
                $integerEntries = 0;
@@ -199,9 +199,8 @@ final class ArrayPagerManager extends APFObject {
             $rootDoc->setAttribute('Config',
                   array('ParameterPage'     => $this->pagerConfig['ParameterPage'],
                         'ParameterEntries'  => $this->pagerConfig['ParameterEntries'],
-                        'Entries'           => intval(RequestHandler::getValue($this->pagerConfig['ParameterEntries'],
-                              $this->pagerConfig['Entries']
-                        )),
+                        'Entries'           => intval(self::getRequest()->getParameter($this->pagerConfig['ParameterEntries'],
+                              $this->pagerConfig['Entries'])),
                         'EntriesPossible'   => $this->pagerConfig['EntriesPossible'],
                         'EntriesChangeable' => $this->pagerConfig['EntriesChangeable']
                   )
@@ -322,9 +321,8 @@ final class ArrayPagerManager extends APFObject {
    public function checkPage() {
       $booleanReturn = false;
 
-      $mixedData = RequestHandler::getValue($this->pagerConfig['ParameterPage'],
-            false
-      );
+      $mixedData = self::getRequest()->getParameter($this->pagerConfig['ParameterPage'],
+            false);
 
       if ($mixedData !== false) {
          $booleanReturn = true;

@@ -23,7 +23,6 @@ namespace APF\extensions\news\pres\documentcontroller\backend;
 use APF\extensions\news\pres\documentcontroller\NewsBaseController;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
-use APF\tools\request\RequestHandler;
 
 /**
  * Document controller for deleting news.
@@ -36,8 +35,8 @@ class NewsDeleteController extends NewsBaseController {
 
    public function transformContent() {
 
-      $deleteId = RequestHandler::getValue('deletenewsid');
-      $deleteYes = (bool) RequestHandler::getValue('deleteyes', false);
+      $deleteId = self::getRequest()->getParameter('deletenewsid');
+      $deleteYes = (bool) self::getRequest()->getParameter('deleteyes', false);
 
       $newsManager = $this->getNewsManager();
 

@@ -23,7 +23,6 @@ namespace APF\extensions\news\pres\documentcontroller\backend;
 use APF\core\registry\Registry;
 use APF\extensions\news\biz\News;
 use APF\extensions\news\pres\documentcontroller\NewsBaseController;
-use APF\tools\request\RequestHandler;
 
 /**
  * Document controller for editing and creating news.
@@ -46,7 +45,7 @@ class NewsEditController extends NewsBaseController {
 
       // If an id is given, an existing news should be updated,
       // so we check here if it really exists.
-      $editId = RequestHandler::getValue('editnewsid');
+      $editId = self::getRequest()->getParameter('editnewsid');
       $news = null;
       if ($editId !== null && $editId !== '') {
          $news = $newsManager->getNewsById((int) $editId);

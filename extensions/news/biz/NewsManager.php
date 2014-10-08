@@ -21,10 +21,10 @@
 namespace APF\extensions\news\biz;
 
 use APF\core\pagecontroller\APFObject;
+use APF\core\http\mixins\GetRequestResponseTrait;
 use APF\extensions\postbox\biz\Postbox;
 use APF\modules\genericormapper\data\GenericCriterionObject;
 use APF\modules\genericormapper\data\GenericORRelationMapper;
-use APF\tools\request\RequestHandler;
 
 /**
  * Manages the news system.
@@ -34,6 +34,8 @@ use APF\tools\request\RequestHandler;
  * Version 1.0, 16.06.2011<br />
  */
 class NewsManager extends APFObject {
+
+   use GetRequestResponseTrait;
 
    /**
     * @var GenericORRelationMapper $ORM
@@ -188,7 +190,7 @@ class NewsManager extends APFObject {
          $Cfg = $this->getConfiguration('APF\extensions\news', 'news.ini');
          $PageParameter = $Cfg->getSection('Paging')->getValue('PageParameter');
 
-         $page = RequestHandler::getValue($PageParameter, 1);
+         $page = self::getRequest()->getParameter($PageParameter, 1);
       }
 
       $page = (int) $page;
