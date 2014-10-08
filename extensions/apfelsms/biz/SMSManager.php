@@ -28,7 +28,6 @@ use APF\extensions\apfelsms\biz\pages\SMSPage;
 use APF\extensions\apfelsms\biz\pages\stores\SMSPageStore;
 use APF\extensions\apfelsms\biz\sites\SMSSite;
 use APF\extensions\apfelsms\data\SMSMapper;
-use APF\tools\request\RequestHandler;
 use InvalidArgumentException;
 
 /**
