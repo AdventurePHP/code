@@ -1,4 +1,7 @@
 <?php
+use APF\core\loader\RootClassLoader;
+use APF\core\loader\StandardClassLoader;
+
 include(dirname(__FILE__) . '/migrate_base.php');
 
 $files = find('.', '*.php');
@@ -48,7 +51,18 @@ foreach ($files as $file) {
 
    if (!empty($matchesClass[1]) && !empty($matchesNamespace[1])) {
 
-      // TODO Handle class loading for other applications
+      // auto-register custom class loader if necessary
+      $vendor = RootClassLoader::getVendor($matchesNamespace[1] . '\\' . $matchesClass[1]);
+      try {
+         RootClassLoader::getLoaderByVendor($vendor);
+      } catch (InvalidArgumentException $e) {
+         $folder = str_replace('\\', '/', realpath(dirname($file)));
+         $namespaceAsPath = str_replace('\\', '/', RootClassLoader::getNamespaceWithoutVendor($matchesNamespace[1] . '\\' . $matchesClass[1]));
+         $basePath = str_replace($namespaceAsPath, '', $folder);
+
+         RootClassLoader::addLoader(new StandardClassLoader($vendor, $basePath));
+      }
+
       $class = new ReflectionClass($matchesNamespace[1] . '\\' . $matchesClass[1]);
       if (
             $class->isSubclassOf('APF\core\pagecontroller\Document')
