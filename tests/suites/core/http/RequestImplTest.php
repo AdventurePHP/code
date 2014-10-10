@@ -23,7 +23,7 @@ namespace APF\tests\suites\core\http;
 use APF\core\http\RequestImpl;
 
 /**
- * Tests the RequestHandler. Written due to bug with "0" values.
+ * Tests the Request implementation. Written due to bug with "0" values.
  *
  * @author Christian Achatz
  * @version

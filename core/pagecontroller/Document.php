@@ -938,6 +938,12 @@ class Document extends APFObject {
             continue;
          }
 
+         // avoid issues with parsing HTML comments including colons (e.g. <!-- foo:bar -->)
+         if (substr($this->content, $start, 4) == '<!--') {
+            $offset = $colon + 1;
+            continue;
+         }
+
          // find out whether we have an opening or closing tag
          $end = strpos($this->content, '>', $colon + 1);
 
