@@ -24,8 +24,6 @@ use APF\core\benchmark\BenchmarkTimer;
 use APF\core\filter\InputFilterChain;
 use APF\core\filter\OutputFilterChain;
 use APF\core\http\mixins\GetRequestResponseTrait;
-use APF\core\http\RequestImpl;
-use APF\core\http\ResponseImpl;
 use APF\core\pagecontroller\APFObject;
 use APF\core\pagecontroller\Page;
 use APF\core\registry\Registry;
@@ -202,11 +200,9 @@ class Frontcontroller extends APFObject {
       }
 
       // Create request and response implementations for OO abstraction
-      /* @var $request RequestImpl */
-      $request = &self::getRequest();
+      $request = & self::getRequest();
 
-      /* @var $response ResponseImpl */
-      $response = &self::getRequest();
+      $response = & self::getResponse();
       $response->setContentType('text/html; charset=' . Registry::retrieve('APF\core', 'Charset'));
 
       // apply input filter to process request
@@ -656,7 +652,7 @@ class Frontcontroller extends APFObject {
    protected function runActions($type = Action::TYPE_PRE_PAGE_CREATE) {
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
 
       foreach ($this->actionStack as $offset => $DUMMY) {
 
