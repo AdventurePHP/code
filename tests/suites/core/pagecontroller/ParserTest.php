@@ -54,11 +54,8 @@ This is text after a comment...
 This is text after a place holder...
 ');
 
-      $method = new ReflectionMethod('APF\core\pagecontroller\Document', 'extractTagLibTags');
-      $method->setAccessible(true);
-
       try {
-         $method->invoke($doc);
+         $this->getMethod()->invoke($doc);
 
          $placeHolder = $doc->getChildNode('name', 'foo', 'APF\core\pagecontroller\PlaceHolderTag');
          $this->assertTrue($placeHolder instanceof PlaceHolderTag);
@@ -66,6 +63,49 @@ This is text after a place holder...
          $this->fail('Parsing comments failed. Message: ' . $e->getMessage());
       }
 
+   }
+
+   /**
+    * Tests parser capabilities with <em>&lt;li&gt;FOO:</em> statements in e.g. HTML lists.
+    */
+   public function testClosingBracket() {
+
+      $doc = new Document();
+      $doc->setContent('<p>
+   This is the content of a document with tags and lists:
+</p>
+<ul>
+   <li>Foo: Foo is the first part of the &quot;foo bar&quot; phrase.</li>
+   <li>Bar: Bar is the second part of the &quot;foo bar&quot; phrase.</li>
+</ul>
+<p>
+ This is text after a list...
+</p>
+<html:placeholder name="foo" />
+<p>
+   This is text after a place holder...
+</p>
+');
+
+      try {
+         $this->getMethod()->invoke($doc);
+
+         $placeHolder = $doc->getChildNode('name', 'foo', 'APF\core\pagecontroller\PlaceHolderTag');
+         $this->assertTrue($placeHolder instanceof PlaceHolderTag);
+      } catch (Exception $e) {
+         $this->fail('Parsing lists failed. Message: ' . $e->getMessage());
+      }
+
+   }
+
+   /**
+    * @return ReflectionMethod
+    */
+   protected function getMethod() {
+      $method = new ReflectionMethod('APF\core\pagecontroller\Document', 'extractTagLibTags');
+      $method->setAccessible(true);
+
+      return $method;
    }
 
 } 
