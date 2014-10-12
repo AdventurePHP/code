@@ -241,7 +241,7 @@ class ResponseImpl implements Response {
             setcookie($cookie->getName(), false, time() - Cookie::DEFAULT_EXPIRATION_TIME);
          } else {
             setcookie($cookie->getName(), $cookie->getValue(), $cookie->getExpireTime(), $cookie->getPath(),
-                  $cookie->getDomain(), $cookie->getSecure(), $cookie->getHttpOnly());
+                  $cookie->getDomain(), $cookie->isSecure(), $cookie->isHttpOnly());
          }
       }
 

@@ -218,7 +218,7 @@ class Cookie {
    /**
     * @return boolean
     */
-   public function getHttpOnly() {
+   public function isHttpOnly() {
       return $this->httpOnly;
    }
 
@@ -232,7 +232,7 @@ class Cookie {
    /**
     * @return boolean
     */
-   public function getSecure() {
+   public function isSecure() {
       return $this->secure;
    }
 
