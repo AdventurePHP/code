@@ -52,6 +52,8 @@ class HtmlFormTag extends Document implements HtmlForm {
 
    use FormControlFinderImpl;
 
+   const ACTION_ATTRIBUTE_NAME = 'action';
+
    /**
     * Indicates, whether the form should be transformed at it'd place of definition or not.
     *
@@ -82,7 +84,7 @@ class HtmlFormTag extends Document implements HtmlForm {
       // setup attributes within white-list
       $this->attributeWhiteList = array_merge(AbstractFormControl::$CORE_ATTRIBUTES, AbstractFormControl::$EVENT_ATTRIBUTES, AbstractFormControl::$I18N_ATTRIBUTES);
       $this->attributeWhiteList[] = self::METHOD_ATTRIBUTE_NAME;
-      $this->attributeWhiteList[] = 'action';
+      $this->attributeWhiteList[] = self::ACTION_ATTRIBUTE_NAME;
       $this->attributeWhiteList[] = 'name'; // allowed with HTML5 again (see http://www.w3.org/html/wg/drafts/html/master/forms.html#attr-form-name)
       $this->attributeWhiteList[] = 'enctype';
       $this->attributeWhiteList[] = 'onsubmit';
@@ -179,7 +181,7 @@ class HtmlFormTag extends Document implements HtmlForm {
    public function &addFormElement($elementType, array $elementAttributes = array()) {
 
       // create form element
-      $control = & $this->createFormElement($this, $elementType, $elementAttributes);
+      $control = &$this->createFormElement($this, $elementType, $elementAttributes);
 
       if ($control === null) {
          // notify developer that object creation failed
@@ -254,8 +256,8 @@ class HtmlFormTag extends Document implements HtmlForm {
     */
    public function &addFormElementBeforeMarker($markerName, $elementType, array $elementAttributes = array()) {
 
-      $marker = & $this->getMarker($markerName);
-      $control = & $this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);
+      $marker = &$this->getMarker($markerName);
+      $control = &$this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);
 
       if ($control === null) {
          // notify developer that object creation failed
@@ -265,7 +267,7 @@ class HtmlFormTag extends Document implements HtmlForm {
 
       // add the position place holder to the content
       $markerId = $marker->getObjectId();
-      $parent = & $marker->getParentObject();
+      $parent = &$marker->getParentObject();
 
       $parent->setContent(str_replace(
             '<' . $markerId . ' />',
@@ -294,8 +296,8 @@ class HtmlFormTag extends Document implements HtmlForm {
     */
    public function &addFormElementAfterMarker($markerName, $elementType, array $elementAttributes = array()) {
 
-      $marker = & $this->getMarker($markerName);
-      $control = & $this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);
+      $marker = &$this->getMarker($markerName);
+      $control = &$this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);
 
       if ($control === null) {
          // notify developer that object creation failed
@@ -305,7 +307,7 @@ class HtmlFormTag extends Document implements HtmlForm {
 
       // add the position place holder to the content
       $markerId = $marker->getObjectId();
-      $parent = & $marker->getParentObject();
+      $parent = &$marker->getParentObject();
 
       $parent->setContent(str_replace(
             '<' . $markerId . ' />',
@@ -364,7 +366,7 @@ class HtmlFormTag extends Document implements HtmlForm {
    }
 
    public function setAction($action) {
-      $this->setAttribute('action', $action);
+      $this->setAttribute(self::ACTION_ATTRIBUTE_NAME, $action);
    }
 
    /**
@@ -405,7 +407,7 @@ class HtmlFormTag extends Document implements HtmlForm {
 
       $class = $this->getTagLibClass($prefix, $name);
       if ($class === null) {
-         $parent = & $this->getParentObject();
+         $parent = &$this->getParentObject();
          $documentController = $parent->getDocumentController();
          throw new FormException('[HtmlFormTag::getTagClass()] No tag with name "' . $tagName
                . '" registered in form with name "' . $this->getAttribute('name') . '" in document controller '
@@ -418,17 +420,27 @@ class HtmlFormTag extends Document implements HtmlForm {
 
    public function transformForm() {
 
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $id = '(HtmlFormTag) ' . $this->getObjectId() . '::transformForm()';
       $t->start($id);
 
       // add action attribute if not set
-      $action = $this->getAttribute('action');
+      $action = $this->getAttribute(self::ACTION_ATTRIBUTE_NAME);
       if ($action === null) {
-         // escape current request uri to avoid XSS attacks
-         $this->setAttribute('action', htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, Registry::retrieve('APF\core', 'Charset'), false));
+         $this->setAttribute(self::ACTION_ATTRIBUTE_NAME, self::getRequest()->getRequestUri());
       }
+
+      // ID#239: always encode action attribute when present to secure custom actions as well as auto-generated ones
+      $this->setAttribute(
+            self::ACTION_ATTRIBUTE_NAME,
+            htmlspecialchars(
+                  $this->getAttribute(self::ACTION_ATTRIBUTE_NAME),
+                  ENT_QUOTES,
+                  Registry::retrieve('APF\core', 'Charset'),
+                  false
+            )
+      );
 
       // transform the form including all child tags
       $htmlCode = (string) '<form ';
