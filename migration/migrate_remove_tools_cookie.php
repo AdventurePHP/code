@@ -8,8 +8,9 @@ $files = find('.', '*.php');
 
 $requestResponseTrait = 'use GetRequestResponseTrait;';
 
-$searchWithDefault = '#RequestHandler::getValue\(([ |\n|\r\n]*)(.+),([ |\n|\r\n]*)(.+)([ |\n|\r\n]*)\)#msU';
-$search = '#RequestHandler::getValue\(([ |\n|\r\n]*)(.+)([ |\n|\r\n]*)\)#msU';
+$cookieUseStatement = 'use APF\tools\cookie\Cookie;';
+
+$search = '#\$(.+)([ |\n|\r\n]*)=([ |\n|\r\n]*)new Cookie\(#msU';
 
 // gather APF installation path and setup class loader for later code analysis
 include(dirname(dirname(__FILE__)) . '/core/bootstrap.php');
@@ -21,23 +22,32 @@ foreach ($files as $file) {
    $content = file_get_contents($file);
 
    // if no occurrence, go ahead
-   if (strpos($content, 'RequestHandler') === false) {
+   if (strpos($content, $cookieUseStatement) === false) {
       continue;
    }
 
-   // w/ default value -------------------------------------------------------------------------------------------------
-   preg_match_all($searchWithDefault, $content, $matches, PREG_SET_ORDER);
-
-   foreach ($matches as $match) {
-      $content = str_replace($match[0], 'self::getRequest()->getParameter(' . $match[1] . $match[2] . ',' . $match[3] . $match[4] . ')', $content);
-   }
-
-   // w/o default value ------------------------------------------------------------------------------------------------
+   // gather variable holding old cookie implementation
    preg_match_all($search, $content, $matches, PREG_SET_ORDER);
 
    foreach ($matches as $match) {
-      $content = str_replace($match[0], 'self::getRequest()->getParameter(' . $match[1] . $match[2] . ')', $content);
+
+      // resolve delete()
+      $content = str_replace(
+            '$' . $match[1] . '->delete()',
+            'self::getResponse()->setCookie($' . $match[1] . '->delete())',
+            $content
+      );
+
+      // resolve setValue()
+      $content = preg_replace(
+            '#\$' . $match[1] . '\->setValue\((.+)\);#U',
+            'self::getResponse()->setCookie($' . $match[1] . '->setValue(\\1));',
+            $content
+      );
    }
+
+   // replace use statement
+   $content = str_replace($cookieUseStatement, 'use APF\core\http\Cookie;', $content);
 
    // check on presence of self::getRequest() --------------------------------------------------------------------------
    // - is use use GetRequestResponseTrait; present --> ok
@@ -80,9 +90,6 @@ foreach ($files as $file) {
          );
       }
    }
-
-   // remove request handler uses
-   $content = str_replace('use APF\tools\request\RequestHandler;', '', $content);
 
    file_put_contents($file, $content);
 
