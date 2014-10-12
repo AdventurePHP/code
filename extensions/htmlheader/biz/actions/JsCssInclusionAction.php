@@ -75,9 +75,14 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
    }
 
    protected function gzipIsSupported() {
-      return (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip'));
+      return self::getRequest()->isGzipSupported();
    }
 
+   /**
+    * @param string $type
+    *
+    * @return string The desired MIME type.
+    */
    protected function getMimeType($type) {
       // check if correct type is given. If not exit for security reasons.
       switch ($type) {
@@ -104,8 +109,8 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
       return $namespace;
    }
 
-   private function getSanitizedFileBody($filebody) {
-      return preg_replace('/[^A-Za-z0-9\-_\.]/', '', $filebody);
+   private function getSanitizedFileBody($fileBody) {
+      return preg_replace('/[^A-Za-z0-9\-_\.]/', '', $fileBody);
    }
 
    protected function sendPackage() {
@@ -115,7 +120,7 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
       if (count($packageExpl) !== 2) {
          throw new InvalidArgumentException('[JsCssInclusionAction::sendPackage()] The attribute
                  "package" has to be like "packagename.type", with type
-                 beeing "js" or "css".');
+                 being "js" or "css".');
       }
 
       $packName = $packageExpl[0];
@@ -171,7 +176,7 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
                . 'is empty or not present.');
       }
 
-      // get mimetype and verify correct extension
+      // get MIME type and verify correct extension
       $mimeType = $this->getMimeType($type);
 
 

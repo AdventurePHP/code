@@ -351,6 +351,15 @@ class RequestImpl implements Request {
    }
 
    /**
+    * Returns the raw content of the <em>Refere</em> header.
+    *
+    * @return string|null The content of the <em>Referer</em> header of <em>null</em> in case no referrer is given.
+    */
+   public function getReferrer() {
+      return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
+   }
+
+   /**
     * Convenience Method to determine whether we have a GET request.
     *
     * @return bool <em>True</em> in case the current request is a GET request, <em>false</em> otherwise.
@@ -410,9 +419,7 @@ class RequestImpl implements Request {
     * @return bool <em>True</em> in case the current request is an IMAGE request, <em>false</em> otherwise.
     */
    public function isImage() {
-      $requestedMimeType = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : '';
-
-      return stripos($requestedMimeType, 'image/') !== false;
+      return stripos($this->getAcceptHeaderContent(), 'image/') !== false;
    }
 
    /**
@@ -422,9 +429,39 @@ class RequestImpl implements Request {
     * @return bool <em>True</em> in case the current request is an HTML request, <em>false</em> otherwise.
     */
    public function isHtml() {
-      $requestedMimeType = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : '';
+      return stripos($this->getAcceptHeaderContent(), 'text/html') !== false;
+   }
 
-      return strpos($requestedMimeType, 'text/html') !== false;
+   /**
+    * Convenience method to determine whether the client supports GZIP content encoding or not.
+    *
+    * @return bool <em>True</em> in case the client supports GZIP encoding, <em>false</em> otherwise.
+    */
+   public function isGzipSupported() {
+      return stripos($this->getAcceptedEncodingHeader(), 'gzip') !== false;
+   }
+
+   /**
+    * Convenience method to determine whether the client supports DEFLATE content encoding or not.
+    *
+    * @return bool <em>True</em> in case the client supports GZIP encoding, <em>false</em> otherwise.
+    */
+   public function isDeflateSupported() {
+      return stripos($this->getAcceptedEncodingHeader(), 'deflate') !== false;
+   }
+
+   /**
+    * @return string The Accept header content.
+    */
+   protected function getAcceptHeaderContent() {
+      return isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : '';
+   }
+
+   /**
+    * @return string The Accept-Encoding header content.
+    */
+   protected function getAcceptedEncodingHeader() {
+      return isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : '';
    }
 
 }

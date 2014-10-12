@@ -51,7 +51,7 @@ abstract class UmgtBaseController extends BaseDocumentController {
     */
    protected function generateLink($linkParams, $baseURL = null) {
       if ($baseURL === null) {
-         $baseURL = $_SERVER['REQUEST_URI'];
+         $baseURL = self::getRequest()->getRequestUri();
       }
 
       return LinkGenerator::generateUrl(Url::fromString($baseURL)->mergeQuery($linkParams));
@@ -82,7 +82,7 @@ abstract class UmgtBaseController extends BaseDocumentController {
     * Version 0.1, 05.06.2010<br />
     */
    protected function &getIcon(TemplateTag $template) {
-      $children = & $template->getChildren();
+      $children = &$template->getChildren();
       foreach ($children as $objectId => $DUMMY) {
          if ($children[$objectId] instanceof UmgtMediaInclusionTag) {
             return $children[$objectId];
