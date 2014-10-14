@@ -113,6 +113,8 @@ class ResponseImpl implements Response {
 
    public function setVersion($version) {
       $this->version = $version;
+
+      return $this;
    }
 
    public function getStatusCode() {
@@ -151,6 +153,8 @@ class ResponseImpl implements Response {
 
    public function setBody($body, $append = false) {
       $this->body = $append ? $this->body . $body : $body;
+
+      return $this;
    }
 
    public function getHeaders() {
@@ -221,6 +225,15 @@ class ResponseImpl implements Response {
       throw new Exception('Header "' . HeaderImpl::CONTENT_TYPE . '" is not set for this response.');
    }
 
+   public function send($exit = true) {
+      // rely on __toString() sending the actual response.
+      echo $this;
+
+      if ($exit === true) {
+         exit(0);
+      }
+   }
+
    public function __toString() {
 
       if ($this->isSent) {
@@ -266,7 +279,7 @@ class ResponseImpl implements Response {
          $response .= $header . self::HEADER_SEPARATOR;
       }
 
-      return $response . self::HEADER_SEPARATOR . $this->body;
+      return $response . self::HEADER_SEPARATOR . self::HEADER_SEPARATOR . $this->body;
    }
 
 }

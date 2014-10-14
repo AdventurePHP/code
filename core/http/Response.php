@@ -129,8 +129,20 @@ interface Response {
     */
    public function setBody($body, $append = false);
 
-   // TODO check whether we need this or not
-   //public function send($exit = false);
+   /**
+    * Allows to (explicitly) send a response <em>manually</em> within document controllers and front
+    * controller actions that generate specific output.
+    * <p/>
+    * Terminates the request processing (except logging and session handling which is realized with
+    * shutdown functions) in case <em>$exit</em> is set to <em>true</em>.
+    *
+    * @param bool $exit Stops request processing if set to <em>true</em> and continues with <em>false</em>.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.09.2014<br />
+    */
+   public function send($exit = true);
 
    /**
     * @return bool <em>True</em> in case this instance has already been sent to the client, <em>false</em> otherwise.
