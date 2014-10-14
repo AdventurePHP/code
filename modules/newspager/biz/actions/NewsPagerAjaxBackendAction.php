@@ -46,15 +46,15 @@ class NewsPagerAjaxBackendAction extends AbstractFrontcontrollerAction {
 
       $input = $this->getInput();
 
-      $page = $input->getAttribute('page');
-      $dataDir = base64_decode($input->getAttribute('datadir'));
+      $page = $input->getParameter('page');
+      $dataDir = base64_decode($input->getParameter('datadir'));
 
       // inject the language here to ease service creation
-      $this->setLanguage($input->getAttribute('lang'));
+      $this->setLanguage($input->getParameter('lang'));
 
       /* @var $provider NewsPagerProvider */
       // load news object
-      $provider = & $this->getServiceObject('APF\modules\newspager\data\NewsPagerProvider');
+      $provider = &$this->getServiceObject('APF\modules\newspager\data\NewsPagerProvider');
       $news = $provider->getNewsByPage($dataDir, $page);
 
       // send json
