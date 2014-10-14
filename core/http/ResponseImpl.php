@@ -22,6 +22,34 @@ namespace APF\core\http;
 
 use Exception;
 
+/**
+ * Generic implementation of a HTTP Response to return the appropriate answer
+ * of the current application to the user.
+ * <p/>
+ * To allow easy Unit Test execution exit()'s used within the forward() and
+ * redirect() methods can be switched of globally. In case you intend to not
+ * stop script execution within a certain controller, you may pass an optional
+ * argument to forward() or redirect().
+ * <p />
+ * Configuration of the code execution stopping feature can be influenced as
+ * follows:
+ * <pre>
+ * self::$EXIT_AFTER_FORWARD | $exitAfterForward | result
+ * true                      | true              | exit()
+ * true                      | false             | -
+ * false                     | true              | -
+ * false                     | false             | -
+ * </pre>
+ *
+ * @see http://forum.adventure-php-framework.org/viewtopic.php?p=243#p243
+ * @see http://tracker.adventure-php-framework.org/view.php?id=72
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 09.10.2008<br />
+ * Version 0.2, 27.08.2013 (Introduced exit after forward to allow easy Unit Test execution)<br />
+ * Version 0.3, 14.10.2014 (Final implementation of the Request/Response abstraction and take-over from HeaderManager)<br />
+ */
 class ResponseImpl implements Response {
 
    const HEADER_SEPARATOR = "\r\n";
@@ -90,7 +118,7 @@ class ResponseImpl implements Response {
    /**
     * @var string The response body.
     */
-   protected $body;
+   protected $body = null;
 
    /**
     * @var Header[] The list of HTTP headers to send along with the response.
@@ -106,6 +134,36 @@ class ResponseImpl implements Response {
     * @var bool Marks this response instance as sent (<em>true</em>) or not (<em>false</em>).
     */
    protected $isSent = false;
+
+   /**
+    * True in case code execution is stopped after forward() or redirect(), false otherwise.
+    *
+    * @var bool $exitAfterForward
+    */
+   private $exitAfterForward = true;
+
+
+   /**
+    * Activates behaviour to stop code execution after forward() or redirect().
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 27.08.2013<br />
+    */
+   public function activateExitAfterForward() {
+      $this->exitAfterForward = true;
+   }
+
+   /**
+    * Deactivates behaviour to stop code execution after forward() or redirect().
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 27.08.2013<br />
+    */
+   public function deactivateExitAfterForward() {
+      $this->exitAfterForward = false;
+   }
 
    public function getVersion() {
       return $this->version;
@@ -234,13 +292,50 @@ class ResponseImpl implements Response {
       }
    }
 
+   /**
+    * @param string $url The URL possibly containing encoded ampersands.
+    *
+    * @return string The decoded url.
+    */
+   protected static function decodeUrl($url) {
+      return str_replace('&amp;', '&', $url);
+   }
+
+   public function forward($url, $exitAfterForward = true) {
+      self::setStatusCode(self::CODE_SEE_OTHER);
+      self::setHeader('Location', self::decodeUrl($url));
+      self::send($this->exitAfterForward === true && $exitAfterForward === true);
+   }
+
+   public function redirect($url, $permanent = false, $exitAfterForward = true) {
+      self::setStatusCode($permanent === true ? self::CODE_PERMANENT_REDIRECT : self::CODE_TEMPORARY_REDIRECT);
+      self::setHeader('Location', self::decodeUrl($url));
+      self::send($this->exitAfterForward === true && $exitAfterForward === true);
+   }
+
+   public function sendNotFound($exitAfterForward = true) {
+      self::setStatusCode(self::CODE_NOT_FOUND);
+      self::setReasonPhrase($this->reasonPhrases[self::CODE_NOT_FOUND]);
+      self::send($this->exitAfterForward === true && $exitAfterForward === true);
+   }
+
+   public function sendServerError($exitAfterForward = true) {
+      self::setStatusCode(self::CODE_INTERNAL_SERVER_ERROR);
+      self::setReasonPhrase($this->reasonPhrases[self::CODE_INTERNAL_SERVER_ERROR]);
+      self::send($this->exitAfterForward === true && $exitAfterForward === true);
+   }
+
    public function __toString() {
 
       if ($this->isSent) {
          throw new HttpResponseException('Response is already sent!');
       }
 
-      header('HTTP/' . $this->getVersion() . ' ' . $this->getStatusCode(), true, $this->getStatusCode());
+      header(
+            'HTTP/' . $this->getVersion() . ' ' . $this->getStatusCode() . ' ' . $this->getReasonPhrase(),
+            true,
+            $this->getStatusCode()
+      );
 
       // "normal" headers
       foreach ($this->headers as $header) {

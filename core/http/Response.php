@@ -145,6 +145,58 @@ interface Response {
    public function send($exit = true);
 
    /**
+    * @see http://www.faqs.org/rfcs/rfc2616 (section 10.3.4 303 See Other)
+    *
+    * Forwards to a given target.
+    *
+    * @param string $url The target URL.
+    * @param bool $exitAfterForward True in case code execution is stopped after this action, false otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 09.10.2008<br />
+    * Version 0.2, 11.03.2014 (ID#173: corrected wrong header() parameter usage)<br />
+    */
+   public function forward($url, $exitAfterForward = true);
+
+   /**
+    * Redirects to a given target.
+    *
+    * @param string $url The target URL.
+    * @param bool $permanent indicates, if the redirect is permanent (true) or not (false)
+    * @param bool $exitAfterForward True in case code execution is stopped after this action, false otherwise.
+    *
+    * @see http://www.faqs.org/rfcs/rfc2616 (sections 10.3.2 301 Moved Permanently and 10.3.3 302 Found)
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 09.10.2008<br />
+    */
+   public function redirect($url, $permanent = false, $exitAfterForward = true);
+
+   /**
+    * Sends a 404 answer back to the client.
+    *
+    * @param bool $exitAfterForward True in case code execution is stopped after this action, false otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.05.2014
+    */
+   public function sendNotFound($exitAfterForward = true);
+
+   /**
+    * Sends an 500 answer back to the client.
+    *
+    * @param bool $exitAfterForward True in case code execution is stopped after this action, false otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.05.2014
+    */
+   public function sendServerError($exitAfterForward = true);
+
+   /**
     * @return bool <em>True</em> in case this instance has already been sent to the client, <em>false</em> otherwise.
     */
    public function isSent();
