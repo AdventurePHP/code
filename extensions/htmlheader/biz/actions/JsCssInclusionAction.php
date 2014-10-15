@@ -21,8 +21,9 @@
 namespace APF\extensions\htmlheader\biz\actions;
 
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\http\HeaderImpl;
+use APF\core\http\ResponseImpl;
 use APF\extensions\htmlheader\biz\JsCssPackager;
-use APF\tools\http\HeaderManager;
 use InvalidArgumentException;
 
 /**
@@ -55,14 +56,11 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
    protected $ttl = 604800;
 
    public function run() {
-
       if ($this->getRequestedType() === 'package') {
          $this->sendPackage();
       } else {
          $this->sendFile();
       }
-
-      exit(0);
    }
 
    protected function getRequestedType() {
@@ -128,33 +126,38 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
 
       $mimeType = $this->getMimeType($packType);
 
-
       /* @var $packager JsCssPackager */
       $packager = $this->getServiceObject('APF\extensions\htmlheader\biz\JsCssPackager');
       $output = $packager->getPackage($packName, $this->gzipIsSupported());
 
+      $response = &self::getResponse();
+
       // Get ClientCachePeriod (in days), and convert to seconds
       $clientCachePeriod = $packager->getClientCachePeriod($packName) * 86400;
-      $this->sendHeaders($clientCachePeriod, $mimeType);
+      $this->addHeaders($response, $clientCachePeriod, $mimeType);
 
-      echo $output;
+      $response->setBody($output);
+
+      $response->send();
    }
 
-   protected function sendHeaders($clientCachePeriod, $mimeType) {
+   protected function addHeaders(ResponseImpl &$response, $clientCachePeriod, $mimeType) {
 
       // send gzip header if supported
       if ($this->gzipIsSupported()) {
-         HeaderManager::send("Content-Encoding: gzip");
+         $response->setHeader(new HeaderImpl('Content-Encoding', 'gzip'));
       }
 
       // send headers for caching
-      HeaderManager::send('Cache-Control: public; max-age=' . $clientCachePeriod, true);
-      $modifiedDate = date('D, d M Y H:i:s \G\M\T', time());
-      HeaderManager::send('Last-Modified: ' . $modifiedDate, true);
-      $expiresDate = date('D, d M Y H:i:s \G\M\T', time() + $clientCachePeriod);
-      HeaderManager::send('Expires: ' . $expiresDate, true);
+      $response->setHeader(new HeaderImpl('Cache-Control', 'public; max-age=' . $clientCachePeriod));
 
-      HeaderManager::send('Content-type: ' . $mimeType);
+      $modifiedDate = date('D, d M Y H:i:s \G\M\T', time());
+      $response->setHeader(new HeaderImpl('Last-Modified', $modifiedDate));
+
+      $expiresDate = date('D, d M Y H:i:s \G\M\T', time() + $clientCachePeriod);
+      $response->setHeader(new HeaderImpl('Expires', $expiresDate));
+
+      $response->setHeader(new HeaderImpl('Content-Type', $mimeType));
    }
 
    protected function sendFile() {
@@ -179,13 +182,14 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
       // get MIME type and verify correct extension
       $mimeType = $this->getMimeType($type);
 
+      $response = &self::getResponse();
 
-      $this->sendHeaders($this->ttl, $mimeType);
+      $this->addHeaders($response, $this->ttl, $mimeType);
 
       /* @var $packager JsCssPackager */
       $packager = $this->getServiceObject('APF\extensions\htmlheader\biz\JsCssPackager');
-      echo $packager->getFile($namespace, $file, $type, $this->gzipIsSupported());
+      $response->setBody($packager->getFile($namespace, $file, $type, $this->gzipIsSupported()));
 
+      $response->send();
    }
-
 }
