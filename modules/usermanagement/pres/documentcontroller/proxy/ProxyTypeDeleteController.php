@@ -21,16 +21,15 @@
 namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
 
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
-use APF\tools\http\HeaderManager;
 
 class ProxyTypeDeleteController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $formNo = & $this->getForm('ProxyTypeDelNo');
-      $formYes = & $this->getForm('ProxyTypeDelYes');
+      $formNo = &$this->getForm('ProxyTypeDelNo');
+      $formYes = &$this->getForm('ProxyTypeDelYes');
 
-      $uM = & $this->getManager();
+      $uM = &$this->getManager();
       $proxyTypeId = self::getRequest()->getParameter('proxytypeid');
       $proxyType = $uM->loadVisibilityDefinitionTypeById($proxyTypeId);
 
@@ -38,9 +37,7 @@ class ProxyTypeDeleteController extends UmgtBaseController {
          if ($formYes->isSent()) {
             $uM->deleteVisibilityDefinitionType($proxyType);
          }
-         HeaderManager::redirect($this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typelist', 'proxytypeid' => null)));
-
-         return;
+         self::getResponse()->forward($this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typelist', 'proxytypeid' => null)));
       }
 
       // fill the intro text
