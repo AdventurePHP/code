@@ -37,6 +37,9 @@ $PHP_BINARY $SCRIPT_DIR/migrate_iterator_place_holders.php
 echo "* Remove RequestHandler usage ..."
 $PHP_BINARY $SCRIPT_DIR/migrate_remove_request_handler.php
 
+echo "* Remove HeaderManager usage ..."
+$PHP_BINARY $SCRIPT_DIR/migrate_remove_header_manager.php
+
 echo "* Remove APF\tools\cookie\Cookie usage ..."
 $PHP_BINARY $SCRIPT_DIR/migrate_remove_tools_cookie.php
 
