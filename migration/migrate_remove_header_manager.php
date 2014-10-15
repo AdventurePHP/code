@@ -8,22 +8,9 @@ $files = find('.', '*.php');
 
 $requestResponseTrait = 'use GetRequestResponseTrait;';
 
-$searchForwardWithExit = '#HeaderManager::forward\(([ |\n|\r\n]*)(.+)([ |\n|\r\n]*),([ |\n|\r\n]*)(true|false)([ |\n|\r\n]*)\);#msU';
-$searchForward = '#HeaderManager::forward\(([ |\n|\r\n]*)(.+)([ |\n|\r\n]*)\);#msU';
-
-/*$searchRedirectFull = '#HeaderManager::redirect\(([ |\n|\r\n]*)(.+)([ |\n|\r\n]*),([ |\n|\r\n]*)(.+)([ |\n|\r\n]*),([ |\n|\r\n]*)(.+)([ |\n|\r\n]*)\);#';
-$searchRedirectPermanent = '#HeaderManager::redirect\(([ |\n|\r\n]*)(.+)([ |\n|\r\n]*),([ |\n|\r\n]*)(.+)([ |\n|\r\n]*)\);#';
-$searchRedirect = '#HeaderManager::redirect\(([ |\n|\r\n]*)(.+)([ |\n|\r\n]*));#';*/
-
 $searchSendFull = '#HeaderManager::send\(([ |\n|\r\n]*)(.+)([ |\n|\r\n]*),([ |\n|\r\n]*)(true|false)([ |\n|\r\n]*),([ |\n|\r\n]*)(true|false)([ |\n|\r\n]*)\);#msU';
 $searchSendReplace = '#HeaderManager::send\(([ |\n|\r\n]*)(.+)([ |\n|\r\n]*),([ |\n|\r\n]*)(true|false)([ |\n|\r\n]*)\);#msU';
 $searchSend = '#HeaderManager::send\(([ |\n|\r\n]*)(.+)([ |\n|\r\n]*)\);#msU';
-
-/*$searchNotFoundWithExit = '#HeaderManager::sendNotFound\(([ |\n|\r\n]*)(true|false)([ |\n|\r\n]*)\);';
-$searchNotFound = '#HeaderManager::sendNotFound\(\);';
-
-$searchServerErrorWithExit = '#HeaderManager::sendServerError\(([ |\n|\r\n]*)(true|false)([ |\n|\r\n]*)\);';
-$searchServerError = '#HeaderManager::sendServerError\(\);';*/
 
 // gather APF installation path and setup class loader for later code analysis
 include(dirname(dirname(__FILE__)) . '/core/bootstrap.php');
@@ -62,17 +49,16 @@ foreach ($files as $file) {
    }
 
    // forward() --------------------------------------------------------------------------------------------------------
-   preg_match_all($searchForwardWithExit, $content, $matches, PREG_SET_ORDER);
+   $content = str_replace('HeaderManager::forward(', 'self::getResponse()->forward(', $content);
 
-   foreach ($matches as $match) {
-      $content = str_replace($match[0], 'self::getResponse()->forward(' . $match[1] . $match[2] . $match[3] . ',' . $match[4] . $match[5] . $match[6] . ');', $content);
-   }
+   // redirect() -------------------------------------------------------------------------------------------------------
+   $content = str_replace('HeaderManager::redirect(', 'self::getResponse()->redirect(', $content);
 
-   preg_match_all($searchForward, $content, $matches, PREG_SET_ORDER);
+   // sendNotFound() ---------------------------------------------------------------------------------------------------
+   $content = str_replace('HeaderManager::sendNotFound(', 'self::getResponse()->sendNotFound(', $content);
 
-   foreach ($matches as $match) {
-      $content = str_replace($match[0], 'self::getResponse()->forward(' . $match[1] . $match[2] . $match[3] . ');', $content);
-   }
+   // sendServerError() ------------------------------------------------------------------------------------------------
+   $content = str_replace('HeaderManager::sendServerError(', 'self::getResponse()->sendServerError(', $content);
 
    // send() -----------------------------------------------------------------------------------------------------------
    preg_match_all($searchSendFull, $content, $matches, PREG_SET_ORDER);
