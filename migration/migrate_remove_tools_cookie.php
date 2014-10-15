@@ -56,7 +56,7 @@ foreach ($files as $file) {
    }
 
    // - is class that derives from Document, AbstractFrontcontrollerAction, BaseDocumentController, AbstractFormValidator
-   preg_match('#^(abstract )?class ([A-Za-z0-9]+) (\{|extends|implements)#', $content, $matchesClass);
+   preg_match('#^(abstract |final )?class ([A-Za-z0-9]+) (\{|extends|implements)#m', $content, $matchesClass);
    preg_match('#namespace ([A-Za-z0-9\\\\]+);#', $content, $matchesNamespace);
 
    if (!empty($matchesClass[1]) && !empty($matchesNamespace[1])) {
