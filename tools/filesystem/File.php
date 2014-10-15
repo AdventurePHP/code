@@ -20,13 +20,16 @@
  */
 namespace APF\tools\filesystem;
 
-use APF\tools\http\HeaderManager;
+use APF\core\http\HeaderImpl;
+use APF\core\http\mixins\GetRequestResponseTrait;
 
 /**
  * @author  Nicolas Pecher
  * @version Version 0.1, 30.04.2012
  */
 class File extends FilesystemItem {
+
+   use GetRequestResponseTrait;
 
    /**
     * A file pointer resource
@@ -284,6 +287,8 @@ class File extends FilesystemItem {
    }
 
    /**
+    * @param string $filename
+    *
     * @author  Nicolas Pecher
     * @version Version 0.1, 01.05.2012
     */
@@ -291,8 +296,11 @@ class File extends FilesystemItem {
       if (empty($filename)) {
          $filename = $this->getName();
       }
-      HeaderManager::send('Content-type: ' . $this->getMimeType());
-      HeaderManager::send('Content-Disposition: attachment; filename="' . $filename . '"');
+      $response = self::getResponse();
+      $response->setHeader(new HeaderImpl('Content-type', $this->getMimeType()));
+      $response->setHeader(new HeaderImpl('Content-Disposition', 'attachment; filename="' . $filename . '"'));
+      $response->send(false);
+
       readfile($this->getPath());
    }
 

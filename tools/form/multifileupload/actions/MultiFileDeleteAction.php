@@ -21,9 +21,9 @@
 namespace APF\tools\form\multifileupload\actions;
 
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\http\HeaderImpl;
 use APF\tools\form\FormException;
 use APF\tools\form\multifileupload\biz\MultiFileUploadManager;
-use APF\tools\http\HeaderManager;
 
 /**
  * This action deletes the given file physically and from session.
@@ -37,10 +37,11 @@ class MultiFileDeleteAction extends AbstractFrontcontrollerAction {
 
    public function run() {
       // modify header to avoid caching of this request
-      HeaderManager::send('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-      HeaderManager::send('Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT');
-      HeaderManager::send('Cache-Control: no-cache, must-revalidate');
-      HeaderManager::send('Pragma: no-cache');
+      $response = self::getResponse();
+      $response->setHeader(new HeaderImpl('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT'));
+      $response->setHeader(new HeaderImpl('Last-Modified', gmdate('D, d M Y H:i:s') . 'GMT'));
+      $response->setHeader(new HeaderImpl('Cache-Control', 'no-cache, must-revalidate'));
+      $response->setHeader(new HeaderImpl('Pragma', 'no-cache'));
 
       try {
          $fieldName = $this->getInput()->getParameter('name');
@@ -48,7 +49,7 @@ class MultiFileDeleteAction extends AbstractFrontcontrollerAction {
          $uploadName = $this->getSanitizedUploadName();
 
          /* @var $manager MultiFileUploadManager */
-         $manager = & $this->getAndInitServiceObject(
+         $manager = &$this->getAndInitServiceObject(
                'APF\tools\form\multifileupload\biz\MultiFileUploadManager',
                array('formname' => $formName, 'name' => $fieldName)
          );
@@ -57,7 +58,8 @@ class MultiFileDeleteAction extends AbstractFrontcontrollerAction {
          } else {
             throw new FormException('[' . get_class($this) . '::run()] No filename was transmitted to the server!', E_USER_ERROR);
          }
-         exit(0);
+
+         $response->send();
       } catch (FormException $e) {
          throw $e;
       }

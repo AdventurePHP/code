@@ -21,9 +21,9 @@
 namespace APF\tools\form\multifileupload\actions;
 
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\http\HeaderImpl;
 use APF\tools\form\FormException;
 use APF\tools\form\multifileupload\biz\MultiFileUploadManager;
-use APF\tools\http\HeaderManager;
 
 /**
  * This action delivers a file that has been uploaded using the multi-upload feature.
@@ -40,25 +40,27 @@ class MultiFileGetFileAction extends AbstractFrontcontrollerAction {
       $uploadName = $this->getInput()->getParameter('uploadname');
 
       // only upload if we have a valid request
+      $response = self::getResponse();
+
       if ($fieldName !== null && $formName !== null && $uploadName !== null) {
 
          /* @var $manager MultiFileUploadManager */
-         $manager = & $this->getAndInitServiceObject(
+         $manager = &$this->getAndInitServiceObject(
                'APF\tools\form\multifileupload\biz\MultiFileUploadManager',
                array('formname' => $formName, 'name' => $fieldName)
          );
          $file = $manager->getFile($uploadName);
          if (is_array($file)) {
             // modify header to avoid caching of this request
-            HeaderManager::send('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-            HeaderManager::send('Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT');
-            HeaderManager::send('Cache-Control: no-cache, must-revalidate');
-            HeaderManager::send('Pragma: no-cache');
+            $response->setHeader(new HeaderImpl('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT'));
+            $response->setHeader(new HeaderImpl('Last-Modified', gmdate('D, d M Y H:i:s') . 'GMT'));
+            $response->setHeader(new HeaderImpl('Cache-Control', 'no-cache, must-revalidate'));
+            $response->setHeader(new HeaderImpl('Pragma', 'no-cache'));
 
             // send attachment headers to allow download with correct file name
-            HeaderManager::send('Content-type: ' . $file['type']);
-            HeaderManager::send('Content-Disposition: inline; filename="' . $file['name'] . '"');
-            HeaderManager::send('Content-Length: ' . $file['size']);
+            $response->setHeader(new HeaderImpl('Content-type', $file['type']));
+            $response->setHeader(new HeaderImpl('Content-Disposition', 'inline; filename="' . $file['name'] . '"'));
+            $response->setHeader(new HeaderImpl('Content-Length', $file['size']));
             $manager->deliverFile($uploadName);
          } else {
             throw new FormException('[' . get_class($this) . '::run()] The file was not found on the server!', E_USER_ERROR);
@@ -66,7 +68,7 @@ class MultiFileGetFileAction extends AbstractFrontcontrollerAction {
       } else {
          throw new FormException('[' . get_class($this) . '::run()] Parameters are missing!', E_USER_ERROR);
       }
-      exit(0);
+      $response->send();
    }
 
 }
