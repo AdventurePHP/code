@@ -24,12 +24,7 @@ use APF\core\database\DatabaseHandlerException;
 use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinitionType;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\validator\AbstractFormValidator;
-use APF\tools\http\HeaderManager;
 
-/**
-
-
- */
 class ProxyTypeAddController extends UmgtBaseController {
 
    public function transformContent() {
@@ -44,7 +39,7 @@ class ProxyTypeAddController extends UmgtBaseController {
          $uM = & $this->getManager();
          try {
             $uM->saveVisibilityDefinitionType($proxyType);
-            HeaderManager::forward($this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typelist')));
+            self::getResponse()->forward($this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typelist')));
          } catch (DatabaseHandlerException $dhe) {
             // mark field as invalid due to the fact, that we have a form error, it is also displayed!
             $proxyName->markAsInvalid();

@@ -24,7 +24,6 @@ use APF\modules\usermanagement\biz\model\UmgtRole;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\MultiSelectBoxTag;
 use APF\tools\form\taglib\SelectBoxOptionTag;
-use APF\tools\http\HeaderManager;
 
 /**
  * Let's you add a group to one or more roles.
@@ -76,7 +75,7 @@ class AddGroupToRolesController extends UmgtBaseController {
          $uM->attachGroupToRoles($group, $additionalRoles);
 
          // back to group main view
-         HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'roleview' => null, 'groupid' => null)));
+         self::getResponse()->forward($this->generateLink(array('mainview' => 'group', 'roleview' => null, 'groupid' => null)));
 
       } else {
          $form->transformOnPlace();

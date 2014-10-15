@@ -22,7 +22,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
 
 use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
-use APF\tools\http\HeaderManager;
 
 /**
  * Deletes a visibility definition.
@@ -62,7 +61,7 @@ class ProxyDeleteController extends UmgtBaseController {
          return;
       }
 
-      HeaderManager::forward($this->generateLink(
+      self::getResponse()->forward($this->generateLink(
                   array(
                         'mainview'  => 'proxy',
                         'proxyview' => null

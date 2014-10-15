@@ -24,7 +24,6 @@ use APF\modules\usermanagement\biz\model\UmgtGroup;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\MultiSelectBoxTag;
 use APF\tools\form\taglib\SelectBoxOptionTag;
-use APF\tools\http\HeaderManager;
 
 /**
  * Let's you remove a role from one or more groups starting at the role main view.
@@ -74,7 +73,7 @@ class GroupRemoveRoleFromGroupsController extends UmgtBaseController {
          $uM->detachRoleToGroups($role, $additionalGroups);
 
          // back to user main view
-         HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'groupview' => null, 'roleid' => null)));
+         self::getResponse()->forward($this->generateLink(array('mainview' => 'role', 'groupview' => null, 'roleid' => null)));
       } else {
          $form->transformOnPlace();
       }

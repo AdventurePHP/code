@@ -24,7 +24,6 @@ use APF\modules\usermanagement\biz\model\UmgtRole;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\MultiSelectBoxTag;
 use APF\tools\form\taglib\SelectBoxOptionTag;
-use APF\tools\http\HeaderManager;
 
 /**
  * Let's you add a user to one or more roles.
@@ -74,7 +73,7 @@ class AddUserToRolesController extends UmgtBaseController {
          $uM->attachUser2Roles($user, $additionalRoles);
 
          // back to user main view
-         HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'roleview' => null, 'userid' => null)));
+         self::getResponse()->forward($this->generateLink(array('mainview' => 'user', 'roleview' => null, 'userid' => null)));
 
       } else {
          $form->transformOnPlace();

@@ -21,13 +21,13 @@
 namespace APF\modules\guestbook2009\biz;
 
 use APF\core\benchmark\BenchmarkTimer;
+use APF\core\http\mixins\GetRequestResponseTrait;
 use APF\core\pagecontroller\APFObject;
 use APF\core\session\Session;
 use APF\core\singleton\Singleton;
 use APF\modules\guestbook2009\data\GuestbookMapper;
 use APF\modules\pager\biz\PagerManager;
 use APF\modules\pager\biz\PagerManagerFabric;
-use APF\tools\http\HeaderManager;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
@@ -40,6 +40,8 @@ use APF\tools\link\Url;
  * Version 0.1, 21.05.2009<br />
  */
 final class GuestbookService extends APFObject {
+
+   use GetRequestResponseTrait;
 
    /**
     * Stores the pager instance for further usage.
@@ -223,7 +225,7 @@ final class GuestbookService extends APFObject {
             'gbview'    => 'admin',
             'adminview' => null
       )));
-      HeaderManager::forward($link);
+      self::getResponse()->forward($link);
    }
 
    /**
@@ -247,7 +249,7 @@ final class GuestbookService extends APFObject {
             'gbview'    => 'list',
             'adminview' => null
       )));
-      HeaderManager::forward($link);
+      self::getResponse()->forward($link);
    }
 
    /**
@@ -272,7 +274,7 @@ final class GuestbookService extends APFObject {
                'gbview'    => 'list',
                'adminview' => null
          )));
-         HeaderManager::forward($startLink);
+         self::getResponse()->forward($startLink);
       }
    }
 
@@ -305,7 +307,7 @@ final class GuestbookService extends APFObject {
                'gbview'    => 'admin',
                'adminview' => null
          )));
-         HeaderManager::forward($adminLink);
+         self::getResponse()->forward($adminLink);
       }
 
       return false;
@@ -336,7 +338,7 @@ final class GuestbookService extends APFObject {
                'gbview' => 'list'
          )));
       }
-      HeaderManager::forward($link);
+      self::getResponse()->forward($link);
    }
 
    /**

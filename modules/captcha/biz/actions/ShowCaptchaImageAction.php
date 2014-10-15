@@ -21,9 +21,9 @@
 namespace APF\modules\captcha\biz\actions;
 
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\http\HeaderImpl;
 use APF\core\loader\RootClassLoader;
 use APF\core\session\Session;
-use APF\tools\http\HeaderManager;
 
 /**
  * Front controller action that displays a captcha image.
@@ -85,16 +85,18 @@ class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
       imagettftext($img, $fontSize, $angle, $t_x, $t_y, $color, $font, $text);
 
       // display image
-      HeaderManager::send('Content-Type: image/png', true);
-      HeaderManager::send('Cache-Control: private', true);
-      HeaderManager::send('Pragma: no-cache', true);
-      HeaderManager::send('Expires: 0', true);
+      $response = self::getResponse();
+      $response->setHeader(new HeaderImpl('Content-Type', 'image/png'));
+      $response->setHeader(new HeaderImpl('Cache-Control', 'private'));
+      $response->setHeader(new HeaderImpl('Pragma', 'no-cache'));
+      $response->setHeader(new HeaderImpl('Expires', '0'));
+
+      $response->send(false);
+
       imagepng($img);
 
       // free memory
       imagedestroy($img);
-
-      exit();
    }
 
    /**

@@ -21,9 +21,9 @@
 namespace APF\modules\comments\biz;
 
 use APF\core\pagecontroller\APFObject;
+use APF\core\http\mixins\GetRequestResponseTrait;
 use APF\modules\comments\data\ArticleCommentMapper;
 use APF\modules\pager\biz\PagerManager;
-use APF\tools\http\HeaderManager;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
@@ -36,6 +36,8 @@ use APF\tools\link\Url;
  * Version 0.2, 28.12.2007 (Added CAPTCHA support)<br />
  */
 class ArticleCommentManager extends APFObject {
+
+   use GetRequestResponseTrait;
 
    /**
     * Category key.
@@ -122,7 +124,7 @@ class ArticleCommentManager extends APFObject {
                   ->mergeQuery(array('coview' => 'listing'))
                   ->setAnchor('comments')
       );
-      HeaderManager::forward($link);
+      self::getResponse()->forward($link);
    }
 
    /**

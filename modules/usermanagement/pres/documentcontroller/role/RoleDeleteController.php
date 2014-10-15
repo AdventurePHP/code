@@ -22,7 +22,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\role;
 
 use APF\modules\usermanagement\biz\model\UmgtRole;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
-use APF\tools\http\HeaderManager;
 
 /**
  * Implements the controller to delete a role.
@@ -49,10 +48,10 @@ class RoleDeleteController extends UmgtBaseController {
          $role = new UmgtRole();
          $role->setObjectId($roleId);
          $uM->deleteRole($role);
-         HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
+         self::getResponse()->forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
 
       } elseif ($formNo->isSent()) {
-         HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
+         self::getResponse()->forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
       } else {
          $formNo->transformOnPlace();
          $formYes->transformOnPlace();

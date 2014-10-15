@@ -22,7 +22,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\permission;
 
 use APF\modules\usermanagement\biz\model\UmgtPermission;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
-use APF\tools\http\HeaderManager;
 
 /**
  * Implements the controller to edit a permission.
@@ -59,7 +58,7 @@ class PermissionEditController extends UmgtBaseController {
             $permission->setName($name->getValue());
             $permission->setValue($value->getValue());
             $uM->savePermission($permission);
-            HeaderManager::forward($this->generateLink(array('mainview' => 'permission', 'permissionview' => '', 'permissionid' => '')));
+            self::getResponse()->forward($this->generateLink(array('mainview' => 'permission', 'permissionview' => '', 'permissionid' => '')));
 
          } else {
             $form->transformOnPlace();

@@ -24,7 +24,6 @@ use APF\modules\usermanagement\biz\model\UmgtGroup;
 use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
-use APF\tools\http\HeaderManager;
 
 /**
  * Revokes a visibility permission for a given user or group.
@@ -95,7 +94,7 @@ class ProxyRevokeAccessController extends UmgtBaseController {
          return;
       }
 
-      HeaderManager::forward($this->generateLink(
+      self::getResponse()->forward($this->generateLink(
                   array(
                         'mainview'  => 'proxy',
                         'proxyview' => 'details',

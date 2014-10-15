@@ -22,7 +22,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\permission;
 
 use APF\modules\usermanagement\biz\model\UmgtPermission;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
-use APF\tools\http\HeaderManager;
 
 /**
  * Implements the delete controller for a permission.
@@ -48,10 +47,10 @@ class PermissionDeleteController extends UmgtBaseController {
          $permission = new UmgtPermission();
          $permission->setObjectId($permissionId);
          $uM->deletePermission($permission);
-         HeaderManager::forward($this->generateLink(array('mainview' => 'permission', 'permissionview' => '', 'permissionid' => '')));
+         self::getResponse()->forward($this->generateLink(array('mainview' => 'permission', 'permissionview' => '', 'permissionid' => '')));
 
       } elseif ($formNo->isSent()) {
-         HeaderManager::forward($this->generateLink(array('mainview' => 'permission', 'permissionview' => '', 'permissionid' => '')));
+         self::getResponse()->forward($this->generateLink(array('mainview' => 'permission', 'permissionview' => '', 'permissionid' => '')));
       } else {
          $formNo->transformOnPlace();
          $formYes->transformOnPlace();

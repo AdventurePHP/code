@@ -23,7 +23,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\role;
 use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\MultiSelectBoxTag;
-use APF\tools\http\HeaderManager;
 
 /**
  * Implements the controller to detach a role from a user.
@@ -76,7 +75,7 @@ class RoleRemoveUsersController extends UmgtBaseController {
             unset($newUser);
          }
          $uM->detachUsersFromRole($newUsers, $role);
-         HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
+         self::getResponse()->forward($this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
 
       } else {
          $form->transformOnPlace();

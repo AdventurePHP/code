@@ -22,7 +22,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\role;
 
 use APF\modules\usermanagement\biz\model\UmgtRole;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
-use APF\tools\http\HeaderManager;
 
 /**
  * Implements the controller to edit a role.
@@ -64,7 +63,7 @@ class RoleEditController extends UmgtBaseController {
             $role->setDescription($description->getValue());
 
             $uM->saveRole($role);
-            HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
+            self::getResponse()->forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
 
          } else {
             $form->transformOnPlace();

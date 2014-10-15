@@ -23,7 +23,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\group;
 use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\MultiSelectBoxTag;
-use APF\tools\http\HeaderManager;
 
 /**
  * Implements the controller to list the groups.
@@ -78,7 +77,7 @@ class GroupAddUserController extends UmgtBaseController {
          }
 
          $uM->attachUsers2Group($newUsers, $group);
-         HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
+         self::getResponse()->forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
 
       } else {
          $form->transformOnPlace();

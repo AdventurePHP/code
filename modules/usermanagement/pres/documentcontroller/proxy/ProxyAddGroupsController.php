@@ -22,7 +22,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
 
 use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition;
 use APF\tools\form\taglib\MultiSelectBoxTag;
-use APF\tools\http\HeaderManager;
 
 class ProxyAddGroupsController extends UmgtPermissionBaseController {
 
@@ -67,7 +66,7 @@ class ProxyAddGroupsController extends UmgtPermissionBaseController {
          $proxy->setObjectId($proxyId);
          $uM->attachGroups2VisibilityDefinition($proxy, $this->mapSelectedOptions2DomainObjects('groups', 'UmgtGroup'));
 
-         HeaderManager::forward(
+         self::getResponse()->forward(
                $this->generateLink(
                      array(
                            'mainview'  => 'proxy',

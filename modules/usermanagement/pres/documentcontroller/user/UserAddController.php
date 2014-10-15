@@ -22,7 +22,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\user;
 
 use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
-use APF\tools\http\HeaderManager;
 
 /**
  * Implements the controller to add a user.
@@ -64,7 +63,7 @@ class UserAddController extends UmgtBaseController {
          $user->setPassword($password->getValue());
 
          $uM->saveUser($user);
-         HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'userview' => null)));
+         self::getResponse()->forward($this->generateLink(array('mainview' => 'user', 'userview' => null)));
 
       }
 

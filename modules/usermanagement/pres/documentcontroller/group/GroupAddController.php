@@ -22,7 +22,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\group;
 
 use APF\modules\usermanagement\biz\model\UmgtGroup;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
-use APF\tools\http\HeaderManager;
 
 /**
  * Implements the controller to add a group.
@@ -51,7 +50,7 @@ class GroupAddController extends UmgtBaseController {
          $uM->saveGroup($group);
 
          // redirect to the desired view
-         HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => '')));
+         self::getResponse()->forward($this->generateLink(array('mainview' => 'group', 'groupview' => '')));
 
       }
       $form->transformOnPlace();

@@ -34,7 +34,6 @@ use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\biz\UmgtManager;
 use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 use APF\tools\form\validator\AbstractFormValidator;
-use APF\tools\http\HeaderManager;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 use Exception;
@@ -96,7 +95,7 @@ class LoginController extends BaseDocumentController {
                   // redirect to target page
                   $urlProvider = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'LoginRedirectUrlProvider');
                   /* @var $urlProvider UmgtRedirectUrlProvider */
-                  HeaderManager::forward(LinkGenerator::generateUrl(Url::fromString($urlProvider->getRedirectUrl())));
+                  self::getResponse()->forward(LinkGenerator::generateUrl(Url::fromString($urlProvider->getRedirectUrl())));
                }
             } catch (Exception $e) {
                $this->getTemplate('system-error')->transformOnPlace();

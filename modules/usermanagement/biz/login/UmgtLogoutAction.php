@@ -24,7 +24,6 @@ use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\core\service\APFService;
 use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 use APF\core\http\Cookie;
-use APF\tools\http\HeaderManager;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
@@ -52,7 +51,7 @@ class UmgtLogoutAction extends AbstractFrontcontrollerAction {
          // redirect to target page
          $urlProvider = & $this->getDIServiceObject('APF\modules\usermanagement\biz', 'LogoutRedirectUrlProvider');
          /* @var $urlProvider UmgtRedirectUrlProvider */
-         HeaderManager::forward(LinkGenerator::generateUrl(Url::fromString($urlProvider->getRedirectUrl())));
+         self::getResponse()->forward(LinkGenerator::generateUrl(Url::fromString($urlProvider->getRedirectUrl())));
       }
    }
 

@@ -24,7 +24,6 @@ use APF\modules\usermanagement\biz\model\UmgtPermission;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\MultiSelectBoxTag;
 use APF\tools\form\taglib\SelectBoxOptionTag;
-use APF\tools\http\HeaderManager;
 
 /**
  * Let's you remove permissions to a role.
@@ -74,7 +73,7 @@ class RemovePermissionFromRoleController extends UmgtBaseController {
          }
 
          $uM->detachPermissionsFromRole($permissionsToAdd, $role);
-         HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
+         self::getResponse()->forward($this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
 
       } else {
          $form->transformOnPlace();

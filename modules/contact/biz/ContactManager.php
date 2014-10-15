@@ -21,11 +21,11 @@
 namespace APF\modules\contact\biz;
 
 use APF\core\configuration\ConfigurationException;
+use APF\core\http\mixins\GetRequestResponseTrait;
 use APF\core\loader\RootClassLoader;
 use APF\core\pagecontroller\APFObject;
 use APF\core\pagecontroller\IncludeException;
 use APF\modules\contact\data\ContactMapper;
-use APF\tools\http\HeaderManager;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 use APF\tools\mail\mailSender;
@@ -38,6 +38,8 @@ use APF\tools\mail\mailSender;
  * Version 0.1, 03.06.2006<br />
  */
 class ContactManager extends APFObject {
+
+   use GetRequestResponseTrait;
 
    /**
     * Sends the contact form and displays the thanks page.
@@ -107,7 +109,7 @@ class ContactManager extends APFObject {
 
       // redirect to the thanks page to avoid F5 bugs!
       $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('contactview' => 'thanks')));
-      HeaderManager::forward($link);
+      self::getResponse()->forward($link);
    }
 
    /**

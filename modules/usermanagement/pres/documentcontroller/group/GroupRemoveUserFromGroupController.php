@@ -24,7 +24,6 @@ use APF\modules\usermanagement\biz\model\UmgtGroup;
 use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\MultiSelectBoxTag;
-use APF\tools\http\HeaderManager;
 
 /**
  * Implements the controller to remove a user from a group.
@@ -79,7 +78,7 @@ class GroupRemoveUserFromGroupController extends UmgtBaseController {
          $group->setObjectId($groupId);
 
          $uM->detachUsersFromGroup($users, $group);
-         HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => null, 'groupid' => null)));
+         self::getResponse()->forward($this->generateLink(array('mainview' => 'group', 'groupview' => null, 'groupid' => null)));
 
       } else {
          $form->transformOnPlace();

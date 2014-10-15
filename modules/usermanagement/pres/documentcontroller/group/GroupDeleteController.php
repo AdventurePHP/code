@@ -22,7 +22,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\group;
 
 use APF\modules\usermanagement\biz\model\UmgtGroup;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
-use APF\tools\http\HeaderManager;
 
 /**
  * Implements the controller to delete a group.
@@ -51,9 +50,9 @@ class GroupDeleteController extends UmgtBaseController {
          $group = new UmgtGroup();
          $group->setObjectId($groupId);
          $uM->deleteGroup($group);
-         HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
+         self::getResponse()->forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
       } elseif ($formNo->isSent()) {
-         HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
+         self::getResponse()->forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
       } else {
          $formNo->transformOnPlace();
          $formYes->transformOnPlace();

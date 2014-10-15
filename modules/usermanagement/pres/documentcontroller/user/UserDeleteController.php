@@ -22,7 +22,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\user;
 
 use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
-use APF\tools\http\HeaderManager;
 
 /**
  * Implements the controller to delete a user.
@@ -48,9 +47,9 @@ class UserDeleteController extends UmgtBaseController {
          $user = new UmgtUser();
          $user->setObjectId($userId);
          $uM->deleteUser($user);
-         HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'userview' => null, 'userid' => null)));
+         self::getResponse()->forward($this->generateLink(array('mainview' => 'user', 'userview' => null, 'userid' => null)));
       } elseif ($formNo->isSent()) {
-         HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'userview' => null, 'userid' => null)));
+         self::getResponse()->forward($this->generateLink(array('mainview' => 'user', 'userview' => null, 'userid' => null)));
       } else {
          $formNo->transformOnPlace();
          $formYes->transformOnPlace();

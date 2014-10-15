@@ -22,7 +22,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
 
 use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition;
 use APF\tools\form\taglib\MultiSelectBoxTag;
-use APF\tools\http\HeaderManager;
 
 /**
  * Document controller to remove groups from an existing visibility definition.
@@ -75,7 +74,7 @@ class ProxyRemoveGroupsController extends UmgtPermissionBaseController {
          $proxy->setObjectId($proxyId);
          $uM->detachGroupsFromVisibilityDefinition($proxy, $this->mapSelectedOptions2DomainObjects('groups', 'UmgtGroup'));
 
-         HeaderManager::forward(
+         self::getResponse()->forward(
                $this->generateLink(
                      array(
                            'mainview'  => 'proxy',

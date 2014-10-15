@@ -24,7 +24,6 @@ use APF\modules\usermanagement\biz\model\UmgtPermission;
 use APF\modules\usermanagement\biz\model\UmgtRole;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\MultiSelectBoxTag;
-use APF\tools\http\HeaderManager;
 
 /**
  * Implements the controller to add a role.
@@ -72,7 +71,7 @@ class RoleAddController extends UmgtBaseController {
          }
 
          $uM->saveRole($role);
-         HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
+         self::getResponse()->forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
 
       }
       $form->transformOnPlace();

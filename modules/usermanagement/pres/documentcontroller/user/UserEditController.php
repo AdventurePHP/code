@@ -24,7 +24,6 @@ use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\AbstractFormControl;
 use APF\tools\form\validator\AbstractFormValidator;
-use APF\tools\http\HeaderManager;
 
 /**
  * Implements the edit controller for a user.
@@ -106,13 +105,13 @@ class UserEditController extends UmgtBaseController {
 
                   // save the user
                   $uM->saveUser($user);
-                  HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'userview' => '', 'userid' => '')));
+                  self::getResponse()->forward($this->generateLink(array('mainview' => 'user', 'userview' => '', 'userid' => '')));
 
                }
 
             } else {
                $uM->saveUser($user);
-               HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'userview' => '', 'userid' => '')));
+               self::getResponse()->forward($this->generateLink(array('mainview' => 'user', 'userview' => '', 'userid' => '')));
             }
 
          } else {

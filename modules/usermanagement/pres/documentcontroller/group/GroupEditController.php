@@ -22,7 +22,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\group;
 
 use APF\modules\usermanagement\biz\model\UmgtGroup;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
-use APF\tools\http\HeaderManager;
 
 /**
  * Implements the controller to edit a group.
@@ -55,7 +54,7 @@ class GroupEditController extends UmgtBaseController {
             $group->setDisplayName($displayName->getValue());
             $group->setDescription($description->getValue());
             $uM->saveGroup($group);
-            HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
+            self::getResponse()->forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
 
          } else {
             $form->transformOnPlace();

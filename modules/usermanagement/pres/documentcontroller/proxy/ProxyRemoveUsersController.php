@@ -22,7 +22,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
 
 use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition;
 use APF\tools\form\taglib\SelectBoxTag;
-use APF\tools\http\HeaderManager;
 
 /**
  * Document controller to remove users from an existing visibility definition.
@@ -74,7 +73,7 @@ class ProxyRemoveUsersController extends UmgtPermissionBaseController {
          $proxy->setObjectId($proxyId);
          $uM->detachUsersFromVisibilityDefinition($proxy, $this->mapSelectedOptions2DomainObjects('users', 'UmgtUser'));
 
-         HeaderManager::forward(
+         self::getResponse()->forward(
                $this->generateLink(
                      array(
                            'mainview'  => 'proxy',

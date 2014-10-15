@@ -27,7 +27,6 @@ use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinitionType;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\MultiSelectBoxTag;
 use APF\tools\form\taglib\SelectBoxTag;
-use APF\tools\http\HeaderManager;
 
 /**
  * Let's the user create a new visibility entry (proxy type <-> proxy <-> user+group).
@@ -139,7 +138,7 @@ class ProxyAddController extends UmgtBaseController {
          $definition->setDeletePermission($form->getFormElementByID('delete-perm')->isChecked() ? 1 : 0);
 
          $uM->createVisibilityDefinition($type, $definition, $users, $groups);
-         HeaderManager::forward($this->generateLink(array('mainview' => 'proxy', 'proxyview' => null, 'proxytypeid' => null)));
+         self::getResponse()->forward($this->generateLink(array('mainview' => 'proxy', 'proxyview' => null, 'proxytypeid' => null)));
 
       } else {
          $form->transformOnPlace();

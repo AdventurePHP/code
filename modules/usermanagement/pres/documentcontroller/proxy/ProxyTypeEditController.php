@@ -23,7 +23,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
 use APF\core\database\DatabaseHandlerException;
 use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinitionType;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
-use APF\tools\http\HeaderManager;
 
 class ProxyTypeEditController extends UmgtBaseController {
 
@@ -40,7 +39,7 @@ class ProxyTypeEditController extends UmgtBaseController {
          $proxyType->setAppObjectName($proxyName->getAttribute('value'));
          try {
             $uM->saveVisibilityDefinitionType($proxyType);
-            HeaderManager::forward($this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typelist')));
+            self::getResponse()->forward($this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typelist')));
          } catch (DatabaseHandlerException $dhe) {
             // mark field as invalid
             // due to the fact, that we have a
