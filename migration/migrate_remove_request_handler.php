@@ -49,21 +49,21 @@ foreach ($files as $file) {
    preg_match('#^(abstract |final )?class ([A-Za-z0-9]+) (\{|extends|implements)#m', $content, $matchesClass);
    preg_match('#namespace ([A-Za-z0-9\\\\]+);#', $content, $matchesNamespace);
 
-   if (!empty($matchesClass[1]) && !empty($matchesNamespace[1])) {
+   if (!empty($matchesClass[2]) && !empty($matchesNamespace[1])) {
 
       // auto-register custom class loader if necessary
-      $vendor = RootClassLoader::getVendor($matchesNamespace[1] . '\\' . $matchesClass[1]);
+      $vendor = RootClassLoader::getVendor($matchesNamespace[1] . '\\' . $matchesClass[2]);
       try {
          RootClassLoader::getLoaderByVendor($vendor);
       } catch (InvalidArgumentException $e) {
          $folder = str_replace('\\', '/', realpath(dirname($file)));
-         $namespaceAsPath = str_replace('\\', '/', RootClassLoader::getNamespaceWithoutVendor($matchesNamespace[1] . '\\' . $matchesClass[1]));
+         $namespaceAsPath = str_replace('\\', '/', RootClassLoader::getNamespaceWithoutVendor($matchesNamespace[1] . '\\' . $matchesClass[2]));
          $basePath = str_replace($namespaceAsPath, '', $folder);
 
          RootClassLoader::addLoader(new StandardClassLoader($vendor, $basePath));
       }
 
-      $class = new ReflectionClass($matchesNamespace[1] . '\\' . $matchesClass[1]);
+      $class = new ReflectionClass($matchesNamespace[1] . '\\' . $matchesClass[2]);
       if (
             $class->isSubclassOf('APF\core\pagecontroller\Document')
             || $class->isSubclassOf('APF\core\pagecontroller\BaseDocumentController')
@@ -74,8 +74,8 @@ foreach ($files as $file) {
          $content = addUseStatement($content, 'APF\core\http\mixins\GetRequestResponseTrait');
 
          // add trait use second to not mess up with addUseStatement() logic
-         $content = preg_replace('#class ' . $matchesClass[1] . ' (.*){#',
-               'class ' . $matchesClass[1] . ' \\1{' . "\n\n" . '   ' . $requestResponseTrait,
+         $content = preg_replace('#class ' . $matchesClass[2] . ' (.*){#',
+               'class ' . $matchesClass[2] . ' \\1{' . "\n\n" . '   ' . $requestResponseTrait,
                $content
          );
       }
