@@ -24,8 +24,8 @@ session_cache_limiter('none');
 
 use APF\core\configuration\ConfigurationException;
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\http\HeaderImpl;
 use APF\core\loader\RootClassLoader;
-use APF\tools\http\HeaderManager;
 use Exception;
 
 /**
@@ -66,18 +66,24 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
             $contentType = $this->getMimeType($allowedExtensions, $extension);
 
             // send desired header
-            header('Content-Type: ' . $contentType);
+            $response = self::getResponse();
+            $response->setHeader(new HeaderImpl('Content-Type', $contentType));
 
             // send headers to allow caching
             $delta = 7 * 24 * 60 * 60; // caching for 7 days
-            HeaderManager::send('Cache-Control: public; max-age=' . $delta);
+            $response->setHeader(new HeaderImpl('Cache-Control', 'public; max-age=' . $delta));
+
             $modifiedDate = date('D, d M Y H:i:s \G\M\T', time());
-            HeaderManager::send('Last-Modified: ' . $modifiedDate);
+            $response->setHeader(new HeaderImpl('Last-Modified', '' . $modifiedDate));
+
             $expiresDate = date('D, d M Y H:i:s \G\M\T', time() + $delta);
-            HeaderManager::send('Expires: ' . $expiresDate);
+            $response->setHeader(new HeaderImpl('Expires', '' . $expiresDate));
+
+            $response->send(false);
 
             @readfile($filePath);
-            exit(0);
+
+            exit();
 
          } else {
             throw new Exception('File with name "' . $fileName . '" cannot be found under sub-path "' . $namespace . '"!');

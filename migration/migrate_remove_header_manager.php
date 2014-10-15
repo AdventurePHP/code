@@ -8,7 +8,7 @@ $files = find('.', '*.php');
 
 $requestResponseTrait = 'use GetRequestResponseTrait;';
 
-$searchSendFull = '#HeaderManager::send\(([ |\n|\r\n]*)(.+)([ |\n|\r\n]*),([ |\n|\r\n]*)(true|false)([ |\n|\r\n]*),([ |\n|\r\n]*)(true|false)([ |\n|\r\n]*)\);#msU';
+$searchSendFull = '#HeaderManager::send\(([ |\n|\r\n]*)(.+)([ |\n|\r\n]*),([ |\n|\r\n]*)(true|false)([ |\n|\r\n]*),([ |\n|\r\n]*)(true|false|[0-9]+)([ |\n|\r\n]*)\);#msU';
 $searchSendReplace = '#HeaderManager::send\(([ |\n|\r\n]*)(.+)([ |\n|\r\n]*),([ |\n|\r\n]*)(true|false)([ |\n|\r\n]*)\);#msU';
 $searchSend = '#HeaderManager::send\(([ |\n|\r\n]*)(.+)([ |\n|\r\n]*)\);#msU';
 
@@ -117,7 +117,7 @@ foreach ($files as $file) {
    }
 
    // - is class that derives from Document, AbstractFrontcontrollerAction, BaseDocumentController, AbstractFormValidator
-   preg_match('#class ([A-Za-z0-9]+) (\{|extends|implements)#', $content, $matchesClass);
+   preg_match('#^(abstract )?class ([A-Za-z0-9]+) (\{|extends|implements)#', $content, $matchesClass);
    preg_match('#namespace ([A-Za-z0-9\\\\]+);#', $content, $matchesNamespace);
 
    if (!empty($matchesClass[1]) && !empty($matchesNamespace[1])) {
@@ -155,7 +155,6 @@ foreach ($files as $file) {
    // remove header manager uses
    $content = str_replace('use APF\tools\http\HeaderManager;', '', $content);
 
-   //echo $content;
    file_put_contents($file, $content);
 
 }

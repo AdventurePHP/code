@@ -20,15 +20,16 @@
  */
 namespace APF\tools\html\taglib;
 
+use APF\core\http\HeaderImpl;
+use APF\core\http\Response;
 use APF\core\pagecontroller\ImportTemplateTag;
 use APF\core\pagecontroller\IncludeException;
-use APF\tools\http\HeaderManager;
 
 /**
- * This class mainly implements the functionality of the core::importdesign tag. It generates a sub node
+ * This class mainly implements the functionality of the &lt;core:importdesign /&gt; tag. It generates a sub node
  * from the template specified by the tag's attributes within the current APF DOM tree. Each
  * importdesign tag can compose further tags. Additionally you can catch inclusion errors e.g.
- * from missing templates, and include a fallbacktemplate instead
+ * from missing templates, and include a fallback template instead
  *
  * @author jw-lighting <jw-lighting@ewetel.net>
  * @version
@@ -75,7 +76,7 @@ class FallbackImportTemplateTag extends ImportTemplateTag {
          // it can be necessary to send an 404-HTTP Error, check it here
          $send404Header = $this->getAttribute('send404Header');
          if ($send404Header != null && $send404Header != 'false') {
-            HeaderManager::send('X-APF-Error: Template not found', true, 404);
+            self::getResponse()->setStatusCode(Response::CODE_NOT_FOUND)->setHeader(new HeaderImpl('X-APF-Error', 'Template not found'));
          }
 
          // try to load the fallback template now
