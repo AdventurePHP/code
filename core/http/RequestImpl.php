@@ -56,12 +56,45 @@ class RequestImpl implements Request {
       return $this->getGenericParameter($name, $default, self::USE_REQUEST_PARAMS);
    }
 
+   /**
+    * Checks whether or not the applied parameter is contained in the current request.
+    *
+    * @param string $name The name of the parameter to check.
+    *
+    * @return bool <em>True</em> in case the given parameter is contained in the current request, <em>false</em> otherwise.
+    */
+   public function hasParameter($name) {
+      return $this->getParameter($name) !== null;
+   }
+
    public function getGetParameter($name, $default = null) {
       return $this->getGenericParameter($name, $default, self::USE_GET_PARAMS);
    }
 
+   /**
+    * Checks whether or not the applied parameter is contained in the current GET request.
+    *
+    * @param string $name The name of the parameter to check.
+    *
+    * @return bool <em>True</em> in case the given parameter is contained in the current GET request, <em>false</em> otherwise.
+    */
+   public function hasGetParameter($name) {
+      return $this->getGetParameter($name) !== null;
+   }
+
    public function getPostParameter($name, $default = null) {
       return $this->getGenericParameter($name, $default, self::USE_POST_PARAMS);
+   }
+
+   /**
+    * Checks whether or not the applied parameter is contained in the current POST request.
+    *
+    * @param string $name The name of the parameter to check.
+    *
+    * @return bool <em>True</em> in case the given parameter is contained in the current POST request, <em>false</em> otherwise.
+    */
+   public function hasPostParameter($name) {
+      return $this->getPostParameter($name) !== null;
    }
 
    public function getSessionId() {
