@@ -343,10 +343,6 @@ class RequestImpl implements Request {
    public function getCookies() {
       $cookies = array();
       foreach ($_COOKIE as $key => $value) {
-
-         // TODO Read extended values (e.g. domain, ...) from $_SERVER and inject
-         // TODO --> Will not work. Client sends only key=>value. Thus, add to docs.
-         // http://stackoverflow.com/questions/23446989/get-the-raw-request-using-php
          $cookie = new Cookie($key);
          $cookie->setValue($value);
          $cookies[] = $cookie;
@@ -384,7 +380,7 @@ class RequestImpl implements Request {
    }
 
    /**
-    * Returns the raw content of the <em>Refere</em> header.
+    * Returns the raw content of the <em>Referer</em> header.
     *
     * @return string|null The content of the <em>Referer</em> header of <em>null</em> in case no referrer is given.
     */

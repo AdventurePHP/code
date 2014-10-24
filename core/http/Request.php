@@ -259,6 +259,13 @@ interface Request {
    public function getReferrerUrl($absolute = false);
 
    /**
+    * Returns the list of Cookies sent along with the request.
+    * <p/>
+    * Please note that the Cookie instances will only contain their name and respective
+    * value as the underlying HTTP request does not propagate e.g. life time settings.
+    * <p/>
+    * For details, please refer to e.g. http://stackoverflow.com/questions/23446989/get-the-raw-request-using-php.
+    *
     * @return Cookie[] The list of cookies sent along with the request.
     */
    public function getCookies();
