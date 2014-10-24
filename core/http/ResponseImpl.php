@@ -189,8 +189,8 @@ class ResponseImpl implements Response {
       // default mapping of status code -> reason phrase
       if ($this->reasonPhrase === null) {
          $code = $this->getStatusCode();
-         if (isset($this->reasonPhrase[$code])) {
-            return $this->reasonPhrase[$code];
+         if (isset($this->reasonPhrases[$code])) {
+            return $this->reasonPhrases[$code];
          } else {
             return 'Unknown response status';
          }
