@@ -170,6 +170,7 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
 
       // re-add POST params
       $request->setParameters(array_merge($request->getParameters(), $postData));
+      $request->setPostParameters($postData);
 
       // add session id to the request again
       if (!empty($sessionId)) {
