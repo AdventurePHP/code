@@ -303,13 +303,13 @@ class ResponseImpl implements Response {
 
    public function forward($url, $exitAfterForward = true) {
       self::setStatusCode(self::CODE_SEE_OTHER);
-      self::setHeader('Location', self::decodeUrl($url));
+      self::setHeader(new HeaderImpl('Location', self::decodeUrl($url)));
       self::send($this->exitAfterForward === true && $exitAfterForward === true);
    }
 
    public function redirect($url, $permanent = false, $exitAfterForward = true) {
       self::setStatusCode($permanent === true ? self::CODE_PERMANENT_REDIRECT : self::CODE_TEMPORARY_REDIRECT);
-      self::setHeader('Location', self::decodeUrl($url));
+      self::setHeader(new HeaderImpl('Location', self::decodeUrl($url)));
       self::send($this->exitAfterForward === true && $exitAfterForward === true);
    }
 
