@@ -118,7 +118,7 @@ class ResponseImpl implements Response {
    /**
     * @var string The response body.
     */
-   protected $body = null;
+   protected $body = '';
 
    /**
     * @var Header[] The list of HTTP headers to send along with the response.
