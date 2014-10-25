@@ -23,16 +23,19 @@ namespace APF\core\http\client;
 use APF\core\http\Request;
 use APF\core\http\ResponseImpl;
 
-class SocketAdapter implements HttpAdapter {
+class SocketAdapter extends BaseAdapter implements HttpAdapter {
 
+   /**
+    * @var ResponseImpl
+    */
    protected $response;
 
    public function executeRequest(Request $request) {
 
       // create request
-      // 80 is the port of the webserver
+      // 80 is the port of the web server
       $connection = fsockopen($request->getHost(), 80);
-      $requestString = $request->toString();
+      $requestString = $this->getRequestStringRepresentation($request);
       fwrite($connection, $requestString);
 
       // get response
@@ -52,17 +55,16 @@ class SocketAdapter implements HttpAdapter {
 
       // split result into header and content
       // the header ends with \r\n\r\n
-      $header = substr($result, 0, strpos($result, "\r\n\r\n"));
-      $content = substr($result, (strpos($result, "\r\n\r\n") + 4));
-
       $this->response = new ResponseImpl();
-      $this->response->setHeadersFromString($header);
-      $this->response->setContent($content);
+      $this->setHeadersFromString($this->response, $this->getHeadersString($result));
+      $this->response->setBody($this->getBodyString($result));
 
       // parse status line
       // status-line-pattern: <HTTP-Version> <status-code> <reason-phrase>
       $status = explode(' ', $statusLine);
+      $this->response->setVersion($status[0]);
       $this->response->setStatusCode($status[1]);
+      $this->response->setReasonPhrase($status[2]);
 
       return $this->response;
    }

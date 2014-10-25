@@ -34,6 +34,15 @@ use APF\tools\link\UrlFormatException;
  */
 class RequestImpl implements Request {
 
+   public function getVersion() {
+      if (!isset($_SERVER['SERVER_PROTOCOL'])) {
+         return null;
+      }
+      $parts = explode('/', $_SERVER['SERVER_PROTOCOL']);
+
+      return isset($parts[1]) ? trim($parts[1]) : null;
+   }
+
    /**
     * @param string $name The name of the URL parameter to get.
     * @param string $default The default value to return in case the parameter is not present (default: <em>null</em>).
@@ -373,6 +382,24 @@ class RequestImpl implements Request {
    public function getPath() {
       // TODO Find a nicer way of implementing this!
       return parse_url($this->getRequestUri())['path'];
+   }
+
+   // we are not using getallheaders() as we would limit the APF to be used with Apache only.
+   public function getHeaders() {
+      $headers = array();
+
+      foreach ($_SERVER as $name => $value) {
+         if (substr($name, 0, 5) == 'HTTP_') {
+            $name = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))));
+            $headers[] = new HeaderImpl($name, $value);
+         } else if ($name == 'CONTENT_TYPE') {
+            $headers[] = new HeaderImpl('Content-Type', $value);
+         } else if ($name == 'CONTENT_LENGTH') {
+            $headers[] = new HeaderImpl('Content-Length', $value);
+         }
+      }
+
+      return $headers;
    }
 
    public function getMethod() {

@@ -232,6 +232,17 @@ class ResponseImpl implements Response {
       return $this;
    }
 
+   /**
+    * Removes all registered HTTP headers.
+    *
+    * @return ResponseImpl This instance for further usage.
+    */
+   public function resetHeaders() {
+      $this->headers = array();
+
+      return $this;
+   }
+
    public function getCookies() {
       return array_values($this->cookies);
    }
@@ -242,10 +253,8 @@ class ResponseImpl implements Response {
       return $this;
    }
 
-   // TODO Think of easy concept to delete Cookies without having to interact with the Response so much
    public function deleteCookie(Cookie $cookie) {
-      $cookie->delete();
-      $this->cookies[$cookie->getName()] = $cookie;
+      $this->cookies[$cookie->getName()] = $cookie->delete();
 
       return $this;
    }

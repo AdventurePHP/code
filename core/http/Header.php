@@ -31,6 +31,7 @@ use InvalidArgumentException;
 interface Header {
 
    const CONTENT_TYPE = 'Content-Type';
+   const CONTENT_LENGTH = 'Content-Length';
    const COOKIE = 'Cookie';
    const SET_COOKIE = 'Set-Cookie';
 

@@ -23,8 +23,11 @@ namespace APF\core\http\client;
 use APF\core\http\Request;
 use APF\core\http\ResponseImpl;
 
-class CUrlAdapter implements HttpAdapter {
+class CUrlAdapter extends BaseAdapter implements HttpAdapter {
 
+   /**
+    * @var ResponseImpl
+    */
    protected $response;
 
    public function executeRequest(Request $request) {
@@ -40,8 +43,8 @@ class CUrlAdapter implements HttpAdapter {
       $result = curl_exec($cH);
       $this->response = new ResponseImpl();
       $this->response->setStatusCode(curl_getinfo($cH, CURLINFO_HTTP_CODE));
-      $this->response->setHeadersFromString(substr($result, 0, strpos($result, "\r\n\r\n")));
-      $this->response->setContent(substr($result, (strpos($result, "\r\n\r\n") + 4)));
+      $this->setHeadersFromString($this->response, $this->getHeadersString($result));
+      $this->response->setBody($this->getBodyString($result));
       curl_close($cH);
 
       return $this->response;

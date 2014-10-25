@@ -69,6 +69,13 @@ interface Request {
    const USE_REQUEST_PARAMS = 'REQUEST';
 
    /**
+    * Returns the version of the HTTP protocol used to initiated the request.
+    *
+    * @return string The protocol version used.
+    */
+   public function getVersion();
+
+   /**
     * Returns the value of a request parameter (both GET and POST).
     *
     * @param string $name The name of the URL parameter to get.
@@ -236,6 +243,13 @@ interface Request {
     * @return string The URL path starting after the domain/host.
     */
    public function getPath();
+
+   /**
+    * Returns the list of HTTP headers sent along with the request.
+    *
+    * @return Header[] The list of headers sent along with the request.
+    */
+   public function getHeaders();
 
    /**
     * @return bool <em>True</em> in case we have an HTTPS/SSL request, <em>false</em> otherwise.
