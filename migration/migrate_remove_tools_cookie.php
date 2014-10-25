@@ -81,7 +81,7 @@ foreach ($files as $file) {
             || $class->isSubclassOf('APF\tools\form\validator\AbstractFormValidator')
       ) {
       } else {
-         $content = addUseStatement($content, 'APF\core\http\mixins\GetRequestResponseTrait');
+         $content = addUseStatement($content, 'APF\core\http\mixins\GetRequestResponse');
 
          // add trait use second to not mess up with addUseStatement() logic
          $content = preg_replace('#class ' . $matchesClass[2] . ' (.*){#',
