@@ -21,7 +21,7 @@
 namespace APF\extensions\arraypager\biz;
 
 use APF\core\configuration\ConfigurationException;
-use APF\core\http\mixins\GetRequestResponseTrait;
+use APF\core\http\mixins\GetRequestResponse;
 use APF\core\pagecontroller\APFObject;
 use APF\core\pagecontroller\Page;
 use APF\extensions\arraypager\data\ArrayPagerMapper;
@@ -36,7 +36,7 @@ use Exception;
  */
 final class ArrayPagerManager extends APFObject {
 
-   use GetRequestResponseTrait;
+   use GetRequestResponse;
 
    private $pagerConfig = null;
    private $anchorName = null;

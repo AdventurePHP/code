@@ -21,7 +21,7 @@
 namespace APF\core\pagecontroller;
 
 use APF\core\benchmark\BenchmarkTimer;
-use APF\core\http\mixins\GetRequestResponseTrait;
+use APF\core\http\mixins\GetRequestResponse;
 use APF\core\loader\RootClassLoader;
 use APF\core\logging\entry\SimpleLogEntry;
 use APF\core\logging\LogEntry;
@@ -42,7 +42,7 @@ use InvalidArgumentException;
  */
 class Document extends APFObject {
 
-   use GetRequestResponseTrait;
+   use GetRequestResponse;
 
    /**
     * Defines the attribute to allow direct access with using <em>Document::getNodeById()</em>.

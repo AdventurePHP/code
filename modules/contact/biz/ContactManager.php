@@ -21,7 +21,7 @@
 namespace APF\modules\contact\biz;
 
 use APF\core\configuration\ConfigurationException;
-use APF\core\http\mixins\GetRequestResponseTrait;
+use APF\core\http\mixins\GetRequestResponse;
 use APF\core\loader\RootClassLoader;
 use APF\core\pagecontroller\APFObject;
 use APF\core\pagecontroller\IncludeException;
@@ -39,7 +39,7 @@ use APF\tools\mail\mailSender;
  */
 class ContactManager extends APFObject {
 
-   use GetRequestResponseTrait;
+   use GetRequestResponse;
 
    /**
     * Sends the contact form and displays the thanks page.

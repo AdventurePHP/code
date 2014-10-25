@@ -21,7 +21,7 @@
 namespace APF\extensions\apfelsms\biz;
 
 use APF\core\configuration\ConfigurationException;
-use APF\core\http\mixins\GetRequestResponseTrait;
+use APF\core\http\mixins\GetRequestResponse;
 use APF\core\pagecontroller\APFObject;
 use APF\extensions\apfelsms\biz\pages\decorators\SMSPageDec;
 use APF\extensions\apfelsms\biz\pages\SMSPage;
@@ -42,7 +42,7 @@ use InvalidArgumentException;
  */
 class SMSManager extends APFObject {
 
-   use GetRequestResponseTrait;
+   use GetRequestResponse;
 
 
    /**

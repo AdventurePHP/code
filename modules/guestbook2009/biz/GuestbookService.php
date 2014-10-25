@@ -21,7 +21,7 @@
 namespace APF\modules\guestbook2009\biz;
 
 use APF\core\benchmark\BenchmarkTimer;
-use APF\core\http\mixins\GetRequestResponseTrait;
+use APF\core\http\mixins\GetRequestResponse;
 use APF\core\pagecontroller\APFObject;
 use APF\core\session\Session;
 use APF\core\singleton\Singleton;
@@ -41,7 +41,7 @@ use APF\tools\link\Url;
  */
 final class GuestbookService extends APFObject {
 
-   use GetRequestResponseTrait;
+   use GetRequestResponse;
 
    /**
     * Stores the pager instance for further usage.

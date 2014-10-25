@@ -21,7 +21,7 @@
 namespace APF\extensions\news\biz;
 
 use APF\core\pagecontroller\APFObject;
-use APF\core\http\mixins\GetRequestResponseTrait;
+use APF\core\http\mixins\GetRequestResponse;
 use APF\extensions\postbox\biz\Postbox;
 use APF\modules\genericormapper\data\GenericCriterionObject;
 use APF\modules\genericormapper\data\GenericORRelationMapper;
@@ -35,7 +35,7 @@ use APF\modules\genericormapper\data\GenericORRelationMapper;
  */
 class NewsManager extends APFObject {
 
-   use GetRequestResponseTrait;
+   use GetRequestResponse;
 
    /**
     * @var GenericORRelationMapper $ORM

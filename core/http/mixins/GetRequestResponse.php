@@ -5,7 +5,7 @@ use APF\core\http\RequestImpl;
 use APF\core\http\ResponseImpl;
 use APF\core\singleton\Singleton;
 
-trait GetRequestResponseTrait {
+trait GetRequestResponse {
 
    /**
     * @return RequestImpl

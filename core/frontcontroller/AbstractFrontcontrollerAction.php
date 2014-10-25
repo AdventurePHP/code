@@ -20,7 +20,7 @@
  */
 namespace APF\core\frontcontroller;
 
-use APF\core\http\mixins\GetRequestResponseTrait;
+use APF\core\http\mixins\GetRequestResponse;
 use APF\core\pagecontroller\APFObject;
 
 /**
@@ -36,7 +36,7 @@ use APF\core\pagecontroller\APFObject;
  */
 abstract class AbstractFrontcontrollerAction extends APFObject implements Action {
 
-   use GetRequestResponseTrait;
+   use GetRequestResponse;
 
    /**
     * The namespace of the action.

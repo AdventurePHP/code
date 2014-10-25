@@ -6,7 +6,7 @@ include(dirname(__FILE__) . '/migrate_base.php');
 
 $files = find('.', '*.php');
 
-$requestResponseTrait = 'use GetRequestResponseTrait;';
+$requestResponseTrait = 'use GetRequestResponse;';
 
 $cookieUseStatement = 'use APF\tools\cookie\Cookie;';
 
@@ -50,7 +50,7 @@ foreach ($files as $file) {
    $content = str_replace($cookieUseStatement, 'use APF\core\http\Cookie;', $content);
 
    // check on presence of self::getRequest() --------------------------------------------------------------------------
-   // - is use use GetRequestResponseTrait; present --> ok
+   // - is use use GetRequestResponse; present --> ok
    if (strpos($content, $requestResponseTrait) !== false) {
       continue;
    }

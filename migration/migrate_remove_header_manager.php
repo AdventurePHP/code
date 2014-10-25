@@ -6,7 +6,7 @@ include(dirname(__FILE__) . '/migrate_base.php');
 
 $files = find('.', '*.php');
 
-$requestResponseTrait = 'use GetRequestResponseTrait;';
+$requestResponseTrait = 'use GetRequestResponse;';
 
 $searchSendFull = '#HeaderManager::send\(([ |\n|\r\n]*)(.+)([ |\n|\r\n]*),([ |\n|\r\n]*)(true|false)([ |\n|\r\n]*),([ |\n|\r\n]*)(true|false|[0-9]+)([ |\n|\r\n]*)\);#msU';
 $searchSendReplace = '#HeaderManager::send\(([ |\n|\r\n]*)(.+)([ |\n|\r\n]*),([ |\n|\r\n]*)(true|false)([ |\n|\r\n]*)\);#msU';
@@ -111,7 +111,7 @@ foreach ($files as $file) {
    }
 
    // check on presence of self::getResponse() -------------------------------------------------------------------------
-   // - is use use GetRequestResponseTrait; present --> ok
+   // - is use use GetRequestResponse; present --> ok
    if (strpos($content, $requestResponseTrait) !== false) {
       continue;
    }

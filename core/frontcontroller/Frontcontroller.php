@@ -23,7 +23,7 @@ namespace APF\core\frontcontroller;
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\filter\InputFilterChain;
 use APF\core\filter\OutputFilterChain;
-use APF\core\http\mixins\GetRequestResponseTrait;
+use APF\core\http\mixins\GetRequestResponse;
 use APF\core\pagecontroller\APFObject;
 use APF\core\pagecontroller\Page;
 use APF\core\registry\Registry;
@@ -52,7 +52,7 @@ use InvalidArgumentException;
  */
 class Frontcontroller extends APFObject {
 
-   use GetRequestResponseTrait;
+   use GetRequestResponse;
 
    /**
     * The front controller's action stack.

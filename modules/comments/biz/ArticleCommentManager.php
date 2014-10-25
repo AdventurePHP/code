@@ -21,7 +21,7 @@
 namespace APF\modules\comments\biz;
 
 use APF\core\pagecontroller\APFObject;
-use APF\core\http\mixins\GetRequestResponseTrait;
+use APF\core\http\mixins\GetRequestResponse;
 use APF\modules\comments\data\ArticleCommentMapper;
 use APF\modules\pager\biz\PagerManager;
 use APF\tools\link\LinkGenerator;
@@ -37,7 +37,7 @@ use APF\tools\link\Url;
  */
 class ArticleCommentManager extends APFObject {
 
-   use GetRequestResponseTrait;
+   use GetRequestResponse;
 
    /**
     * Category key.

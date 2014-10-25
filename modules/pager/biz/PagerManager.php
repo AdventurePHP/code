@@ -21,7 +21,7 @@
 namespace APF\modules\pager\biz;
 
 use APF\core\benchmark\BenchmarkTimer;
-use APF\core\http\mixins\GetRequestResponseTrait;
+use APF\core\http\mixins\GetRequestResponse;
 use APF\core\pagecontroller\APFObject;
 use APF\core\pagecontroller\Page;
 use APF\core\singleton\Singleton;
@@ -44,7 +44,7 @@ use InvalidArgumentException;
  */
 final class PagerManager extends APFObject {
 
-   use GetRequestResponseTrait;
+   use GetRequestResponse;
 
    /**
     * Contains the desired anchor name.

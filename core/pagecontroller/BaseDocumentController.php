@@ -20,7 +20,7 @@
  */
 namespace APF\core\pagecontroller;
 
-use APF\core\http\mixins\GetRequestResponseTrait;
+use APF\core\http\mixins\GetRequestResponse;
 use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\html\taglib\HtmlIteratorTag;
 use InvalidArgumentException;
@@ -38,7 +38,7 @@ use InvalidArgumentException;
  */
 abstract class BaseDocumentController extends APFObject implements DocumentController {
 
-   use GetRequestResponseTrait;
+   use GetRequestResponse;
 
    /**
     * References the document, the document controller is responsible for transformation.

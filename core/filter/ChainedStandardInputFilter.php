@@ -22,7 +22,7 @@ namespace APF\core\filter;
 
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\frontcontroller\Frontcontroller;
-use APF\core\http\mixins\GetRequestResponseTrait;
+use APF\core\http\mixins\GetRequestResponse;
 use APF\core\singleton\Singleton;
 
 /**
@@ -49,7 +49,7 @@ use APF\core\singleton\Singleton;
  */
 class ChainedStandardInputFilter implements ChainedContentFilter {
 
-   use GetRequestResponseTrait;
+   use GetRequestResponse;
 
    /**
     * Defines the action keyword.

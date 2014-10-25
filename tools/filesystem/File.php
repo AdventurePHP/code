@@ -21,7 +21,7 @@
 namespace APF\tools\filesystem;
 
 use APF\core\http\HeaderImpl;
-use APF\core\http\mixins\GetRequestResponseTrait;
+use APF\core\http\mixins\GetRequestResponse;
 
 /**
  * @author  Nicolas Pecher
@@ -29,7 +29,7 @@ use APF\core\http\mixins\GetRequestResponseTrait;
  */
 class File extends FilesystemItem {
 
-   use GetRequestResponseTrait;
+   use GetRequestResponse;
 
    /**
     * A file pointer resource
