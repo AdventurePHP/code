@@ -402,6 +402,25 @@ class RequestImpl implements Request {
       return $headers;
    }
 
+   /**
+    * Returns a HTTP header instance by a given name. In case the header has not been sent
+    * along with the request, <em>null</em> is returned instead.
+    *
+    * @param string $name The name of the header to return.
+    *
+    * @return HeaderImpl|null The desired header instance or null.
+    */
+   public function getHeader($name) {
+      /* @var $header HeaderImpl */
+      foreach ($this->getHeaders() as $header) {
+         if ($header->getName() == $name) {
+            return $header;
+         }
+      }
+
+      return null;
+   }
+
    public function getMethod() {
       return $_SERVER['REQUEST_METHOD'];
    }
