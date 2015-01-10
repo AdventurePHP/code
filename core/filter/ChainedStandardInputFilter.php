@@ -92,8 +92,9 @@ class ChainedStandardInputFilter implements ChainedContentFilter {
 
                $tmpArray = explode(':', $paramsArray[$i]);
 
+               // ID#240: allow "0" values to be passed as within front controller action input value.
                if (isset($tmpArray[0]) && isset($tmpArray[1])
-                     && !empty($tmpArray[0]) && !empty($tmpArray[1])
+                     && !empty($tmpArray[0]) && (!empty($tmpArray[1]) || (string) $tmpArray[1] === '0')
                ) {
                   $inputParams[$tmpArray[0]] = $tmpArray[1];
                }
