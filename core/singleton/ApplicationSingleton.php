@@ -43,14 +43,7 @@ register_shutdown_function(function () {
  * @version
  * Version 0.1, 17.07.2013<br />
  */
-class ApplicationSingleton {
-
-   /**
-    * Stores the objects, that are requested as singletons.
-    *
-    * @var string[] $CACHE
-    */
-   private static $CACHE = array();
+class ApplicationSingleton extends Singleton {
 
    private function __construct() {
    }
@@ -77,14 +70,7 @@ class ApplicationSingleton {
     */
    public static function &getInstance($class, $instanceId = null) {
 
-      // the cache key is set to the class name for "normal" application singleton
-      // instances. in case an instance id is given, more than one application
-      // singleton instance can be created specified by the instance id - but only
-      // one per instance id (->SPRING bean creation style).
-      $cacheKey = $instanceId === null ? $class : $instanceId;
-
-      // prepend class including namespace to cache key to avoid collisions within the APC store
-      $cacheKey = __CLASS__ . '#' . $cacheKey;
+      $cacheKey = self::getCacheKey($class, $instanceId);
 
       if (!isset(self::$CACHE[$cacheKey])) {
 
@@ -101,6 +87,14 @@ class ApplicationSingleton {
       return self::$CACHE[$cacheKey];
    }
 
+   public static function deleteInstance($class, $instanceId = null) {
+      parent::deleteInstance($class, $instanceId);
+
+      // remove from APC store to not restore instance after in subsequent request by accident
+      apc_delete(self::getCacheKey($class, $instanceId));
+   }
+
+
    /**
     * Implements a shutdown function to save all application singleton objects to the APC store.
     *
@@ -115,6 +109,13 @@ class ApplicationSingleton {
             apc_store($key, serialize(self::$CACHE[$key]));
          }
       }
+   }
+
+   protected static function getCacheKey($class, $instanceId) {
+      $cacheKey = parent::getCacheKey($class, $instanceId);
+
+      // prepend class including namespace to cache key to avoid collisions within the APC store
+      return __CLASS__ . '#' . $cacheKey;
    }
 
 }

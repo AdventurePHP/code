@@ -44,9 +44,9 @@ class Singleton {
    /**
     * Stores the objects, that are requested as singletons.
     *
-    * @var APFObject[] $CACHE
+    * @var string[] $CACHE
     */
-   private static $CACHE = array();
+   protected static $CACHE = array();
 
    private function __construct() {
    }
@@ -73,18 +73,48 @@ class Singleton {
     * Version 0.2, 21.08.2007 (Added check, if the class exists.)<br />
     */
    public static function &getInstance($class, $instanceId = null) {
-
-      // the cache key is set to the class name for "normal" singleton instances.
-      // in case an instance id is given, more than one singleton instance can
-      // be created specified by the instance id - but only one per instance id
-      // (->SPRING bean creation style).
-      $cacheKey = $instanceId === null ? $class : $instanceId;
-
+      $cacheKey = self::getCacheKey($class, $instanceId);
       if (!isset(self::$CACHE[$cacheKey])) {
          self::$CACHE[$cacheKey] = new $class();
       }
 
       return self::$CACHE[$cacheKey];
+   }
+
+   /**
+    * Destroys a singleton instance of given class.
+    * <p/>
+    * Provide the instance id parameter to destroy a named instance.
+    *
+    * @param string $class The name of the class to be created as singleton.
+    * @param string $instanceId The id of the instance.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 10.01.2015<br />
+    */
+   public static function deleteInstance($class, $instanceId = null) {
+      $cacheKey = self::getCacheKey($class, $instanceId);
+      unset(self::$CACHE[$cacheKey]);
+   }
+
+   /**
+    * The cache key is set to the class name for "normal" singleton instances.
+    * in case an instance id is given, more than one singleton instance can
+    * be created specified by the instance id - but only one per instance id
+    * (->SPRING bean creation style).
+    *
+    * @param string $class The name of the class to be created as singleton.
+    * @param string $instanceId The id of the instance.
+    *
+    * @return string The instance cache key for the singleton cache.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 10.01.2015<br />
+    */
+   protected static function getCacheKey($class, $instanceId) {
+      return $instanceId === null ? $class : $instanceId;
    }
 
 }

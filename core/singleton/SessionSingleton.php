@@ -48,13 +48,6 @@ register_shutdown_function(function () {
 class SessionSingleton extends Singleton {
 
    /**
-    * Stores the objects, that are requested as singletons.
-    *
-    * @var string[] $CACHE
-    */
-   private static $CACHE = array();
-
-   /**
     * The session instance to retrieve the session objects from.
     *
     * @var Session $SESSION
@@ -86,11 +79,7 @@ class SessionSingleton extends Singleton {
     */
    public static function &getInstance($class, $instanceId = null) {
 
-      // the cache key is set to the class name for "normal" singleton instances.
-      // in case an instance id is given, more than one singleton instance can
-      // be created specified by the instance id - but only one per instance id
-      // (->SPRING bean creation style).
-      $cacheKey = $instanceId === null ? $class : $instanceId;
+      $cacheKey = self::getCacheKey($class, $instanceId);
 
       if (!isset(self::$CACHE[$cacheKey])) {
 
@@ -106,6 +95,14 @@ class SessionSingleton extends Singleton {
 
       return self::$CACHE[$cacheKey];
    }
+
+   public static function deleteInstance($class, $instanceId = null) {
+      parent::deleteInstance($class, $instanceId);
+
+      // remove from session to not restore instance after in subsequent request by accident
+      self::getSession()->delete(self::getCacheKey($class, $instanceId));
+   }
+
 
    /**
     * @return Session
