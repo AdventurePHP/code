@@ -76,9 +76,9 @@ final class ArrayPagerMapper extends APFObject {
     * Version 0.1, 21.12.2009<br />
     */
    public function loadEntries($stringPager) {
-      $objectSession = $this->getSessionManager();
+      $session = $this->getSession();
       $stringSessionKey = $this->getSessionKey($stringPager);
-      $arrayEntries = $objectSession->load($stringSessionKey);
+      $arrayEntries = $session->load($stringSessionKey);
 
       return $arrayEntries;
    }
@@ -86,7 +86,7 @@ final class ArrayPagerMapper extends APFObject {
    /**
     * @return Session
     */
-   protected function getSessionManager() {
+   protected function getSession() {
       return new Session('APF\extensions\arraypager\biz');
    }
 
@@ -99,9 +99,9 @@ final class ArrayPagerMapper extends APFObject {
     * Version 0.1, 21.12.2009<br />
     */
    public function registerEntries($stringPager, $arrayData) {
-      $objectSession = $this->getSessionManager();
+      $session = $this->getSession();
       $stringSessionKey = $this->getSessionKey($stringPager);
-      $objectSession->save($stringSessionKey,
+      $session->save($stringSessionKey,
             $arrayData
       );
    }
@@ -114,9 +114,9 @@ final class ArrayPagerMapper extends APFObject {
     * Version 0.1, 21.12.2009<br />
     */
    public function unregisterEntries($stringPager) {
-      $objectSession = $this->getSessionManager();
+      $session = $this->getSession();
       $stringSessionKey = $this->getSessionKey($stringPager);
-      $objectSession->delete($stringSessionKey);
+      $session->delete($stringSessionKey);
    }
 
    /**
@@ -129,9 +129,9 @@ final class ArrayPagerMapper extends APFObject {
     * Version 0.1, 21.12.2009<br />
     */
    public function checkPager($stringPager) {
-      $objectSession = $this->getSessionManager();
+      $session = $this->getSession();
       $stringSessionKey = $this->getSessionKey($stringPager);
-      $mixedData = $objectSession->load($stringSessionKey);
+      $mixedData = $session->load($stringSessionKey);
 
       $booleanExists = false;
 

@@ -33,30 +33,25 @@ use APF\tools\link\Url;
  */
 class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
 
-
    /**
     * @var string SESSION_NAMESPACE
     */
    const SESSION_NAMESPACE = 'APF\extensions\apfelsms\actions';
-
 
    /**
     * @var string SESSION_LOOPCOUNT_NAME
     */
    const SESSION_LOOPCOUNT_NAME = 'redirectLoopCount';
 
-
    /**
     * @var integer MAX_LOOPS
     */
    const MAX_LOOPS = 10;
 
-
    /**
     * @var string $type
     */
    protected $type = self::TYPE_PRE_PAGE_CREATE;
-
 
    /**
     * Checks for 404 and 403 errors and redirects to error pages.
@@ -120,40 +115,34 @@ class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
 
    }
 
-
    /**
     *
     */
    protected function incrementLoopCounter() {
 
 
-      $sessM = new Session(self::SESSION_NAMESPACE);
-      $sessM->save(
+      $session = new Session(self::SESSION_NAMESPACE);
+      $session->save(
             self::SESSION_LOOPCOUNT_NAME,
-            intval($sessM->load(self::SESSION_LOOPCOUNT_NAME, 0)) + 1
+            intval($session->load(self::SESSION_LOOPCOUNT_NAME, 0)) + 1
       );
    }
-
 
    /**
     * @return bool
     */
    protected function checkLoopsOK() {
+      $session = new Session(self::SESSION_NAMESPACE);
 
-
-      $sessM = new Session(self::SESSION_NAMESPACE);
-
-      return $sessM->load(self::SESSION_LOOPCOUNT_NAME, 0) <= self::MAX_LOOPS;
+      return $session->load(self::SESSION_LOOPCOUNT_NAME, 0) <= self::MAX_LOOPS;
    }
-
 
    /**
     *
     */
    protected function resetLoopCounter() {
-
-
-      $sessM = new Session(self::SESSION_NAMESPACE);
-      $sessM->delete(self::SESSION_LOOPCOUNT_NAME);
+      $session = new Session(self::SESSION_NAMESPACE);
+      $session->delete(self::SESSION_LOOPCOUNT_NAME);
    }
+
 }

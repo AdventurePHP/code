@@ -142,7 +142,6 @@ class ResponseImpl implements Response {
     */
    private $exitAfterForward = true;
 
-
    /**
     * Activates behaviour to stop code execution after forward() or redirect().
     *
