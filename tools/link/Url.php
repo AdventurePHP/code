@@ -20,8 +20,7 @@
  */
 namespace APF\tools\link;
 
-use APF\core\http\RequestImpl;
-use APF\core\singleton\Singleton;
+use APF\core\http\mixins\GetRequestResponse;
 
 /**
  * This class represents a url designed to generate related urls using
@@ -32,6 +31,8 @@ use APF\core\singleton\Singleton;
  * Version 0.1, 29.03.2011<br />
  */
 final class Url {
+
+   use GetRequestResponse;
 
    const DEFAULT_HTTP_PORT = '80';
    const DEFAULT_HTTPS_PORT = '443';
@@ -331,10 +332,7 @@ final class Url {
     * Version 0.2, 09.03.2013 (Now uses standard PHP variables in stead of a Registry value to allow better url input filter manipulation)<br />
     */
    public static function fromCurrent($absolute = false) {
-      /* @var $request RequestImpl */
-      $request = & Singleton::getInstance('APF\core\http\RequestImpl');
-
-      return $request->getUrl($absolute);
+      return self::getRequest()->getUrl($absolute);
    }
 
    /**
@@ -350,10 +348,7 @@ final class Url {
     * Version 0.1, 07.09.2011<br />
     */
    public static function fromReferer($absolute = false) {
-      /* @var $request RequestImpl */
-      $request = & Singleton::getInstance('APF\core\http\RequestImpl');
-
-      return $request->getReferrerUrl($absolute);
+      return self::getRequest()->getReferrerUrl($absolute);
    }
 
    /**
