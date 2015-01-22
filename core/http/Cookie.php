@@ -202,10 +202,21 @@ class Cookie {
    }
 
    /**
-    * @return string
+    * @return string The name of the domain the Cookie is valid for.
     */
    public function getDomain() {
       return $this->domain;
+   }
+
+   /**
+    * @param string $domain The name of the domain the Cookie is valid for.
+    *
+    * @return Cookie This instance for further usage.
+    */
+   public function setDomain($domain) {
+      $this->domain = $domain;
+
+      return $this;
    }
 
    /**
@@ -216,6 +227,17 @@ class Cookie {
    }
 
    /**
+    * @param int $expireTime
+    *
+    * @return Cookie This instance for further usage.
+    */
+   public function setExpireTime($expireTime) {
+      $this->expireTime = $expireTime;
+
+      return $this;
+   }
+
+   /**
     * @return boolean
     */
    public function isHttpOnly() {
@@ -223,17 +245,51 @@ class Cookie {
    }
 
    /**
-    * @return string
+    * @param boolean $httpOnly True in case the cookie should be restricted to HTTP protocol chances, false otherwise
+    * (e.g. for Java Script manipulation).
+    *
+    * @return Cookie This instance for further usage.
+    */
+   public function setHttpOnly($httpOnly) {
+      $this->httpOnly = $httpOnly;
+
+      return $this;
+   }
+
+   /**
+    * @return string The URL path the cookie is valid for.
     */
    public function getPath() {
       return $this->path;
    }
 
    /**
-    * @return boolean
+    * @param string $path The URL path the cookie is valid for.
+    *
+    * @return Cookie This instance for further usage.
+    */
+   public function setPath($path) {
+      $this->path = $path;
+
+      return $this;
+   }
+
+   /**
+    * @return boolean True in case the cookie should be sent over secure connection only.
     */
    public function isSecure() {
       return $this->secure;
+   }
+
+   /**
+    * @param boolean $secure True in case the cookie is only sent via a secure connection, false otherwise.
+    *
+    * @return Cookie This instance for further usage.
+    */
+   public function setSecure($secure) {
+      $this->secure = $secure;
+
+      return $this;
    }
 
 }
