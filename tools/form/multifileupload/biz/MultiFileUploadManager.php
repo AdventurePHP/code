@@ -20,9 +20,10 @@
  */
 namespace APF\tools\form\multifileupload\biz;
 
+use APF\core\http\mixins\GetRequestResponse;
+use APF\core\http\Session;
 use APF\core\loader\RootClassLoader;
 use APF\core\pagecontroller\APFObject;
-use APF\core\session\Session;
 use APF\tools\filesystem\File;
 use APF\tools\filesystem\Folder;
 use APF\tools\form\FormException;
@@ -36,6 +37,8 @@ use APF\tools\link\Url;
  * @version 1.0, 14.3.2011<br>
  */
 class MultiFileUploadManager extends APFObject {
+
+   use GetRequestResponse;
 
    private $sessionNamespace;
    private static $DEFAULT_SESSION_NAMESPACE = 'APF\tools\form\multifileupload';
@@ -72,7 +75,7 @@ class MultiFileUploadManager extends APFObject {
       $this->formName = $param['formname'];
       $this->name = $param['name'];
       $this->sessionNamespace = self::$DEFAULT_SESSION_NAMESPACE . '\\' . $param['formname'] . '\\' . $param['name'];
-      $this->session = new Session($this->sessionNamespace);
+      $this->session = self::getRequest()->getSession($this->sessionNamespace);
 
       //Temporäres Upload-Verzeichnis erstellen, falls es vorhanden ist, wird der Pfad zurück gegeben.
       $createFolder = new Folder();

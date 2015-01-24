@@ -21,7 +21,7 @@
 namespace APF\modules\captcha\pres\taglib;
 
 use APF\core\pagecontroller\XmlParser;
-use APF\core\session\Session;
+use APF\modules\captcha\biz\actions\ShowCaptchaImageAction;
 use APF\tools\form\filter\AbstractFormFilter;
 use APF\tools\form\taglib\AbstractFormControl;
 use APF\tools\form\taglib\HtmlFormTag;
@@ -158,7 +158,7 @@ class SimpleCaptchaTag extends AbstractFormControl {
       $this->textField->onAfterAppend();
 
       // get the captcha string from session
-      $session = new Session('APF\modules\captcha');
+      $session = self::getRequest()->getSession(ShowCaptchaImageAction::SESSION_NAMESPACE);
       $this->captchaString = $session->load($this->textFieldName);
       $session->save($this->textFieldName, StringAssistant::generateCaptchaString(5));
 

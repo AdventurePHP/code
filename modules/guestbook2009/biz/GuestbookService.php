@@ -23,7 +23,6 @@ namespace APF\modules\guestbook2009\biz;
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\http\mixins\GetRequestResponse;
 use APF\core\pagecontroller\APFObject;
-use APF\core\session\Session;
 use APF\core\singleton\Singleton;
 use APF\modules\guestbook2009\data\GuestbookMapper;
 use APF\modules\pager\biz\PagerManager;
@@ -83,17 +82,17 @@ final class GuestbookService extends APFObject {
    public function loadPagedEntryList() {
 
       /* @var $t BenchmarkTimer */
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       $t->start('loadPagedEntryList');
 
-      $pager = & $this->getPager();
+      $pager = &$this->getPager();
 
       /* @var $model GuestbookModel */
-      $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
+      $model = &$this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
       $entryIds = $pager->loadEntries(array('GuestbookID' => $model->getGuestbookId()));
 
       $entries = array();
-      $mapper = & $this->getMapper();
+      $mapper = &$this->getMapper();
       foreach ($entryIds as $entryId) {
          $entries[] = $mapper->loadEntry($entryId);
       }
@@ -114,8 +113,8 @@ final class GuestbookService extends APFObject {
     */
    public function getPagerOutput() {
       /* @var $model GuestbookModel */
-      $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
-      $pager = & $this->getPager();
+      $model = &$this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
+      $pager = &$this->getPager();
 
       return $pager->getPager(array('GuestbookID' => $model->getGuestbookId()));
    }
@@ -130,7 +129,7 @@ final class GuestbookService extends APFObject {
     * Version 0.1, 13.06.2009<br />
     */
    public function getPagerURLParams() {
-      $pager = & $this->getPager();
+      $pager = &$this->getPager();
 
       return $pager->getPagerURLParameters();
    }
@@ -150,8 +149,8 @@ final class GuestbookService extends APFObject {
 
       if ($this->pager === null) {
          /* @var $pMF PagerManagerFabric */
-         $pMF = & $this->getServiceObject('APF\modules\pager\biz\PagerManagerFabric');
-         $this->pager = & $pMF->getPagerManager($this->pagerConfigSection);
+         $pMF = &$this->getServiceObject('APF\modules\pager\biz\PagerManagerFabric');
+         $this->pager = &$pMF->getPagerManager($this->pagerConfigSection);
       }
 
       return $this->pager;
@@ -167,7 +166,7 @@ final class GuestbookService extends APFObject {
     * Version 0.1, 21.05.2009<br />
     */
    public function loadEntryListForSelection() {
-      $mapper = & $this->getMapper();
+      $mapper = &$this->getMapper();
 
       return $mapper->loadEntryListForSelection();
    }
@@ -184,7 +183,7 @@ final class GuestbookService extends APFObject {
     * Version 0.1, 21.05.2009<br />
     */
    public function loadEntry($id) {
-      $mapper = & $this->getMapper();
+      $mapper = &$this->getMapper();
 
       return $mapper->loadEntry($id);
    }
@@ -199,7 +198,7 @@ final class GuestbookService extends APFObject {
     * Version 0.1, 21.05.2009<br />
     */
    public function loadGuestbook() {
-      $mapper = & $this->getMapper();
+      $mapper = &$this->getMapper();
 
       return $mapper->loadGuestbook();
    }
@@ -216,7 +215,7 @@ final class GuestbookService extends APFObject {
    public function deleteEntry(Entry $entry) {
 
       if ($entry !== null) {
-         $mapper = & $this->getMapper();
+         $mapper = &$this->getMapper();
          $mapper->deleteEntry($entry);
       }
 
@@ -239,9 +238,8 @@ final class GuestbookService extends APFObject {
 
       // logout by cleaning the session
       /* @var $model GuestbookModel */
-      $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
-      $guestbookId = $model->getGuestbookId();
-      $session = new Session('APF\modules\guestbook2009\biz\\' . $guestbookId);
+      $model = &$this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
+      $session = $this->getSession($model->getGuestbookId());
       $session->delete('LoggedIn');
 
       // display the list view
@@ -250,6 +248,10 @@ final class GuestbookService extends APFObject {
             'adminview' => null
       )));
       self::getResponse()->forward($link);
+   }
+
+   protected function getSession($guestBookId) {
+      return self::getRequest()->getSession(__NAMESPACE__ . '\\' . $guestBookId);
    }
 
    /**
@@ -263,9 +265,8 @@ final class GuestbookService extends APFObject {
    public function checkAccessAllowed() {
 
       /* @var $model GuestbookModel */
-      $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
-      $guestbookId = $model->getGuestbookId();
-      $session = new Session('APF\modules\guestbook2009\biz\\' . $guestbookId);
+      $model = &$this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
+      $session = $this->getSession($model->getGuestbookId());
       $loggedId = $session->load('LoggedIn');
 
       // redirect to admin page
@@ -292,14 +293,13 @@ final class GuestbookService extends APFObject {
     */
    public function validateCredentials(User $user) {
 
-      $mapper = & $this->getMapper();
+      $mapper = &$this->getMapper();
       if ($mapper->validateCredentials($user)) {
 
          // log user in
          /* @var $model GuestbookModel */
-         $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
-         $guestbookId = $model->getGuestbookId();
-         $session = new Session('APF\modules\guestbook2009\biz\\' . $guestbookId);
+         $model = &$this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
+         $session = $this->getSession($model->getGuestbookId());
          $session->save('LoggedIn', 'true');
 
          // redirect to admin page
@@ -324,7 +324,7 @@ final class GuestbookService extends APFObject {
     */
    public function saveEntry(Entry $entry) {
 
-      $mapper = & $this->getMapper();
+      $mapper = &$this->getMapper();
       $mapper->saveEntry($entry);
 
       // Forward to the desired view to prevent F5-bugs.

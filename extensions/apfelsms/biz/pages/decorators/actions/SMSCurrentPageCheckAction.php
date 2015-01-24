@@ -21,7 +21,6 @@
 namespace APF\extensions\apfelsms\biz\pages\decorators\actions;
 
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
-use APF\core\session\Session;
 use APF\extensions\apfelsms\biz\SMSManager;
 use APF\extensions\apfelsms\biz\SMSWrongParameterException;
 use APF\tools\link\Url;
@@ -115,13 +114,12 @@ class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
 
    }
 
-   /**
-    *
-    */
+   protected function getSession() {
+      return self::getRequest()->getSession(self::SESSION_NAMESPACE);
+   }
+
    protected function incrementLoopCounter() {
-
-
-      $session = new Session(self::SESSION_NAMESPACE);
+      $session = $this->getSession();
       $session->save(
             self::SESSION_LOOPCOUNT_NAME,
             intval($session->load(self::SESSION_LOOPCOUNT_NAME, 0)) + 1
@@ -132,17 +130,14 @@ class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
     * @return bool
     */
    protected function checkLoopsOK() {
-      $session = new Session(self::SESSION_NAMESPACE);
-
-      return $session->load(self::SESSION_LOOPCOUNT_NAME, 0) <= self::MAX_LOOPS;
+      return $this->getSession()->load(self::SESSION_LOOPCOUNT_NAME, 0) <= self::MAX_LOOPS;
    }
 
    /**
     *
     */
    protected function resetLoopCounter() {
-      $session = new Session(self::SESSION_NAMESPACE);
-      $session->delete(self::SESSION_LOOPCOUNT_NAME);
+      $this->getSession()->delete(self::SESSION_LOOPCOUNT_NAME);
    }
 
 }

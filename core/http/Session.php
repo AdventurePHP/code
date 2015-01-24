@@ -18,13 +18,13 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-namespace APF\core\session;
+namespace APF\core\http;
 
 use InvalidArgumentException;
 
 /**
  * Provides advances session handling with namespaces. Example:
- * <pre>$session = new Session('{namespace}');
+ * <pre>$session = self::getRequest()->getSession('some namespace');
  * $session->load('{key}');
  * $session->save('{key}','{value}');</pre>
  * Further, you do not have to take care of starting or persisting sessions.
@@ -35,6 +35,7 @@ use InvalidArgumentException;
  * Version 0.2, 12.04.2006 (Added the possibility to create the class singleton.)<br />
  * Version 0.3, 02.08.2009 (Ensured PHP 5.3.x/6.x.x compatibility with session handling.)<br />
  * Version 0.4, 06.05.2013 (Renamed from SessionManager to Session to ensure better naming)<br />
+ * Version 0.5, 22.01.2015 (ID#234: moved to APF\core\http namespace to streamline request/response API)<br />
  */
 final class Session {
 
@@ -165,19 +166,6 @@ final class Session {
     */
    public function delete($attribute) {
       unset($_SESSION[$this->namespace][$attribute]);
-   }
-
-   /**
-    * Returns the id of the current session.
-    *
-    * @return string The current session id
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 08.03.2006<br />
-    */
-   public function getSessionID() {
-      return session_id();
    }
 
 }

@@ -116,11 +116,11 @@ interface Request {
    public function getPostParameter($name, $default = null);
 
    /**
-    * Returns the current session id.
+    * @param string $name The name of the named session instance to return.
     *
-    * @return string The current session id.
+    * @return Session
     */
-   public function getSessionId();
+   public function getSession($name);
 
    /**
     * Let's you retrieve the list of request parameters defined for this instance.

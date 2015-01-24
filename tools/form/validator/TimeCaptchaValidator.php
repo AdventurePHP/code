@@ -20,7 +20,7 @@
  */
 namespace APF\tools\form\validator;
 
-use APF\core\session\Session;
+use APF\tools\form\taglib\TimeCaptchaTag;
 
 /**
  * Implements, in combination with TimeCaptchaTag, a non-visual captcha
@@ -60,8 +60,8 @@ class TimeCaptchaValidator extends TextFieldValidator {
          $seconds = $this->defaultSeconds;
       }
 
-      $session = new Session(get_class($this));
-      $form = & $this->control->getForm();
+      $session = self::getRequest()->getSession(TimeCaptchaTag::SESSION_NAMESPACE);
+      $form = &$this->control->getForm();
       $storedTime = intval($session->load('form_' . $form->getAttribute('name')));
       $session->delete('form_' . $form->getAttribute('name'));
       unset($session);
@@ -78,4 +78,5 @@ class TimeCaptchaValidator extends TextFieldValidator {
       return true;
 
    }
+
 }

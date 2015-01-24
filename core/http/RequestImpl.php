@@ -106,6 +106,10 @@ class RequestImpl implements Request {
       return $this->getPostParameter($name) !== null;
    }
 
+   public function getSession($name) {
+      return new Session($name);
+   }
+
    public function getSessionId() {
       return $this->getParameter($this->getSessionName());
    }

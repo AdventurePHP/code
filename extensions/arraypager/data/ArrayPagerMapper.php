@@ -20,8 +20,9 @@
  */
 namespace APF\extensions\arraypager\data;
 
+use APF\core\http\mixins\GetRequestResponse;
+use APF\core\http\Session;
 use APF\core\pagecontroller\APFObject;
-use APF\core\session\Session;
 
 /**
  * Represents the data layer of the array-pager.
@@ -31,6 +32,8 @@ use APF\core\session\Session;
  * Version 0.1, 21.12.2009<br />
  */
 final class ArrayPagerMapper extends APFObject {
+
+   use GetRequestResponse;
 
    /**
     *  Returns the session key.
@@ -87,7 +90,7 @@ final class ArrayPagerMapper extends APFObject {
     * @return Session
     */
    protected function getSession() {
-      return new Session('APF\extensions\arraypager\biz');
+      return self::getRequest()->getSession(__NAMESPACE__);
    }
 
    /**

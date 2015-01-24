@@ -23,8 +23,9 @@ namespace APF\modules\pager\data;
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\database\AbstractDatabaseHandler;
 use APF\core\database\ConnectionManager;
+use APF\core\http\mixins\GetRequestResponse;
+use APF\core\http\Session;
 use APF\core\pagecontroller\APFObject;
-use APF\core\session\Session;
 use APF\core\singleton\Singleton;
 
 /**
@@ -37,6 +38,8 @@ use APF\core\singleton\Singleton;
  * Version 0.3, 24.01.2009 (Added session caching to gain performance)<br />
  */
 final class PagerMapper extends APFObject {
+
+   use GetRequestResponse;
 
    /**
     * Defines the database connection key. Must be filled within the init() method.
@@ -60,7 +63,7 @@ final class PagerMapper extends APFObject {
     * @return AbstractDatabaseHandler The current database connection.
     */
    private function &getConnection() {
-      $cM = & $this->getServiceObject('APF\core\database\ConnectionManager');
+      $cM = &$this->getServiceObject('APF\core\database\ConnectionManager');
 
       /* @var $cM ConnectionManager */
 
@@ -85,6 +88,13 @@ final class PagerMapper extends APFObject {
    }
 
    /**
+    * @return Session
+    */
+   protected function getSession() {
+      return self::getRequest()->getSession(__NAMESPACE__);
+   }
+
+   /**
     * Returns the number of entries of the current object.
     *
     * @param string $namespace the namespace of the statement
@@ -104,7 +114,7 @@ final class PagerMapper extends APFObject {
     */
    public function getEntriesCount($namespace, $statement, array $params = array(), $cache = true) {
 
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $t->start('PagerMapper::getEntriesCount()');
 
@@ -115,14 +125,14 @@ final class PagerMapper extends APFObject {
       $session = null;
       $sessionKey = null;
       if ($cache === true) {
-         $session = new Session(__NAMESPACE__);
+         $session = $this->getSession();
          $sessionKey = $this->getSessionKey($namespace, $statement, $params) . '_EntriesCount';
          $entriesCount = $session->load($sessionKey);
       }
 
       // load from database if not in session
       if ($entriesCount === null) {
-         $conn = & $this->getConnection();
+         $conn = &$this->getConnection();
          $result = $conn->executeStatement($namespace, $statement, $params);
          $data = $conn->fetchData($result);
          $entriesCount = $data['EntriesCount'];
@@ -158,7 +168,7 @@ final class PagerMapper extends APFObject {
     */
    public function loadEntries($namespace, $statement, array $params = array(), $cache = true) {
 
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $t->start('PagerMapper::loadEntries()');
 
@@ -168,7 +178,7 @@ final class PagerMapper extends APFObject {
       $session = null;
       $sessionKey = null;
       if ($cache === true) {
-         $session = new Session(__NAMESPACE__);
+         $session = $this->getSession();
          $sessionKey = $this->getSessionKey($namespace, $statement, $params) . '_EntryIDs';
          $entryIds = $session->load($sessionKey);
       } else {
@@ -178,7 +188,7 @@ final class PagerMapper extends APFObject {
       // load from database if not in session
       if ($entryIds === null) {
 
-         $conn = & $this->getConnection();
+         $conn = &$this->getConnection();
          $result = $conn->executeStatement($namespace, $statement, $params);
 
          // map empty results to empty array
@@ -210,7 +220,7 @@ final class PagerMapper extends APFObject {
     * @return array The sanitized list of pager statement parameters.
     */
    private function sanitizeParameters(array $params = array()) {
-      $conn = & $this->getConnection();
+      $conn = &$this->getConnection();
       foreach ($params as $key => $value) {
          $params[$conn->escapeValue($key)] = $conn->escapeValue($value);
       }

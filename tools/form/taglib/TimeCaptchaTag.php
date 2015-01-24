@@ -20,8 +20,6 @@
  */
 namespace APF\tools\form\taglib;
 
-use APF\core\session\Session;
-
 /**
  * Implements, in combination with TimeCaptchaValidator, a non-visual captcha
  * which tries to identify bots by the time they need to fill in the data in a
@@ -32,6 +30,8 @@ use APF\core\session\Session;
  * Version 0.1, 14.03.2010<br />
  */
 class TimeCaptchaTag extends AbstractFormControl {
+
+   const SESSION_NAMESPACE = __NAMESPACE__;
 
    /**
     * Overwrites the parent's method, because there is nothing to do here.
@@ -54,7 +54,7 @@ class TimeCaptchaTag extends AbstractFormControl {
     */
    public function transform() {
 
-      $session = new Session(get_class($this));
+      $session = self::getRequest()->getSession(self::SESSION_NAMESPACE);
 
       // Delete every stored time in session, which is older than 40 minutes, in order to clean the session.
       $sessionStore = $session->getEntryKeys();

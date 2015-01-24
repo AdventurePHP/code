@@ -20,8 +20,9 @@
  */
 namespace APF\core\singleton;
 
+use APF\core\http\mixins\GetRequestResponse;
+use APF\core\http\Session;
 use APF\core\pagecontroller\APFObject;
-use APF\core\session\Session;
 use Exception;
 
 // ID#178: use closure functions instead of array() to avoid issued with PHP 5.4.x
@@ -47,10 +48,12 @@ register_shutdown_function(function () {
  */
 class SessionSingleton extends Singleton {
 
+   use GetRequestResponse;
+
    /**
     * The session instance to retrieve the session objects from.
     *
-    * @var Session $SESSION
+    * @var Session
     */
    private static $SESSION;
 
@@ -109,7 +112,7 @@ class SessionSingleton extends Singleton {
     */
    private static function getSession() {
       if (self::$SESSION === null) {
-         self::$SESSION = new Session(__NAMESPACE__);
+         self::$SESSION = self::getRequest()->getSession(__NAMESPACE__);
       }
 
       return self::$SESSION;

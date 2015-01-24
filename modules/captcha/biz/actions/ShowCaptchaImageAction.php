@@ -23,7 +23,6 @@ namespace APF\modules\captcha\biz\actions;
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\core\http\HeaderImpl;
 use APF\core\loader\RootClassLoader;
-use APF\core\session\Session;
 
 /**
  * Front controller action that displays a captcha image.
@@ -33,6 +32,8 @@ use APF\core\session\Session;
  * Version 0.1, 20.07.2008<br />
  */
 class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
+
+   const SESSION_NAMESPACE = 'APF\modules\captcha';
 
    /**
     * Defines the installed fonts.
@@ -50,7 +51,7 @@ class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
     */
    public function run() {
 
-      $session = new Session('APF\modules\captcha');
+      $session = self::getRequest()->getSession(self::SESSION_NAMESPACE);
 
       // read captcha string from the session.
       $CaptchaStringName = $this->getInput()->getParameter('name');
