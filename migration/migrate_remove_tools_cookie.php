@@ -52,6 +52,7 @@ foreach ($files as $file) {
    // check on presence of self::getRequest() --------------------------------------------------------------------------
    // - is use use GetRequestResponse; present --> ok
    if (strpos($content, $requestResponseTrait) !== false) {
+      file_put_contents($file, $content);
       continue;
    }
 

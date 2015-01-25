@@ -8,8 +8,8 @@ $files = find('.', '*.php');
 
 $requestResponseTrait = 'use GetRequestResponse;';
 
-$searchWithDefault = '#RequestHandler::getValue\(([ |\n|\r\n]*)(.+),([ |\n|\r\n]*)(.+)([ |\n|\r\n]*)\)#msU';
-$search = '#RequestHandler::getValue\(([ |\n|\r\n]*)(.+)([ |\n|\r\n]*)\)#msU';
+$search = '#new Session\(\'(.+)\'\)#U';
+$searchSessionId = '#\$(.+)\->getSessionID\(\)#U';
 
 // gather APF installation path and setup class loader for later code analysis
 include(dirname(dirname(__FILE__)) . '/core/bootstrap.php');
@@ -18,25 +18,26 @@ include(dirname(dirname(__FILE__)) . '/core/bootstrap.php');
 \APF\core\errorhandler\GlobalErrorHandler::disable();
 
 foreach ($files as $file) {
+
    $content = file_get_contents($file);
 
    // if no occurrence, go ahead
-   if (strpos($content, 'RequestHandler') === false) {
+   if (strpos($content, 'new Session(') === false && strpos($content, '->getSessionID()') === false) {
       continue;
    }
 
-   // w/ default value -------------------------------------------------------------------------------------------------
-   preg_match_all($searchWithDefault, $content, $matches, PREG_SET_ORDER);
-
-   foreach ($matches as $match) {
-      $content = str_replace($match[0], 'self::getRequest()->getParameter(' . $match[1] . $match[2] . ',' . $match[3] . $match[4] . ')', $content);
-   }
-
-   // w/o default value ------------------------------------------------------------------------------------------------
+   // session construction  --------------------------------------------------------------------------------------------
    preg_match_all($search, $content, $matches, PREG_SET_ORDER);
 
    foreach ($matches as $match) {
-      $content = str_replace($match[0], 'self::getRequest()->getParameter(' . $match[1] . $match[2] . ')', $content);
+      $content = str_replace($match[0], 'self::getRequest()->getSession(\'' . $match[1] . '\')', $content);
+   }
+
+   // session id query -------------------------------------------------------------------------------------------------
+   preg_match_all($searchSessionId, $content, $matches, PREG_SET_ORDER);
+
+   foreach ($matches as $match) {
+      $content = str_replace($match[0], 'self::getRequest()->getSessionId()', $content);
    }
 
    // check on presence of self::getRequest() --------------------------------------------------------------------------
@@ -82,8 +83,8 @@ foreach ($files as $file) {
       }
    }
 
-   // remove request handler uses
-   $content = str_replace('use APF\tools\request\RequestHandler;', '', $content);
+   // rewrite namespace mapping
+   $content = str_replace('use APF\core\session\Session;', 'use APF\core\http\Session;', $content);
 
    file_put_contents($file, $content);
 

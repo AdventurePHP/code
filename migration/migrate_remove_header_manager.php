@@ -113,6 +113,7 @@ foreach ($files as $file) {
    // check on presence of self::getResponse() -------------------------------------------------------------------------
    // - is use use GetRequestResponse; present --> ok
    if (strpos($content, $requestResponseTrait) !== false) {
+      file_put_contents($file, $content);
       continue;
    }
 
