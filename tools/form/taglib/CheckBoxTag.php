@@ -51,7 +51,7 @@ class CheckBoxTag extends AbstractFormControl {
 
       $name = $this->getAttribute('name');
       // ID#236: removed check on whether form is sent or not to avoid issues with the APF 3.0 parser.
-      if (self::getRequest()->getParameter($name) !== null) {
+      if (self::getRequest()->hasParameter($name)) {
          $this->check();
       } else {
          // Bug 626: in case the control has been checked by the so-called attribute,
