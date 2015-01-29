@@ -46,6 +46,9 @@ $PHP_BINARY $SCRIPT_DIR/migrate_remove_tools_cookie.php
 echo "* Migrate session handling to new API ..."
 $PHP_BINARY $SCRIPT_DIR/migrate_session_handling.php
 
+echo "* Migrate form definitions ..."
+$PHP_BINARY $SCRIPT_DIR/migrate_form_definitions.php
+
 echo
 echo "#############################################"
 echo
