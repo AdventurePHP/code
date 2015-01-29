@@ -38,16 +38,6 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddControll
                   entry="frontend.proxy.add-proxy.proxy-app-id.label"/>
          </label>
          <form:text id="appobjectid" name="appobjectid" maxlength="50" minlength="1"/>
-         <form:addvalidator
-               class="APF\tools\form\validator\TextLengthValidator"
-               button="add"
-               control="appobjectid"
-               />
-         <form:addvalidator
-               class="APF\modules\usermanagement\pres\validator\AppObjectIdValidator"
-               button="add"
-               control="appobjectid"
-               />
       </div>
       <form:listener control="users">
          <div class="error-cont">
@@ -75,11 +65,6 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddControll
          </label>
          <form:multiselect id="groups" name="groups" size="6"/>
       </div>
-      <form:addvalidator
-            class="APF\modules\usermanagement\pres\validator\UserOrGroupActivatedValidator"
-            control="users"
-            button="add"
-            />
       <h4>
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
@@ -130,5 +115,20 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddControll
                config="labels.ini"
                entry="frontend.proxy.add-proxy.button.label"/>
       </form:button>
+      <form:addvalidator
+               class="APF\tools\form\validator\TextLengthValidator"
+               button="add"
+               control="appobjectid"
+               />
+      <form:addvalidator
+               class="APF\modules\usermanagement\pres\validator\AppObjectIdValidator"
+               button="add"
+               control="appobjectid"
+               />
+      <form:addvalidator
+            class="APF\modules\usermanagement\pres\validator\UserOrGroupActivatedValidator"
+            control="users"
+            button="add"
+            />
    </div>
 </html:form>

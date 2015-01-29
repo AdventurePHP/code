@@ -9,11 +9,6 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupAddRoleToGr
 </h3>
 <html:form name="Groups" method="post">
    <div>
-      <form:addvalidator
-            class="APF\tools\form\validator\MultiSelectFieldValidator"
-            button="Add"
-            control="Groups"
-            />
       <p>
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
@@ -30,6 +25,11 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupAddRoleToGr
                   config="labels.ini"
                   entry="frontend.role.add-role-to-groups.button.label"/>
          </form:button>
+         <form:addvalidator
+            class="APF\tools\form\validator\MultiSelectFieldValidator"
+            button="Add"
+            control="Groups"
+            />
       </p>
    </div>
 </html:form>

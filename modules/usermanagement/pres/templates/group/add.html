@@ -17,11 +17,6 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupAddControll
 </p>
 <html:form name="GroupAdd" method="post">
    <div>
-      <form:addvalidator
-            class="APF\tools\form\validator\TextLengthValidator"
-            control="DisplayName"
-            button="Add"
-            />
       <p>
          <label>
             <html:getstring
@@ -49,5 +44,10 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupAddControll
                entry="frontend.group.add.button.label"
                />
       </form:button>
+      <form:addvalidator
+            class="APF\tools\form\validator\TextLengthValidator"
+            control="DisplayName"
+            button="Add"
+            />
    </div>
 </html:form>

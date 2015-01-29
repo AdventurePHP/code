@@ -33,17 +33,17 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyRemoveGroup
          </label>
          <form:multiselect id="groups" name="groups" size="6"/>
       </div>
-      <form:addvalidator
-            class="APF\tools\form\validator\MultiSelectFieldValidator"
-            control="groups"
-            button="rem"
-            />
       <form:button name="rem">
          <button:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.proxy.remove-groups-from-proxy.button.label"/>
       </form:button>
+      <form:addvalidator
+            class="APF\tools\form\validator\MultiSelectFieldValidator"
+            control="groups"
+            button="rem"
+            />
       <form:hidden name="proxyid"/>
    </div>
 </html:form>

@@ -18,27 +18,12 @@ class="APF\modules\comments\pres\controller\CommentCreateEntryController"
                name="Name"
                class="cm--create-element-name"
                />
-         <form:addvalidator
-               class="APF\tools\form\validator\TextLengthValidator"
-               button="Save"
-               control="Name|Comment"
-               />
          <br/>
          <span><html:getstring namespace="APF\modules\comments" config="language.ini" entry="form.email"/>*</span>
          <form:text
                maxlength="100"
                name="EMail"
                class="cm--create-element-email"
-               />
-         <form:addfilter
-               class="APF\tools\form\filter\EMailFilter"
-               button="Save"
-               control="EMail"
-               />
-         <form:addvalidator
-               class="APF\tools\form\validator\EMailValidator"
-               button="Save"
-               control="EMail"
                />
          <br/>
          <br/>
@@ -61,14 +46,29 @@ class="APF\modules\comments\pres\controller\CommentCreateEntryController"
                name="Captcha"
                clearonerror="true"
                />
+         <br/>
+         <br/>
+         <form:button name="Save" class="cm--create-element-button"/>
+         <form:addfilter
+               class="APF\tools\form\filter\EMailFilter"
+               button="Save"
+               control="EMail"
+               />
+         <form:addvalidator
+               class="APF\tools\form\validator\TextLengthValidator"
+               button="Save"
+               control="Name|Comment"
+               />
+         <form:addvalidator
+               class="APF\tools\form\validator\EMailValidator"
+               button="Save"
+               control="EMail"
+               />
          <form:addvalidator
                class="APF\modules\captcha\pres\validator\CaptchaValidator"
                control="Captcha"
                button="Save"
                />
-         <br/>
-         <br/>
-         <form:button name="Save" class="cm--create-element-button"/>
       </html:form>
    </div>
 </div>

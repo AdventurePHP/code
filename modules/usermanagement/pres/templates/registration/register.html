@@ -56,11 +56,6 @@ class="APF\modules\usermanagement\pres\documentcontroller\registration\Registrat
                   entry="register.email.label"/>
          </label>
          <form:text id="umgt-fe-reg-email" name="email" maxlength="100"/>
-         <form:addvalidator
-               class="APF\tools\form\validator\EMailValidator"
-               button="sendFormRegistration"
-               control="email"
-               />
       </p>
       <p>
          <label for="umgt-fe-reg-user">
@@ -70,11 +65,6 @@ class="APF\modules\usermanagement\pres\documentcontroller\registration\Registrat
                   entry="register.username.label"/>
          </label>
          <form:text id="umgt-fe-reg-user" name="username" maxlength="100"/>
-         <form:addvalidator
-               class="APF\tools\form\validator\TextLengthValidator"
-               button="sendFormRegistration"
-               control="username|password|repeat"
-               />
       </p>
       <p>
          <label for="umgt-fe-reg-pass">
@@ -84,11 +74,6 @@ class="APF\modules\usermanagement\pres\documentcontroller\registration\Registrat
                   entry="register.password.label"/>
          </label>
          <form:password id="umgt-fe-reg-pass" name="password" maxlength="100" ref="repeat"/>
-         <form:addvalidator
-               class="APF\tools\form\validator\FieldCompareValidator"
-               button="sendFormRegistration"
-               control="password"
-               />
       </p>
       <p>
          <label for="umgt-fe-reg-repeat">
@@ -106,6 +91,21 @@ class="APF\modules\usermanagement\pres\documentcontroller\registration\Registrat
                   config="labels.ini"
                   entry="register.button.label"/>
          </form:button>
+         <form:addvalidator
+               class="APF\tools\form\validator\EMailValidator"
+               button="sendFormRegistration"
+               control="email"
+               />
+         <form:addvalidator
+               class="APF\tools\form\validator\TextLengthValidator"
+               button="sendFormRegistration"
+               control="username|password|repeat"
+               />
+         <form:addvalidator
+               class="APF\tools\form\validator\FieldCompareValidator"
+               button="sendFormRegistration"
+               control="password"
+               />
       </p>
    </div>
 </html:form>

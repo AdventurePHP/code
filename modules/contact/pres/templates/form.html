@@ -40,21 +40,6 @@ class="APF\modules\contact\pres\controller\ContactFormController"
             </ul>
       </div>
       </form:error>
-      <form:addfilter
-            class="APF\tools\form\filter\EMailFilter"
-            button="sendFormContact"
-            control="sender-address"
-            />
-      <form:addvalidator
-            class="APF\tools\form\validator\TextLengthValidator"
-            button="sendFormContact"
-            control="sender-name|subject|content"
-            />
-      <form:addvalidator
-            class="APF\tools\form\validator\EMailValidator"
-            button="sendFormContact"
-            control="sender-address"
-            />
       <label for="contact-form-recipient">
          <html:getstring namespace="APF\modules\contact" config="language.ini" entry="form.person"/>
       </label>
@@ -86,16 +71,31 @@ class="APF\modules\contact\pres\controller\ContactFormController"
                text_id="contact-form-captcha"
                disable_inline="true"
                />
-         <form:addvalidator
-               class="APF\modules\captcha\pres\validator\CaptchaValidator"
-               control="captcha-control"
-               button="sendFormContact"
-               />
       </div>
       <div class="fullsizebox buttonbox">
          <form:button name="sendFormContact" class="button">
             <button:getstring namespace="APF\modules\contact" config="language.ini" entry="form.button"/>
          </form:button>
+         <form:addfilter
+            class="APF\tools\form\filter\EMailFilter"
+            button="sendFormContact"
+            control="sender-address"
+            />
+         <form:addvalidator
+            class="APF\tools\form\validator\TextLengthValidator"
+            button="sendFormContact"
+            control="sender-name|subject|content"
+            />
+         <form:addvalidator
+            class="APF\tools\form\validator\EMailValidator"
+            button="sendFormContact"
+            control="sender-address"
+            />
+         <form:addvalidator
+               class="APF\modules\captcha\pres\validator\CaptchaValidator"
+               control="captcha-control"
+               button="sendFormContact"
+               />
       </div>
 </div>
 </html:form>

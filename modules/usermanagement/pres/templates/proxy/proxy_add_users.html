@@ -33,17 +33,17 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddUsersCon
          </label>
          <form:multiselect id="users" name="users" size="6"/>
       </div>
-      <form:addvalidator
-            class="APF\tools\form\validator\MultiSelectFieldValidator"
-            control="users"
-            button="add"
-            />
       <form:button name="add">
          <button:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.proxy.add-users-to-proxy.button.label"/>
       </form:button>
+      <form:addvalidator
+            class="APF\tools\form\validator\MultiSelectFieldValidator"
+            control="users"
+            button="add"
+            />
       <form:hidden name="proxyid"/>
    </div>
 </html:form>

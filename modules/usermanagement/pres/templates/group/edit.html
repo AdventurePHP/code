@@ -18,11 +18,6 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupEditControl
 </p>
 <html:form name="GroupEdit" method="post">
    <div>
-      <form:addvalidator
-            class="APF\tools\form\validator\TextLengthValidator"
-            button="Edit"
-            control="DisplayName"
-            />
       <p>
          <label>
             <html:getstring
@@ -50,6 +45,11 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupEditControl
                entry="frontend.group.edit.form.button.label"
                />
       </form:button>
+      <form:addvalidator
+            class="APF\tools\form\validator\TextLengthValidator"
+            button="Edit"
+            control="DisplayName"
+            />
       <form:hidden name="groupid"/>
    </div>
 </html:form>

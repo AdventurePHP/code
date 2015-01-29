@@ -87,15 +87,15 @@ class="APF\modules\guestbook2009\pres\controller\GuestbookCreateEntryController"
                      name="Captcha"
                      clearonerror="true"
                      />
-               <form:addvalidator
-                     class="APF\modules\captcha\pres\validator\CaptchaValidator"
-                     control="Captcha"
-                     button="send"
-                     />
             </div>
          </div>
          <div class="gb--create-button-placer">
             <form:button class="gb--button-create" name="send"/>
+            <form:addvalidator
+                     class="APF\modules\captcha\pres\validator\CaptchaValidator"
+                     control="Captcha"
+                     button="send"
+                     />
          </div>
          <form:addfilter
                class="APF\tools\form\filter\NoSpecialCharactersFilter"

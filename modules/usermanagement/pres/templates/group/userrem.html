@@ -10,11 +10,6 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupRemoveUserF
 
 <html:form name="User" method="post">
    <div>
-      <form:addvalidator
-            class="APF\tools\form\validator\MultiSelectFieldValidator"
-            button="Rem"
-            control="User"
-            />
       <p>
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
@@ -31,6 +26,11 @@ class="APF\modules\usermanagement\pres\documentcontroller\group\GroupRemoveUserF
                   config="labels.ini"
                   entry="frontend.group.remove-users-from-group.button.label"/>
          </form:button>
+         <form:addvalidator
+            class="APF\tools\form\validator\MultiSelectFieldValidator"
+            button="Rem"
+            control="User"
+            />
       </p>
    </div>
 </html:form>

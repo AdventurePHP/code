@@ -34,17 +34,17 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddGroupsCo
          </label>
          <form:multiselect id="groups" name="groups" size="6"/>
       </div>
-      <form:addvalidator
-            class="APF\tools\form\validator\MultiSelectFieldValidator"
-            control="groups"
-            button="add"
-            />
       <form:button name="add">
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.proxy.add-groups-to-proxy.button.label"/>
       </form:button>
+      <form:addvalidator
+            class="APF\tools\form\validator\MultiSelectFieldValidator"
+            control="groups"
+            button="add"
+            />
       <form:hidden name="proxyid"/>
    </div>
 </html:form>

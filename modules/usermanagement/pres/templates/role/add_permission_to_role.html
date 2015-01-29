@@ -9,11 +9,6 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\AddPermissionToRo
 </h3>
 <html:form name="Permissions" method="post">
    <div>
-      <form:addvalidator
-            class="APF\tools\form\validator\MultiSelectFieldValidator"
-            button="Assign"
-            control="Permissions"
-            />
       <p>
          <html:getstring
                name="display-name"
@@ -31,6 +26,11 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\AddPermissionToRo
                   config="labels.ini"
                   entry="frontend.role.add-permission-to-role.button.label"/>
          </form:button>
+         <form:addvalidator
+            class="APF\tools\form\validator\MultiSelectFieldValidator"
+            button="Assign"
+            control="Permissions"
+            />
       </p>
    </div>
 </html:form>

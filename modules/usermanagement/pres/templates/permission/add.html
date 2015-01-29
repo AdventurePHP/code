@@ -9,11 +9,6 @@ class="APF\modules\usermanagement\pres\documentcontroller\permission\PermissionA
 </h3>
 <html:form name="PermissionAdd" method="post">
    <div>
-      <form:addvalidator
-            class="APF\tools\form\validator\TextLengthValidator"
-            button="Add"
-            control="DisplayName|Name|Value"
-            />
       <p>
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
@@ -54,6 +49,11 @@ class="APF\modules\usermanagement\pres\documentcontroller\permission\PermissionA
                   config="labels.ini"
                   entry="frontend.permission.add.button.label"/>
          </form:button>
+         <form:addvalidator
+            class="APF\tools\form\validator\TextLengthValidator"
+            button="Add"
+            control="DisplayName|Name|Value"
+            />
          <form:hidden name="permissionsetid"/>
       </p>
    </div>

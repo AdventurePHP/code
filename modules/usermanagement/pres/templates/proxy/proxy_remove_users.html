@@ -33,17 +33,17 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyRemoveUsers
          </label>
          <form:multiselect id="users" name="users" size="6"/>
       </div>
-      <form:addvalidator
-            class="APF\tools\form\validator\MultiSelectFieldValidator"
-            control="users"
-            button="rem"
-            />
       <form:button name="rem">
          <button:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.proxy.remove-users-from-proxy.button.label"/>
       </form:button>
+      <form:addvalidator
+            class="APF\tools\form\validator\MultiSelectFieldValidator"
+            control="users"
+            button="rem"
+            />
       <form:hidden name="proxyid"/>
    </div>
 </html:form>

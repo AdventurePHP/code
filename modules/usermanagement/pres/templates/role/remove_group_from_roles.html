@@ -10,11 +10,6 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RemoveGroupFromRo
 </h3>
 <html:form name="Roles" method="post">
    <div>
-      <form:addvalidator
-            class="APF\tools\form\validator\MultiSelectFieldValidator"
-            button="Remove"
-            control="Roles"
-            />
       <p>
          <html:getstring
                name="display-name"
@@ -34,6 +29,11 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RemoveGroupFromRo
                   entry="frontend.group.remove-roles-from-group.label"
                   />
          </form:button>
+         <form:addvalidator
+            class="APF\tools\form\validator\MultiSelectFieldValidator"
+            button="Remove"
+            control="Roles"
+            />
       </p>
    </div>
 </html:form>

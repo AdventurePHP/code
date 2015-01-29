@@ -9,11 +9,6 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleRemoveUsersCo
 </h3>
 <html:form name="User" method="post">
    <div>
-      <form:addvalidator
-            class="APF\tools\form\validator\MultiSelectFieldValidator"
-            button="Det"
-            control="User"
-            />
       <p>
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
@@ -30,6 +25,11 @@ class="APF\modules\usermanagement\pres\documentcontroller\role\RoleRemoveUsersCo
                   config="labels.ini"
                   entry="frontend.role.remove-role-from-users.button.label"/>
          </form:button>
+         <form:addvalidator
+            class="APF\tools\form\validator\MultiSelectFieldValidator"
+            button="Det"
+            control="User"
+            />
       </p>
    </div>
 </html:form>

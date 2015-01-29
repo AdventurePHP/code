@@ -31,11 +31,6 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyTypeAddCont
                   entry="frontend.proxy.add-type.proxy-type-name.label"/>
          </label>
          <form:text id="proxytypename" name="proxytypename" maxlength="100"/>
-         <form:addvalidator
-               class="APF\tools\form\validator\TextLengthValidator"
-               control="proxytypename"
-               button="send"
-               />
       </p>
       <p>
          <form:button name="send">
@@ -44,6 +39,11 @@ class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyTypeAddCont
                   config="labels.ini"
                   entry="frontend.proxy.add-type.button.label"/>
          </form:button>
+         <form:addvalidator
+               class="APF\tools\form\validator\TextLengthValidator"
+               control="proxytypename"
+               button="send"
+               />
       </p>
    </div>
 </html:form>
