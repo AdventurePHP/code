@@ -4,7 +4,8 @@ include(dirname(__FILE__) . '/migrate_base.php');
 $files = find('.', '*.html');
 
 $searchFormTag = '#<html:form(.+)>(.+)</html:form>#msU';
-$searchButtons = '#<form:(button|imagebutton)(.+)name ?= ?"(.+)"(.+)/>#msU';
+$searchContentButtons = '#(<form:button|<form:imagebutton)(.+)name ?= ?"(.+)"(.*)(</form:button>|</form:imagebutton>)#msU';
+$searchButtons = '#<form:(button|imagebutton)(.+)name ?= ?"(.+)"(.*)/>#msU';
 $searchObserver = '#<form:(addvalidator|addfilter)(.+)button ?= ?"(.+)"(.+)/>#msU';
 
 /**
@@ -46,13 +47,31 @@ foreach ($files as $file) {
    $validators = array();
    foreach ($formMatches as $formMatch) {
 
-      // search position of all buttons
+      // First search for explicit closing buttons, then for implicit-closing ones.
+      // This is necessary as reg exps are not made for parsing XML!
+
+      // search position of all content buttons
       $currentFormContent = $formMatch[2];
+      if (preg_match_all($searchContentButtons, $currentFormContent, $buttonMatches, PREG_SET_ORDER)) {
+         foreach ($buttonMatches as $buttonMatch) {
+            $pos = strpos($currentFormContent, $buttonMatch[0]);
+            $buttons[$buttonMatch[3]] = array(
+                  'pos' => $pos,
+                  'tag' => $buttonMatch[0]
+            );
+         }
+      }
+
+      // search position of all buttons
       if (!preg_match_all($searchButtons, $currentFormContent, $buttonMatches, PREG_SET_ORDER)) {
          continue;
       }
 
       foreach ($buttonMatches as $buttonMatch) {
+         if (isset($buttons[$buttonMatch[3]])) {
+            // avoid overwriting of explicitly closing buttons with their implicit-closing pendents
+            continue;
+         }
          $pos = strpos($currentFormContent, $buttonMatch[0]);
          $buttons[$buttonMatch[3]] = array(
                'pos' => $pos,
