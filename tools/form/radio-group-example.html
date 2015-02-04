@@ -1,0 +1,21 @@
+<@controller
+   class="APF\tools\form\RadioGroupTagController"
+@>
+<html:form name="test">
+   <div>
+      Radio group built with RadioGroupTag:
+      <br />
+      ${radio-message}
+      <br />
+      <form:radiogroup name="radio-group">
+         Left: <form:radio name="radio" id="r1" value="1"/>
+         <br />
+         Right: <form:radio name="radio" id="r2" value="2"/>
+         <br />
+         Middle: <form:radio name="radio" id="r3" value="3"/>
+      </form:radiogroup>
+   </div>
+   <div>
+      <form:button name="send" value="go" />
+   </div>
+</html:form>
