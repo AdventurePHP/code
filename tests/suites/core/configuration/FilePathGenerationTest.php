@@ -26,7 +26,7 @@ use APF\core\loader\StandardClassLoader;
 use ReflectionMethod;
 
 /**
- * Tests the file path generation of file-based configuration providers..
+ * Tests the file path generation of file-based configuration providers.
  *
  * @author Christian Achatz
  * @version

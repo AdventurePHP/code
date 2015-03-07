@@ -41,10 +41,21 @@ class RootClassLoader {
    private static $loaders = array();
 
    /**
+    * Registers a given class loader.
+    *
     * @param ClassLoader $loader A class loader to add to the list.
     */
    public static function addLoader(ClassLoader $loader) {
       self::$loaders[$loader->getVendorName()] = $loader;
+   }
+
+   /**
+    * Removes a given class loader from the list.
+    *
+    * @param ClassLoader $loader A class loader to remove from the list.
+    */
+   public static function removeLoader(ClassLoader $loader) {
+      unset(self::$loaders[$loader->getVendorName()]);
    }
 
    /**
