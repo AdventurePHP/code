@@ -105,7 +105,7 @@ ConfigurationManager::registerProvider('ini', new IniConfigurationProvider());
 // configure logger (outside namespace'd file! otherwise initialization will not work)
 register_shutdown_function(function () {
    /* @var $logger Logger */
-   $logger = & Singleton::getInstance('APF\core\logging\Logger');
+   $logger = &Singleton::getInstance('APF\core\logging\Logger');
    $logger->flushLogBuffer();
 });
 
@@ -170,6 +170,7 @@ Document::addTagLib('APF\tools\form\taglib\FormGroupTag', 'form', 'group');
 Document::addTagLib('APF\tools\html\taglib\HtmlIteratorTag', 'html', 'iterator');
 Document::addTagLib('APF\core\pagecontroller\TemplateTag', 'iterator', 'fallback');
 Document::addTagLib('APF\tools\html\taglib\HtmlIteratorItemTag', 'iterator', 'item');
+Document::addTagLib('APF\tools\html\taglib\FillHtmlIteratorTag', 'item', 'fill-iterator');
 
 Document::addTagLib('APF\tools\form\taglib\ButtonLanguageLabelTag', 'button', 'getstring');
 

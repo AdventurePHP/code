@@ -46,6 +46,8 @@ use InvalidArgumentException;
  */
 class HtmlIteratorTag extends Document implements Iterator {
 
+   use GetIterator;
+
    /**
     * Defines the "normal" fallback mode (fallback content is displayed additionally).
     *
@@ -101,6 +103,13 @@ class HtmlIteratorTag extends Document implements Iterator {
    protected $iterationNumber = 0;
 
    public function onParseTime() {
+
+      // ID#118: allow stacking of iterator tags by allowing an iterator to be
+      // transformed at it's definition place activated by attribute.
+      if ($this->getAttribute('transform-on-place', 'false') === 'true') {
+         $this->transformOnPlace();
+      }
+
       $this->extractTagLibTags();
    }
 
@@ -165,7 +174,7 @@ class HtmlIteratorTag extends Document implements Iterator {
             $pagerConfig = $this->getConfiguration('APF\modules\pager', 'pager.ini')->getSection($pager);
 
             // get the number of entries per page
-            $request = & self::getRequest();
+            $request = &self::getRequest();
             $entriesPerPage = $request->getParameter(
                   $pagerConfig->getValue('Pager.ParameterCountName'),
                   $pagerConfig->getValue('Pager.EntriesPerPage')
@@ -188,14 +197,14 @@ class HtmlIteratorTag extends Document implements Iterator {
       // the iterator item must not always be the first child
       // of the current node!
       $itemObjectId = $this->getIteratorItemObjectId();
-      $iteratorItem = & $this->children[$itemObjectId];
+      $iteratorItem = &$this->children[$itemObjectId];
       /* @var $iteratorItem HtmlIteratorItemTag */
 
       // define the dynamic getter.
       $getter = $iteratorItem->getAttribute('getter');
 
       // get the place holders
-      $placeHolders = & $iteratorItem->getPlaceHolders();
+      $placeHolders = &$iteratorItem->getPlaceHolders();
 
       $itemCount = count($this->dataContainer);
 

@@ -29,8 +29,11 @@ use APF\core\pagecontroller\ParserException;
  * @author Christian Achatz
  * @version
  * Version 0.1, 29.01.2014<br />
+ * Version 0.2, 07.03.2015 (ID#118: added support for "this" keyword to return the current document instance)<br />
  */
 class ModelEvaluationExpression extends EvaluationExpressionBase implements EvaluationExpression {
+
+   const THIS_MODEL_PARAM_NAME = 'this';
 
    public function getResult() {
 
@@ -46,10 +49,24 @@ class ModelEvaluationExpression extends EvaluationExpressionBase implements Eval
          $name = substr($name, 0, $open);
       }
 
-      /* @var $document Document */
-      $document = $this->previousResult;
+      // In case the model name is "this" the current document is returned. Current in this case
+      // means the Document instance where the expression is defined. Example:
+      //
+      // <html:iterator name="outer">
+      //    <iterator:item>
+      //       ${this->getIterator('inner')->getData('foo')}
+      //    </iterator:item>
+      // </html:iterator>
+      //
+      // Here, "this" will evaluate to the instance of the <iterator:item /> (HtmlIteratorItemTag).
+      if ($name === self::THIS_MODEL_PARAM_NAME) {
+         return $this->previousResult;
+      } else {
+         /* @var $document Document */
+         $document = $this->previousResult;
 
-      return $document->getData($name);
+         return $document->getData($name);
+      }
    }
 
    protected function check($expression, $previousResult) {

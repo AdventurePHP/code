@@ -29,9 +29,12 @@ use APF\core\pagecontroller\PlaceHolderTag;
  * @author Christian Achatz
  * @version
  * Version 0.1, 01.06.2008<br />
- * Version 0.3, 11.05.2014 (ID#187: allow template expressions within iterator items)<br />
+ * Version 0.2, 11.05.2014 (ID#187: allow template expressions within iterator items)<br />
+ * Version 0.3, 07.03.2015 (ID#118: added iterator stacking support)<br />
  */
 class HtmlIteratorItemTag extends Document {
+
+   use GetIterator;
 
    public function onParseTime() {
       $this->extractTagLibTags();
@@ -56,7 +59,7 @@ class HtmlIteratorItemTag extends Document {
       if (count($this->children) > 0) {
          foreach ($this->children as $objectId => $DUMMY) {
             if ($this->children[$objectId] instanceof PlaceHolderTag) {
-               $placeHolders[] = & $this->children[$objectId];
+               $placeHolders[] = &$this->children[$objectId];
             }
          }
       }
