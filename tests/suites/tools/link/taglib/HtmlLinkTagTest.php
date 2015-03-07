@@ -72,4 +72,73 @@ class HtmlLinkTagTest extends \PHPUnit_Framework_TestCase {
       $this->assertTrue($tag->isActive());
    }
 
+   /**
+    * ID#246: added unit test to guarantee accurate functionality
+    */
+   public function testNavigationLinks() {
+
+      // Current URL: http://www.example.com/?p=start
+      $query = '/?p=start';
+      $_SERVER['REQUEST_URI'] = $query;
+      $host = 'www.example.com';
+      $_SERVER['HTTP_HOST'] = $host;
+
+      // <li><html:a p="start">Home</html:a></li>
+      $tagOne = new HtmlLinkTag();
+      $tagOne->setAttributes([
+            'p' => 'start'
+      ]);
+      $homeLinkText = 'Home';
+      $tagOne->setContent($homeLinkText);
+      $tagOne->onParseTime();
+
+      $this->assertTrue($tagOne->isActive());
+      $this->assertEquals(
+            '<a href="http://' . $host . '/?p=start" class="active">' . $homeLinkText . '</a>',
+            $tagOne->transform()
+      );
+
+      // <li><html:a p="impress" para="345">Impress</html:a></li>
+      $tagTwo = new HtmlLinkTag();
+      $tagTwo->setAttributes([
+            'p'    => 'impress',
+            'para' => '345'
+      ]);
+      $impressLinkText = 'Impress';
+      $tagTwo->setContent($impressLinkText);
+      $tagTwo->onParseTime();
+
+      $this->assertFalse($tagTwo->isActive());
+      $this->assertEquals(
+            '<a href="http://' . $host . '/?p=impress&amp;para=345">' . $impressLinkText . '</a>',
+            $tagTwo->transform()
+      );
+
+   }
+
+   public function testLinkTextFallBack() {
+
+      // Current URL: http://www.example.com/?p=start
+      $query = '/?p=start';
+      $_SERVER['REQUEST_URI'] = $query;
+      $host = 'www.example.com';
+      $_SERVER['HTTP_HOST'] = $host;
+
+      // <li><html:a p="start" title="Home" /></li>
+      $tagOne = new HtmlLinkTag();
+      $homeLinkText = 'Home';
+      $tagOne->setAttributes([
+            'p'     => 'start',
+            'title' => $homeLinkText
+      ]);
+      $tagOne->onParseTime();
+
+      $this->assertTrue($tagOne->isActive());
+      $this->assertEquals(
+            '<a title="' . $homeLinkText . '" href="http://' . $host . '/?p=start" class="active">' . $homeLinkText . '</a>',
+            $tagOne->transform()
+      );
+
+   }
+
 }

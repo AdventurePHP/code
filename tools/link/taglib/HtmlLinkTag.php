@@ -35,6 +35,8 @@ use InvalidArgumentException;
  */
 class HtmlLinkTag extends LinkGenerationTag {
 
+   const TITLE_ATTRIBUTE_NAME = 'title';
+
    protected $attributeWhiteList = array(
          'id',
          'style',
@@ -54,7 +56,7 @@ class HtmlLinkTag extends LinkGenerationTag {
          'tabindex',
          'dir',
          'accesskey',
-         'title',
+         self::TITLE_ATTRIBUTE_NAME,
          'coords',
          self::HREF_ATTRIBUTE_NAME,
          'hreflang',
@@ -95,7 +97,7 @@ class HtmlLinkTag extends LinkGenerationTag {
       // because otherwise you will get an invalid html.
       $content = $this->getContent();
       if (empty($content)) {
-         $content = $this->attributeWhiteList['title'];
+         $content = $this->getAttribute(self::TITLE_ATTRIBUTE_NAME);
       }
 
       if (empty($content)) {
@@ -112,7 +114,7 @@ class HtmlLinkTag extends LinkGenerationTag {
          $this->addAttribute('class', 'active', ' ');
       }
 
-      return '<a ' . $this->getAttributesAsString($this->getAttributes()) . '>' . $content . '</a>';
+      return '<a ' . $this->getAttributesAsString($this->getAttributes(), $this->attributeWhiteList) . '>' . $content . '</a>';
    }
 
    /**
@@ -134,7 +136,7 @@ class HtmlLinkTag extends LinkGenerationTag {
       ksort($currentQuery);
       $currentUrl->setQuery($currentQuery);
 
-      $targetQuery = $currentUrl->getQuery();
+      $targetQuery = $targetUrl->getQuery();
       ksort($targetQuery);
       $targetUrl->setQuery($targetQuery);
 
