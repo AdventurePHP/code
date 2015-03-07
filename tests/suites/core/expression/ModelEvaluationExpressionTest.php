@@ -31,6 +31,7 @@ class ModelEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
    private function getDocument($dataAttributeName) {
       $document = new Document();
       $document->setData($dataAttributeName, new ContentModel());
+
       return $document;
    }
 
@@ -62,6 +63,19 @@ class ModelEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
    public function testWrongDataAttributeReference() {
       $expression = new ModelEvaluationExpression('bar', $this->getDocument(self::DATA_ATTRIBUTE_NAME));
       assertTrue($expression->getResult() === null);
+   }
+
+   public function testThisModelExpression() {
+      $expected = new Document();
+      $expected->setAttribute('foo', 'bar');
+
+      $expression = new ModelEvaluationExpression('this', $expected);
+
+      /* @var $result Document */
+      $result = $expression->getResult();
+
+      assertEquals($expected, $result);
+      assertEquals($expected->getAttribute('foo'), $result->getAttribute('foo'));
    }
 
 }
