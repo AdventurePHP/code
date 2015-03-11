@@ -74,7 +74,7 @@ class MultiFileUploadTag extends AbstractFormControl {
       $maxFileSize = $this->getAttribute('max-file-size');
       $MimeTypes = $this->getAttribute('allowed-mime-types');
 
-      $this->manager = & $this->getAndInitServiceObject(
+      $this->manager = &$this->getAndInitServiceObject(
             'APF\tools\form\multifileupload\biz\MultiFileUploadManager',
             array('formname' => $this->formName, 'name' => $this->uploadFieldName),
             APFService::SERVICE_TYPE_SINGLETON
@@ -89,7 +89,7 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 14.3.2011<br>
     */
    public function onAfterAppend() {
-      $form = & $this->getForm();
+      $form = &$this->getForm();
       $form->setAttribute('enctype', 'multipart/form-data');
 
       // ensure form has an id (required for the java script stuff)
@@ -148,7 +148,8 @@ class MultiFileUploadTag extends AbstractFormControl {
       /*       * ********* CSS-Code Ladbild Angfang *********** */
       $HHM->addNode(new CssContentNode(
             '.file_upload_progress .ui-progressbar-value {
-                     background: url(' . $this->MFUConfig->getValue('loadingimage.dir') . '/' . $this->MFUConfig->getValue('loadingimage.name') . ');
+                     background: url(' . $this->MFUConfig->getSection('loadingimage')->getValue('dir') . '/'
+            . $this->MFUConfig->getSection('loadingimage')->getValue('name') . ');
                }'));
 
       /*       * ********* CSS-Code Ladbild Ende *********** */
@@ -177,11 +178,12 @@ class MultiFileUploadTag extends AbstractFormControl {
                $image = '<img src="' . $file['filelink'] . '" alt="' . $file['name'] . '" /> ';
             }
 
+            $label = $this->languageConfig->getSection('delete')->getValue('label');
             $buffer .= '<tr>'
                   . '<td class="file_upload_preview">' . $image . '</td>'
                   . '<td><a href="' . $file['filelink'] . '" target="_blank">' . $file['name'] . '</a></td>'
                   . '<td>' . $file['filesize'] . '</td>'
-                  . '<td class="delete"><a href="' . $file['deletelink'] . '" target="_blank" onclick="return deletefile(\'' . $file['deletelink'] . '\',this)"><div class="ui-state-default ui-corner-all" title="' . $this->languageConfig->getValue('delete.label') . '"><span class="ui-icon ui-icon-trash">' . $this->languageConfig->getValue('delete.label') . '</span></div></a></td>'
+                  . '<td class="delete"><a href="' . $file['deletelink'] . '" target="_blank" onclick="return deletefile(\'' . $file['deletelink'] . '\',this)"><div class="ui-state-default ui-corner-all" title="' . $label . '"><span class="ui-icon ui-icon-trash">' . $label . '</span></div></a></td>'
                   . '</tr>';
          }
       }
@@ -198,7 +200,7 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 14.3.2011<br>
     */
    public function uploadFiles() {
-      $name = & $this->uploadFieldName;
+      $name = &$this->uploadFieldName;
       if (isset($_FILES[$name]) && $_FILES[$name]['name'] != '') {
          $addfile = $this->manager->addFile($_FILES[$name], false);
          unset($_FILES[$name]);
@@ -308,9 +310,11 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 13.07.2012<br>
     */
    private function createDialogFileDelete() {
+      $deleteLabels = $this->languageConfig->getSection('delete');
+
       return '<div class="confirm_delete ui-dialog-content ui-widget-content dialog_confirm_delete" title="'
-      . $this->languageConfig->getValue('delete.title') . '">'
-      . $this->languageConfig->getValue('delete.message') . '</div>';
+      . $deleteLabels->getValue('title') . '">'
+      . $deleteLabels->getValue('message') . '</div>';
    }
 
    /**
@@ -322,9 +326,11 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 13.07.2012<br>
     */
    private function createDialogFileSize() {
+      $fileSizeLabels = $this->languageConfig->getSection('filesize');
+
       return '<div class="filesize_dialog ui-dialog-content ui-widget-content" title="'
-      . $this->languageConfig->getValue('filesize.title') . '">'
-      . $this->languageConfig->getValue('filesize.message') . ' ' . $this->manager->getMaxFileSizeWithUnit() . '</div>';
+      . $fileSizeLabels->getValue('title') . '">'
+      . $fileSizeLabels->getValue('message') . ' ' . $this->manager->getMaxFileSizeWithUnit() . '</div>';
    }
 
    /**
@@ -336,9 +342,11 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 13.07.2012<br>
     */
    private function createDialogFileType() {
+      $fileTypeLabels = $this->languageConfig->getSection('filetype');
+
       return '<div class="filetype_dialog ui-dialog-content ui-widget-content" title="'
-      . $this->languageConfig->getValue('filetype.title') . '">'
-      . $this->languageConfig->getValue('filetype.message') . ' ' . $this->createFileExtensionFromMimeType($this->manager->getMimeTypes()) . '</div>';
+      . $fileTypeLabels->getValue('title') . '">'
+      . $fileTypeLabels->getValue('message') . ' ' . $this->createFileExtensionFromMimeType($this->manager->getMimeTypes()) . '</div>';
    }
 
    /**
@@ -350,9 +358,11 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 13.07.2012<br>
     */
    private function createUploadButton() {
+      $uploadLabels = $this->languageConfig->getSection('upload');
+
       return '<div id="' . $this->uploadFieldName . '_file_upload_container"><input type="file" name="' . $this->uploadFieldName . '" id="' . $this->uploadFieldName . '" multiple="multiple" /><button>'
-      . $this->languageConfig->getValue('upload.button.label') . '</button><div class="uploadlabel">'
-      . $this->languageConfig->getValue('upload.label') . '</div></div>';
+      . $uploadLabels->getSection('button')->getValue('label') . '</button><div class="uploadlabel">'
+      . $uploadLabels->getValue('label') . '</div></div>';
    }
 
    /**
@@ -396,7 +406,7 @@ class MultiFileUploadTag extends AbstractFormControl {
                   \'<td>\' + files[index].name + \'<\/td>\' +
                   \'<td class="file_upload_progress"><div><\/div><\/td>\' +
                   \'<td class="value">0 %<\/td>\' +
-                  \'<td class="delete"><button class="ui-state-default ui-corner-all" title="' . $this->languageConfig->getValue('cancel.label') . '"><span class="ui-icon ui-icon-cancel">' . $this->languageConfig->getValue('cancel.label') . '<\/span><\/button><\/td>\' +
+                  \'<td class="delete"><button class="ui-state-default ui-corner-all" title="' . $this->languageConfig->getSection('cancel')->getValue('label') . '"><span class="ui-icon ui-icon-cancel">' . $this->languageConfig->getSection('cancel')->getValue('label') . '<\/span><\/button><\/td>\' +
                \'<\/tr>\');
          },';
    }
@@ -411,6 +421,8 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @verison 1.1, 16.09.2012 (Fixed some smaller problems with escaping of tags)<br>
     */
    private function buildDownloadRow() {
+      $deleteLabel = $this->languageConfig->getSection('delete')->getValue('label');
+
       return '
          function (file) {
             var bild = "";
@@ -422,7 +434,7 @@ class MultiFileUploadTag extends AbstractFormControl {
                   \'<td class="file_upload_preview">\' + bild + \' <\/td>\' +
                   \'<td><a href="\' + file.filelink + \'" target="_blank" >\' + file.name + \'<\/a><\/td>\' +
                   \'<td>\'+file.filesize+\'<\/td>\'+
-                  \'<td><a href="\' + file.deletelink + \'" target="_blank" onclick="return deletefile(\\\'\' + file.deletelink + \'\\\',this)" ><div class="ui-state-default ui-corner-all" title="' . $this->languageConfig->getValue('delete.label') . '"><span class="ui-icon ui-icon-trash">' . $this->languageConfig->getValue('delete.label') . '<\/span><\/div><\/a><\/td>\'+
+                  \'<td><a href="\' + file.deletelink + \'" target="_blank" onclick="return deletefile(\\\'\' + file.deletelink + \'\\\',this)" ><div class="ui-state-default ui-corner-all" title="' . $deleteLabel . '"><span class="ui-icon ui-icon-trash">' . $deleteLabel . '<\/span><\/div><\/a><\/td>\'+
                \'<\/tr>\');
          },';
    }
@@ -443,7 +455,7 @@ class MultiFileUploadTag extends AbstractFormControl {
                height: 220,
                width: 300,
                buttons: {
-                  "' . $this->languageConfig->getValue('filesize.ok') . '": function() {
+                  "' . $this->languageConfig->getSection('filesize')->getValue('ok') . '": function() {
                      $(this).dialog("close");
                   }
                }
@@ -468,7 +480,7 @@ class MultiFileUploadTag extends AbstractFormControl {
             $(".filetype_dialog").dialog({
                modal: true,height:220,width:300,
                buttons: {
-                  "' . $this->languageConfig->getValue('filetype.ok') . '": function() {
+                  "' . $this->languageConfig->getSection('filetype')->getValue('ok') . '": function() {
                      $(this).dialog("close");
                   }
                }
@@ -499,7 +511,7 @@ class MultiFileUploadTag extends AbstractFormControl {
                   height: 240,
                   width: 400,
                   buttons: {
-                     "' . $this->languageConfig->getValue('delete.ok') . '": function() {
+                     "' . $this->languageConfig->getSection('delete')->getValue('ok') . '": function() {
                         $(this).dialog("close");
                         var jqxhr = $.ajax({
                            url: link
@@ -508,7 +520,7 @@ class MultiFileUploadTag extends AbstractFormControl {
                            $(elem).parent().parent().remove();
                         })
                      },
-                     "' . $this->languageConfig->getValue('delete.no') . '" : function() {
+                     "' . $this->languageConfig->getSection('delete')->getValue('no') . '" : function() {
                         $(this).dialog("close");
                         return false;
                      }

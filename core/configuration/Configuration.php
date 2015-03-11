@@ -57,9 +57,37 @@ interface Configuration {
     */
    public function getSection($name);
 
+   /**
+    * Let's you check whether the current configuration object has
+    * a section with the given name defined.
+    *
+    * @param string $name The name of the section.
+    *
+    * @return bool <em>True</em> in case the section is defined and <em>false</em> otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.03.2015<br />
+    */
+   public function definesSection($name);
+
    public function setValue($name, $value);
 
    public function setSection($name, Configuration $section);
+
+   /**
+    * Let's you check whether the current configuration object has
+    * a value with the given name defined.
+    *
+    * @param string $name The name of the attribute.
+    *
+    * @return bool <em>True</em> in case the attribute is defined and <em>false</em> otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.03.2015<br />
+    */
+   public function definesValue($name);
 
    /**
     * Enumerates the names of the current configuration keys.

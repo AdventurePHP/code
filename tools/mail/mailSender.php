@@ -138,20 +138,21 @@ class mailSender extends APFObject {
 
       // load config
       $config = $this->getConfiguration('APF\tools\mail', 'mailsender.ini');
-      $section = $config->getSection($initParam);
 
-      if ($section === null) {
+      if (!$config->definesSection($initParam)) {
          throw new InvalidArgumentException('[mailSender::init()] Section "' . $initParam
                . '" is not present within the mail sender\'s configuration!');
       }
 
+      $section = $config->getSection($initParam)->getSection('Mail');
+
       // set sender
-      $this->sender['Name'] = $section->getValue('Mail.SenderName');
-      $this->sender['EMail'] = $section->getValue('Mail.SenderEMail');
+      $this->sender['Name'] = $section->getValue('SenderName');
+      $this->sender['EMail'] = $section->getValue('SenderEMail');
 
-      $this->contentType = $section->getValue('Mail.ContentType');
+      $this->contentType = $section->getValue('ContentType');
 
-      $this->returnPath = $section->getValue('Mail.ReturnPath');
+      $this->returnPath = $section->getValue('ReturnPath');
 
       // reset text and recipients to avoid interference during multiple usage
       $this->clearRecipients();
@@ -420,7 +421,7 @@ class mailSender extends APFObject {
 
       $header = $this->generateHeader();
       /* @var $log Logger */
-      $log = & Singleton::getInstance('APF\core\logging\Logger');
+      $log = &Singleton::getInstance('APF\core\logging\Logger');
       $sentEmails = array();
 
       for ($i = 0; $i < count($this->recipients); $i++) {

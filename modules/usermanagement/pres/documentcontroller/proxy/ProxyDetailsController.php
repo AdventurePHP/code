@@ -28,7 +28,7 @@ class ProxyDetailsController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $uM = & $this->getManager();
+      $uM = &$this->getManager();
       $proxyId = self::getRequest()->getParameter('proxyid');
       $proxy = $uM->loadVisibilityDefinitionById($proxyId);
       $type = $uM->loadVisibilityDefinitionType($proxy);
@@ -39,7 +39,7 @@ class ProxyDetailsController extends UmgtBaseController {
             ->setPlaceHolder('app-proxy-type', $type->getAppObjectName());
 
       // load visibility permission list for the current permission
-      $template = & $this->getTemplate('listitem');
+      $template = &$this->getTemplate('listitem');
       $buffer = (string) '';
       $list = $uM->loadUsersAndGroupsWithVisibilityDefinition($proxy);
 
@@ -52,20 +52,21 @@ class ProxyDetailsController extends UmgtBaseController {
       ksort($sortedList);
 
       $config = $this->getConfiguration('APF\modules\usermanagement\pres', 'labels.ini');
-      $section = $config->getSection($this->getLanguage());
+      $section = $config->getSection($this->getLanguage())
+            ->getSection('frontend')->getSection('proxy')->getSection('details');
 
       foreach ($sortedList as $item) {
 
          /* @var $item UmgtUser|UmgtGroup */
          $template->setPlaceHolder('item', $item->getDisplayName());
 
-         $icon = & $this->getIcon($template);
+         $icon = &$this->getIcon($template);
          if ($item instanceof UmgtUser) {
             $icon->setAttribute('filename', 'user.png');
-            $icon->setAttribute('title', $section->getValue('frontend.proxy.details.user-img.label'));
+            $icon->setAttribute('title', $section->getSection('user-img')->getValue('label'));
          } else {
             $icon->setAttribute('filename', 'group.png');
-            $icon->setAttribute('title', $section->getValue('frontend.proxy.details.group-img.label'));
+            $icon->setAttribute('title', $section->getSection('group-img')->getValue('label'));
          }
 
          // insert links
@@ -87,7 +88,7 @@ class ProxyDetailsController extends UmgtBaseController {
       $this->setPlaceHolder('list', $buffer);
 
       // display special visibility definitions
-      $tmpl = & $this->getTemplate('access-perms');
+      $tmpl = &$this->getTemplate('access-perms');
 
       $read = $tmpl->getChildNode('id', 'read', 'APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag');
       $proxy->getReadPermission() == '1'

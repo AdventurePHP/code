@@ -131,7 +131,7 @@ class SocialBookmarkBarManager extends APFObject {
    public function getBookmarkCode() {
 
       /* @var $t BenchmarkTimer */
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       $id = 'SocialBookmarkBarManager::getBookmarkCode()';
       $t->start($id);
 
@@ -145,15 +145,15 @@ class SocialBookmarkBarManager extends APFObject {
 
       foreach ($services->getSectionNames() as $serviceName) {
 
-         $service = $services->getSection($serviceName);
+         $service = $services->getSection($serviceName)->getSection('BookmarkService');
          $this->bookmarkServices[] =
                new SocialBookmarkItem(
-                     $service->getValue('BookmarkService.BaseURL'),
-                     $service->getValue('BookmarkService.Param.URL'),
-                     $service->getValue('BookmarkService.Param.Title'),
-                     $service->getValue('BookmarkService.Display.Title'),
-                     $service->getValue('BookmarkService.Display.Image'),
-                     $service->getValue('BookmarkService.Display.ImageExt')
+                     $service->getValue('BaseURL'),
+                     $service->getSection('Param')->getValue('URL'),
+                     $service->getSection('Param')->getValue('Title'),
+                     $service->getSection('Display')->getValue('Title'),
+                     $service->getSection('Display')->getValue('Image'),
+                     $service->getSection('Display')->getValue('ImageExt')
                );
       }
 

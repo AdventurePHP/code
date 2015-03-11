@@ -48,7 +48,7 @@ class ArticleCommentMapper extends APFObject {
     */
    public function loadArticleCommentByID($commentId) {
 
-      $SQL = & $this->getConnection();
+      $SQL = &$this->getConnection();
       $select = 'SELECT ArticleCommentID, Name, EMail, Comment, Date, Time
                     FROM article_comments
                     WHERE ArticleCommentID = \'' . $commentId . '\';';
@@ -68,7 +68,7 @@ class ArticleCommentMapper extends APFObject {
     */
    public function saveArticleComment(ArticleComment $comment) {
 
-      $conn = & $this->getConnection();
+      $conn = &$this->getConnection();
       if ($comment->getId() == null) {
          $insert = 'INSERT INTO article_comments
                        (Name, EMail, Comment, Date, Time, CategoryKey)
@@ -92,9 +92,9 @@ class ArticleCommentMapper extends APFObject {
    private function &getConnection() {
 
       /* @var $cM ConnectionManager */
-      $cM = & $this->getServiceObject('APF\core\database\ConnectionManager');
+      $cM = &$this->getServiceObject('APF\core\database\ConnectionManager');
       $config = $this->getConfiguration('APF\modules\comments', 'comments.ini');
-      $connectionKey = $config->getSection('Default')->getValue('Database.ConnectionKey');
+      $connectionKey = $config->getSection('Default')->getSection('Database')->getValue('ConnectionKey');
       if ($connectionKey == null) {
          throw new InvalidArgumentException('[ArticleCommentMapper::getConnection()] The module\'s '
                . 'configuration file does not contain a valid database connection key. Please '

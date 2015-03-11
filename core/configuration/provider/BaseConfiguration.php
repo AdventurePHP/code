@@ -46,11 +46,17 @@ abstract class BaseConfiguration {
    private $sections = array();
 
    public function getSection($name) {
-      return isset($this->sections[$name]) ? $this->sections[$name] : null;
+      $configType = get_class($this);
+
+      return isset($this->sections[$name]) ? $this->sections[$name] : new $configType();
    }
 
    public function getSectionNames() {
       return array_keys($this->sections);
+   }
+
+   public function definesSection($name) {
+      return isset($this->sections[$name]);
    }
 
    public function getValue($name, $defaultValue = null) {
@@ -59,6 +65,10 @@ abstract class BaseConfiguration {
 
    public function getValueNames() {
       return array_keys($this->values);
+   }
+
+   public function definesValue($name) {
+      return isset($this->values[$name]);
    }
 
    public function setSection($name, Configuration $section) {

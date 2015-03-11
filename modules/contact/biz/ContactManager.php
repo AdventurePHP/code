@@ -59,7 +59,7 @@ class ContactManager extends APFObject {
 
       // set up the mail sender
       /* @var $mail mailSender */
-      $mail = & $this->getAndInitServiceObject('APF\tools\mail\mailSender', 'ContactForm');
+      $mail = &$this->getAndInitServiceObject('APF\tools\mail\mailSender', 'ContactForm');
 
       /* @var $recipient ContactFormRecipient */
       $recipient = $this->getMapper()->loadRecipientById($formData->getRecipientId());
@@ -156,17 +156,19 @@ class ContactManager extends APFObject {
    private function getNotificationText(array $values = array()) {
 
       $config = $this->getConfiguration('APF\modules\contact', 'mail_templates.ini');
-      $section = $config->getSection($this->getLanguage());
-      if ($section === null) {
+
+      if (!$config->definesSection($this->getLanguage())) {
          throw new ConfigurationException('Configuration section "' . $this->getLanguage() . '" is not present within '
                . 'the contact form module configuration loading the email templates. Please '
                . 'review your configuration!');
       }
 
+      $section = $config->getSection($this->getLanguage())->getSection('notification');
+
       return $this->fillPlaceHolders(
             $this->getEmailTemplateContent(
-                  $section->getValue('notification.namespace'),
-                  $section->getValue('notification.template')
+                  $section->getValue('namespace'),
+                  $section->getValue('template')
             ),
             $values
       );
@@ -194,17 +196,19 @@ class ContactManager extends APFObject {
     */
    private function getConfirmationText(array $values = array()) {
       $config = $this->getConfiguration('APF\modules\contact', 'mail_templates.ini');
-      $section = $config->getSection($this->getLanguage());
-      if ($section === null) {
+
+      if (!$config->definesSection($this->getLanguage())) {
          throw new ConfigurationException('Configuration section "' . $this->getLanguage() . '" is not present within '
                . 'the contact form module configuration loading the email templates. Please '
                . 'review your configuration!');
       }
 
+      $section = $config->getSection($this->getLanguage())->getSection('confirmation');
+
       return $this->fillPlaceHolders(
             $this->getEmailTemplateContent(
-                  $section->getValue('confirmation.namespace'),
-                  $section->getValue('confirmation.template')
+                  $section->getValue('namespace'),
+                  $section->getValue('template')
             ),
             $values
       );
