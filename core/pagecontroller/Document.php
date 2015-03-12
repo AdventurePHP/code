@@ -222,6 +222,19 @@ class Document extends APFObject {
 
    /**
     * Returns the object's attribute.
+    * <p/>
+    * PLEASE NOTE: attributes defined with value <em>null</em> will not be recognized
+    * as XML string attributes that are really <em>null</em> don't make sense. Defining
+    * an attribute such as
+    * <code>
+    * empty=""
+    * </code>
+    * will return <em>false</em> for
+    * <code>
+    * $attributes = XmlParser::getAttributesFromString('filled="foo" empty=""');
+    * var_dump($attributes['empty'] === null)
+    * </code>
+    * For this reason, XML attributes can only be null when not existing.
     *
     * @param string $name The name of the desired attribute.
     * @param string $default The default value for the attribute.
@@ -235,6 +248,26 @@ class Document extends APFObject {
     */
    public function getAttribute($name, $default = null) {
       return isset($this->attributes[$name]) ? $this->attributes[$name] : $default;
+   }
+
+   /**
+    * Allows you to check whether an attribute has been defined or not.
+    * <p/>
+    * Similar to <em>getAttribute()</em> this method only returns <em>true</em>
+    * in case there is an attribute defined and it's value is unlike <em>null</em>.
+    * <p/>
+    * PLEASE NOTE: this is intentional as described in <em>getAttribute()</em>.
+    *
+    * @param string $name The name of the desired attribute.
+    *
+    * @return bool <em>True</em> in case
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.03.2015<br />
+    */
+   public function hasAttribute($name) {
+      return isset($this->attributes[$name]);
    }
 
    /**
