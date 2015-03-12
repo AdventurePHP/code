@@ -23,6 +23,7 @@ namespace APF\tests\suites\core\pagecontroller;
 use APF\core\loader\RootClassLoader;
 use APF\core\loader\StandardClassLoader;
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\TemplateTag;
 use ReflectionMethod;
 
 /**
@@ -67,6 +68,37 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
    public function testWithVendorOnly() {
       $filePath = $this->getMethod()->invokeArgs(new Document(), array(self::VENDOR, 'foo'));
       assertEquals(self::SOURCE_PATH . '/foo.html', $filePath);
+   }
+
+   public function testGetChildNode() {
+      $doc = new TemplateTag();
+      $doc->setContent('<html:template name="foo">bar</html:template>');
+      $doc->onParseTime();
+      $template = $doc->getChildNode('name', 'foo', 'APF\core\pagecontroller\TemplateTag');
+      $this->assertNotNull($template);
+      $this->assertEquals('bar', $template->getContent());
+   }
+
+   public function testGetChildNodeWithException() {
+      $this->setExpectedException('\InvalidArgumentException');
+      $doc = new Document();
+      $doc->onParseTime();
+      $doc->getChildNode('foo', 'bar', 'APF\core\pagecontroller\Document');
+   }
+
+   public function testGetChildNodes() {
+      $doc = new TemplateTag();
+      $doc->setContent('<html:placeholder name="foo" /><html:placeholder name="foo" /><html:placeholder name="foo" />');
+      $doc->onParseTime();
+      $placeHolders = $doc->getChildNodes('name', 'foo', 'APF\core\pagecontroller\PlaceHolderTag');
+      $this->assertEquals(3, count($placeHolders));
+      $this->assertEquals('foo', $placeHolders[0]->getAttribute('name'));
+   }
+
+   public function testGetChildNodesWithException() {
+      $this->setExpectedException('\InvalidArgumentException');
+      $doc = new Document();
+      $doc->getChildNodes('foo', 'bar', 'APF\core\pagecontroller\Document');
    }
 
 }

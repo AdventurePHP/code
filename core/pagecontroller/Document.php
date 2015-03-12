@@ -474,17 +474,12 @@ class Document extends APFObject {
     */
    public function &getChildNode($attributeName, $value, $tagLibClass) {
       $children = &$this->getChildren();
-      if (count($children) > 0) {
-         foreach ($children as $objectId => $DUMMY) {
-            if ($children[$objectId] instanceof $tagLibClass) {
-               if ($children[$objectId]->getAttribute($attributeName) == $value) {
-                  return $children[$objectId];
-               }
-            }
+      foreach ($children as $objectId => $DUMMY) {
+         if ($children[$objectId] instanceof $tagLibClass
+               && $children[$objectId]->getAttribute($attributeName) == $value
+         ) {
+            return $children[$objectId];
          }
-      } else {
-         throw new InvalidArgumentException('[' . get_class($this) . '::getChildNode()] Current node has no children!',
-               E_USER_ERROR);
       }
       throw new InvalidArgumentException('[' . get_class($this) . '::getChildNode()] No child node with type "'
             . $tagLibClass . '" and attribute selector ' . $attributeName . '="' . $value . '" composed in current '
@@ -509,27 +504,24 @@ class Document extends APFObject {
     * Version 0.2, 09.02.2013 (Now public access since DocumentController is now derived from APFObject instead of Document)<br />
     */
    public function &getChildNodes($attributeName, $value, $tagLibClass) {
+      $result = array();
+
       $children = &$this->getChildren();
 
-      if (count($children) > 0) {
-         $result = array();
-         foreach ($children as $objectId => $DUMMY) {
-            if ($children[$objectId] instanceof $tagLibClass) {
-               if ($children[$objectId]->getAttribute($attributeName) == $value) {
-                  $result[] = &$children[$objectId];
-               }
-            }
-         }
-         if (count($result) == 0) {
-            throw new InvalidArgumentException('[' . get_class($this) . '::getChildNodes()] No child nodes with type "'
-                  . $tagLibClass . '" and attribute selector ' . $attributeName . '="' . $value . '" composed in current '
-                  . 'document!', E_USER_ERROR);
-         } else {
-            return $result;
+      foreach ($children as $objectId => $DUMMY) {
+         if ($children[$objectId] instanceof $tagLibClass
+               && $children[$objectId]->getAttribute($attributeName) == $value
+         ) {
+            $result[] = &$children[$objectId];
          }
       }
-
-      throw new InvalidArgumentException('[' . get_class($this) . '::getChildNodes()] Current node has no children!', E_USER_ERROR);
+      if (count($result) == 0) {
+         throw new InvalidArgumentException('[' . get_class($this) . '::getChildNodes()] No child nodes with type "'
+               . $tagLibClass . '" and attribute selector ' . $attributeName . '="' . $value . '" composed in current '
+               . 'document!', E_USER_ERROR);
+      } else {
+         return $result;
+      }
    }
 
    /**
