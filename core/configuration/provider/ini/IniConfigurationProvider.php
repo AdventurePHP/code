@@ -55,13 +55,6 @@ use APF\core\configuration\provider\BaseConfigurationProvider;
  */
 class IniConfigurationProvider extends BaseConfigurationProvider implements ConfigurationProvider {
 
-   /**
-    * The sub key delimiter.
-    *
-    * @var string $NAMESPACE_DELIMITER
-    */
-   private static $NAMESPACE_DELIMITER = '.';
-
    public function loadConfiguration($namespace, $context, $language, $environment, $name) {
 
       $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
@@ -122,12 +115,12 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
 
       $config = new IniConfiguration();
       foreach ($entries as $name => $value) {
-         $config->setValue($name, $value);
-
          // do always parse sub sections to have a clear API for the configuration provider
-         $dot = strpos($name, self::$NAMESPACE_DELIMITER);
+         $dot = strpos($name, Configuration::SECTION_PATH_SEPARATOR);
          if ($dot !== false) {
             $this->parseSubSection($config, $name, $value);
+         } else {
+            $config->setValue($name, $value);
          }
       }
 
@@ -148,15 +141,16 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
     */
    private function parseSubSection(Configuration &$config, $name, $value) {
 
-      $dot = strpos($name, self::$NAMESPACE_DELIMITER);
+      $dot = strpos($name, Configuration::SECTION_PATH_SEPARATOR);
       if ($dot === false) {
          $config->setValue($name, $value);
       } else {
          $subSectionName = substr($name, 0, $dot);
-         $remainingName = substr($name, $dot + strlen(self::$NAMESPACE_DELIMITER));
+         $remainingName = substr($name, $dot + strlen(Configuration::SECTION_PATH_SEPARATOR));
 
-         $nextSection = $config->getSection($subSectionName);
-         if ($nextSection === null) {
+         if ($config->hasSection($subSectionName)) {
+            $nextSection = $config->getSection($subSectionName);
+         } else {
             $nextSection = new IniConfiguration();
          }
 
@@ -192,7 +186,7 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
 
       // append simple values except the dot notation values
       foreach ($section->getValueNames() as $name) {
-         $dot = strpos($name, self::$NAMESPACE_DELIMITER);
+         $dot = strpos($name, Configuration::SECTION_PATH_SEPARATOR);
          if ($dot === false) {
             $value = $section->getValue($name);
 

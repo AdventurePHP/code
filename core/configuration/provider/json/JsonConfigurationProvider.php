@@ -141,7 +141,7 @@ class JsonConfigurationProvider extends BaseConfigurationProvider implements Con
     * Creates a meta structure from the given configuration representation and returns the
     * json-formatted string to save.
     *
-    * @param JsonConfiguration $config The config to resolve.
+    * @param Configuration $config The config to resolve.
     *
     * @return array The meta structure of the given configuration representation.
     *
@@ -149,7 +149,7 @@ class JsonConfigurationProvider extends BaseConfigurationProvider implements Con
     * @version
     * Version 0.1, 07.11.2010<br />
     */
-   private function resolveStructure(JsonConfiguration $config) {
+   private function resolveStructure(Configuration $config) {
 
       $rawConfig = array();
 
@@ -163,7 +163,7 @@ class JsonConfigurationProvider extends BaseConfigurationProvider implements Con
    /**
     * Resolves the configuration abstraction to the array meta format concerning one section.
     *
-    * @param JsonConfiguration $config The config to resolve.
+    * @param Configuration $config The config to resolve.
     *
     * @return array The meta structure of the given configuration representation.
     *
@@ -171,7 +171,7 @@ class JsonConfigurationProvider extends BaseConfigurationProvider implements Con
     * @version
     * Version 0.1, 07.11.2010<br />
     */
-   private function resolveSection(JsonConfiguration $config) {
+   private function resolveSection(Configuration $config) {
 
       $rawConfig = array();
 

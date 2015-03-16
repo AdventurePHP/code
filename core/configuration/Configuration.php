@@ -27,11 +27,21 @@ namespace APF\core\configuration;
  * @author Christian Achatz
  * @version
  * Version 0.1, 27.09.2010<br />
+ * Version 0.2, 12.03.2015 (ID#224: introduced path expression capability for configuration values)<br />
  */
 interface Configuration {
 
    /**
+    * @const string Defines the separation character to define a multi-level value expression.
+    */
+   const SECTION_PATH_SEPARATOR = '.';
+
+   /**
     * Returns the desired configuration key's value.
+    * <p/>
+    * Supports accessing values with a path expression (e.g. <em>Section.SubSection.AttributeName</em>).
+    * Here, <em>AttributeName</em> is the name of the attribute to return but located in section
+    * <em>SubSection</em> that in turn is defined withing section <em>Section</em>.
     *
     * @param string $name The name of the attribute.
     * @param string $defaultValue The default value.
@@ -46,6 +56,10 @@ interface Configuration {
 
    /**
     * Returns the desired configuration section.
+    * <p/>
+    * Supports accessing sections with a path expression (e.g. <em>Section.SubSection</em>).
+    * Here, <em>SubSection</em> is the name of the section to return but located in section
+    * <em>Section</em>.
     *
     * @param string $name The name of the attribute.
     *
@@ -60,6 +74,8 @@ interface Configuration {
    /**
     * Let's you check whether the current configuration object has
     * a section with the given name defined.
+    * <p/>
+    * Supports path expressions that are also applicable with the <em>getSection()</em> method.
     *
     * @param string $name The name of the section.
     *
@@ -67,9 +83,9 @@ interface Configuration {
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 11.03.2015<br />
+    * Version 0.1, 13.03.2015<br />
     */
-   public function definesSection($name);
+   public function hasSection($name);
 
    public function setValue($name, $value);
 
@@ -78,6 +94,8 @@ interface Configuration {
    /**
     * Let's you check whether the current configuration object has
     * a value with the given name defined.
+    * <p/>
+    * Supports path expressions that are also applicable with the <em>getValue()</em> method.
     *
     * @param string $name The name of the attribute.
     *
@@ -87,10 +105,10 @@ interface Configuration {
     * @version
     * Version 0.1, 11.03.2015<br />
     */
-   public function definesValue($name);
+   public function hasValue($name);
 
    /**
-    * Enumerates the names of the current configuration keys.
+    * Enumerates the names of the CURRENT instance' configuration keys.
     *
     * @return array The names of the config keys.
     *
@@ -101,7 +119,7 @@ interface Configuration {
    public function getValueNames();
 
    /**
-    * Enumerates the names of the current configuration sections.
+    * Enumerates the names of the CURRENT instance' configuration sections.
     *
     * @return array The names of the section keys.
     *

@@ -20,7 +20,6 @@
  */
 namespace APF\core\configuration\provider\php;
 
-use APF\core\configuration\Configuration;
 use APF\core\configuration\provider\BaseConfiguration;
 
 /**
@@ -30,6 +29,6 @@ use APF\core\configuration\provider\BaseConfiguration;
  * @version
  * Version 0.1, 07.03.2015 (ID#243: added PHP-array file based configuration file support)<br />
  */
-class PhpConfiguration extends BaseConfiguration implements Configuration {
+class PhpConfiguration extends BaseConfiguration {
 
 }

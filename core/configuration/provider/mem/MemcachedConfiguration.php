@@ -20,7 +20,6 @@
  */
 namespace APF\core\configuration\provider\mem;
 
-use APF\core\configuration\Configuration;
 use APF\core\configuration\provider\BaseConfiguration;
 
 /**
@@ -31,6 +30,6 @@ use APF\core\configuration\provider\BaseConfiguration;
  * @version
  * Version 0.1, 30.10.2010<br />
  */
-class MemcachedConfiguration extends BaseConfiguration implements Configuration {
+class MemcachedConfiguration extends BaseConfiguration {
 
 }

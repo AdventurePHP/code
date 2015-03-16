@@ -20,7 +20,6 @@
  */
 namespace APF\core\configuration\provider\xml;
 
-use APF\core\configuration\Configuration;
 use APF\core\configuration\provider\BaseConfiguration;
 
 /**
@@ -30,6 +29,6 @@ use APF\core\configuration\provider\BaseConfiguration;
  * @version
  * Version 0.1, 09.10.2010<br />
  */
-class XmlConfiguration extends BaseConfiguration implements Configuration {
+class XmlConfiguration extends BaseConfiguration {
 
 }

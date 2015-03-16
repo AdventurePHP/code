@@ -20,7 +20,6 @@
  */
 namespace APF\core\configuration\provider\apc;
 
-use APF\core\configuration\Configuration;
 use APF\core\configuration\provider\BaseConfiguration;
 
 /**
@@ -31,6 +30,6 @@ use APF\core\configuration\provider\BaseConfiguration;
  * @version
  * Version 0.1, 03.01.2013<br />
  */
-class ApcConfiguration extends BaseConfiguration implements Configuration {
+class ApcConfiguration extends BaseConfiguration {
 
 }

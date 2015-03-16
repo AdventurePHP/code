@@ -73,10 +73,12 @@ class IniConfigurationProviderTest extends \PHPUnit_Framework_TestCase {
             self::TEST_CONFIG_NAME
       );
 
-      $this->assertEquals('foo', $config->getSection('Section')->getValue('SubSection.ValueOne'));
+      $this->assertEquals('foo', $config->getSection('Section')->getValue('SubSection.ValueOne')); // should not fail with removing direct access support
+      $this->assertEquals('foo', $config->getValue('Section.SubSection.ValueOne'));
       $this->assertEquals('foo', $config->getSection('Section')->getSection('SubSection')->getValue('ValueOne'));
 
-      $this->assertEquals('bar', $config->getSection('Section')->getValue('SubSection.ValueTwo'));
+      $this->assertEquals('bar', $config->getSection('Section')->getValue('SubSection.ValueTwo')); // should not fail with removing direct access support
+      $this->assertEquals('bar', $config->getValue('Section.SubSection.ValueTwo'));
       $this->assertEquals('bar', $config->getSection('Section')->getSection('SubSection')->getValue('ValueTwo'));
 
    }
@@ -127,6 +129,31 @@ class IniConfigurationProviderTest extends \PHPUnit_Framework_TestCase {
             self::TEST_ENVIRONMENT,
             self::TEST_NEW_CONFIG_NAME
       );
+   }
+
+   public function testSectionAccessWithPath() {
+      $config = ConfigurationManager::loadConfiguration(
+            self::TEST_VENDOR,
+            null,
+            null,
+            self::TEST_ENVIRONMENT,
+            self::TEST_CONFIG_NAME
+      );
+
+      $this->assertEquals('foo', $config->getSection('Section.SubSection')->getValue('ValueOne'));
+      $this->assertEquals('foo', $config->getSection('Section')->getSection('SubSection')->getValue('ValueOne'));
+   }
+
+   public function testValueAccessWithPath() {
+      $config = ConfigurationManager::loadConfiguration(
+            self::TEST_VENDOR,
+            null,
+            null,
+            self::TEST_ENVIRONMENT,
+            self::TEST_CONFIG_NAME
+      );
+
+      $this->assertEquals('foo', $config->getValue('Section.SubSection.ValueOne'));
    }
 
    public static function tearDownAfterClass() {

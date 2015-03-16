@@ -20,7 +20,6 @@
  */
 namespace APF\core\configuration\provider\ini;
 
-use APF\core\configuration\Configuration;
 use APF\core\configuration\provider\BaseConfiguration;
 
 /**
@@ -30,6 +29,6 @@ use APF\core\configuration\provider\BaseConfiguration;
  * @version
  * Version 0.1, 27.09.2010<br />
  */
-class IniConfiguration extends BaseConfiguration implements Configuration {
+class IniConfiguration extends BaseConfiguration {
 
 }

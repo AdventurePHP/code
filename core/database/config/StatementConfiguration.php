@@ -20,7 +20,6 @@
  */
 namespace APF\core\database\config;
 
-use APF\core\configuration\Configuration;
 use APF\core\configuration\provider\BaseConfiguration;
 
 /**
@@ -32,7 +31,7 @@ use APF\core\configuration\provider\BaseConfiguration;
  * @version
  * Version 0.1, 02.02.2011
  */
-class StatementConfiguration extends BaseConfiguration implements Configuration {
+class StatementConfiguration extends BaseConfiguration {
 
    /**
     * The statement content.

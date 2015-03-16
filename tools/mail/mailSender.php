@@ -139,7 +139,7 @@ class mailSender extends APFObject {
       // load config
       $config = $this->getConfiguration('APF\tools\mail', 'mailsender.ini');
 
-      if (!$config->definesSection($initParam)) {
+      if (!$config->hasSection($initParam)) {
          throw new InvalidArgumentException('[mailSender::init()] Section "' . $initParam
                . '" is not present within the mail sender\'s configuration!');
       }
