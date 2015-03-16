@@ -87,8 +87,36 @@ interface Configuration {
     */
    public function hasSection($name);
 
+   /**
+    * Allows you to set a configuration value within the current configuration instance.
+    * <p/>
+    * Supports path expressions that are also applicable with the <em>getSection()</em> method.
+    *
+    * @param string $name The name of the configuration attribute.
+    * @param string $value The value of the configuration attribute.
+    *
+    * @return Configuration This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 13.03.2015<br />
+    */
    public function setValue($name, $value);
 
+   /**
+    * Allows you to add a configuration section to the current configuration instance.
+    * <p/>
+    * Supports path expressions that are also applicable with the <em>getSection()</em> method.
+    *
+    * @param string $name The name of the section.
+    * @param Configuration $section The configuration section to add.
+    *
+    * @return Configuration This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 13.03.2015<br />
+    */
    public function setSection($name, Configuration $section);
 
    /**
@@ -135,6 +163,8 @@ interface Configuration {
     *
     * @param string $name The name of the section to remove.
     *
+    * @return Configuration This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 28.10.2010<br />
@@ -146,6 +176,8 @@ interface Configuration {
     * This can be used to manipulate configuration files for saving.
     *
     * @param string $name The name of the value to remove.
+    *
+    * @return Configuration This instance for further usage.
     *
     * @author Christian Achatz
     * @version

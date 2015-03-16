@@ -145,6 +145,8 @@ abstract class BaseConfiguration implements Configuration {
       } else {
          $this->sections[$name] = $section;
       }
+
+      return $this;
    }
 
    public function setValue($name, $value) {
@@ -156,6 +158,7 @@ abstract class BaseConfiguration implements Configuration {
          $this->values[$name] = $value;
       }
 
+      return $this;
    }
 
    public function removeSection($name) {
@@ -167,6 +170,7 @@ abstract class BaseConfiguration implements Configuration {
          unset($this->sections[$name]);
       }
 
+      return $this;
    }
 
    public function removeValue($name) {
@@ -178,6 +182,7 @@ abstract class BaseConfiguration implements Configuration {
          unset($this->values[$name]);
       }
 
+      return $this;
    }
 
    /**
