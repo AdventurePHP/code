@@ -36,21 +36,18 @@ class ProxyListController extends UmgtBaseController {
    public function transformContent() {
 
       // display filter form
-      $uM = &$this->getManager();
-      $form = &$this->getForm('type-filter');
+      $uM = & $this->getManager();
+      $form = & $this->getForm('type-filter');
 
       $types = $uM->loadVisibilityDefinitionTypes();
-      $select = &$form->getFormElementByName('proxytypeid');
+      $select = & $form->getFormElementByName('proxytypeid');
       /* @var $select SelectBoxTag */
 
       // add default option that deletes any filter
       $select->addOption(
             $this->getConfiguration('APF\modules\usermanagement\pres', 'labels.ini')
                   ->getSection($this->getLanguage())
-                  ->getSection('frontend')->getSection('proxy')->getSection('list')->getSection('delete-filter')
-                  ->getValue('label'),
-            0
-      );
+                  ->getValue('frontend.proxy.list.delete-filter.label'), 0);
 
       foreach ($types as $type) {
          $select->addOption($type->getAppObjectName(), $type->getObjectId());
@@ -72,7 +69,7 @@ class ProxyListController extends UmgtBaseController {
       }
 
       $buffer = (string) '';
-      $template = &$this->getTemplate('Proxy');
+      $template = & $this->getTemplate('Proxy');
       foreach ($proxies as $proxy) {
 
          $proxyId = $proxy->getObjectId();

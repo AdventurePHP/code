@@ -171,20 +171,18 @@ class HtmlIteratorTag extends Document implements Iterator {
          if ($pager != false) {
 
             // get pager-config
-            $pagerConfig = $this->getConfiguration('APF\modules\pager', 'pager.ini')
-                  ->getSection($pager)
-                  ->getSection('Pager');
+            $pagerConfig = $this->getConfiguration('APF\modules\pager', 'pager.ini')->getSection($pager);
 
             // get the number of entries per page
             $request = &self::getRequest();
             $entriesPerPage = $request->getParameter(
-                  $pagerConfig->getValue('ParameterCountName'),
-                  $pagerConfig->getValue('EntriesPerPage')
+                  $pagerConfig->getValue('Pager.ParameterCountName'),
+                  $pagerConfig->getValue('Pager.EntriesPerPage')
             );
 
             // get the number of the actual page
             $actualPage = $request->getParameter(
-                  $pagerConfig->getValue('ParameterPageName'),
+                  $pagerConfig->getValue('Pager.ParameterPageName'),
                   1
             );
 
@@ -281,9 +279,9 @@ class HtmlIteratorTag extends Document implements Iterator {
 
                   // use getter defined with <iterator:item /> to retrieve appropriate value
                   $placeHolders[$objectId]->setContent($this->dataContainer[$i]->{
-                  $getter
-                  }(
-                        $placeHolders[$objectId]->getAttribute('name'))
+                              $getter
+                              }(
+                                    $placeHolders[$objectId]->getAttribute('name'))
                   );
 
                }

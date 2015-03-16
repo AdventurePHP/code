@@ -36,7 +36,7 @@ class ProxyRevokeAccessController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $uM = &$this->getManager();
+      $uM = & $this->getManager();
 
       $objectId = self::getRequest()->getParameter('objectid');
       $objectType = self::getRequest()->getParameter('objecttype');
@@ -50,8 +50,8 @@ class ProxyRevokeAccessController extends UmgtBaseController {
       /* @var $object UmgtUser|UmgtGroup */
       $object->setObjectId($objectId);
 
-      $formYes = &$this->getForm('RevokeYes');
-      $formNo = &$this->getForm('RevokeNo');
+      $formYes = & $this->getForm('RevokeYes');
+      $formNo = & $this->getForm('RevokeNo');
 
       if ($formYes->isSent()) {
 
@@ -64,18 +64,23 @@ class ProxyRevokeAccessController extends UmgtBaseController {
       } elseif ($formNo->isSent()) {
       } else {
 
-         $label = &$this->getLabel('intro-text');
+         $label = & $this->getLabel('intro-text');
 
          $labels = $this->getConfiguration('APF\modules\usermanagement\pres', 'labels.ini')
-               ->getSection($this->getLanguage())->getSection('frontend')->getSection('proxy')
-               ->getSection('revoke-access')->getSection('object-type');
+               ->getSection($this->getLanguage());
 
          if ($objectType == 'User') {
             $object = $this->getManager()->loadUserByID($objectId);
-            $label->setPlaceHolder('object-type', $labels->getSection('user')->getValue('label'));
+            $label->setPlaceHolder(
+                  'object-type',
+                  $labels->getValue('frontend.proxy.revoke-access.object-type.user.label')
+            );
          } else {
             $object = $this->getManager()->loadGroupByID($objectId);
-            $label->setPlaceHolder('object-type', $labels->getSection('group')->getValue('label'));
+            $label->setPlaceHolder(
+                  'object-type',
+                  $labels->getValue('frontend.proxy.revoke-access.object-type.group.label')
+            );
          }
          $label->setPlaceHolder('display-name', $object->getDisplayName());
          $label->setPlaceHolder('proxy-id', $proxyId);
@@ -90,12 +95,12 @@ class ProxyRevokeAccessController extends UmgtBaseController {
       }
 
       self::getResponse()->forward($this->generateLink(
-            array(
-                  'mainview'  => 'proxy',
-                  'proxyview' => 'details',
-                  'proxyid'   => $proxyId
+                  array(
+                        'mainview'  => 'proxy',
+                        'proxyview' => 'details',
+                        'proxyid'   => $proxyId
+                  )
             )
-      )
       );
 
    }

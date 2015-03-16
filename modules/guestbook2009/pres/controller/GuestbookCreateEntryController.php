@@ -36,23 +36,23 @@ class GuestbookCreateEntryController extends GuestbookBaseController {
 
    public function transformContent() {
 
-      $form = &$this->getForm('create_entry');
+      $form = & $this->getForm('create_entry');
 
       if ($form->isSent() && $form->isValid()) {
 
          // Fill domain objects by extracting the values
          // from the form elements directly.
-         $name = &$form->getFormElementByName('name');
-         $email = &$form->getFormElementByName('email');
-         $website = &$form->getFormElementByName('website');
+         $name = & $form->getFormElementByName('name');
+         $email = & $form->getFormElementByName('email');
+         $website = & $form->getFormElementByName('website');
 
          $user = new User();
          $user->setName($name->getAttribute('value'));
          $user->setEmail($email->getAttribute('value'));
          $user->setWebsite($website->getAttribute('value'));
 
-         $title = &$form->getFormElementByName('title');
-         $text = &$form->getFormElementByName('text');
+         $title = & $form->getFormElementByName('title');
+         $text = & $form->getFormElementByName('text');
          $entry = new Entry();
          $entry->setTitle($title->getAttribute('value'));
          $entry->setText($text->getContent());
@@ -67,8 +67,8 @@ class GuestbookCreateEntryController extends GuestbookBaseController {
       // language and context information of the current
       // DOM node.
       $config = $this->getConfiguration('APF\modules\guestbook2009\pres', 'language.ini');
-      $buttonLabel = $config->getSection($this->language)->getSection('form')->getSection('label')->getValue('button');
-      $button = &$form->getFormElementByName('send');
+      $buttonLabel = $config->getSection($this->language)->getValue('form.label.button');
+      $button = & $form->getFormElementByName('send');
       $button->setAttribute('value', $buttonLabel);
 
       // Transform on definition place to render
