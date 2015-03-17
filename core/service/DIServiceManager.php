@@ -115,6 +115,13 @@ final class DIServiceManager {
    private static $SERVICE_TYPE_CACHE = array();
 
    /**
+    * Defines the configuration extension and thus the file type to be used for DI service configurations.
+    *
+    * @var string $CONFIGURATION_EXTENSION
+    */
+   public static $configurationExtension = 'ini';
+
+   /**
     * Returns the initialized service object.
     *
     * @param string $configNamespace The namespace of the service object.
@@ -150,7 +157,7 @@ final class DIServiceManager {
 
       // Invoke benchmarker. Suppress warning for already started timers with circular calls!
       // Suppressing is here done by a dirty '@', because we will run into an error anyway.
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $benchId = 'DIServiceManager::getServiceObject(' . $configNamespace . ',' . $sectionName . ',' . $context . ',' . $language . ')';
       @$t->start($benchId);
@@ -194,7 +201,7 @@ final class DIServiceManager {
       // this is no problem. Hence, the injected instance is then only one time constructed.
 
       /* @var $serviceObject APFDIService */
-      $serviceObject = & ServiceManager::getServiceObject($class, $context, $language, $serviceType, $cacheKey);
+      $serviceObject = &ServiceManager::getServiceObject($class, $context, $language, $serviceType, $cacheKey);
 
       // do param injection (static configuration)
       $cfTasks = $section->getSection('conf');
@@ -253,7 +260,7 @@ final class DIServiceManager {
             if (isset(self::$INJECTION_CALL_CACHE[$injectionKey]) && $serviceType != APFService::SERVICE_TYPE_NORMAL) {
 
                // append error to log to provide debugging information
-               $log = & Singleton::getInstance('APF\core\logging\Logger');
+               $log = &Singleton::getInstance('APF\core\logging\Logger');
                /* @var $log Logger */
                $instructions = '';
                foreach (self::$INJECTION_CALL_CACHE as $injectionInstruction => $DUMMY) {
@@ -281,7 +288,7 @@ final class DIServiceManager {
                self::$INJECTION_CALL_CACHE[$injectionKey] = true;
 
                // get the dependent service object
-               $miObject = & self::getServiceObject($namespace, $name, $context, $language);
+               $miObject = &self::getServiceObject($namespace, $name, $context, $language);
 
                // inject the current service object with the created one
                if (method_exists($serviceObject, $method)) {
@@ -356,7 +363,7 @@ final class DIServiceManager {
             $context,
             $language,
             Registry::retrieve('APF\core', 'Environment'),
-            'serviceobjects.ini')
+            'serviceobjects.' . self::$configurationExtension)
             ->getSection($sectionName);
 
       return self::$SERVICE_CONFIG_CACHE[$cacheKey];
