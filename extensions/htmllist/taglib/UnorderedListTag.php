@@ -33,11 +33,9 @@ class UnorderedListTag extends AbstractListTag {
     *
     * @param string $sContent
     * @param string $sClass [optional]
-    *
-    * @return string
     */
    public function addElement($sContent, $sClass = '') {
-      return $this->addElement($sContent, $sClass, 'elem_list');
+      $this->addElementInternal($sContent, $sClass, 'APF\extensions\htmllist\taglib\ListElementTag');
    }
 
    protected function getListIdentifier() {

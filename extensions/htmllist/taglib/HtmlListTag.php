@@ -32,6 +32,12 @@ use InvalidArgumentException;
  */
 class HtmlListTag extends Document {
 
+   protected $listTypes = [
+         'list:unordered'  => 'APF\extensions\htmllist\taglib\UnorderedListTag',
+         'list:ordered'    => 'APF\extensions\htmllist\taglib\OrderedListTag',
+         'list:definition' => 'APF\extensions\htmllist\taglib\DefinitionListTag'
+   ];
+
    /**
     * Adds a list.
     *
@@ -40,7 +46,7 @@ class HtmlListTag extends Document {
     *
     * @return string The object id of the list.
     */
-   public function addList($elementType, $elementAttributes = array()) {
+   public function addList($elementType, array $elementAttributes = array()) {
 
       // create list element
       $objectId = $this->createList($elementType, $elementAttributes);
@@ -89,42 +95,40 @@ class HtmlListTag extends Document {
     */
    protected function createList($elementType, array $elementAttributes = array()) {
 
-      $tagLibClass = str_replace(':', '_taglib_', $elementType);
-
-      // check, if class exists
-      if (class_exists($tagLibClass)) {
-         // generate object id
-         $objectId = XmlParser::generateUniqID();
-
-         /* @var $listObject Document */
-         $listObject = new $tagLibClass();
-
-         // add standard and user defined attributes
-         $listObject->setObjectId($objectId);
-         $listObject->setLanguage($this->language);
-         $listObject->setContext($this->context);
-
-         foreach ($elementAttributes as $Key => $Value) {
-            $listObject->setAttribute($Key, $Value);
-         }
-
-         // add list element to DOM tree and call the onParseTime() method
-         $listObject->setParentObject($this);
-         $listObject->onParseTime();
-
-         // add new list element to children list
-         $this->children[$objectId] = $listObject;
-
-         // call the onAfterAppend() method
-         $this->children[$objectId]->onAfterAppend();
-
-         // return object id for further addressing
-         return $objectId;
-      } else {
-         // throw error and return null as object id
-         throw new InvalidArgumentException('[HtmlListTag::createList()] No list element with name "'
-               . $elementType . '" found! Maybe the tag name is mis-spelt. Please use &lt;core:addtaglib /&gt;!');
+      if (!isset($this->listTypes[$elementType])) {
+         throw new InvalidArgumentException('[HtmlListTag::createList()] Invalid element type found. '
+               . 'Supported element types: ' . implode(', ', array_keys($this->listTypes)));
       }
+
+      $tagClass = $this->listTypes[$elementType];
+
+      // generate object id
+      $objectId = XmlParser::generateUniqID();
+
+      /* @var $listObject Document */
+      $listObject = new $tagClass();
+
+      // add standard and user defined attributes
+      $listObject->setObjectId($objectId);
+      $listObject->setLanguage($this->language);
+      $listObject->setContext($this->context);
+
+      foreach ($elementAttributes as $key => $value) {
+         $listObject->setAttribute($key, $value);
+      }
+
+      // add list element to DOM tree and call the onParseTime() method
+      $listObject->setParentObject($this);
+      $listObject->onParseTime();
+
+      // add new list element to children list
+      $this->children[$objectId] = $listObject;
+
+      // call the onAfterAppend() method
+      $this->children[$objectId]->onAfterAppend();
+
+      // return object id for further addressing
+      return $objectId;
    }
 
 }

@@ -62,20 +62,20 @@ abstract class AbstractListTag extends Document {
     */
    abstract protected function getListIdentifier();
 
+   abstract public function addElement($sContent, $sClass = '');
+
    /**
     * Adds a list element.
     *
     * @param string $content The content of the element.
     * @param string $cssClass The name of the implementation class.
-    * @param string $elementName The name of the tag (e.g. "elem_list" for ListElementTag class).
+    * @param string $elementName The fully qualified class name of the tag implementation.
     */
-   protected function addElement($content, $cssClass, $elementName) {
+   protected function addElementInternal($content, $cssClass, $elementName) {
 
       $objectId = XmlParser::generateUniqID();
 
-      $fullClassName = 'list_taglib_' . $elementName;
-
-      $this->children[$objectId] = new $fullClassName();
+      $this->children[$objectId] = new $elementName();
       $this->children[$objectId]->setObjectId($objectId);
       $this->children[$objectId]->setContent($content);
       $this->children[$objectId]->setLanguage($this->language);

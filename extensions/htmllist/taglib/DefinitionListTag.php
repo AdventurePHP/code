@@ -26,7 +26,11 @@ namespace APF\extensions\htmllist\taglib;
  * @author Florian Horn
  * @version 1.0, 03.04.2010<br />
  */
-class ListDefinitionTag extends AbstractListTag {
+class DefinitionListTag extends AbstractListTag {
+
+   public function addElement($sContent, $sClass = '') {
+      // do nothing here as definitions lists work with definition terms and definitions instead
+   }
 
    /**
     * Adds a definition term element.
@@ -37,7 +41,7 @@ class ListDefinitionTag extends AbstractListTag {
     * @return string
     */
    public function addDefinitionTerm($sContent, $sClass = '') {
-      $this->addElement($sContent, $sClass, 'elem_defterm');
+      $this->addElementInternal($sContent, $sClass, 'APF\extensions\htmllist\taglib\DefinitionListTermTag');
    }
 
    /**
@@ -49,7 +53,7 @@ class ListDefinitionTag extends AbstractListTag {
     * @return string
     */
    public function addDefinition($sContent, $sClass = '') {
-      $this->addElement($sContent, $sClass, 'elem_defdef');
+      $this->addElementInternal($sContent, $sClass, 'APF\extensions\htmllist\taglib\DefinitionListDefinitionTag');
    }
 
    protected function getListIdentifier() {
