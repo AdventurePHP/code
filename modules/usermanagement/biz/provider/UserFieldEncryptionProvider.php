@@ -129,6 +129,11 @@ class UserFieldEncryptionProvider {
     * @return String encrypted value
     */
    public static function encrypt($value, $encryptionHandler = null) {
+
+      if (empty($value)) {
+         return $value;
+      }
+
       $closeHandler = false;
       if ($encryptionHandler === null) {
          $encryptionHandler = self::getEncryptionHandler();
@@ -155,6 +160,11 @@ class UserFieldEncryptionProvider {
     * @return String The decrypted plain value
     */
    public static function decrypt($crypted, $encryptionHandler = null) {
+
+      if (empty($crypted)) {
+         return $crypted;
+      }
+
       $closeHandler = false;
       if ($encryptionHandler === null) {
          $encryptionHandler = self::getEncryptionHandler();
