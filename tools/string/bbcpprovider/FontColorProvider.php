@@ -33,8 +33,8 @@ class FontColorProvider extends BBCodeParserProvider {
 
    /**
     *  Implements the getOutput() method of the abstract BBCodeParserProvider. Parses font color
-    *  definitions provided th the "fontcolor" configuration file under the tools::string::bbcpprovider
-    *  namespace. An configuration example can be found in the adventure-configpack-* release file.
+    *  definitions provided th the "fontcolor" configuration file under the APF\tools\string\bbcpprovider
+    *  namespace. An configuration example can be found in the apf-configpack-* release file.
     *
     * @param string $string the content to parse
     *
