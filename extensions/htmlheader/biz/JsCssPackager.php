@@ -68,22 +68,21 @@ class JsCssPackager extends APFObject {
     * Version 1.0, 18.03.2010<br />
     */
    public function getPackage($name, $gZip = false) {
-      $cfgPack = $this->getPackageConfiguration()->getSection($name);
+      $config = $this->getPackageConfiguration();
 
-      if ($cfgPack === null) {
+      if (!$config->hasSection($name)) {
          throw new InvalidArgumentException('Package with the given name was not found!');
       }
 
-      $ServerCacheMinutes = $cfgPack->getValue('ServerCacheMinutes');
-      if ($ServerCacheMinutes === null) {
-         $ServerCacheMinutes = 0;
-      }
+      $cfgPack = $config->getSection($name);
+
+      $serverCacheMinutes = $cfgPack->getValue('ServerCacheMinutes', 0);
 
       /* If ServerCacheMinutes is not 0, we use a file cache */
-      if ((int) $ServerCacheMinutes !== 0) {
+      if ((int) $serverCacheMinutes !== 0) {
          /* @var $cMF CacheManagerFabric */
-         $cMF = & $this->getServiceObject('APF\tools\cache\CacheManagerFabric');
-         $cM = & $cMF->getCacheManager('jscsspackager_cache');
+         $cMF = &$this->getServiceObject('APF\tools\cache\CacheManagerFabric');
+         $cM = &$cMF->getCacheManager('jscsspackager_cache');
 
          $cacheKey = $name;
          if ($gZip === true) {
@@ -104,7 +103,7 @@ class JsCssPackager extends APFObject {
          }
          /* Package was not in cache or was expired, we generate a new one, cache and deliver it. */
          $newPackage = $this->generatePackage($cfgPack, $name);
-         $cacheExpires = time() + ($ServerCacheMinutes * 60);
+         $cacheExpires = time() + ($serverCacheMinutes * 60);
          $newPackageGzip = gzencode($newPackage, 9);
 
          $cM->writeToCache(new SimpleCacheKey($name), $newPackage . $cacheExpires);
@@ -135,10 +134,9 @@ class JsCssPackager extends APFObject {
     */
    protected function generatePackage(Configuration $cfgPack, $name) {
       $output = '';
-      $Files = $cfgPack->getSection('Files');
-      $FileSectionNames = $Files->getSectionNames();
-      foreach ($FileSectionNames as $FileSectionName) {
-         $file = $Files->getSection($FileSectionName);
+      $files = $cfgPack->getSection('Files');
+      foreach ($files->getSectionNames() as $fileSectionName) {
+         $file = $files->getSection($fileSectionName);
          $output .= $this->loadSingleFile($file->getValue('Namespace'), $file->getValue('Filename'), $cfgPack->getValue('PackageType'), $name);
       }
 
@@ -177,17 +175,14 @@ class JsCssPackager extends APFObject {
       try {
          $config = $this->getConfiguration('APF\extensions\htmlheader\biz', 'JsCssInclusion.ini');
 
-         $sectionGeneral = $config->getSection('General');
-         if ($sectionGeneral !== null) {
-            if ($sectionGeneral->getValue('EnableShrinking') === 'true') {
-               switch ($type) {
-                  case 'js':
-                     $filteredContent = $this->shrinkJs($filteredContent);
-                     break;
-                  case 'css':
-                     $filteredContent = $this->shrinkCSS($filteredContent);
-                     break;
-               }
+         if ($config->getSection('General')->getValue('EnableShrinking') === 'true') {
+            switch ($type) {
+               case 'js':
+                  $filteredContent = $this->shrinkJs($filteredContent);
+                  break;
+               case 'css':
+                  $filteredContent = $this->shrinkCSS($filteredContent);
+                  break;
             }
          }
       } catch (ConfigurationException $e) {
@@ -301,9 +296,10 @@ class JsCssPackager extends APFObject {
       }
 
       $sectionName = ($fileType === 'css') ? 'CssFilter' : 'JsFilter';
-      $section = $config->getSection($sectionName);
 
-      if ($section !== null) {
+      if ($config->hasSection($sectionName)) {
+         $section = $config->getSection($sectionName);
+
          foreach ($section->getSectionNames() as $key) {
             $filterInformation = $section->getSection($key);
             $name = $filterInformation->getValue('Class');

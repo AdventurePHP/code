@@ -224,11 +224,11 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
    private function getExtensions() {
 
       $config = $this->getConfiguration('APF\tools\media', 'allowed_extensions.ini');
-      $section = $config->getSection('Default');
-
-      if ($section == null) {
+      if (!$config->hasSection('Default')) {
          throw new ConfigurationException('Section "Default" is missing!');
       }
+
+      $section = $config->getSection('Default');
 
       $extensions = array();
       foreach ($section->getValueNames() as $name) {

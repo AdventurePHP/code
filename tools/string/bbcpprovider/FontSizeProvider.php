@@ -51,8 +51,8 @@ class FontSizeProvider extends BBCodeParserProvider {
       $config = $this->getConfiguration('APF\tools\string\bbcpprovider', 'fontsize.ini');
       $sizes = $config->getSection('Sizes');
 
-      foreach ($sizes as $key => $value) {
-         $string = strtr($string, array('[' . $key . ']' => '<span style="font-size: ' . $value . ';">', '[/' . $key . ']' => '</span>'));
+      foreach ($sizes->getValueNames() as $key) {
+         $string = strtr($string, array('[' . $key . ']' => '<span style="font-size: ' . $sizes->getValue($key) . ';">', '[/' . $key . ']' => '</span>'));
       }
 
       return $string;

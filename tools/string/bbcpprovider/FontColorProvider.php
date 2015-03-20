@@ -51,8 +51,8 @@ class FontColorProvider extends BBCodeParserProvider {
       $config = $this->getConfiguration('APF\tools\string\bbcpprovider', 'fontcolor.ini');
       $colors = $config->getSection('Colors');
 
-      foreach ($colors as $key => $value) {
-         $string = strtr($string, array('[' . $key . ']' => '<span style="color: ' . $value . ';">', '[/' . $key . ']' => '</span>'));
+      foreach ($colors->getValueNames() as $key) {
+         $string = strtr($string, array('[' . $key . ']' => '<span style="color: ' . $colors->getValue($key) . ';">', '[/' . $key . ']' => '</span>'));
       }
 
       return $string;

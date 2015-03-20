@@ -63,7 +63,7 @@ final class ConnectionManager extends APFObject {
 
    /**
     * Cache for existing database connections.
-	*
+    *
     * @var AbstractDatabaseHandler[]
     */
    private $connections = array();
@@ -122,16 +122,16 @@ final class ConnectionManager extends APFObject {
       // TODO decide whether database connections must be fully qualified in the future as well (e.g. like DI services)
       $config = $this->getConfiguration('APF\core\database', 'connections.ini');
 
-      // get config section
-      $section = $config->getSection($connectionKey);
-
-      if ($section == null) {
+      if (!$config->hasSection($connectionKey)) {
          $env = Registry::retrieve('APF\core', 'Environment');
          throw new InvalidArgumentException('[ConnectionManager::getConnection()] The given '
                . 'configuration section ("' . $connectionKey . '") does not exist in configuration file "'
                . $env . '_connections.ini" in namespace "APF\core\database" for context "'
                . $this->context . '"!', E_USER_ERROR);
       }
+
+      // get config section
+      $section = $config->getSection($connectionKey);
 
       // re-map options to array to be able to initialize the database connection using the service manager
       $options = array();

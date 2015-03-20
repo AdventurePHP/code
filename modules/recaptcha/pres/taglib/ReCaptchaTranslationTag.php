@@ -60,8 +60,7 @@ class ReCaptchaTranslationTag extends LanguageLabelTag {
       // get configuration values
       $config = $this->getConfiguration($namespace, $configName);
 
-      $langSection = $config->getSection($this->getLanguage());
-      if ($langSection === null) {
+      if (!$config->hasSection($this->getLanguage())) {
 
          // get environment variable from registry to have nice exception message
          $env = Registry::retrieve('APF\core', 'Environment');
@@ -75,8 +74,8 @@ class ReCaptchaTranslationTag extends LanguageLabelTag {
       $control = $this->getParentObject();
 
       // inject custom translation attributes into the ReCaptchaTag
-      $customTranslations = $langSection->getSection($entry);
-      if ($customTranslations === null) {
+      $langSection = $config->getSection($this->getLanguage());
+      if (!$langSection->hasSection($entry)) {
 
          // get environment variable from registry to have nice exception message
          $env = Registry::retrieve('APF\core', 'Environment');
@@ -87,6 +86,7 @@ class ReCaptchaTranslationTag extends LanguageLabelTag {
                . $this->getContext() . '"!', E_USER_ERROR);
       }
 
+      $customTranslations = $langSection->getSection($entry);
       foreach ($customTranslations->getValueNames() as $name) {
          $control->setAttribute($name, $customTranslations->getValue($name));
       }

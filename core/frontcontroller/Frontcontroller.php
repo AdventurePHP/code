@@ -227,9 +227,9 @@ class Frontcontroller extends APFObject {
       }
 
       // Create request and response implementations for OO abstraction
-      $request = & self::getRequest();
+      $request = &self::getRequest();
 
-      $response = & self::getResponse();
+      $response = &self::getResponse();
       $response->setContentType('text/html; charset=' . Registry::retrieve('APF\core', 'Charset'));
 
       // apply input filter to process request
@@ -412,10 +412,9 @@ class Frontcontroller extends APFObject {
 
       // load the action configuration
       $config = $this->getConfiguration($namespace, 'actionconfig.ini');
-      $actionConfig = $config->getSection($name);
 
       // throw exception, in case the action config is not present
-      if ($actionConfig == null) {
+      if (!$config->hasSection($name)) {
          $env = Registry::retrieve('APF\core', 'Environment');
          throw new InvalidArgumentException('[Frontcontroller::addAction()] No config '
                . 'section for action key "' . $name . '" available in configuration file "' . $env
@@ -423,6 +422,7 @@ class Frontcontroller extends APFObject {
                . $this->getContext() . '"!', E_USER_ERROR);
       }
 
+      $actionConfig = $config->getSection($name);
 
       // evaluate which method to use: simple object or di service
       $actionServiceName = $actionConfig->getValue('ActionServiceName');
@@ -679,7 +679,7 @@ class Frontcontroller extends APFObject {
    protected function runActions($type = Action::TYPE_PRE_PAGE_CREATE) {
 
       /* @var $t BenchmarkTimer */
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
 
       foreach ($this->actionStack as $offset => $DUMMY) {
 

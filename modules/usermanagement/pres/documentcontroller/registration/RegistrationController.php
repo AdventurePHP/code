@@ -41,7 +41,7 @@ class RegistrationController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $form = & $this->getForm('register');
+      $form = &$this->getForm('register');
 
       if ($form->isSent() && $form->isValid()) {
 
@@ -96,7 +96,7 @@ class RegistrationController extends UmgtBaseController {
                $user->addRole($initialRole);
             }
          } catch (ConfigurationException $e) {
-            $l = & Singleton::getInstance('APF\core\logging\Logger');
+            $l = &Singleton::getInstance('APF\core\logging\Logger');
             /* @var $l Logger */
             $l->logEntry('registration', 'Registration cannot add initial groups or roles due to the following '
                   . 'exception: ' . $e . ' This may be ok, in case you have no initial groups and/or roles specified.',
@@ -108,7 +108,7 @@ class RegistrationController extends UmgtBaseController {
             $this->getTemplate('register-ok')->transformOnPlace();
          } catch (Exception $e) {
             $this->getTemplate('system-error')->transformOnPlace();
-            $l = & Singleton::getInstance('APF\core\logging\Logger');
+            $l = &Singleton::getInstance('APF\core\logging\Logger');
             /* @var $l Logger */
             $l->logEntry('registration', 'Registration is not possible due to ' . $e, LogEntry::SEVERITY_ERROR);
          }
@@ -134,18 +134,20 @@ class RegistrationController extends UmgtBaseController {
    private function getInitialGroups() {
 
       $config = $this->getConfiguration('APF\modules\usermanagement\pres', 'registration.ini');
-      $section = $config->getSection('Default');
 
-      if ($section === null) {
-         throw new ConfigurationException('Section "default" is not defined within registration.ini');
+      $sectionName = 'Default';
+      if (!$config->hasSection($sectionName)) {
+         throw new ConfigurationException('Section "' . $sectionName . '" is not defined within registration.ini');
       }
+
+      $section = $config->getSection($sectionName);
 
       $uM = $this->getManager();
 
       $groups = array();
 
-      $initialGroups = $section->getSection('group');
-      if ($initialGroups !== null) {
+      if ($section->hasSection('group')) {
+         $initialGroups = $section->getSection('group');
          foreach ($initialGroups->getValueNames() as $name) {
             $group = $uM->loadGroupByName($initialGroups->getValue($name));
             if ($group !== null) {
@@ -170,18 +172,20 @@ class RegistrationController extends UmgtBaseController {
    private function getInitialRoles() {
 
       $config = $this->getConfiguration('APF\modules\usermanagement\pres', 'registration.ini');
-      $section = $config->getSection('Default');
 
-      if ($section === null) {
+      $sectionName = 'Default';
+      if (!$config->hasSection($sectionName)) {
          throw new ConfigurationException('Section "default" is not defined within registration.ini');
       }
+
+      $section = $config->getSection($sectionName);
 
       $uM = $this->getManager();
 
       $roles = array();
 
-      $initialRoles = $section->getSection('role');
-      if ($initialRoles !== null) {
+      if ($section->hasSection('role')) {
+         $initialRoles = $section->getSection('role');
          foreach ($initialRoles->getValueNames() as $name) {
             $role = $uM->loadRoleByName($initialRoles->getValue($name));
             if ($role !== null) {

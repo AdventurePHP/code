@@ -61,16 +61,16 @@ final class ArrayPagerManager extends APFObject {
 
       // remap configuration
       $configParams = array();
-      $section = $config->getSection($initParam);
-      if ($section === null) {
+      if ($config->hasSection($initParam)) {
+         $section = $config->getSection($initParam);
+         foreach ($section->getValueNames() as $name) {
+            $configParams[$name] = $section->getValue($name);
+         }
+      } else {
          throw new ConfigurationException('[ArrayPagerManager::init()] Section with name "' . $initParam
                . '" cannot be found in configuration "' . $configName . '" unter namespace "'
                . $namespace . '" and context "' . $this->getContext() . '". '
                . 'Please double check you configuration!');
-      } else {
-         foreach ($section->getValueNames() as $name) {
-            $configParams[$name] = $section->getValue($name);
-         }
       }
 
       $arrayParameter = array(
@@ -127,7 +127,7 @@ final class ArrayPagerManager extends APFObject {
       if (is_array($arrayData) === true) {
          if ($integerPage === null) {
             $integerPage = intval(self::getRequest()->getParameter($this->pagerConfig['ParameterPage'],
-                        1)
+                  1)
             );
 
             if ($integerPage <= 0) {
@@ -138,7 +138,7 @@ final class ArrayPagerManager extends APFObject {
          if ($integerEntries === null) {
             if ($this->pagerConfig['EntriesChangeable'] === true) {
                $integerEntries = intval(self::getRequest()->getParameter($this->pagerConfig['ParameterEntries'],
-                           $this->pagerConfig['Entries'])
+                     $this->pagerConfig['Entries'])
                );
             } else {
                $integerEntries = 0;

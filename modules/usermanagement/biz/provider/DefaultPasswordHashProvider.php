@@ -47,19 +47,13 @@ abstract class DefaultPasswordHashProvider extends APFObject implements Password
     * @return string The hard-coded salt contained within the configuration
     */
    protected function getHardCodedSalt() {
-      $section = $this->getConfiguration('APF\modules\usermanagement\biz', 'umgtconfig.ini')
-            ->getSection(UmgtManager::CONFIG_SECTION_NAME);
-      if ($section === null) {
-         throw new Exception('[DefaultPasswordHashProvider::init()] No section with name"'
-               . UmgtManager::CONFIG_SECTION_NAME . '" found in the umgtconfig.ini!',
-               E_USER_ERROR);
-      } else {
-         $salt = $section->getValue('Salt');
-         if ($salt === null) {
-            return self::$DEFAULT_HARDCODED_SALT;
-         }
-
-         return $salt;
+      $config = $this->getConfiguration('APF\modules\usermanagement\biz', 'umgtconfig.ini');
+      if ($config->hasSection(UmgtManager::CONFIG_SECTION_NAME)) {
+         return $config->getSection(UmgtManager::CONFIG_SECTION_NAME)->getValue('Salt', self::$DEFAULT_HARDCODED_SALT);
       }
+
+      throw new Exception('[DefaultPasswordHashProvider::init()] No section with name"'
+            . UmgtManager::CONFIG_SECTION_NAME . '" found in the umgtconfig.ini!',
+            E_USER_ERROR);
    }
 }

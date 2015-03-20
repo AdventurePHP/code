@@ -478,7 +478,7 @@ class BaseMapper extends APFObject {
                foreach ($section->getValueNames() as $valueName) {
                   $this->domainObjectsTable[$sectionName][$valueName] = $section->getValue($valueName);
                }
-               if ($section->getSection('Base') !== null) {
+               if ($section->hasSection('Base')) {
                   $this->domainObjectsTable[$sectionName]['Base'] = array(
                         'Class' => $section->getSection('Base')->getValue('Class'),
                   );

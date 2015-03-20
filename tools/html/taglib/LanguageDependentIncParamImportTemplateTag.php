@@ -121,7 +121,7 @@ class LanguageDependentIncParamImportTemplateTag extends ImportTemplateTag {
          throw new InvalidArgumentException('[LanguageDependentIncParamImportTemplateTag::onParseTime()] Attribute "namespace" is not given!');
       }
 
-      $incparam = $this->getAttribute('incparam', 'incparam');
+      $incParam = $this->getAttribute('incparam', 'incparam');
       $prefix = $this->getAttribute('prefix', '');
       $context = $this->getAttribute('context', null);
 
@@ -142,9 +142,8 @@ class LanguageDependentIncParamImportTemplateTag extends ImportTemplateTag {
          $config = $this->getConfiguration($configNamespace, $configFile);
 
          // get language-dependent parameters form config
-         $sec = $config->getSection($this->getLanguage());
-         if ($sec !== null) {
-            $incParamName = $sec->getValue($incparam);
+         if ($config->hasSection($this->getLanguage())) {
+            $incParamName = $config->getSection($this->getLanguage())->getValue($incParam);
          }
       } catch (Exception $e) {
          if ($this->getAttribute('deactivateConfigException', 'false') != "true") {
@@ -152,7 +151,7 @@ class LanguageDependentIncParamImportTemplateTag extends ImportTemplateTag {
          }
       }
       if (!isset($incParamName) || $incParamName === null) {
-         $incParamName = $incparam;
+         $incParamName = $incParam;
       }
 
 

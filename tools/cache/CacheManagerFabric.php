@@ -62,9 +62,7 @@ final class CacheManagerFabric extends APFObject {
 
          // load config
          $config = $this->getConfiguration('APF\tools\cache', 'cacheconfig.ini');
-         $section = $config->getSection($configSection);
-
-         if ($section === null) {
+         if (!$config->hasSection($configSection)) {
             $env = Registry::retrieve('APF\core', 'Environment');
             throw new InvalidArgumentException('[CacheManagerFabric::getCacheManager()] The desired config section "'
                   . $configSection . '" does not exist within the cache configuration. Please check '
@@ -73,8 +71,11 @@ final class CacheManagerFabric extends APFObject {
          }
 
          // create cache manager
-         $this->cacheManagerCache[$configSection] =
-               $this->getAndInitServiceObject('APF\tools\cache\CacheManager', $section, APFService::SERVICE_TYPE_NORMAL);
+         $this->cacheManagerCache[$configSection] = $this->getAndInitServiceObject(
+               'APF\tools\cache\CacheManager',
+               $config->getSection($configSection),
+               APFService::SERVICE_TYPE_NORMAL
+         );
 
       }
 

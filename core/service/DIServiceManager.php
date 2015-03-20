@@ -207,8 +207,9 @@ final class DIServiceManager {
       $serviceObject = &ServiceManager::getServiceObject($class, $context, $language, $serviceType, $cacheKey);
 
       // do param injection (static configuration)
-      $cfTasks = $section->getSection('conf');
-      if ($cfTasks !== null) {
+      if ($section->hasSection('conf')) {
+
+         $cfTasks = $section->getSection('conf');
 
          foreach ($cfTasks->getSectionNames() as $initKey) {
 
@@ -237,8 +238,9 @@ final class DIServiceManager {
       }
 
       // do service object injection
-      $miTasks = $section->getSection('init');
-      if ($miTasks !== null) {
+      if ($section->hasSection('init')) {
+
+         $miTasks = $section->getSection('init');
 
          foreach ($miTasks->getSectionNames() as $initKey) {
 

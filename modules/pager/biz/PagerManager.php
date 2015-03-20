@@ -213,14 +213,15 @@ final class PagerManager extends APFObject {
 
       // initialize the config
       $config = $this->getConfiguration('APF\modules\pager', 'pager.ini');
-      $section = $config->getSection($initParam);
 
       // empty sections are not allowed since they produced NPE's
-      if ($section === null) {
+      if (!$config->hasSection($initParam)) {
          throw new InvalidArgumentException('[PagerManager::init()] The given configuration section '
                . '"' . $initParam . '" cannot be found within the pager configuration file. Please '
                . 'review your setup!');
       }
+
+      $section = $config->getSection($initParam);
 
       // translate entries per page
       $this->entriesPerPage = (int) $section->getValue('EntriesPerPage', '10');

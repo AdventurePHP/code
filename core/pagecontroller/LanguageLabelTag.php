@@ -90,11 +90,9 @@ class LanguageLabelTag extends Document implements LanguageLabel {
 
       // get configuration values
       $config = $this->getConfiguration($namespace, $configName);
-      $value = $config->getSection($this->getLanguage()) === null
-            ? null
-            : $config->getSection($this->getLanguage())->getValue($entry);
+      $value = $config->getSection($this->getLanguage())->getValue($entry);
 
-      if ($value == null) {
+      if ($value === null) {
 
          // get environment variable from registry to have nice exception message
          $env = Registry::retrieve('APF\core', 'Environment');
