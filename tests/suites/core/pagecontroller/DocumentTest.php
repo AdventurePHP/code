@@ -101,4 +101,44 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
       $doc->getChildNodes('foo', 'bar', 'APF\core\pagecontroller\Document');
    }
 
+   public function testDocumentControllerParsingTest() {
+
+      $controllerClass = 'APF\modules\usermanagement\pres\documentcontroller\registration\RegistrationController';
+
+      // rear cases
+      $this->executeControllerTest('<@controller class="' . $controllerClass . '"@>', $controllerClass);
+      $this->executeControllerTest('<@controller class="' . $controllerClass . '" @>', $controllerClass);
+      $this->executeControllerTest('<@controller class="' . $controllerClass . '"' . "\n" . '@>', $controllerClass);
+      $this->executeControllerTest('<@controller class="' . $controllerClass . '"' . "\n" . ' @>', $controllerClass);
+      $this->executeControllerTest('<@controller class="' . $controllerClass . '"  ' . "\n" . '  @>', $controllerClass);
+      $this->executeControllerTest('<@controller class="' . $controllerClass . '"  ' . "\n\r" . '  @>', $controllerClass);
+
+      // front cases
+      $this->executeControllerTest('<@controller' . "\n" . 'class="' . $controllerClass . '" @>', $controllerClass);
+      $this->executeControllerTest('<@controller' . " \n" . 'class="' . $controllerClass . '" @>', $controllerClass);
+      $this->executeControllerTest('<@controller' . " \n" . '   class="' . $controllerClass . '" @>', $controllerClass);
+
+      // mixed
+      $this->executeControllerTest('<@controller' . "\n" . 'class="' . $controllerClass . '"@>', $controllerClass);
+      $this->executeControllerTest('<@controller' . "\n" . 'class="' . $controllerClass . '"' . "\n" . '@>', $controllerClass);
+      $this->executeControllerTest('<@controller' . " \n" . 'class="' . $controllerClass . '"' . "\n" . '@>', $controllerClass);
+      $this->executeControllerTest('<@controller' . " \n" . '   class="' . $controllerClass . '" ' . "\n" . '@>', $controllerClass);
+
+      $this->executeControllerTest('   <@controller' . " \n" . '   class="' . $controllerClass . '" ' . "\n" . '   @>', $controllerClass);
+      $this->executeControllerTest('   <@controller' . " \n\r" . '   class="' . $controllerClass . '" ' . "\n\r" . '   @>', $controllerClass);
+
+   }
+
+   protected function executeControllerTest($content, $controllerClass) {
+
+      $method = new ReflectionMethod('APF\core\pagecontroller\Document', 'extractDocumentController');
+      $method->setAccessible(true);
+
+      $doc = new Document();
+      $doc->setContent($content);
+      $method->invoke($doc);
+      $this->assertEquals($controllerClass, $doc->getDocumentController());
+
+   }
+
 }

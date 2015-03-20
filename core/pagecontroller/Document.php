@@ -1224,10 +1224,12 @@ class Document extends APFObject {
 
       $tagStartPos = strpos($this->content, $controllerStartTag);
       $tagEndPos = strpos($this->content, $controllerEndTag, $tagStartPos);
-      $controllerTag = substr($this->content, $tagStartPos + strlen($controllerStartTag), ($tagEndPos - $tagStartPos) - 1 - strlen($controllerStartTag));
+      $controllerTag = substr($this->content, $tagStartPos + 12, ($tagEndPos - $tagStartPos) - 12); // 12 for <@controller
       $controllerAttributes = XmlParser::getAttributesFromString($controllerTag);
 
-      if (isset($controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAMESPACE]) && isset($controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAME])) {
+      if (isset($controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAMESPACE])
+            && isset($controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAME])
+      ) {
 
          try {
             $docCon = $this->getDIServiceObject(
@@ -1235,8 +1237,9 @@ class Document extends APFObject {
                   $controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAME]
             );
          } catch (Exception $e) {
-            throw new InvalidArgumentException('[' . get_class($this) . '::extractDocumentController()] Given document controller '
-                  . 'could not be created using the DIServiceManager. Message: ' . $e->getMessage(), $e->getCode());
+            throw new InvalidArgumentException('[' . get_class($this) . '::extractDocumentController()] Given document'
+                  . ' controller  could not be created using the DIServiceManager. Message: '
+                  . $e->getMessage(), $e->getCode());
          }
 
       } elseif (isset($controllerAttributes[self::CONTROLLER_ATTR_CLASS])) {
@@ -1262,7 +1265,7 @@ class Document extends APFObject {
       $this->documentController = $docCon;
 
       // remove definition from content to be not displayed
-      $this->content = substr_replace($this->content, '', $tagStartPos, ($tagEndPos - $tagStartPos) + strlen($controllerEndTag));
+      $this->content = substr_replace($this->content, '', $tagStartPos, ($tagEndPos - $tagStartPos) + 2); // for @>
    }
 
    /**
