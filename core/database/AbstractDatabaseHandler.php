@@ -383,7 +383,9 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
             $this->setPass($initParam['Pass']);
          }
 
-         $this->setDatabaseName($initParam['Name']);
+         if (isset($initParam['Name'])) {
+            $this->setDatabaseName($initParam['Name']);
+         }
 
          if (isset($initParam['Port'])) {
             $this->setPort($initParam['Port']);
