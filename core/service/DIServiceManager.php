@@ -21,9 +21,9 @@
 namespace APF\core\service;
 
 use APF\core\benchmark\BenchmarkTimer;
+use APF\core\configuration\Configuration;
 use APF\core\configuration\ConfigurationException;
 use APF\core\configuration\ConfigurationManager;
-use APF\core\configuration\provider\ini\IniConfiguration;
 use APF\core\logging\entry\SimpleLogEntry;
 use APF\core\logging\LogEntry;
 use APF\core\logging\Logger;
@@ -163,12 +163,15 @@ final class DIServiceManager {
       @$t->start($benchId);
 
       // Get config to determine, which object to create.
-      $section = self::getServiceConfiguration($configNamespace, $sectionName, $context, $language, $cacheKey);
-      if ($section === null) {
+      $config = self::getServiceConfiguration($configNamespace, $sectionName, $context, $language, $cacheKey);
+
+      if (!$config->hasSection($sectionName)) {
          throw new ConfigurationException('[DIServiceManager::getServiceObject()] Service object configuration with '
                . 'name "' . $sectionName . '" cannot be found within namespace "'
                . $configNamespace . '"! Please double-check your setup.', E_USER_ERROR);
       }
+
+      $section = $config->getSection($sectionName);
 
       // check, whether the section contains the basic directives and read/write service type cache
       if (isset(self::$SERVICE_TYPE_CACHE[$cacheKey])) {
@@ -344,7 +347,7 @@ final class DIServiceManager {
     * @param string $language The language of the current application.
     * @param string $cacheKey The cache key to check/find configuration in configuration cache
     *
-    * @return IniConfiguration The appropriate configuration.
+    * @return Configuration The appropriate configuration.
     *
     * @author Christian Achatz
     * @version
@@ -363,8 +366,7 @@ final class DIServiceManager {
             $context,
             $language,
             Registry::retrieve('APF\core', 'Environment'),
-            'serviceobjects.' . self::$configurationExtension)
-            ->getSection($sectionName);
+            'serviceobjects.' . self::$configurationExtension);
 
       return self::$SERVICE_CONFIG_CACHE[$cacheKey];
    }
