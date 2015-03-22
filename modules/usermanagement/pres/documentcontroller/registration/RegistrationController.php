@@ -104,8 +104,28 @@ class RegistrationController extends UmgtBaseController {
          }
 
          try {
-            $uM->saveUser($user);
-            $this->getTemplate('register-ok')->transformOnPlace();
+            // Lets have a look if the username/email is always in use and show an error message
+            try {
+               $config = $this->getConfiguration('APF\modules\usermanagement\pres', 'login.ini');
+               $loginType = $config->getSection('Default')->getValue('login.type', 'username');
+            } catch (ConfigurationException $e) {
+               $loginType = 'username';
+            }
+
+            if ($loginType === 'username') {
+               $regUser = $uM->loadUserByUserName($userNameValue);
+            } else {
+               $regUser = $uM->loadUserByEMail($email->getValue());
+            }
+
+            if ($regUser === null) {
+               $uM->saveUser($user);
+               $this->getTemplate('register-ok')->transformOnPlace();
+            } else {
+               $form->setPlaceHolder('register-error', $this->getTemplate('register-error-user-already-exists')->transformTemplate());
+               $form->transformOnPlace();
+            }
+
          } catch (Exception $e) {
             $this->getTemplate('system-error')->transformOnPlace();
             $l = &Singleton::getInstance('APF\core\logging\Logger');

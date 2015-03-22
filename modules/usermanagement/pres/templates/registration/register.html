@@ -119,6 +119,15 @@ class="APF\modules\usermanagement\pres\documentcontroller\registration\Registrat
    </div>
 </html:template>
 
+<html:template name="register-error-user-already-exists">
+   <div class="registration-error">
+      <html:getstring
+            namespace="APF\modules\usermanagement\pres"
+            config="labels.ini"
+            entry="register.user.already-exists"/>
+   </div>
+</html:template>
+
 <html:template name="system-error">
    <div class="system-error">
       <html:getstring
