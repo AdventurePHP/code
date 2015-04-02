@@ -54,6 +54,50 @@ final class CacheManager extends CacheBase {
     */
    private $active = false;
 
+   private $cacheConfiguration;
+
+   public function setCacheConfiguration($cacheConfiguration) {
+      $this->cacheConfiguration = $cacheConfiguration;
+   }
+
+   /**
+    * [CMS-Cache]
+    * class = "APF\tools\cache\CacheManager"
+    * servicetype = "SINGLETON"
+    * conf.cache-type.method = "setCacheConfiguration"
+    * conf.cache-type.value = "CMS-Cache"
+    * setupmethod = "initialize"
+    *
+    * ----
+    *
+    * // pretty convenient...
+    * $cache = $this->getDIServiceObject('VENDOR\path\to\config', 'CMS-Cache');
+    * $item = $cache->getFromCache(new SimpleCacheKey('...'));
+    *
+    * ----
+    *
+    * // would break the interface and imply code changes
+    * CacheManager::registerProvider('foo', ...);
+    * $item = CacheManager::getFromCache('foo', new SimpleCacheKey(...));
+    *
+    * ----
+    *
+    * // today (pretty inconvenient)...
+    * $cMF = &$this->getServiceObject('APF\tools\cache\CacheManagerFabric');
+    * $cM = &$cMF->getCacheManager('jscsspackager_cache');
+    * $item = $cM->getFromCache(new SimpleCacheKey('...');
+    *
+    * ----
+    *
+    * // today (plain)
+    * $cM = $this->getServiceObject('APF\tools\cache\CacheManager');
+    * $cM->init('foo');
+    * $item = $cM->getFromCache(new SimpleCacheKey('...');
+    */
+   public function initialize() {
+      $this->init($this->cacheConfiguration);
+   }
+
    /**
     * Implements the init() method used by the service manager. Initializes the cache
     * manager with the corresponding cache configuration section.
