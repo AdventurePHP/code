@@ -196,6 +196,13 @@ class ContactManager extends APFObject {
     */
    private function getConfirmationText(array $values = array()) {
       $config = $this->getConfiguration('APF\modules\contact', 'mail_templates.ini');
+
+      if (!$config->hasSection($this->getLanguage())) {
+         throw new ConfigurationException('Configuration section "' . $this->getLanguage() . '" is not present within '
+               . 'the contact form module configuration loading the email templates. Please '
+               . 'review your configuration!');
+      }
+
       $section = $config->getSection($this->getLanguage())->getSection('confirmation');
 
       return $this->fillPlaceHolders(
