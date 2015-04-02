@@ -241,6 +241,7 @@ interface Request {
 
    /**
     * @return string The URL path starting after the domain/host.
+    * @throws UrlFormatException In case the given string is not a valid url.
     */
    public function getPath();
 

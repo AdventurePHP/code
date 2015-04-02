@@ -384,8 +384,15 @@ class RequestImpl implements Request {
    }
 
    public function getPath() {
-      // TODO Find a nicer way of implementing this!
-      return parse_url($this->getRequestUri())['path'];
+      $url = $this->getRequestUri();
+
+      // the ugly "@" is only introduced to convert the E_WARNING into an exception
+      $parts = @parse_url($url);
+      if ($parts === false || !is_array($parts)) {
+         throw new UrlFormatException('The given url "' . $url . '" cannot be parsed due to semantic errors!');
+      }
+
+      return $parts['path'];
    }
 
    // we are not using getallheaders() as we would limit the APF to be used with Apache only.

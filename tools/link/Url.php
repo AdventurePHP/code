@@ -291,8 +291,7 @@ final class Url {
       // the ugly "@" is only introduced to convert the E_WARNING into an exception
       $parts = @parse_url($url);
       if ($parts === false || !is_array($parts)) {
-         throw new UrlFormatException('The given url "' . $url
-               . '" cannot be parsed due to semantic errors!');
+         throw new UrlFormatException('The given url "' . $url . '" cannot be parsed due to semantic errors!');
       }
 
       // resolve missing parameters
