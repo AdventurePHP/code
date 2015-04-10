@@ -22,6 +22,7 @@ namespace APF\core\singleton;
 
 use APF\core\pagecontroller\APFObject;
 use Exception;
+use ReflectionClass;
 
 /**
  * Implements the generic singleton pattern. Can be used to create singleton objects from
@@ -38,6 +39,7 @@ use Exception;
  * @version
  * Version 0.1, 12.04.2006<br />
  * Version 0.2, 11.03.2010 (Refactoring to PHP5 only code)<br />
+ * Version 0.3, 10.04.2015 (ID#249: introduced constructor injection for object creation)<br />
  */
 class Singleton {
 
@@ -62,6 +64,7 @@ class Singleton {
     * the UMGT).
     *
     * @param string $class The name of the class, that should be created a singleton instance from.
+    * @param array $arguments A list of constructor arguments to create the singleton instance with.
     * @param string $instanceId The id of the instance to return.
     *
     * @return APFObject The desired object's singleton instance.
@@ -72,10 +75,14 @@ class Singleton {
     * Version 0.1, 12.04.2006<br />
     * Version 0.2, 21.08.2007 (Added check, if the class exists.)<br />
     */
-   public static function &getInstance($class, $instanceId = null) {
+   public static function &getInstance($class, array $arguments = [], $instanceId = null) {
       $cacheKey = self::getCacheKey($class, $instanceId);
       if (!isset(self::$CACHE[$cacheKey])) {
-         self::$CACHE[$cacheKey] = new $class();
+         if (count($arguments) > 0) {
+            self::$CACHE[$cacheKey] = (new ReflectionClass($class))->newInstanceArgs($arguments);
+         } else {
+            self::$CACHE[$cacheKey] = new $class;
+         }
       }
 
       return self::$CACHE[$cacheKey];

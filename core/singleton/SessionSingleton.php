@@ -24,6 +24,7 @@ use APF\core\http\mixins\GetRequestResponse;
 use APF\core\http\Session;
 use APF\core\pagecontroller\APFObject;
 use Exception;
+use ReflectionClass;
 
 // ID#178: use closure functions instead of array() to avoid issued with PHP 5.4.x
 register_shutdown_function(function () {
@@ -45,6 +46,7 @@ register_shutdown_function(function () {
  * @version
  * Version 0.1, 24.02.2008<br />
  * Version 0.2, 11.03.2010 (Refactoring to PHP5 only code)<br />
+ * Version 0.3, 10.04.2015 (ID#249: introduced constructor injection for object creation)<br />
  */
 class SessionSingleton extends Singleton {
 
@@ -71,6 +73,7 @@ class SessionSingleton extends Singleton {
     * the UMGT).
     *
     * @param string $class The name of the class, that should be created a session singleton instance from.
+    * @param array $arguments A list of constructor arguments to create the singleton instance with.
     * @param string $instanceId The id of the instance to return.
     *
     * @return APFObject The desired object's singleton instance.
@@ -80,7 +83,7 @@ class SessionSingleton extends Singleton {
     * @version
     * Version 0.1, 24.02.2008<br />
     */
-   public static function &getInstance($class, $instanceId = null) {
+   public static function &getInstance($class, array $arguments = [], $instanceId = null) {
 
       $cacheKey = self::getCacheKey($class, $instanceId);
 
@@ -90,7 +93,11 @@ class SessionSingleton extends Singleton {
 
          if ($cachedObject === null) {
             // no class check needed due to auto loading!
-            self::$CACHE[$cacheKey] = new $class();
+            if (count($arguments) > 0) {
+               self::$CACHE[$cacheKey] = (new ReflectionClass($class))->newInstanceArgs($arguments);
+            } else {
+               self::$CACHE[$cacheKey] = new $class;
+            }
          } else {
             self::$CACHE[$cacheKey] = unserialize($cachedObject);
          }
@@ -105,7 +112,6 @@ class SessionSingleton extends Singleton {
       // remove from session to not restore instance after in subsequent request by accident
       self::getSession()->delete(self::getCacheKey($class, $instanceId));
    }
-
 
    /**
     * @return Session

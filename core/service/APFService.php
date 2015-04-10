@@ -28,6 +28,7 @@ namespace APF\core\service;
  * Version 0.1, 27.08.2011<br />
  * Version 0.2, 08.07.2012 (Added constant for service type "CACHED")<br />
  * Version 0.3, 23.07.2013 (Added "APPLICATIONSINGLETON" creation type)<br />
+ * Version 0.4, 10.04.2015 (ID#249: introduced constructor injection for object creation)<br />
  */
 interface APFService {
 
@@ -103,19 +104,5 @@ interface APFService {
     * Version 0.1, 20.02.2010<br />
     */
    public function getServiceType();
-
-   /**
-    * Interface definition of the init() method. This function is used to initialize a service
-    * object with the service manager. It must be implemented by derived classes.
-    *
-    * @deprecated Initialization of services should be done with the DIServiceManager.
-    *
-    * @param string $initParam The initializing value of the service object. Data type may also be array or object.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 30.03.2007<br />
-    */
-   public function init($initParam);
 
 }

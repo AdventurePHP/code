@@ -34,14 +34,14 @@ use InvalidArgumentException;
 /**
  * The DIServiceManager provides a dependency injection container for
  * creating pre-configured service objects similar to the {@link ServiceManager}.
- * It provides only method injection, because the APF objects are already injected
- * the current language and context. Introducing constructor injection would
- * lead to the situation, that the service objects could not be created
- * in SINGLETON or SESSIONSINGLETON mode with the generic implementations.
- * Please note, that a service object must derive from the {@link APFObject} class,
- * to be able to inject the context and language of the current instance of
- * the page or front controller. For convenience, the {@link APFObject} contains the
- * getDIServiceObject() method. Usage:
+ * It provides constructor injection and method injection.
+ * <p/>
+ * PLEASE NOTE: with constructor injection, context and language are not yet available,
+ * so you cannot load configurations or the like that are based on context and/or language.
+ * <p/>
+ * Services must derive from the {@link APFObject} class to be able to inject the context
+ * and language of the current instance of the page or front controller. For convenience,
+ * the {@link APFObject} contains the getDIServiceObject() method. Usage:
  * <br />
  * <pre>$initializedServiceObject =
  *             &$this->getDIServiceObject(
@@ -52,30 +52,38 @@ use InvalidArgumentException;
  * Further, the DIServiceManager includes additional config param injection.
  * This means, that the desired service cannot only be configured using other
  * service objects but also by plain parameters.
- * <br />
- * <br />
- * Configuration:
- * The configuration is done by a ini file located under the desired
- * namespace provided as the first argument to the getServiceObject()
- * method. It is named after the APF configuration file naming convention
- * and the file-body must be "serviceobjects". The scheme of the configuration
- * file looks as follows:
+ * <p/>
+ * The configuration is done by a file located under the desired namespace provided
+ * as the first argument to the getServiceObject() method. It is named after the
+ * APF configuration file naming convention and the file-body must be "serviceobjects".
+ * The scheme of the configuration file is as follows:
  * <pre>[&lt;ServiceObjectName&gt;]
  * servicetype = "SINGLETON|SESSIONSINGLETON|NORMAL|CACHED"
- * class = "VENDOR\namespace\to\the\service\object\class\BothNameOfTheClassAndTheFile"
+ * class = "VENDOR\namespace\to\the\service\object\class\NameOfTheClass"
  *
- * init.&lt;foo&gt;.method = "nameOfTheFirstInjectionMethod"
- * init.&lt;foo&gt;.namespace = "VENDOR\namespace\of\the\service\object\to\inject"
- * init.&lt;foo&gt;.name = "NameOfTheServiceToInject"
- * ...
- * conf.&lt;baz&gt;.method = "nameOfTheConfigParamInjectionMethod"
- * conf.&lt;baz&gt;.value = "config value"</pre>
+ * constructor.{construct-key-one}.value = "constructor value"
+ * constructor.{construct-key-two}.namespace = "VENDOR\namespace\of\the\service\object\to\inject"
+ * constructor.{construct-key-two}.name = "bar-service"
  *
+ * init.{init-key}.method = "nameOfTheFirstInjectionMethod"
+ * init.{init-key}.namespace = "VENDOR\namespace\of\the\service\object\to\inject"
+ * init.{init-key}.name = "NameOfTheServiceToInject"
+ *
+ * conf.{conf-key}.method = "nameOfTheConfigParamInjectionMethod"
+ * conf.{conf-key}.value = "config value"</pre>
+ * <p/>
  * The name of the injected object references a configuration section within
- * the configuration file located under the defined namespace. "&lt;foo&gt;"
+ * the configuration file located under the defined namespace. "{init-key}"
  * indicates the key of the injected object. This makes possible multiple
- * injections. Too, "&lt;baz&gt;" indicates one section of plain configuration
+ * injections. Further, "{conf-key}" indicates one section of plain configuration
  * param injection.
+ * <p/>
+ * Using the constructor injection option you are able to inject any number of
+ * constructor arguments. Each injection - either scalar values using the
+ * <em>value</em> keyword or other services using <em>namespace</em> and <em>name</em>
+ * as reference - must be defined with a unique key indicated with "{construct-key-one}"
+ * and "{construct-key-two}" above. The order of the items must comply with the
+ * order of arguments the service expects within the __construct() method.
  *
  * @author Christian Achatz
  * @version
@@ -83,6 +91,7 @@ use InvalidArgumentException;
  * Version 0.2, 19.04.2009 (Finished implementation)<br />
  * Version 0.3, 07.03.2011 (Refactored to static component to increase performance and accessibility)<br />
  * Version 0.4, 10.07.2012 Jan Wiese (Added configuration and service type cache)<br />
+ * Version 0.5, 10.04.2015 (ID#249: introduced constructor injection for object creation)<br />
  */
 final class DIServiceManager {
 
@@ -117,7 +126,7 @@ final class DIServiceManager {
    /**
     * Defines the configuration extension and thus the file type to be used for DI service configurations.
     *
-    * @var string $CONFIGURATION_EXTENSION
+    * @var string $configurationExtension
     */
    public static $configurationExtension = 'ini';
 
@@ -203,8 +212,41 @@ final class DIServiceManager {
       // and the DIServiceManager caches the created service objects within a singleton cache,
       // this is no problem. Hence, the injected instance is then only one time constructed.
 
+      // ID#249: as of 3.0 you are also able to inject dependent configuration and services via constructor.
+      // This replaces the former getAndInitServiceObject() method of the ServiceManager with a more elegant
+      // way. Configuration allows any number of constructor arguments as string, array, or other services.
+      $arguments = [];
+      if ($section->hasSection('construct')) {
+
+         $constructorArguments = $section->getSection('construct');
+
+         foreach ($constructorArguments->getSectionNames() as $argumentKey) {
+
+            $directive = $constructorArguments->getSection($argumentKey);
+
+            // be aware of the params needed for injection
+            $value = $directive->getValue('value');
+            $namespace = $directive->getValue('namespace');
+            $name = $directive->getValue('name');
+            if ($value === null && ($namespace === null || $name === null)) {
+               throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Construction of the'
+                     . ' service object "' . $sectionName . '" cannot be accomplished, due to'
+                     . ' incorrect constructor injection configuration! Please revise the "' . $argumentKey
+                     . '" sub section and consult the manual!', E_USER_ERROR);
+            }
+
+            // Simple value argument (string)
+            if ($directive->hasValue('value')) {
+               $arguments[] = $value;
+            } else {
+               // complex injection with another service
+               $arguments[] = &self::getServiceObject($namespace, $name, $context, $language);
+            }
+         }
+      }
+
       /* @var $serviceObject APFDIService */
-      $serviceObject = &ServiceManager::getServiceObject($class, $context, $language, $serviceType, $cacheKey);
+      $serviceObject = &ServiceManager::getServiceObject($class, $context, $language, $arguments, $serviceType, $cacheKey);
 
       // do param injection (static configuration)
       if ($section->hasSection('conf')) {

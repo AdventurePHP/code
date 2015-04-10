@@ -38,6 +38,7 @@ use APF\core\service\ServiceManager;
  * Version 0.2, 11.02.2007 (Added language and context)<br />
  * Version 0.3, 28.10.2008 (Added the serviceType member to indicate the service manager creation type)<br />
  * Version 0.4, 03.11.2008 (Added initializing values to some of the class members)<br />
+ * Version 0.5, 10.04.2015 (ID#249: introduced constructor injection for object creation)<br />
  */
 abstract class APFObject implements APFDIService {
 
@@ -83,9 +84,6 @@ abstract class APFObject implements APFDIService {
 
    public function isInitialized() {
       return $this->isInitialized;
-   }
-
-   public function init($initParam) {
    }
 
    public function setContext($context) {
@@ -150,6 +148,7 @@ abstract class APFObject implements APFDIService {
     * Returns a service object according to the current application context.
     *
     * @param string $class Fully qualified class name of the service object.
+    * @param array $arguments A list of constructor arguments to create the service instance with.
     * @param string $type The initializing type (see service manager for details).
     * @param string $instanceId The id of the instance to return.
     *
@@ -162,33 +161,10 @@ abstract class APFObject implements APFDIService {
     * Version 0.3, 10.03.2007 (Method now is considered protected)<br />
     * Version 0.4, 22.04.2007 (Added language initialization of the service manager)<br />
     * Version 0.5, 24.02.2008 (Added the service type param)<br />
-    * Version 0.6  21.11.2012 Jens Prangenberg <jprangenberg@mywebhd.com> (Added the instanceid param)<br />
+    * Version 0.6  21.11.2012 Jens Prangenberg <jprangenberg@mywebhd.com> (Added the instance id param)<br />
     */
-   protected function &getServiceObject($class, $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
-      return ServiceManager::getServiceObject($class, $this->getContext(), $this->getLanguage(), $type, $instanceId);
-   }
-
-   /**
-    * Returns a initialized service object according to the current application context.
-    *
-    * @deprecated Please use getServiceObject() applying the init param to dedicated methods or the DIServiceManager instead.
-    *
-    * @param string $class Fully qualified class name of the service object.
-    * @param string $initParam The initialization parameter.
-    * @param string $type The initializing type (see service manager for details).
-    * @param string $instanceId The id of the instance to return.
-    *
-    * @return APFObject The desired service object.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 29.03.2007<br />
-    * Version 0.2, 22.04.2007 (Added language initialization of the service manager)<br />
-    * Version 0.3, 24.02.2008 (Added the service type param)<br />
-    * Version 0.4  21.11.2012 Jens Prangenberg <jprangenberg@mywebhd.com> (Added the instanceid param)<br />
-    */
-   protected function &getAndInitServiceObject($class, $initParam, $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
-      return ServiceManager::getAndInitServiceObject($class, $this->getContext(), $this->getLanguage(), $initParam, $type, $instanceId);
+   protected function &getServiceObject($class, array $arguments = [], $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
+      return ServiceManager::getServiceObject($class, $this->getContext(), $this->getLanguage(), $arguments, $type, $instanceId);
    }
 
    /**

@@ -22,6 +22,7 @@ namespace APF\core\singleton;
 
 use APF\core\pagecontroller\APFObject;
 use Exception;
+use ReflectionClass;
 
 // ID#178: use closure functions instead of array() to avoid issued with PHP 5.4.x
 register_shutdown_function(function () {
@@ -42,6 +43,7 @@ register_shutdown_function(function () {
  * @author Christian Achatz
  * @version
  * Version 0.1, 17.07.2013<br />
+ * Version 0.2, 10.04.2015 (ID#249: introduced constructor injection for object creation)<br />
  */
 class ApplicationSingleton extends Singleton {
 
@@ -59,6 +61,7 @@ class ApplicationSingleton extends Singleton {
     * the UMGT).
     *
     * @param string $class The name of the class, that should be created a singleton instance from.
+    * @param array $arguments A list of constructor arguments to create the singleton instance with.
     * @param string $instanceId The id of the instance to return.
     *
     * @return APFObject The desired object's singleton instance.
@@ -68,7 +71,7 @@ class ApplicationSingleton extends Singleton {
     * @version
     * Version 0.1, 17.07.2013<br />
     */
-   public static function &getInstance($class, $instanceId = null) {
+   public static function &getInstance($class, array $arguments = [], $instanceId = null) {
 
       $cacheKey = self::getCacheKey($class, $instanceId);
 
@@ -78,7 +81,11 @@ class ApplicationSingleton extends Singleton {
 
          if ($cachedObject === false) {
             // no class check needed due to auto loading!
-            self::$CACHE[$cacheKey] = new $class();
+            if (count($arguments) > 0) {
+               self::$CACHE[$cacheKey] = (new ReflectionClass($class))->newInstanceArgs($arguments);
+            } else {
+               self::$CACHE[$cacheKey] = new $class;
+            }
          } else {
             self::$CACHE[$cacheKey] = unserialize($cachedObject);
          }
@@ -93,7 +100,6 @@ class ApplicationSingleton extends Singleton {
       // remove from APC store to not restore instance after in subsequent request by accident
       apc_delete(self::getCacheKey($class, $instanceId));
    }
-
 
    /**
     * Implements a shutdown function to save all application singleton objects to the APC store.

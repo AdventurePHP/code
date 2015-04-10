@@ -24,6 +24,7 @@ use APF\core\singleton\ApplicationSingleton;
 use APF\core\singleton\SessionSingleton;
 use APF\core\singleton\Singleton;
 use InvalidArgumentException;
+use ReflectionClass;
 
 /**
  * Provides a simple dependency injection container for objects created during application flow.
@@ -46,6 +47,7 @@ final class ServiceManager {
     * @param string $class Fully qualified class name of the service object.
     * @param string $context The application context, the service object belongs to.
     * @param string $language The language, the service object has.
+    * @param array $arguments A list of constructor arguments to create the service instance with.
     * @param string $type The initializing type (see service manager for details).
     * @param string $instanceId The id of the instance to return.
     *
@@ -64,7 +66,7 @@ final class ServiceManager {
     * Version 0.8, 07.07.2012 Jan Wiese <jw-lighting@ewetel.net> (Corrected service retrieval to respect context and language each time.)<br />
     * Version 0.9, 23.07.2013 (Added "APPLICATIONSINGLETON" object creation mechanism.)<br />
     */
-   public static function &getServiceObject($class, $context, $language, $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
+   public static function &getServiceObject($class, $context, $language, array $arguments = [], $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
 
       // Introduce generated instance key to create services with respect to the context.
       // In 1.15, creating instances of the same service implementation within different contexts
@@ -78,16 +80,20 @@ final class ServiceManager {
       $service = null;
       switch ($type) {
          case APFService::SERVICE_TYPE_SINGLETON:
-            $service = & Singleton::getInstance($class, $instanceId);
+            $service = &Singleton::getInstance($class, $arguments, $instanceId);
             break;
          case APFService::SERVICE_TYPE_SESSION_SINGLETON:
-            $service = & SessionSingleton::getInstance($class, $instanceId);
+            $service = &SessionSingleton::getInstance($class, $arguments, $instanceId);
             break;
          case APFService::SERVICE_TYPE_APPLICATION_SINGLETON:
-            $service = & ApplicationSingleton::getInstance($class, $instanceId);
+            $service = &ApplicationSingleton::getInstance($class, $arguments, $instanceId);
             break;
          case APFService::SERVICE_TYPE_NORMAL:
-            $service = new $class();
+            if (count($arguments) > 0) {
+               $service = (new ReflectionClass($class))->newInstanceArgs($arguments);
+            } else {
+               $service = new $class;
+            }
             break;
          default:
             throw new InvalidArgumentException('[ServiceManager::getServiceObject()] The given type ('
@@ -106,36 +112,6 @@ final class ServiceManager {
                . 'now created object (' . $class . ') does not implement the APFService interface! '
                . 'So context, language and service type cannot be set correctly!', E_USER_WARNING);
       }
-
-      return $service;
-   }
-
-   /**
-    * Returns a service object, that is initialized with the given init param. The param itself
-    * can be a primitive data type, an array or an object. Context and language are injected
-    * as well.
-    *
-    * @deprecated Please use getServiceObject() applying the init param to dedicated methods or the DIServiceManager instead.
-    *
-    * @param string $class Fully qualified class name of the service object.
-    * @param string $context The application context, the service object belongs to.
-    * @param string $language The language, the service object has.
-    * @param string $initParam The initialization param for the service object.
-    * @param string $type The initializing type (see service manager for details).
-    * @param string $instanceId The id of the instance to return.
-    *
-    * @return APFService The desired service object.
-    * @throws InvalidArgumentException In case the service object does not implement the APFService interface.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 29.03.2007<br />
-    * Version 0.2, 16.05.2009 (Added check for non existing service object returned by getServiceObject()))<br />
-    * Version 0.3, 04.03.2011 (Refactored to static method)<br />
-    */
-   public static function &getAndInitServiceObject($class, $context, $language, $initParam, $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
-      $service = & self::getServiceObject($class, $context, $language, $type, $instanceId);
-      $service->init($initParam);
 
       return $service;
    }
