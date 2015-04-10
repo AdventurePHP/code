@@ -27,7 +27,7 @@ use APF\core\service\APFService;
  * Implements the factory of the array-pager manager. Initializes concrete ArrayPagerManager
  * instances and caches them for further usage.
  * Application sample:
- * <pre>$aPMF = $this->getServiceObject ('extensions::arraypager::biz','ArrayPagerManagerFabric');
+ * <pre>$aPMF = $this->getServiceObject ('APF\extensions\arraypager\biz\ArrayPagerManagerFabric');
  * $aPM = $aPMF->getArrayPagerManager ('{ConfigSection}');</pre>
  *
  * @author Lutz Mahlstedt

@@ -34,13 +34,11 @@ use Exception;
  * as follows:
  * <pre>
  * // add condition
- * $condSet = &$this->getServiceObject('APF\modules\usermanagement\pres\condition',
- *                   'UserDependentContentConditionSet');
+ * $condSet = &$this->getServiceObject('APF\modules\usermanagement\pres\condition\UserDependentContentConditionSet');
  * $condSet->addCondition(new FooCondition());
  *
  * // initialize with custom condition
- * $condSet = &$this->getServiceObject('APF\modules\usermanagement\pres\condition',
- *                   'UserDependentContentConditionSet');
+ * $condSet = &$this->getServiceObject('APF\modules\usermanagement\pres\condition\UserDependentContentConditionSet');
  * $condSet
  *         ->resetConditionList()
  *         ->addCondition(new BarCondition());
