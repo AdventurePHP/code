@@ -176,7 +176,7 @@ class Cookie {
    /**
     * Returns the value of the desired key within the current namespace.
     *
-    * @param string $default The default value in case the cookie is not existing.
+    * @param string $default The default value in case the cookie's value is null.
     *
     * @return string Cookie value or default value.
     *
@@ -187,7 +187,7 @@ class Cookie {
     * Version 0.3, 13.06.2013 (Refactoring to real domain object representation)<br />
     */
    public function getValue($default = null) {
-      return isset($_COOKIE[$this->name]) ? $_COOKIE[$this->name] : $default;
+      return $this->value !== null ? $this->value : $default;
    }
 
    /**
