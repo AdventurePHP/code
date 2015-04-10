@@ -180,7 +180,8 @@ class UserDependentContentConditionSet extends APFObject {
     * @return UmgtUserSessionStore The session store of the umgt module.
     */
    private function &getUserSessionStore() {
-      return $this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      return $this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore',
+            APFService::SERVICE_TYPE_SESSION_SINGLETON);
    }
 
 }

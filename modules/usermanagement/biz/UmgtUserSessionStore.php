@@ -33,7 +33,9 @@ use InvalidArgumentException;
  * <pre>
  * $store = &$this->getServiceObject(
  *             'APF\modules\usermanagement\biz\UmgtUserSessionStore',
- *             APFService::SERVICE_TYPE_SESSION_SINGLETON);
+ *             [],
+ *             APFService::SERVICE_TYPE_SESSION_SINGLETON
+ * );
  * </pre>
  * Otherwise, the scope of the object is not "session".
  *
