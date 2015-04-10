@@ -23,11 +23,16 @@ namespace APF\core\http;
 use InvalidArgumentException;
 
 /**
- * The Cookie is a tool, that provides sophisticated cookie handling. The methods included allow you to
- * create, update and delete cookies using a clean API. Usage:
- * <pre>$c = new Cookie('my_cookie');
- * $c->setValue('my_value');
- * $c->delete();</pre>
+ * The Cookie class is an abstraction of a HTTP cookie. It allows you to create, configure and set/delete
+ * it using APF's request handling mechanism.
+ * <p/>
+ * Usage:
+ * <pre>
+ * $cookie = new Cookie('my_cookie');
+ * self::getResponse()->setCookie($cookie);
+ *
+ * self::getResponse()->deleteCookie($cookie);
+ * </pre>
  *
  * @author Christian Achatz
  * @version
@@ -123,7 +128,7 @@ class Cookie {
     * Version 0.1, 08.11.2008<br />
     * Version 0.2, 13.06.2013 (Refactoring to real domain object representation)<br />
     */
-   public function __construct($name, $expireTime = self::DEFAULT_EXPIRATION_TIME, $domain = null, $path = null, $secure = null, $httpOnly = null) {
+   public function __construct($name, $expireTime = null, $domain = null, $path = null, $secure = null, $httpOnly = null) {
 
       if (empty($name)) {
          throw new InvalidArgumentException('Cookie cannot be created with an empty name!');
@@ -134,7 +139,13 @@ class Cookie {
       $this->domain = $domain === null ? $_SERVER['HTTP_HOST'] : $domain;
       $this->secure = $secure;
       $this->httpOnly = $httpOnly;
-      $this->expireTime = $expireTime;
+
+      // set default expire time in case nothing specified
+      if ($expireTime === null) {
+         $this->expireTime = time() + self::DEFAULT_EXPIRATION_TIME;
+      } else {
+         $this->expireTime = $expireTime;
+      }
    }
 
    /**
