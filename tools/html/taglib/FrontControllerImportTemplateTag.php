@@ -56,7 +56,7 @@ class FrontControllerImportTemplateTag extends ImportTemplateTag {
 
       // read the name of the template from the model
       /* @var $model FrontControllerImportTemplateModel */
-      $model = & $this->getServiceObject($modelImplementation, $modelCreationMode);
+      $model = &$this->getServiceObject($modelImplementation, [], $modelCreationMode);
 
       $this->loadContentFromFile($model->getTemplateNamespace(), $model->getTemplateName());
 

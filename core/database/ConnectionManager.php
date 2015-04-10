@@ -70,6 +70,13 @@ final class ConnectionManager extends APFObject {
    private static $STATEMENT_FILE_EXTENSION = 'sql';
 
    /**
+    * Defines the configuration extension and thus the file type to be used for DI service configurations.
+    *
+    * @var string $configurationExtension
+    */
+   public static $configurationExtension = 'ini';
+
+   /**
     * Initializes the configuration provider for file based statements.
     *
     * @author Christian Achatz
@@ -118,9 +125,8 @@ final class ConnectionManager extends APFObject {
          return $this->connections[$cacheKey];
       }
 
-      // read configuration
       // TODO decide whether database connections must be fully qualified in the future as well (e.g. like DI services)
-      $config = $this->getConfiguration('APF\core\database', 'connections.ini');
+      $config = $this->getConfiguration('APF\core\database', 'connections.' . self::$configurationExtension);
 
       if (!$config->hasSection($connectionKey)) {
          $env = Registry::retrieve('APF\core', 'Environment');
@@ -140,7 +146,8 @@ final class ConnectionManager extends APFObject {
       }
 
       // create the connection lazily
-      $this->connections[$cacheKey] = $this->getServiceObject($section->getValue('Type'), APFService::SERVICE_TYPE_NORMAL);
+      $this->connections[$cacheKey] = $this->getServiceObject($section->getValue('Type'), [],
+            APFService::SERVICE_TYPE_NORMAL);
       $this->connections[$cacheKey]->init($options);
 
       return $this->connections[$cacheKey];

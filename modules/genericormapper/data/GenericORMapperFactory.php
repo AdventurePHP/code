@@ -35,8 +35,16 @@ use APF\core\service\APFService;
  * <p/>
  * Further, the factory must be created using the service manager. Sample:
  * <pre>$gormFact = &$this->getServiceObject('APF\modules\genericormapper\data\GenericORMapperFactory');
- * $gormFact = &$this->getServiceObject('APF\modules\genericormapper\data\GenericORMapperFactory', APFService::SERVICE_TYPE_NORMAL);
- * $gormFact = &$this->getServiceObject('APF\modules\genericormapper\data\GenericORMapperFactory', APFService::SERVICE_TYPE_SESSION_SINGLETON);</pre>
+ * $gormFact = &$this->getServiceObject(
+ *                                      'APF\modules\genericormapper\data\GenericORMapperFactory',
+ *                                      [],
+ *                                      APFService::SERVICE_TYPE_NORMAL
+ * );
+ * $gormFact = &$this->getServiceObject(
+ *                                      'APF\modules\genericormapper\data\GenericORMapperFactory',
+ *                                      [],
+ *                                      APFService::SERVICE_TYPE_SESSION_SINGLETON
+ * );</pre>
  *
  * @deprecated Please use the GORM with the DIServiceManager instead of this factory to initialize the desired instance!
  *

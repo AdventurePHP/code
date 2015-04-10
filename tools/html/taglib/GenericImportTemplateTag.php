@@ -134,7 +134,7 @@ class GenericImportTemplateTag extends ImportTemplateTag {
       }
 
       // get model
-      $model = & $this->getServiceObject($modelClass, $modelMode);
+      $model = &$this->getServiceObject($modelClass, [], $modelMode);
 
       // check for the get method
       if (!method_exists($model, $getMethod)) {

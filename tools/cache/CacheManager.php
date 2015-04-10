@@ -73,7 +73,7 @@ final class CacheManager extends CacheBase {
       $class = $initParam->getValue('Provider');
 
       /* @var $provider CacheProvider */
-      $provider = $this->getServiceObject($class, APFService::SERVICE_TYPE_NORMAL);
+      $provider = $this->getServiceObject($class, [], APFService::SERVICE_TYPE_NORMAL);
 
       // inject configuration
       $provider->setConfiguration($initParam);
