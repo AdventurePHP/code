@@ -21,7 +21,6 @@
 namespace APF\modules\usermanagement\biz\login;
 
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
-use APF\core\http\Cookie;
 use APF\core\service\APFService;
 use APF\modules\usermanagement\biz\UmgtManager;
 use APF\modules\usermanagement\biz\UmgtUserSessionStore;
@@ -72,7 +71,7 @@ class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
          $umgt = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
 
          $cookieLifeTime = $umgt->getAutoLoginCookieLifeTime();
-         $cookie = new Cookie(self::AUTO_LOGIN_COOKIE_NAME, time() + $cookieLifeTime);
+         $cookie = self::getRequest()->getCookie(self::AUTO_LOGIN_COOKIE_NAME);
          $authToken = $cookie->getValue();
 
          if ($authToken !== null) {
@@ -84,6 +83,7 @@ class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
 
                if ($user !== null) {
                   $sessionStore->setUser($appIdent, $user);
+                  $cookie->setExpireTime(time() + $cookieLifeTime);
                   self::getResponse()->setCookie($cookie->setValue($savedToken->getToken()));
                }
             }
