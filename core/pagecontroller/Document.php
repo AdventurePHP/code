@@ -730,13 +730,16 @@ class Document extends APFObject {
     *
     * @param string $name The reference name of the data field to set/add.
     * @param mixed $data The data to inject to the current node.
+    * @return Document This instance for further usage.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.01.2014<br />
     */
-   public function setData($name, $data) {
+   public function &setData($name, $data) {
       $this->data[$name] = $data;
+
+      return $this;
    }
 
    /**
