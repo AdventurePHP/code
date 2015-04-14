@@ -72,18 +72,19 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
       }
 
       /** @var $umgtUS UmgtUserSessionStore */
-      $umgtUS = & $this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      $umgtUS = &$this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', [],
+            APFService::SERVICE_TYPE_SESSION_SINGLETON);
 
       // load current user
       $user = $umgtUS->getUser($this->getContext());
 
-      // protect against access if no user is logged in and no anonymous acces is granted
+      // protect against access if no user is logged in and no anonymous access is granted
       if ($user === null) {
          return $this->cache[$permissionName][$pageId] = (!$this->anonymousAccess);
       }
 
       /** @var $umgtM UmgtManager */
-      $umgtM = & $this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
+      $umgtM = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
 
       // load visibilities from users and groups
       $groups = $umgtM->loadGroupsWithUser($user);

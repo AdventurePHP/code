@@ -159,7 +159,7 @@ class AdvancedBBCodeParser extends APFObject {
     */
    private function setUpProvider() {
 
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $t->start('AdvancedBBCodeParser::setUpProvider()');
 
@@ -171,7 +171,7 @@ class AdvancedBBCodeParser extends APFObject {
             $class = $providerDefinition->getClass();
 
             // convert definition and initialize provider
-            $this->provider[$providerName] = $this->getServiceObject($class, APFService::SERVICE_TYPE_NORMAL);
+            $this->provider[$providerName] = $this->getServiceObject($class, [], APFService::SERVICE_TYPE_NORMAL);
          }
 
       }
@@ -192,7 +192,7 @@ class AdvancedBBCodeParser extends APFObject {
     */
    public function parseCode($string) {
 
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $t->start('AdvancedBBCodeParser::parseCode()');
 

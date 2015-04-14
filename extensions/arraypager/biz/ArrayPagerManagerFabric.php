@@ -63,6 +63,7 @@ final class ArrayPagerManagerFabric extends APFObject {
       if (isset($this->pagers[$cacheKey]) === false) {
          $this->pagers[$cacheKey] = $this->getServiceObject(
                'APF\extensions\arraypager\biz\ArrayPagerManager',
+               [],
                APFService::SERVICE_TYPE_NORMAL
          );
          $this->pagers[$cacheKey]->init($config);

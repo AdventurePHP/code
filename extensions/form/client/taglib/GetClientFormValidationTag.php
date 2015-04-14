@@ -92,7 +92,8 @@ class GetClientFormValidationTag extends AbstractFormControl {
 
 
       /* @var $CVSS ClientValidationScriptStore */
-      $CVSS = & $this->getServiceObject('APF\extensions\form\client\ClientValidationScriptStore', APFService::SERVICE_TYPE_SINGLETON);
+      $CVSS = &$this->getServiceObject('APF\extensions\form\client\ClientValidationScriptStore', [],
+            APFService::SERVICE_TYPE_SINGLETON);
 
       $scriptStore = $CVSS->getScriptStore();
       $valmarkerclassStore = $CVSS->getValmarkerclassStore();

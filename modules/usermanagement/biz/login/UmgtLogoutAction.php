@@ -21,9 +21,9 @@
 namespace APF\modules\usermanagement\biz\login;
 
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\http\Cookie;
 use APF\core\service\APFService;
 use APF\modules\usermanagement\biz\UmgtUserSessionStore;
-use APF\core\http\Cookie;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
@@ -40,7 +40,8 @@ class UmgtLogoutAction extends AbstractFrontcontrollerAction {
    public function run() {
       $logout = $this->getInput()->getParameter('logout', 'false');
       if ($logout === 'true') {
-         $sessionStore = & $this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
+         $sessionStore = &$this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', [],
+               APFService::SERVICE_TYPE_SESSION_SINGLETON);
          /* @var $sessionStore UmgtUserSessionStore */
          $sessionStore->logout($this->getContext());
 
@@ -49,7 +50,7 @@ class UmgtLogoutAction extends AbstractFrontcontrollerAction {
          self::getResponse()->setCookie($cookie->delete());
 
          // redirect to target page
-         $urlProvider = & $this->getDIServiceObject('APF\modules\usermanagement\biz', 'LogoutRedirectUrlProvider');
+         $urlProvider = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'LogoutRedirectUrlProvider');
          /* @var $urlProvider UmgtRedirectUrlProvider */
          self::getResponse()->forward(LinkGenerator::generateUrl(Url::fromString($urlProvider->getRedirectUrl())));
       }
