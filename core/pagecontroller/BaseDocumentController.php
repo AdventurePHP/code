@@ -297,13 +297,14 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     *
     * @param string $name The reference name of the data field to set/add.
     * @param mixed $data The data to inject to the current node.
+    * @return Document The document instance this controller is responsible to transform.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.01.2014<br />
     */
-   protected function setData($name, $data) {
-      $this->getDocument()->setData($name, $data);
+   protected function &setData($name, $data) {
+      return $this->getDocument()->setData($name, $data);
    }
 
    /**
@@ -319,7 +320,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * Version 0.1, 29.01.2014<br />
     */
    protected function getData($name, $default = null) {
-      $this->getDocument()->getData($name, $default);
+      return $this->getDocument()->getData($name, $default);
    }
 
    /**
