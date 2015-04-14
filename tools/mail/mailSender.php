@@ -30,7 +30,7 @@ use InvalidArgumentException;
 /**
  * Provides a mail() wrapper.
  *
- * @deprecated This service implementation is deprecated. Please use any available PHP solution instead (e.g. PHPMailer).
+ * @deprecated This implementation is deprecated. Please use any available PHP solution instead (e.g. PHPMailer).
  *
  * @author Christian Schäfer
  * @version
@@ -116,6 +116,8 @@ class mailSender extends APFObject {
    /**
     * Initializes the component. Loads the configuration file for the current
     * instance of the mailSender.
+    * 
+    * @deprecated This implementation is deprecated. Please use any available PHP solution instead (e.g. PHPMailer).
     *
     * @param string $initParam The name of the config section to initialize the component with.
     *
@@ -407,6 +409,8 @@ class mailSender extends APFObject {
     *   <li>recipientcount (new!): the number of recipients.</li>
     *   <li>successcount (new!): the number of emails sent successfully.</li>
     * </ul>
+    * 
+    * @deprecated This implementation is deprecated. Please use any available PHP solution instead (e.g. PHPMailer).
     *
     * @return string[] The sending status.
     *

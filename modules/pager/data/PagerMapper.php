@@ -49,14 +49,14 @@ final class PagerMapper extends APFObject {
    /**
     * Initializes the connection key of the mapper.
     *
-    * @param string $initParam the database connection key
+    * @param string $connectionKey The database connection key.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 19.01.2009<br />
     */
-   public function init($initParam) {
-      $this->connectionKey = $initParam;
+   public function __construct($connectionKey) {
+      $this->connectionKey = $connectionKey;
    }
 
    /**

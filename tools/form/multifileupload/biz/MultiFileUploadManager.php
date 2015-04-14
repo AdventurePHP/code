@@ -57,7 +57,7 @@ class MultiFileUploadManager extends APFObject {
    private $session;
 
    /**
-    * Initiert das Service. Es werden die nötigen Parameter name und formname erwartet.
+    * Initializes the service. Required parameters are <em>formname</em> and <em>name</em> as associative array.
     *
     * @param array $param ('formname'=>'Formularname', 'name'=>'Name_mit_dem_der_Taglib_eingebaut_wurde')
     *
@@ -68,7 +68,7 @@ class MultiFileUploadManager extends APFObject {
     * @version 1.1, 11.07.2012 (Change Exception to FormException)<br>
     * @version 1.2, 14.08.2012 (Change to new File-/Folder-class)<br>
     */
-   public function init($param) {
+   public function __construct(array $param = []) {
       if (!isset($param['formname']) || !isset($param['name'])) {
          throw new FormException('[' . get_class($this) . '::init()] MultiFileUpload init params are not correct!', E_USER_ERROR);
       }
@@ -77,7 +77,7 @@ class MultiFileUploadManager extends APFObject {
       $this->sessionNamespace = self::$DEFAULT_SESSION_NAMESPACE . '\\' . $param['formname'] . '\\' . $param['name'];
       $this->session = self::getRequest()->getSession($this->sessionNamespace);
 
-      //Temporäres Upload-Verzeichnis erstellen, falls es vorhanden ist, wird der Pfad zurück gegeben.
+      // Temporäres Upload-Verzeichnis erstellen, falls es vorhanden ist, wird der Pfad zurück gegeben.
       $createFolder = new Folder();
       $uploadPath = $this->getUploadPath();
       $createFolder->create($uploadPath);

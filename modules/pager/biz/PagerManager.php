@@ -312,7 +312,7 @@ final class PagerManager extends APFObject {
     * @return PagerMapper
     */
    protected function &getMapper() {
-      return $this->getAndInitServiceObject('APF\modules\pager\data\PagerMapper', $this->databaseConnectionName);
+      return $this->getServiceObject('APF\modules\pager\data\PagerMapper', [$this->databaseConnectionName]);
    }
 
    /**

@@ -51,17 +51,17 @@ class CommentListingController extends CommentBaseDocumentController {
    public function transformContent() {
 
       /* @var $m ArticleCommentManager */
-      $m = & $this->getAndInitServiceObject('APF\modules\comments\biz\ArticleCommentManager', $this->getCategoryKey());
+      $m = &$this->getServiceObject('APF\modules\comments\biz\ArticleCommentManager', [$this->getCategoryKey()]);
 
       // load the entries using the business component
       $entries = $m->loadEntries();
 
       $buffer = (string) '';
-      $template = & $this->getTemplate('ArticleComment');
+      $template = &$this->getTemplate('ArticleComment');
 
       // init bb code parser (remove some provider, that we don't need configuration files)
       /* @var $bP AdvancedBBCodeParser */
-      $bP = & $this->getServiceObject('APF\tools\string\AdvancedBBCodeParser');
+      $bP = &$this->getServiceObject('APF\tools\string\AdvancedBBCodeParser');
       $bP->removeProvider('standard.font.color');
       $bP->removeProvider('standard.font.size');
 
@@ -80,7 +80,7 @@ class CommentListingController extends CommentBaseDocumentController {
 
       // display hint, if no entries are to display
       if (count($entries) < 1) {
-         $Template__NoEntries = & $this->getTemplate('NoEntries');
+         $Template__NoEntries = &$this->getTemplate('NoEntries');
          $buffer = $Template__NoEntries->transformTemplate();
       }
 
@@ -97,11 +97,11 @@ class CommentListingController extends CommentBaseDocumentController {
       // generate the add comment link
       $this->setPlaceHolder('Link',
             LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
-                              $urlParams['PageName']  => '',
-                              $urlParams['CountName'] => '',
-                              'coview'                => 'form'
-                        )
+                        $urlParams['PageName']  => '',
+                        $urlParams['CountName'] => '',
+                        'coview'                => 'form'
                   )
+            )
             )
       );
    }

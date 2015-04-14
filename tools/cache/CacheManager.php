@@ -58,7 +58,7 @@ final class CacheManager extends CacheBase {
     * Implements the init() method used by the service manager. Initializes the cache
     * manager with the corresponding cache configuration section.
     *
-    * @param string[] $initParam The desired cache config section.
+    * @param Configuration $initParam The desired cache config section.
     *
     * @author Christian Achatz
     * @version
@@ -69,7 +69,6 @@ final class CacheManager extends CacheBase {
     */
    public function init($initParam) {
 
-      /* @var $initParam Configuration */
       $class = $initParam->getValue('Provider');
 
       /* @var $provider CacheProvider */

@@ -49,9 +49,9 @@ class MultiFileDeleteAction extends AbstractFrontcontrollerAction {
          $uploadName = $this->getSanitizedUploadName();
 
          /* @var $manager MultiFileUploadManager */
-         $manager = &$this->getAndInitServiceObject(
+         $manager = &$this->getServiceObject(
                'APF\tools\form\multifileupload\biz\MultiFileUploadManager',
-               array('formname' => $formName, 'name' => $fieldName)
+               ['formname' => $formName, 'name' => $fieldName]
          );
          if ($uploadName !== null) {
             $manager->deleteFile($uploadName);

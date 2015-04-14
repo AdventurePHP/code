@@ -21,7 +21,6 @@
 namespace APF\tools\form\multifileupload\pres\taglib;
 
 use APF\core\configuration\Configuration;
-use APF\core\service\APFService;
 use APF\extensions\htmlheader\biz\CssContentNode;
 use APF\extensions\htmlheader\biz\HtmlHeaderManager;
 use APF\extensions\htmlheader\biz\JsContentNode;
@@ -72,14 +71,13 @@ class MultiFileUploadTag extends AbstractFormControl {
       // get Settings
       $this->uploadFieldName = $this->getAttribute('name');
       $maxFileSize = $this->getAttribute('max-file-size');
-      $MimeTypes = $this->getAttribute('allowed-mime-types');
+      $mimeTypes = $this->getAttribute('allowed-mime-types');
 
-      $this->manager = & $this->getAndInitServiceObject(
+      $this->manager = &$this->getServiceObject(
             'APF\tools\form\multifileupload\biz\MultiFileUploadManager',
-            array('formname' => $this->formName, 'name' => $this->uploadFieldName),
-            APFService::SERVICE_TYPE_SINGLETON
+            ['formname' => $this->formName, 'name' => $this->uploadFieldName]
       );
-      $this->manager->setSettings($maxFileSize, explode(',', $MimeTypes));
+      $this->manager->setSettings($maxFileSize, explode(',', $mimeTypes));
    }
 
    /**
@@ -89,7 +87,7 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 14.3.2011<br>
     */
    public function onAfterAppend() {
-      $form = & $this->getForm();
+      $form = &$this->getForm();
       $form->setAttribute('enctype', 'multipart/form-data');
 
       // ensure form has an id (required for the java script stuff)
@@ -198,7 +196,7 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 14.3.2011<br>
     */
    public function uploadFiles() {
-      $name = & $this->uploadFieldName;
+      $name = &$this->uploadFieldName;
       if (isset($_FILES[$name]) && $_FILES[$name]['name'] != '') {
          $addfile = $this->manager->addFile($_FILES[$name], false);
          unset($_FILES[$name]);
