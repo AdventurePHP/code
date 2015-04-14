@@ -293,6 +293,17 @@ interface Request {
    public function getCookie($name);
 
    /**
+    * Let's you check whether the current request has a specific cookie or not.
+    * <p/>
+    * This is potentially helpful as getCookie() will return <em>null</em> if a cookie is not specified.
+    *
+    * @param string $name The name of the desired cookie.
+    *
+    * @return bool <em>True</em> in case the current request has the desired cookie specified, <em>false</em> otherwise.
+    */
+   public function hasCookie($name);
+
+   /**
     * @return string The request method name (e.g. GET).
     */
    public function getMethod();

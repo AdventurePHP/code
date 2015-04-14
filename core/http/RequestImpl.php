@@ -375,6 +375,10 @@ class RequestImpl implements Request {
       return null;
    }
 
+   public function hasCookie($name) {
+      return isset($_COOKIE[$name]);
+   }
+
    public function getRequestUri() {
       return $_SERVER['REQUEST_URI'];
    }
