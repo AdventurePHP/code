@@ -35,6 +35,8 @@ interface Iterator {
     *
     * @param array $data List of objects of an associative array.
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 01.06.2008<br />

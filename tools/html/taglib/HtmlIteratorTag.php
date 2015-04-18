@@ -115,6 +115,8 @@ class HtmlIteratorTag extends Document implements Iterator {
 
    public function fillDataContainer($data) {
       $this->dataContainer = $data;
+
+      return $this;
    }
 
    /**
@@ -279,9 +281,9 @@ class HtmlIteratorTag extends Document implements Iterator {
 
                   // use getter defined with <iterator:item /> to retrieve appropriate value
                   $placeHolders[$objectId]->setContent($this->dataContainer[$i]->{
-                              $getter
-                              }(
-                                    $placeHolders[$objectId]->getAttribute('name'))
+                  $getter
+                  }(
+                        $placeHolders[$objectId]->getAttribute('name'))
                   );
 
                }
