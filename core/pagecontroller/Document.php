@@ -173,12 +173,16 @@ class Document extends APFObject {
     *
     * @param Document $parentObject The parent node.
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 20.02.2010<br />
     */
    public function setParentObject(Document &$parentObject) {
       $this->parentObject = &$parentObject;
+
+      return $this;
    }
 
    /**
@@ -199,12 +203,16 @@ class Document extends APFObject {
     *
     * @param string $objectId The object id.
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 20.02.2010<br />
     */
    public function setObjectId($objectId) {
       $this->objectId = $objectId;
+
+      return $this;
    }
 
    /**
@@ -299,12 +307,16 @@ class Document extends APFObject {
     * @param string $name Name of the attribute.
     * @param string $value Value of the attribute.
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 28.12.2006<br />
     */
    public function setAttribute($name, $value) {
       $this->attributes[$name] = $value;
+
+      return $this;
    }
 
    /**
@@ -338,6 +350,8 @@ class Document extends APFObject {
     *
     * @param array $attributes The attributes list.
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 28.12.2006<br />
@@ -349,6 +363,8 @@ class Document extends APFObject {
          }
          $this->attributes = array_merge($this->attributes, $attributes);
       }
+
+      return $this;
    }
 
    /**
@@ -434,12 +450,16 @@ class Document extends APFObject {
     *
     * @param string $content The content of the current node.
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 20.02.2010<br />
     */
    public function setContent($content) {
       $this->content = $content;
+
+      return $this;
    }
 
    /**
@@ -531,7 +551,7 @@ class Document extends APFObject {
     * @param string $value value of the place holder.
     * @param bool $append True in case the applied value should be appended, false otherwise.
     *
-    * @return Document This instance for further usage.
+    * @return $this This instance for further usage.
     * @throws InvalidArgumentException In case the place holder cannot be found.
     *
     * @author Christian Achatz, Jan Wiese
@@ -598,6 +618,8 @@ class Document extends APFObject {
     * @param string[] $placeHolderValues Key-value-couples to fill place holders.
     * @param bool $append True in case the applied values should be appended, false otherwise.
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 20.11.2010<br />
@@ -608,6 +630,8 @@ class Document extends APFObject {
       foreach ($placeHolderValues as $key => $value) {
          $this->setPlaceHolder($key, $value, $append);
       }
+
+      return $this;
    }
 
    /**
@@ -616,6 +640,8 @@ class Document extends APFObject {
     * @param string $name The name of the place holder.
     * @param string $value The place holder's value.
     * @param bool $append True in case the applied values should be appended, false otherwise.
+    *
+    * @return $this This instance for further usage.
     *
     * @author Christian Achatz, Werner Liemberger
     * @version
@@ -640,6 +666,8 @@ class Document extends APFObject {
                )
          );
       }
+
+      return $this;
    }
 
    /**
@@ -648,6 +676,8 @@ class Document extends APFObject {
     *
     * @param array $placeHolderValues Key-value-couples to fill place holders.
     * @param bool $append True in case the applied values should be appended, false otherwise.
+    *
+    * @return $this This instance for further usage.
     *
     * @author Christian Achatz
     * @version
@@ -659,6 +689,8 @@ class Document extends APFObject {
       foreach ($placeHolderValues as $key => $value) {
          $this->setPlaceHolderIfExist($key, $value, $append);
       }
+
+      return $this;
    }
 
    /**
@@ -730,6 +762,7 @@ class Document extends APFObject {
     *
     * @param string $name The reference name of the data field to set/add.
     * @param mixed $data The data to inject to the current node.
+    *
     * @return Document This instance for further usage.
     *
     * @author Christian Achatz
