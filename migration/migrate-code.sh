@@ -49,6 +49,9 @@ $PHP_BINARY $SCRIPT_DIR/migrate_session_handling.php
 echo "* Migrate form definitions ..."
 $PHP_BINARY $SCRIPT_DIR/migrate_form_definitions.php
 
+echo "* Migrate service object API ..."
+$PHP_BINARY $SCRIPT_DIR/migrate_service_object_api.php
+
 echo
 echo "#############################################"
 echo
