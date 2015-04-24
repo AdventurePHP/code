@@ -39,7 +39,7 @@ namespace APF\modules\captcha\pres\validator;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\tools\form\taglib\TextFieldTag;
+use APF\modules\captcha\pres\taglib\SimpleCaptchaTag;
 use APF\tools\form\validator\TextFieldValidator;
 
 /**
@@ -65,8 +65,7 @@ class CaptchaValidator extends TextFieldValidator {
    public function validate($input) {
 
       // get the captcha content of the current request
-      /* @var $this ->control SimpleCaptchaTag */
-      $captcha = $this->control->getCurrentCaptcha();
+      $captcha = $this->getControl()->getCurrentCaptcha();
 
       // validate field
       if (strlen($input) == 5
@@ -91,8 +90,7 @@ class CaptchaValidator extends TextFieldValidator {
    public function notify() {
 
       // add validation style to the text field
-      /* @var $textField TextFieldTag */
-      $textField = & $this->control->getCaptchaTextField();
+      $textField = $this->getControl()->getCaptchaTextField();
       $textField->markAsInvalid();
       $this->markControl($textField);
 
@@ -104,6 +102,13 @@ class CaptchaValidator extends TextFieldValidator {
       // notify listeners to be able to handle the validation event
       $this->notifyValidationListeners($this->control);
 
+   }
+
+   /**
+    * @return SimpleCaptchaTag
+    */
+   protected function &getControl() {
+      return $this->control;
    }
 
 }

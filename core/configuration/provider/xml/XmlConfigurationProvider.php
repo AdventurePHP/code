@@ -50,13 +50,10 @@ use SimpleXMLElement;
  * @author Christian Achatz
  * @version
  * Version 0.1, 27.09.2010<br />
+ * Version 0.2, 27.02.2012 (Throw an exception if xml isn't well-formed - Tobias Lückel [Megger])
  */
 class XmlConfigurationProvider extends BaseConfigurationProvider implements ConfigurationProvider {
 
-   /**
-    * @version
-    * Version 0.2, 27.02.2012 (Throw an exception if xml isn't well-formed - Tobias Lückel [Megger])
-    */
    public function loadConfiguration($namespace, $context, $language, $environment, $name) {
 
       $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);

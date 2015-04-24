@@ -43,6 +43,8 @@ class UserFieldEncryptionProvider {
     * If key is smaller then all key parts together, a new key will be generated,
     * containing parts of each single key part.
     *
+    * @param string $handler The mcrypt handler.
+    *
     * @return String The final encryption/decryption key
     */
    protected static function getConcatenatedEncryptionKey($handler) {

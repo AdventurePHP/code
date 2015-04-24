@@ -119,12 +119,15 @@ class MultiFileUploadManager extends APFObject {
     * Entfernt Dateien die älter als die angegebene Zeit sind (ausgegangen wird vom CreationTimestamp - Dieser kann je nach
     * Betriebsystem variieren!)
     *
-    * @params int $seconds - Dateien die älter sind als dieser Wert werden gelöscht. (Default: 86400 Sekunden => 1 Tag)
+    * @param int $seconds Dateien die älter sind als dieser Wert werden gelöscht. (Default: 86400 Sekunden => 1 Tag)
+    *
+    * @throws \APF\tools\filesystem\FilesystemException In case anything goes wrong.
     *
     * @author Werner Liemberger <wpublicmail@gmail.com>
-    * @version 1.0, 14.3.2011<br>
-    * @version 1.1, 14.08.2012 (Change to new File-/Folder-class)<br>
-    * @version 1.2, 17.08.2012 (Completly refactored method for full functionality)
+    * @version
+    * 1.0, 14.3.2011<br>
+    * 1.1, 14.08.2012 (Change to new File-/Folder-class)<br>
+    * 1.2, 17.08.2012 (Completely refactored method for full functionality)
     */
    public function deleteOldFiles($seconds = 86400) {
 

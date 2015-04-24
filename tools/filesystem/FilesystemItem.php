@@ -59,6 +59,8 @@ abstract class FilesystemItem extends APFObject {
    protected $owner = null;
 
    /**
+    * @param string $path The path of the item to open.
+    *
     * @author  Nicolas Pecher
     * @version Version 0.1, 06.08.2012
     */
@@ -71,6 +73,8 @@ abstract class FilesystemItem extends APFObject {
    public abstract function close();
 
    /**
+    * @param string $path The path of the item to create.
+    *
     * @author  Nicolas Pecher
     * @version Version 0.1, 06.08.2012
     */

@@ -356,7 +356,9 @@ class ExtendedSoapClientService extends APFObject {
    }
 
    /**
-    * @param int The connection_timeout option defines a timeout in seconds for the connection to the SOAP service. This option does not define a timeout for services with slow responses. To limit the time to wait for calls to finish the default_socket_timeout setting is available.
+    * @param int $timeout The connection_timeout option defines a timeout in seconds for the connection to the SOAP
+    * service. This option does not define a timeout for services with slow responses. To limit the time to wait for
+    * calls to finish the default_socket_timeout setting is available.
     *
     * @return ExtendedSoapClientService This instance for further usage.
     *
@@ -374,7 +376,8 @@ class ExtendedSoapClientService extends APFObject {
    }
 
    /**
-    * @param int The cache_wsdl option is one of WSDL_CACHE_NONE, WSDL_CACHE_DISK, WSDL_CACHE_MEMORY or WSDL_CACHE_BOTH.
+    * @param bool $cacheWsdl The cache_wsdl option is one of WSDL_CACHE_NONE, WSDL_CACHE_DISK, WSDL_CACHE_MEMORY
+    * or WSDL_CACHE_BOTH.
     *
     * @return ExtendedSoapClientService This instance for further usage.
     *

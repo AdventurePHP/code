@@ -210,14 +210,13 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
     * Generates the PHP code for the base object for the object with the given name.
     *
     * @param string $name The object's name.
-    * @param string $namespace The namespace of the class to generate.
     *
     * @return string The base object's PHP code.
     *
     * @author Ralf Schubert
     * @version 0.1,  15.01.2011<br />
     */
-   protected function generateBaseObjectCode($name, $namespace) {
+   protected function generateBaseObjectCode($name) {
       $class = $this->domainObjectsTable[$name]['Class'];
       $className = RootClassLoader::getClassName($class);
 
@@ -329,14 +328,13 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
     * Generates the code for the object, which extends the base object.
     *
     * @param string $name The object's name.
-    * @param string $namespace The namespace of the class to generate.
     *
     * @return string The PHP code.
     *
     * @author Ralf Schubert
     * @version 0.1,  15.01.2011<br />
     */
-   protected function generateObjectCode($name, $namespace) {
+   protected function generateObjectCode($name) {
       $class = $this->domainObjectsTable[$name]['Class'];
       $className = RootClassLoader::getClassName($class);
 

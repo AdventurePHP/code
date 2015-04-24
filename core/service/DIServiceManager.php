@@ -172,7 +172,7 @@ final class DIServiceManager {
       @$t->start($benchId);
 
       // Get config to determine, which object to create.
-      $config = self::getServiceConfiguration($configNamespace, $sectionName, $context, $language, $cacheKey);
+      $config = self::getServiceConfiguration($configNamespace, $context, $language, $cacheKey);
 
       if (!$config->hasSection($sectionName)) {
          throw new ConfigurationException('[DIServiceManager::getServiceObject()] Service object configuration with '
@@ -386,7 +386,6 @@ final class DIServiceManager {
     * Loads the service configuration.
     *
     * @param string $configNamespace The namespace of the service (a.k.a. config namespace).
-    * @param string $sectionName The name of the service (a.k.a. section name).
     * @param string $context The context of the current application.
     * @param string $language The language of the current application.
     * @param string $cacheKey The cache key to check/find configuration in configuration cache
@@ -398,7 +397,7 @@ final class DIServiceManager {
     * Version 0.1, 04.10.2010<br />
     * Version 0.2, 15.07.2012 Jan Wiese (Introduced configuration cache and $cacheKey parameter)<br />
     */
-   private static function getServiceConfiguration($configNamespace, $sectionName, $context, $language, $cacheKey) {
+   private static function getServiceConfiguration($configNamespace, $context, $language, $cacheKey) {
 
       // return cached version as much as possible to gain performance
       if (isset(self::$SERVICE_CONFIG_CACHE[$cacheKey])) {

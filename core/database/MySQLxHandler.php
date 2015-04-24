@@ -221,6 +221,9 @@ class MySQLxHandler extends AbstractDatabaseHandler {
    /**
     * Sets the data pointer to the given offset using the result resource.
     *
+    * @param resource $result The query result.
+    * @param int $offset The offset to set the data pointer to.
+    *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 15.01.2006<br />
