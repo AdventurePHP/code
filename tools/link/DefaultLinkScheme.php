@@ -93,7 +93,7 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
          return str_replace('&', '&amp;', $resultUrl);
       }
 
-      return $resultUrl;
+      return $this->sanitizeUrl($resultUrl);
    }
 
    public function formatActionLink(Url $url, $namespace, $name, array $params = array()) {
