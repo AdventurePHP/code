@@ -23,6 +23,7 @@ namespace APF\tools\link;
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\core\frontcontroller\ActionUrlMapping;
 use APF\core\frontcontroller\Frontcontroller;
+use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 
 /**
@@ -330,6 +331,18 @@ abstract class BasicLinkScheme {
       }
 
       return $url->setQuery($query);
+   }
+   
+   /**
+    * Sanitizes a generated URL to avoid XSS. Attack vector is to injecting XSS code as a URL parameter name
+    * with an application that directly passes the URL to the generated HTML code even if the
+    * XssProtectionInputFilter is used.
+    *
+    * @param string $url The url to sanitize.
+    * @return string The sanitized url.
+    */
+   protected function sanitizeUrl($url) {
+      return strip_tags(html_entity_decode($url, ENT_QUOTES, Registry::retrieve('APF\core', 'Charset')));
    }
 
 }
