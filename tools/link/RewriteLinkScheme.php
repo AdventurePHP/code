@@ -110,9 +110,7 @@ class RewriteLinkScheme extends BasicLinkScheme implements LinkScheme {
          $resultUrl .= self::REWRITE_PARAM_TO_ACTION_DELIMITER . $actions;
       }
 
-      $resultUrl = $this->appendAnchor($resultUrl, $url);
-
-      return $resultUrl;
+      return $this->sanitizeUrl($this->appendAnchor($resultUrl, $url));
    }
 
    public function formatActionLink(Url $url, $namespace, $name, array $params = array()) {
