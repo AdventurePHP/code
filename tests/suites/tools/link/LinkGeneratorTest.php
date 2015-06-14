@@ -405,4 +405,19 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   public function testXssEscape() {
+
+      $injection = '<script>alert(\'foo\')</script>';
+      $url = Url::fromString('/foo/bar/?\'>' . $injection . '=test');
+
+      $link = LinkGenerator::generateUrl($url, new DefaultLinkScheme());
+      assertNotContains($injection, $link, true);
+
+      $url = Url::fromString('/foo/bar/\'>' . $injection . '/test');
+
+      $link = LinkGenerator::generateUrl($url, new RewriteLinkScheme());
+      assertNotContains($injection, $link, true);
+
+   }
+
 }

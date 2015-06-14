@@ -88,12 +88,15 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
 
       $resultUrl = $this->appendAnchor($resultUrl, $url);
 
+      // escape resulting URL to avoid URL parameter script injections
+      $resultUrl = $this->sanitizeUrl($resultUrl);
+
       // encode ampersands if desired
       if ($this->getEncodeAmpersands()) {
          return str_replace('&', '&amp;', $resultUrl);
       }
 
-      return $this->sanitizeUrl($resultUrl);
+      return $resultUrl;
    }
 
    public function formatActionLink(Url $url, $namespace, $name, array $params = array()) {
