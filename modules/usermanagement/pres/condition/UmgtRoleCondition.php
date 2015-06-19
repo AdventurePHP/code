@@ -20,7 +20,6 @@
  */
 namespace APF\modules\usermanagement\pres\condition;
 
-use APF\modules\usermanagement\biz\model\UmgtRole;
 use APF\modules\usermanagement\biz\model\UmgtUser;
 
 /**
@@ -30,7 +29,7 @@ use APF\modules\usermanagement\biz\model\UmgtUser;
  * @version
  * Version 0.1, 02.06.2011
  */
-class UmgtRoleCondition extends UserDependentContentConditionBase implements UserDependentContentCondition {
+class UmgtRoleCondition extends UmgtRoleConditionBase implements UserDependentContentCondition {
 
    public function matches($conditionKey, UmgtUser $user = null) {
 
@@ -49,15 +48,6 @@ class UmgtRoleCondition extends UserDependentContentConditionBase implements Use
 
    public function getConditionIdentifier() {
       return 'role';
-   }
-
-   /**
-    * @param UmgtUser $user
-    *
-    * @return UmgtRole[]
-    */
-   private function getRoles(UmgtUser $user) {
-      return $user->loadRelatedObjects('Role2User');
    }
 
 }

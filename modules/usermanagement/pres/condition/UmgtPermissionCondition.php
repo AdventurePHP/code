@@ -31,7 +31,7 @@ use APF\modules\usermanagement\biz\model\UmgtUser;
  * @version
  * Version 0.1, 12.03.2015<br />
  */
-class UmgtPermissionCondition extends UserDependentContentConditionBase implements UserDependentContentCondition {
+class UmgtPermissionCondition extends UmgtRoleConditionBase implements UserDependentContentCondition {
 
    public function matches($conditionKey, UmgtUser $user = null) {
 
@@ -66,7 +66,7 @@ class UmgtPermissionCondition extends UserDependentContentConditionBase implemen
     */
    private function getPermissions(UmgtUser $user) {
 
-      $roles = $user->loadRelatedObjects('Role2User');
+      $roles = $this->getRoles($user);
       $result = array();
 
       foreach ($roles as $role) {
@@ -78,7 +78,7 @@ class UmgtPermissionCondition extends UserDependentContentConditionBase implemen
          }
       }
 
-      return array_merge($result);
+      return array_values($result);
    }
 
 }
