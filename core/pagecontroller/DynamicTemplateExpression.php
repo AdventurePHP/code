@@ -42,4 +42,4 @@ class DynamicTemplateExpression implements TemplateExpression {
       return $expressionTag;
    }
 
-} 
+}

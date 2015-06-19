@@ -182,4 +182,4 @@ class FilePathGenerationTest extends \PHPUnit_Framework_TestCase {
 
    }
 
-} 
+}

@@ -34,4 +34,4 @@ interface EvaluationExpression {
     */
    public function getResult();
 
-} 
+}

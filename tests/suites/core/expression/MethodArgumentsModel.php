@@ -52,4 +52,4 @@ class MethodArgumentsModel {
       return $result;
    }
 
-} 
+}

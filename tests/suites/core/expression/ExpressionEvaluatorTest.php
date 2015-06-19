@@ -87,4 +87,4 @@ class ExpressionEvaluatorTest extends \PHPUnit_Framework_TestCase {
       ExpressionEvaluator::evaluate(new Document(), 'foo-> getCssClass()');
    }
 
-} 
+}

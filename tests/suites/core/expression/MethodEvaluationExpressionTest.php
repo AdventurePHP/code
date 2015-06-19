@@ -82,4 +82,4 @@ class MethodEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
       $expression->getResult();
    }
 
-} 
+}

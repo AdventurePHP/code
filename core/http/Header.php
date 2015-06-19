@@ -69,4 +69,4 @@ interface Header {
     */
    public function __toString();
 
-} 
+}

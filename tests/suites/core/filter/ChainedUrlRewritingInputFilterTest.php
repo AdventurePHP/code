@@ -394,4 +394,4 @@ class ChainedUrlRewritingInputFilterTest extends \PHPUnit_Framework_TestCase {
       assertEquals(array(), $fC->getActions());
    }
 
-} 
+}

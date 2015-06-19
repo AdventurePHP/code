@@ -143,4 +143,3 @@ class NumberScopeValidatorTest extends \PHPUnit_Framework_TestCase {
    }
 
 }
- 

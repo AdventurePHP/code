@@ -52,4 +52,4 @@ class ExpressionEvaluationTag extends Document {
       return ExpressionEvaluator::evaluate($this->getParentObject(), $this->getAttribute(self::EXPRESSION));
    }
 
-} 
+}

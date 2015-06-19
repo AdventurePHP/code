@@ -72,4 +72,3 @@ class TextLengthValidatorTest extends \PHPUnit_Framework_TestCase {
    }
 
 }
- 

@@ -38,4 +38,4 @@ class TestableChainedStandardInputFilter extends ChainedStandardInputFilter {
       return $this->frontController;
    }
 
-} 
+}

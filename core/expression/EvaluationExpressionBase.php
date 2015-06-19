@@ -63,4 +63,4 @@ abstract class EvaluationExpressionBase {
     */
    abstract protected function check($expression, $previousResult);
 
-} 
+}

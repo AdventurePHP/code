@@ -24,4 +24,4 @@ use APF\core\filter\AbstractFilterChain;
 
 class TestableFilterChain extends AbstractFilterChain {
 
-} 
+}

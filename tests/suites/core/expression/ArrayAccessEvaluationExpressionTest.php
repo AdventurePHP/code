@@ -91,4 +91,4 @@ class ArrayAccessEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
       $expression->getResult();
    }
 
-} 
+}

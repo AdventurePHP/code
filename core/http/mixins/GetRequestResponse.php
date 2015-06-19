@@ -22,4 +22,4 @@ trait GetRequestResponse {
       return Singleton::getInstance(Frontcontroller::$responseImplClass);
    }
 
-} 
+}

@@ -31,4 +31,4 @@ use Exception;
  */
 class UrlFormatException extends Exception {
 
-} 
+}

@@ -67,4 +67,4 @@ interface TemplateExpression {
     */
    public static function getDocument($token);
 
-} 
+}

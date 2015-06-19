@@ -45,4 +45,4 @@ class PriorityAwareTestAction extends AbstractFrontcontrollerAction {
       return $this->priority;
    }
 
-} 
+}
