@@ -251,71 +251,6 @@ final class PagerManager extends APFObject {
    }
 
    /**
-    * Returns the statement params needed by the pager's data layer.
-    *
-    * @param string[] $addStmtParams Additional statement parameters.
-    *
-    * @return string[] A list of default statement params.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 24.01.2009<br />
-    */
-   private function getStatementParams(array $addStmtParams = array()) {
-      if ($this->isDynamicPageSizeActivated()) {
-         $entriesCount = (int) self::getRequest()->getParameter($this->countUrlParameterName, $this->entriesPerPage);
-      } else {
-         $entriesCount = $this->entriesPerPage;
-      }
-
-      // determine offset by page with respect to the first page being a special case in calculation
-      $page = self::getRequest()->getParameter($this->pageUrlParameterName, 1);
-      $start = 0;
-      if ($page > 1) {
-         $start = ($page * $entriesCount) - $entriesCount;
-      }
-
-      $defaultParams = array(
-            'Start'        => $start,
-            'EntriesCount' => $entriesCount
-      );
-
-      return array_merge($defaultParams, $this->generateStatementParams($this->statementParameters), $addStmtParams);
-   }
-
-   /**
-    * Loads the ids of the entries of the current page.
-    *
-    * @param string[] $addStmtParams additional statement parameters.
-    *
-    * @return int[] List of entry ids for the current page.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 05.08.2006<br />
-    * Version 0.2, 06.08.2006<br />
-    * Version 0.3, 16.08.2006 (Added the enhanced param configuration opportunity)<br />
-    * Version 0.4, 24.01.2009 (Changed the API of the method. Moved the additional param handling to this method)<br />
-    */
-   public function loadEntries($addStmtParams = array()) {
-      $m = &$this->getMapper();
-
-      return $m->loadEntries(
-            $this->statementNamespace,
-            $this->entriesStatementFile,
-            $this->getStatementParams($addStmtParams),
-            $this->cacheInSession === 'true'
-      );
-   }
-
-   /**
-    * @return PagerMapper
-    */
-   protected function &getMapper() {
-      return $this->getServiceObject('APF\modules\pager\data\PagerMapper', [$this->databaseConnectionName]);
-   }
-
-   /**
     * Loads a list of domain objects using a given data layer component.
     *
     * @param APFObject $dataComponent instance of a data component, that loads the domain objects directly
@@ -359,6 +294,136 @@ final class PagerManager extends APFObject {
    }
 
    /**
+    * Loads the ids of the entries of the current page.
+    *
+    * @param string[] $addStmtParams additional statement parameters.
+    *
+    * @return int[] List of entry ids for the current page.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 05.08.2006<br />
+    * Version 0.2, 06.08.2006<br />
+    * Version 0.3, 16.08.2006 (Added the enhanced param configuration opportunity)<br />
+    * Version 0.4, 24.01.2009 (Changed the API of the method. Moved the additional param handling to this method)<br />
+    */
+   public function loadEntries($addStmtParams = array()) {
+      $m = &$this->getMapper();
+
+      return $m->loadEntries(
+            $this->statementNamespace,
+            $this->entriesStatementFile,
+            $this->getStatementParams($addStmtParams),
+            $this->cacheInSession === 'true'
+      );
+   }
+
+   /**
+    * @return PagerMapper
+    */
+   protected function &getMapper() {
+      return $this->getServiceObject('APF\modules\pager\data\PagerMapper', [$this->databaseConnectionName]);
+   }
+
+   /**
+    * Returns the statement params needed by the pager's data layer.
+    *
+    * @param string[] $addStmtParams Additional statement parameters.
+    *
+    * @return string[] A list of default statement params.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 24.01.2009<br />
+    */
+   private function getStatementParams(array $addStmtParams = array()) {
+      if ($this->isDynamicPageSizeActivated()) {
+         $entriesCount = (int) self::getRequest()->getParameter($this->countUrlParameterName, $this->entriesPerPage);
+      } else {
+         $entriesCount = $this->entriesPerPage;
+      }
+
+      // determine offset by page with respect to the first page being a special case in calculation
+      $page = self::getRequest()->getParameter($this->pageUrlParameterName, 1);
+      $start = 0;
+      if ($page > 1) {
+         $start = ($page * $entriesCount) - $entriesCount;
+      }
+
+      $defaultParams = array(
+            'Start'        => $start,
+            'EntriesCount' => $entriesCount
+      );
+
+      return array_merge($defaultParams, $this->generateStatementParams($this->statementParameters), $addStmtParams);
+   }
+
+   /**
+    * Evaluates, whether the config attribute <em>Pager.AllowDynamicEntriesPerPage</em>
+    * is present and set to <em>true</em> to activate the dynamic page size feature.
+    *
+    * @return boolean True in case, the config allows dynamic page size, false otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 22.09.2010<br />
+    */
+   public function isDynamicPageSizeActivated() {
+      return $this->allowDynamicEntriesPerPage === 'true';
+   }
+
+   /**
+    * Returns a param array, that contains the initialized params from the page configuration
+    * file. The initialization is done by the url params. Default values are taken from the
+    * configuration offset *.Params. If no value is contained in the URL, the default ones are
+    * taken.
+    *
+    * @param string $configString the param-value-string from the configuration (e.g.: param1:value1|param2:value2)
+    *
+    * @return string[] A list of statement parameters
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 16.08.2006<br />
+    * Version 0.2, 24.01.2009 (Refactoring due to configuration param changes)<br />
+    */
+   private function generateStatementParams($configString) {
+
+      $stmtParams = array();
+
+      if (!empty($configString)) {
+
+         $params = explode('|', $configString);
+
+         $request = self::getRequest();
+
+         for ($i = 0; $i < count($params); $i++) {
+
+            // only accept params, that have a default value configured (to avoid errors!)
+            if (substr_count($params[$i], ':') !== 0) {
+
+               // add the param with the default value of the url value
+               $temp = explode(':', $params[$i]);
+
+               $stmtParams = array_merge(
+                     $stmtParams,
+                     array(
+                           trim($temp[0]) => $request->getParameter(trim($temp[0]), trim($temp[1]))
+                     )
+               );
+
+               unset($temp);
+
+            }
+
+         }
+
+      }
+
+      return $stmtParams;
+   }
+
+   /**
     * Creates the graphical output of the pagerc concerning the configured presentation layer template.
     *
     * @param array $addStmtParams list of additional statement params
@@ -397,27 +462,6 @@ final class PagerManager extends APFObject {
       }
 
       return $pager->transform();
-   }
-
-   /**
-    * Returns the name of the current URL params of the pager. The array featiures the following
-    * offsets:
-    * <ul>
-    *   <li>PageName: the name of the page param</li>
-    *   <li>CountName: the name of the count per page param</li>
-    * <ul>
-    *
-    * @return string[] Url params of the pager.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 17.03.2007<br />
-    */
-   public function getPagerURLParameters() {
-      return array(
-            'PageName'  => $this->pageUrlParameterName,
-            'CountName' => $this->countUrlParameterName
-      );
    }
 
    /**
@@ -497,45 +541,48 @@ final class PagerManager extends APFObject {
    }
 
    /**
-    * Returns a param array, that contains the initialized params from the page configuration
-    * file. The initialization is done by the url params. Default values are taken from the
-    * configuration offset *.Params. If no value is contained in the URL, the default ones are
-    * taken.
+    * Returns the count of entries per page.
     *
-    * @param string $configString the param-value-string from the configuration (e.g.: param1:value1|param2:value2)
+    * @return int The count of entries per page.
     *
-    * @return string[] A list of statement parameters
+    * @author Daniel Seemaier
+    * @version
+    * Version 0.1, 22.08.2010
+    */
+   public function getCountPerPage() {
+
+      $countPerPage = 0;
+
+      if ($this->isDynamicPageSizeActivated()) {
+         $countPerPage = (int) self::getRequest()->getParameter($this->countUrlParameterName, 0);
+      }
+
+      if (!$this->isDynamicPageSizeActivated() || $countPerPage === 0) { // avoid division by zero!
+         $countPerPage = $this->entriesPerPage;
+      }
+
+      return $countPerPage;
+   }
+
+   /**
+    * Returns the name of the current URL params of the pager. The array featiures the following
+    * offsets:
+    * <ul>
+    *   <li>PageName: the name of the page param</li>
+    *   <li>CountName: the name of the count per page param</li>
+    * <ul>
+    *
+    * @return string[] Url params of the pager.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 16.08.2006<br />
-    * Version 0.2, 24.01.2009 (Refactoring due to configuration param changes)<br />
+    * Version 0.1, 17.03.2007<br />
     */
-   private function generateStatementParams($configString) {
-
-      $stmtParams = array();
-
-      if (!empty($configString)) {
-
-         $params = explode('|', $configString);
-
-         for ($i = 0; $i < count($params); $i++) {
-
-            // only accept params, that have a default value configured (to avoid errors!)
-            if (substr_count($params[$i], ':') !== 0) {
-
-               // add the param with the default value of the url value
-               $temp = explode(':', $params[$i]);
-               $stmtParams = array_merge($stmtParams, array(trim($temp[0]) => self::getRequest()->getParameter(trim($temp[1]))));
-               unset($temp);
-
-            }
-
-         }
-
-      }
-
-      return $stmtParams;
+   public function getPagerURLParameters() {
+      return array(
+            'PageName'  => $this->pageUrlParameterName,
+            'CountName' => $this->countUrlParameterName
+      );
    }
 
    /**
@@ -565,30 +612,6 @@ final class PagerManager extends APFObject {
    }
 
    /**
-    * Returns the count of entries per page.
-    *
-    * @return int The count of entries per page.
-    *
-    * @author Daniel Seemaier
-    * @version
-    * Version 0.1, 22.08.2010
-    */
-   public function getCountPerPage() {
-
-      $countPerPage = 0;
-
-      if ($this->isDynamicPageSizeActivated()) {
-         $countPerPage = (int) self::getRequest()->getParameter($this->countUrlParameterName, 0);
-      }
-
-      if (!$this->isDynamicPageSizeActivated() || $countPerPage === 0) { // avoid division by zero!
-         $countPerPage = $this->entriesPerPage;
-      }
-
-      return $countPerPage;
-   }
-
-   /**
     * Generates the link to a given page.
     *
     * @param int $page The number of the page.
@@ -611,20 +634,6 @@ final class PagerManager extends APFObject {
       }
 
       return LinkGenerator::generateUrl(Url::fromString($baseURI)->mergeQuery($linkParams));
-   }
-
-   /**
-    * Evaluates, whether the config attribute <em>Pager.AllowDynamicEntriesPerPage</em>
-    * is present and set to <em>true</em> to activate the dynamic page size feature.
-    *
-    * @return boolean True in case, the config allows dynamic page size, false otherwise.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 22.09.2010<br />
-    */
-   public function isDynamicPageSizeActivated() {
-      return $this->allowDynamicEntriesPerPage === 'true';
    }
 
 }
