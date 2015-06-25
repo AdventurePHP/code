@@ -421,7 +421,7 @@ final class BenchmarkTimer {
       // return, if benchmarker is disabled
       if ($this->enabled === false) {
          return 'Benchmarker is currently disabled. To generate a detailed report, please '
-         . 'enable it calling <em>$t = &Singleton::getInstance(\'BenchmarkTimer\'); '
+         . 'enable it calling <em>$t = &Singleton::getInstance(\'APF\core\benchmark\BenchmarkTimer\'); '
          . '$t->enable();</em>!';
       }
 
