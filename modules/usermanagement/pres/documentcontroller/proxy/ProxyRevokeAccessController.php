@@ -38,9 +38,10 @@ class ProxyRevokeAccessController extends UmgtBaseController {
 
       $uM = & $this->getManager();
 
-      $objectId = self::getRequest()->getParameter('objectid');
-      $objectType = self::getRequest()->getParameter('objecttype');
-      $proxyId = self::getRequest()->getParameter('proxyid');
+      $request = self::getRequest();
+      $objectId = $request->getParameter('objectid');
+      $objectType = $request->getParameter('objecttype');
+      $proxyId = $request->getParameter('proxyid');
 
       $proxy = new UmgtVisibilityDefinition();
       $proxy->setObjectId($proxyId);

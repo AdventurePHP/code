@@ -43,9 +43,10 @@ class ProxyAddController extends UmgtBaseController {
       $form = & $this->getForm('visibilitydef');
 
       // pre-fill mode if "proxytypeid" and "appobjectid" are given
-      $proxyTypeId = self::getRequest()->getParameter('proxytypeid');
-      $appObjectId = self::getRequest()->getParameter('appobjectid');
-      $proxyId = self::getRequest()->getParameter('proxyid');
+      $request = self::getRequest();
+      $proxyTypeId = $request->getParameter('proxytypeid');
+      $appObjectId = $request->getParameter('appobjectid');
+      $proxyId = $request->getParameter('proxyid');
       $selectedUsers = array();
       $selectedGroups = array();
       if ($proxyTypeId != null && $appObjectId != null) {
