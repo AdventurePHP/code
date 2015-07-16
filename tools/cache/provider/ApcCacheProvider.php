@@ -43,6 +43,24 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
     */
    const CACHE_KEY_DELIMITER = '#';
 
+   public function read(CacheKey $cacheKey) {
+
+      $cacheContent = apc_fetch($this->getCacheIdentifier($cacheKey));
+
+      if ($cacheContent === false) {
+         return null;
+      }
+
+      $unserialized = @unserialize($cacheContent);
+
+      if ($unserialized !== false) {
+         return $unserialized;
+      } else {
+         return null;
+      }
+
+   }
+
    /**
     * Calculates the cache identifier for read and write operations.
     *
@@ -64,88 +82,6 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
       }
 
       return $identifier;
-   }
-
-   /**
-    * Gathers the entire list of cache entries and returns it.
-    *
-    * @return string[] The list of current cache entries.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 12.01.2013<br />
-    */
-   protected function getCacheEntries() {
-      $cacheInfo = apc_cache_info('user');
-      $entries = array();
-      foreach ($cacheInfo['cache_list'] as $cacheEntryInfo) {
-         $entries[] = $cacheEntryInfo['info'];
-      }
-
-      return $entries;
-   }
-
-   /**
-    * Gathers the entries of a given namespace.
-    *
-    * @param string $namespace The desired namespace to filter the entries.
-    *
-    * @return string[] The list of current cache entries.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 12.01.2013<br />
-    */
-   protected function getCacheEntriesByNamespace($namespace) {
-      $namespaceEntries = array();
-      foreach ($this->getCacheEntries() as $entry) {
-         if (strpos($entry, $namespace . self::CACHE_KEY_DELIMITER) !== false) {
-            $namespaceEntries[] = $entry;
-         }
-      }
-
-      return $namespaceEntries;
-   }
-
-   /**
-    * Gathers the entries of a given namespace and main cache key.
-    *
-    * @param string $namespace The desired namespace to filter the entries.
-    * @param string $key The main cache key.
-    *
-    * @return string[] The list of current cache entries.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 12.01.2013<br />
-    */
-   protected function getCacheEntriesByNamespaceAndKey($namespace, $key) {
-      $namespaceAndKeyEntries = array();
-      foreach ($this->getCacheEntries() as $entry) {
-         if (strpos($entry, $namespace . self::CACHE_KEY_DELIMITER . $key . self::CACHE_KEY_DELIMITER) !== false) {
-            $namespaceAndKeyEntries[] = $entry;
-         }
-      }
-
-      return $namespaceAndKeyEntries;
-   }
-
-   public function read(CacheKey $cacheKey) {
-
-      $cacheContent = apc_fetch($this->getCacheIdentifier($cacheKey));
-
-      if ($cacheContent === false) {
-         return null;
-      }
-
-      $unserialized = @unserialize($cacheContent);
-
-      if ($unserialized !== false) {
-         return $unserialized;
-      } else {
-         return null;
-      }
-
    }
 
    public function write(CacheKey $cacheKey, $object) {
@@ -191,6 +127,77 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
          }
       }
 
+   }
+
+   /**
+    * Gathers the entries of a given namespace.
+    *
+    * @param string $namespace The desired namespace to filter the entries.
+    *
+    * @return string[] The list of current cache entries.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.01.2013<br />
+    */
+   protected function getCacheEntriesByNamespace($namespace) {
+      $namespaceEntries = array();
+      foreach ($this->getCacheEntries() as $entry) {
+         if (strpos($entry, $namespace . self::CACHE_KEY_DELIMITER) !== false) {
+            $namespaceEntries[] = $entry;
+         }
+      }
+
+      return $namespaceEntries;
+   }
+
+   /**
+    * Gathers the entire list of cache entries and returns it.
+    *
+    * @return string[] The list of current cache entries.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.01.2013<br />
+    * Version 0.2, 16.07.2015 (Added support for WIN implementation/variant of APC cache statistics)<br />
+    */
+   protected function getCacheEntries() {
+      $cacheInfo = apc_cache_info('user');
+      $entries = array();
+      foreach ($cacheInfo['cache_list'] as $cacheEntryInfo) {
+         // distinguish between WIN vs. LINUX implementation of APC API.
+         if (isset($cacheEntryInfo['info'])) {
+            $entries[] = $cacheEntryInfo['info'];
+         } else {
+            $entries[] = $cacheEntryInfo['key'];
+         }
+
+      }
+
+      return $entries;
+   }
+
+   /**
+    * Gathers the entries of a given namespace and main cache key.
+    *
+    * @param string $namespace The desired namespace to filter the entries.
+    * @param string $key The main cache key.
+    *
+    * @return string[] The list of current cache entries.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.01.2013<br />
+    */
+   protected function getCacheEntriesByNamespaceAndKey($namespace, $key) {
+      $namespaceAndKeyEntries = array();
+      foreach ($this->getCacheEntries() as $entry) {
+         if (strpos($entry, $namespace . self::CACHE_KEY_DELIMITER . $key . self::CACHE_KEY_DELIMITER) !== false) {
+            $namespaceAndKeyEntries[] = $entry;
+         }
+      }
+
+      return $namespaceAndKeyEntries;
    }
 
 }
