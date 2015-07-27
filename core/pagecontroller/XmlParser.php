@@ -92,7 +92,7 @@ final class XmlParser {
          // limit parse loop count to avoid endless searching
          if ($parserLoops > self::$maxParserLoops) {
             throw new ParserException('[XmlParser::getTagAttributes()] Error while parsing: "'
-                  . $attributesString . '". Maximum number of loops ("' . self::$maxParserLoops
+                  . $tagString . '". Maximum number of loops ("' . self::$maxParserLoops
                   . '") exceeded!', E_USER_ERROR);
          }
 
