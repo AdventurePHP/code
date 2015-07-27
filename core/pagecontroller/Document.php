@@ -564,7 +564,7 @@ class Document extends APFObject {
    public function &setPlaceHolder($name, $value, $append = false) {
       $count = 0;
       foreach ($this->children as $objectId => $DUMMY) {
-         if ($this->children[$objectId] instanceof PlaceHolderTag
+         if ($this->children[$objectId] instanceof PlaceHolder
                && $this->children[$objectId]->getAttribute('name') === $name
          ) {
             // false handled first, since most usages don't append --> slightly faster
