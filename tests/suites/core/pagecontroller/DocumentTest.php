@@ -38,20 +38,6 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
    const VENDOR = 'VENDOR';
    const SOURCE_PATH = '/var/www/html/src';
 
-   protected function setUp() {
-      RootClassLoader::addLoader(new StandardClassLoader(self::VENDOR, self::SOURCE_PATH));
-   }
-
-   /**
-    * @return ReflectionMethod The <em>APF\core\pagecontroller\Document::getTemplateFilePath()</em> method.
-    */
-   private function getMethod() {
-      $method = new ReflectionMethod('APF\core\pagecontroller\Document', 'getTemplateFilePath');
-      $method->setAccessible(true);
-
-      return $method;
-   }
-
    public function testWithNormalNamespace() {
 
       $method = $this->getMethod();
@@ -63,6 +49,16 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
       $filePath = $method->invokeArgs($document, array(self::VENDOR . '\foo\bar', 'baz'));
       assertEquals(self::SOURCE_PATH . '/foo/bar/baz.html', $filePath);
 
+   }
+
+   /**
+    * @return ReflectionMethod The <em>APF\core\pagecontroller\Document::getTemplateFilePath()</em> method.
+    */
+   private function getMethod() {
+      $method = new ReflectionMethod('APF\core\pagecontroller\Document', 'getTemplateFilePath');
+      $method->setAccessible(true);
+
+      return $method;
    }
 
    public function testWithVendorOnly() {
@@ -139,6 +135,79 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
       $method->invoke($doc);
       $this->assertEquals($controllerClass, $doc->getDocumentController());
 
+   }
+
+   public function testTagClosingSignInAttribute() {
+
+      $doc = new TemplateTag();
+      $doc->setData('model', [new TestDataModel(), new TestDataModel()]);
+
+      $expressionOne = 'model[0]->getFoo()';
+      $expressionTwo = 'model[1]->getBar()';
+      $expressionThree = 'model[0]->getBaz()->getBar()';
+      $expressionFour = 'model[1]->getBaz()->getBaz()->getFoo()';
+
+      $doc->setContent('<core:addtaglib
+   class="APF\core\expression\taglib\ExpressionEvaluationTag"
+   prefix="dyn"
+   name="expr"
+/>
+<dyn:expr
+   name="one"
+   expression="' . $expressionOne . '"
+/>
+
+<dyn:expr name="two" expression="' . $expressionTwo . '">
+   Bar Baz
+</dyn:expr>
+
+<dyn:expr
+   name="three"
+   expression="' . $expressionThree . '"/>
+
+<dyn:expr name="four" expression="' . $expressionFour . '"/>');
+
+      $doc->onParseTime();
+
+      $expressionNodeOne = $doc->getChildNode('name', 'one', 'APF\core\expression\taglib\ExpressionEvaluationTag');
+      $expressionNodeTwo = $doc->getChildNode('name', 'two', 'APF\core\expression\taglib\ExpressionEvaluationTag');
+      $expressionNodeThree = $doc->getChildNode('name', 'three', 'APF\core\expression\taglib\ExpressionEvaluationTag');
+      $expressionNodeFour = $doc->getChildNode('name', 'four', 'APF\core\expression\taglib\ExpressionEvaluationTag');
+
+      $this->assertEquals($expressionOne, $expressionNodeOne->getAttribute('expression'));
+      $this->assertEquals($expressionTwo, $expressionNodeTwo->getAttribute('expression'));
+      $this->assertEquals($expressionThree, $expressionNodeThree->getAttribute('expression'));
+      $this->assertEquals($expressionFour, $expressionNodeFour->getAttribute('expression'));
+
+      $this->assertEquals('foo', $expressionNodeOne->transform());
+      $this->assertEquals('bar', $expressionNodeTwo->transform());
+      $this->assertEquals('bar', $expressionNodeThree->transform());
+      $this->assertEquals('foo', $expressionNodeFour->transform());
+
+   }
+
+   public function testInvalidTemplateSyntaxWithTagClosingSignInAttribute1() {
+
+      $this->setExpectedException('APF\core\pagecontroller\ParserException');
+
+      $doc = new TemplateTag();
+      $doc->setContent('<html:placeholder name="tes>t"/');
+      $doc->onParseTime();
+
+   }
+
+   public function testInvalidTemplateSyntaxWithTagClosingSignInAttribute2() {
+
+      $this->setExpectedException('APF\core\pagecontroller\ParserException');
+
+      $doc = new TemplateTag();
+      $doc->setContent('<html:placeholder name="test" /');
+      $doc->onParseTime();
+
+   }
+
+   protected function setUp() {
+      RootClassLoader::addLoader(new StandardClassLoader(self::VENDOR, self::SOURCE_PATH));
    }
 
 }
