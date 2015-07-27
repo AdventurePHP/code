@@ -190,4 +190,35 @@ class XmlParserTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   public function testTagClosingSignInAttribute() {
+
+      $expressionAttributeName = 'expression';
+
+      $expressions = [
+            'foo',
+            'foo-bar',
+            'model[0]',
+            'model[0]->getFoo()',
+            'model->getFoo()->getBar()->getBaz()',
+            'model->getFoo()->getBar()[5]',
+            'self->getBar()[2]->getFoo()[3]->getBaz()'
+      ];
+
+      foreach ($expressions as $expression) {
+         $selfClosingTagString = '<dyn:expr ' . PHP_EOL . '   ' . $expressionAttributeName . '="' . $expression . '"' . PHP_EOL . '/>';
+         $attributes = XmlParser::getTagAttributes('dyn', 'expr', $selfClosingTagString);
+
+         $this->assertEquals($attributes['attributes'][$expressionAttributeName], $expression);
+
+         $explicitClosingTagString = '<dyn:expr ' . PHP_EOL . '   ' . $expressionAttributeName . '="' . $expression . '"' . PHP_EOL . '>'
+               . PHP_EOL . 'this is tag content ' . PHP_EOL
+               . '</dyn:expr>';
+         $attributes = XmlParser::getTagAttributes('dyn', 'expr', $explicitClosingTagString);
+
+         $this->assertEquals($attributes['attributes'][$expressionAttributeName], $expression);
+
+      }
+
+   }
+
 }

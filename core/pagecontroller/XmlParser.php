@@ -80,6 +80,26 @@ final class XmlParser {
       // extract the rest of the tag string.
       $attributesString = substr($tagString, $tagAttributeDel + 1, $posTagClosingSign - $tagAttributeDel);
 
+      // ID#253: In case we are using an extended templating expression within a tag attribute
+      // (e.g. "model[0]->getFoo()") the ending ">" is contained within the attribute and thus the first
+      // substr() produces wrong results. For this reason, search for the last ">" with an even number of
+      // quotes in the string to fix this.
+      $parserLoops = 0;
+      while (substr_count($attributesString, '"') % 2 !== 0) {
+
+         $parserLoops++;
+
+         // limit parse loop count to avoid endless searching
+         if ($parserLoops > self::$maxParserLoops) {
+            throw new ParserException('[XmlParser::getTagAttributes()] Error while parsing: "'
+                  . $attributesString . '". Maximum number of loops ("' . self::$maxParserLoops
+                  . '") exceeded!', E_USER_ERROR);
+         }
+
+         $posTagClosingSign = strpos($tagString, '>', $posTagClosingSign + 1);
+         $attributesString = substr($tagString, $tagAttributeDel + 1, $posTagClosingSign - $tagAttributeDel);
+      }
+
       // parse the tag's attributes
       $tagAttributes = XmlParser::getAttributesFromString($attributesString);
 
@@ -99,16 +119,17 @@ final class XmlParser {
          $content = substr($tagString, $posTagClosingSign + 1, ($tagEndPos - $posTagClosingSign) - 1);
       }
 
-      return array(
+      return [
             'attributes' => $tagAttributes,
             'content'    => $content
-      );
+      ];
    }
 
    /**
-    * Extracts XML attributes from an attributes string. Returns an associative array with the attributes as keys and the values.
+    * Extracts XML attributes from an attributes string. Returns an associative array with the attributes as keys and
+    * their associated values:
     * <pre>
-    *   $array['ATTRIBUTE_NAME'] = 'ATTRIBUTE_VALUE';
+    * $array['ATTRIBUTE_NAME'] = 'ATTRIBUTE_VALUE';
     * </pre>
     *
     * @param string $attributesString The attributes string of the tag to analyze.
