@@ -1007,8 +1007,34 @@ class Document extends APFObject {
 
          // find out whether we have an opening or closing tag
          $end = strpos($this->content, '>', $colon + 1);
+         if ($end === false) {
+            throw new ParserException('[Document::extractTagLibTags()] Error while parsing: "'
+                  . $this->content . '". Invalid markup found. Please check your template code!', E_USER_ERROR);
+         }
 
          if (substr($this->content, $start, 2) !== '</') {
+
+            // ID#253: In case we are using an extended templating expression within a tag attribute
+            // (e.g. "model[0]->getFoo()") the ending ">" is contained within the attribute and thus the first
+            // strpos() produces wrong results. For this reason, search for the last ">" with an even number of
+            // quotes in the string to fix this.
+            $parserLoops = 0;
+            while (substr_count(substr($this->content, $start, $end + 1 - $start), '"') % 2 !== 0) {
+
+               $parserLoops++;
+
+               if ($parserLoops > XmlParser::$maxParserLoops) {
+                  throw new ParserException('[Document::extractTagLibTags()] Error while parsing: "'
+                        . $this->content . '". Maximum number of loops ("' . XmlParser::$maxParserLoops
+                        . '") exceeded!', E_USER_ERROR);
+               }
+
+               $end = strpos($this->content, '>', $end + 1);
+               if ($end === false) {
+                  throw new ParserException('[Document::extractTagLibTags()] Error while parsing: "'
+                        . $this->content . '". Invalid markup found. Please check your template code!', E_USER_ERROR);
+               }
+            }
 
             // Determine whether we have a self-closing tag or not. This is important
             // within the following lines how to handle the tag.
