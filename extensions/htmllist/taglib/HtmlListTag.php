@@ -59,32 +59,6 @@ class HtmlListTag extends Document {
    }
 
    /**
-    * Get a list by its identifier.
-    *
-    * @param string $id The id of the list.
-    *
-    * @return AbstractListTag The desired instance.
-    * @throws InvalidArgumentException In case no list can be found.
-    */
-   public function getListById($id) {
-      if (count($this->children) > 0) {
-         foreach ($this->children as $objectID => $DUMMY) {
-            if ($this->children[$objectID]->getAttribute('id') == $id) {
-               return $this->children[$objectID];
-            }
-         }
-      }
-
-      // display extended debug message in case no list element was found
-      $parent = $this->getParentObject();
-      $grandParent = $parent->getParentObject();
-      $docCon = ($grandParent !== null) ? $grandParent->getDocumentController() : $docCon = 'n/a';
-
-      throw new InvalidArgumentException('[HtmlListTag::getListById()] No list with id "' . $id
-            . '" in document controller "' . $docCon . '"!', E_USER_ERROR);
-   }
-
-   /**
     * Creates a list.
     *
     * @param string $elementType The type of list to create (ul, ol).
@@ -129,6 +103,32 @@ class HtmlListTag extends Document {
 
       // return object id for further addressing
       return $objectId;
+   }
+
+   /**
+    * Get a list by its identifier.
+    *
+    * @param string $id The id of the list.
+    *
+    * @return AbstractListTag The desired instance.
+    * @throws InvalidArgumentException In case no list can be found.
+    */
+   public function getListById($id) {
+      if (count($this->children) > 0) {
+         foreach ($this->children as $objectID => $DUMMY) {
+            if ($this->children[$objectID]->getAttribute('id') == $id) {
+               return $this->children[$objectID];
+            }
+         }
+      }
+
+      // display extended debug message in case no list element was found
+      $parent = $this->getParentObject();
+      $grandParent = $parent->getParentObject();
+      $docCon = ($grandParent !== null) ? get_class($grandParent->getDocumentController()) : 'n/a';
+
+      throw new InvalidArgumentException('[HtmlListTag::getListById()] No list with id "' . $id
+            . '" in document controller "' . $docCon . '"!', E_USER_ERROR);
    }
 
 }

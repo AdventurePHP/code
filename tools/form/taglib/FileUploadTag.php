@@ -70,9 +70,9 @@ class FileUploadTag extends TextFieldTag {
    public function onParseTime() {
       $name = $this->getAttribute('name');
       if (substr($name, -2) === '[]') {
-         $form = & $this->getForm();
-         $doc = & $form->getParentObject();
-         $docCon = $doc->getDocumentController();
+         $form = &$this->getForm();
+         $doc = &$form->getParentObject();
+         $docCon = get_class($doc->getDocumentController());
          throw new FormException('[FileUploadTag::onParseTime()] The attribute "name" of the '
                . '&lt;form:file /&gt; tag with name "' . $name
                . '" in form "' . $form->getAttribute('name') . '" and document '
@@ -109,6 +109,41 @@ class FileUploadTag extends TextFieldTag {
    }
 
    /**
+    * Indicates whether multi-upload has been activated.
+    *
+    * @return boolean <em>True</em> if activated, <em>false</em> otherwise.
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 24.01.2014<br />
+    */
+   public function isMultiple() {
+      return $this->getAttribute('multiple') === 'multiple';
+   }
+
+   /**
+    * Returns an array of File Domain Objects.
+    *
+    * @return FileModel[]|null List of file models or NULL.
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 24.01.2014<br />
+    */
+   public function getFiles() {
+      if ($this->hasUploadedFile()) {
+         if ($this->isMultiple()) {
+            return $this->mapFilesArray2DomainObject($_FILES[$this->getAttribute('name')]);
+         }
+
+         // if type is not multiple return array with only 1 file
+         return array($this->getFile());
+      }
+
+      return null;
+   }
+
+   /**
     * Indicates, whether a file has been uploaded (true) or not (false).
     *
     * @return boolean Returns TRUE if a file has been transferred, FALSE otherwise.
@@ -132,51 +167,27 @@ class FileUploadTag extends TextFieldTag {
    }
 
    /**
-    * Returns the File Domain Object. If multiple files where uploaded
-    * this function only returns the first file. If you want to retrieve all
-    * files, use "getFiles()" instead.
+    * Maps the files array with multiple files in it to file domain objects
     *
-    * @return FileModel|null Returns a file domain object or NULL.
+    * @param string[] The content of the <em>$_FILES</em> array for the current form control with multiple option set.
     *
-    * @author Ralf Schubert
-    * @version
-    * Version 0.1, 12.01.2010<br />
-    * Version 0.2, 24.01.2014 (Added support for HTML5 multiple file uploads)<br />
-    */
-   public function getFile() {
-      if ($this->hasUploadedFile()) {
-         $fileArray = $_FILES[$this->getAttribute('name')];
-         // only return first file when type is multiple
-         if ($this->isMultiple()) {
-            return $this->mapFilesArray2DomainObject($fileArray)[0];
-         }
-
-         return $this->mapFileArray2DomainObject($fileArray);
-      }
-
-      return null;
-   }
-
-   /**
-    * Returns an array of File Domain Objects.
-    *
-    * @return FileModel[]|null List of file models or NULL.
+    * @return array Representations of uploaded files
     *
     * @author Ralf Schubert
     * @version
     * Version 0.1, 24.01.2014<br />
     */
-   public function getFiles() {
-      if ($this->hasUploadedFile()) {
-         if ($this->isMultiple()) {
-            return $this->mapFilesArray2DomainObject($_FILES[$this->getAttribute('name')]);
-         }
-
-         // if type is not multiple return array with only 1 file
-         return array($this->getFile());
+   private function mapFilesArray2DomainObject($filesArray) {
+      $files = array();
+      foreach ($filesArray['name'] as $key => $name) {
+         $files[] = $this->mapFileArray2DomainObject(array(
+               'name'     => $name,
+               'tmp_name' => $filesArray['tmp_name'][$key],
+               'type'     => $filesArray['type'][$key]
+         ));
       }
 
-      return null;
+      return $files;
    }
 
    /**
@@ -213,27 +224,33 @@ class FileUploadTag extends TextFieldTag {
    }
 
    /**
-    * Maps the files array with multiple files in it to file domain objects
+    * Returns the File Domain Object. If multiple files where uploaded
+    * this function only returns the first file. If you want to retrieve all
+    * files, use "getFiles()" instead.
     *
-    * @param string[] The content of the <em>$_FILES</em> array for the current form control with multiple option set.
-    *
-    * @return array Representations of uploaded files
+    * @return FileModel|null Returns a file domain object or NULL.
     *
     * @author Ralf Schubert
     * @version
-    * Version 0.1, 24.01.2014<br />
+    * Version 0.1, 12.01.2010<br />
+    * Version 0.2, 24.01.2014 (Added support for HTML5 multiple file uploads)<br />
     */
-   private function mapFilesArray2DomainObject($filesArray) {
-      $files = array();
-      foreach ($filesArray['name'] as $key => $name) {
-         $files[] = $this->mapFileArray2DomainObject(array(
-               'name'     => $name,
-               'tmp_name' => $filesArray['tmp_name'][$key],
-               'type'     => $filesArray['type'][$key]
-         ));
+   public function getFile() {
+      if ($this->hasUploadedFile()) {
+         $fileArray = $_FILES[$this->getAttribute('name')];
+         // only return first file when type is multiple
+         if ($this->isMultiple()) {
+            return $this->mapFilesArray2DomainObject($fileArray)[0];
+         }
+
+         return $this->mapFileArray2DomainObject($fileArray);
       }
 
-      return $files;
+      return null;
+   }
+
+   public function reset() {
+      unset($_FILES[$this->getAttribute('name')]);
    }
 
    /**
@@ -254,23 +271,6 @@ class FileUploadTag extends TextFieldTag {
       }
 
       return true;
-   }
-
-   /**
-    * Indicates whether multi-upload has been activated.
-    *
-    * @return boolean <em>True</em> if activated, <em>false</em> otherwise.
-    *
-    * @author Ralf Schubert
-    * @version
-    * Version 0.1, 24.01.2014<br />
-    */
-   public function isMultiple() {
-      return $this->getAttribute('multiple') === 'multiple';
-   }
-
-   public function reset() {
-      unset($_FILES[$this->getAttribute('name')]);
    }
 
 }

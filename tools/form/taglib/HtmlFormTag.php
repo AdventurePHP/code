@@ -196,6 +196,86 @@ class HtmlFormTag extends Document implements HtmlForm {
    }
 
    /**
+    * Adds a new form element to the child list.
+    *
+    * @param Document $parent The parent document to create the object in.
+    * @param string $elementType Type of the element (e.g. "form:text")
+    * @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
+    *
+    * @return AbstractFormControl The created form element.
+    * @throws FormException In case form element cannot be found.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 06.09.2008<br />
+    * Version 0.2, 10.09.2008 (Added the $elementAttributes param)<br />
+    * Version 0.3, 12.11.2008 (Bug-fix: language and context initialisation were wrong)<br />
+    * Version 0.4, 23.08.2014 (ID#198: added unlimited form control nesting capability)<br />
+    */
+   protected function &createFormElement(Document &$parent, $elementType, array $elementAttributes = array()) {
+
+      $class = $this->getTagClass($elementType);
+      if ($class === null) {
+         return null;
+      }
+
+      // generate object id
+      $objectId = XmlParser::generateUniqID();
+
+      // create new form element
+      $parent->children[$objectId] = new $class();
+      /* @var $formControl AbstractFormControl */
+
+      // add standard and user defined attributes
+      $parent->children[$objectId]->setObjectId($objectId);
+      $parent->children[$objectId]->setLanguage($this->getLanguage());
+      $parent->children[$objectId]->setContext($this->getContext());
+      $parent->children[$objectId]->setAttributes($elementAttributes);
+
+      // add form element to DOM tree and call the onParseTime() method
+      $parent->children[$objectId]->setParentObject($parent);
+      $parent->children[$objectId]->onParseTime();
+
+      // call the onAfterAppend() method
+      $parent->children[$objectId]->onAfterAppend();
+
+      return $parent->children[$objectId];
+   }
+
+   /**
+    * Returns the name of the tag implementation that refers to the applied tag name.
+    *
+    * @param string $tagName The name of the tag (e.g. form:listener).
+    *
+    * @return string The name of the tag implementation class.
+    * @throws FormException In case the referred tag name is not registered within the current form.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.12.2012<br />
+    * Version 0.2, 20.08.2014 (ID#198: Method is now public to be used within all FormControlFinder implementations)<br />
+    */
+   public function getTagClass($tagName) {
+
+      // gather tag implementation and return in case there is nothing defined
+      $colon = strpos($tagName, ':');
+      $prefix = substr($tagName, 0, $colon);
+      $name = substr($tagName, $colon + 1);
+
+      $class = $this->getTagLibClass($prefix, $name);
+      if ($class === null) {
+         $parent = &$this->getParentObject();
+         $documentController = get_class($parent->getDocumentController());
+         throw new FormException('[HtmlFormTag::getTagClass()] No tag with name "' . $tagName
+               . '" registered in form with name "' . $this->getAttribute('name') . '" in document controller '
+               . $documentController . '!', E_USER_ERROR);
+      }
+
+      return $class;
+
+   }
+
+   /**
     * Adds content at the end of the form. This method is intended to dynamically generate forms.
     *
     * @param string $content The desired content
@@ -318,53 +398,6 @@ class HtmlFormTag extends Document implements HtmlForm {
       return $control;
    }
 
-   /**
-    * Adds a new form element to the child list.
-    *
-    * @param Document $parent The parent document to create the object in.
-    * @param string $elementType Type of the element (e.g. "form:text")
-    * @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
-    *
-    * @return AbstractFormControl The created form element.
-    * @throws FormException In case form element cannot be found.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 06.09.2008<br />
-    * Version 0.2, 10.09.2008 (Added the $elementAttributes param)<br />
-    * Version 0.3, 12.11.2008 (Bug-fix: language and context initialisation were wrong)<br />
-    * Version 0.4, 23.08.2014 (ID#198: added unlimited form control nesting capability)<br />
-    */
-   protected function &createFormElement(Document &$parent, $elementType, array $elementAttributes = array()) {
-
-      $class = $this->getTagClass($elementType);
-      if ($class === null) {
-         return null;
-      }
-
-      // generate object id
-      $objectId = XmlParser::generateUniqID();
-
-      // create new form element
-      $parent->children[$objectId] = new $class();
-      /* @var $formControl AbstractFormControl */
-
-      // add standard and user defined attributes
-      $parent->children[$objectId]->setObjectId($objectId);
-      $parent->children[$objectId]->setLanguage($this->getLanguage());
-      $parent->children[$objectId]->setContext($this->getContext());
-      $parent->children[$objectId]->setAttributes($elementAttributes);
-
-      // add form element to DOM tree and call the onParseTime() method
-      $parent->children[$objectId]->setParentObject($parent);
-      $parent->children[$objectId]->onParseTime();
-
-      // call the onAfterAppend() method
-      $parent->children[$objectId]->onAfterAppend();
-
-      return $parent->children[$objectId];
-   }
-
    public function setAction($action) {
       $this->setAttribute(self::ACTION_ATTRIBUTE_NAME, $action);
    }
@@ -386,36 +419,34 @@ class HtmlFormTag extends Document implements HtmlForm {
    }
 
    /**
-    * Returns the name of the tag implementation that refers to the applied tag name.
-    *
-    * @param string $tagName The name of the tag (e.g. form:listener).
-    *
-    * @return string The name of the tag implementation class.
-    * @throws FormException In case the referred tag name is not registered within the current form.
+    * Defines, whether the form should be transformed at the definition place.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 12.12.2012<br />
-    * Version 0.2, 20.08.2014 (ID#198: Method is now public to be used within all FormControlFinder implementations)<br />
+    * Version 0.1, 01.06.2008<br />
     */
-   public function getTagClass($tagName) {
+   public function transformOnPlace() {
+      $this->transformOnPlace = true;
+   }
 
-      // gather tag implementation and return in case there is nothing defined
-      $colon = strpos($tagName, ':');
-      $prefix = substr($tagName, 0, $colon);
-      $name = substr($tagName, $colon + 1);
+   /**
+    * Re-implements the {@link transform} method for the form taglib.
+    *
+    * @return string The content of the form (in case of transformOnPlace) or an empty string.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 12.01.2007<br />
+    * Version 0.2, 01.06.2008 (Added the transformOnPlace() feature)<br />
+    */
+   public function transform() {
 
-      $class = $this->getTagLibClass($prefix, $name);
-      if ($class === null) {
-         $parent = &$this->getParentObject();
-         $documentController = $parent->getDocumentController();
-         throw new FormException('[HtmlFormTag::getTagClass()] No tag with name "' . $tagName
-               . '" registered in form with name "' . $this->getAttribute('name') . '" in document controller '
-               . $documentController . '!', E_USER_ERROR);
+      // to transformation on place if desired
+      if ($this->transformOnPlace === true) {
+         return $this->transformForm();
       }
 
-      return $class;
-
+      return '';
    }
 
    public function transformForm() {
@@ -466,37 +497,6 @@ class HtmlFormTag extends Document implements HtmlForm {
       $t->stop($id);
 
       return $htmlCode;
-   }
-
-   /**
-    * Defines, whether the form should be transformed at the definition place.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 01.06.2008<br />
-    */
-   public function transformOnPlace() {
-      $this->transformOnPlace = true;
-   }
-
-   /**
-    * Re-implements the {@link transform} method for the form taglib.
-    *
-    * @return string The content of the form (in case of transformOnPlace) or an empty string.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 12.01.2007<br />
-    * Version 0.2, 01.06.2008 (Added the transformOnPlace() feature)<br />
-    */
-   public function transform() {
-
-      // to transformation on place if desired
-      if ($this->transformOnPlace === true) {
-         return $this->transformForm();
-      }
-
-      return '';
    }
 
 }

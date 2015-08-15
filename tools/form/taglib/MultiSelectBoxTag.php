@@ -73,7 +73,7 @@ class MultiSelectBoxTag extends SelectBoxTag {
       if (substr_count($name, '[') > 0 || substr_count($name, ']') > 0) {
          $form = &$this->getForm();
          $doc = &$form->getParentObject();
-         $docCon = $doc->getDocumentController();
+         $docCon = get_class($doc->getDocumentController());
          throw new FormException('[MultiSelectBoxTag::onParseTime()] The attribute "name" of the '
                . '&lt;form:multiselect /&gt; tag with name "' . $this->attributes['name']
                . '" in form "' . $form->getAttribute('name') . '" and document '
@@ -83,6 +83,42 @@ class MultiSelectBoxTag extends SelectBoxTag {
       }
 
       $this->presetValue();
+   }
+
+   /**
+    * Re-implements the presetting method for the multi-select field.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 15.01.2007<br />
+    * Version 0.2, 16.01.2007 (Now checks, if the request param is set)<br />
+    */
+   protected function presetValue() {
+      if (count($this->children) > 0) {
+         foreach ($this->getRequestValues() as $value) {
+            $this->setOption2Selected($value);
+         }
+      }
+   }
+
+   /**
+    * retrieves the selected values from the current request. Returns an
+    * empty array, if no options are found.
+    *
+    * @return string[] The currently selected values contained in th request.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 28.08.2010<br />
+    */
+   protected function getRequestValues() {
+      $controlName = $this->getAttribute('name');
+      $values = self::getRequest()->getParameter($controlName);
+      if ($values !== null && is_array($values)) {
+         return $values;
+      }
+
+      return array();
    }
 
    /**
@@ -124,6 +160,21 @@ class MultiSelectBoxTag extends SelectBoxTag {
    }
 
    /**
+    * Re-implements the retrieving of values for multi-select controls.
+    *
+    * @return SelectBoxOptionTag[] List of the options, that are selected.
+    *
+    * @since 1.14
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 26.07.2011<br />
+    */
+   public function getValue() {
+      return $this->getSelectedOptions();
+   }
+
+   /**
     * Returns the selected options.
     *
     * @return SelectBoxOptionTag[] List of the options, that are selected.
@@ -157,57 +208,6 @@ class MultiSelectBoxTag extends SelectBoxTag {
 
       return $selectedOptions;
 
-   }
-
-   /**
-    * Re-implements the presetting method for the multi-select field.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 15.01.2007<br />
-    * Version 0.2, 16.01.2007 (Now checks, if the request param is set)<br />
-    */
-   protected function presetValue() {
-      if (count($this->children) > 0) {
-         foreach ($this->getRequestValues() as $value) {
-            $this->setOption2Selected($value);
-         }
-      }
-   }
-
-   /**
-    * retrieves the selected values from the current request. Returns an
-    * empty array, if no options are found.
-    *
-    * @return string[] The currently selected values contained in th request.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 28.08.2010<br />
-    */
-   protected function getRequestValues() {
-      $controlName = $this->getAttribute('name');
-      $values = self::getRequest()->getParameter($controlName);
-      if ($values !== null && is_array($values)) {
-         return $values;
-      }
-
-      return array();
-   }
-
-   /**
-    * Re-implements the retrieving of values for multi-select controls.
-    *
-    * @return SelectBoxOptionTag[] List of the options, that are selected.
-    *
-    * @since 1.14
-    *
-    * @author Ralf Schubert
-    * @version
-    * Version 0.1, 26.07.2011<br />
-    */
-   public function getValue() {
-      return $this->getSelectedOptions();
    }
 
    /**

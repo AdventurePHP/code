@@ -73,6 +73,32 @@ class Document extends APFObject {
    const CONTROLLER_ATTR_CLASS = 'class';
 
    /**
+    * The maximum number of parser loops taken to analyze tags within a document. Used to protect against infinite loops.
+    *
+    * @var int $maxParserLoops
+    */
+   public static $maxParserLoops = 500;
+
+   /**
+    * List of known tags the APF parser uses to create tag instances during analysis phase.
+    *
+    * @var string[] $knownTags
+    */
+   protected static $knownTags = array();
+
+   /**
+    * List of known expressions used to process APF templates.
+    *
+    * @var TemplateExpression[]
+    */
+   protected static $knownExpressions = array();
+
+   /**
+    * @var Document[] The list of documents indexed by the <em>dom-id</em> attribute.
+    */
+   protected static $documentIndex = array();
+
+   /**
     * Unique object identifier.
     *
     * @var string $objectId
@@ -123,37 +149,11 @@ class Document extends APFObject {
    protected $data = array();
 
    /**
-    * List of known tags the APF parser uses to create tag instances during analysis phase.
-    *
-    * @var string[] $knownTags
-    */
-   protected static $knownTags = array();
-
-   /**
-    * List of known expressions used to process APF templates.
-    *
-    * @var TemplateExpression[]
-    */
-   protected static $knownExpressions = array();
-
-   /**
     * List of known tags for a dedicated DOM node the APF parser uses to create tag instances during analysis phase.
     *
     * @var string[] $knownInstanceTags
     */
    protected $knownInstanceTags = array();
-
-   /**
-    * The maximum number of parser loops taken to analyze tags within a document. Used to protect against infinite loops.
-    *
-    * @var int $maxParserLoops
-    */
-   public static $maxParserLoops = 500;
-
-   /**
-    * @var Document[] The list of documents indexed by the <em>dom-id</em> attribute.
-    */
-   protected static $documentIndex = array();
 
    /**
     * Default constructor of an APF document. The APF DOM tree is constructed by objects derived from this class.
@@ -169,93 +169,34 @@ class Document extends APFObject {
    }
 
    /**
-    * Injects the parent node of the current APF object.
+    * This method adds a given tag to the <em>global</em> list of known tags for the APF parser.
     *
-    * @param Document $parentObject The parent node.
+    * @param string $class The fully-qualified name of the tag implementation.
+    * @param string $prefix The tag prefix.
+    * @param string $name The tag name.
     *
-    * @return $this This instance for further usage.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
-   public function setParentObject(Document &$parentObject) {
-      $this->parentObject = &$parentObject;
-
-      return $this;
-   }
-
-   /**
-    * Returns the parent node of the current APF object.
-    *
-    * @return Document The parent node.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
-   public function &getParentObject() {
-      return $this->parentObject;
-   }
-
-   /**
-    * Sets the object id of the current APF object.
-    *
-    * @param string $objectId The object id.
-    *
-    * @return $this This instance for further usage.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
-   public function setObjectId($objectId) {
-      $this->objectId = $objectId;
-
-      return $this;
-   }
-
-   /**
-    * Returns the object id of the current APF object.
-    *
-    * @return string The object id.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
-   public function getObjectId() {
-      return $this->objectId;
-   }
-
-   /**
-    * Returns the object's attribute.
-    * <p/>
-    * PLEASE NOTE: attributes defined with value <em>null</em> will not be recognized
-    * as XML string attributes that are really <em>null</em> don't make sense. Defining
-    * an attribute such as
-    * <code>
-    * empty=""
-    * </code>
-    * will return <em>false</em> for
-    * <code>
-    * $attributes = XmlParser::getAttributesFromString('filled="foo" empty=""');
-    * var_dump($attributes['empty'] === null)
-    * </code>
-    * For this reason, XML attributes can only be null when not existing.
-    *
-    * @param string $name The name of the desired attribute.
-    * @param string $default The default value for the attribute.
-    *
-    * @return string Returns the value or null in case of errors.
-    *
-    * @author Christian Schäfer
+    * @author Christian Schäfer, Christian Achatz
     * @version
     * Version 0.1, 28.12.2006<br />
-    * Version 0.2, 02.02.2007 (Added default value handling)<br />
+    * Version 0.2, 03.03.2007 (Removed the "&" in front of "new")<br />
+    * Version 0.3, 14.02.2011 (Refactored method signature to be more type safe)<br />
+    * Version 0.4, 11.07.2014 (Removed TagLib to gain performance and simplify API)<br />
     */
-   public function getAttribute($name, $default = null) {
-      return isset($this->attributes[$name]) ? $this->attributes[$name] : $default;
+   public static function addTagLib($class, $prefix, $name) {
+      self::$knownTags[$prefix . ':' . $name] = $class;
+   }
+
+   /**
+    * Add a template expressions to the <em>global</em> list of known expressions.
+    *
+    * @param string $expression The fully qualified class name of the template expression (e.g. <em>APF\core\pagecontroller\PlaceHolderTemplateExpression</em>).
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 30.08.2014 (ID#229: introduced template expressions)<br />
+    */
+   public static function addTemplateExpression($expression) {
+      self::$knownExpressions[] = $expression;
    }
 
    /**
@@ -302,6 +243,36 @@ class Document extends APFObject {
    }
 
    /**
+    * Returns the object's attribute.
+    * <p/>
+    * PLEASE NOTE: attributes defined with value <em>null</em> will not be recognized
+    * as XML string attributes that are really <em>null</em> don't make sense. Defining
+    * an attribute such as
+    * <code>
+    * empty=""
+    * </code>
+    * will return <em>false</em> for
+    * <code>
+    * $attributes = XmlParser::getAttributesFromString('filled="foo" empty=""');
+    * var_dump($attributes['empty'] === null)
+    * </code>
+    * For this reason, XML attributes can only be null when not existing.
+    *
+    * @param string $name The name of the desired attribute.
+    * @param string $default The default value for the attribute.
+    *
+    * @return string Returns the value or null in case of errors.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    * Version 0.2, 02.02.2007 (Added default value handling)<br />
+    */
+   public function getAttribute($name, $default = null) {
+      return isset($this->attributes[$name]) ? $this->attributes[$name] : $default;
+   }
+
+   /**
     * Sets an object's attribute.
     *
     * @param string $name Name of the attribute.
@@ -333,19 +304,6 @@ class Document extends APFObject {
    }
 
    /**
-    * Deletes an attribute.
-    *
-    * @param string $name The name of the attribute to delete.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 28.12.2006<br />
-    */
-   public function deleteAttribute($name) {
-      unset($this->attributes[$name]);
-   }
-
-   /**
     * Sets an object's attributes.
     *
     * @param array $attributes The attributes list.
@@ -365,6 +323,19 @@ class Document extends APFObject {
       }
 
       return $this;
+   }
+
+   /**
+    * Deletes an attribute.
+    *
+    * @param string $name The name of the attribute to delete.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    */
+   public function deleteAttribute($name) {
+      unset($this->attributes[$name]);
    }
 
    /**
@@ -396,86 +367,6 @@ class Document extends APFObject {
    }
 
    /**
-    * Creates a string representation of the given attributes list, using a
-    * white list to especially include attributes.
-    *
-    * @param array $attributes The list of attributes to convert to an xml string.
-    * @param array $whiteList The list of attributes, the string may contain.
-    *
-    * @return string The xml attributes string.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 13.02.2010 (Replaced old implementation with the white list feature.)<br />
-    * Version 0.2, 27.11.2013 (Added default data-* attribute support to ease white list maintenance)<br />
-    */
-   protected function getAttributesAsString(array $attributes, array $whiteList = array()) {
-
-      $attributeParts = array();
-
-      // process white list entries only, when attribute is given
-      // code duplication is done here due to performance reasons!!!
-      $charset = Registry::retrieve('APF\core', 'Charset');
-      if (count($whiteList) > 0) {
-         foreach ($attributes as $name => $value) {
-            // allow "data-*" attributes by default to not deal with complicated white list configuration
-            if (strpos($name, 'data-') !== false || in_array($name, $whiteList)) {
-               $attributeParts[] = $name . '="' . htmlspecialchars($value, ENT_QUOTES, $charset, false) . '"';
-            }
-         }
-      } else {
-         foreach ($attributes as $name => $value) {
-            $attributeParts[] = $name . '="' . htmlspecialchars($value, ENT_QUOTES, $charset, false) . '"';
-         }
-      }
-
-      return implode(' ', $attributeParts);
-   }
-
-   /**
-    * Returns the textual content of the current node.
-    *
-    * @return string The content of the current node.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
-   public function getContent() {
-      return $this->content;
-   }
-
-   /**
-    * Sets the textual content of the current node.
-    *
-    * @param string $content The content of the current node.
-    *
-    * @return $this This instance for further usage.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
-   public function setContent($content) {
-      $this->content = $content;
-
-      return $this;
-   }
-
-   /**
-    * Returns the list of the current node's children.
-    *
-    * @return Document[] The current node's children.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
-   public function &getChildren() {
-      return $this->children;
-   }
-
-   /**
     * Let's you retrieve a child node of the current document by specifying a selector
     * (attribute name and attribute value) and the expected node type (name of the taglib
     * class).
@@ -504,6 +395,19 @@ class Document extends APFObject {
       throw new InvalidArgumentException('[' . get_class($this) . '::getChildNode()] No child node with type "'
             . $tagLibClass . '" and attribute selector ' . $attributeName . '="' . $value . '" composed in current '
             . 'document!', E_USER_ERROR);
+   }
+
+   /**
+    * Returns the list of the current node's children.
+    *
+    * @return Document[] The current node's children.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.02.2010<br />
+    */
+   public function &getChildren() {
+      return $this->children;
    }
 
    /**
@@ -542,6 +446,40 @@ class Document extends APFObject {
       } else {
          return $result;
       }
+   }
+
+   /**
+    * This method is for conveniently setting of multiple place holders. The applied
+    * array must contain a structure like this:
+    * <code>
+    * array(
+    *    'key-a' => 'value-a',
+    *    'key-b' => 'value-b',
+    *    'key-c' => 'value-c',
+    *    'key-d' => 'value-d',
+    *    'key-e' => 'value-e',
+    * )
+    * </code>
+    * Thereby, the <em>key-*</em> offsets define the name of the place holders, their
+    * values are used as the place holder's values.
+    *
+    * @param string[] $placeHolderValues Key-value-couples to fill place holders.
+    * @param bool $append True in case the applied values should be appended, false otherwise.
+    *
+    * @return $this This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.11.2010<br />
+    * Version 0.2, 09.02.2013 (Moved to Document to avoid multiple implementations)<br />
+    * Version 0.3, 06.08.2013 (Added support for appending content to place holders)<br />
+    */
+   public function setPlaceHolders(array $placeHolderValues, $append = false) {
+      foreach ($placeHolderValues as $key => $value) {
+         $this->setPlaceHolder($key, $value, $append);
+      }
+
+      return $this;
    }
 
    /**
@@ -601,34 +539,53 @@ class Document extends APFObject {
    }
 
    /**
-    * This method is for conveniently setting of multiple place holders. The applied
-    * array must contain a structure like this:
-    * <code>
-    * array(
-    *    'key-a' => 'value-a',
-    *    'key-b' => 'value-b',
-    *    'key-c' => 'value-c',
-    *    'key-d' => 'value-d',
-    *    'key-e' => 'value-e',
-    * )
-    * </code>
-    * Thereby, the <em>key-*</em> offsets define the name of the place holders, their
-    * values are used as the place holder's values.
+    * Returns the textual content of the current node.
     *
-    * @param string[] $placeHolderValues Key-value-couples to fill place holders.
+    * @return string The content of the current node.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.02.2010<br />
+    */
+   public function getContent() {
+      return $this->content;
+   }
+
+   /**
+    * Sets the textual content of the current node.
+    *
+    * @param string $content The content of the current node.
+    *
+    * @return $this This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.02.2010<br />
+    */
+   public function setContent($content) {
+      $this->content = $content;
+
+      return $this;
+   }
+
+   /**
+    * This method is for convenient setting of multiple place holders in case they exist within
+    * the current document. See <em>BaseDocumentController::setPlaceHolderIfExist()</em> for details.
+    *
+    * @param array $placeHolderValues Key-value-couples to fill place holders.
     * @param bool $append True in case the applied values should be appended, false otherwise.
     *
     * @return $this This instance for further usage.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 20.11.2010<br />
-    * Version 0.2, 09.02.2013 (Moved to Document to avoid multiple implementations)<br />
-    * Version 0.3, 06.08.2013 (Added support for appending content to place holders)<br />
+    * Version 0.1, 02.07.2011<br />
+    * Version 0.2, 06.08.2013 (Added support for appending content to place holders)<br />
+    * Version 0.3, 25.09.2104 (ID#235: moved to Document to be able to reuse in TemplateTag)<br />
     */
-   public function setPlaceHolders(array $placeHolderValues, $append = false) {
+   public function setPlaceHoldersIfExist(array $placeHolderValues, $append = false) {
       foreach ($placeHolderValues as $key => $value) {
-         $this->setPlaceHolder($key, $value, $append);
+         $this->setPlaceHolderIfExist($key, $value, $append);
       }
 
       return $this;
@@ -671,59 +628,19 @@ class Document extends APFObject {
    }
 
    /**
-    * This method is for convenient setting of multiple place holders in case they exist within
-    * the current document. See <em>BaseDocumentController::setPlaceHolderIfExist()</em> for details.
-    *
-    * @param array $placeHolderValues Key-value-couples to fill place holders.
-    * @param bool $append True in case the applied values should be appended, false otherwise.
-    *
-    * @return $this This instance for further usage.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 02.07.2011<br />
-    * Version 0.2, 06.08.2013 (Added support for appending content to place holders)<br />
-    * Version 0.3, 25.09.2104 (ID#235: moved to Document to be able to reuse in TemplateTag)<br />
-    */
-   public function setPlaceHoldersIfExist(array $placeHolderValues, $append = false) {
-      foreach ($placeHolderValues as $key => $value) {
-         $this->setPlaceHolderIfExist($key, $value, $append);
-      }
-
-      return $this;
-   }
-
-   /**
-    * Returns the name of the document controller in case the document should
-    * be transformed using an MVC controller. In case no controller is defined
+    * Returns the document controller instance in case the document should
+    * be transformed using an controller. In case no controller is defined
     * <em>null</em> is returned instead.
     *
-    * @return string|null The name of the document controller.
+    * @return DocumentController|null The document controller instance of <em>null</em>.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 20.02.2010<br />
+    * Version 0.2, 15.08.2015 (ID#254: allow document controller access from within another document).
     */
-   public function getDocumentController() {
-      return $this->documentController === null ? null : get_class($this->documentController);
-   }
-
-   /**
-    * This method adds a given tag to the <em>global</em> list of known tags for the APF parser.
-    *
-    * @param string $class The fully-qualified name of the tag implementation.
-    * @param string $prefix The tag prefix.
-    * @param string $name The tag name.
-    *
-    * @author Christian Schäfer, Christian Achatz
-    * @version
-    * Version 0.1, 28.12.2006<br />
-    * Version 0.2, 03.03.2007 (Removed the "&" in front of "new")<br />
-    * Version 0.3, 14.02.2011 (Refactored method signature to be more type safe)<br />
-    * Version 0.4, 11.07.2014 (Removed TagLib to gain performance and simplify API)<br />
-    */
-   public static function addTagLib($class, $prefix, $name) {
-      self::$knownTags[$prefix . ':' . $name] = $class;
+   public function &getDocumentController() {
+      return $this->documentController;
    }
 
    /**
@@ -745,16 +662,19 @@ class Document extends APFObject {
    }
 
    /**
-    * Add a template expressions to the <em>global</em> list of known expressions.
+    * Allows you to retrieve a data attribute from the current DOM node (similar to Java Script for HTML nodes).
     *
-    * @param string $expression The fully qualified class name of the template expression (e.g. <em>APF\core\pagecontroller\PlaceHolderTemplateExpression</em>).
+    * @param string $name The reference name of the data field to set/add.
+    * @param mixed $default The desired default value (optional).
+    *
+    * @return mixed The desired data field content or the default value.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 30.08.2014 (ID#229: introduced template expressions)<br />
+    * Version 0.1, 29.01.2014<br />
     */
-   public static function addTemplateExpression($expression) {
-      self::$knownExpressions[] = $expression;
+   public function getData($name, $default = null) {
+      return isset($this->data[$name]) ? $this->data[$name] : $default;
    }
 
    /**
@@ -773,22 +693,6 @@ class Document extends APFObject {
       $this->data[$name] = $data;
 
       return $this;
-   }
-
-   /**
-    * Allows you to retrieve a data attribute from the current DOM node (similar to Java Script for HTML nodes).
-    *
-    * @param string $name The reference name of the data field to set/add.
-    * @param mixed $default The desired default value (optional).
-    *
-    * @return mixed The desired data field content or the default value.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.01.2014<br />
-    */
-   public function getData($name, $default = null) {
-      return isset($this->data[$name]) ? $this->data[$name] : $default;
    }
 
    /**
@@ -899,6 +803,106 @@ class Document extends APFObject {
 
          return $rootPath . '/' . str_replace('\\', '/', str_replace($vendor . '\\', '', $namespace)) . '/' . $name . '.html';
       }
+   }
+
+   /**
+    * Returns the parent node of the current APF object.
+    *
+    * @return Document The parent node.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.02.2010<br />
+    */
+   public function &getParentObject() {
+      return $this->parentObject;
+   }
+
+   /**
+    * Injects the parent node of the current APF object.
+    *
+    * @param Document $parentObject The parent node.
+    *
+    * @return $this This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.02.2010<br />
+    */
+   public function setParentObject(Document &$parentObject) {
+      $this->parentObject = &$parentObject;
+
+      return $this;
+   }
+
+   /**
+    * Initializes the document controller class, that is executed at APF DOM node
+    * transformation time.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    * Version 0.2, 15.12.2009 (Added check for non existing class attribute)<br />
+    * Version 0.2, 28.07.2013 Jan Wiese (Introduced di-service support for document controllers. Moved controller creation here)<br />
+    */
+   protected function extractDocumentController() {
+
+      // define start and end tag
+      $controllerStartTag = '<@controller';
+      $controllerEndTag = '@>';
+
+      if (strpos($this->content, $controllerStartTag) === false) {
+         // no controller tag found
+         return;
+      }
+
+      $tagStartPos = strpos($this->content, $controllerStartTag);
+      $tagEndPos = strpos($this->content, $controllerEndTag, $tagStartPos);
+      $controllerTag = substr($this->content, $tagStartPos + 12, ($tagEndPos - $tagStartPos) - 12); // 12 for <@controller
+      $controllerAttributes = XmlParser::getAttributesFromString($controllerTag);
+
+      if (isset($controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAMESPACE])
+            && isset($controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAME])
+      ) {
+
+         try {
+            $docCon = $this->getDIServiceObject(
+                  $controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAMESPACE],
+                  $controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAME]
+            );
+         } catch (Exception $e) {
+            throw new InvalidArgumentException('[' . get_class($this) . '::extractDocumentController()] Given document'
+                  . ' controller  could not be created using the DIServiceManager. Message: '
+                  . $e->getMessage(), $e->getCode());
+         }
+
+      } elseif (isset($controllerAttributes[self::CONTROLLER_ATTR_CLASS])) {
+
+         // class is loaded via the class loader lazily
+         $docCon = new $controllerAttributes[self::CONTROLLER_ATTR_CLASS];
+         /* @var $docCon DocumentController */
+
+         // inject APF core attributes to guarantee native environment
+         $docCon->setContext($this->getContext());
+         $docCon->setLanguage($this->getLanguage());
+
+      } else {
+
+         // no valid document controller definition given, thus interrupt execution here
+         throw new ParserException('[' . get_class($this) . '::extractDocumentController()] Document '
+               . 'controller specification does not contain a valid controller class or service definition. '
+               . 'Please double check the template code and consult the documentation. '
+               . 'Template code: ' . $this->getContent());
+
+      }
+
+      $this->documentController = $docCon;
+
+      // inject this document to be able to work on the DOM
+      $this->documentController->setDocument($this);
+
+      // remove definition from content to be not displayed
+      $this->content = substr_replace($this->content, '', $tagStartPos, ($tagEndPos - $tagStartPos) + 2); // for @>
    }
 
    /**
@@ -1234,6 +1238,36 @@ class Document extends APFObject {
    }
 
    /**
+    * Returns the object id of the current APF object.
+    *
+    * @return string The object id.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.02.2010<br />
+    */
+   public function getObjectId() {
+      return $this->objectId;
+   }
+
+   /**
+    * Sets the object id of the current APF object.
+    *
+    * @param string $objectId The object id.
+    *
+    * @return $this This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.02.2010<br />
+    */
+   public function setObjectId($objectId) {
+      $this->objectId = $objectId;
+
+      return $this;
+   }
+
+   /**
     * Returns the name of the tag implementation according to the given tag prefix and name.
     *
     * @param string $prefix The tag prefix.
@@ -1264,70 +1298,28 @@ class Document extends APFObject {
    }
 
    /**
-    * Initializes the document controller class, that is executed at APF DOM node
-    * transformation time.
+    * Interface definition of the onParseTime() method. This function is called after the creation
+    * of a new DOM node. It must be implemented by derived classes.
     *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 28.12.2006<br />
-    * Version 0.2, 15.12.2009 (Added check for non existing class attribute)<br />
-    * Version 0.2, 28.07.2013 Jan Wiese (Introduced di-service support for document controllers. Moved controller creation here)<br />
     */
-   protected function extractDocumentController() {
+   public function onParseTime() {
+   }
 
-      // define start and end tag
-      $controllerStartTag = '<@controller';
-      $controllerEndTag = '@>';
-
-      if (strpos($this->content, $controllerStartTag) === false) {
-         // no controller tag found
-         return;
-      }
-
-      $tagStartPos = strpos($this->content, $controllerStartTag);
-      $tagEndPos = strpos($this->content, $controllerEndTag, $tagStartPos);
-      $controllerTag = substr($this->content, $tagStartPos + 12, ($tagEndPos - $tagStartPos) - 12); // 12 for <@controller
-      $controllerAttributes = XmlParser::getAttributesFromString($controllerTag);
-
-      if (isset($controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAMESPACE])
-            && isset($controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAME])
-      ) {
-
-         try {
-            $docCon = $this->getDIServiceObject(
-                  $controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAMESPACE],
-                  $controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAME]
-            );
-         } catch (Exception $e) {
-            throw new InvalidArgumentException('[' . get_class($this) . '::extractDocumentController()] Given document'
-                  . ' controller  could not be created using the DIServiceManager. Message: '
-                  . $e->getMessage(), $e->getCode());
-         }
-
-      } elseif (isset($controllerAttributes[self::CONTROLLER_ATTR_CLASS])) {
-
-         // class is loaded via the class loader lazily
-         $docCon = new $controllerAttributes[self::CONTROLLER_ATTR_CLASS];
-         /* @var $docCon DocumentController */
-
-         // inject APF core attributes to guarantee native environment
-         $docCon->setContext($this->getContext());
-         $docCon->setLanguage($this->getLanguage());
-
-      } else {
-
-         // no valid document controller definition given, thus interrupt execution here
-         throw new ParserException('[' . get_class($this) . '::extractDocumentController()] Document '
-               . 'controller specification does not contain a valid controller class or service definition. '
-               . 'Please double check the template code and consult the documentation. '
-               . 'Template code: ' . $this->getContent());
-
-      }
-
-      $this->documentController = $docCon;
-
-      // remove definition from content to be not displayed
-      $this->content = substr_replace($this->content, '', $tagStartPos, ($tagEndPos - $tagStartPos) + 2); // for @>
+   /**
+    * Interface definition of the onAfterAppend() method. This function is called after the DOM
+    * node is appended to the DOM tree. It must be implemented by derived classes.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    * Version 0.2, 27.06.2014 (Added expression tag analysis to "standard" document to allow expression place holders in initial document)<br />
+    */
+   public function onAfterAppend() {
+      // ID#191: extract "static" expressions (e.g. place holders)
+      $this->extractExpressionTags();
    }
 
    /**
@@ -1421,28 +1413,79 @@ class Document extends APFObject {
    }
 
    /**
-    * Interface definition of the onParseTime() method. This function is called after the creation
-    * of a new DOM node. It must be implemented by derived classes.
+    * Let's you access a document within the <em>entire APF DOM tree</em> by a given <em>dom-id</em>.
     *
-    * @author Christian Schäfer
+    * @param string $id The id of the DOM node to return.
+    *
+    * @return Document The desired DOM node within the tree.
+    * @throws InvalidArgumentException In case no DOM node exists with the given id.
+    *
+    * @author Christian Achatz
     * @version
-    * Version 0.1, 28.12.2006<br />
+    * Version 0.1, 13.08.2014<br />
     */
-   public function onParseTime() {
+   public function &getNodeById($id) {
+      if (isset(self::$documentIndex[$id])) {
+         return self::$documentIndex[$id];
+      }
+      throw new InvalidArgumentException('Document with DOM id "' . $id . '" not found. '
+            . 'Please review your template setup and/or controller code!');
    }
 
    /**
-    * Interface definition of the onAfterAppend() method. This function is called after the DOM
-    * node is appended to the DOM tree. It must be implemented by derived classes.
+    * Creates a string representation of the given attributes list, using a
+    * white list to especially include attributes.
     *
-    * @author Christian Schäfer
+    * @param array $attributes The list of attributes to convert to an xml string.
+    * @param array $whiteList The list of attributes, the string may contain.
+    *
+    * @return string The xml attributes string.
+    *
+    * @author Christian Achatz
     * @version
-    * Version 0.1, 28.12.2006<br />
-    * Version 0.2, 27.06.2014 (Added expression tag analysis to "standard" document to allow expression place holders in initial document)<br />
+    * Version 0.1, 13.02.2010 (Replaced old implementation with the white list feature.)<br />
+    * Version 0.2, 27.11.2013 (Added default data-* attribute support to ease white list maintenance)<br />
     */
-   public function onAfterAppend() {
-      // ID#191: extract "static" expressions (e.g. place holders)
-      $this->extractExpressionTags();
+   protected function getAttributesAsString(array $attributes, array $whiteList = array()) {
+
+      $attributeParts = array();
+
+      // process white list entries only, when attribute is given
+      // code duplication is done here due to performance reasons!!!
+      $charset = Registry::retrieve('APF\core', 'Charset');
+      if (count($whiteList) > 0) {
+         foreach ($attributes as $name => $value) {
+            // allow "data-*" attributes by default to not deal with complicated white list configuration
+            if (strpos($name, 'data-') !== false || in_array($name, $whiteList)) {
+               $attributeParts[] = $name . '="' . htmlspecialchars($value, ENT_QUOTES, $charset, false) . '"';
+            }
+         }
+      } else {
+         foreach ($attributes as $name => $value) {
+            $attributeParts[] = $name . '="' . htmlspecialchars($value, ENT_QUOTES, $charset, false) . '"';
+         }
+      }
+
+      return implode(' ', $attributeParts);
+   }
+
+   /**
+    * Convenience method to transform the current node's children within the current node's content
+    * buffer (<em>$this->content</em>).
+    * <p/>
+    * In case you intend to preserve the current node's content you may want to use the
+    * <em>transformChildrenAndPreserveContent()</em> method.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 23.10.2012<br />
+    */
+   protected function transformChildren() {
+      foreach ($this->children as $objectId => $DUMMY) {
+         $this->content = str_replace(
+               '<' . $objectId . ' />', $this->children[$objectId]->transform(), $this->content
+         );
+      }
    }
 
    /**
@@ -1480,9 +1523,6 @@ class Document extends APFObject {
          $id = '(' . get_class($this->documentController) . ') ' . (XmlParser::generateUniqID()) . '::transformContent()';
          $t->start($id);
 
-         // inject this document to be able to work on the DOM
-         $this->documentController->setDocument($this);
-
          // execute the document controller by using a standard method
          $this->documentController->transformContent();
 
@@ -1499,25 +1539,6 @@ class Document extends APFObject {
       $t->stop('(' . get_class($this) . ') ' . $this->getObjectId() . '::transform()');
 
       return $content;
-   }
-
-   /**
-    * Convenience method to transform the current node's children within the current node's content
-    * buffer (<em>$this->content</em>).
-    * <p/>
-    * In case you intend to preserve the current node's content you may want to use the
-    * <em>transformChildrenAndPreserveContent()</em> method.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 23.10.2012<br />
-    */
-   protected function transformChildren() {
-      foreach ($this->children as $objectId => $DUMMY) {
-         $this->content = str_replace(
-               '<' . $objectId . ' />', $this->children[$objectId]->transform(), $this->content
-         );
-      }
    }
 
    /**
@@ -1578,26 +1599,6 @@ class Document extends APFObject {
       }
 
       return $content;
-   }
-
-   /**
-    * Let's you access a document within the <em>entire APF DOM tree</em> by a given <em>dom-id</em>.
-    *
-    * @param string $id The id of the DOM node to return.
-    *
-    * @return Document The desired DOM node within the tree.
-    * @throws InvalidArgumentException In case no DOM node exists with the given id.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 13.08.2014<br />
-    */
-   public function &getNodeById($id) {
-      if (isset(self::$documentIndex[$id])) {
-         return self::$documentIndex[$id];
-      }
-      throw new InvalidArgumentException('Document with DOM id "' . $id . '" not found. '
-            . 'Please review your template setup and/or controller code!');
    }
 
 }

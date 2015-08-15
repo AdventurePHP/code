@@ -40,49 +40,6 @@ use APF\tools\form\taglib\HtmlFormTag;
 trait FormControlFinder {
 
    /**
-    * @param string $name The name of the desired form element.
-    *
-    * @return AbstractFormControl A reference on the form element.
-    * @throws FormException In case the form element cannot be found.
-    */
-   public function &getFormElementByName($name) {
-
-      if (count($this->children) > 0) {
-         foreach ($this->children as $objectId => $DUMMY) {
-
-            // when we directly find something - get it!
-            if ($this->children[$objectId]->getAttribute('name') == $name) {
-               return $this->children[$objectId];
-            }
-
-            // facing a group, let's recurs into it!
-            if ($this->children[$objectId] instanceof FormElementGroup) {
-               try {
-                  return $this->children[$objectId]->getFormElementByName($name);
-               } catch (FormException $e) {
-                  // nothing to do here, it's just a not found status...
-               }
-            }
-         }
-      }
-
-      // display extended debug message in case no form element was found
-      /* @var $form HtmlFormTag */
-      if ($this instanceof HtmlForm) {
-         $form = & $this;
-      } else {
-         $form = & $this->getForm();
-      }
-      $parent = & $form->getParentObject();
-      $docCon = $parent->getDocumentController();
-      throw new FormException('[' . get_class($this) . '::getFormElementByName()] No form element with name "'
-            . $name . '" composed in current form "' . $form->getAttribute('name')
-            . '" in document controller "' . $docCon . '". Please double-check your taglib definitions '
-            . 'within this form (especially attributes, that are used for referencing other form '
-            . 'controls)!', E_USER_ERROR);
-   }
-
-   /**
     * @param string $id The ID of the desired form element.
     *
     * @return AbstractFormControl A reference on the form element.
@@ -112,12 +69,12 @@ trait FormControlFinder {
       // display extended debug message in case no form element was found
       /* @var $form HtmlFormTag */
       if ($this instanceof HtmlForm) {
-         $form = & $this;
+         $form = &$this;
       } else {
-         $form = & $this->getForm();
+         $form = &$this->getForm();
       }
-      $parent = & $form->getParentObject();
-      $docCon = $parent->getDocumentController();
+      $parent = &$form->getParentObject();
+      $docCon = get_class($parent->getDocumentController());
       throw new FormException('[' . get_class($this) . '::getFormElementByID()] No form element with id "'
             . $id . '" composed in current form "' . $form->getAttribute('name')
             . '" in document controller "' . $docCon . '". Please double-check your taglib definitions '
@@ -133,6 +90,49 @@ trait FormControlFinder {
     */
    public function &getMarker($markerName) {
       return $this->getFormElementByName($markerName);
+   }
+
+   /**
+    * @param string $name The name of the desired form element.
+    *
+    * @return AbstractFormControl A reference on the form element.
+    * @throws FormException In case the form element cannot be found.
+    */
+   public function &getFormElementByName($name) {
+
+      if (count($this->children) > 0) {
+         foreach ($this->children as $objectId => $DUMMY) {
+
+            // when we directly find something - get it!
+            if ($this->children[$objectId]->getAttribute('name') == $name) {
+               return $this->children[$objectId];
+            }
+
+            // facing a group, let's recurs into it!
+            if ($this->children[$objectId] instanceof FormElementGroup) {
+               try {
+                  return $this->children[$objectId]->getFormElementByName($name);
+               } catch (FormException $e) {
+                  // nothing to do here, it's just a not found status...
+               }
+            }
+         }
+      }
+
+      // display extended debug message in case no form element was found
+      /* @var $form HtmlFormTag */
+      if ($this instanceof HtmlForm) {
+         $form = &$this;
+      } else {
+         $form = &$this->getForm();
+      }
+      $parent = &$form->getParentObject();
+      $docCon = get_class($parent->getDocumentController());
+      throw new FormException('[' . get_class($this) . '::getFormElementByName()] No form element with name "'
+            . $name . '" composed in current form "' . $form->getAttribute('name')
+            . '" in document controller "' . $docCon . '". Please double-check your taglib definitions '
+            . 'within this form (especially attributes, that are used for referencing other form '
+            . 'controls)!', E_USER_ERROR);
    }
 
    /**
@@ -164,12 +164,12 @@ trait FormControlFinder {
       // display extended debug message in case no form elements were found
       /* @var $form HtmlFormTag */
       if ($this instanceof HtmlForm) {
-         $form = & $this;
+         $form = &$this;
       } else {
-         $form = & $this->getForm();
+         $form = &$this->getForm();
       }
-      $parent = & $form->getParentObject();
-      $docCon = $parent->getDocumentController();
+      $parent = &$form->getParentObject();
+      $docCon = get_class($parent->getDocumentController());
       throw new FormException('[' . get_class($this) . '::getLabel()] No label found with name "' . $name
             . '" composed in form with name "' . $form->getAttribute('name') . '" for document controller "'
             . $docCon . '"!', E_USER_ERROR);
@@ -187,7 +187,7 @@ trait FormControlFinder {
 
             // when we directly find something - get it!
             if ($this->children[$objectId]->getAttribute('name') == $name) {
-               $elements[] = & $this->children[$objectId];
+               $elements[] = &$this->children[$objectId];
             }
 
             // facing a group, let's recurs into it!
@@ -210,9 +210,9 @@ trait FormControlFinder {
 
       /* @var $form HtmlFormTag */
       if ($this instanceof HtmlForm) {
-         $form = & $this;
+         $form = &$this;
       } else {
-         $form = & $this->getForm();
+         $form = &$this->getForm();
       }
 
       $tagClassName = $form->getTagClass($tagName);
@@ -224,7 +224,7 @@ trait FormControlFinder {
 
             // when we directly find something - get it!
             if ($this->children[$objectId] instanceof $tagClassName) {
-               $formElements[] = & $this->children[$objectId];
+               $formElements[] = &$this->children[$objectId];
             }
 
             // facing a group, let's recurs into it!
@@ -237,8 +237,8 @@ trait FormControlFinder {
       }
 
       // display extended debug message in case no form elements were found
-      $parent = & $form->getParentObject();
-      $docCon = $parent->getDocumentController();
+      $parent = &$form->getParentObject();
+      $docCon = get_class($parent->getDocumentController());
       throw new FormException('[' . get_class($this) . '::getFormElementsByType()] No form elements of type "&lt;'
             . $tagName . ' /&gt;" composed in ' . 'current form "' . $form->getAttribute('name') . '" in document controller "'
             . $docCon . '"!', E_USER_ERROR);

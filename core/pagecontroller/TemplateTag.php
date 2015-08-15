@@ -73,31 +73,8 @@ class TemplateTag extends Document implements Template {
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[TemplateTag::getLabel()] No label found with name "' . $name
                . '" composed in template with name "' . $this->getAttribute('name') . '" for document controller "'
-               . $this->getParentObject()->getDocumentController() . '"! Perhaps, the tag library for template:getstring '
-               . 'is not loaded.', E_USER_ERROR, $e);
+               . get_class($this->getParentObject()->getDocumentController()) . '"!', E_USER_ERROR, $e);
       }
-   }
-
-   /**
-    * Returns the content of the template. Can be used to generate the template output
-    * within a document controller. Usage:
-    * <pre>
-    * $template = &$this->getTemplate('MyTemplate');
-    * $template->setPlaceHolder('URL', 'http://adventure-php-framework.org');
-    * echo $template->transformTemplate(); // or echo $template; using the __toString() implementation
-    * </pre>
-    *
-    * @return string The content of the transformed template.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.12.2006<br />
-    * Version 0.2, 31.12.2006 (Removed parameter $this->isVisible, because the parent object automatically removes the XML positioning tag on transformation now)<br />
-    * Version 0.3, 02.02.2007 (Renamed method to transformTemplate(). Removed visible marking finally from the class.)<br />
-    * Version 0.4, 05.01.2007 (Added the template:addtaglib tag)<br />
-    */
-   public function transformTemplate() {
-      return $this->transformChildrenAndPreserveContent();
    }
 
    /**
@@ -122,6 +99,28 @@ class TemplateTag extends Document implements Template {
     */
    public function __toString() {
       return $this->transformTemplate();
+   }
+
+   /**
+    * Returns the content of the template. Can be used to generate the template output
+    * within a document controller. Usage:
+    * <pre>
+    * $template = &$this->getTemplate('MyTemplate');
+    * $template->setPlaceHolder('URL', 'http://adventure-php-framework.org');
+    * echo $template->transformTemplate(); // or echo $template; using the __toString() implementation
+    * </pre>
+    *
+    * @return string The content of the transformed template.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.12.2006<br />
+    * Version 0.2, 31.12.2006 (Removed parameter $this->isVisible, because the parent object automatically removes the XML positioning tag on transformation now)<br />
+    * Version 0.3, 02.02.2007 (Renamed method to transformTemplate(). Removed visible marking finally from the class.)<br />
+    * Version 0.4, 05.01.2007 (Added the template:addtaglib tag)<br />
+    */
+   public function transformTemplate() {
+      return $this->transformChildrenAndPreserveContent();
    }
 
    /**

@@ -133,7 +133,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
       $doc = new Document();
       $doc->setContent($content);
       $method->invoke($doc);
-      $this->assertEquals($controllerClass, $doc->getDocumentController());
+      $this->assertEquals($controllerClass, get_class($doc->getDocumentController()));
 
    }
 
@@ -203,6 +203,31 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
       $doc = new TemplateTag();
       $doc->setContent('<html:placeholder name="test" /');
       $doc->onParseTime();
+
+   }
+
+   public function testControllerAccessFromDocument() {
+
+      $doc = new Document();
+      $doc->setContent('<@controller class="APF\tests\suites\core\pagecontroller\TestDocumentController"@>
+<core:addtaglib
+   prefix="read-from"
+   name="controller-tag"
+   class="APF\tests\suites\core\pagecontroller\ReadValueFromControllerTag"
+/>
+<read-from:controller-tag />');
+
+      $extractDocConMethod = new ReflectionMethod('APF\core\pagecontroller\Document', 'extractDocumentController');
+      $extractDocConMethod->setAccessible(true);
+      $extractDocConMethod->invoke($doc);
+
+      $extractTagLibsMethod = new ReflectionMethod('APF\core\pagecontroller\Document', 'extractTagLibTags');
+      $extractTagLibsMethod->setAccessible(true);
+      $extractTagLibsMethod->invoke($doc);
+
+      $result = $doc->transform();
+
+      $this->assertEquals(TestDocumentController::VALUE, trim($result));
 
    }
 
