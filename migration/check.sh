@@ -24,7 +24,8 @@ else
       echo -e "\e[00;31mPHP not found in your PATH-scope. Provide path to php as first parameter. Aborting!\e[00m"
       exit 1
    fi
-   echo "[OK]"
-   echo "PHP executable found."
+   echo -e "\e[00;32m[OK]\e[00m"
+   echo
+   echo "Using installed php executable at $(which php). PHP Version: $(php -r "echo phpversion();" 2> /dev/null)."
    PHP_BINARY="php"
 fi

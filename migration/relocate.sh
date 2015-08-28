@@ -1,15 +1,22 @@
 #!/bin/bash
 ########################################################################################################################
-# APF 2.2 automatic namespace/vendor relocation                                                                        #
+# APF 3.0 automatic namespace/vendor relocation                                                                        #
 ########################################################################################################################
 
-echo "######################################"
-echo "# APF 2.2 automatic migration        #"
-echo "######################################"
+echo "#################################################"
+echo "# APF 3.0 automatic namespace/vendor relocation #"
+echo "#################################################"
 echo
 
+SCRIPT_DIR=$(dirname $0)
+
+case "$(uname -s)" in
+    CYGWIN*) PHP_SCRIPT_DIR=$(cygpath -m $SCRIPT_DIR) ;;
+    *) PHP_SCRIPT_DIR=$SCRIPT_DIR ;;
+esac
+
 # include checks and preparation
-source "$(dirname $0)/check.sh"
+source "$SCRIPT_DIR/check.sh"
 
 # add extra check for argument 2 (from namespace) and 3 (to namespace)
 echo
@@ -36,7 +43,7 @@ echo
 echo "Starting relocation ..."
 
 # relocate files in file system
-$PHP_BINARY migration/relocate.php $SOURCE_NAMESPACE $TARGET_NAMESPACE
+$PHP_BINARY $PHP_SCRIPT_DIR/relocate.php $SOURCE_NAMESPACE $TARGET_NAMESPACE
 
 if [ $? -ne 0 ]
 then

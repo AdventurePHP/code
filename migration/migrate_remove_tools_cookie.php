@@ -74,21 +74,26 @@ foreach ($files as $file) {
          RootClassLoader::addLoader(new StandardClassLoader($vendor, $basePath));
       }
 
-      $class = new ReflectionClass($matchesNamespace[1] . '\\' . $matchesClass[2]);
-      if (
-            $class->isSubclassOf('APF\core\pagecontroller\Document')
-            || $class->isSubclassOf('APF\core\pagecontroller\BaseDocumentController')
-            || $class->isSubclassOf('APF\core\frontcontroller\AbstractFrontcontrollerAction')
-            || $class->isSubclassOf('APF\tools\form\validator\AbstractFormValidator')
-      ) {
-      } else {
-         $content = addUseStatement($content, 'APF\core\http\mixins\GetRequestResponse');
+      try {
+         $class = new ReflectionClass($matchesNamespace[1] . '\\' . $matchesClass[2]);
+         if (
+               $class->isSubclassOf('APF\core\pagecontroller\Document')
+               || $class->isSubclassOf('APF\core\pagecontroller\BaseDocumentController')
+               || $class->isSubclassOf('APF\core\frontcontroller\AbstractFrontcontrollerAction')
+               || $class->isSubclassOf('APF\tools\form\validator\AbstractFormValidator')
+         ) {
+         } else {
+            $content = addUseStatement($content, 'APF\core\http\mixins\GetRequestResponse');
 
-         // add trait use second to not mess up with addUseStatement() logic
-         $content = preg_replace('#class ' . $matchesClass[2] . ' (.*){#',
-               'class ' . $matchesClass[2] . ' \\1{' . "\n\n" . '   ' . $requestResponseTrait,
-               $content
-         );
+            // add trait use second to not mess up with addUseStatement() logic
+            $content = preg_replace('#class ' . $matchesClass[2] . ' (.*){#',
+                  'class ' . $matchesClass[2] . ' \\1{' . "\n\n" . '   ' . $requestResponseTrait,
+                  $content
+            );
+         }
+      } catch (Exception $e) {
+         echo '  Error while migrating file ' . $file . '. Maybe manual interaction required. Details: '
+               . $e->getMessage() . PHP_EOL;
       }
    }
 

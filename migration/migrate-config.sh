@@ -10,6 +10,11 @@ echo
 
 SCRIPT_DIR=$(dirname $0)
 
+case "$(uname -s)" in
+    CYGWIN*) PHP_SCRIPT_DIR=$(cygpath -m $SCRIPT_DIR) ;;
+    *) PHP_SCRIPT_DIR=$SCRIPT_DIR ;;
+esac
+
 # include checks and preparation
 source "$SCRIPT_DIR/check.sh"
 
@@ -19,10 +24,10 @@ echo
 echo "Starting configuration migration ..."
 
 echo "* Migrate cache configuration ..."
-$PHP_BINARY $SCRIPT_DIR/migrate_cache_config.php
+$PHP_BINARY $PHP_SCRIPT_DIR/migrate_cache_config.php
 
 echo "* Migrate pager configuration ..."
-$PHP_BINARY $SCRIPT_DIR/migrate_pager_config.php
+$PHP_BINARY $PHP_SCRIPT_DIR/migrate_pager_config.php
 
 echo
 echo "#############################################"

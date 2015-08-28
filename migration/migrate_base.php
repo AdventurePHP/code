@@ -7,10 +7,11 @@ function find($dir, $pattern) {
    $files = glob($dir . '/' . $pattern);
    // find a list of all directories in the current directory
    // directories beginning with a dot are also included
-   foreach (glob($dir . '/{.[^.]*,*}', GLOB_BRACE | GLOB_ONLYDIR) as $sub_dir) {
+   foreach (glob($dir . '/*', GLOB_ONLYDIR) as $sub_dir) {
       $arr = find($sub_dir, $pattern); // recursive call
       $files = array_merge($files, $arr); // merge array with files from subdirectory
    }
+
    return $files;
 }
 
@@ -23,6 +24,7 @@ function filterApfDirectories($files) {
       }
       $filteredFiles[] = $file;
    }
+
    return $filteredFiles;
 }
 
@@ -34,6 +36,7 @@ function filterApplicationDirectories($files) {
          $filteredFiles[] = $file;
       }
    }
+
    return $filteredFiles;
 }
 
@@ -59,5 +62,6 @@ function addUseStatement($content, $class) {
          $content = preg_replace('#namespace ([A-Za-z0-9\\\\-]+);#', 'namespace $1;' . "\n" . "\n" . 'use ' . $class . ';', $content);
       }
    }
+
    return $content;
 }
