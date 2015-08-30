@@ -10,7 +10,7 @@ $requestResponseTrait = 'use GetRequestResponse;';
 
 $cookieUseStatement = 'use APF\tools\cookie\Cookie;';
 
-$search = '#\$(.+)([ |\n|\r\n]*)=([ |\n|\r\n]*)new Cookie\(#msU';
+$search = '#\$(.+)([ |\n|\r\n]*)=([ |\n|\r\n]*)new Cookie\(#mU';
 
 // gather APF installation path and setup class loader for later code analysis
 include(dirname(dirname(__FILE__)) . '/core/bootstrap.php');
