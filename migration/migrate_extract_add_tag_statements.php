@@ -39,8 +39,13 @@ foreach ($files as $file) {
    foreach ($matches as $match) {
       $attributes = XmlParser::getAttributesFromString(trim($match[3]));
 
-      if (isRegistered($registeredTags, $attributes['class'], $attributes['prefix'], $attributes['name'])) {
-         $content = str_replace($match[0], '', $content);
+      if (isset($attributes['class']) && isset($attributes['prefix']) && isset($attributes['name'])) {
+         if (isRegistered($registeredTags, $attributes['class'], $attributes['prefix'], $attributes['name'])) {
+            $content = str_replace($match[0], '', $content);
+         }
+      } else {
+         echo '  Error while migrating file ' . $file . '. Maybe manual interaction required. Details: '
+               . 'Tag definition ' . $match[0] . ' incorrect!' . PHP_EOL;
       }
 
    }
