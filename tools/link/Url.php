@@ -29,6 +29,7 @@ use APF\core\http\mixins\GetRequestResponse;
  * @author Christian Achatz
  * @version
  * Version 0.1, 29.03.2011<br />
+ * Version 0.2, 05.09.2015 (ID#258: added support for array URL params)<br />
  */
 final class Url {
 
@@ -41,7 +42,7 @@ final class Url {
    private $host;
    private $port;
    private $path;
-   private $query = array();
+   private $query = [];
    private $anchor;
 
    /**
@@ -58,220 +59,13 @@ final class Url {
     * @version
     * Version 0.1, 29.03.2011<br />
     */
-   public function __construct($scheme, $host, $port, $path, array $query = array(), $anchor = null) {
+   public function __construct($scheme, $host, $port, $path, array $query = [], $anchor = null) {
       $this->scheme = $scheme;
       $this->host = $host;
       $this->port = $port;
       $this->path = $path;
       $this->query = $query;
       $this->anchor = $anchor;
-   }
-
-   public function getScheme() {
-      return $this->scheme;
-   }
-
-   public function getHost() {
-      return $this->host;
-   }
-
-   public function getPort() {
-      return $this->port;
-   }
-
-   public function getPath() {
-      return $this->path;
-   }
-
-   /**
-    * Returns the list of registered query parameters.
-    *
-    * @return array The query parameters of the url.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 04.04.2011<br />
-    */
-   public function getQuery() {
-      return $this->query;
-   }
-
-   public function getAnchor() {
-      return $this->anchor;
-   }
-
-   /**
-    * Let's you query a request parameter.
-    *
-    * @param string $name The name of the desired parameter.
-    * @param string $default The default value to return in case the parameter is not existing.
-    *
-    * @return string The value of the parameter or null if it doesn't exist.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 04.04.2011<br />
-    */
-   public function getQueryParameter($name, $default = null) {
-      return isset($this->query[$name]) ? $this->query[$name] : $default;
-   }
-
-   /**
-    * Let's you inject the scheme of the url.
-    *
-    * @param string $scheme The url scheme (e.g. http, ftp).
-    *
-    * @return Url This object for further usage.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 04.04.2011<br />
-    */
-   public function &setScheme($scheme) {
-      $this->scheme = $scheme;
-
-      return $this;
-   }
-
-   /**
-    * Let's you inject the host of the url.
-    *
-    * @param string $host The url' host (e.g. example.com).
-    *
-    * @return Url This object for further usage.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 04.04.2011<br />
-    */
-   public function &setHost($host) {
-      $this->host = $host;
-
-      return $this;
-   }
-
-   /**
-    * Let's you inject the port of the url.
-    *
-    * @param int|null $port The url's port (e.g. 80, 443).
-    *
-    * @return Url This object for further usage.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 04.04.2011<br />
-    */
-   public function &setPort($port) {
-      $this->port = $port;
-
-      return $this;
-   }
-
-   /**
-    * Let's you inject the path of the url.
-    *
-    * @param string $path The url's path (e.g. /foo/bar).
-    *
-    * @return Url This object for further usage.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 04.04.2011<br />
-    */
-   public function &setPath($path) {
-      $this->path = $path;
-
-      return $this;
-   }
-
-   /**
-    * Let's you inject the desired amount of request parameters.
-    *
-    * @param array $query The query parameters to inject.
-    *
-    * @return Url This object for further usage.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 04.04.2011<br />
-    */
-   public function &setQuery(array $query) {
-      $this->query = $query;
-
-      return $this;
-   }
-
-   /**
-    * This method let's you merge a list of parameters into the current url's
-    * list. Setting a query parameter's value to <em>null</em> indicates to
-    * delete the parameter within the LinkScheme implementation.
-    *
-    * @param array $query An associative array of the query params to merge.
-    *
-    * @return Url This object for further usage.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 04.04.2011<br />
-    */
-   public function &mergeQuery(array $query) {
-      foreach ($query as $name => $value) {
-         $this->query[$name] = $value;
-      }
-
-      return $this;
-   }
-
-   /**
-    * Let's you inject the anchor of the url.
-    *
-    * @param string $anchor The anchor (e.g. #top).
-    *
-    * @return Url This object for further usage.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 04.04.2011<br />
-    */
-   public function &setAnchor($anchor) {
-      $this->anchor = $anchor;
-
-      return $this;
-   }
-
-   /**
-    * This method resets the list of parameters.
-    *
-    * @return Url This object for further usage.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 04.06.2011<br />
-    */
-   public function resetQuery() {
-      $this->query = array();
-
-      return $this;
-   }
-
-   /**
-    * This method can be used to set a query parameter. Setting it's value
-    * to <em>null</em> indicates to delete the parameter within the
-    * LinkScheme implementation.
-    *
-    * @param string $name The name of the parameter.
-    * @param string $value The value of the parameter.
-    *
-    * @return Url This object for further usage.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 04.04.2011<br />
-    */
-   public function &setQueryParameter($name, $value) {
-      $this->query[$name] = $value;
-
-      return $this;
    }
 
    /**
@@ -318,6 +112,34 @@ final class Url {
    }
 
    /**
+    * Generates a query param array from a given query string.
+    *
+    * @param string $query The query params string.
+    *
+    * @return array The query params array.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.03.2011<br />
+    * Version 0.2, 05.09.2015 (ID#258: support nested query parameters)<br />
+    */
+   private static function getQueryParams($query) {
+
+      // reverse resolve encoded ampersands
+      $query = str_replace('&amp;', '&', $query);
+
+      // in case of empty query strings, return empty param list
+      if (empty($query)) {
+         return [];
+      }
+
+      parse_str($query, $output);
+
+      return $output;
+
+   }
+
+   /**
     * Creates a url representation from the current request url.
     *
     * @param boolean $absolute True, in case the url should be absolute, false otherwise.
@@ -335,6 +157,18 @@ final class Url {
    }
 
    /**
+    * @deprecated Compatibility method. Please use fromReferrer() instead.
+    *
+    * @param boolean $absolute True, in case the url should be absolute, false otherwise.
+    *
+    * @return Url The current url representation.
+    * @throws UrlFormatException In case the given referrer is not a valid url.
+    */
+   public static function fromReferer($absolute = false) {
+      return self::fromReferrer($absolute);
+   }
+
+   /**
     * Creates a url representation from the referring url.
     *
     * @param boolean $absolute True, in case the url should be absolute, false otherwise.
@@ -346,42 +180,215 @@ final class Url {
     * @version
     * Version 0.1, 07.09.2011<br />
     */
-   public static function fromReferer($absolute = false) {
+   public static function fromReferrer($absolute = false) {
       return self::getRequest()->getReferrerUrl($absolute);
    }
 
+   public function getScheme() {
+      return $this->scheme;
+   }
+
    /**
-    * Generates a query param array from a given query string.
+    * Let's you inject the scheme of the url.
     *
-    * @param string $query The query params string.
+    * @param string $scheme The url scheme (e.g. http, ftp).
     *
-    * @return array The query params array.
+    * @return Url This object for further usage.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 29.03.2011<br />
+    * Version 0.1, 04.04.2011<br />
     */
-   private static function getQueryParams($query) {
+   public function &setScheme($scheme) {
+      $this->scheme = $scheme;
 
-      // reverse resolve encoded ampersands
-      $query = str_replace('&amp;', '&', $query);
+      return $this;
+   }
 
-      // in case of empty query strings, return empty param list
-      if (empty($query)) {
-         return array();
+   public function getHost() {
+      return $this->host;
+   }
+
+   /**
+    * Let's you inject the host of the url.
+    *
+    * @param string $host The url' host (e.g. example.com).
+    *
+    * @return Url This object for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 04.04.2011<br />
+    */
+   public function &setHost($host) {
+      $this->host = $host;
+
+      return $this;
+   }
+
+   public function getPort() {
+      return $this->port;
+   }
+
+   /**
+    * Let's you inject the port of the url.
+    *
+    * @param int|null $port The url's port (e.g. 80, 443).
+    *
+    * @return Url This object for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 04.04.2011<br />
+    */
+   public function &setPort($port) {
+      $this->port = $port;
+
+      return $this;
+   }
+
+   public function getPath() {
+      return $this->path;
+   }
+
+   /**
+    * Let's you inject the path of the url.
+    *
+    * @param string $path The url's path (e.g. /foo/bar).
+    *
+    * @return Url This object for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 04.04.2011<br />
+    */
+   public function &setPath($path) {
+      $this->path = $path;
+
+      return $this;
+   }
+
+   /**
+    * Returns the list of registered query parameters.
+    *
+    * @return array The query parameters of the url.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 04.04.2011<br />
+    */
+   public function getQuery() {
+      return $this->query;
+   }
+
+   /**
+    * Let's you inject the desired amount of request parameters.
+    *
+    * @param array $query The query parameters to inject.
+    *
+    * @return Url This object for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 04.04.2011<br />
+    */
+   public function &setQuery(array $query) {
+      $this->query = $query;
+
+      return $this;
+   }
+
+   public function getAnchor() {
+      return $this->anchor;
+   }
+
+   /**
+    * Let's you inject the anchor of the url.
+    *
+    * @param string $anchor The anchor (e.g. #top).
+    *
+    * @return Url This object for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 04.04.2011<br />
+    */
+   public function &setAnchor($anchor) {
+      $this->anchor = $anchor;
+
+      return $this;
+   }
+
+   /**
+    * Let's you query a request parameter.
+    *
+    * @param string $name The name of the desired parameter.
+    * @param string $default The default value to return in case the parameter is not existing.
+    *
+    * @return string The value of the parameter or null if it doesn't exist.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 04.04.2011<br />
+    */
+   public function getQueryParameter($name, $default = null) {
+      return isset($this->query[$name]) ? $this->query[$name] : $default;
+   }
+
+   /**
+    * This method let's you merge a list of parameters into the current url's
+    * list. Setting a query parameter's value to <em>null</em> indicates to
+    * delete the parameter within the LinkScheme implementation.
+    *
+    * @param array $query An associative array of the query params to merge.
+    *
+    * @return Url This object for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 04.04.2011<br />
+    */
+   public function &mergeQuery(array $query) {
+      foreach ($query as $name => $value) {
+         $this->query[$name] = $value;
       }
 
-      $parts = explode('&', $query);
-      $params = array();
-      foreach ($parts as $part) {
-         $tmp = explode('=', $part);
-         // include only param couples
-         if (isset($tmp[1])) {
-            $params[$tmp[0]] = $tmp[1];
-         }
-      }
+      return $this;
+   }
 
-      return $params;
+   /**
+    * This method resets the list of parameters.
+    *
+    * @return Url This object for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 04.06.2011<br />
+    */
+   public function resetQuery() {
+      $this->query = [];
+
+      return $this;
+   }
+
+   /**
+    * This method can be used to set a query parameter. Setting it's value
+    * to <em>null</em> indicates to delete the parameter within the
+    * LinkScheme implementation.
+    *
+    * @param string $name The name of the parameter.
+    * @param string $value The value of the parameter.
+    *
+    * @return Url This object for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 04.04.2011<br />
+    */
+   public function &setQueryParameter($name, $value) {
+      $this->query[$name] = $value;
+
+      return $this;
    }
 
 }

@@ -35,18 +35,6 @@ class RequestImplTest extends \PHPUnit_Framework_TestCase {
    const PARAMETER_FOO = 'foo';
    const PARAMETER_BAR = 'bar';
 
-   protected function setUp() {
-      $_GET = array();
-      $_POST = array();
-      $_REQUEST = array();
-   }
-
-   protected function tearDown() {
-      unset($_REQUEST);
-      unset($_GET);
-      unset($_POST);
-   }
-
    public function testSimpleValues() {
 
       $testData = array(
@@ -173,6 +161,77 @@ class RequestImplTest extends \PHPUnit_Framework_TestCase {
 
       assertEquals(self::PARAMETER_BAR, $request->getParameter(self::PARAMETER_FOO, $default));
 
+   }
+
+   public function testNestedRequestParameters() {
+
+      $request = new RequestImpl();
+
+      // ?a[x]=1&a[y]=2&b[]=1&b[]=2&b[2]=3&b[1]=7
+      $_REQUEST = [
+            'a' => [
+                  'x' => '1',
+                  'y' => '2'
+            ],
+            'b' => [1, 7, 3]
+      ];
+
+      $a = $request->getParameter('a');
+      assertTrue(is_array($a));
+      assertEquals('1', $a['x']);
+      assertEquals('2', $a['y']);
+
+      $b = $request->getParameter('b');
+      assertTrue(is_array($b));
+      assertEquals('1', $b[0]);
+      assertEquals('7', $b[1]);
+      assertEquals('3', $b[2]);
+
+      // ?a[][foo]=123&a[][foo]=123&a[1][bar]=456&b[c][d][e][f]=123
+      $_REQUEST = [
+            'a' => [
+                  ['foo' => '123'],
+                  [
+                        'foo' => '123',
+                        'bar' => '456'
+                  ]
+            ],
+            'b' => [
+                  'c' => [
+                        'd' => [
+                              'e' => [
+                                    'f' => '123'
+                              ]
+                        ]
+                  ]
+            ]
+      ];
+
+      $a = $request->getParameter('a');
+      assertTrue(is_array($a));
+      assertEquals('123', $a[0]['foo']);
+      assertEquals('123', $a[1]['foo']);
+      assertEquals('456', $a[1]['bar']);
+
+      $b = $request->getParameter('b');
+      assertTrue(is_array($b));
+      assertTrue(is_array($b['c']));
+      assertTrue(is_array($b['c']['d']));
+      assertTrue(is_array($b['c']['d']['e']));
+      assertEquals('123', $b['c']['d']['e']['f']);
+
+   }
+
+   protected function setUp() {
+      $_GET = array();
+      $_POST = array();
+      $_REQUEST = array();
+   }
+
+   protected function tearDown() {
+      unset($_REQUEST);
+      unset($_GET);
+      unset($_POST);
    }
 
 }

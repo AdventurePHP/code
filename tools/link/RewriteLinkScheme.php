@@ -40,7 +40,7 @@ class RewriteLinkScheme extends BasicLinkScheme implements LinkScheme {
 
       // save and reset query to save variable order
       $query = $url->getQuery();
-      $url->setQuery(array());
+      $url->setQuery([]);
 
       // extract path to separate params and remove actions
       $parts = explode(self::REWRITE_PARAM_TO_ACTION_DELIMITER, $url->getPath());
@@ -113,7 +113,7 @@ class RewriteLinkScheme extends BasicLinkScheme implements LinkScheme {
       return $this->sanitizeUrl($this->appendAnchor($resultUrl, $url));
    }
 
-   public function formatActionLink(Url $url, $namespace, $name, array $params = array()) {
+   public function formatActionLink(Url $url, $namespace, $name, array $params = []) {
       return $this->formatLink(
             $url->setQueryParameter(
                   $this->formatActionIdentifier($namespace, $name, true),

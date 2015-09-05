@@ -109,7 +109,7 @@ final class LinkGenerator {
     *
     * @return string the formatted url.
     */
-   public static function generateActionUrl(Url $url, $namespace, $name, array $params = array(), LinkScheme $scheme = null) {
+   public static function generateActionUrl(Url $url, $namespace, $name, array $params = [], LinkScheme $scheme = null) {
       if ($scheme === null) {
          return self::$LINK_SCHEME->formatActionLink($url, $namespace, $name, $params);
       }

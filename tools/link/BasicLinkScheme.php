@@ -145,7 +145,7 @@ abstract class BasicLinkScheme {
       // retrieve actions from internal method (to enable testing)
       $actions = & $this->getFrontcontrollerActions();
 
-      $actionUrlRepresentation = array();
+      $actionUrlRepresentation = [];
       foreach ($actions as $action) {
          /* @var $action AbstractFrontcontrollerAction */
          if ($action->getKeepInUrl() === true) {
@@ -256,7 +256,7 @@ abstract class BasicLinkScheme {
       $keyValueDelimiter = $urlRewriting === true ? '/' : ':';
 
       // fill consolidated attributes array
-      $groups = array();
+      $groups = [];
 
       if (count($params) > 0) {
          foreach ($params as $key => $value) {

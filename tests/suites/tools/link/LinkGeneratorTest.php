@@ -420,4 +420,104 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   public function testSimpleParameterOverwriting() {
+      $url = Url::fromString('/?foo=1&amp;foo=2');
+      assertEquals('2', $url->getQueryParameter('foo'));
+   }
+
+   public function testArrayParameterOverwriting() {
+      $url = Url::fromString('/?a[x]=1&a[y]=2&b[]=1&b[]=2&b[2]=3&b[1]=7');
+
+      $a = $url->getQueryParameter('a');
+      assertTrue(is_array($a));
+      assertEquals('1', $a['x']);
+      assertEquals('2', $a['y']);
+
+      $b = $url->getQueryParameter('b');
+      assertTrue(is_array($b));
+      assertEquals('1', $b[0]);
+      assertEquals('7', $b[1]);
+      assertEquals('3', $b[2]);
+   }
+
+   public function testNestedArrayParameters() {
+
+      // nested arrays with mixed keys (most complex use case)
+      $url = Url::fromString('/?a[][foo]=123&a[][foo]=123&a[1][bar]=456&b[c][d][e][f]=123');
+
+      $a = $url->getQueryParameter('a');
+
+      assertTrue(is_array($a));
+      assertTrue(is_array($a[0]));
+      assertTrue(is_array($a[1]));
+
+      assertEquals('123', $a[0]['foo']);
+      assertEquals('123', $a[1]['foo']);
+      assertEquals('456', $a[1]['bar']);
+
+      $b = $url->getQueryParameter('b');
+
+      assertTrue(is_array($b));
+      assertTrue(is_array($b['c']));
+      assertTrue(is_array($b['c']['d']));
+      assertTrue(is_array($b['c']['d']['e']));
+      assertEquals('123', $b['c']['d']['e']['f']);
+   }
+
+   public function testMixedParameterResolvingEdgeCase() {
+
+      // mixed parameter types --> later data type declaration overwrites previous one
+      $url = Url::fromString('/?a=123&a[b]=456');
+      $a = $url->getQueryParameter('a');
+
+      assertTrue(is_array($a));
+      assertEquals('456', $a['b']);
+
+   }
+
+   public function testMixedArrayParameterUrlGeneration() {
+
+      $scheme = new DefaultLinkScheme();
+      $url = Url::fromString('/');
+
+      $url->setQuery([
+            'a' => [
+                  'x' => '1',
+                  'y' => '2'
+            ],
+            'b' => [
+                  0 => '1',
+                  1 => '2'
+            ]
+      ]);
+
+      $link = $link = LinkGenerator::generateUrl($url, $scheme);
+      assertEquals('/?a[x]=1&amp;a[y]=2&amp;b[0]=1&amp;b[1]=2', $link);
+
+      $url->setQuery([
+            'a' => [
+                  ['foo' => '123'],
+                  [
+                        'foo' => '123',
+                        'bar' => '456'
+                  ],
+            ],
+            'b' => [
+                  'c' => [
+                        'd' => [
+                              'e' => [
+                                    'f' => '123'
+                              ]
+                        ]
+                  ]
+            ]
+      ]);
+
+      assertEquals(
+            '/?a[0][foo]=123&amp;a[1][foo]=123&amp;a[1][bar]=456&amp;b[c][d][e][f]=123',
+            LinkGenerator::generateUrl($url, $scheme)
+      );
+
+   }
+
 }

@@ -79,7 +79,7 @@ class HtmlLinkTag extends LinkGenerationTag {
 
       // only non-white-list parameters are allowed as URL parameters
       // to not interfere with HTML attributes
-      $attributes = array();
+      $attributes = [];
 
       foreach ($this->getAttributes() as $key => $value) {
          if (!in_array($key, $this->attributeWhiteList)) {

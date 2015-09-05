@@ -71,7 +71,11 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
             if (!empty($queryString)) {
                $queryString .= '&';
             }
-            $queryString .= $name . '=' . $value;
+            if (is_array($value)) {
+               $queryString .= rawurldecode(http_build_query([$name => $value], null, '&', PHP_QUERY_RFC3986));
+            } else {
+               $queryString .= $name . '=' . $value;
+            }
          }
       }
 
@@ -99,7 +103,7 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
       return $resultUrl;
    }
 
-   public function formatActionLink(Url $url, $namespace, $name, array $params = array()) {
+   public function formatActionLink(Url $url, $namespace, $name, array $params = []) {
       $url = $this->removeActionInstructions($url);
 
       return $this->formatLinkInternal(

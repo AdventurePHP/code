@@ -94,12 +94,12 @@ class SMSPageLinkTag extends Document {
 
                $pageRequestParamName = $SMSM->getPageRequestParamName();
 
-               $refererUrl = Url::fromReferer(true);
+               $referrerUrl = Url::fromReferrer(true);
                $currentUrl = Url::fromCurrent(true);
 
                // protection against url xss
-               if ($refererUrl->getHost() == $currentUrl->getHost()) {
-                  $pageId = $refererUrl->getQueryParameter($pageRequestParamName);
+               if ($referrerUrl->getHost() == $currentUrl->getHost()) {
+                  $pageId = $referrerUrl->getQueryParameter($pageRequestParamName);
                }
 
                if (empty($pageId)) {
