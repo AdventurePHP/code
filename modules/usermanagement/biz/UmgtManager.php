@@ -611,7 +611,12 @@ class UmgtManager extends APFObject {
       $displayName = $dbDriver->escapeValue($displayName);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user` WHERE `DisplayName` = \'' . $displayName . '\';';
+      $select = 'SELECT * FROM `ent_user`
+                 INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
+                 INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
+                 WHERE
+                     ent_application.ApplicationID = \'' . $this->applicationId . '\'
+                     AND `DisplayName` = \'' . $displayName . '\';';
 
       return $orm->loadObjectByTextStatement('User', $select);
    }
@@ -662,7 +667,12 @@ class UmgtManager extends APFObject {
       $firstName = $dbDriver->escapeValue($firstName);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user` WHERE `FirstName` = \'' . $firstName . '\';';
+      $select = 'SELECT * FROM `ent_user`
+                 INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
+                 INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
+                 WHERE
+                     ent_application.ApplicationID = \'' . $this->applicationId . '\'
+                     AND `FirstName` = \'' . $firstName . '\';';
 
       return $orm->loadObjectByTextStatement('User', $select);
 
@@ -692,7 +702,12 @@ class UmgtManager extends APFObject {
       $lastName = $dbDriver->escapeValue($lastName);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user` WHERE `LastName` = \'' . $lastName . '\';';
+      $select = 'SELECT * FROM `ent_user`
+                 INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
+                 INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
+                 WHERE
+                     ent_application.ApplicationID = \'' . $this->applicationId . '\'
+                     AND `LastName` = \'' . $lastName . '\';';
 
       return $orm->loadObjectByTextStatement('User', $select);
 
@@ -722,7 +737,12 @@ class UmgtManager extends APFObject {
       $email = $dbDriver->escapeValue($email);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user` WHERE `EMail` = \'' . $email . '\';';
+      $select = 'SELECT * FROM `ent_user`
+                 INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
+                 INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
+                 WHERE
+                     ent_application.ApplicationID = \'' . $this->applicationId . '\'
+                     AND `EMail` = \'' . $email . '\';';
 
       return $orm->loadObjectByTextStatement('User', $select);
 
@@ -757,7 +777,13 @@ class UmgtManager extends APFObject {
       $lastName = $dbDriver->escapeValue($lastName);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user` WHERE `FirstName` = \'' . $firstName . '\' AND `LastName` = \'' . $lastName . '\';';
+      $select = 'SELECT * FROM `ent_user`
+                 INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
+                 INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
+                 WHERE
+                     ent_application.ApplicationID = \'' . $this->applicationId . '\'
+                     AND `FirstName` = \'' . $firstName . '\'
+                     AND `LastName` = \'' . $lastName . '\';';
 
       return $orm->loadObjectByTextStatement('User', $select);
 
@@ -787,7 +813,12 @@ class UmgtManager extends APFObject {
       $username = $dbDriver->escapeValue($username);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user` WHERE `Username` = \'' . $username . '\';';
+      $select = 'SELECT * FROM `ent_user`
+                 INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
+                 INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
+                 WHERE
+                     ent_application.ApplicationID = \'' . $this->applicationId . '\'
+                     AND `Username` = \'' . $username . '\';';
 
       return $orm->loadObjectByTextStatement('User', $select);
 
@@ -2104,6 +2135,7 @@ class UmgtManager extends APFObject {
    public function loadUserByAuthToken(UmgtAuthToken $token) {
       $crit = new GenericCriterionObject();
       $crit->addRelationIndicator('User2AuthToken', $token);
+      $crit->addRelationIndicator('Application2User', $this->getCurrentApplication());
 
       return $this->getORMapper()->loadObjectByCriterion('User', $crit);
    }
