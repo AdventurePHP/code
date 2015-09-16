@@ -36,6 +36,11 @@ final class XmlParser {
     */
    public static $maxParserLoops = 20;
 
+   /**
+    * @var int Internal counter to generate unique APF DOM tree node IDs.
+    */
+   private static $domNodeCounter = 1;
+
    private function __construct() {
    }
 
@@ -194,9 +199,11 @@ final class XmlParser {
     * @version
     * Version 0.1, 22.12.2006<br />
     * Version 0.2, 25.10.2012 (Removed md5 choosing parameter to gain performance)<br />
+    * Version 0.3, 27.07.2015 (Switched to static counter to gain performance by factor 3 up to 6)<br />
     */
    public static function generateUniqID() {
-      return md5(uniqid(rand(), true));
+      // Parser is optimized to 32 characters of DOM GUIDs. Hence return a 32 characters unique string.
+      return sprintf('node-%027s', self::$domNodeCounter++);
    }
 
 }
