@@ -1,10 +1,10 @@
 #!/bin/bash
 ########################################################################################################################
-# APF 3.0 automatic configuration migration script                                                                     #
+# APF 3.1 automatic configuration migration script                                                                     #
 ########################################################################################################################
 
 echo "#############################################"
-echo "# APF 3.0 automatic configuration migration #"
+echo "# APF 3.1 automatic configuration migration #"
 echo "#############################################"
 echo
 
@@ -22,12 +22,6 @@ echo
 echo "#############################################"
 echo
 echo "Starting configuration migration ..."
-
-echo "* Migrate cache configuration ..."
-$PHP_BINARY $PHP_SCRIPT_DIR/migrate_cache_config.php
-
-echo "* Migrate pager configuration ..."
-$PHP_BINARY $PHP_SCRIPT_DIR/migrate_pager_config.php
 
 echo
 echo "#############################################"

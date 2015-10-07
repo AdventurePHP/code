@@ -158,7 +158,7 @@ class SimpleCaptchaTag extends AbstractFormControl {
       $this->textField->onAfterAppend();
 
       // get the captcha string from session
-      $session = self::getRequest()->getSession(ShowCaptchaImageAction::SESSION_NAMESPACE);
+      $session = $this->getRequest()->getSession(ShowCaptchaImageAction::SESSION_NAMESPACE);
       $this->captchaString = $session->load($this->textFieldName);
       $session->save($this->textFieldName, StringAssistant::generateCaptchaString(5));
 

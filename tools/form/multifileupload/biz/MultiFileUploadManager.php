@@ -75,7 +75,7 @@ class MultiFileUploadManager extends APFObject {
       $this->formName = $param['formname'];
       $this->name = $param['name'];
       $this->sessionNamespace = self::$DEFAULT_SESSION_NAMESPACE . '\\' . $param['formname'] . '\\' . $param['name'];
-      $this->session = self::getRequest()->getSession($this->sessionNamespace);
+      $this->session = $this->getRequest()->getSession($this->sessionNamespace);
 
       // Temporäres Upload-Verzeichnis erstellen, falls es vorhanden ist, wird der Pfad zurück gegeben.
       $createFolder = new Folder();

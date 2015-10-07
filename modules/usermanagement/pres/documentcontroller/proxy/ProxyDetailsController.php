@@ -29,7 +29,7 @@ class ProxyDetailsController extends UmgtBaseController {
    public function transformContent() {
 
       $uM = & $this->getManager();
-      $proxyId = self::getRequest()->getParameter('proxyid');
+      $proxyId = $this->getRequest()->getParameter('proxyid');
       $proxy = $uM->loadVisibilityDefinitionById($proxyId);
       $type = $uM->loadVisibilityDefinitionType($proxy);
 

@@ -66,9 +66,7 @@ class TextAreaTag extends AbstractFormControl {
     * Version 0.1, 13.01.2007<br />
     */
    protected function presetValue() {
-      $name = $this->getAttribute('name');
-      $request = self::getRequest();
-      $value = $request->getParameter($name);
+      $value = $this->getRequest()->getParameter($this->getAttribute('name'));
       if ($value !== null) {
          $this->content = $value;
       }

@@ -53,7 +53,7 @@ class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
     * @return bool True in case the action is to be considered active, false otherwise.
     */
    public function isActive() {
-      return self::getRequest()->isHtml();
+      return $this->getRequest()->isHtml();
    }
 
    public function run() {
@@ -71,7 +71,7 @@ class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
          /* @var $umgt UmgtManager */
          $umgt = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
 
-         $request = self::getRequest();
+         $request = $this->getRequest();
 
          if (!$request->hasCookie(self::AUTO_LOGIN_COOKIE_NAME)) {
             return;
@@ -90,7 +90,7 @@ class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
                if ($user !== null) {
                   $sessionStore->setUser($appIdent, $user);
                   $cookie->setExpireTime(time() + $umgt->getAutoLoginCookieLifeTime());
-                  self::getResponse()->setCookie($cookie->setValue($savedToken->getToken()));
+                  $this->getResponse()->setCookie($cookie->setValue($savedToken->getToken()));
                }
             }
          }

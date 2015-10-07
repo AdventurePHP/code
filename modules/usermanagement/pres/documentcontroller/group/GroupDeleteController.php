@@ -35,7 +35,7 @@ class GroupDeleteController extends UmgtBaseController {
    public function transformContent() {
 
       // get the group id from the request
-      $groupId = self::getRequest()->getParameter('groupid');
+      $groupId = $this->getRequest()->getParameter('groupid');
 
       // load the current group and print the display name
       $uM = & $this->getManager();
@@ -46,13 +46,15 @@ class GroupDeleteController extends UmgtBaseController {
       $formNo = & $this->getForm('GroupDelNo');
       $formYes = & $this->getForm('GroupDelYes');
 
+      $response = $this->getResponse();
+
       if ($formYes->isSent()) {
          $group = new UmgtGroup();
          $group->setObjectId($groupId);
          $uM->deleteGroup($group);
-         self::getResponse()->forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
+         $response->forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
       } elseif ($formNo->isSent()) {
-         self::getResponse()->forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
+         $response->forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
       } else {
          $formNo->transformOnPlace();
          $formYes->transformOnPlace();

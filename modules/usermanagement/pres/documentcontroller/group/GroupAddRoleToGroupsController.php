@@ -40,7 +40,7 @@ class GroupAddRoleToGroupsController extends UmgtBaseController {
 
       $uM = & $this->getManager();
 
-      $role = $uM->loadRoleByID(self::getRequest()->getParameter('roleid'));
+      $role = $uM->loadRoleByID($this->getRequest()->getParameter('roleid'));
       $groups = $uM->loadGroupsNotWithRole($role);
 
       if (count($groups) === 0) {
@@ -73,7 +73,7 @@ class GroupAddRoleToGroupsController extends UmgtBaseController {
          $uM->attachRoleToGroups($role, $additionalGroups);
 
          // back to user main view
-         self::getResponse()->forward($this->generateLink(array('mainview' => 'role', 'groupview' => null, 'roleid' => null)));
+         $this->getResponse()->forward($this->generateLink(array('mainview' => 'role', 'groupview' => null, 'roleid' => null)));
       } else {
          $form->transformOnPlace();
       }

@@ -35,7 +35,7 @@ class NewsDeleteController extends NewsBaseController {
 
    public function transformContent() {
 
-      $request = self::getRequest();
+      $request = $this->getRequest();
       $deleteId = $request->getParameter('deletenewsid');
       $deleteYes = (bool) $request->getParameter('deleteyes', false);
 

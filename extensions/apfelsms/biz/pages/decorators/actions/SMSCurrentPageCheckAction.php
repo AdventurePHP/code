@@ -115,7 +115,7 @@ class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
    }
 
    protected function getSession() {
-      return self::getRequest()->getSession(self::SESSION_NAMESPACE);
+      return $this->getRequest()->getSession(self::SESSION_NAMESPACE);
    }
 
    protected function incrementLoopCounter() {

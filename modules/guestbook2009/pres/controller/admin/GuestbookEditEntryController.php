@@ -34,7 +34,7 @@ class GuestbookEditEntryController extends GuestbookBackendBaseController {
 
    public function transformContent() {
 
-      $entryId = self::getRequest()->getParameter('entryid');
+      $entryId = $this->getRequest()->getParameter('entryid');
       if ($entryId === null) {
          $this->displayEntrySelection('edit');
       } else {

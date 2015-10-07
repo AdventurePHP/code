@@ -34,7 +34,7 @@ class PermissionDeleteController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $permissionId = self::getRequest()->getParameter('permissionid');
+      $permissionId = $this->getRequest()->getParameter('permissionid');
       $uM = & $this->getManager();
       $permission = $uM->loadPermissionByID($permissionId);
       $this->getLabel('display-name')->setPlaceHolder('display-name', $permission->getDisplayName());
@@ -42,15 +42,17 @@ class PermissionDeleteController extends UmgtBaseController {
       $formNo = & $this->getForm('PermissionDelNo');
       $formYes = & $this->getForm('PermissionDelYes');
 
+      $response = $this->getResponse();
+
       if ($formYes->isSent()) {
 
          $permission = new UmgtPermission();
          $permission->setObjectId($permissionId);
          $uM->deletePermission($permission);
-         self::getResponse()->forward($this->generateLink(array('mainview' => 'permission', 'permissionview' => '', 'permissionid' => '')));
+         $response->forward($this->generateLink(array('mainview' => 'permission', 'permissionview' => '', 'permissionid' => '')));
 
       } elseif ($formNo->isSent()) {
-         self::getResponse()->forward($this->generateLink(array('mainview' => 'permission', 'permissionview' => '', 'permissionid' => '')));
+         $response->forward($this->generateLink(array('mainview' => 'permission', 'permissionview' => '', 'permissionid' => '')));
       } else {
          $formNo->transformOnPlace();
          $formYes->transformOnPlace();

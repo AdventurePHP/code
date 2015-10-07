@@ -40,7 +40,7 @@ class RemoveUserFromRolesController extends UmgtBaseController {
 
       $uM = & $this->getManager();
 
-      $user = $uM->loadUserByID(self::getRequest()->getParameter('userid'));
+      $user = $uM->loadUserByID($this->getRequest()->getParameter('userid'));
       $roles = $uM->loadRolesWithUser($user);
 
       if (count($roles) === 0) {
@@ -73,7 +73,7 @@ class RemoveUserFromRolesController extends UmgtBaseController {
          $uM->detachUserFromRoles($user, $rolesToRemove);
 
          // back to user main view
-         self::getResponse()->forward($this->generateLink(array('mainview' => 'user', 'roleview' => null, 'userid' => null)));
+         $this->getResponse()->forward($this->generateLink(array('mainview' => 'user', 'roleview' => null, 'userid' => null)));
       } else {
          $form->transformOnPlace();
       }

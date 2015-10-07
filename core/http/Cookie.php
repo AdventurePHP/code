@@ -29,9 +29,9 @@ use InvalidArgumentException;
  * Usage:
  * <pre>
  * $cookie = new Cookie('my_cookie');
- * self::getResponse()->setCookie($cookie);
+ * $this->getResponse()->setCookie($cookie);
  *
- * self::getResponse()->deleteCookie($cookie);
+ * $this->getResponse()->deleteCookie($cookie);
  * </pre>
  *
  * @author Christian Achatz

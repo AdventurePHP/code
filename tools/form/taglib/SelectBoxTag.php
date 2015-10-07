@@ -416,7 +416,7 @@ class SelectBoxTag extends AbstractFormControl {
       $subMarkerStart = '[';
       $subMarkerEnd = ']';
 
-      $request = self::getRequest();
+      $request = $this->getRequest();
 
       // analyze sub-elements by the start marker bracket
       if (substr_count($name, $subMarkerStart) > 0) {

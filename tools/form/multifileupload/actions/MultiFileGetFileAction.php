@@ -40,7 +40,7 @@ class MultiFileGetFileAction extends AbstractFrontcontrollerAction {
       $uploadName = $this->getInput()->getParameter('uploadname');
 
       // only upload if we have a valid request
-      $response = self::getResponse();
+      $response = $this->getResponse();
 
       if ($fieldName !== null && $formName !== null && $uploadName !== null) {
 

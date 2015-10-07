@@ -296,7 +296,7 @@ class File extends FilesystemItem {
       if (empty($filename)) {
          $filename = $this->getName();
       }
-      $response = self::getResponse();
+      $response = $this->getResponse();
       $response->setHeader(new HeaderImpl('Content-type', $this->getMimeType()));
       $response->setHeader(new HeaderImpl('Content-Disposition', 'attachment; filename="' . $filename . '"'));
       $response->send(false);

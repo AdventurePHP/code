@@ -28,7 +28,7 @@ class ProxyTypeEditController extends UmgtBaseController {
 
    public function transformContent() {
       $form = & $this->getForm('add');
-      $proxyTypeId = self::getRequest()->getParameter('proxytypeid');
+      $proxyTypeId = $this->getRequest()->getParameter('proxytypeid');
       $uM = & $this->getManager();
 
       if ($form->isSent() && $form->isValid()) {
@@ -39,7 +39,7 @@ class ProxyTypeEditController extends UmgtBaseController {
          $proxyType->setAppObjectName($proxyName->getAttribute('value'));
          try {
             $uM->saveVisibilityDefinitionType($proxyType);
-            self::getResponse()->forward($this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typelist')));
+            $this->getResponse()->forward($this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typelist')));
          } catch (DatabaseHandlerException $dhe) {
             // mark field as invalid
             // due to the fact, that we have a

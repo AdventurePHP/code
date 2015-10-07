@@ -38,7 +38,7 @@ class ProxyRevokeAccessController extends UmgtBaseController {
 
       $uM = & $this->getManager();
 
-      $request = self::getRequest();
+      $request = $this->getRequest();
       $objectId = $request->getParameter('objectid');
       $objectType = $request->getParameter('objecttype');
       $proxyId = $request->getParameter('proxyid');
@@ -95,7 +95,7 @@ class ProxyRevokeAccessController extends UmgtBaseController {
          return;
       }
 
-      self::getResponse()->forward($this->generateLink(
+      $this->getResponse()->forward($this->generateLink(
                   array(
                         'mainview'  => 'proxy',
                         'proxyview' => 'details',

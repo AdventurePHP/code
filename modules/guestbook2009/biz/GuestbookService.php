@@ -224,7 +224,7 @@ final class GuestbookService extends APFObject {
             'gbview'    => 'admin',
             'adminview' => null
       )));
-      self::getResponse()->forward($link);
+      $this->getResponse()->forward($link);
    }
 
    /**
@@ -247,11 +247,11 @@ final class GuestbookService extends APFObject {
             'gbview'    => 'list',
             'adminview' => null
       )));
-      self::getResponse()->forward($link);
+      $this->getResponse()->forward($link);
    }
 
    protected function getSession($guestBookId) {
-      return self::getRequest()->getSession(__NAMESPACE__ . '\\' . $guestBookId);
+      return $this->getRequest()->getSession(__NAMESPACE__ . '\\' . $guestBookId);
    }
 
    /**
@@ -275,7 +275,7 @@ final class GuestbookService extends APFObject {
                'gbview'    => 'list',
                'adminview' => null
          )));
-         self::getResponse()->forward($startLink);
+         $this->getResponse()->forward($startLink);
       }
    }
 
@@ -307,7 +307,7 @@ final class GuestbookService extends APFObject {
                'gbview'    => 'admin',
                'adminview' => null
          )));
-         self::getResponse()->forward($adminLink);
+         $this->getResponse()->forward($adminLink);
       }
 
       return false;
@@ -338,7 +338,7 @@ final class GuestbookService extends APFObject {
                'gbview' => 'list'
          )));
       }
-      self::getResponse()->forward($link);
+      $this->getResponse()->forward($link);
    }
 
    /**

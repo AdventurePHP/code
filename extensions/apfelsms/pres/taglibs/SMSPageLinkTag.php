@@ -86,7 +86,7 @@ class SMSPageLinkTag extends Document {
             case '__referer': // previous visited page
 
                // get http referer
-               if (self::getRequest()->getReferrer() === null) {
+               if ($this->getRequest()->getReferrer() === null) {
                   // fallback on current page
                   $pageId = $SMSM->getSite()->getCurrentPageId();
                   break;

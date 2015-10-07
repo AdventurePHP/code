@@ -40,7 +40,7 @@ class GroupAddUserController extends UmgtBaseController {
       $userControl = & $form->getFormElementByName('User');
 
       /* @var $userControl MultiSelectBoxTag */
-      $groupId = self::getRequest()->getParameter('groupid');
+      $groupId = $this->getRequest()->getParameter('groupid');
 
       $uM = & $this->getManager();
       $group = $uM->loadGroupById($groupId);
@@ -77,7 +77,7 @@ class GroupAddUserController extends UmgtBaseController {
          }
 
          $uM->attachUsers2Group($newUsers, $group);
-         self::getResponse()->forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
+         $this->getResponse()->forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
 
       } else {
          $form->transformOnPlace();

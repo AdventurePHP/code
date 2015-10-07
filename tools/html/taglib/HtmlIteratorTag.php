@@ -176,7 +176,7 @@ class HtmlIteratorTag extends Document implements Iterator {
             $pagerConfig = $this->getConfiguration('APF\modules\pager', 'pager.ini')->getSection($pager);
 
             // get the number of entries per page
-            $request = &self::getRequest();
+            $request = $this->getRequest();
             $entriesPerPage = $request->getParameter(
                   $pagerConfig->getValue('Pager.ParameterCountName'),
                   $pagerConfig->getValue('Pager.EntriesPerPage')

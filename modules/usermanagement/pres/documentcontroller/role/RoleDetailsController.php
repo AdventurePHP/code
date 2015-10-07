@@ -35,7 +35,7 @@ class RoleDetailsController extends UmgtBaseController {
 
       // load data
       $uM = & $this->getManager();
-      $roleId = self::getRequest()->getParameter('roleid');
+      $roleId = $this->getRequest()->getParameter('roleid');
       $role = $uM->loadRoleByID($roleId);
 
       // display user data

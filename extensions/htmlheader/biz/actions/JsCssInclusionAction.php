@@ -73,7 +73,7 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
    }
 
    protected function gzipIsSupported() {
-      return self::getRequest()->isGzipSupported();
+      return $this->getRequest()->isGzipSupported();
    }
 
    /**
@@ -130,7 +130,7 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
       $packager = $this->getServiceObject('APF\extensions\htmlheader\biz\JsCssPackager');
       $output = $packager->getPackage($packName, $this->gzipIsSupported());
 
-      $response = &self::getResponse();
+      $response = &$this->getResponse();
 
       // Get ClientCachePeriod (in days), and convert to seconds
       $clientCachePeriod = $packager->getClientCachePeriod($packName) * 86400;
@@ -182,7 +182,7 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
       // get MIME type and verify correct extension
       $mimeType = $this->getMimeType($type);
 
-      $response = &self::getResponse();
+      $response = &$this->getResponse();
 
       $this->addHeaders($response, $this->ttl, $mimeType);
 

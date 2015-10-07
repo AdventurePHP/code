@@ -1,10 +1,10 @@
 #!/bin/bash
 ########################################################################################################################
-# APF 3.0 automatic code migration script                                                                              #
+# APF 3.1 automatic code migration script                                                                              #
 ########################################################################################################################
 
 echo "#############################################"
-echo "# APF 3.0 automatic code migration          #"
+echo "# APF 3.1 automatic code migration          #"
 echo "#############################################"
 echo
 
@@ -24,38 +24,8 @@ echo
 echo "Starting migration ..."
 
 # migrate tag lib declaration
-echo "* Migrate taglib declaration statements ..."
-$PHP_BINARY $PHP_SCRIPT_DIR/migrate_taglib_registration.php
-
-echo "* Consolidate tag usage ..."
-$PHP_BINARY $PHP_SCRIPT_DIR/migrate_consolidate_tag_usage.php
-
-echo "* Remove redundant tag lib registration ..."
-$PHP_BINARY $PHP_SCRIPT_DIR/migrate_extract_add_tag_statements.php
-
-echo "* Switch to new place holder logic ..."
-$PHP_BINARY $PHP_SCRIPT_DIR/migrate_update_place_holders_to_expression_notation.php
-
-echo "* Migrate iterator item place holders ..."
-$PHP_BINARY $PHP_SCRIPT_DIR/migrate_iterator_place_holders.php
-
-echo "* Remove RequestHandler usage ..."
-$PHP_BINARY $PHP_SCRIPT_DIR/migrate_remove_request_handler.php
-
-echo "* Remove HeaderManager usage ..."
-$PHP_BINARY $PHP_SCRIPT_DIR/migrate_remove_header_manager.php
-
-echo "* Remove APF\tools\cookie\Cookie usage ..."
-$PHP_BINARY $PHP_SCRIPT_DIR/migrate_remove_tools_cookie.php
-
-echo "* Migrate session handling to new API ..."
-$PHP_BINARY $PHP_SCRIPT_DIR/migrate_session_handling.php
-
-echo "* Migrate form definitions ..."
-$PHP_BINARY $PHP_SCRIPT_DIR/migrate_form_definitions.php
-
-echo "* Migrate service object API ..."
-$PHP_BINARY $PHP_SCRIPT_DIR/migrate_service_object_api.php
+echo "* Migrate request and response obtaining ..."
+$PHP_BINARY $PHP_SCRIPT_DIR/migrate_request_response_access.php
 
 echo
 echo "#############################################"

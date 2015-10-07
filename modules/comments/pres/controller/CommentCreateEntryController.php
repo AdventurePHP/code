@@ -86,7 +86,7 @@ class CommentCreateEntryController extends CommentBaseDocumentController {
    private function buildForm() {
 
       $form = &$this->getForm('AddComment');
-      $form->setAttribute('action', self::getRequest()->getRequestUri() . '#comments');
+      $form->setAttribute('action', $this->getRequest()->getRequestUri() . '#comments');
 
       $config = $this->getConfiguration('APF\modules\comments', 'language.ini');
       $button = &$form->getFormElementByName('Save');

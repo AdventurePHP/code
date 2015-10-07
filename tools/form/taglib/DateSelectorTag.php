@@ -155,7 +155,7 @@ class DateSelectorTag extends AbstractFormControl {
       }
 
       // preset today's date on startup if we have no empty options
-      $request = self::getRequest();
+      $request = $this->getRequest();
       $value = $request->getParameter($name);
       if ($value === null && $prependEmptyOption !== true) {
          $day->setOption2Selected($this->appendZero(date('d')));

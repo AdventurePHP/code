@@ -35,7 +35,7 @@ class UserDetailsController extends UmgtBaseController {
 
       // load data
       $uM = & $this->getManager();
-      $userId = self::getRequest()->getParameter('userid');
+      $userId = $this->getRequest()->getParameter('userid');
       $user = $uM->loadUserByID($userId);
 
       // display user data

@@ -24,7 +24,7 @@ use InvalidArgumentException;
 
 /**
  * Provides advances session handling with namespaces. Example:
- * <pre>$session = self::getRequest()->getSession('some namespace');
+ * <pre>$session = $this->getRequest()->getSession('some namespace');
  * $session->load('{key}');
  * $session->save('{key}','{value}');</pre>
  * Further, you do not have to take care of starting or persisting sessions.

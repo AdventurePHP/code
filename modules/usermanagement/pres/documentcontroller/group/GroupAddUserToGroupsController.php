@@ -40,7 +40,7 @@ class GroupAddUserToGroupsController extends UmgtBaseController {
 
       $uM = & $this->getManager();
 
-      $user = $uM->loadUserByID(self::getRequest()->getParameter('userid'));
+      $user = $uM->loadUserByID($this->getRequest()->getParameter('userid'));
       $groups = $uM->loadGroupsNotWithUser($user);
 
       if (count($groups) === 0) {
@@ -73,7 +73,7 @@ class GroupAddUserToGroupsController extends UmgtBaseController {
          $uM->attachUser2Groups($user, $additionalGroups);
 
          // back to user main view
-         self::getResponse()->forward($this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
+         $this->getResponse()->forward($this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
 
       } else {
          $form->transformOnPlace();

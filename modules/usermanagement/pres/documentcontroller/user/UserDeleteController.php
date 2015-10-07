@@ -34,7 +34,7 @@ class UserDeleteController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $userId = self::getRequest()->getParameter('userid');
+      $userId = $this->getRequest()->getParameter('userid');
       $uM = & $this->getManager();
       $user = $uM->loadUserById($userId);
 
@@ -43,13 +43,15 @@ class UserDeleteController extends UmgtBaseController {
       $formNo = & $this->getForm('UserDelNo');
       $formYes = & $this->getForm('UserDelYes');
 
+      $response = $this->getResponse();
+
       if ($formYes->isSent()) {
          $user = new UmgtUser();
          $user->setObjectId($userId);
          $uM->deleteUser($user);
-         self::getResponse()->forward($this->generateLink(array('mainview' => 'user', 'userview' => null, 'userid' => null)));
+         $response->forward($this->generateLink(array('mainview' => 'user', 'userview' => null, 'userid' => null)));
       } elseif ($formNo->isSent()) {
-         self::getResponse()->forward($this->generateLink(array('mainview' => 'user', 'userview' => null, 'userid' => null)));
+         $response->forward($this->generateLink(array('mainview' => 'user', 'userview' => null, 'userid' => null)));
       } else {
          $formNo->transformOnPlace();
          $formYes->transformOnPlace();

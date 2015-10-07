@@ -118,7 +118,7 @@ class SessionSingleton extends Singleton {
     */
    private static function getSession() {
       if (self::$SESSION === null) {
-         self::$SESSION = self::getRequest()->getSession(__NAMESPACE__);
+         self::$SESSION = self::getRequestStatic()->getSession(__NAMESPACE__);
       }
 
       return self::$SESSION;

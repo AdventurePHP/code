@@ -40,7 +40,7 @@ class RemoveGroupFromRolesController extends UmgtBaseController {
 
       $uM = & $this->getManager();
 
-      $group = $uM->loadGroupByID(self::getRequest()->getParameter('groupid'));
+      $group = $uM->loadGroupByID($this->getRequest()->getParameter('groupid'));
       $roles = $uM->loadRolesWithGroup($group);
 
       if (count($roles) === 0) {
@@ -75,7 +75,7 @@ class RemoveGroupFromRolesController extends UmgtBaseController {
          $uM->detachGroupFromRoles($group, $rolesToRemove);
 
          // back to group main view
-         self::getResponse()->forward($this->generateLink(array('mainview' => 'group', 'roleview' => null, 'groupid' => null)));
+         $this->getResponse()->forward($this->generateLink(array('mainview' => 'group', 'roleview' => null, 'groupid' => null)));
 
       } else {
          $form->transformOnPlace();

@@ -40,7 +40,7 @@ class GroupRemoveUserFromGroupController extends UmgtBaseController {
       $form = & $this->getForm('User');
       $userControl = & $form->getFormElementByName('User');
       /* @var $userControl MultiSelectBoxTag */
-      $groupId = self::getRequest()->getParameter('groupid');
+      $groupId = $this->getRequest()->getParameter('groupid');
       $uM = & $this->getManager();
       $group = $uM->loadGroupById($groupId);
       $users = $uM->loadUsersWithGroup($group);
@@ -78,7 +78,7 @@ class GroupRemoveUserFromGroupController extends UmgtBaseController {
          $group->setObjectId($groupId);
 
          $uM->detachUsersFromGroup($users, $group);
-         self::getResponse()->forward($this->generateLink(array('mainview' => 'group', 'groupview' => null, 'groupid' => null)));
+         $this->getResponse()->forward($this->generateLink(array('mainview' => 'group', 'groupview' => null, 'groupid' => null)));
 
       } else {
          $form->transformOnPlace();

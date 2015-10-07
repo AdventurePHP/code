@@ -338,13 +338,13 @@ final class PagerManager extends APFObject {
     */
    private function getStatementParams(array $addStmtParams = array()) {
       if ($this->isDynamicPageSizeActivated()) {
-         $entriesCount = (int) self::getRequest()->getParameter($this->countUrlParameterName, $this->entriesPerPage);
+         $entriesCount = (int) $this->getRequest()->getParameter($this->countUrlParameterName, $this->entriesPerPage);
       } else {
          $entriesCount = $this->entriesPerPage;
       }
 
       // determine offset by page with respect to the first page being a special case in calculation
-      $page = self::getRequest()->getParameter($this->pageUrlParameterName, 1);
+      $page = $this->getRequest()->getParameter($this->pageUrlParameterName, 1);
       $start = 0;
       if ($page > 1) {
          $start = ($page * $entriesCount) - $entriesCount;
@@ -395,7 +395,7 @@ final class PagerManager extends APFObject {
 
          $params = explode('|', $configString);
 
-         $request = self::getRequest();
+         $request = $this->getRequest();
 
          for ($i = 0; $i < count($params); $i++) {
 
@@ -491,7 +491,7 @@ final class PagerManager extends APFObject {
       $start = (int) 1;
 
       $countPerPage = $this->getCountPerPage();
-      $currentStart = (int) self::getRequest()->getParameter($this->pageUrlParameterName, 1) * $countPerPage;
+      $currentStart = (int) $this->getRequest()->getParameter($this->pageUrlParameterName, 1) * $countPerPage;
 
       // initialize page delimiter params
       $m = &$this->getMapper();
@@ -554,7 +554,7 @@ final class PagerManager extends APFObject {
       $countPerPage = 0;
 
       if ($this->isDynamicPageSizeActivated()) {
-         $countPerPage = (int) self::getRequest()->getParameter($this->countUrlParameterName, 0);
+         $countPerPage = (int) $this->getRequest()->getParameter($this->countUrlParameterName, 0);
       }
 
       if (!$this->isDynamicPageSizeActivated() || $countPerPage === 0) { // avoid division by zero!
@@ -630,7 +630,7 @@ final class PagerManager extends APFObject {
       }
 
       if ($baseURI === null) {
-         $baseURI = self::getRequest()->getRequestUri();
+         $baseURI = $this->getRequest()->getRequestUri();
       }
 
       return LinkGenerator::generateUrl(Url::fromString($baseURI)->mergeQuery($linkParams));

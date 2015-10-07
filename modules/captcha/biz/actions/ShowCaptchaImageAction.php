@@ -51,7 +51,7 @@ class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
     */
    public function run() {
 
-      $session = self::getRequest()->getSession(self::SESSION_NAMESPACE);
+      $session = $this->getRequest()->getSession(self::SESSION_NAMESPACE);
 
       // read captcha string from the session.
       $CaptchaStringName = $this->getInput()->getParameter('name');
@@ -86,7 +86,7 @@ class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
       imagettftext($img, $fontSize, $angle, $t_x, $t_y, $color, $font, $text);
 
       // display image
-      $response = self::getResponse();
+      $response = $this->getResponse();
       $response->setHeader(new HeaderImpl('Content-Type', 'image/png'));
       $response->setHeader(new HeaderImpl('Cache-Control', 'private'));
       $response->setHeader(new HeaderImpl('Pragma', 'no-cache'));

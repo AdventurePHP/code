@@ -33,7 +33,7 @@ class GuestbookDeleteEntryController extends GuestbookBackendBaseController {
 
    public function transformContent() {
 
-      $entryId = self::getRequest()->getParameter('entryid');
+      $entryId = $this->getRequest()->getParameter('entryid');
       if ($entryId === null) {
          $this->displayEntrySelection('delete');
       } else {

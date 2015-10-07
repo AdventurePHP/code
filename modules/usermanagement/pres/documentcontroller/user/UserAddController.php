@@ -63,7 +63,7 @@ class UserAddController extends UmgtBaseController {
          $user->setPassword($password->getValue());
 
          $uM->saveUser($user);
-         self::getResponse()->forward($this->generateLink(array('mainview' => 'user', 'userview' => null)));
+         $this->getResponse()->forward($this->generateLink(array('mainview' => 'user', 'userview' => null)));
 
       }
 

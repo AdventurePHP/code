@@ -51,7 +51,7 @@ abstract class UmgtBaseController extends BaseDocumentController {
     */
    protected function generateLink($linkParams, $baseURL = null) {
       if ($baseURL === null) {
-         $baseURL = self::getRequest()->getRequestUri();
+         $baseURL = $this->getRequest()->getRequestUri();
       }
 
       return LinkGenerator::generateUrl(Url::fromString($baseURL)->mergeQuery($linkParams));

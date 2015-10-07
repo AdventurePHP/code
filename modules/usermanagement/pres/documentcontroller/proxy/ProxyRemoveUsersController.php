@@ -34,7 +34,7 @@ class ProxyRemoveUsersController extends UmgtPermissionBaseController {
 
    public function transformContent() {
 
-      $proxyId = self::getRequest()->getParameter('proxyid');
+      $proxyId = $this->getRequest()->getParameter('proxyid');
       $form = & $this->getForm(self::$FORM_NAME);
 
       $proxyIdControl = $form->getFormElementByName('proxyid');
@@ -73,7 +73,7 @@ class ProxyRemoveUsersController extends UmgtPermissionBaseController {
          $proxy->setObjectId($proxyId);
          $uM->detachUsersFromVisibilityDefinition($proxy, $this->mapSelectedOptions2DomainObjects('users', 'UmgtUser'));
 
-         self::getResponse()->forward(
+         $this->getResponse()->forward(
                $this->generateLink(
                      array(
                            'mainview'  => 'proxy',

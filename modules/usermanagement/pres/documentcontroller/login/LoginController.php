@@ -96,7 +96,7 @@ class LoginController extends BaseDocumentController {
                   // redirect to target page
                   $urlProvider = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'LoginRedirectUrlProvider');
                   /* @var $urlProvider UmgtRedirectUrlProvider */
-                  self::getResponse()->forward(LinkGenerator::generateUrl(Url::fromString($urlProvider->getRedirectUrl())));
+                  $this->getResponse()->forward(LinkGenerator::generateUrl(Url::fromString($urlProvider->getRedirectUrl())));
                }
             } catch (Exception $e) {
                $this->getTemplate('system-error')->transformOnPlace();
@@ -161,7 +161,7 @@ class LoginController extends BaseDocumentController {
 
       $token = md5(rand(100000, 999999));
 
-      self::getResponse()->setCookie($cookie->setValue($token));
+      $this->getResponse()->setCookie($cookie->setValue($token));
 
       $authToken = new UmgtAuthToken();
       $authToken->setToken($token);

@@ -127,7 +127,7 @@ class ArticleCommentManager extends APFObject {
                   ->mergeQuery(array('coview' => 'listing'))
                   ->setAnchor('comments')
       );
-      self::getResponse()->forward($link);
+      $this->getResponse()->forward($link);
    }
 
    /**

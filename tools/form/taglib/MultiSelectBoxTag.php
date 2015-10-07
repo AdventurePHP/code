@@ -113,7 +113,7 @@ class MultiSelectBoxTag extends SelectBoxTag {
     */
    protected function getRequestValues() {
       $controlName = $this->getAttribute('name');
-      $values = self::getRequest()->getParameter($controlName);
+      $values = $this->getRequest()->getParameter($controlName);
       if ($values !== null && is_array($values)) {
          return $values;
       }

@@ -161,7 +161,7 @@ class LanguageDependentIncParamImportTemplateTag extends ImportTemplateTag {
 
       $rootPath = $this->getRootPath();
       $basePath = $rootPath . '/' . str_replace('\\', '/', $namespace);
-      $value = self::getRequest()->getParameter($incParamName);
+      $value = $this->getRequest()->getParameter($incParamName);
       if ($value !== null) {
          $templateToTest = $this->getFileName($prefix, '', $value);
          $files = glob($basePath . '/' . $templateToTest);

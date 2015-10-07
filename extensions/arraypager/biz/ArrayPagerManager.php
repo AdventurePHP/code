@@ -126,7 +126,7 @@ final class ArrayPagerManager extends APFObject {
 
       if (is_array($arrayData) === true) {
          if ($integerPage === null) {
-            $integerPage = intval(self::getRequest()->getParameter($this->pagerConfig['ParameterPage'],
+            $integerPage = intval($this->getRequest()->getParameter($this->pagerConfig['ParameterPage'],
                   1)
             );
 
@@ -137,7 +137,7 @@ final class ArrayPagerManager extends APFObject {
 
          if ($integerEntries === null) {
             if ($this->pagerConfig['EntriesChangeable'] === true) {
-               $integerEntries = intval(self::getRequest()->getParameter($this->pagerConfig['ParameterEntries'],
+               $integerEntries = intval($this->getRequest()->getParameter($this->pagerConfig['ParameterEntries'],
                      $this->pagerConfig['Entries'])
                );
             } else {
@@ -199,7 +199,7 @@ final class ArrayPagerManager extends APFObject {
             $rootDoc->setAttribute('Config',
                   array('ParameterPage'     => $this->pagerConfig['ParameterPage'],
                         'ParameterEntries'  => $this->pagerConfig['ParameterEntries'],
-                        'Entries'           => intval(self::getRequest()->getParameter($this->pagerConfig['ParameterEntries'],
+                        'Entries' => intval($this->getRequest()->getParameter($this->pagerConfig['ParameterEntries'],
                               $this->pagerConfig['Entries'])),
                         'EntriesPossible'   => $this->pagerConfig['EntriesPossible'],
                         'EntriesChangeable' => $this->pagerConfig['EntriesChangeable']
@@ -321,7 +321,7 @@ final class ArrayPagerManager extends APFObject {
    public function checkPage() {
       $booleanReturn = false;
 
-      $mixedData = self::getRequest()->getParameter($this->pagerConfig['ParameterPage'],
+      $mixedData = $this->getRequest()->getParameter($this->pagerConfig['ParameterPage'],
             false);
 
       if ($mixedData !== false) {

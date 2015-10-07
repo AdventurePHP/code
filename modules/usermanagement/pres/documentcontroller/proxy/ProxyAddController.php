@@ -43,7 +43,7 @@ class ProxyAddController extends UmgtBaseController {
       $form = & $this->getForm('visibilitydef');
 
       // pre-fill mode if "proxytypeid" and "appobjectid" are given
-      $request = self::getRequest();
+      $request = $this->getRequest();
       $proxyTypeId = $request->getParameter('proxytypeid');
       $appObjectId = $request->getParameter('appobjectid');
       $proxyId = $request->getParameter('proxyid');
@@ -139,7 +139,7 @@ class ProxyAddController extends UmgtBaseController {
          $definition->setDeletePermission($form->getFormElementByID('delete-perm')->isChecked() ? 1 : 0);
 
          $uM->createVisibilityDefinition($type, $definition, $users, $groups);
-         self::getResponse()->forward($this->generateLink(array('mainview' => 'proxy', 'proxyview' => null, 'proxytypeid' => null)));
+         $this->getResponse()->forward($this->generateLink(array('mainview' => 'proxy', 'proxyview' => null, 'proxytypeid' => null)));
 
       } else {
          $form->transformOnPlace();

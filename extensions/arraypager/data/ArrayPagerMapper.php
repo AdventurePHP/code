@@ -90,7 +90,7 @@ final class ArrayPagerMapper extends APFObject {
     * @return Session
     */
    protected function getSession() {
-      return self::getRequest()->getSession(__NAMESPACE__);
+      return $this->getRequest()->getSession(__NAMESPACE__);
    }
 
    /**

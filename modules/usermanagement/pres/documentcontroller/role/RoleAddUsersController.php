@@ -37,7 +37,7 @@ class RoleAddUsersController extends UmgtBaseController {
    public function transformContent() {
 
       // get role id
-      $roleId = self::getRequest()->getParameter('roleid');
+      $roleId = $this->getRequest()->getParameter('roleid');
 
       // initialize the form
       $form = & $this->getForm('User');
@@ -77,7 +77,7 @@ class RoleAddUsersController extends UmgtBaseController {
          }
 
          $uM->attachUsersToRole($newUsers, $role);
-         self::getResponse()->forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
+         $this->getResponse()->forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
 
       } else {
          $form->transformOnPlace();

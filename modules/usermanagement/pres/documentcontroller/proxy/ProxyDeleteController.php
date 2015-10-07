@@ -36,7 +36,7 @@ class ProxyDeleteController extends UmgtBaseController {
 
       $uM = & $this->getManager();
 
-      $proxyId = self::getRequest()->getParameter('proxyid');
+      $proxyId = $this->getRequest()->getParameter('proxyid');
 
       $proxy = new UmgtVisibilityDefinition();
       $proxy->setObjectId($proxyId);
@@ -61,7 +61,7 @@ class ProxyDeleteController extends UmgtBaseController {
          return;
       }
 
-      self::getResponse()->forward($this->generateLink(
+      $this->getResponse()->forward($this->generateLink(
                   array(
                         'mainview'  => 'proxy',
                         'proxyview' => null

@@ -39,7 +39,7 @@ class ProxyTypeAddController extends UmgtBaseController {
          $uM = & $this->getManager();
          try {
             $uM->saveVisibilityDefinitionType($proxyType);
-            self::getResponse()->forward($this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typelist')));
+            $this->getResponse()->forward($this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typelist')));
          } catch (DatabaseHandlerException $dhe) {
             // mark field as invalid due to the fact, that we have a form error, it is also displayed!
             $proxyName->markAsInvalid();

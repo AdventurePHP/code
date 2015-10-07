@@ -54,7 +54,7 @@ class TimeCaptchaTag extends AbstractFormControl {
     */
    public function transform() {
 
-      $session = self::getRequest()->getSession(self::SESSION_NAMESPACE);
+      $session = $this->getRequest()->getSession(self::SESSION_NAMESPACE);
 
       // Delete every stored time in session, which is older than 40 minutes, in order to clean the session.
       $sessionStore = $session->getEntryKeys();

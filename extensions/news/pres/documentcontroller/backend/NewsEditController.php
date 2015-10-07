@@ -45,7 +45,7 @@ class NewsEditController extends NewsBaseController {
 
       // If an id is given, an existing news should be updated,
       // so we check here if it really exists.
-      $editId = self::getRequest()->getParameter('editnewsid');
+      $editId = $this->getRequest()->getParameter('editnewsid');
       $news = null;
       if ($editId !== null && $editId !== '') {
          $news = $newsManager->getNewsById((int) $editId);

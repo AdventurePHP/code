@@ -45,7 +45,7 @@ class UserEditController extends UmgtBaseController {
    public function transformContent() {
 
       // get the userid from the request
-      $userId = self::getRequest()->getParameter('userid');
+      $userId = $this->getRequest()->getParameter('userid');
 
       // setup the form
       $form = & $this->getForm('UserForm');
@@ -90,6 +90,8 @@ class UserEditController extends UmgtBaseController {
             $pass1 = $passField1->getAttribute('value');
             $pass2 = $passField2->getAttribute('value');
 
+            $response = $this->getResponse();
+
             if (!empty($pass1)) {
 
                if ($pass1 !== $pass2) {
@@ -105,13 +107,13 @@ class UserEditController extends UmgtBaseController {
 
                   // save the user
                   $uM->saveUser($user);
-                  self::getResponse()->forward($this->generateLink(array('mainview' => 'user', 'userview' => '', 'userid' => '')));
+                  $response->forward($this->generateLink(array('mainview' => 'user', 'userview' => '', 'userid' => '')));
 
                }
 
             } else {
                $uM->saveUser($user);
-               self::getResponse()->forward($this->generateLink(array('mainview' => 'user', 'userview' => '', 'userid' => '')));
+               $response->forward($this->generateLink(array('mainview' => 'user', 'userview' => '', 'userid' => '')));
             }
 
          } else {

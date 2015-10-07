@@ -158,7 +158,7 @@ class AdvancedPagerController extends BaseDocumentController {
       if ($isDynamicPageSizeActivated == true) {
 
          $entriesPerPageConfig = array(5, 10, 15, 20);
-         $entriesPerPage = self::getRequest()->getParameter($countUrlParameterName, $entriesPerPage);
+         $entriesPerPage = $this->getRequest()->getParameter($countUrlParameterName, $entriesPerPage);
          $buffer = (string) '';
 
          foreach ($entriesPerPageConfig as $count) {

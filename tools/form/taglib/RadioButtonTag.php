@@ -83,7 +83,7 @@ class RadioButtonTag extends AbstractFormControl {
                . 'Please check your tag definition!', E_USER_ERROR);
       }
 
-      $requestValue = self::getRequest()->getParameter($name);
+      $requestValue = $this->getRequest()->getParameter($name);
       if ($requestValue !== null) {
          // pre-check, whether the value is contained in the request or the
          // value is "on" for tag definitions without a value attribute.

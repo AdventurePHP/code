@@ -66,7 +66,7 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
             $contentType = $this->getMimeType($allowedExtensions, $extension);
 
             // send desired header
-            $response = self::getResponse();
+            $response = $this->getResponse();
             $response->setHeader(new HeaderImpl('Content-Type', $contentType));
 
             // send headers to allow caching

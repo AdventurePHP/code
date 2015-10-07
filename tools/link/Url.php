@@ -153,7 +153,7 @@ final class Url {
     * Version 0.2, 09.03.2013 (Now uses standard PHP variables in stead of a Registry value to allow better url input filter manipulation)<br />
     */
    public static function fromCurrent($absolute = false) {
-      return self::getRequest()->getUrl($absolute);
+      return self::getRequestStatic()->getUrl($absolute);
    }
 
    /**
@@ -181,7 +181,7 @@ final class Url {
     * Version 0.1, 07.09.2011<br />
     */
    public static function fromReferrer($absolute = false) {
-      return self::getRequest()->getReferrerUrl($absolute);
+      return self::getRequestStatic()->getReferrerUrl($absolute);
    }
 
    public function getScheme() {

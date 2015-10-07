@@ -35,7 +35,7 @@ class GroupDetailsController extends UmgtBaseController {
 
       // load data
       $uM = & $this->getManager();
-      $groupId = self::getRequest()->getParameter('groupid');
+      $groupId = $this->getRequest()->getParameter('groupid');
       $group = $uM->loadGroupByID($groupId);
 
       // display user data

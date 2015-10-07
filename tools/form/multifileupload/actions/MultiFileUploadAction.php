@@ -36,7 +36,7 @@ class MultiFileUploadAction extends AbstractFrontcontrollerAction {
 
    public function run() {
       // modify header to avoid caching of this request
-      $response = self::getResponse();
+      $response = $this->getResponse();
       $response->setHeader(new HeaderImpl('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT'));
       $response->setHeader(new HeaderImpl('Last-Modified', gmdate('D, d M Y H:i:s') . 'GMT'));
       $response->setHeader(new HeaderImpl('Cache-Control', 'no-cache, must-revalidate'));

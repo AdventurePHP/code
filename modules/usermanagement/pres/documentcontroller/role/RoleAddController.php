@@ -71,7 +71,7 @@ class RoleAddController extends UmgtBaseController {
          }
 
          $uM->saveRole($role);
-         self::getResponse()->forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
+         $this->getResponse()->forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
 
       }
       $form->transformOnPlace();

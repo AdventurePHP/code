@@ -11,14 +11,28 @@ trait GetRequestResponse {
    /**
     * @return RequestImpl The request implementation.
     */
-   protected static function &getRequest() {
+   protected function &getRequest() {
+      return self::getRequestStatic();
+   }
+
+   /**
+    * @return RequestImpl The request implementation.
+    */
+   protected static function &getRequestStatic() {
       return Singleton::getInstance(Frontcontroller::$requestImplClass);
    }
 
    /**
-    * @return ResponseImpl
+    * @return ResponseImpl The response implementation.
     */
-   protected static function &getResponse() {
+   protected function &getResponse() {
+      return self::getResponseStatic();
+   }
+
+   /**
+    * @return ResponseImpl The response implementation.
+    */
+   protected static function &getResponseStatic() {
       return Singleton::getInstance(Frontcontroller::$responseImplClass);
    }
 

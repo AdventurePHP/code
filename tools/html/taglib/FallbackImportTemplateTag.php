@@ -76,7 +76,7 @@ class FallbackImportTemplateTag extends ImportTemplateTag {
          // it can be necessary to send an 404-HTTP Error, check it here
          $send404Header = $this->getAttribute('send404Header');
          if ($send404Header != null && $send404Header != 'false') {
-            self::getResponse()->setStatusCode(Response::CODE_NOT_FOUND)->setHeader(new HeaderImpl('X-APF-Error', 'Template not found'));
+            $this->getResponse()->setStatusCode(Response::CODE_NOT_FOUND)->setHeader(new HeaderImpl('X-APF-Error', 'Template not found'));
          }
 
          // try to load the fallback template now

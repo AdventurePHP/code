@@ -34,7 +34,7 @@ class RoleDeleteController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $roleId = self::getRequest()->getParameter('roleid');
+      $roleId = $this->getRequest()->getParameter('roleid');
       $uM = & $this->getManager();
 
       $role = $uM->loadRoleById($roleId);
@@ -48,10 +48,10 @@ class RoleDeleteController extends UmgtBaseController {
          $role = new UmgtRole();
          $role->setObjectId($roleId);
          $uM->deleteRole($role);
-         self::getResponse()->forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
+         $this->getResponse()->forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
 
       } elseif ($formNo->isSent()) {
-         self::getResponse()->forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
+         $this->getResponse()->forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
       } else {
          $formNo->transformOnPlace();
          $formYes->transformOnPlace();

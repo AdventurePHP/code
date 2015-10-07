@@ -76,7 +76,7 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
       $id = get_class($this);
       $t->start($id);
 
-      $request = self::getRequest();
+      $request = $this->getRequest();
 
       // extract the session id from $_REQUEST if existent to re-add it after filtering
       $sessionId = $request->getSessionId();

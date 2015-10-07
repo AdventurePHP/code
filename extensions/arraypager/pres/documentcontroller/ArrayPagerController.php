@@ -51,9 +51,11 @@ class ArrayPagerController extends BaseDocumentController {
       $dataCount = $document->getAttribute('DataCount');
       $anchorName = $document->getAttribute('AnchorName');
 
+      $request = $this->getRequest();
+
       $urlParams = array($config['ParameterEntries'] => $config['Entries']);
       if ($config['EntriesChangeable'] === true) {
-         $urlParams = array($config['ParameterEntries'] => self::getRequest()->getParameter($config['Entries']));
+         $urlParams = array($config['ParameterEntries'] => $request->getParameter($config['Entries']));
       }
 
       // Pager leer zurückgeben, falls keine Seiten vorhanden sind.
@@ -74,7 +76,7 @@ class ArrayPagerController extends BaseDocumentController {
       $integerPageCount = ceil($dataCount / $integerEntriesCount);
 
       // Aktuelle Seite generieren
-      $integerCurrentPage = intval(self::getRequest()->getParameter($config['ParameterPage'], 1));
+      $integerCurrentPage = intval($request->getParameter($config['ParameterPage'], 1));
 
       // Puffer initialisieren
       $stringBuffer = '';

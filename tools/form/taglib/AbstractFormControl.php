@@ -415,8 +415,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
       }
 
       // try to preset the field with the url parameter if applicable (or contains 0)
-      $request = self::getRequest();
-      $value = $request->getParameter($controlName);
+      $value = $this->getRequest()->getParameter($controlName);
 
       if ($value !== null) {
          $this->setAttribute('value', $value);

@@ -110,7 +110,7 @@ class ContactManager extends APFObject {
 
       // redirect to the thanks page to avoid F5 bugs!
       $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('contactview' => 'thanks')));
-      self::getResponse()->forward($link);
+      $this->getResponse()->forward($link);
    }
 
    /**

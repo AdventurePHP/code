@@ -50,7 +50,7 @@ class GroupAddController extends UmgtBaseController {
          $uM->saveGroup($group);
 
          // redirect to the desired view
-         self::getResponse()->forward($this->generateLink(array('mainview' => 'group', 'groupview' => '')));
+         $this->getResponse()->forward($this->generateLink(array('mainview' => 'group', 'groupview' => '')));
 
       }
       $form->transformOnPlace();

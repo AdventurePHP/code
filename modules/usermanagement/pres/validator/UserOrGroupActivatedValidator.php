@@ -52,7 +52,7 @@ class UserOrGroupActivatedValidator extends TextFieldValidator {
       /* @var $form HtmlFormTag */
       $this->alternativeControl = &$form->getFormElementByName($altControlName);
 
-      $request = self::getRequest();
+      $request = $this->getRequest();
       if ($request->getParameter($controlName) === null && $request->getParameter($altControlName) === null) {
          return false;
       }

@@ -34,7 +34,7 @@ class GroupEditController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $groupId = self::getRequest()->getParameter('groupid');
+      $groupId = $this->getRequest()->getParameter('groupid');
 
       $form = & $this->getForm('GroupEdit');
       $groupIdField = & $form->getFormElementByName('groupid');
@@ -54,7 +54,7 @@ class GroupEditController extends UmgtBaseController {
             $group->setDisplayName($displayName->getValue());
             $group->setDescription($description->getValue());
             $uM->saveGroup($group);
-            self::getResponse()->forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
+            $this->getResponse()->forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
 
          } else {
             $form->transformOnPlace();

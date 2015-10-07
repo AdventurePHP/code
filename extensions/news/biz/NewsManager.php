@@ -190,7 +190,7 @@ class NewsManager extends APFObject {
          $Cfg = $this->getConfiguration('APF\extensions\news', 'news.ini');
          $PageParameter = $Cfg->getSection('Paging')->getValue('PageParameter');
 
-         $page = self::getRequest()->getParameter($PageParameter, 1);
+         $page = $this->getRequest()->getParameter($PageParameter, 1);
       }
 
       $page = (int) $page;

@@ -36,7 +36,7 @@ class RoleRemoveUsersController extends UmgtBaseController {
    public function transformContent() {
 
       // get the current roleid
-      $roleid = self::getRequest()->getParameter('roleid');
+      $roleid = $this->getRequest()->getParameter('roleid');
 
       // initialize the form
       $form = & $this->getForm('User');
@@ -75,7 +75,7 @@ class RoleRemoveUsersController extends UmgtBaseController {
             unset($newUser);
          }
          $uM->detachUsersFromRole($newUsers, $role);
-         self::getResponse()->forward($this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
+         $this->getResponse()->forward($this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
 
       } else {
          $form->transformOnPlace();

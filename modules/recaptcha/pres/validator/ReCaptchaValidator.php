@@ -44,7 +44,7 @@ class ReCaptchaValidator extends TextFieldValidator {
       $control = $this->control;
       $control->getPrivateKey();
 
-      $request = self::getRequest();
+      $request = $this->getRequest();
       $challengeContent = $request->getParameter(ReCaptchaTag::RE_CAPTCHA_CHALLENGE_FIELD_IDENTIFIER);
       $answerIdentifier = $request->getParameter(ReCaptchaTag::RE_CAPTCHA_CHALLENGE_ANSWER_IDENTIFIER);
 

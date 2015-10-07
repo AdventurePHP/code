@@ -1,10 +1,10 @@
 #!/bin/bash
 ########################################################################################################################
-# APF 3.0 automatic namespace/vendor relocation                                                                        #
+# APF 3.1 automatic namespace/vendor relocation                                                                        #
 ########################################################################################################################
 
 echo "#################################################"
-echo "# APF 3.0 automatic namespace/vendor relocation #"
+echo "# APF 3.1 automatic namespace/vendor relocation #"
 echo "#################################################"
 echo
 

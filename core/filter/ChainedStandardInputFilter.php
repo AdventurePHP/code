@@ -69,7 +69,7 @@ class ChainedStandardInputFilter implements ChainedContentFilter {
       $fC = $this->getFrontcontroller();
       $tokens = $fC->getActionUrlMappingTokens();
 
-      foreach (self::getRequest()->getParameters() as $key => $value) {
+      foreach ($this->getRequest()->getParameters() as $key => $value) {
 
          // ID#63: re-map action instructions according to registered aliases
          if (in_array($key, $tokens)) {

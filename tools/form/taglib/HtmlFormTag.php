@@ -459,7 +459,7 @@ class HtmlFormTag extends Document implements HtmlForm {
       // add action attribute if not set
       $action = $this->getAttribute(self::ACTION_ATTRIBUTE_NAME);
       if ($action === null) {
-         $this->setAttribute(self::ACTION_ATTRIBUTE_NAME, self::getRequest()->getRequestUri());
+         $this->setAttribute(self::ACTION_ATTRIBUTE_NAME, $this->getRequest()->getRequestUri());
       }
 
       // ID#239: always encode action attribute when present to secure custom actions as well as auto-generated ones

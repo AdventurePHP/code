@@ -71,7 +71,7 @@ class ImportTemplateTag extends Document {
       // check, if the inc param is present in the current request
       if (strpos($template, '[') !== false) {
 
-         $value = self::getRequest()->getParameter($incParam);
+         $value = $this->getRequest()->getParameter($incParam);
          if ($value !== null) {
             $template = $value;
          } else {

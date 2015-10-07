@@ -227,9 +227,9 @@ class Frontcontroller extends APFObject {
       }
 
       // Create request and response implementations for OO abstraction
-      $request = &self::getRequest();
+      $request = &$this->getRequest();
 
-      $response = &self::getResponse();
+      $response = &$this->getResponse();
       $response->setContentType('text/html; charset=' . Registry::retrieve('APF\core', 'Charset'));
 
       // apply input filter to process request

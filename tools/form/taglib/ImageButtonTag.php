@@ -65,7 +65,7 @@ class ImageButtonTag extends ButtonTag {
       // form was sent. Mark button as sent, too. Due to potential
       // XSS issues, we distinguish between GET and POST requests
       $method = strtolower($form->getAttribute(HtmlForm::METHOD_ATTRIBUTE_NAME));
-      $request = self::getRequest();
+      $request = $this->getRequest();
       if ($method == HtmlForm::METHOD_POST_VALUE_NAME) {
          if ($request->getPostParameter($buttonName . '_x') !== null && $request->getPostParameter($buttonName . '_y') !== null) {
             $this->controlIsSent = true;

@@ -39,7 +39,7 @@ class AddPermissionToRoleController extends UmgtBaseController {
       $form = & $this->getForm('Permissions');
       $uM = & $this->getManager();
 
-      $role = $uM->loadRoleByID(self::getRequest()->getParameter('roleid'));
+      $role = $uM->loadRoleByID($this->getRequest()->getParameter('roleid'));
       $form->getLabel('display-name')->setPlaceHolder('display-name', $role->getDisplayName());
 
       $permissions = $uM->loadPermissionsNotWithRole($role);
@@ -73,7 +73,7 @@ class AddPermissionToRoleController extends UmgtBaseController {
          }
 
          $uM->attachPermissions2Role($permissionsToAdd, $role);
-         self::getResponse()->forward($this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
+         $this->getResponse()->forward($this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
 
       } else {
          $form->transformOnPlace();

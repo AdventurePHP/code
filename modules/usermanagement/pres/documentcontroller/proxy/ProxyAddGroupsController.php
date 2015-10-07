@@ -27,7 +27,7 @@ class ProxyAddGroupsController extends UmgtPermissionBaseController {
 
    public function transformContent() {
 
-      $proxyId = self::getRequest()->getParameter('proxyid');
+      $proxyId = $this->getRequest()->getParameter('proxyid');
       $form = & $this->getForm(self::$FORM_NAME);
 
       $proxyIdControl = $form->getFormElementByName('proxyid');
@@ -66,7 +66,7 @@ class ProxyAddGroupsController extends UmgtPermissionBaseController {
          $proxy->setObjectId($proxyId);
          $uM->attachGroups2VisibilityDefinition($proxy, $this->mapSelectedOptions2DomainObjects('groups', 'UmgtGroup'));
 
-         self::getResponse()->forward(
+         $this->getResponse()->forward(
                $this->generateLink(
                      array(
                            'mainview'  => 'proxy',
