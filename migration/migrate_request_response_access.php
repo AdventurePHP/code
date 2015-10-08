@@ -6,8 +6,8 @@ $files = find('.', '*.php');
 // Due to huge implementation effort to leave static calls used within static methods
 // documentation will include hints to manually replace $this->get*() calls with
 // their static pendants (e.g. self::get*Static()).
-$searchRequest = '$this->getRequest()';
-$searchResponse = '$this->getResponse()';
+$searchRequest = 'self::getRequest()';
+$searchResponse = 'self::getResponse()';
 
 foreach ($files as $file) {
    $content = file_get_contents($file);
