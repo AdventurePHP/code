@@ -46,7 +46,7 @@ class MultiFileGetFileAction extends AbstractFrontcontrollerAction {
 
          /* @var $manager MultiFileUploadManager */
          $manager = &$this->getServiceObject(
-               'APF\tools\form\multifileupload\biz\MultiFileUploadManager',
+               MultiFileUploadManager::class,
                ['formname' => $formName, 'name' => $fieldName]
          );
          $file = $manager->getFile($uploadName);

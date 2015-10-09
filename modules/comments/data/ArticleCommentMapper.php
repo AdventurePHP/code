@@ -58,27 +58,6 @@ class ArticleCommentMapper extends APFObject {
    }
 
    /**
-    * Saves a new comment.
-    *
-    * @param ArticleComment $comment The domain object to save.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 22.08.2007<br />
-    */
-   public function saveArticleComment(ArticleComment $comment) {
-
-      $conn = &$this->getConnection();
-      if ($comment->getId() == null) {
-         $insert = 'INSERT INTO article_comments
-                       (Name, EMail, Comment, Date, Time, CategoryKey)
-                       VALUES
-                       (\'' . $conn->escapeValue($comment->getName()) . '\',\'' . $conn->escapeValue($comment->getEmail()) . '\',\'' . $conn->escapeValue($comment->getComment()) . '\',CURDATE(),CURTIME(),\'' . $comment->getCategoryKey() . '\');';
-         $conn->executeTextStatement($insert);
-      }
-   }
-
-   /**
     * Returns the initialized database connection (reference!) for the
     * current application instance.
     *
@@ -92,7 +71,7 @@ class ArticleCommentMapper extends APFObject {
    private function &getConnection() {
 
       /* @var $cM ConnectionManager */
-      $cM = &$this->getServiceObject('APF\core\database\ConnectionManager');
+      $cM = &$this->getServiceObject(ConnectionManager::class);
       $config = $this->getConfiguration('APF\modules\comments', 'comments.ini');
       $connectionKey = $config->getValue('Default.Database.ConnectionKey');
       if ($connectionKey === null) {
@@ -126,6 +105,27 @@ class ArticleCommentMapper extends APFObject {
       $comment->setTime($resultSet['Time']);
 
       return $comment;
+   }
+
+   /**
+    * Saves a new comment.
+    *
+    * @param ArticleComment $comment The domain object to save.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 22.08.2007<br />
+    */
+   public function saveArticleComment(ArticleComment $comment) {
+
+      $conn = &$this->getConnection();
+      if ($comment->getId() == null) {
+         $insert = 'INSERT INTO article_comments
+                       (Name, EMail, Comment, Date, Time, CategoryKey)
+                       VALUES
+                       (\'' . $conn->escapeValue($comment->getName()) . '\',\'' . $conn->escapeValue($comment->getEmail()) . '\',\'' . $conn->escapeValue($comment->getComment()) . '\',CURDATE(),CURTIME(),\'' . $comment->getCategoryKey() . '\');';
+         $conn->executeTextStatement($insert);
+      }
    }
 
 }

@@ -34,7 +34,7 @@ include_once('./APF/core/bootstrap.php');
 
 // create the front controller instance
 /* @var $fC Frontcontroller */
-$fC = & Singleton::getInstance('APF\core\frontcontroller\Frontcontroller');
+$fC = &Singleton::getInstance(Frontcontroller::class);
 
 // set the current context (change the context to what ever you want)
 $fC->setContext('...');
@@ -44,5 +44,5 @@ $fC->start('APF\modules\usermanagement\pres\templates', 'main');
 
 // create the benchmark report
 /* @var $t BenchmarkTimer */
-$t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+$t = &Singleton::getInstance(BenchmarkTimer::class);
 echo $t->createReport();

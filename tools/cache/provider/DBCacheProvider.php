@@ -42,7 +42,7 @@ class DBCacheProvider extends CacheBase implements CacheProvider {
       $tableName = $this->getConfigAttribute('Table');
 
       // initialize database connection
-      $db = & $this->getDatabaseConnection();
+      $db = &$this->getDatabaseConnection();
 
       // read from the database
       $select = 'SELECT `value` FROM `' . $tableName . '`
@@ -57,6 +57,23 @@ class DBCacheProvider extends CacheBase implements CacheProvider {
 
    }
 
+   /**
+    * Returns the database connection need.
+    *
+    * @return AbstractDatabaseHandler The database connection.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 24.11.2008<br />
+    */
+   protected function &getDatabaseConnection() {
+      $connectionKey = $this->getConfigAttribute('Connection');
+      /* @var $cM ConnectionManager */
+      $cM = &$this->getServiceObject(ConnectionManager::class);
+
+      return $cM->getConnection($connectionKey);
+   }
+
    public function write(CacheKey $cacheKey, $object) {
 
       // get configuration params
@@ -64,7 +81,7 @@ class DBCacheProvider extends CacheBase implements CacheProvider {
       $tableName = $this->getConfigAttribute('Table');
 
       // initialize database connection
-      $db = & $this->getDatabaseConnection();
+      $db = &$this->getDatabaseConnection();
 
       // insert into the the database
       $select = 'SELECT `value` FROM `' . $tableName . '`
@@ -102,7 +119,7 @@ class DBCacheProvider extends CacheBase implements CacheProvider {
       $tableName = $this->getConfigAttribute('Table');
 
       // initialize database connection
-      $db = & $this->getDatabaseConnection();
+      $db = &$this->getDatabaseConnection();
 
       if ($cacheKey === null) {
          $delete = 'DELETE FROM `' . $tableName . '`
@@ -118,23 +135,6 @@ class DBCacheProvider extends CacheBase implements CacheProvider {
 
       return true;
 
-   }
-
-   /**
-    * Returns the database connection need.
-    *
-    * @return AbstractDatabaseHandler The database connection.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 24.11.2008<br />
-    */
-   protected function &getDatabaseConnection() {
-      $connectionKey = $this->getConfigAttribute('Connection');
-      /* @var $cM ConnectionManager */
-      $cM = & $this->getServiceObject('APF\core\database\ConnectionManager');
-
-      return $cM->getConnection($connectionKey);
    }
 
 }

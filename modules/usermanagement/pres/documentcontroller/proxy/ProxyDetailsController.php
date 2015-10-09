@@ -23,12 +23,13 @@ namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
 use APF\modules\usermanagement\biz\model\UmgtGroup;
 use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag;
 
 class ProxyDetailsController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $uM = & $this->getManager();
+      $uM = &$this->getManager();
       $proxyId = $this->getRequest()->getParameter('proxyid');
       $proxy = $uM->loadVisibilityDefinitionById($proxyId);
       $type = $uM->loadVisibilityDefinitionType($proxy);
@@ -39,7 +40,7 @@ class ProxyDetailsController extends UmgtBaseController {
             ->setPlaceHolder('app-proxy-type', $type->getAppObjectName());
 
       // load visibility permission list for the current permission
-      $template = & $this->getTemplate('listitem');
+      $template = &$this->getTemplate('listitem');
       $buffer = (string) '';
       $list = $uM->loadUsersAndGroupsWithVisibilityDefinition($proxy);
 
@@ -59,7 +60,7 @@ class ProxyDetailsController extends UmgtBaseController {
          /* @var $item UmgtUser|UmgtGroup */
          $template->setPlaceHolder('item', $item->getDisplayName());
 
-         $icon = & $this->getIcon($template);
+         $icon = &$this->getIcon($template);
          if ($item instanceof UmgtUser) {
             $icon->setAttribute('filename', 'user.png');
             $icon->setAttribute('title', $section->getValue('frontend.proxy.details.user-img.label'));
@@ -87,25 +88,25 @@ class ProxyDetailsController extends UmgtBaseController {
       $this->setPlaceHolder('list', $buffer);
 
       // display special visibility definitions
-      $tmpl = & $this->getTemplate('access-perms');
+      $tmpl = &$this->getTemplate('access-perms');
 
-      $read = $tmpl->getChildNode('id', 'read', 'APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag');
+      $read = $tmpl->getChildNode('id', 'read', UmgtMediaInclusionTag::class);
       $proxy->getReadPermission() == '1'
             ? $read->setAttribute('filename', 'yes.png')
             : $read->setAttribute('filename', 'no.png');
 
 
-      $write = $tmpl->getChildNode('id', 'write', 'APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag');
+      $write = $tmpl->getChildNode('id', 'write', UmgtMediaInclusionTag::class);
       $proxy->getWritePermission() == '1'
             ? $write->setAttribute('filename', 'yes.png')
             : $write->setAttribute('filename', 'no.png');
 
-      $relation = $tmpl->getChildNode('id', 'relation', 'APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag');
+      $relation = $tmpl->getChildNode('id', 'relation', UmgtMediaInclusionTag::class);
       $proxy->getLinkPermission() == '1'
             ? $relation->setAttribute('filename', 'yes.png')
             : $relation->setAttribute('filename', 'no.png');
 
-      $delete = $tmpl->getChildNode('id', 'delete', 'APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag');
+      $delete = $tmpl->getChildNode('id', 'delete', UmgtMediaInclusionTag::class);
       $proxy->getDeletePermission() == '1'
             ? $delete->setAttribute('filename', 'yes.png')
             : $delete->setAttribute('filename', 'no.png');

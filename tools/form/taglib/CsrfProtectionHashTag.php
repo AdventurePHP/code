@@ -22,6 +22,7 @@ namespace APF\tools\form\taglib;
 
 use APF\tools\form\FormException;
 use APF\tools\form\provider\csrf\CSRFHashProvider;
+use APF\tools\form\provider\csrf\EncryptedSIDHashProvider;
 use APF\tools\form\validator\CSRFHashValidator;
 
 /**
@@ -49,7 +50,7 @@ class CsrfProtectionHashTag extends AbstractFormControl {
     * Version 0.1, 06.11.2010
     */
    public function __construct() {
-      $this->setAttribute('class', 'APF\tools\form\provider\csrf\EncryptedSIDHashProvider');
+      $this->setAttribute('class', EncryptedSIDHashProvider::class);
    }
 
    /**
@@ -71,14 +72,14 @@ class CsrfProtectionHashTag extends AbstractFormControl {
       }
 
       /* @var $provider CSRFHashProvider */
-      $provider = & $this->getServiceObject($class);
+      $provider = &$this->getServiceObject($class);
       $this->hash = $provider->generateHash($salt);
 
       // preset the value to make it available for the validator
       parent::onParseTime();
 
       // add the csrfhash validator for every button
-      $form = & $this->getForm();
+      $form = &$this->getForm();
       $buttons = $form->getFormElementsByTagName('form:button');
       foreach ($buttons as $offset => $DUMMY) {
          $this->addValidator(new CSRFHashValidator($this, $buttons[$offset]));

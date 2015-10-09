@@ -22,6 +22,7 @@ namespace APF\tests\suites\core\expression;
 
 use APF\core\expression\ExpressionEvaluator;
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\ParserException;
 
 class ExpressionEvaluatorTest extends \PHPUnit_Framework_TestCase {
 
@@ -45,11 +46,11 @@ class ExpressionEvaluatorTest extends \PHPUnit_Framework_TestCase {
       $node = new Document();
       $model = new ContentModel();
       $node->setData(
-         'foo',
-         array(
-            0 => $model,
-            'foo' => $model
-         )
+            'foo',
+            array(
+                  0     => $model,
+                  'foo' => $model
+            )
       );
       assertEquals($model->getCssClass(), ExpressionEvaluator::evaluate($node, 'foo[0]->getCssClass()'));
       assertEquals($model->getMoreLinkModel()->getMoreLabel(), ExpressionEvaluator::evaluate($node, 'foo[\'foo\']->getMoreLinkModel()->getMoreLabel()'));
@@ -67,23 +68,23 @@ class ExpressionEvaluatorTest extends \PHPUnit_Framework_TestCase {
       $node = new Document();
       $model = new ContentModel();
       $node->setData(
-         'foo',
-         array(
-            1 => array(
-               2 => $model
+            'foo',
+            array(
+                  1 => array(
+                        2 => $model
+                  )
             )
-         )
       );
       assertEquals($model->getCssClass(), ExpressionEvaluator::evaluate($node, 'foo[1]->bar[2]->getCssClass()'));
    }
 
    public function testIllegalCallChain() {
-      $this->setExpectedException('APF\core\pagecontroller\ParserException');
+      $this->setExpectedException(ParserException::class);
       ExpressionEvaluator::evaluate(new Document(), '->foo->getMoreLinkModel()->->getMoreLabel()');
    }
 
    public function testIllegalCall() {
-      $this->setExpectedException('APF\core\pagecontroller\ParserException');
+      $this->setExpectedException(ParserException::class);
       ExpressionEvaluator::evaluate(new Document(), 'foo-> getCssClass()');
    }
 

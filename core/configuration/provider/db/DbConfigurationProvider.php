@@ -61,18 +61,17 @@ use APF\core\service\ServiceManager;
 class DbConfigurationProvider extends BaseConfigurationProvider implements ConfigurationProvider {
 
    /**
-    * The name of the connection to create.
-    *
-    * @var string $connectionName
-    */
-   private $connectionName;
-
-   /**
     * The file extension registered with this provider.
     *
     * @var string $extension
     */
    protected $extension;
+   /**
+    * The name of the connection to create.
+    *
+    * @var string $connectionName
+    */
+   private $connectionName;
 
    /**
     * @param string $connectionName The name of the database connection to use.
@@ -124,6 +123,57 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
 
    }
 
+   /**
+    * Creates the config table suffix. Since MySQL supports only a limited amount of
+    * characters to be used as table name, we are sanitizing the given namespace.
+    *
+    * @param string $namespace The namespace the configuration is located in.
+    *
+    * @return string The sanitized table name prefix.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.10.2010<br />
+    */
+   private function getTableNameSuffix($namespace) {
+      return preg_replace('/([^a-z_]+)/i', '', strtolower(str_replace('\\', '_', $namespace)));
+   }
+
+   /**
+    * Creates the database connection.
+    *
+    * @param string $context The current context.
+    * @param string $language The current language.
+    *
+    * @return AbstractDatabaseHandler The database connection to read the configuration from and store it.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.10.2010<br />
+    */
+   private function &getConnection($context, $language) {
+      // create service "manually", since we have no convenience method
+      /* @var $connMgr ConnectionManager */
+      $connMgr = &ServiceManager::getServiceObject(ConnectionManager::class, $context, $language);
+
+      return $connMgr->getConnection($this->connectionName);
+   }
+
+   /**
+    * Removes the extension from the
+    *
+    * @param string $name The name of the configuration "file".
+    *
+    * @return string The name of the configuration without the extension.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.10.2010<br />
+    */
+   private function getConfigName($name) {
+      return str_replace('.' . $this->extension, '', $name);
+   }
+
    public function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config) {
 
       $table = 'config_' . $this->getTableNameSuffix($namespace);
@@ -152,58 +202,6 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
             $conn->executeTextStatement($insert);
          }
       }
-   }
-
-   /**
-    * Creates the config table suffix. Since MySQL supports only a limited amount of
-    * characters to be used as table name, we are sanitizing the given namespace.
-    *
-    * @param string $namespace The namespace the configuration is located in.
-    *
-    * @return string The sanitized table name prefix.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.10.2010<br />
-    */
-   private function getTableNameSuffix($namespace) {
-      return preg_replace('/([^a-z_]+)/i', '', strtolower(str_replace('\\', '_', $namespace)));
-   }
-
-   /**
-    * Removes the extension from the
-    *
-    * @param string $name The name of the configuration "file".
-    *
-    * @return string The name of the configuration without the extension.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.10.2010<br />
-    */
-   private function getConfigName($name) {
-      return str_replace('.' . $this->extension, '', $name);
-   }
-
-   /**
-    * Creates the database connection.
-    *
-    * @param string $context The current context.
-    * @param string $language The current language.
-    *
-    * @return AbstractDatabaseHandler The database connection to read the configuration from and store it.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.10.2010<br />
-    */
-   private function &getConnection($context, $language) {
-      // create service "manually", since we have no convenience method
-      $connMgr = &ServiceManager::getServiceObject('APF\core\database\ConnectionManager', $context, $language);
-
-      /* @var $connMgr ConnectionManager */
-
-      return $connMgr->getConnection($this->connectionName);
    }
 
    /**

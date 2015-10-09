@@ -46,51 +46,6 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       $this->dbPort = '3306';
    }
 
-   protected function connect() {
-
-      // initiate connection
-      $this->dbConn = mysqli_init();
-
-      // as discussed under http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=614
-      // the mysqli extension triggers an error instead of throwing an exception. thus we have
-      // to add an ugly "@" sign to convert this error into an exception. :(
-      @$this->dbConn->real_connect(
-            $this->dbHost,
-            $this->dbUser,
-            $this->dbPass,
-            $this->dbName,
-            $this->dbPort,
-            $this->dbSocket);
-
-      if ($this->dbConn->connect_error || mysqli_connect_error()) {
-         throw new DatabaseHandlerException('[MySQLiHandler->connect()] Database connection '
-               . 'could\'t be established (' . mysqli_connect_errno($this->dbConn) . ': '
-               . mysqli_connect_error($this->dbConn) . ')!', E_USER_ERROR);
-      }
-
-      // configure client connection
-      $this->initCharsetAndCollation();
-
-      if ($this->dbCharset !== null) {
-         if (!$this->dbConn->set_charset($this->dbCharset)) {
-            throw new DatabaseHandlerException(
-                  '[MySQLiHandler->connect()] Error loading character set ' . $this->dbCharset .
-                  ' (' . $this->dbConn->error . ')!'
-            );
-         }
-      }
-
-   }
-
-   protected function close() {
-      if (!$this->dbConn->close()) {
-         throw new DatabaseHandlerException('[MySQLiHandler->close()] An error occurred during closing of the '
-               . 'database connection (' . mysqli_errno($this->dbConn) . ': ' . mysqli_error($this->dbConn) . ')!',
-               E_USER_WARNING);
-      }
-      $this->dbConn = null;
-   }
-
    /**
     * Executes a statement stored within a statement file.
     *
@@ -164,7 +119,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       // must be present in the order defined in the statement. Thus we must
       // re-order the $params array.
       /* @var $t BenchmarkTimer */
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
       $statementId = md5($statement);
       $id = $statementId . ' re-order bind params';
       $t->start($id);
@@ -237,6 +192,111 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    }
 
    /**
+    * Creates a MySQLi statement representation by the given statement string.
+    *
+    * @param string $statement The statement to create the statement instance of.
+    *
+    * @return \MYSQLi_STMT The desired statement instance.
+    * @throws DatabaseHandlerException In case of any statement errors.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 08.03.2010<br />
+    */
+   private function createQuery($statement) {
+      $query = $this->dbConn->prepare($statement);
+
+      // bug 547: map public connection properties to variables, to throw an exception for
+      // illegal statements. otherwise, empty() will always return true.
+      $error = $this->dbConn->error;
+      $errno = $this->dbConn->errno;
+
+      if ($query === false || !empty($error) || !empty($errno)) {
+         throw new DatabaseHandlerException($error, $errno);
+      }
+
+      return $query;
+   }
+
+   /**
+    * Binds the given params to the presented prepared statement.
+    *
+    * @param \MYSQLi_STMT $query The prepared query to bind the params to.
+    * @param string[] $params A list of statement parameters.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 09.03.2010<br />
+    */
+   private function bindParams(&$query, array $params) {
+
+      // don't bind params in case we have none!
+      if (count($params) == 0) {
+         return;
+      }
+
+      $binds = array();
+      foreach ($params as $key => $DUMMY) {
+         // Bug 694: bind via reference to avoid "expected to be a reference, value given in" errors.
+         $binds[] = &$params[$key];
+      }
+      call_user_func_array(
+            array(&$query, 'bind_param'),
+            array_merge(
+                  array(str_repeat('s', count($params))),
+                  $binds
+            )
+      );
+   }
+
+   /**
+    * Fetches the result from a prepared query.
+    *
+    * @param \MYSQLi_STMT $query The prepared query to fetch the result from.
+    *
+    * @return string[] The result array or null in case we have no result.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 09.03.2010<br />
+    */
+   private function fetchBindResult(\mysqli_stmt $query) {
+
+      $result = null;
+
+      do {
+
+         $metaData = $query->result_metadata();
+
+         // in case the meta data is not present (e.g. for INSERT statements),
+         // we cannot fetch any data. thus we return null to indicate no result
+         if ($metaData === false) {
+            break;
+         }
+
+         $resultRow = array();
+         $resultParams = array();
+         while ($field = $metaData->fetch_field()) {
+            $resultParams[] = &$resultRow[$field->name];
+         }
+
+         $bindResult = array();
+
+         call_user_func_array(array(&$query, 'bind_result'), $resultParams);
+         while ($query->fetch()) {
+            $currentRow = array();
+            foreach ($resultRow as $key => $val) {
+               $currentRow[$key] = $val;
+            }
+            $bindResult[] = $currentRow;
+         }
+         $result[] = $bindResult;
+      } while ($query->more_results() && $query->next_result()); // for sprocs
+
+      return (count($result) === 1) ? $result[0] : $result;
+   }
+
+   /**
     * Executes a statement provided using mysqli's bind feature.
     *
     * @param string $statement The statement to execute.
@@ -253,7 +313,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    public function executeTextBindStatement($statement, array $params = array(), $logStatement = false) {
 
       /* @var $t BenchmarkTimer */
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
       $statementId = md5($statement);
 
       // prepare statement
@@ -315,112 +375,6 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    public function getBindNumRows() {
       return $this->bindNumRows;
    }
-
-   /**
-    * Creates a MySQLi statement representation by the given statement string.
-    *
-    * @param string $statement The statement to create the statement instance of.
-    *
-    * @return \MYSQLi_STMT The desired statement instance.
-    * @throws DatabaseHandlerException In case of any statement errors.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 08.03.2010<br />
-    */
-   private function createQuery($statement) {
-      $query = $this->dbConn->prepare($statement);
-
-      // bug 547: map public connection properties to variables, to throw an exception for
-      // illegal statements. otherwise, empty() will always return true.
-      $error = $this->dbConn->error;
-      $errno = $this->dbConn->errno;
-
-      if ($query === false || !empty($error) || !empty($errno)) {
-         throw new DatabaseHandlerException($error, $errno);
-      }
-
-      return $query;
-   }
-
-   /**
-    * Binds the given params to the presented prepared statement.
-    *
-    * @param \MYSQLi_STMT $query The prepared query to bind the params to.
-    * @param string[] $params A list of statement parameters.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 09.03.2010<br />
-    */
-   private function bindParams(&$query, array $params) {
-
-      // don't bind params in case we have none!
-      if (count($params) == 0) {
-         return;
-      }
-
-      $binds = array();
-      foreach ($params as $key => $DUMMY) {
-         // Bug 694: bind via reference to avoid "expected to be a reference, value given in" errors.
-         $binds[] = & $params[$key];
-      }
-      call_user_func_array(
-            array(&$query, 'bind_param'),
-            array_merge(
-                  array(str_repeat('s', count($params))),
-                  $binds
-            )
-      );
-   }
-
-   /**
-    * Fetches the result from a prepared query.
-    *
-    * @param \MYSQLi_STMT $query The prepared query to fetch the result from.
-    *
-    * @return string[] The result array or null in case we have no result.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 09.03.2010<br />
-    */
-   private function fetchBindResult(\mysqli_stmt $query) {
-
-      $result = null;
-
-      do {
-
-         $metaData = $query->result_metadata();
-
-         // in case the meta data is not present (e.g. for INSERT statements),
-         // we cannot fetch any data. thus we return null to indicate no result
-         if ($metaData === false) {
-            break;
-         }
-
-         $resultRow = array();
-         $resultParams = array();
-         while ($field = $metaData->fetch_field()) {
-            $resultParams[] = & $resultRow[$field->name];
-         }
-
-         $bindResult = array();
-
-         call_user_func_array(array(&$query, 'bind_result'), $resultParams);
-         while ($query->fetch()) {
-            $currentRow = array();
-            foreach ($resultRow as $key => $val) {
-               $currentRow[$key] = $val;
-            }
-            $bindResult[] = $currentRow;
-         }
-         $result[] = $bindResult;
-      } while ($query->more_results() && $query->next_result()); // for sprocs
-
-      return (count($result) === 1) ? $result[0] : $result;
-   }
-
 
    /**
     * Quotes data for use in MySQL statements.
@@ -586,6 +540,51 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     */
    public function getDatabaseName() {
       return $this->dbName;
+   }
+
+   protected function connect() {
+
+      // initiate connection
+      $this->dbConn = mysqli_init();
+
+      // as discussed under http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=614
+      // the mysqli extension triggers an error instead of throwing an exception. thus we have
+      // to add an ugly "@" sign to convert this error into an exception. :(
+      @$this->dbConn->real_connect(
+            $this->dbHost,
+            $this->dbUser,
+            $this->dbPass,
+            $this->dbName,
+            $this->dbPort,
+            $this->dbSocket);
+
+      if ($this->dbConn->connect_error || mysqli_connect_error()) {
+         throw new DatabaseHandlerException('[MySQLiHandler->connect()] Database connection '
+               . 'could\'t be established (' . mysqli_connect_errno($this->dbConn) . ': '
+               . mysqli_connect_error($this->dbConn) . ')!', E_USER_ERROR);
+      }
+
+      // configure client connection
+      $this->initCharsetAndCollation();
+
+      if ($this->dbCharset !== null) {
+         if (!$this->dbConn->set_charset($this->dbCharset)) {
+            throw new DatabaseHandlerException(
+                  '[MySQLiHandler->connect()] Error loading character set ' . $this->dbCharset .
+                  ' (' . $this->dbConn->error . ')!'
+            );
+         }
+      }
+
+   }
+
+   protected function close() {
+      if (!$this->dbConn->close()) {
+         throw new DatabaseHandlerException('[MySQLiHandler->close()] An error occurred during closing of the '
+               . 'database connection (' . mysqli_errno($this->dbConn) . ': ' . mysqli_error($this->dbConn) . ')!',
+               E_USER_WARNING);
+      }
+      $this->dbConn = null;
    }
 
 }

@@ -22,6 +22,7 @@ namespace APF\modules\genericormapper\data\tools;
 
 use APF\core\loader\RootClassLoader;
 use APF\modules\genericormapper\data\BaseMapper;
+use APF\modules\genericormapper\data\GenericDomainObject;
 use APF\tools\filesystem\File;
 use APF\tools\filesystem\Folder;
 
@@ -34,7 +35,7 @@ use APF\tools\filesystem\Folder;
  */
 class GenericORMapperDomainObjectGenerator extends BaseMapper {
 
-   protected static $DEFAULT_BASE_CLASS = 'APF\modules\genericormapper\data\GenericDomainObject';
+   protected static $DEFAULT_BASE_CLASS = GenericDomainObject::class;
 
    /**
     * Generates all service objects which are defined in *_domainobjects.ini
@@ -69,42 +70,6 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
    }
 
    /**
-    * @param string $name The name of the domain object class.
-    *
-    * @return string The name of the corresponding class file.
-    */
-   protected function getFileName($name) {
-      return $this->getFileNameByClass($this->domainObjectsTable[$name]['Class']);
-   }
-
-   /**
-    * @param string $name The name of the domain object class.
-    *
-    * @return string The name of the corresponding base class file.
-    */
-   protected function getBaseFileName($name) {
-      return $this->getFileNameByClass($this->domainObjectsTable[$name]['Class'] . 'Base');
-   }
-
-   protected function getFileNameByClass($class) {
-      $loader = RootClassLoader::getLoaderByClass($class);
-      $vendor = $loader->getVendorName();
-      $rootPath = $loader->getRootPath();
-
-      // first part of the namespace must be dropped to not double the vendor name
-      return $rootPath . '/' . str_replace('\\', '/', str_replace($vendor . '\\', '', $class)) . '.php';
-   }
-
-   /**
-    * @param string $name The domain object descriptor.
-    *
-    * @return string The namespace of the given domain object name.
-    */
-   protected function getNamespaceByObjectName($name) {
-      return RootClassLoader::getNamespace($this->domainObjectsTable[$name]['Class']);
-   }
-
-   /**
     * Generates the service object for the object with the given name.
     *
     * @param string $name The object's name.
@@ -130,39 +95,30 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
    }
 
    /**
-    * Creates a new file for each the base class and the DO class with the code for
-    * the object with the given name. Will overwrite existing file!
+    * @param string $name The name of the domain object class.
     *
-    * @param string $name The object's name.
-    * @param string $baseFileName The file name the base class will be written to.
-    * @param string $fileName The file name the class will be written to.
-    *
-    * @author Ralf Schubert
-    * @version
-    * Version 0.1, 15.01.2011<br />
-    * Version 0.2, 24.06.2014 (ID#194: split base class and DO class into separate files to better support auto loading.)<br />
+    * @return string The name of the corresponding class file.
     */
-   protected function createNewServiceObject($name, $baseFileName, $fileName) {
+   protected function getFileName($name) {
+      return $this->getFileNameByClass($this->domainObjectsTable[$name]['Class']);
+   }
 
-      $namespace = $this->getNamespaceByObjectName($name);
-      $path = dirname($fileName);
-      if (!file_exists($path)) {
-         $folder = new Folder();
-         $folder->create($path);
-      }
+   protected function getFileNameByClass($class) {
+      $loader = RootClassLoader::getLoaderByClass($class);
+      $vendor = $loader->getVendorName();
+      $rootPath = $loader->getRootPath();
 
-      // create base class file
-      $content = '<?php' . PHP_EOL . 'namespace ' . $namespace . ';'
-            . PHP_EOL . PHP_EOL . $this->generateBaseObjectCode($name, $namespace) . PHP_EOL;
-      $baseFile = new File();
-      $baseFile->create($baseFileName)->writeContent($content);
+      // first part of the namespace must be dropped to not double the vendor name
+      return $rootPath . '/' . str_replace('\\', '/', str_replace($vendor . '\\', '', $class)) . '.php';
+   }
 
-      // create class file
-      $content = '<?php' . PHP_EOL . 'namespace ' . $namespace . ';'
-            . PHP_EOL . PHP_EOL . $this->generateObjectCode($name, $namespace) . PHP_EOL;
-      $file = new File();
-      $file->create($fileName)->writeContent($content);
-
+   /**
+    * @param string $name The name of the domain object class.
+    *
+    * @return string The name of the corresponding base class file.
+    */
+   protected function getBaseFileName($name) {
+      return $this->getFileNameByClass($this->domainObjectsTable[$name]['Class'] . 'Base');
    }
 
    /**
@@ -280,6 +236,29 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
    }
 
    /**
+    * Generates the PHP code for a property's setter with the given name.
+    *
+    * @param string $name The property's name.
+    * @param string $class The name of the class.
+    *
+    * @return string The PHP code.
+    *
+    * @author Ralf Schubert
+    * @version 0.1,  15.01.2011<br />
+    */
+   protected function generateSetterCode($name, $class) {
+      return '   /**' . PHP_EOL .
+      '    * @param string $value The value to set for property "' . $name . '".' . PHP_EOL .
+      '    *' . PHP_EOL .
+      '    * @return ' . RootClassLoader::getClassName($class) . ' The domain object for further usage.' . PHP_EOL .
+      '    */' . PHP_EOL .
+      '   public function set' . $name . '($value) {' . PHP_EOL .
+      '      $this->setProperty(\'' . $name . '\', $value);' . PHP_EOL . PHP_EOL .
+      '      return $this;' . PHP_EOL .
+      '   }' . PHP_EOL . PHP_EOL;
+   }
+
+   /**
     * Generates the PHP code for a property's delete method with the given name.
     *
     * @param string $name The property's name.
@@ -302,26 +281,48 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
    }
 
    /**
-    * Generates the PHP code for a property's setter with the given name.
+    * @param string $name The domain object descriptor.
     *
-    * @param string $name The property's name.
-    * @param string $class The name of the class.
+    * @return string The namespace of the given domain object name.
+    */
+   protected function getNamespaceByObjectName($name) {
+      return RootClassLoader::getNamespace($this->domainObjectsTable[$name]['Class']);
+   }
+
+   /**
+    * Creates a new file for each the base class and the DO class with the code for
+    * the object with the given name. Will overwrite existing file!
     *
-    * @return string The PHP code.
+    * @param string $name The object's name.
+    * @param string $baseFileName The file name the base class will be written to.
+    * @param string $fileName The file name the class will be written to.
     *
     * @author Ralf Schubert
-    * @version 0.1,  15.01.2011<br />
+    * @version
+    * Version 0.1, 15.01.2011<br />
+    * Version 0.2, 24.06.2014 (ID#194: split base class and DO class into separate files to better support auto loading.)<br />
     */
-   protected function generateSetterCode($name, $class) {
-      return '   /**' . PHP_EOL .
-      '    * @param string $value The value to set for property "' . $name . '".' . PHP_EOL .
-      '    *' . PHP_EOL .
-      '    * @return ' . RootClassLoader::getClassName($class) . ' The domain object for further usage.' . PHP_EOL .
-      '    */' . PHP_EOL .
-      '   public function set' . $name . '($value) {' . PHP_EOL .
-      '      $this->setProperty(\'' . $name . '\', $value);' . PHP_EOL . PHP_EOL .
-      '      return $this;' . PHP_EOL .
-      '   }' . PHP_EOL . PHP_EOL;
+   protected function createNewServiceObject($name, $baseFileName, $fileName) {
+
+      $namespace = $this->getNamespaceByObjectName($name);
+      $path = dirname($fileName);
+      if (!file_exists($path)) {
+         $folder = new Folder();
+         $folder->create($path);
+      }
+
+      // create base class file
+      $content = '<?php' . PHP_EOL . 'namespace ' . $namespace . ';'
+            . PHP_EOL . PHP_EOL . $this->generateBaseObjectCode($name, $namespace) . PHP_EOL;
+      $baseFile = new File();
+      $baseFile->create($baseFileName)->writeContent($content);
+
+      // create class file
+      $content = '<?php' . PHP_EOL . 'namespace ' . $namespace . ';'
+            . PHP_EOL . PHP_EOL . $this->generateObjectCode($name, $namespace) . PHP_EOL;
+      $file = new File();
+      $file->create($fileName)->writeContent($content);
+
    }
 
    /**

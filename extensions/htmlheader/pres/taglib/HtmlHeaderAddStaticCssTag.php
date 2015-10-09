@@ -42,7 +42,7 @@ use InvalidArgumentException;
 class HtmlHeaderAddStaticCssTag extends Document {
 
    public function transform() {
-      $header = & $this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
+      $header = &$this->getServiceObject(HtmlHeaderManager::class);
       /* @var $header HtmlHeaderManager */
 
       $file = $this->getAttribute('file');

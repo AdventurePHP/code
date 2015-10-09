@@ -60,41 +60,6 @@ final class PagerMapper extends APFObject {
    }
 
    /**
-    * @return AbstractDatabaseHandler The current database connection.
-    */
-   private function &getConnection() {
-      $cM = &$this->getServiceObject('APF\core\database\ConnectionManager');
-
-      /* @var $cM ConnectionManager */
-
-      return $cM->getConnection($this->connectionKey);
-   }
-
-   /**
-    * Returns the session key for the current statement and params.
-    *
-    * @param string $namespace namespace of the statement
-    * @param string $statement name of the statement file
-    * @param array $params statement params
-    *
-    * @return string $sessionKey the desired session key
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 24.01.2009<br />
-    */
-   protected function getSessionKey($namespace, $statement, array $params = array()) {
-      return 'PagerMapper_' . md5($namespace . $statement . implode('', $params));
-   }
-
-   /**
-    * @return Session
-    */
-   protected function getSession() {
-      return $this->getRequest()->getSession(__NAMESPACE__);
-   }
-
-   /**
     * Returns the number of entries of the current object.
     *
     * @param string $namespace the namespace of the statement
@@ -114,7 +79,7 @@ final class PagerMapper extends APFObject {
     */
    public function getEntriesCount($namespace, $statement, array $params = array(), $cache = true) {
 
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
       /* @var $t BenchmarkTimer */
       $t->start('PagerMapper::getEntriesCount()');
 
@@ -149,6 +114,55 @@ final class PagerMapper extends APFObject {
    }
 
    /**
+    * @param array $params The list of pager statement parameters.
+    *
+    * @return array The sanitized list of pager statement parameters.
+    */
+   private function sanitizeParameters(array $params = array()) {
+      $conn = &$this->getConnection();
+      foreach ($params as $key => $value) {
+         $params[$conn->escapeValue($key)] = $conn->escapeValue($value);
+      }
+
+      return $params;
+   }
+
+   /**
+    * @return AbstractDatabaseHandler The current database connection.
+    */
+   private function &getConnection() {
+      $cM = &$this->getServiceObject(ConnectionManager::class);
+
+      /* @var $cM ConnectionManager */
+
+      return $cM->getConnection($this->connectionKey);
+   }
+
+   /**
+    * @return Session
+    */
+   protected function getSession() {
+      return $this->getRequest()->getSession(__NAMESPACE__);
+   }
+
+   /**
+    * Returns the session key for the current statement and params.
+    *
+    * @param string $namespace namespace of the statement
+    * @param string $statement name of the statement file
+    * @param array $params statement params
+    *
+    * @return string $sessionKey the desired session key
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 24.01.2009<br />
+    */
+   protected function getSessionKey($namespace, $statement, array $params = array()) {
+      return 'PagerMapper_' . md5($namespace . $statement . implode('', $params));
+   }
+
+   /**
     * Returns a list of the object ids, that should be loaded for the current page.
     *
     * @param string $namespace the namespace of the statement
@@ -168,7 +182,7 @@ final class PagerMapper extends APFObject {
     */
    public function loadEntries($namespace, $statement, array $params = array(), $cache = true) {
 
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
       /* @var $t BenchmarkTimer */
       $t->start('PagerMapper::loadEntries()');
 
@@ -212,20 +226,6 @@ final class PagerMapper extends APFObject {
       $t->stop('PagerMapper::loadEntries()');
 
       return $entryIds;
-   }
-
-   /**
-    * @param array $params The list of pager statement parameters.
-    *
-    * @return array The sanitized list of pager statement parameters.
-    */
-   private function sanitizeParameters(array $params = array()) {
-      $conn = &$this->getConnection();
-      foreach ($params as $key => $value) {
-         $params[$conn->escapeValue($key)] = $conn->escapeValue($value);
-      }
-
-      return $params;
    }
 
 }

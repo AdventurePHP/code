@@ -91,7 +91,7 @@ class DefaultErrorHandler implements ErrorHandler {
    protected function logError() {
       $message = '[' . ($this->generateErrorID()) . '] ' . $this->errorMessage . ' (Number: ' . $this->errorNumber . ', File: ' . $this->errorFile . ', Line: ' . $this->errorLine . ')';
 
-      $log = & Singleton::getInstance('APF\core\logging\Logger');
+      $log = &Singleton::getInstance(Logger::class);
       /* @var $log Logger */
       $log->addEntry(
             new SimpleLogEntry(
@@ -131,7 +131,7 @@ class DefaultErrorHandler implements ErrorHandler {
       $stackTrace->loadDesign('APF\core\errorhandler\templates', 'errorpage');
 
       // inject error information into the document attributes array
-      $doc = & $stackTrace->getRootDocument();
+      $doc = &$stackTrace->getRootDocument();
       $doc->setAttribute('id', $this->generateErrorID());
       $doc->setAttribute('message', $this->errorMessage);
       $doc->setAttribute('number', $this->errorNumber);

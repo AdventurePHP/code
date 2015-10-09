@@ -35,7 +35,7 @@ class OrderedListTag extends AbstractListTag {
     * @param string $sClass [optional]
     */
    public function addElement($sContent, $sClass = '') {
-      $this->addElementInternal($sContent, $sClass, 'APF\extensions\htmllist\taglib\ListElementTag');
+      $this->addElementInternal($sContent, $sClass, ListElementTag::class);
    }
 
    protected function getListIdentifier() {

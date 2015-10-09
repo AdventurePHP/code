@@ -31,7 +31,7 @@ use InvalidArgumentException;
  * This is the central component of the extension.
  *
  * @example:
- * $PostboxFactory = $this->getServiceObject('APF\extensions\postbox\biz\PostboxFactory');
+ * $PostboxFactory = $this->getServiceObject(PostboxFactory::class);
  * $Postbox = $PostboxFactory->getPostbox($User);
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>

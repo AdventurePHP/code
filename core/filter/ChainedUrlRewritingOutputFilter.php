@@ -61,29 +61,6 @@ class ChainedUrlRewritingOutputFilter implements ChainedContentFilter {
    private static $REWRITE_DEACTIVATE_PATTERN = '/linkrewrite="false"/i';
    private static $REWRITE_CONTROL_PATTERN = '/linkrewrite="([A-Za-z]+)"/i';
 
-   public function filter(FilterChain &$chain, $input = null) {
-
-      /* @var $t BenchmarkTimer */
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
-
-      $id = get_class($this);
-      $t->start($id);
-
-      $input = preg_replace_callback(
-            '/<form (.*?)action="(.*?)"(.*?)>(.*?)<\/form>/ims',
-            array('APF\core\filter\ChainedUrlRewritingOutputFilter', 'replaceForm'),
-            preg_replace_callback(
-                  '/<a (.*?)href="(.*?)"(.*?)>(.*?)<\/a>/ims',
-                  array('APF\core\filter\ChainedUrlRewritingOutputFilter', 'replaceLink'),
-                  $input)
-      );
-
-      $t->stop($id);
-
-      // delegate filtering to the applied chain
-      return $chain->filter($input);
-   }
-
    /**
     * Callback function for link rewriting.
     *
@@ -130,6 +107,29 @@ class ChainedUrlRewritingOutputFilter implements ChainedContentFilter {
       $hits[2] = strtr($hits[2], self::$REPLACE_PATTERN);
 
       return '<form ' . $hits[1] . 'action="' . $hits[2] . '"' . $hits[3] . '>' . $hits[4] . '</form>';
+   }
+
+   public function filter(FilterChain &$chain, $input = null) {
+
+      /* @var $t BenchmarkTimer */
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
+
+      $id = get_class($this);
+      $t->start($id);
+
+      $input = preg_replace_callback(
+            '/<form (.*?)action="(.*?)"(.*?)>(.*?)<\/form>/ims',
+            array(ChainedUrlRewritingOutputFilter::class, 'replaceForm'),
+            preg_replace_callback(
+                  '/<a (.*?)href="(.*?)"(.*?)>(.*?)<\/a>/ims',
+                  array(ChainedUrlRewritingOutputFilter::class, 'replaceLink'),
+                  $input)
+      );
+
+      $t->stop($id);
+
+      // delegate filtering to the applied chain
+      return $chain->filter($input);
    }
 
 }

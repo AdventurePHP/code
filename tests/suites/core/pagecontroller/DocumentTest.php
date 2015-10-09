@@ -20,10 +20,15 @@
  */
 namespace APF\tests\suites\core\pagecontroller;
 
+use APF\core\expression\taglib\ExpressionEvaluationTag;
 use APF\core\loader\RootClassLoader;
 use APF\core\loader\StandardClassLoader;
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\ParserException;
+use APF\core\pagecontroller\PlaceHolderTag;
 use APF\core\pagecontroller\TemplateTag;
+use APF\modules\usermanagement\pres\documentcontroller\registration\RegistrationController;
+use InvalidArgumentException;
 use ReflectionMethod;
 
 /**
@@ -55,7 +60,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
     * @return ReflectionMethod The <em>APF\core\pagecontroller\Document::getTemplateFilePath()</em> method.
     */
    private function getMethod() {
-      $method = new ReflectionMethod('APF\core\pagecontroller\Document', 'getTemplateFilePath');
+      $method = new ReflectionMethod(Document::class, 'getTemplateFilePath');
       $method->setAccessible(true);
 
       return $method;
@@ -70,23 +75,23 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
       $doc = new TemplateTag();
       $doc->setContent('<html:template name="foo">bar</html:template>');
       $doc->onParseTime();
-      $template = $doc->getChildNode('name', 'foo', 'APF\core\pagecontroller\TemplateTag');
+      $template = $doc->getChildNode('name', 'foo', TemplateTag::class);
       $this->assertNotNull($template);
       $this->assertEquals('bar', $template->getContent());
    }
 
    public function testGetChildNodeWithException() {
-      $this->setExpectedException('\InvalidArgumentException');
+      $this->setExpectedException(InvalidArgumentException::class);
       $doc = new Document();
       $doc->onParseTime();
-      $doc->getChildNode('foo', 'bar', 'APF\core\pagecontroller\Document');
+      $doc->getChildNode('foo', 'bar', Document::class);
    }
 
    public function testGetChildNodes() {
       $doc = new TemplateTag();
       $doc->setContent('<html:placeholder name="foo" /><html:placeholder name="foo" /><html:placeholder name="foo" />');
       $doc->onParseTime();
-      $placeHolders = $doc->getChildNodes('name', 'foo', 'APF\core\pagecontroller\PlaceHolderTag');
+      $placeHolders = $doc->getChildNodes('name', 'foo', PlaceHolderTag::class);
       $this->assertEquals(3, count($placeHolders));
       $this->assertEquals('foo', $placeHolders[0]->getAttribute('name'));
    }
@@ -94,12 +99,12 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
    public function testGetChildNodesWithException() {
       $this->setExpectedException('\InvalidArgumentException');
       $doc = new Document();
-      $doc->getChildNodes('foo', 'bar', 'APF\core\pagecontroller\Document');
+      $doc->getChildNodes('foo', 'bar', Document::class);
    }
 
    public function testDocumentControllerParsingTest() {
 
-      $controllerClass = 'APF\modules\usermanagement\pres\documentcontroller\registration\RegistrationController';
+      $controllerClass = RegistrationController::class;
 
       // rear cases
       $this->executeControllerTest('<@controller class="' . $controllerClass . '"@>', $controllerClass);
@@ -127,7 +132,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 
    protected function executeControllerTest($content, $controllerClass) {
 
-      $method = new ReflectionMethod('APF\core\pagecontroller\Document', 'extractDocumentController');
+      $method = new ReflectionMethod(Document::class, 'extractDocumentController');
       $method->setAccessible(true);
 
       $doc = new Document();
@@ -169,10 +174,10 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 
       $doc->onParseTime();
 
-      $expressionNodeOne = $doc->getChildNode('name', 'one', 'APF\core\expression\taglib\ExpressionEvaluationTag');
-      $expressionNodeTwo = $doc->getChildNode('name', 'two', 'APF\core\expression\taglib\ExpressionEvaluationTag');
-      $expressionNodeThree = $doc->getChildNode('name', 'three', 'APF\core\expression\taglib\ExpressionEvaluationTag');
-      $expressionNodeFour = $doc->getChildNode('name', 'four', 'APF\core\expression\taglib\ExpressionEvaluationTag');
+      $expressionNodeOne = $doc->getChildNode('name', 'one', ExpressionEvaluationTag::class);
+      $expressionNodeTwo = $doc->getChildNode('name', 'two', ExpressionEvaluationTag::class);
+      $expressionNodeThree = $doc->getChildNode('name', 'three', ExpressionEvaluationTag::class);
+      $expressionNodeFour = $doc->getChildNode('name', 'four', ExpressionEvaluationTag::class);
 
       $this->assertEquals($expressionOne, $expressionNodeOne->getAttribute('expression'));
       $this->assertEquals($expressionTwo, $expressionNodeTwo->getAttribute('expression'));
@@ -188,7 +193,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 
    public function testInvalidTemplateSyntaxWithTagClosingSignInAttribute1() {
 
-      $this->setExpectedException('APF\core\pagecontroller\ParserException');
+      $this->setExpectedException(ParserException::class);
 
       $doc = new TemplateTag();
       $doc->setContent('<html:placeholder name="tes>t"/');
@@ -198,7 +203,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 
    public function testInvalidTemplateSyntaxWithTagClosingSignInAttribute2() {
 
-      $this->setExpectedException('APF\core\pagecontroller\ParserException');
+      $this->setExpectedException(ParserException::class);
 
       $doc = new TemplateTag();
       $doc->setContent('<html:placeholder name="test" /');
@@ -217,11 +222,11 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 />
 <read-from:controller-tag />');
 
-      $extractDocConMethod = new ReflectionMethod('APF\core\pagecontroller\Document', 'extractDocumentController');
+      $extractDocConMethod = new ReflectionMethod(Document::class, 'extractDocumentController');
       $extractDocConMethod->setAccessible(true);
       $extractDocConMethod->invoke($doc);
 
-      $extractTagLibsMethod = new ReflectionMethod('APF\core\pagecontroller\Document', 'extractTagLibTags');
+      $extractTagLibsMethod = new ReflectionMethod(Document::class, 'extractTagLibTags');
       $extractTagLibsMethod->setAccessible(true);
       $extractTagLibsMethod->invoke($doc);
 

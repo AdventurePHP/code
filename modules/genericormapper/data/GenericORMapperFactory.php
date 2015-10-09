@@ -34,14 +34,14 @@ use APF\core\service\APFService;
  * relation table only once per session.
  * <p/>
  * Further, the factory must be created using the service manager. Sample:
- * <pre>$gormFact = &$this->getServiceObject('APF\modules\genericormapper\data\GenericORMapperFactory');
+ * <pre>$gormFact = &$this->getServiceObject(GenericORMapperFactory::class);
  * $gormFact = &$this->getServiceObject(
- *                                      'APF\modules\genericormapper\data\GenericORMapperFactory',
+ *                                      GenericORMapperFactory::class,
  *                                      [],
  *                                      APFService::SERVICE_TYPE_NORMAL
  * );
  * $gormFact = &$this->getServiceObject(
- *                                      'APF\modules\genericormapper\data\GenericORMapperFactory',
+ *                                      GenericORMapperFactory::class,
  *                                      [],
  *                                      APFService::SERVICE_TYPE_SESSION_SINGLETON
  * );</pre>
@@ -93,7 +93,7 @@ final class GenericORMapperFactory extends APFObject {
     * environment!
     * <p/>
     * As of 1.12, this method has to be used as follows:
-    * <pre>$gormFact = &$this->getServiceObject('APF\modules\genericormapper\data\GenericORMapperFactory');
+    * <pre>$gormFact = &$this->getServiceObject(GenericORMapperFactory::class);
     * $orm = &$gormFact->getGenericORMapper('VENDOR\my\namespace', 'config_sub_key', 'db_connection'[, true|false]);</pre>
     *
     * @param string $configNamespace namespace, where the desired mapper configuration is located
@@ -120,9 +120,7 @@ final class GenericORMapperFactory extends APFObject {
       // create and initialize a GORM mapper instance
       if (!isset($this->orMapperCache[$cacheKey])) {
          $this->orMapperCache[$cacheKey] =
-               $this->getServiceObject(
-                     'APF\modules\genericormapper\data\GenericORRelationMapper',
-                     APFService::SERVICE_TYPE_NORMAL);
+               $this->getServiceObject(GenericORRelationMapper::class, APFService::SERVICE_TYPE_NORMAL);
 
          // as of 1.14 the mapper is explicitly initialized by the provided setter
          // methods to be able to directly create the service via the DI container

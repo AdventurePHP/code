@@ -42,6 +42,14 @@ use APF\core\singleton\Singleton;
 class BaseMapper extends APFObject {
 
    /**
+    * Identifies the param that defines additional indices relevant for database setup.
+    *
+    * @var string $ADDITIONAL_INDICES_INDICATOR
+    */
+   protected static $ADDITIONAL_INDICES_INDICATOR = 'AddIndices';
+   protected static $STORAGE_ENGINE_INDICATOR = 'StorageEngine';
+
+   /**
     * Namespace, where the configuration files are located.
     *
     * @var string $configNamespace
@@ -144,16 +152,6 @@ class BaseMapper extends APFObject {
     */
    private $configFileExtension = 'ini';
 
-   /**
-    * Identifies the param that defines additional indices relevant for database setup.
-    *
-    * @var string $ADDITIONAL_INDICES_INDICATOR
-    */
-   protected static $ADDITIONAL_INDICES_INDICATOR = 'AddIndices';
-
-   protected static $STORAGE_ENGINE_INDICATOR = 'StorageEngine';
-
-
    public function getConfigNamespace() {
       return $this->configNamespace;
    }
@@ -200,41 +198,6 @@ class BaseMapper extends APFObject {
       $this->logStatements = $logStatements;
    }
 
-   public function getConfigFileExtension() {
-      return $this->configFileExtension;
-   }
-
-   /**
-    * Injects the desired config file extension to use with the APF's configuration
-    * provider concept. Must be called before <em>setConfigNamespace()</em> and
-    * <em>setConfigNameAffix()</em>!
-    *
-    * @param string $configFileExtension The desired file extension.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 12.03.2011<br />
-    */
-   public function setConfigFileExtension($configFileExtension) {
-      $this->configFileExtension = $configFileExtension;
-   }
-
-   /**
-    * Initializes the database connection. This is used on creation of the mapper
-    * and on wakeup after session de-serialization.
-    *
-    * @since 1.12
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 16.03.2010 (Introduced due to bug 299)<br />
-    */
-   protected function createDatabaseConnection() {
-      $cM = & $this->getServiceObject('APF\core\database\ConnectionManager');
-      /* @var $cM ConnectionManager */
-      $this->dbDriver = & $cM->getConnection($this->connectionName);
-   }
-
    /**
     * DI initialization method to setup and re-initialize (on session restore!) the password hash providers.
     *
@@ -276,31 +239,19 @@ class BaseMapper extends APFObject {
    }
 
    /**
-    * Returns the instance of the current database instance to be able to native
-    * execute statements against the database without extra configuration.
+    * Initializes the database connection. This is used on creation of the mapper
+    * and on wakeup after session de-serialization.
     *
-    * @return AbstractDatabaseHandler The instance of the current database connection.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
-   public function &getDbDriver() {
-      return $this->dbDriver;
-   }
-
-   /**
-    * This method can be used to inject the database connection via the
-    * DIServiceManager.
-    *
-    * @param DatabaseConnection $dbDriver The database driver to use.
+    * @since 1.12
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 08.05.2012<br />
+    * Version 0.1, 16.03.2010 (Introduced due to bug 299)<br />
     */
-   public function setDbDriver(DatabaseConnection $dbDriver) {
-      $this->dbDriver = $dbDriver;
+   protected function createDatabaseConnection() {
+      $cM = &$this->getServiceObject(ConnectionManager::class);
+      /* @var $cM ConnectionManager */
+      $this->dbDriver = &$cM->getConnection($this->connectionName);
    }
 
    /**
@@ -315,7 +266,7 @@ class BaseMapper extends APFObject {
     */
    public function addMappingConfiguration($configNamespace, $configNameAffix) {
 
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
       /* @var $t BenchmarkTimer */
       $t->start('BaseMapper::addMappingConfiguration()');
 
@@ -366,19 +317,50 @@ class BaseMapper extends APFObject {
       $t->stop('BaseMapper::addMappingConfiguration()');
    }
 
+   public function getConfigFileExtension() {
+      return $this->configFileExtension;
+   }
+
    /**
-    * Allows you to initialize/enhance the generic or mapper's mapping configuration using
-    * the DI service manager. See documentation of the
-    * <em>GenericORMapperDIMappingConfiguration</em> class on configuration definition.
+    * Injects the desired config file extension to use with the APF's configuration
+    * provider concept. Must be called before <em>setConfigNamespace()</em> and
+    * <em>setConfigNameAffix()</em>!
     *
-    * @param GenericORMapperDIMappingConfiguration $config The additional mapping configuration.
+    * @param string $configFileExtension The desired file extension.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 30.06.2010<br />
+    * Version 0.1, 12.03.2011<br />
     */
-   public function addDIMappingConfiguration(GenericORMapperDIMappingConfiguration $config) {
-      $this->addMappingConfiguration($config->getConfigNamespace(), $config->getConfigAffix());
+   public function setConfigFileExtension($configFileExtension) {
+      $this->configFileExtension = $configFileExtension;
+   }
+
+   /**
+    * Resolves the table and primary key name within the object definition configuration.
+    *
+    * @param string $objectName Name of the current configuration section (=name of the current object).
+    * @param array $objectSection Current object definition params.
+    *
+    * @return string[] Enhanced object definition.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.10.2008<br />
+    */
+   protected function generateMappingItem($objectName, $objectSection) {
+
+      // resolve standard properties, that derive from the definition
+      // - table name:
+      $objectSection['Table'] = 'ent_' . strtolower($objectName);
+      // - name of the primary key
+      $objectSection['ID'] = $objectName . 'ID';
+      // remove the additional table definition
+      unset($objectSection[self::$ADDITIONAL_INDICES_INDICATOR]);
+      // remove the storage Engine definition
+      unset($objectSection[self::$STORAGE_ENGINE_INDICATOR]);
+
+      return $objectSection;
    }
 
    /**
@@ -393,7 +375,7 @@ class BaseMapper extends APFObject {
     */
    public function addRelationConfiguration($configNamespace, $configNameAffix) {
 
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
       /* @var $t BenchmarkTimer */
       $t->start('BaseMapper::addRelationConfiguration()');
 
@@ -434,18 +416,39 @@ class BaseMapper extends APFObject {
    }
 
    /**
-    * Allows you to initialize/enhance the generic or mapper's relation configuration using
-    * the DI service manager. See documentation of the
-    * <em>GenericORMapperDIMappingConfiguration</em> class on configuration definition.
+    * Resolves the table name, source and target id of the relation definition within
+    * the relation configuration.
     *
-    * @param GenericORMapperDIRelationConfiguration $config The additional relation configuration.
+    * @param string $relationName nam of the current configuration section (=name of the current relation).
+    * @param array $relationSection current relation definition params.
+    *
+    * @return string[] Enhanced relation definition.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 30.06.2010<br />
+    * Version 0.1, 26.10.2008<br />
+    * Version 0.2, 16.03.2011 (Re-introduced Tobi's changes to allow self referencing relations)<br />
     */
-   public function addDIRelationConfiguration(GenericORMapperDIRelationConfiguration $config) {
-      $this->addRelationConfiguration($config->getConfigNamespace(), $config->getConfigAffix());
+   protected function generateRelationItem($relationName, $relationSection) {
+
+      // Resolve standard properties, that derive from the definition
+      // - table name
+      if ($relationSection['Type'] == 'COMPOSITION') {
+         $relationSection['Table'] = 'cmp_' . strtolower($relationName);
+      } else {
+         $relationSection['Table'] = 'ass_' . strtolower($relationName);
+      }
+
+      // - name of the primary key of the source object
+      $relationSection['SourceID'] = 'Source_' . $relationSection['SourceObject'] . 'ID';
+
+      // - name of the primary key of the target object
+      $relationSection['TargetID'] = 'Target_' . $relationSection['TargetObject'] . 'ID';
+
+      // remove the Storage Engine definition
+      unset($relationSection[self::$STORAGE_ENGINE_INDICATOR]);
+
+      return $relationSection;
    }
 
    /**
@@ -460,7 +463,7 @@ class BaseMapper extends APFObject {
     */
    public function addDomainObjectsConfiguration($configNamespace, $configNameAffix) {
 
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
       /* @var $t BenchmarkTimer */
       $t->start('BaseMapper::addDomainObjectsConfiguration()');
 
@@ -496,6 +499,64 @@ class BaseMapper extends APFObject {
    }
 
    /**
+    * Returns the instance of the current database instance to be able to native
+    * execute statements against the database without extra configuration.
+    *
+    * @return AbstractDatabaseHandler The instance of the current database connection.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.02.2010<br />
+    */
+   public function &getDbDriver() {
+      return $this->dbDriver;
+   }
+
+   /**
+    * This method can be used to inject the database connection via the
+    * DIServiceManager.
+    *
+    * @param DatabaseConnection $dbDriver The database driver to use.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 08.05.2012<br />
+    */
+   public function setDbDriver(DatabaseConnection $dbDriver) {
+      $this->dbDriver = $dbDriver;
+   }
+
+   /**
+    * Allows you to initialize/enhance the generic or mapper's mapping configuration using
+    * the DI service manager. See documentation of the
+    * <em>GenericORMapperDIMappingConfiguration</em> class on configuration definition.
+    *
+    * @param GenericORMapperDIMappingConfiguration $config The additional mapping configuration.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 30.06.2010<br />
+    */
+   public function addDIMappingConfiguration(GenericORMapperDIMappingConfiguration $config) {
+      $this->addMappingConfiguration($config->getConfigNamespace(), $config->getConfigAffix());
+   }
+
+   /**
+    * Allows you to initialize/enhance the generic or mapper's relation configuration using
+    * the DI service manager. See documentation of the
+    * <em>GenericORMapperDIMappingConfiguration</em> class on configuration definition.
+    *
+    * @param GenericORMapperDIRelationConfiguration $config The additional relation configuration.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 30.06.2010<br />
+    */
+   public function addDIRelationConfiguration(GenericORMapperDIRelationConfiguration $config) {
+      $this->addRelationConfiguration($config->getConfigNamespace(), $config->getConfigAffix());
+   }
+
+   /**
     * Allows you to initialize/enhance the generic or mapper's service object configuration using
     * the DI service manager. See documentation of the
     * <em>GenericORMapperDIDomainObjectsConfiguration</em> class on configuration definition.
@@ -508,69 +569,6 @@ class BaseMapper extends APFObject {
     */
    public function addDIDomainObjectsConfiguration(GenericORMapperDIDomainObjectsConfiguration $config) {
       $this->addDomainObjectsConfiguration($config->getConfigNamespace(), $config->getConfigAffix());
-   }
-
-   /**
-    * Resolves the table and primary key name within the object definition configuration.
-    *
-    * @param string $objectName Name of the current configuration section (=name of the current object).
-    * @param array $objectSection Current object definition params.
-    *
-    * @return string[] Enhanced object definition.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 26.10.2008<br />
-    */
-   protected function generateMappingItem($objectName, $objectSection) {
-
-      // resolve standard properties, that derive from the definition
-      // - table name:
-      $objectSection['Table'] = 'ent_' . strtolower($objectName);
-      // - name of the primary key
-      $objectSection['ID'] = $objectName . 'ID';
-      // remove the additional table definition
-      unset($objectSection[self::$ADDITIONAL_INDICES_INDICATOR]);
-      // remove the storage Engine definition
-      unset($objectSection[self::$STORAGE_ENGINE_INDICATOR]);
-
-      return $objectSection;
-   }
-
-   /**
-    * Resolves the table name, source and target id of the relation definition within
-    * the relation configuration.
-    *
-    * @param string $relationName nam of the current configuration section (=name of the current relation).
-    * @param array $relationSection current relation definition params.
-    *
-    * @return string[] Enhanced relation definition.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 26.10.2008<br />
-    * Version 0.2, 16.03.2011 (Re-introduced Tobi's changes to allow self referencing relations)<br />
-    */
-   protected function generateRelationItem($relationName, $relationSection) {
-
-      // Resolve standard properties, that derive from the definition
-      // - table name
-      if ($relationSection['Type'] == 'COMPOSITION') {
-         $relationSection['Table'] = 'cmp_' . strtolower($relationName);
-      } else {
-         $relationSection['Table'] = 'ass_' . strtolower($relationName);
-      }
-
-      // - name of the primary key of the source object
-      $relationSection['SourceID'] = 'Source_' . $relationSection['SourceObject'] . 'ID';
-
-      // - name of the primary key of the target object
-      $relationSection['TargetID'] = 'Target_' . $relationSection['TargetObject'] . 'ID';
-
-      // remove the Storage Engine definition
-      unset($relationSection[self::$STORAGE_ENGINE_INDICATOR]);
-
-      return $relationSection;
    }
 
    /**

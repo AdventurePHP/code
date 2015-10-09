@@ -72,8 +72,9 @@ class DisplayForwardMessagesTag extends Document {
       }
 
       /* @var $manager ForwardMessageManager */
-      $manager = &$this->getServiceObject('APF\extensions\forwardmessage\biz\ForwardMessageManager', [],
-            APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      $manager = &$this->getServiceObject(
+            ForwardMessageManager::class, [], APFService::SERVICE_TYPE_SESSION_SINGLETON
+      );
 
       return $manager->getMessages($groups);
    }

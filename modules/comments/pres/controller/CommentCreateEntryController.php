@@ -51,7 +51,7 @@ class CommentCreateEntryController extends CommentBaseDocumentController {
       if ($form->isSent() == true) {
 
          /* @var $m ArticleCommentManager */
-         $m = &$this->getServiceObject('APF\modules\comments\biz\ArticleCommentManager', [$this->getCategoryKey()]);
+         $m = &$this->getServiceObject(ArticleCommentManager::class, [$this->getCategoryKey()]);
 
          if ($form->isValid() == true) {
 

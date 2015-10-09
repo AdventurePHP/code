@@ -49,12 +49,12 @@ abstract class BasicLinkScheme {
       $this->setEncodeAmpersands($encodeAmpersands);
    }
 
-   public function setEncodeAmpersands($encodeAmpersands) {
-      $this->encodeAmpersands = $encodeAmpersands;
-   }
-
    public function getEncodeAmpersands() {
       return $this->encodeAmpersands;
+   }
+
+   public function setEncodeAmpersands($encodeAmpersands) {
+      $this->encodeAmpersands = $encodeAmpersands;
    }
 
    /**
@@ -92,26 +92,6 @@ abstract class BasicLinkScheme {
    }
 
    /**
-    * Retrieves the current action stack from the front controller.
-    *
-    * @return AbstractFrontcontrollerAction[] The list of registered actions.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.12.2011<br />
-    */
-   protected function &getFrontcontrollerActions() {
-      return $this->getFrontController()->getActions();
-   }
-
-   /**
-    * @return Frontcontroller
-    */
-   protected function &getFrontController() {
-      return Singleton::getInstance('APF\core\frontcontroller\Frontcontroller');
-   }
-
-   /**
     * Creates a url sub-string that contains all action's encoded information that
     * have the <em>keepInUrl</em> flag set to true.
     * <p/>
@@ -143,7 +123,7 @@ abstract class BasicLinkScheme {
    protected function getActionsUrlRepresentation(array $query, $urlRewriting) {
 
       // retrieve actions from internal method (to enable testing)
-      $actions = & $this->getFrontcontrollerActions();
+      $actions = &$this->getFrontcontrollerActions();
 
       $actionUrlRepresentation = [];
       foreach ($actions as $action) {
@@ -173,25 +153,23 @@ abstract class BasicLinkScheme {
    }
 
    /**
-    * Creates a url sub-string that contains one action's encoded information.
+    * Retrieves the current action stack from the front controller.
     *
-    * @param AbstractFrontcontrollerAction $action The front controller action.
-    * @param boolean $urlRewriting True in case url rewriting is activated, false otherwise.
-    *
-    * @return string The action's url representations.
+    * @return AbstractFrontcontrollerAction[] The list of registered actions.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 07.04.2011<br />
+    * Version 0.1, 29.12.2011<br />
     */
-   protected function getActionUrlRepresentation(AbstractFrontcontrollerAction $action, $urlRewriting) {
-      $value = $this->formatActionParameters($action->getInput()->getParameters(), $urlRewriting);
-      $key = $this->formatActionIdentifier($action->getActionNamespace(), $action->getActionName(), $urlRewriting);
+   protected function &getFrontcontrollerActions() {
+      return $this->getFrontController()->getActions();
+   }
 
-      // avoid "=" sign with empty value list
-      $actionParamsDelimiter = $urlRewriting === true ? '/' : '=';
-
-      return empty($value) ? $key : $key . $actionParamsDelimiter . $value;
+   /**
+    * @return Frontcontroller
+    */
+   protected function &getFrontController() {
+      return Singleton::getInstance(Frontcontroller::class);
    }
 
    /**
@@ -228,10 +206,25 @@ abstract class BasicLinkScheme {
    }
 
    /**
-    * @return string[] The list of action URL mapping tokens.
+    * Creates a url sub-string that contains one action's encoded information.
+    *
+    * @param AbstractFrontcontrollerAction $action The front controller action.
+    * @param boolean $urlRewriting True in case url rewriting is activated, false otherwise.
+    *
+    * @return string The action's url representations.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.04.2011<br />
     */
-   protected function getActionUrMappingTokens() {
-      return $this->getFrontController()->getActionUrlMappingTokens();
+   protected function getActionUrlRepresentation(AbstractFrontcontrollerAction $action, $urlRewriting) {
+      $value = $this->formatActionParameters($action->getInput()->getParameters(), $urlRewriting);
+      $key = $this->formatActionIdentifier($action->getActionNamespace(), $action->getActionName(), $urlRewriting);
+
+      // avoid "=" sign with empty value list
+      $actionParamsDelimiter = $urlRewriting === true ? '/' : '=';
+
+      return empty($value) ? $key : $key . $actionParamsDelimiter . $value;
    }
 
    /**
@@ -332,13 +325,21 @@ abstract class BasicLinkScheme {
 
       return $url->setQuery($query);
    }
-   
+
+   /**
+    * @return string[] The list of action URL mapping tokens.
+    */
+   protected function getActionUrMappingTokens() {
+      return $this->getFrontController()->getActionUrlMappingTokens();
+   }
+
    /**
     * Sanitizes a generated URL to avoid XSS. Attack vector is to injecting XSS code as a URL parameter name
     * with an application that directly passes the URL to the generated HTML code even if the
     * XssProtectionInputFilter is used.
     *
     * @param string $url The url to sanitize.
+    *
     * @return string The sanitized url.
     */
    protected function sanitizeUrl($url) {

@@ -51,7 +51,7 @@ class CommentListingController extends CommentBaseDocumentController {
    public function transformContent() {
 
       /* @var $m ArticleCommentManager */
-      $m = &$this->getServiceObject('APF\modules\comments\biz\ArticleCommentManager', [$this->getCategoryKey()]);
+      $m = &$this->getServiceObject(ArticleCommentManager::class, [$this->getCategoryKey()]);
 
       // load the entries using the business component
       $entries = $m->loadEntries();
@@ -61,7 +61,7 @@ class CommentListingController extends CommentBaseDocumentController {
 
       // init bb code parser (remove some provider, that we don't need configuration files)
       /* @var $bP AdvancedBBCodeParser */
-      $bP = &$this->getServiceObject('APF\tools\string\AdvancedBBCodeParser');
+      $bP = &$this->getServiceObject(AdvancedBBCodeParser::class);
       $bP->removeProvider('standard.font.color');
       $bP->removeProvider('standard.font.size');
 

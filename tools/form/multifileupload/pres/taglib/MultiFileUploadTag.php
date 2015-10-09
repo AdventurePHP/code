@@ -74,7 +74,7 @@ class MultiFileUploadTag extends AbstractFormControl {
       $mimeTypes = $this->getAttribute('allowed-mime-types');
 
       $this->manager = &$this->getServiceObject(
-            'APF\tools\form\multifileupload\biz\MultiFileUploadManager',
+            MultiFileUploadManager::class,
             ['formname' => $this->formName, 'name' => $this->uploadFieldName]
       );
       $this->manager->setSettings($maxFileSize, explode(',', $mimeTypes));
@@ -117,7 +117,7 @@ class MultiFileUploadTag extends AbstractFormControl {
 
       // Zugriff auf HTML-Header-Manager
       /* @var $HHM HtmlHeaderManager */
-      $HHM = $this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
+      $HHM = $this->getServiceObject(HtmlHeaderManager::class);
 
 
       /*       * ********** Upload Button erstellen Anfang *********** */
@@ -155,146 +155,17 @@ class MultiFileUploadTag extends AbstractFormControl {
    }
 
    /**
-    * Diese Funktion baut aus allen vom User auf den Server geladenen Dateien eine Downloadtabelle.
-    * Dies ist vor allem für jene Leute wichtig, die kein JS aktiviert haben.
-    *
-    * @param array $files - Array mit allen Dateien kommend aus der biz.
-    *
-    * @return string
-    *
-    * @author Werner Liemberger <wpublicmail@gmail.com>
-    * @version 1.0, 14.3.2011<br>
-    */
-   private function createFileTable($files) {
-      $buffer = '';
-      if (count($files) > 0) {
-
-         foreach ($files as $file) {
-            $image = '';
-            if (strpos($file['type'], 'image') !== false) {
-               $image = '<img src="' . $file['filelink'] . '" alt="' . $file['name'] . '" /> ';
-            }
-
-            $buffer .= '<tr>'
-                  . '<td class="file_upload_preview">' . $image . '</td>'
-                  . '<td><a href="' . $file['filelink'] . '" target="_blank">' . $file['name'] . '</a></td>'
-                  . '<td>' . $file['filesize'] . '</td>'
-                  . '<td class="delete"><a href="' . $file['deletelink'] . '" target="_blank" onclick="return deletefile(\'' . $file['deletelink'] . '\',this)"><div class="ui-state-default ui-corner-all" title="' . $this->languageConfig->getValue('delete.label') . '"><span class="ui-icon ui-icon-trash">' . $this->languageConfig->getValue('delete.label') . '</span></div></a></td>'
-                  . '</tr>';
-         }
-      }
-
-      return $buffer;
-   }
-
-   /**
-    * Lädt die Dateien hinauf, wenn das Formular ohne JS ausgeführt wurde.
-    *
-    * @return boolean erfolg - Falls es möglich war dateien hinzuzufügen liefert die funktion true, sonst false
-    *
-    * @author Werner Liemberger <wpublicmail@gmail.com>
-    * @version 1.0, 14.3.2011<br>
-    */
-   public function uploadFiles() {
-      $name = &$this->uploadFieldName;
-      if (isset($_FILES[$name]) && $_FILES[$name]['name'] != '') {
-         $addfile = $this->manager->addFile($_FILES[$name], false);
-         unset($_FILES[$name]);
-
-         return $addfile;
-      } else {
-         return false;
-      }
-   }
-
-   /**
-    * Liefert das Datei Array des aktuellen Formularnutzers zurück.
-    *
-    * @return array
-    *
-    * @author Werner Liemberger <wpublicmail@gmail.com>
-    * @version 1.0, 14.3.2011<br>
-    */
-   public function getFiles() {
-      return $this->manager->getFiles();
-   }
-
-   /**
-    * Verschiebt die angegebene Datei an den angegeben Ort.
-    *
-    * @param string $uploadname - md5 Wert der raufgeladenen Datei
-    * @param string $dir - Zielverzeichnis
-    * @param string $name - Name unter dem die Datei gespeichert wird.
-    *
-    * @return bool <em>True</em> in case the file move has been successfully, <em>false</em> otherwise.
-    *
-    * @author Werner Liemberger <wpublicmail@gmail.com>
-    * @version 1.0, 14.3.2011<br>
-    * @version 1.1, 14.09.2012 (removed bug for method moveFile)<br>
-    */
-   public function moveFile($uploadname, $dir, $name) {
-      return $this->manager->moveFile($uploadname, $dir, $name);
-   }
-
-   /**
-    * Funktion liefert das temporäre Uplaodverzeichnis zurück
-    *
-    * @return string Uplaodpath
-    *
-    * @author Werner Liemberger <wpublicmail@gmail.com>
-    * @version 1.0, 14.3.2011<br>
-    */
-   public function getUploadPath() {
-      return $this->manager->getUploadPath();
-   }
-
-   /**
-    * Erstellt anhand eines übergebenen Array mimeTypes einen String mit erlaubten Dateiendungen
-    *
-    * @param array $MimeTypes
+    * Erstellt den HTML Code für den Upload-Button
     *
     * @return string
     *
     * @author dave
     * @version 1.0, 13.07.2012<br>
     */
-   private function createFileExtensionFromMimeType($MimeTypes) {
-
-      $endung = '';
-      foreach ($MimeTypes as $mimeType) {
-         $endung .= substr(strrchr($mimeType, "/"), 1) . ', ';
-      }
-
-      //Letzten 2 Zeichen entfernen
-      $endung = substr($endung, 0, -2);
-
-      return $endung;
-   }
-
-   /**
-    * Creates the allowed extension string for the JS code.
-    *
-    * @param array $mimeTypes The list of allowed MIME types.
-    *
-    * @return string The JS regexp string.
-    *
-    * @author dave
-    * @version
-    * Version 1.0, 14.07.2012<br />
-    */
-   private function createFileExtensionForJS(array $mimeTypes) {
-      $return = '';
-      foreach ($mimeTypes as $mimeType) {
-
-         $extension = substr(strrchr($mimeType, '/'), 1);
-         if ($return == '') {
-            $return = '/\.(' . $extension . ')';
-         } else {
-            $return .= '|(' . $extension . ')';
-         }
-      }
-
-      return $return . '$/i';
+   private function createUploadButton() {
+      return '<div id="' . $this->uploadFieldName . '_file_upload_container"><input type="file" name="' . $this->uploadFieldName . '" id="' . $this->uploadFieldName . '" multiple="multiple" /><button>'
+      . $this->languageConfig->getValue('upload.button.label') . '</button><div class="uploadlabel">'
+      . $this->languageConfig->getValue('upload.label') . '</div></div>';
    }
 
    /**
@@ -340,17 +211,132 @@ class MultiFileUploadTag extends AbstractFormControl {
    }
 
    /**
-    * Erstellt den HTML Code für den Upload-Button
+    * Erstellt anhand eines übergebenen Array mimeTypes einen String mit erlaubten Dateiendungen
+    *
+    * @param array $MimeTypes
     *
     * @return string
     *
     * @author dave
     * @version 1.0, 13.07.2012<br>
     */
-   private function createUploadButton() {
-      return '<div id="' . $this->uploadFieldName . '_file_upload_container"><input type="file" name="' . $this->uploadFieldName . '" id="' . $this->uploadFieldName . '" multiple="multiple" /><button>'
-      . $this->languageConfig->getValue('upload.button.label') . '</button><div class="uploadlabel">'
-      . $this->languageConfig->getValue('upload.label') . '</div></div>';
+   private function createFileExtensionFromMimeType($MimeTypes) {
+
+      $endung = '';
+      foreach ($MimeTypes as $mimeType) {
+         $endung .= substr(strrchr($mimeType, "/"), 1) . ', ';
+      }
+
+      //Letzten 2 Zeichen entfernen
+      $endung = substr($endung, 0, -2);
+
+      return $endung;
+   }
+
+   /**
+    * Diese Funktion baut aus allen vom User auf den Server geladenen Dateien eine Downloadtabelle.
+    * Dies ist vor allem für jene Leute wichtig, die kein JS aktiviert haben.
+    *
+    * @param array $files - Array mit allen Dateien kommend aus der biz.
+    *
+    * @return string
+    *
+    * @author Werner Liemberger <wpublicmail@gmail.com>
+    * @version 1.0, 14.3.2011<br>
+    */
+   private function createFileTable($files) {
+      $buffer = '';
+      if (count($files) > 0) {
+
+         foreach ($files as $file) {
+            $image = '';
+            if (strpos($file['type'], 'image') !== false) {
+               $image = '<img src="' . $file['filelink'] . '" alt="' . $file['name'] . '" /> ';
+            }
+
+            $buffer .= '<tr>'
+                  . '<td class="file_upload_preview">' . $image . '</td>'
+                  . '<td><a href="' . $file['filelink'] . '" target="_blank">' . $file['name'] . '</a></td>'
+                  . '<td>' . $file['filesize'] . '</td>'
+                  . '<td class="delete"><a href="' . $file['deletelink'] . '" target="_blank" onclick="return deletefile(\'' . $file['deletelink'] . '\',this)"><div class="ui-state-default ui-corner-all" title="' . $this->languageConfig->getValue('delete.label') . '"><span class="ui-icon ui-icon-trash">' . $this->languageConfig->getValue('delete.label') . '</span></div></a></td>'
+                  . '</tr>';
+         }
+      }
+
+      return $buffer;
+   }
+
+   /**
+    * Erstellt den fertigen JSCode, damit dieser über den Hrml-Header-Manager ausgegeben werden kann
+    *
+    * @return string
+    *
+    * @author dave
+    * @version 1.0, 14.07.2012
+    */
+   private function createJSCode() {
+      $code = '
+            $(".uploadlabel").css("display", "block");
+
+            function deletefile(link, elem) {
+
+               $(".confirm_delete").dialog("destroy");
+               $(".uploadlabel").show();
+               $(".confirm_delete").dialog({
+                  modal: true,
+                  height: 240,
+                  width: 400,
+                  buttons: {
+                     "' . $this->languageConfig->getValue('delete.ok') . '": function() {
+                        $(this).dialog("close");
+                        var jqxhr = $.ajax({
+                           url: link
+                        })
+                        .success(function() {
+                           $(elem).parent().parent().remove();
+                        })
+                     },
+                     "' . $this->languageConfig->getValue('delete.no') . '" : function() {
+                        $(this).dialog("close");
+                        return false;
+                     }
+                  }
+               });
+               return false;
+            }
+
+            $(function () {
+                $(\'#' . $this->formName . '\').fileUploadUI({
+                   url: "' . $this->manager->link() . '",
+                   fieldName: "' . $this->uploadFieldName . '",
+                   uploadTable: ' . $this->createUploadTable() . '
+                   downloadTable: ' . $this->createDownloadTable() . '
+                   buildUploadRow: ' . $this->buildUploadRow() . '
+                   buildDownloadRow: ' . $this->buildDownloadRow() . '
+
+                   dropZone: $("#' . $this->uploadFieldName . '_file_upload_container"),
+                   parseResponse: function (xhr) {
+                      if (typeof xhr.responseText !== "undefined") {
+                            return $.parseJSON(xhr.responseText);
+                      } else {
+                            return $.parseJSON(xhr.contents().text());
+                      }
+                   },
+                   onProgress: function (event, files, index, xhr, handler) {
+                      if (handler.progressbar) {
+                         var value=parseInt(event.loaded / event.total * 100, 10);
+                         handler.uploadRow.find(".value").text(value + "%");
+                         handler.progressbar.progressbar(\'value\',value);
+                      }
+                   },
+                   beforeSend : function (event, files, index, xhr, handler, callBack) {
+                      ' . $this->createFileSizeCheck() . $this->createMimeTypeCheck() . '
+                      callBack();
+                   }
+               });
+            });';
+
+      return $code;
    }
 
    /**
@@ -477,76 +463,90 @@ class MultiFileUploadTag extends AbstractFormControl {
    }
 
    /**
-    * Erstellt den fertigen JSCode, damit dieser über den Hrml-Header-Manager ausgegeben werden kann
+    * Creates the allowed extension string for the JS code.
     *
-    * @return string
+    * @param array $mimeTypes The list of allowed MIME types.
+    *
+    * @return string The JS regexp string.
     *
     * @author dave
-    * @version 1.0, 14.07.2012
+    * @version
+    * Version 1.0, 14.07.2012<br />
     */
-   private function createJSCode() {
-      $code = '
-            $(".uploadlabel").css("display", "block");
+   private function createFileExtensionForJS(array $mimeTypes) {
+      $return = '';
+      foreach ($mimeTypes as $mimeType) {
 
-            function deletefile(link, elem) {
+         $extension = substr(strrchr($mimeType, '/'), 1);
+         if ($return == '') {
+            $return = '/\.(' . $extension . ')';
+         } else {
+            $return .= '|(' . $extension . ')';
+         }
+      }
 
-               $(".confirm_delete").dialog("destroy");
-               $(".uploadlabel").show();
-               $(".confirm_delete").dialog({
-                  modal: true,
-                  height: 240,
-                  width: 400,
-                  buttons: {
-                     "' . $this->languageConfig->getValue('delete.ok') . '": function() {
-                        $(this).dialog("close");
-                        var jqxhr = $.ajax({
-                           url: link
-                        })
-                        .success(function() {
-                           $(elem).parent().parent().remove();
-                        })
-                     },
-                     "' . $this->languageConfig->getValue('delete.no') . '" : function() {
-                        $(this).dialog("close");
-                        return false;
-                     }
-                  }
-               });
-               return false;
-            }
+      return $return . '$/i';
+   }
 
-            $(function () {
-                $(\'#' . $this->formName . '\').fileUploadUI({
-                   url: "' . $this->manager->link() . '",
-                   fieldName: "' . $this->uploadFieldName . '",
-                   uploadTable: ' . $this->createUploadTable() . '
-                   downloadTable: ' . $this->createDownloadTable() . '
-                   buildUploadRow: ' . $this->buildUploadRow() . '
-                   buildDownloadRow: ' . $this->buildDownloadRow() . '
-                   
-                   dropZone: $("#' . $this->uploadFieldName . '_file_upload_container"),
-                   parseResponse: function (xhr) {
-                      if (typeof xhr.responseText !== "undefined") {
-                            return $.parseJSON(xhr.responseText);
-                      } else {
-                            return $.parseJSON(xhr.contents().text());
-                      }
-                   },
-                   onProgress: function (event, files, index, xhr, handler) {
-                      if (handler.progressbar) {
-                         var value=parseInt(event.loaded / event.total * 100, 10);
-                         handler.uploadRow.find(".value").text(value + "%");
-                         handler.progressbar.progressbar(\'value\',value);
-                      }
-                   },
-                   beforeSend : function (event, files, index, xhr, handler, callBack) {
-                      ' . $this->createFileSizeCheck() . $this->createMimeTypeCheck() . '
-                      callBack();
-                   }
-               });
-            });';
+   /**
+    * Lädt die Dateien hinauf, wenn das Formular ohne JS ausgeführt wurde.
+    *
+    * @return boolean erfolg - Falls es möglich war dateien hinzuzufügen liefert die funktion true, sonst false
+    *
+    * @author Werner Liemberger <wpublicmail@gmail.com>
+    * @version 1.0, 14.3.2011<br>
+    */
+   public function uploadFiles() {
+      $name = &$this->uploadFieldName;
+      if (isset($_FILES[$name]) && $_FILES[$name]['name'] != '') {
+         $addfile = $this->manager->addFile($_FILES[$name], false);
+         unset($_FILES[$name]);
 
-      return $code;
+         return $addfile;
+      } else {
+         return false;
+      }
+   }
+
+   /**
+    * Liefert das Datei Array des aktuellen Formularnutzers zurück.
+    *
+    * @return array
+    *
+    * @author Werner Liemberger <wpublicmail@gmail.com>
+    * @version 1.0, 14.3.2011<br>
+    */
+   public function getFiles() {
+      return $this->manager->getFiles();
+   }
+
+   /**
+    * Verschiebt die angegebene Datei an den angegeben Ort.
+    *
+    * @param string $uploadname - md5 Wert der raufgeladenen Datei
+    * @param string $dir - Zielverzeichnis
+    * @param string $name - Name unter dem die Datei gespeichert wird.
+    *
+    * @return bool <em>True</em> in case the file move has been successfully, <em>false</em> otherwise.
+    *
+    * @author Werner Liemberger <wpublicmail@gmail.com>
+    * @version 1.0, 14.3.2011<br>
+    * @version 1.1, 14.09.2012 (removed bug for method moveFile)<br>
+    */
+   public function moveFile($uploadname, $dir, $name) {
+      return $this->manager->moveFile($uploadname, $dir, $name);
+   }
+
+   /**
+    * Funktion liefert das temporäre Uplaodverzeichnis zurück
+    *
+    * @return string Uplaodpath
+    *
+    * @author Werner Liemberger <wpublicmail@gmail.com>
+    * @version 1.0, 14.3.2011<br>
+    */
+   public function getUploadPath() {
+      return $this->manager->getUploadPath();
    }
 
    public function reset() {

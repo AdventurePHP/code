@@ -21,6 +21,7 @@
 namespace APF\tests\suites\core\expression;
 
 use APF\core\expression\MethodEvaluationExpression;
+use APF\core\pagecontroller\ParserException;
 
 class MethodEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
 
@@ -63,20 +64,20 @@ class MethodEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testInvalidPreviousResult() {
-      $this->setExpectedException('APF\core\pagecontroller\ParserException');
+      $this->setExpectedException(ParserException::class);
       $expression = new MethodEvaluationExpression('getFoo()', 'bar');
       $expression->getResult();
    }
 
    public function testInvalidMethod() {
-      $this->setExpectedException('APF\core\pagecontroller\ParserException');
+      $this->setExpectedException(ParserException::class);
       $model = new ContentModel();
       $expression = new MethodEvaluationExpression('getFoo()', $model);
       $expression->getResult();
    }
 
    public function testInvalidExpression() {
-      $this->setExpectedException('APF\core\pagecontroller\ParserException');
+      $this->setExpectedException(ParserException::class);
       $model = new ContentModel();
       $expression = new MethodEvaluationExpression('getFoo', $model);
       $expression->getResult();

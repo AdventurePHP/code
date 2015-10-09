@@ -126,8 +126,8 @@ class GenericImportTemplateTag extends ImportTemplateTag {
 
          // register action with the front controller
          /* @var $fC Frontcontroller */
-         $fC = & Singleton::getInstance('APF\core\frontcontroller\Frontcontroller');
-         $action = & $fC->getActionByName($dependentActionName);
+         $fC = &Singleton::getInstance(Frontcontroller::class);
+         $action = &$fC->getActionByName($dependentActionName);
          if ($action === null) {
             $fC->addAction($dependentActionNamespace, $dependentActionName, $actionParamList);
          }

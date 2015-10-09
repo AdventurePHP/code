@@ -32,7 +32,7 @@ use APF\core\singleton\Singleton;
 class SingletonTest extends \PHPUnit_Framework_TestCase {
 
    const TEST_TAG = 'test';
-   const MODEL_CLASS = 'APF\tests\suites\core\singleton\TagModel';
+   const MODEL_CLASS = TagModel::class;
    const INSTANCE_ID = 'test-id';
 
    public function testSimpleCreation() {

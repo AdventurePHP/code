@@ -54,7 +54,7 @@ class LoginController extends BaseDocumentController {
    public function transformContent() {
 
       /* @var $sessionStore UmgtUserSessionStore */
-      $sessionStore = &$this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', [],
+      $sessionStore = &$this->getServiceObject(UmgtUserSessionStore::class, [],
             APFService::SERVICE_TYPE_SESSION_SINGLETON);
 
       $appIdent = $this->getContext();
@@ -101,7 +101,7 @@ class LoginController extends BaseDocumentController {
             } catch (Exception $e) {
                $this->getTemplate('system-error')->transformOnPlace();
 
-               $l = &Singleton::getInstance('APF\core\logging\Logger');
+               $l = &Singleton::getInstance(Logger::class);
                /* @var $l Logger */
                $l->logEntry('login', 'Login is not possible due to ' . $e, LogEntry::SEVERITY_ERROR);
             }

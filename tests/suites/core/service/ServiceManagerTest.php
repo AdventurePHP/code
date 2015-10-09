@@ -33,7 +33,7 @@ use APF\core\singleton\Singleton;
  */
 class ServiceManagerTest extends \PHPUnit_Framework_TestCase {
 
-   const SERVICE_CLASS = 'APF\tests\suites\core\service\DummyService';
+   const SERVICE_CLASS = DummyService::class;
    const CONTEXT = 'foo';
    const LANGUAGE = 'de';
    const INSTANCE_ID = 'test-id';

@@ -80,7 +80,7 @@ class DIServiceManagerTest extends \PHPUnit_Framework_TestCase {
       $this->assertEquals(APFService::SERVICE_TYPE_SINGLETON, $service->getServiceType());
 
       $this->assertEquals('foo', $service->getParamOne());
-      $this->assertInstanceOf('APF\tests\suites\core\service\DummyServiceTwo', $service->getParamTwo());
+      $this->assertInstanceOf(DummyServiceTwo::class, $service->getParamTwo());
 
    }
 
@@ -95,7 +95,7 @@ class DIServiceManagerTest extends \PHPUnit_Framework_TestCase {
       $this->assertEquals(APFService::SERVICE_TYPE_SINGLETON, $service->getServiceType());
 
       $this->assertEquals('foo', $service->getParamOne());
-      $this->assertInstanceOf('APF\tests\suites\core\service\DummyServiceTwo', $service->getParamTwo());
+      $this->assertInstanceOf(DummyServiceTwo::class, $service->getParamTwo());
 
    }
 
@@ -124,7 +124,7 @@ class DIServiceManagerTest extends \PHPUnit_Framework_TestCase {
       $this->assertEquals(APFService::SERVICE_TYPE_SINGLETON, $service->getServiceType());
 
       $this->assertEquals('foo', $service->getParamOne());
-      $this->assertInstanceOf('APF\tests\suites\core\service\DummyServiceTwo', $service->getParamTwo());
+      $this->assertInstanceOf(DummyServiceTwo::class, $service->getParamTwo());
 
       DIServiceManager::$configurationExtension = 'ini';
 

@@ -22,6 +22,7 @@ namespace APF\tests\suites\core\registry;
 
 use APF\core\registry\Registry;
 use InvalidArgumentException;
+use ReflectionClass;
 
 /**
  * Test methods of registry class with valid parameters<br />
@@ -69,7 +70,7 @@ class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
     * Version 0.1, 17.12.2011<br />
     */
    public function testConstructorNotCallable() {
-      $oReflectionRegistry = new \ReflectionClass('APF\core\registry\Registry');
+      $oReflectionRegistry = new ReflectionClass(Registry::class);
       assertFalse($oReflectionRegistry->isInstantiable(), 'Registry object should not be abled to be instanced!');
    }
 
@@ -86,7 +87,7 @@ class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
     * Version 0.1, 17.12.2011<br />
     */
    public function testStaticClassHasFinalAttribute() {
-      $oReflectionRegistry = new \ReflectionClass('APF\core\registry\Registry');
+      $oReflectionRegistry = new ReflectionClass(Registry::class);
       assertTrue($oReflectionRegistry->isFinal(), 'Registry object should be declared as final!');
    }
 
@@ -103,7 +104,7 @@ class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
     * Version 0.1, 17.12.2011<br />
     */
    public function testMethodsExisting() {
-      $oReflectionRegistry = new \ReflectionClass('APF\core\registry\Registry');
+      $oReflectionRegistry = new ReflectionClass(Registry::class);
       assertTrue($oReflectionRegistry->hasMethod('register'));
       assertTrue($oReflectionRegistry->hasMethod('retrieve'));
    }
@@ -121,7 +122,7 @@ class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
     * Version 0.1, 17.12.2011<br />
     */
    public function testRegisterDefaultMethod() {
-      $oReflectionRegistry = new \ReflectionClass('APF\core\registry\Registry');
+      $oReflectionRegistry = new ReflectionClass(Registry::class);
       $aProperties = $oReflectionRegistry->getStaticProperties();
       $aRegistryStore = $aProperties['REGISTRY_STORE'];
       // --- Prefilled with default values
@@ -129,9 +130,9 @@ class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
       assertEquals(3, count($aRegistryStore['APF\core']));
 
       Registry::register(
-         self::$REGISTRY_NAMESPACE,
-         self::$REGISTRY_NAME,
-         self::$REGISTRY_VALUE);
+            self::$REGISTRY_NAMESPACE,
+            self::$REGISTRY_NAME,
+            self::$REGISTRY_VALUE);
 
       $aProperties = $oReflectionRegistry->getStaticProperties();
       $aRegistryStore = $aProperties['REGISTRY_STORE'];
@@ -159,12 +160,12 @@ class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
     */
    public function testRegisterReadonlyMethod() {
       Registry::register(
-         self::$REGISTRY_NAMESPACE,
-         self::$REGISTRY_NAME,
-         self::$REGISTRY_VALUE,
-         true);
+            self::$REGISTRY_NAMESPACE,
+            self::$REGISTRY_NAME,
+            self::$REGISTRY_VALUE,
+            true);
 
-      $oReflectionRegistry = new \ReflectionClass('APF\core\registry\Registry');
+      $oReflectionRegistry = new ReflectionClass(Registry::class);
       $aProperties = $oReflectionRegistry->getStaticProperties();
       $aRegistryStore = $aProperties['REGISTRY_STORE'];
       assertEquals(2, count($aRegistryStore));
@@ -193,15 +194,15 @@ class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
     */
    public function testRegisterMethodReadonlyEffectWithOverwriteTry() {
       Registry::register(
-         self::$REGISTRY_NAMESPACE,
-         self::$REGISTRY_NAME,
-         self::$REGISTRY_VALUE,
-         true);
+            self::$REGISTRY_NAMESPACE,
+            self::$REGISTRY_NAME,
+            self::$REGISTRY_VALUE,
+            true);
 
       Registry::register(
-         self::$REGISTRY_NAMESPACE,
-         self::$REGISTRY_NAME,
-         self::$REGISTRY_VALUE);
+            self::$REGISTRY_NAMESPACE,
+            self::$REGISTRY_NAME,
+            self::$REGISTRY_VALUE);
    }
 
    /**
@@ -218,53 +219,53 @@ class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
     */
    public function testRetrieveMethod() {
       Registry::register(
-         self::$REGISTRY_NAMESPACE,
-         self::$REGISTRY_NAME,
-         self::$REGISTRY_VALUE,
-         true);
+            self::$REGISTRY_NAMESPACE,
+            self::$REGISTRY_NAME,
+            self::$REGISTRY_VALUE,
+            true);
 
       $sReturnValue = Registry::retrieve(
-         self::$REGISTRY_NAMESPACE,
-         self::$REGISTRY_NAME);
+            self::$REGISTRY_NAMESPACE,
+            self::$REGISTRY_NAME);
       assertEquals(self::$REGISTRY_VALUE, $sReturnValue);
 
       $sReturnValue = Registry::retrieve(
-         self::$REGISTRY_NAMESPACE,
-         self::$REGISTRY_NAME,
-         self::$REGISTRY_DEFAULT_VALUE);
+            self::$REGISTRY_NAMESPACE,
+            self::$REGISTRY_NAME,
+            self::$REGISTRY_DEFAULT_VALUE);
       assertEquals(self::$REGISTRY_VALUE, $sReturnValue);
 
       $sReturnValue = Registry::retrieve(
-         self::$REGISTRY_NAMESPACE . '42',
-         self::$REGISTRY_NAME);
+            self::$REGISTRY_NAMESPACE . '42',
+            self::$REGISTRY_NAME);
       assertNull($sReturnValue);
 
       $sReturnValue = Registry::retrieve(
-         self::$REGISTRY_NAMESPACE . '42',
-         self::$REGISTRY_NAME,
-         self::$REGISTRY_DEFAULT_VALUE);
+            self::$REGISTRY_NAMESPACE . '42',
+            self::$REGISTRY_NAME,
+            self::$REGISTRY_DEFAULT_VALUE);
       assertEquals(self::$REGISTRY_DEFAULT_VALUE, $sReturnValue);
 
       $sReturnValue = Registry::retrieve(
-         self::$REGISTRY_NAMESPACE,
+            self::$REGISTRY_NAMESPACE,
             self::$REGISTRY_NAME . '42');
       assertNull($sReturnValue);
 
       $sReturnValue = Registry::retrieve(
-         self::$REGISTRY_NAMESPACE,
+            self::$REGISTRY_NAMESPACE,
             self::$REGISTRY_NAME . '42',
-         self::$REGISTRY_DEFAULT_VALUE);
+            self::$REGISTRY_DEFAULT_VALUE);
       assertEquals(self::$REGISTRY_DEFAULT_VALUE, $sReturnValue);
 
       $sReturnValue = Registry::retrieve(
-         self::$REGISTRY_NAMESPACE . '42',
+            self::$REGISTRY_NAMESPACE . '42',
             self::$REGISTRY_NAME . '42');
       assertNull($sReturnValue);
 
       $sReturnValue = Registry::retrieve(
-         self::$REGISTRY_NAMESPACE . '42',
+            self::$REGISTRY_NAMESPACE . '42',
             self::$REGISTRY_NAME . '42',
-         self::$REGISTRY_DEFAULT_VALUE);
+            self::$REGISTRY_DEFAULT_VALUE);
       assertEquals(self::$REGISTRY_DEFAULT_VALUE, $sReturnValue);
    }
 }

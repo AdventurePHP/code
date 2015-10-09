@@ -54,7 +54,7 @@ class NewsPagerAjaxBackendAction extends AbstractFrontcontrollerAction {
 
       /* @var $provider NewsPagerProvider */
       // load news object
-      $provider = &$this->getServiceObject('APF\modules\newspager\data\NewsPagerProvider');
+      $provider = &$this->getServiceObject(NewsPagerProvider::class);
       $news = $provider->getNewsByPage($dataDir, $page);
 
       // send json

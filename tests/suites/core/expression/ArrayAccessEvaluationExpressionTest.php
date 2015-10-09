@@ -21,6 +21,7 @@
 namespace APF\tests\suites\core\expression;
 
 use APF\core\expression\ArrayAccessEvaluationExpression;
+use APF\core\pagecontroller\ParserException;
 
 class ArrayAccessEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
 
@@ -28,18 +29,19 @@ class ArrayAccessEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
 
    private function getPreviousResult() {
       $model = new ContentModel();
+
       return array(
-         0 => $model,
-         4711 => $model,
-         'foo' => $model,
-         'bar' => array(
-            42 => $model,
-            'baz' => $model
-         ),
-         42 => array(
-            0 => $model,
-            1 => $model
-         )
+            0     => $model,
+            4711  => $model,
+            'foo' => $model,
+            'bar' => array(
+                  42    => $model,
+                  'baz' => $model
+            ),
+            42    => array(
+                  0 => $model,
+                  1 => $model
+            )
       );
    }
 
@@ -74,19 +76,19 @@ class ArrayAccessEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testInvalidOffset() {
-      $this->setExpectedException('APF\core\pagecontroller\ParserException');
+      $this->setExpectedException(ParserException::class);
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME . '[\'baz\']', $this->getPreviousResult());
       $expression->getResult();
    }
 
    public function testInvalidExpression() {
-      $this->setExpectedException('APF\core\pagecontroller\ParserException');
+      $this->setExpectedException(ParserException::class);
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME, array());
       $expression->getResult();
    }
 
    public function testInvalidPreviousResult() {
-      $this->setExpectedException('APF\core\pagecontroller\ParserException');
+      $this->setExpectedException(ParserException::class);
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME, null);
       $expression->getResult();
    }

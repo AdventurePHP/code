@@ -41,7 +41,7 @@ class DefinitionListTag extends AbstractListTag {
     * @return string
     */
    public function addDefinitionTerm($sContent, $sClass = '') {
-      $this->addElementInternal($sContent, $sClass, 'APF\extensions\htmllist\taglib\DefinitionListTermTag');
+      $this->addElementInternal($sContent, $sClass, DefinitionListTermTag::class);
    }
 
    /**
@@ -53,7 +53,7 @@ class DefinitionListTag extends AbstractListTag {
     * @return string
     */
    public function addDefinition($sContent, $sClass = '') {
-      $this->addElementInternal($sContent, $sClass, 'APF\extensions\htmllist\taglib\DefinitionListDefinitionTag');
+      $this->addElementInternal($sContent, $sClass, DefinitionListDefinitionTag::class);
    }
 
    protected function getListIdentifier() {

@@ -72,8 +72,34 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
       return 'file';
    }
 
-   protected function gzipIsSupported() {
-      return $this->getRequest()->isGzipSupported();
+   protected function sendPackage() {
+      $package = $this->getInput()->getParameter('package');
+
+      $packageExpl = explode('.', $package);
+      if (count($packageExpl) !== 2) {
+         throw new InvalidArgumentException('[JsCssInclusionAction::sendPackage()] The attribute
+                 "package" has to be like "packagename.type", with type
+                 being "js" or "css".');
+      }
+
+      $packName = $packageExpl[0];
+      $packType = $packageExpl[1];
+
+      $mimeType = $this->getMimeType($packType);
+
+      /* @var $packager JsCssPackager */
+      $packager = $this->getServiceObject(JsCssPackager::class);
+      $output = $packager->getPackage($packName, $this->gzipIsSupported());
+
+      $response = &$this->getResponse();
+
+      // Get ClientCachePeriod (in days), and convert to seconds
+      $clientCachePeriod = $packager->getClientCachePeriod($packName) * 86400;
+      $this->addHeaders($response, $clientCachePeriod, $mimeType);
+
+      $response->setBody($output);
+
+      $response->send();
    }
 
    /**
@@ -94,51 +120,8 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
       }
    }
 
-   protected function getSanitizedNamespace($namespace) {
-      $namespace = str_replace('_', '\\', // resolve url notation for namespaces
-            preg_replace('/[^A-Za-z0-9\-_\.]/', '', $namespace)
-      );
-
-      // Changing to higher directories is not allowed, either!
-      while (preg_match('/\.\./', $namespace) > 0) {
-         $namespace = preg_replace('/\.\./', '', $namespace);
-      }
-
-      return $namespace;
-   }
-
-   private function getSanitizedFileBody($fileBody) {
-      return preg_replace('/[^A-Za-z0-9\-_\.]/', '', $fileBody);
-   }
-
-   protected function sendPackage() {
-      $package = $this->getInput()->getParameter('package');
-
-      $packageExpl = explode('.', $package);
-      if (count($packageExpl) !== 2) {
-         throw new InvalidArgumentException('[JsCssInclusionAction::sendPackage()] The attribute
-                 "package" has to be like "packagename.type", with type
-                 being "js" or "css".');
-      }
-
-      $packName = $packageExpl[0];
-      $packType = $packageExpl[1];
-
-      $mimeType = $this->getMimeType($packType);
-
-      /* @var $packager JsCssPackager */
-      $packager = $this->getServiceObject('APF\extensions\htmlheader\biz\JsCssPackager');
-      $output = $packager->getPackage($packName, $this->gzipIsSupported());
-
-      $response = &$this->getResponse();
-
-      // Get ClientCachePeriod (in days), and convert to seconds
-      $clientCachePeriod = $packager->getClientCachePeriod($packName) * 86400;
-      $this->addHeaders($response, $clientCachePeriod, $mimeType);
-
-      $response->setBody($output);
-
-      $response->send();
+   protected function gzipIsSupported() {
+      return $this->getRequest()->isGzipSupported();
    }
 
    protected function addHeaders(ResponseImpl &$response, $clientCachePeriod, $mimeType) {
@@ -187,9 +170,26 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
       $this->addHeaders($response, $this->ttl, $mimeType);
 
       /* @var $packager JsCssPackager */
-      $packager = $this->getServiceObject('APF\extensions\htmlheader\biz\JsCssPackager');
+      $packager = $this->getServiceObject(JsCssPackager::class);
       $response->setBody($packager->getFile($namespace, $file, $type, $this->gzipIsSupported()));
 
       $response->send();
+   }
+
+   protected function getSanitizedNamespace($namespace) {
+      $namespace = str_replace('_', '\\', // resolve url notation for namespaces
+            preg_replace('/[^A-Za-z0-9\-_\.]/', '', $namespace)
+      );
+
+      // Changing to higher directories is not allowed, either!
+      while (preg_match('/\.\./', $namespace) > 0) {
+         $namespace = preg_replace('/\.\./', '', $namespace);
+      }
+
+      return $namespace;
+   }
+
+   private function getSanitizedFileBody($fileBody) {
+      return preg_replace('/[^A-Za-z0-9\-_\.]/', '', $fileBody);
    }
 }

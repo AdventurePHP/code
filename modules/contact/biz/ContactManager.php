@@ -59,7 +59,7 @@ class ContactManager extends APFObject {
 
       // set up the mail sender
       /* @var $mail mailSender */
-      $mail = &$this->getServiceObject('APF\tools\mail\mailSender');
+      $mail = &$this->getServiceObject(mailSender::class);
       $mail->init('ContactForm');
 
       /* @var $recipient ContactFormRecipient */
@@ -114,24 +114,10 @@ class ContactManager extends APFObject {
    }
 
    /**
-    * Loads the configuration of the recipients.
-    *
-    * @return ContactFormRecipient[] The contact reasons.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 03.06.2006<br />
-    * Version 0.2, 04.06.2006<br />
-    */
-   public function loadRecipients() {
-      return $this->getMapper()->loadRecipients();
-   }
-
-   /**
     * @return ContactMapper
     */
    private function &getMapper() {
-      return $this->getServiceObject('APF\modules\contact\data\ContactMapper');
+      return $this->getServiceObject(ContactMapper::class);
    }
 
    /**
@@ -165,46 +151,6 @@ class ContactManager extends APFObject {
       }
 
       $section = $config->getSection($this->getLanguage())->getSection('notification');
-
-      return $this->fillPlaceHolders(
-            $this->getEmailTemplateContent(
-                  $section->getValue('namespace'),
-                  $section->getValue('template')
-            ),
-            $values
-      );
-   }
-
-   /**
-    * Allows you to set these place holders (including the brackets!) within your text:
-    * <ul>
-    * <li>{sender-name}</li>
-    * <li>{sender-email}</li>
-    * <li>{sender-subject}</li>
-    * <li>{sender-message}</li>
-    * <li>{recipient-name}</li>
-    * <li>{recipient-email}</li>
-    * </ul>
-    *
-    * @param array $values An associative array of place holders and their value to be included within the text.
-    *
-    * @return string The notification text sent to the originator to confirm the submission.
-    * @throws ConfigurationException In case the language configuration section is missing.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 19.10.2011<br />
-    */
-   private function getConfirmationText(array $values = array()) {
-      $config = $this->getConfiguration('APF\modules\contact', 'mail_templates.ini');
-
-      if (!$config->hasSection($this->getLanguage())) {
-         throw new ConfigurationException('Configuration section "' . $this->getLanguage() . '" is not present within '
-               . 'the contact form module configuration loading the email templates. Please '
-               . 'review your configuration!');
-      }
-
-      $section = $config->getSection($this->getLanguage())->getSection('confirmation');
 
       return $this->fillPlaceHolders(
             $this->getEmailTemplateContent(
@@ -262,6 +208,60 @@ class ContactManager extends APFObject {
       }
       throw new IncludeException('Email template file "' . $file . '" cannot be loaded. '
             . 'Please review your contact module configuration!');
+   }
+
+   /**
+    * Allows you to set these place holders (including the brackets!) within your text:
+    * <ul>
+    * <li>{sender-name}</li>
+    * <li>{sender-email}</li>
+    * <li>{sender-subject}</li>
+    * <li>{sender-message}</li>
+    * <li>{recipient-name}</li>
+    * <li>{recipient-email}</li>
+    * </ul>
+    *
+    * @param array $values An associative array of place holders and their value to be included within the text.
+    *
+    * @return string The notification text sent to the originator to confirm the submission.
+    * @throws ConfigurationException In case the language configuration section is missing.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 19.10.2011<br />
+    */
+   private function getConfirmationText(array $values = array()) {
+      $config = $this->getConfiguration('APF\modules\contact', 'mail_templates.ini');
+
+      if (!$config->hasSection($this->getLanguage())) {
+         throw new ConfigurationException('Configuration section "' . $this->getLanguage() . '" is not present within '
+               . 'the contact form module configuration loading the email templates. Please '
+               . 'review your configuration!');
+      }
+
+      $section = $config->getSection($this->getLanguage())->getSection('confirmation');
+
+      return $this->fillPlaceHolders(
+            $this->getEmailTemplateContent(
+                  $section->getValue('namespace'),
+                  $section->getValue('template')
+            ),
+            $values
+      );
+   }
+
+   /**
+    * Loads the configuration of the recipients.
+    *
+    * @return ContactFormRecipient[] The contact reasons.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 03.06.2006<br />
+    * Version 0.2, 04.06.2006<br />
+    */
+   public function loadRecipients() {
+      return $this->getMapper()->loadRecipients();
    }
 
 }

@@ -27,11 +27,64 @@ use APF\core\exceptionhandler\GlobalExceptionHandler;
 use APF\core\filter\ChainedStandardInputFilter;
 use APF\core\filter\InputFilterChain;
 use APF\core\logging\Logger;
+use APF\core\pagecontroller\AddTaglibTag;
+use APF\core\pagecontroller\AppendNodeTag;
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\DynamicTemplateExpression;
+use APF\core\pagecontroller\ImportTemplateTag;
+use APF\core\pagecontroller\LanguageLabelTag;
+use APF\core\pagecontroller\PlaceHolderTag;
+use APF\core\pagecontroller\PlaceHolderTemplateExpression;
+use APF\core\pagecontroller\TemplateTag;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
+use APF\extensions\htmllist\taglib\DefinitionListDefinitionTag;
+use APF\extensions\htmllist\taglib\DefinitionListTermTag;
+use APF\extensions\htmllist\taglib\ListElementTag;
+use APF\modules\captcha\pres\taglib\SimpleCaptchaTag;
+use APF\modules\recaptcha\pres\taglib\ReCaptchaTag;
+use APF\modules\recaptcha\pres\taglib\ReCaptchaTranslationTag;
+use APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionLanguageLabelTag;
+use APF\tools\form\multifileupload\pres\taglib\MultiFileUploadTag;
+use APF\tools\form\taglib\AddFormControlFilterTag;
+use APF\tools\form\taglib\AddFormControlValidatorTag;
+use APF\tools\form\taglib\ButtonLanguageLabelTag;
+use APF\tools\form\taglib\ButtonTag;
+use APF\tools\form\taglib\CheckBoxTag;
+use APF\tools\form\taglib\CsrfProtectionHashTag;
+use APF\tools\form\taglib\DateSelectorTag;
+use APF\tools\form\taglib\DynamicFormElementMarkerTag;
+use APF\tools\form\taglib\FileUploadTag;
+use APF\tools\form\taglib\FormErrorDisplayTag;
+use APF\tools\form\taglib\FormGroupTag;
+use APF\tools\form\taglib\FormLabelTag;
+use APF\tools\form\taglib\FormSuccessDisplayTag;
+use APF\tools\form\taglib\HiddenFieldTag;
+use APF\tools\form\taglib\HtmlFormTag;
+use APF\tools\form\taglib\ImageButtonTag;
+use APF\tools\form\taglib\LabelLanguageLabelTag;
+use APF\tools\form\taglib\MultiSelectBoxTag;
+use APF\tools\form\taglib\PasswordFieldTag;
+use APF\tools\form\taglib\RadioButtonTag;
+use APF\tools\form\taglib\ResetButtonTag;
+use APF\tools\form\taglib\SelectBoxGroupTag;
+use APF\tools\form\taglib\SelectBoxOptionTag;
+use APF\tools\form\taglib\SelectBoxTag;
+use APF\tools\form\taglib\TextAreaTag;
+use APF\tools\form\taglib\TextFieldTag;
+use APF\tools\form\taglib\TimeCaptchaTag;
+use APF\tools\form\taglib\TimeSelectorTag;
+use APF\tools\form\taglib\ValidationListenerTag;
+use APF\tools\html\taglib\FillHtmlIteratorTag;
+use APF\tools\html\taglib\HtmlIteratorItemTag;
+use APF\tools\html\taglib\HtmlIteratorTag;
 use APF\tools\link\DefaultLinkScheme;
 use APF\tools\link\LinkGenerator;
+use APF\tools\link\taglib\LinkLanguageLabelActiveTag;
+use APF\tools\link\taglib\LinkLanguageLabelTag;
+use APF\tools\link\taglib\LinkLanguageTitleActiveTag;
+use APF\tools\link\taglib\LinkLanguageTitleTag;
+use APF\tools\media\taglib\MediaInclusionTag;
 
 /**
  * @file bootstrap.php
@@ -105,7 +158,7 @@ ConfigurationManager::registerProvider('ini', new IniConfigurationProvider());
 // configure logger (outside namespace'd file! otherwise initialization will not work)
 register_shutdown_function(function () {
    /* @var $logger Logger */
-   $logger = &Singleton::getInstance('APF\core\logging\Logger');
+   $logger = &Singleton::getInstance(Logger::class);
    $logger->flushLogBuffer();
 });
 
@@ -129,78 +182,78 @@ InputFilterChain::getInstance()->appendFilter(new ChainedStandardInputFilter());
 // shipped with the release to have them available for custom tags. Tags are grouped per namespace and purpose.
 
 // APF\core
-Document::addTagLib('APF\core\pagecontroller\AddTaglibTag', 'core', 'addtaglib');
-Document::addTagLib('APF\core\pagecontroller\AppendNodeTag', 'core', 'appendnode');
-Document::addTagLib('APF\core\pagecontroller\ImportTemplateTag', 'core', 'importdesign');
+Document::addTagLib(AddTaglibTag::class, 'core', 'addtaglib');
+Document::addTagLib(AppendNodeTag::class, 'core', 'appendnode');
+Document::addTagLib(ImportTemplateTag::class, 'core', 'importdesign');
 
-Document::addTagLib('APF\core\pagecontroller\LanguageLabelTag', 'html', 'getstring');
-Document::addTagLib('APF\core\pagecontroller\PlaceHolderTag', 'html', 'placeholder');
+Document::addTagLib(LanguageLabelTag::class, 'html', 'getstring');
+Document::addTagLib(PlaceHolderTag::class, 'html', 'placeholder');
 
-Document::addTagLib('APF\core\pagecontroller\TemplateTag', 'html', 'template');
+Document::addTagLib(TemplateTag::class, 'html', 'template');
 
 // APF\tools
-Document::addTagLib('APF\tools\form\taglib\HtmlFormTag', 'html', 'form');
+Document::addTagLib(HtmlFormTag::class, 'html', 'form');
 
-Document::addTagLib('APF\tools\form\taglib\AddFormControlFilterTag', 'form', 'addfilter');
-Document::addTagLib('APF\tools\form\taglib\AddFormControlValidatorTag', 'form', 'addvalidator');
-Document::addTagLib('APF\tools\form\taglib\ButtonTag', 'form', 'button');
-Document::addTagLib('APF\tools\form\taglib\CheckBoxTag', 'form', 'checkbox');
-Document::addTagLib('APF\tools\form\taglib\CsrfProtectionHashTag', 'form', 'csrfhash');
-Document::addTagLib('APF\tools\form\taglib\DateSelectorTag', 'form', 'date');
-Document::addTagLib('APF\tools\form\taglib\DynamicFormElementMarkerTag', 'form', 'marker');
-Document::addTagLib('APF\tools\form\taglib\FileUploadTag', 'form', 'file');
-Document::addTagLib('APF\tools\form\multifileupload\pres\taglib\MultiFileUploadTag', 'form', 'multifileupload');
-Document::addTagLib('APF\tools\form\taglib\FormErrorDisplayTag', 'form', 'error');
-Document::addTagLib('APF\tools\form\taglib\FormLabelTag', 'form', 'label');
-Document::addTagLib('APF\tools\form\taglib\FormSuccessDisplayTag', 'form', 'success');
-Document::addTagLib('APF\tools\form\taglib\HiddenFieldTag', 'form', 'hidden');
-Document::addTagLib('APF\tools\form\taglib\ImageButtonTag', 'form', 'imagebutton');
-Document::addTagLib('APF\tools\form\taglib\MultiSelectBoxTag', 'form', 'multiselect');
-Document::addTagLib('APF\tools\form\taglib\PasswordFieldTag', 'form', 'password');
-Document::addTagLib('APF\tools\form\taglib\RadioButtonTag', 'form', 'radio');
-Document::addTagLib('APF\tools\form\taglib\ResetButtonTag', 'form', 'reset');
-Document::addTagLib('APF\tools\form\taglib\SelectBoxTag', 'form', 'select');
-Document::addTagLib('APF\tools\form\taglib\TextAreaTag', 'form', 'area');
-Document::addTagLib('APF\tools\form\taglib\TextFieldTag', 'form', 'text');
-Document::addTagLib('APF\tools\form\taglib\TimeCaptchaTag', 'form', 'timecaptcha');
-Document::addTagLib('APF\tools\form\taglib\TimeSelectorTag', 'form', 'time');
-Document::addTagLib('APF\tools\form\taglib\ValidationListenerTag', 'form', 'listener');
-Document::addTagLib('APF\tools\form\taglib\FormGroupTag', 'form', 'group');
+Document::addTagLib(AddFormControlFilterTag::class, 'form', 'addfilter');
+Document::addTagLib(AddFormControlValidatorTag::class, 'form', 'addvalidator');
+Document::addTagLib(ButtonTag::class, 'form', 'button');
+Document::addTagLib(CheckBoxTag::class, 'form', 'checkbox');
+Document::addTagLib(CsrfProtectionHashTag::class, 'form', 'csrfhash');
+Document::addTagLib(DateSelectorTag::class, 'form', 'date');
+Document::addTagLib(DynamicFormElementMarkerTag::class, 'form', 'marker');
+Document::addTagLib(FileUploadTag::class, 'form', 'file');
+Document::addTagLib(MultiFileUploadTag::class, 'form', 'multifileupload');
+Document::addTagLib(FormErrorDisplayTag::class, 'form', 'error');
+Document::addTagLib(FormLabelTag::class, 'form', 'label');
+Document::addTagLib(FormSuccessDisplayTag::class, 'form', 'success');
+Document::addTagLib(HiddenFieldTag::class, 'form', 'hidden');
+Document::addTagLib(ImageButtonTag::class, 'form', 'imagebutton');
+Document::addTagLib(MultiSelectBoxTag::class, 'form', 'multiselect');
+Document::addTagLib(PasswordFieldTag::class, 'form', 'password');
+Document::addTagLib(RadioButtonTag::class, 'form', 'radio');
+Document::addTagLib(ResetButtonTag::class, 'form', 'reset');
+Document::addTagLib(SelectBoxTag::class, 'form', 'select');
+Document::addTagLib(TextAreaTag::class, 'form', 'area');
+Document::addTagLib(TextFieldTag::class, 'form', 'text');
+Document::addTagLib(TimeCaptchaTag::class, 'form', 'timecaptcha');
+Document::addTagLib(TimeSelectorTag::class, 'form', 'time');
+Document::addTagLib(ValidationListenerTag::class, 'form', 'listener');
+Document::addTagLib(FormGroupTag::class, 'form', 'group');
 
-Document::addTagLib('APF\tools\html\taglib\HtmlIteratorTag', 'html', 'iterator');
-Document::addTagLib('APF\core\pagecontroller\TemplateTag', 'iterator', 'fallback');
-Document::addTagLib('APF\tools\html\taglib\HtmlIteratorItemTag', 'iterator', 'item');
-Document::addTagLib('APF\tools\html\taglib\FillHtmlIteratorTag', 'item', 'fill-iterator');
+Document::addTagLib(HtmlIteratorTag::class, 'html', 'iterator');
+Document::addTagLib(TemplateTag::class, 'iterator', 'fallback');
+Document::addTagLib(HtmlIteratorItemTag::class, 'iterator', 'item');
+Document::addTagLib(FillHtmlIteratorTag::class, 'item', 'fill-iterator');
 
-Document::addTagLib('APF\tools\form\taglib\ButtonLanguageLabelTag', 'button', 'getstring');
+Document::addTagLib(ButtonLanguageLabelTag::class, 'button', 'getstring');
 
-Document::addTagLib('APF\tools\form\taglib\LabelLanguageLabelTag', 'label', 'getstring');
+Document::addTagLib(LabelLanguageLabelTag::class, 'label', 'getstring');
 
-Document::addTagLib('APF\tools\form\taglib\SelectBoxGroupTag', 'select', 'group');
-Document::addTagLib('APF\tools\form\taglib\SelectBoxOptionTag', 'select', 'option');
-Document::addTagLib('APF\tools\form\taglib\SelectBoxOptionTag', 'group', 'option');
+Document::addTagLib(SelectBoxGroupTag::class, 'select', 'group');
+Document::addTagLib(SelectBoxOptionTag::class, 'select', 'option');
+Document::addTagLib(SelectBoxOptionTag::class, 'group', 'option');
 
-Document::addTagLib('APF\tools\link\taglib\LinkLanguageLabelActiveTag', 'aActive', 'getstring');
-Document::addTagLib('APF\tools\link\taglib\LinkLanguageLabelTag', 'a', 'getstring');
-Document::addTagLib('APF\tools\link\taglib\LinkLanguageTitleActiveTag', 'titleActive', 'getstring');
-Document::addTagLib('APF\tools\link\taglib\LinkLanguageTitleTag', 'title', 'getstring');
+Document::addTagLib(LinkLanguageLabelActiveTag::class, 'aActive', 'getstring');
+Document::addTagLib(LinkLanguageLabelTag::class, 'a', 'getstring');
+Document::addTagLib(LinkLanguageTitleActiveTag::class, 'titleActive', 'getstring');
+Document::addTagLib(LinkLanguageTitleTag::class, 'title', 'getstring');
 
-Document::addTagLib('APF\tools\media\taglib\MediaInclusionTag', 'html', 'mediastream');
+Document::addTagLib(MediaInclusionTag::class, 'html', 'mediastream');
 
 // APF\modules
-Document::addTagLib('APF\modules\recaptcha\pres\taglib\ReCaptchaTranslationTag', 'recaptcha', 'getstring');
-Document::addTagLib('APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionLanguageLabelTag', 'media', 'getstring');
+Document::addTagLib(ReCaptchaTranslationTag::class, 'recaptcha', 'getstring');
+Document::addTagLib(UmgtMediaInclusionLanguageLabelTag::class, 'media', 'getstring');
 
-Document::addTagLib('APF\modules\captcha\pres\taglib\SimpleCaptchaTag', 'form', 'captcha');
-Document::addTagLib('APF\modules\recaptcha\pres\taglib\ReCaptchaTag', 'form', 'recaptcha');
+Document::addTagLib(SimpleCaptchaTag::class, 'form', 'captcha');
+Document::addTagLib(ReCaptchaTag::class, 'form', 'recaptcha');
 
 // APF\extensions
-Document::addTagLib('APF\extensions\htmllist\taglib\DefinitionListDefinitionTag', 'list', 'elem_defdef');
-Document::addTagLib('APF\extensions\htmllist\taglib\DefinitionListTermTag', 'list', 'elem_defterm');
-Document::addTagLib('APF\extensions\htmllist\taglib\ListElementTag', 'list', 'elem_list');
+Document::addTagLib(DefinitionListDefinitionTag::class, 'list', 'elem_defdef');
+Document::addTagLib(DefinitionListTermTag::class, 'list', 'elem_defterm');
+Document::addTagLib(ListElementTag::class, 'list', 'elem_list');
 
 // The 2.2/3.0 APF parser allows to globally register template expressions. This allows to register custom "short cuts"
 // for template syntax (e.g. place holders, language labels). The following section registers the default APF expressions
 // shipped with the release to have them available for all templates.
-Document::addTemplateExpression('APF\core\pagecontroller\PlaceHolderTemplateExpression');
-Document::addTemplateExpression('APF\core\pagecontroller\DynamicTemplateExpression');
+Document::addTemplateExpression(PlaceHolderTemplateExpression::class);
+Document::addTemplateExpression(DynamicTemplateExpression::class);

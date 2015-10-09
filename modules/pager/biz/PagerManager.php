@@ -322,7 +322,7 @@ final class PagerManager extends APFObject {
     * @return PagerMapper
     */
    protected function &getMapper() {
-      return $this->getServiceObject('APF\modules\pager\data\PagerMapper', [$this->databaseConnectionName]);
+      return $this->getServiceObject(PagerMapper::class, [$this->databaseConnectionName]);
    }
 
    /**
@@ -484,7 +484,7 @@ final class PagerManager extends APFObject {
    private function createPages4PagerDisplay($addStmtParams = array()) {
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
       $t->start('PagerManager::createPages4PagerDisplay()');
 
       // initialize start params

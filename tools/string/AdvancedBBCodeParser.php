@@ -24,6 +24,10 @@ use APF\core\benchmark\BenchmarkTimer;
 use APF\core\pagecontroller\APFObject;
 use APF\core\service\APFService;
 use APF\core\singleton\Singleton;
+use APF\tools\string\bbcpprovider\FontColorProvider;
+use APF\tools\string\bbcpprovider\FontSizeProvider;
+use APF\tools\string\bbcpprovider\FontStyleProvider;
+use APF\tools\string\bbcpprovider\NewLineProvider;
 
 /**
  * Internal representation of an BBCodeParserProvider. Nearly the same as the TagLib class for
@@ -88,7 +92,7 @@ abstract class BBCodeParserProvider extends APFObject {
 /**
  * Implements the advanced bbcode parser for the adventure php framework.
  * Usage:
- * <pre>$bP = &$this->getServiceObject('APF\tools\string\AdvancedBBCodeParser');
+ * <pre>$bP = &$this->getServiceObject(AdvancedBBCodeParser::class);
  * [$bP->addProvider(...,...);]
  * [$bP->removeProvider(...);]
  * $string = '...';
@@ -114,10 +118,10 @@ class AdvancedBBCodeParser extends APFObject {
     * Version 0.1, 28.10.2008
     */
    public function __construct() {
-      $this->provider['standard.font.style'] = new BBCodeParserDefinition('APF\tools\string\bbcpprovider\FontStyleProvider');
-      $this->provider['standard.font.size'] = new BBCodeParserDefinition('APF\tools\string\bbcpprovider\FontSizeProvider');
-      $this->provider['standard.font.color'] = new BBCodeParserDefinition('APF\tools\string\bbcpprovider\FontColorProvider');
-      $this->provider['standard.newline'] = new BBCodeParserDefinition('APF\tools\string\bbcpprovider\NewLineProvider');
+      $this->provider['standard.font.style'] = new BBCodeParserDefinition(FontStyleProvider::class);
+      $this->provider['standard.font.size'] = new BBCodeParserDefinition(FontSizeProvider::class);
+      $this->provider['standard.font.color'] = new BBCodeParserDefinition(FontColorProvider::class);
+      $this->provider['standard.newline'] = new BBCodeParserDefinition(NewLineProvider::class);
    }
 
    /**
@@ -149,6 +153,36 @@ class AdvancedBBCodeParser extends APFObject {
    }
 
    /**
+    * Parses the given string using the provider configured before.
+    *
+    * @param string $string the string, that should be parsed
+    *
+    * @return string $parsedString the parsed string
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 28.10.2008
+    */
+   public function parseCode($string) {
+
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      /* @var $t BenchmarkTimer */
+      $t->start('AdvancedBBCodeParser::parseCode()');
+
+      // lazily set up the desired parser
+      $this->setUpProvider();
+
+      foreach ($this->provider as $provider) {
+         /* @var $provider BBCodeParserProvider */
+         $string = $provider->getOutput($string);
+      }
+
+      $t->stop('AdvancedBBCodeParser::parseCode()');
+
+      return $string;
+   }
+
+   /**
     * Sets up the provider to be ready for use. Converts each BBCodeParserDefinition into
     * it's real implementation. If a provider was added / removed the converter is going to
     * notice this fact.
@@ -159,7 +193,7 @@ class AdvancedBBCodeParser extends APFObject {
     */
    private function setUpProvider() {
 
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
       /* @var $t BenchmarkTimer */
       $t->start('AdvancedBBCodeParser::setUpProvider()');
 
@@ -177,36 +211,6 @@ class AdvancedBBCodeParser extends APFObject {
       }
 
       $t->stop('AdvancedBBCodeParser::setUpProvider()');
-   }
-
-   /**
-    * Parses the given string using the provider configured before.
-    *
-    * @param string $string the string, that should be parsed
-    *
-    * @return string $parsedString the parsed string
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 28.10.2008
-    */
-   public function parseCode($string) {
-
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
-      /* @var $t BenchmarkTimer */
-      $t->start('AdvancedBBCodeParser::parseCode()');
-
-      // lazily set up the desired parser
-      $this->setUpProvider();
-
-      foreach ($this->provider as $provider) {
-         /* @var $provider BBCodeParserProvider */
-         $string = $provider->getOutput($string);
-      }
-
-      $t->stop('AdvancedBBCodeParser::parseCode()');
-
-      return $string;
    }
 
 }

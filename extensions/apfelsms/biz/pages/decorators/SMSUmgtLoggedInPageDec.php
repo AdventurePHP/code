@@ -48,10 +48,8 @@ class SMSUmgtLoggedInPageDec extends SMSAbstractPageDec {
     */
    public function isHidden() {
 
-
       /** @var $umgtUS UmgtUserSessionStore */
-      $umgtUS = &$this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', [],
-            APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      $umgtUS = &$this->getServiceObject(UmgtUserSessionStore::class, [], APFService::SERVICE_TYPE_SESSION_SINGLETON);
 
       // load current user
       $user = $umgtUS->getUser($this->getContext());
@@ -66,19 +64,6 @@ class SMSUmgtLoggedInPageDec extends SMSAbstractPageDec {
 
    }
 
-
-   /**
-    * @param boolean $hiddenOnLogin
-    *
-    * @since v0.2
-    */
-   public function setHiddenOnLogin($hiddenOnLogin) {
-
-
-      $this->hiddenOnLogin = (strtolower((string) $hiddenOnLogin) == 'true');
-   }
-
-
    /**
     * @return boolean
     * @since v0.2
@@ -87,6 +72,15 @@ class SMSUmgtLoggedInPageDec extends SMSAbstractPageDec {
 
 
       return $this->hiddenOnLogin;
+   }
+
+   /**
+    * @param boolean $hiddenOnLogin
+    *
+    * @since v0.2
+    */
+   public function setHiddenOnLogin($hiddenOnLogin) {
+      $this->hiddenOnLogin = (strtolower((string) $hiddenOnLogin) == 'true');
    }
 
 }

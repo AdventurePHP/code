@@ -27,7 +27,7 @@ use APF\core\service\APFService;
  * Implements the factory of the pager manager. Initializes concrete PagerManager
  * instances and caches them for further usage.
  * Application sample:
- * <pre>$pMF = &$this->getServiceObject('APF\modules\pager\biz\PagerManagerFabric');
+ * <pre>$pMF = &$this->getServiceObject(PagerManagerFabric::class);
  * $pM = &$pMF->getPagerManager('{ConfigSection}', {AdditionalParamArray});</pre>
  *
  * @deprecated Please use initialization of the PagerManager via the DIServiceManager instead.
@@ -64,7 +64,7 @@ final class PagerManagerFabric extends APFObject {
 
       // initialize desired pager lazily
       if (!isset($this->pager[$pagerHash])) {
-         $this->pager[$pagerHash] = $this->getServiceObject('APF\modules\pager\biz\PagerManager', [],
+         $this->pager[$pagerHash] = $this->getServiceObject(PagerManager::class, [],
                APFService::SERVICE_TYPE_NORMAL);
          $this->pager[$pagerHash]->init($configString);
       }

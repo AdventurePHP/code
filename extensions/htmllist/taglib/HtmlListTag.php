@@ -33,9 +33,9 @@ use InvalidArgumentException;
 class HtmlListTag extends Document {
 
    protected $listTypes = [
-         'list:unordered'  => 'APF\extensions\htmllist\taglib\UnorderedListTag',
-         'list:ordered'    => 'APF\extensions\htmllist\taglib\OrderedListTag',
-         'list:definition' => 'APF\extensions\htmllist\taglib\DefinitionListTag'
+         'list:unordered'  => UnorderedListTag::class,
+         'list:ordered'    => OrderedListTag::class,
+         'list:definition' => DefinitionListTag::class
    ];
 
    /**

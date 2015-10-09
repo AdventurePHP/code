@@ -125,6 +125,6 @@ abstract class GlobalExceptionHandler {
       }
 
       // (re-)register the APF exception handler
-      set_exception_handler(array('APF\core\exceptionhandler\GlobalExceptionHandler', 'handleException'));
+      set_exception_handler(array(GlobalExceptionHandler::class, 'handleException'));
    }
 }

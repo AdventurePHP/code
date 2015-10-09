@@ -94,19 +94,6 @@ final class ArrayPagerManager extends APFObject {
    }
 
    /**
-    * Returns the mapper.
-    *
-    * @return ArrayPagerMapper The pager mapper.
-    *
-    * @author Lutz Mahlstedt
-    * @version
-    * Version 0.1, 21.12.2009<br />
-    */
-   protected function &getDataMapper() {
-      return $this->getServiceObject('APF\extensions\arraypager\data\ArrayPagerMapper');
-   }
-
-   /**
     * @param string $stringPager name of the pager
     * @param integer $integerPage optional parameter for current page
     * @param integer $integerEntries optional parameter for entries per page
@@ -158,6 +145,19 @@ final class ArrayPagerManager extends APFObject {
          throw new Exception('[ArrayPagerManager->loadEntries()] There is no pager named "'
                . $stringPager . '" registered!', E_USER_WARNING);
       }
+   }
+
+   /**
+    * Returns the mapper.
+    *
+    * @return ArrayPagerMapper The pager mapper.
+    *
+    * @author Lutz Mahlstedt
+    * @version
+    * Version 0.1, 21.12.2009<br />
+    */
+   protected function &getDataMapper() {
+      return $this->getServiceObject(ArrayPagerMapper::class);
    }
 
    /**
@@ -228,19 +228,6 @@ final class ArrayPagerManager extends APFObject {
    }
 
    /**
-    *  Sets the anchor name.
-    *
-    * @param string $stringAnchorName The name of the desired anchor.
-    *
-    * @author Lutz Mahlstedt
-    * @version
-    * Version 0.1, 21.12.2009<br />
-    */
-   public function setAnchorName($stringAnchorName = null) {
-      $this->anchorName = $stringAnchorName;
-   }
-
-   /**
     *  Returns the anchor name.
     *
     * @return string The name of the anchor
@@ -251,6 +238,19 @@ final class ArrayPagerManager extends APFObject {
     */
    public function getAnchorName() {
       return $this->anchorName;
+   }
+
+   /**
+    *  Sets the anchor name.
+    *
+    * @param string $stringAnchorName The name of the desired anchor.
+    *
+    * @author Lutz Mahlstedt
+    * @version
+    * Version 0.1, 21.12.2009<br />
+    */
+   public function setAnchorName($stringAnchorName = null) {
+      $this->anchorName = $stringAnchorName;
    }
 
    /**

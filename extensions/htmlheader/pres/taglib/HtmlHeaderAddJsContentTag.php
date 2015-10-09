@@ -41,7 +41,7 @@ class HtmlHeaderAddJsContentTag extends Document {
 
    public function transform() {
       /* @var $header HtmlHeaderManager */
-      $header = & $this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
+      $header = &$this->getServiceObject(HtmlHeaderManager::class);
 
       $node = new JsContentNode($this->getContent());
 

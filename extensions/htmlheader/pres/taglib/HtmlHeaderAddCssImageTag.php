@@ -40,7 +40,7 @@ class HtmlHeaderAddCssImageTag extends Document {
 
    public function transform() {
       /* @var $header HtmlHeaderManager */
-      $header = & $this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
+      $header = &$this->getServiceObject(HtmlHeaderManager::class);
 
       $href = $this->getAttribute('href');
       if ($href == null) {

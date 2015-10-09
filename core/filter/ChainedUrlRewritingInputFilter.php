@@ -71,7 +71,7 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
    public function filter(FilterChain &$chain, $input = null) {
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
 
       $id = get_class($this);
       $t->start($id);

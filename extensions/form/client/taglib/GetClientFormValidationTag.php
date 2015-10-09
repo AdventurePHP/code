@@ -92,8 +92,7 @@ class GetClientFormValidationTag extends AbstractFormControl {
 
 
       /* @var $CVSS ClientValidationScriptStore */
-      $CVSS = &$this->getServiceObject('APF\extensions\form\client\ClientValidationScriptStore', [],
-            APFService::SERVICE_TYPE_SINGLETON);
+      $CVSS = &$this->getServiceObject(ClientValidationScriptStore::class, [], APFService::SERVICE_TYPE_SINGLETON);
 
       $scriptStore = $CVSS->getScriptStore();
       $valmarkerclassStore = $CVSS->getValmarkerclassStore();
@@ -192,16 +191,6 @@ class GetClientFormValidationTag extends AbstractFormControl {
    }
 
    /**
-    * Overwrite the parent's method, because there's nothing to do here.
-    *
-    * @author Ralf Schubert
-    * @version
-    * Version 1.0, 18.03.2010<br />
-    */
-   public function onAfterAppend() {
-   }
-
-   /**
     * Encode an array as json-object. Uses JSON_FORCE_OBJECT, if php-version >= 5.3.0
     *
     * @param array $obj The Array which should be encoded
@@ -217,6 +206,16 @@ class GetClientFormValidationTag extends AbstractFormControl {
       } else {
          return json_encode($obj, JSON_FORCE_OBJECT);
       }
+   }
+
+   /**
+    * Overwrite the parent's method, because there's nothing to do here.
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 1.0, 18.03.2010<br />
+    */
+   public function onAfterAppend() {
    }
 
    public function reset() {

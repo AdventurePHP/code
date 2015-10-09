@@ -64,7 +64,7 @@ class HtmlHeaderAddCssTag extends Document {
    public function transform() {
 
       /* @var $header HtmlHeaderManager */
-      $header = & $this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
+      $header = &$this->getServiceObject(HtmlHeaderManager::class);
 
       $url = $this->getAttribute('url');
       $folder = $this->getAttribute('folder');

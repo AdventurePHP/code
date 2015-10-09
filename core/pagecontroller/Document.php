@@ -610,7 +610,7 @@ class Document extends APFObject {
       try {
          $this->setPlaceHolder($name, $value, $append);
       } catch (Exception $e) {
-         $log = &Singleton::getInstance('APF\core\logging\Logger');
+         $log = &Singleton::getInstance(Logger::class);
          /* @var $log Logger */
          $log->addEntry(
                new SimpleLogEntry(
@@ -967,7 +967,7 @@ class Document extends APFObject {
       $count = 0;
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
 
       $benchId = '(' . get_class($this) . ') ' . $this->getObjectId() . '::onParseTime()';
       $t->start($benchId);
@@ -1509,7 +1509,7 @@ class Document extends APFObject {
     */
    public function transform() {
 
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
       /* @var $t BenchmarkTimer */
       $t->start('(' . get_class($this) . ') ' . $this->getObjectId() . '::transform()');
 

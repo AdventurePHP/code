@@ -94,7 +94,7 @@ class HtmlHeaderManager extends APFObject {
     * @return HtmlNode The title or null.
     */
    public function getTitle() {
-      $titles = $this->getNodesByType('APF\extensions\htmlheader\biz\TitleNode');
+      $titles = $this->getNodesByType(TitleNode::class);
       if (count($titles) > 0) {
          return $titles[count($titles) - 1]; // always return the last title, to allow override!
       }
@@ -106,7 +106,7 @@ class HtmlHeaderManager extends APFObject {
     * @return CanonicalNode The canonical node or null.
     */
    public function getCanonical() {
-      $canonical = $this->getNodesByType('APF\extensions\htmlheader\biz\CanonicalNode');
+      $canonical = $this->getNodesByType(CanonicalNode::class);
       if (count($canonical) > 0) {
          return $canonical[count($canonical) - 1]; // always return the last title, to allow override!
       }
@@ -118,28 +118,28 @@ class HtmlHeaderManager extends APFObject {
     * @return CssNode[] The list of javascript nodes.
     */
    public function getStylesheetNodes() {
-      return $this->getNodesByType('APF\extensions\htmlheader\biz\CssNode');
+      return $this->getNodesByType(CssNode::class);
    }
 
    /**
     * @return JsNode[] The list of javascript nodes.
     */
    public function getJavascriptNodes() {
-      return $this->getNodesByType('APF\extensions\htmlheader\biz\JsNode');
+      return $this->getNodesByType(JsNode::class);
    }
 
    /**
     * @return MetaNode[] The meta nodes (HttpMetaNode, SimpleMetaNode).
     */
    public function getMetaNodes() {
-      return $this->getNodesByType('APF\extensions\htmlheader\biz\MetaNode');
+      return $this->getNodesByType(MetaNode::class);
    }
 
    /**
     * @return BaseNode[] The base nodes of the current header.
     */
    public function getBaseNodes() {
-      return $this->getNodesByType('APF\extensions\htmlheader\biz\BaseNode');
+      return $this->getNodesByType(BaseNode::class);
    }
 
    /**

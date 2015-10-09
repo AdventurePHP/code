@@ -55,7 +55,7 @@ class FrontControllerActionPriorityTest extends \PHPUnit_Framework_TestCase {
 
       // setup section for action
       $action = new IniConfiguration();
-      $action->setValue('ActionClass', 'APF\tests\suites\core\frontcontroller\PriorityAwareTestAction');
+      $action->setValue('ActionClass', PriorityAwareTestAction::class);
 
       $config->setSection(FrontControllerActionPriorityTest::TEST_ACTION_NAME, $action);
 
@@ -63,11 +63,6 @@ class FrontControllerActionPriorityTest extends \PHPUnit_Framework_TestCase {
 
       ConfigurationManager::registerProvider('ini', $provider);
 
-   }
-
-   protected function tearDown() {
-      // restore previous setup to not influence further tests
-      ConfigurationManager::registerProvider('ini', $this->initialIniProvider);
    }
 
    /**
@@ -93,7 +88,7 @@ class FrontControllerActionPriorityTest extends \PHPUnit_Framework_TestCase {
       PriorityAwareTestAction::$INITIAL_PRIORITY = 15;
       $fC->addAction(self::TEST_ACTION_NAMESPACE, self::TEST_ACTION_NAME);
 
-      $actions = & $fC->getActions();
+      $actions = &$fC->getActions();
       $keys = array_keys($actions);
 
       assertEquals(20, $actions[$keys[0]]->getPriority());
@@ -133,7 +128,7 @@ class FrontControllerActionPriorityTest extends \PHPUnit_Framework_TestCase {
       $fC->addAction(self::TEST_ACTION_NAMESPACE, self::TEST_ACTION_NAME, array('id' => '20-2'));
 
 
-      $actions = & $fC->getActions();
+      $actions = &$fC->getActions();
       $keys = array_keys($actions);
 
       assertEquals(20, $actions[$keys[0]]->getPriority());
@@ -157,6 +152,11 @@ class FrontControllerActionPriorityTest extends \PHPUnit_Framework_TestCase {
 
       assertEquals(1, $actions[$keys[7]]->getPriority());
 
+   }
+
+   protected function tearDown() {
+      // restore previous setup to not influence further tests
+      ConfigurationManager::registerProvider('ini', $this->initialIniProvider);
    }
 
 }

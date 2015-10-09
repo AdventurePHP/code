@@ -47,13 +47,6 @@ use InvalidArgumentException;
 class JsCssPackager extends APFObject {
 
    /**
-    * @return Configuration The current package configuration.
-    */
-   private function getPackageConfiguration() {
-      return $this->getConfiguration('APF\extensions\htmlheader\biz', 'JsCssPackager.ini');
-   }
-
-   /**
     * Loads the content of all files, included in the package with the given name.
     *
     * @param string $name The package name.
@@ -81,7 +74,7 @@ class JsCssPackager extends APFObject {
       /* If ServerCacheMinutes is not 0, we use a file cache */
       if ((int) $serverCacheMinutes !== 0) {
          /* @var $cMF CacheManagerFabric */
-         $cMF = &$this->getServiceObject('APF\tools\cache\CacheManagerFabric');
+         $cMF = &$this->getServiceObject(CacheManagerFabric::class);
          $cM = &$cMF->getCacheManager('jscsspackager_cache');
 
          $cacheKey = $name;
@@ -116,6 +109,13 @@ class JsCssPackager extends APFObject {
       $pack = $this->generatePackage($cfgPack, $name);
 
       return $gZip ? gzencode($pack, 9) : $pack;
+   }
+
+   /**
+    * @return Configuration The current package configuration.
+    */
+   private function getPackageConfiguration() {
+      return $this->getConfiguration('APF\extensions\htmlheader\biz', 'JsCssPackager.ini');
    }
 
    /**
@@ -157,39 +157,43 @@ class JsCssPackager extends APFObject {
       return $output;
    }
 
-   public function getFile($path, $file, $type, $gZip = false) {
+   /**
+    * Loads the content of a file.
+    *
+    * @param string $namespace The namespace of the file.
+    * @param string $file The name of the file.
+    * @param string $ext The extension of the file.
+    * @param string $packageName The name of the package, which contains the file.
+    *
+    * @return string The content of the file.
+    * @throws IncludeException In case the file identified by the applied params cannot be found.
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 1.0, 18.03.2010<br />
+    */
+   protected function loadSingleFile($namespace, $file, $ext, $packageName) {
 
-      $filePath = $this->getRootPath($path) . DIRECTORY_SEPARATOR . $this->removeVendorOfNamespace($path) . DIRECTORY_SEPARATOR . $file . '.' . $type;
-      $filePath = str_replace('\\', DIRECTORY_SEPARATOR, $filePath);
+      $fqNamespace = str_replace('\\', DIRECTORY_SEPARATOR, $this->removeVendorOfNamespace($namespace));
+      $filePath = $this->getRootPath($namespace) . DIRECTORY_SEPARATOR . $fqNamespace . DIRECTORY_SEPARATOR . $file . '.' . $ext;
 
-      if (!file_exists($filePath)) {
-         throw new IncludeException('[JsCssPackager::getFile()] The requested file "' . $file . '.'
-               . $type . '" cannot be found in namespace "' . str_replace('_', '\\', $path) . '" (FilePath: "' . $filePath . '"). Please '
-               . 'check your taglib definition for tag &lt;htmlheader:add* /&gt;!',
-               E_USER_ERROR);
+      if (file_exists($filePath)) {
+         return file_get_contents($filePath);
       }
 
-      $this->initFilterChain($type);
-      $filteredContent = JsCssInclusionFilterChain::getInstance()->filter(file_get_contents($filePath));
+      throw new IncludeException('[JsCssPackager::loadSingleFile()] The requested file "' . $file . '.' . $ext
+            . '" cannot be found in namespace "' . $namespace . '". Please check the configuration of package "'
+            . $packageName . '"!');
+   }
 
-      try {
-         $config = $this->getConfiguration('APF\extensions\htmlheader\biz', 'JsCssInclusion.ini');
+   protected function removeVendorOfNamespace($namespace) {
+      $start = strpos($namespace, '\\');
 
-         if ($config->getSection('General')->getValue('EnableShrinking') === 'true') {
-            switch ($type) {
-               case 'js':
-                  $filteredContent = $this->shrinkJs($filteredContent);
-                  break;
-               case 'css':
-                  $filteredContent = $this->shrinkCSS($filteredContent);
-                  break;
-            }
-         }
-      } catch (ConfigurationException $e) {
-         // do nothing but go on without shrinking
-      }
+      return substr($namespace, $start + 1);
+   }
 
-      return $gZip ? gzencode($filteredContent, 9) : $filteredContent;
+   private function getRootPath($namespace) {
+      return RootClassLoader::getLoaderByNamespace($namespace)->getRootPath();
    }
 
    /**
@@ -236,55 +240,6 @@ class JsCssPackager extends APFObject {
    }
 
    /**
-    * Loads the period (in days) the package should be cached by client.
-    * Default is 0 (no client caching)
-    *
-    * @param String $name The package name.
-    *
-    * @return int The period the package should be cached by client in days.
-    *
-    * @author Ralf Schubert
-    * @version
-    * Version 1.0, 18.03.2010<br />
-    */
-   public function getClientCachePeriod($name) {
-      if (($CCP = $this->getPackageConfiguration()->getSection($name)->getValue('ClientCacheDays')) !== null) {
-         return (int) $CCP;
-      }
-
-      return 0;
-   }
-
-   /**
-    * Loads the content of a file.
-    *
-    * @param string $namespace The namespace of the file.
-    * @param string $file The name of the file.
-    * @param string $ext The extension of the file.
-    * @param string $packageName The name of the package, which contains the file.
-    *
-    * @return string The content of the file.
-    * @throws IncludeException In case the file identified by the applied params cannot be found.
-    *
-    * @author Ralf Schubert
-    * @version
-    * Version 1.0, 18.03.2010<br />
-    */
-   protected function loadSingleFile($namespace, $file, $ext, $packageName) {
-
-      $fqNamespace = str_replace('\\', DIRECTORY_SEPARATOR, $this->removeVendorOfNamespace($namespace));
-      $filePath = $this->getRootPath($namespace) . DIRECTORY_SEPARATOR . $fqNamespace . DIRECTORY_SEPARATOR . $file . '.' . $ext;
-
-      if (file_exists($filePath)) {
-         return file_get_contents($filePath);
-      }
-
-      throw new IncludeException('[JsCssPackager::loadSingleFile()] The requested file "' . $file . '.' . $ext
-            . '" cannot be found in namespace "' . $namespace . '". Please check the configuration of package "'
-            . $packageName . '"!');
-   }
-
-   /**
     * @param string $fileType The current file extension (js or css).
     */
    protected function initFilterChain($fileType) {
@@ -308,14 +263,59 @@ class JsCssPackager extends APFObject {
       }
    }
 
-   protected function removeVendorOfNamespace($namespace) {
-      $start = strpos($namespace, '\\');
+   public function getFile($path, $file, $type, $gZip = false) {
 
-      return substr($namespace, $start + 1);
+      $filePath = $this->getRootPath($path) . DIRECTORY_SEPARATOR . $this->removeVendorOfNamespace($path) . DIRECTORY_SEPARATOR . $file . '.' . $type;
+      $filePath = str_replace('\\', DIRECTORY_SEPARATOR, $filePath);
+
+      if (!file_exists($filePath)) {
+         throw new IncludeException('[JsCssPackager::getFile()] The requested file "' . $file . '.'
+               . $type . '" cannot be found in namespace "' . str_replace('_', '\\', $path) . '" (FilePath: "' . $filePath . '"). Please '
+               . 'check your taglib definition for tag &lt;htmlheader:add* /&gt;!',
+               E_USER_ERROR);
+      }
+
+      $this->initFilterChain($type);
+      $filteredContent = JsCssInclusionFilterChain::getInstance()->filter(file_get_contents($filePath));
+
+      try {
+         $config = $this->getConfiguration('APF\extensions\htmlheader\biz', 'JsCssInclusion.ini');
+
+         if ($config->getSection('General')->getValue('EnableShrinking') === 'true') {
+            switch ($type) {
+               case 'js':
+                  $filteredContent = $this->shrinkJs($filteredContent);
+                  break;
+               case 'css':
+                  $filteredContent = $this->shrinkCSS($filteredContent);
+                  break;
+            }
+         }
+      } catch (ConfigurationException $e) {
+         // do nothing but go on without shrinking
+      }
+
+      return $gZip ? gzencode($filteredContent, 9) : $filteredContent;
    }
 
-   private function getRootPath($namespace) {
-      return RootClassLoader::getLoaderByNamespace($namespace)->getRootPath();
+   /**
+    * Loads the period (in days) the package should be cached by client.
+    * Default is 0 (no client caching)
+    *
+    * @param String $name The package name.
+    *
+    * @return int The period the package should be cached by client in days.
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 1.0, 18.03.2010<br />
+    */
+   public function getClientCachePeriod($name) {
+      if (($CCP = $this->getPackageConfiguration()->getSection($name)->getValue('ClientCacheDays')) !== null) {
+         return (int) $CCP;
+      }
+
+      return 0;
    }
 
 }

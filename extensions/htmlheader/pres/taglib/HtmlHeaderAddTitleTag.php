@@ -51,7 +51,7 @@ class HtmlHeaderAddTitleTag extends Document {
 
    public function transform() {
       /* @var $header HtmlHeaderManager */
-      $header = $this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
+      $header = $this->getServiceObject(HtmlHeaderManager::class);
 
       $content = trim(parent::transformChildrenAndPreserveContent());
       if (!empty($content)) {

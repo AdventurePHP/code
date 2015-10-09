@@ -20,6 +20,8 @@
  */
 namespace APF\tests\suites\core\configuration;
 
+use APF\core\configuration\Configuration;
+use APF\core\configuration\ConfigurationException;
 use APF\core\configuration\ConfigurationManager;
 use APF\core\configuration\provider\php\PhpConfigurationProvider;
 use APF\core\loader\RootClassLoader;
@@ -55,6 +57,16 @@ class PhpConfigurationProviderTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   public static function tearDownAfterClass() {
+
+      // remove configuration provider to not disturb other tests
+      ConfigurationManager::removeProvider('php');
+
+      // remove static configuration class loader used for test purposes only
+      RootClassLoader::removeLoader(RootClassLoader::getLoaderByVendor(self::TEST_VENDOR));
+
+   }
+
    public function testLoadConfigurationFile() {
       $config = ConfigurationManager::loadConfiguration(
             self::TEST_VENDOR,
@@ -68,13 +80,13 @@ class PhpConfigurationProviderTest extends \PHPUnit_Framework_TestCase {
       assertEquals($config->getValue('value 2'), 'bar');
       assertEquals($config->getValue('php-version'), PHP_VERSION_ID);
 
-      assertInstanceOf('APF\core\configuration\Configuration', $config->getSection('section 1'));
-      assertInstanceOf('APF\core\configuration\Configuration', $config->getSection('section 1')->getSection('subsection 1'));
-      assertInstanceOf('APF\core\configuration\Configuration', $config->getSection('section 1')->getSection('subsection 2'));
+      assertInstanceOf(Configuration::class, $config->getSection('section 1'));
+      assertInstanceOf(Configuration::class, $config->getSection('section 1')->getSection('subsection 1'));
+      assertInstanceOf(Configuration::class, $config->getSection('section 1')->getSection('subsection 2'));
    }
 
    public function testFailToLoadConfigurationFile() {
-      $this->setExpectedException('APF\core\configuration\ConfigurationException');
+      $this->setExpectedException(ConfigurationException::class);
       ConfigurationManager::loadConfiguration(self::TEST_VENDOR, null, null, self::TEST_ENVIRONMENT, 'non-existing.php');
    }
 
@@ -110,9 +122,9 @@ class PhpConfigurationProviderTest extends \PHPUnit_Framework_TestCase {
       assertEquals($config->getValue('value 2'), $newConfig->getValue('value 2'));
       assertEquals($config->getValue('php-version'), $newConfig->getValue('php-version'));
 
-      assertInstanceOf('APF\core\configuration\Configuration', $newConfig->getSection('section 1'));
-      assertInstanceOf('APF\core\configuration\Configuration', $newConfig->getSection('section 1')->getSection('subsection 1'));
-      assertInstanceOf('APF\core\configuration\Configuration', $newConfig->getSection('section 1')->getSection('subsection 2'));
+      assertInstanceOf(Configuration::class, $newConfig->getSection('section 1'));
+      assertInstanceOf(Configuration::class, $newConfig->getSection('section 1')->getSection('subsection 1'));
+      assertInstanceOf(Configuration::class, $newConfig->getSection('section 1')->getSection('subsection 2'));
 
       assertEquals(
             $config->getSection('section 1')->getSection('subsection 1')->getValue('value 1'),
@@ -151,16 +163,6 @@ class PhpConfigurationProviderTest extends \PHPUnit_Framework_TestCase {
       } else {
          assertTrue(true);
       }
-
-   }
-
-   public static function tearDownAfterClass() {
-
-      // remove configuration provider to not disturb other tests
-      ConfigurationManager::removeProvider('php');
-
-      // remove static configuration class loader used for test purposes only
-      RootClassLoader::removeLoader(RootClassLoader::getLoaderByVendor(self::TEST_VENDOR));
 
    }
 

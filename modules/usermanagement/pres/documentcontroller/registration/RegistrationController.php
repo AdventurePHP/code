@@ -96,7 +96,7 @@ class RegistrationController extends UmgtBaseController {
                $user->addRole($initialRole);
             }
          } catch (ConfigurationException $e) {
-            $l = &Singleton::getInstance('APF\core\logging\Logger');
+            $l = &Singleton::getInstance(Logger::class);
             /* @var $l Logger */
             $l->logEntry('registration', 'Registration cannot add initial groups or roles due to the following '
                   . 'exception: ' . $e . ' This may be ok, in case you have no initial groups and/or roles specified.',
@@ -128,7 +128,7 @@ class RegistrationController extends UmgtBaseController {
 
          } catch (Exception $e) {
             $this->getTemplate('system-error')->transformOnPlace();
-            $l = &Singleton::getInstance('APF\core\logging\Logger');
+            $l = &Singleton::getInstance(Logger::class);
             /* @var $l Logger */
             $l->logEntry('registration', 'Registration is not possible due to ' . $e, LogEntry::SEVERITY_ERROR);
          }

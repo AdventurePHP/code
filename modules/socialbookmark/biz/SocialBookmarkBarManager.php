@@ -131,7 +131,7 @@ class SocialBookmarkBarManager extends APFObject {
    public function getBookmarkCode() {
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
       $id = 'SocialBookmarkBarManager::getBookmarkCode()';
       $t->start($id);
 

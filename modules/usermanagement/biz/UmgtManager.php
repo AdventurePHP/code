@@ -33,6 +33,7 @@ use APF\modules\usermanagement\biz\model\UmgtRole;
 use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition;
 use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinitionType;
+use APF\modules\usermanagement\biz\provider\crypt\CryptHardcodedSaltPasswordHashProvider;
 use APF\modules\usermanagement\biz\provider\PasswordHashProvider;
 use APF\modules\usermanagement\biz\provider\UserFieldEncryptionProvider;
 
@@ -66,13 +67,6 @@ class UmgtManager extends APFObject {
    const AUTO_LOGIN_COOKIE_LIFETIME = 2592000;
 
    /**
-    * Indicates the id of the current application/project.
-    *
-    * @var int $applicationId
-    */
-   private $applicationId = 1;
-
-   /**
     * Stores the providers, that hashes the user's password.
     *
     * @var PasswordHashProvider[] $passwordHashProviders
@@ -92,6 +86,13 @@ class UmgtManager extends APFObject {
     * @var GenericORRelationMapper $orm
     */
    protected $orm;
+
+   /**
+    * Indicates the id of the current application/project.
+    *
+    * @var int $applicationId
+    */
+   private $applicationId = 1;
 
    /**
     * DI initialization method to setup and re-initialize (on session restore!) the password hash providers.
@@ -130,7 +131,7 @@ class UmgtManager extends APFObject {
 
          if (count($this->passwordHashProviderList) === 0) {
             // fallback to default provider
-            $this->passwordHashProviderList[] = array('APF\modules\usermanagement\biz\provider\crypt\CryptHardcodedSaltPasswordHashProvider');
+            $this->passwordHashProviderList[] = [CryptHardcodedSaltPasswordHashProvider::class];
          }
 
       }
@@ -149,10 +150,10 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @param int $applicationId The current application id.
+    * @return Configuration The configuration section used to initialize this service.
     */
-   public function setApplicationId($applicationId) {
-      $this->applicationId = $applicationId;
+   protected function getConfigurationSection() {
+      return $this->getConfiguration('APF\modules\usermanagement\biz', 'umgtconfig.ini')->getSection(self::CONFIG_SECTION_NAME);
    }
 
    /**
@@ -163,10 +164,10 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @return Configuration The configuration section used to initialize this service.
+    * @param int $applicationId The current application id.
     */
-   protected function getConfigurationSection() {
-      return $this->getConfiguration('APF\modules\usermanagement\biz', 'umgtconfig.ini')->getSection(self::CONFIG_SECTION_NAME);
+   public function setApplicationId($applicationId) {
+      $this->applicationId = $applicationId;
    }
 
    /**
@@ -190,112 +191,31 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * Implements the comparing of stored hash with given password,
-    * supporting fallback hash-providers and on-the-fly updating
-    * of hashes in database to new providers.
+    * Let's you inject the o/r mapper instance to use (used for DI configuration).
     *
-    * @param string $password the password to hash
-    * @param UmgtUser $user current user.
-    *
-    * @return bool Returns true if password matches.
-    *
-    * @author Ralf Schubert
-    * @version
-    * Version 0.1, 21.06.2011 <br />
-    */
-   public function comparePasswordHash($password, UmgtUser &$user) {
-      // check if current default hash provider matches
-      $defaultHashedPassword = $this->createPasswordHash($password, $user);
-      if ($user->getPassword() === $defaultHashedPassword) {
-         return true;
-      }
-
-      // if there is no fallback provider, password didn't match
-      if (count($this->passwordHashProviders) === 1) {
-         return false;
-      }
-
-      // check each fallback, but skip default provider
-      $firstSkipped = false;
-      foreach ($this->passwordHashProviders as $passwordHashProvider) {
-         if (!$firstSkipped) {
-            $firstSkipped = true;
-            continue;
-         }
-         $hashedPassword = $passwordHashProvider->createPasswordHash($password, $this->getDynamicSalt($user));
-         if ($user->getPassword() === $hashedPassword) {
-            // if fallback matched, first update hash in database to new provider (on-the-fly updating to new provider)
-            $user->setPassword($password);
-            $this->saveUser($user);
-
-            return true;
-         }
-      }
-
-      // no fallback matched, this user cannot be authenticated after all second tries. :(
-      return false;
-   }
-
-   /**
-    * Implements the central dynamic salt method. If you desire to use another
-    * dynamic salt, extend the UmgtManager and re-implement this method! Be sure,
-    * to keep all other methods untouched.
-    *
-    * @param UmgtUser $user Current user
-    *
-    * @return string The dynamic salt
-    *
-    * @author Tobias Lückel
-    * @version
-    * Version 0.1, 05.04.2011<br />
-    */
-   public function getDynamicSalt(UmgtUser &$user) {
-
-      $dynamicSalt = $user->getDynamicSalt();
-      $dynamicSalt = ($dynamicSalt === null) ? '' : trim($dynamicSalt);
-
-      if ($dynamicSalt === '') {
-         $dynamicSalt = md5(rand(10000, 99999));
-         $user->setDynamicSalt($dynamicSalt);
-      }
-
-      return $dynamicSalt;
-
-   }
-
-   /**
-    * Hashes the password for the given user with the first configured
-    * hash provider, which represents the current default provider.
-    * If you desire to use another hash algo, implement a PasswordHashProvider
-    * and add it to the UmgtManager.
-    *
-    * @param string $password The password to hash
-    * @param UmgtUser $user The current user.
-    *
-    * @return string The desired hash of the given password.
-    *
-    * @author Tobias Lückel
-    * @version
-    * Version 0.1, 21.06.2011<br />
-    */
-   public function createPasswordHash($password, UmgtUser &$user) {
-      return $this->passwordHashProviders[0]->createPasswordHash($password, $this->getDynamicSalt($user));
-   }
-
-   /**
-    * Returns an initialized Application object.
-    *
-    * @return UmgtApplication Current application domain object.
+    * @param GenericORRelationMapper $orm The o/r mapper instance to use.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 15.06.2008<br />
+    * Version 0.1, 25.08.2011<br />
     */
-   protected function getCurrentApplication() {
-      $app = new UmgtApplication();
-      $app->setObjectId($this->applicationId);
+   public function setORMapper(GenericORRelationMapper &$orm) {
+      $this->orm = &$orm;
+   }
 
-      return $app;
+   /**
+    * Saves an application object.
+    *
+    * @param UmgtApplication $app The application object to save.
+    *
+    * @return int The id of the application.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.07.2010<br />
+    */
+   public function saveApplication(UmgtApplication &$app) {
+      return $this->getORMapper()->saveObject($app);
    }
 
    /**
@@ -318,88 +238,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * Let's you inject the o/r mapper instance to use (used for DI configuration).
-    *
-    * @param GenericORRelationMapper $orm The o/r mapper instance to use.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 25.08.2011<br />
-    */
-   public function setORMapper(GenericORRelationMapper &$orm) {
-      $this->orm = &$orm;
-   }
-
-   /**
-    * Saves a user object within the current application.
-    *
-    * @param UmgtUser $user current user.
-    *
-    * @return int The id of the user.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 15.06.2008<br />
-    * Version 0.2, 23.06.2009 (Introduced a generic possibility to create the display name.)<br />
-    * Version 0.3, 20.09.2009 (Bugfix for bug 202. Password was hased twice on update.)<br />
-    * Version 0.4, 27.09.2009 (Bugfix for bug related to 202. Password for new user was not hashed.)<br />
-    */
-   public function saveUser(UmgtUser &$user) {
-
-      $orm = &$this->getORMapper();
-
-      // check, whether user is an existing user, and yes, resolve the
-      // password conflict, described under http://forum.adventure-php-framework.org/viewtopic.php?f=8&t=202
-      $userId = $user->getObjectId();
-      $password = $user->getPassword();
-      if ($userId !== null && $password !== null) {
-
-         $storedUser = $orm->loadObjectByID('User', $userId);
-         /* @var $storedUser UmgtUser */
-
-         // In case, the stored password is different to the current one,
-         // hash the password. In all other cases, the password would be
-         // hashed twice!
-         if ($storedUser->getPassword() != $password) {
-            $user->setPassword($this->createPasswordHash($password, $user));
-         } else {
-            $user->deletePassword();
-         }
-
-      } else {
-         // only create password for not empty strings!
-         if (!empty($password)) {
-            $user->setPassword($this->createPasswordHash($password, $user));
-         }
-      }
-
-      // set display name
-      $user->setDisplayName($this->getDisplayName($user));
-
-      // save the user and return it's id
-      $app = $this->getCurrentApplication();
-      $user->addRelatedObject('Application2User', $app);
-
-      return $orm->saveObject($user);
-
-   }
-
-   /**
-    * Saves an application object.
-    *
-    * @param UmgtApplication $app The application object to save.
-    *
-    * @return int The id of the application.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 07.07.2010<br />
-    */
-   public function saveApplication(UmgtApplication &$app) {
-      return $this->getORMapper()->saveObject($app);
-   }
-
-   /**
     * Saves a group object within the current application.
     *
     * @param UmgtGroup $group current group.
@@ -415,6 +253,22 @@ class UmgtManager extends APFObject {
       $group->addRelatedObject('Application2Group', $app);
 
       return $this->getORMapper()->saveObject($group);
+   }
+
+   /**
+    * Returns an initialized Application object.
+    *
+    * @return UmgtApplication Current application domain object.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 15.06.2008<br />
+    */
+   protected function getCurrentApplication() {
+      $app = new UmgtApplication();
+      $app->setObjectId($this->applicationId);
+
+      return $app;
    }
 
    /**
@@ -588,6 +442,231 @@ class UmgtManager extends APFObject {
    }
 
    /**
+    * Loads a user object by a user name.
+    *
+    * @param string $username The user name of the user to load.
+    *
+    * @return UmgtUser The user domain object or null.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 23.06.2009<br />
+    */
+   public function loadUserByUserName($username) {
+
+      $orm = &$this->getORMapper();
+
+      if (UserFieldEncryptionProvider::propertyHasEncryptionEnabled('Username')) {
+         $username = UserFieldEncryptionProvider::encrypt($username);
+      }
+
+      // escape the input values
+      $dbDriver = &$orm->getDbDriver();
+      $username = $dbDriver->escapeValue($username);
+
+      // create the statement and select user
+      $select = 'SELECT * FROM `ent_user`
+                 INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
+                 INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
+                 WHERE
+                     ent_application.ApplicationID = \'' . $this->applicationId . '\'
+                     AND `Username` = \'' . $username . '\';';
+
+      return $orm->loadObjectByTextStatement('User', $select);
+
+   }
+
+   /**
+    * Implements the comparing of stored hash with given password,
+    * supporting fallback hash-providers and on-the-fly updating
+    * of hashes in database to new providers.
+    *
+    * @param string $password the password to hash
+    * @param UmgtUser $user current user.
+    *
+    * @return bool Returns true if password matches.
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 21.06.2011 <br />
+    */
+   public function comparePasswordHash($password, UmgtUser &$user) {
+      // check if current default hash provider matches
+      $defaultHashedPassword = $this->createPasswordHash($password, $user);
+      if ($user->getPassword() === $defaultHashedPassword) {
+         return true;
+      }
+
+      // if there is no fallback provider, password didn't match
+      if (count($this->passwordHashProviders) === 1) {
+         return false;
+      }
+
+      // check each fallback, but skip default provider
+      $firstSkipped = false;
+      foreach ($this->passwordHashProviders as $passwordHashProvider) {
+         if (!$firstSkipped) {
+            $firstSkipped = true;
+            continue;
+         }
+         $hashedPassword = $passwordHashProvider->createPasswordHash($password, $this->getDynamicSalt($user));
+         if ($user->getPassword() === $hashedPassword) {
+            // if fallback matched, first update hash in database to new provider (on-the-fly updating to new provider)
+            $user->setPassword($password);
+            $this->saveUser($user);
+
+            return true;
+         }
+      }
+
+      // no fallback matched, this user cannot be authenticated after all second tries. :(
+      return false;
+   }
+
+   /**
+    * Hashes the password for the given user with the first configured
+    * hash provider, which represents the current default provider.
+    * If you desire to use another hash algo, implement a PasswordHashProvider
+    * and add it to the UmgtManager.
+    *
+    * @param string $password The password to hash
+    * @param UmgtUser $user The current user.
+    *
+    * @return string The desired hash of the given password.
+    *
+    * @author Tobias Lückel
+    * @version
+    * Version 0.1, 21.06.2011<br />
+    */
+   public function createPasswordHash($password, UmgtUser &$user) {
+      return $this->passwordHashProviders[0]->createPasswordHash($password, $this->getDynamicSalt($user));
+   }
+
+   /**
+    * Implements the central dynamic salt method. If you desire to use another
+    * dynamic salt, extend the UmgtManager and re-implement this method! Be sure,
+    * to keep all other methods untouched.
+    *
+    * @param UmgtUser $user Current user
+    *
+    * @return string The dynamic salt
+    *
+    * @author Tobias Lückel
+    * @version
+    * Version 0.1, 05.04.2011<br />
+    */
+   public function getDynamicSalt(UmgtUser &$user) {
+
+      $dynamicSalt = $user->getDynamicSalt();
+      $dynamicSalt = ($dynamicSalt === null) ? '' : trim($dynamicSalt);
+
+      if ($dynamicSalt === '') {
+         $dynamicSalt = md5(rand(10000, 99999));
+         $user->setDynamicSalt($dynamicSalt);
+      }
+
+      return $dynamicSalt;
+
+   }
+
+   /**
+    * Saves a user object within the current application.
+    *
+    * @param UmgtUser $user current user.
+    *
+    * @return int The id of the user.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 15.06.2008<br />
+    * Version 0.2, 23.06.2009 (Introduced a generic possibility to create the display name.)<br />
+    * Version 0.3, 20.09.2009 (Bugfix for bug 202. Password was hased twice on update.)<br />
+    * Version 0.4, 27.09.2009 (Bugfix for bug related to 202. Password for new user was not hashed.)<br />
+    */
+   public function saveUser(UmgtUser &$user) {
+
+      $orm = &$this->getORMapper();
+
+      // check, whether user is an existing user, and yes, resolve the
+      // password conflict, described under http://forum.adventure-php-framework.org/viewtopic.php?f=8&t=202
+      $userId = $user->getObjectId();
+      $password = $user->getPassword();
+      if ($userId !== null && $password !== null) {
+
+         $storedUser = $orm->loadObjectByID('User', $userId);
+         /* @var $storedUser UmgtUser */
+
+         // In case, the stored password is different to the current one,
+         // hash the password. In all other cases, the password would be
+         // hashed twice!
+         if ($storedUser->getPassword() != $password) {
+            $user->setPassword($this->createPasswordHash($password, $user));
+         } else {
+            $user->deletePassword();
+         }
+
+      } else {
+         // only create password for not empty strings!
+         if (!empty($password)) {
+            $user->setPassword($this->createPasswordHash($password, $user));
+         }
+      }
+
+      // set display name
+      $user->setDisplayName($this->getDisplayName($user));
+
+      // save the user and return it's id
+      $app = $this->getCurrentApplication();
+      $user->addRelatedObject('Application2User', $app);
+
+      return $orm->saveObject($user);
+
+   }
+
+   /**
+    * Implements the central method to create the display name of a user object. If you desire
+    * to use another algorithm, extend the UmgtManager and re-implement this method! Be sure, to keep
+    * all other methods untouched.
+    *
+    * @param UmgtUser $user The user object to save.
+    *
+    * @return string The desired display name.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 23.06.2009<br />
+    */
+   protected function getDisplayName(UmgtUser $user) {
+      $displayName = $user->getDisplayName();
+
+      return empty($displayName)
+            ? $user->getLastName() . ', ' . $user->getFirstName()
+            : $user->getDisplayName();
+   }
+
+   /**
+    * Loads a user by it's display name and password.
+    *
+    * @param string $displayName The desired user's display name.
+    * @param string $password The user's password.
+    *
+    * @return UmgtUser|null The desired user or null in case the user has not been found or the password didn't match.
+    *
+    * @author Coach83
+    * @version
+    * Version 0.1,10.2012<br />
+    */
+   public function loadUserByDisplayNameAndPassword($displayName, $password) {
+
+      $userObject = $this->loadUserByDisplayName($displayName);
+      if ($userObject === null || !$this->comparePasswordHash($password, $userObject)) {
+         return null;
+      }
+
+      return $userObject;
+   }
+
+   /**
     * Loads a user by it's display name.
     *
     * @param string $displayName The desired user's display name.
@@ -619,28 +698,6 @@ class UmgtManager extends APFObject {
                      AND `DisplayName` = \'' . $displayName . '\';';
 
       return $orm->loadObjectByTextStatement('User', $select);
-   }
-
-   /**
-    * Loads a user by it's display name and password.
-    *
-    * @param string $displayName The desired user's display name.
-    * @param string $password The user's password.
-    *
-    * @return UmgtUser|null The desired user or null in case the user has not been found or the password didn't match.
-    *
-    * @author Coach83
-    * @version
-    * Version 0.1,10.2012<br />
-    */
-   public function loadUserByDisplayNameAndPassword($displayName, $password) {
-
-      $userObject = $this->loadUserByDisplayName($displayName);
-      if ($userObject === null || !$this->comparePasswordHash($password, $userObject)) {
-         return null;
-      }
-
-      return $userObject;
    }
 
    /**
@@ -714,41 +771,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * Loads a user object by a given email.
-    *
-    * @param string $email The email of the user to load.
-    *
-    * @return UmgtUser The user domain object or null.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 23.06.2009<br />
-    */
-   public function loadUserByEMail($email) {
-
-      $orm = &$this->getORMapper();
-
-      if (UserFieldEncryptionProvider::propertyHasEncryptionEnabled('EMail')) {
-         $email = UserFieldEncryptionProvider::encrypt($email);
-      }
-
-      // escape the input values
-      $dbDriver = &$orm->getDbDriver();
-      $email = $dbDriver->escapeValue($email);
-
-      // create the statement and select user
-      $select = 'SELECT * FROM `ent_user`
-                 INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
-                 INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
-                 WHERE
-                     ent_application.ApplicationID = \'' . $this->applicationId . '\'
-                     AND `EMail` = \'' . $email . '\';';
-
-      return $orm->loadObjectByTextStatement('User', $select);
-
-   }
-
-   /**
     * Loads a user object by a first and last name.
     *
     * @param string $firstName The first name of the user to load.
@@ -790,41 +812,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * Loads a user object by a user name.
-    *
-    * @param string $username The user name of the user to load.
-    *
-    * @return UmgtUser The user domain object or null.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 23.06.2009<br />
-    */
-   public function loadUserByUserName($username) {
-
-      $orm = &$this->getORMapper();
-
-      if (UserFieldEncryptionProvider::propertyHasEncryptionEnabled('Username')) {
-         $username = UserFieldEncryptionProvider::encrypt($username);
-      }
-
-      // escape the input values
-      $dbDriver = &$orm->getDbDriver();
-      $username = $dbDriver->escapeValue($username);
-
-      // create the statement and select user
-      $select = 'SELECT * FROM `ent_user`
-                 INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
-                 INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
-                 WHERE
-                     ent_application.ApplicationID = \'' . $this->applicationId . '\'
-                     AND `Username` = \'' . $username . '\';';
-
-      return $orm->loadObjectByTextStatement('User', $select);
-
-   }
-
-   /**
     * Returns a user domain object by it'd email and password.
     *
     * @param string $email the user's email
@@ -849,24 +836,38 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * Implements the central method to create the display name of a user object. If you desire
-    * to use another algorithm, extend the UmgtManager and re-implement this method! Be sure, to keep
-    * all other methods untouched.
+    * Loads a user object by a given email.
     *
-    * @param UmgtUser $user The user object to save.
+    * @param string $email The email of the user to load.
     *
-    * @return string The desired display name.
+    * @return UmgtUser The user domain object or null.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 23.06.2009<br />
     */
-   protected function getDisplayName(UmgtUser $user) {
-      $displayName = $user->getDisplayName();
+   public function loadUserByEMail($email) {
 
-      return empty($displayName)
-            ? $user->getLastName() . ', ' . $user->getFirstName()
-            : $user->getDisplayName();
+      $orm = &$this->getORMapper();
+
+      if (UserFieldEncryptionProvider::propertyHasEncryptionEnabled('EMail')) {
+         $email = UserFieldEncryptionProvider::encrypt($email);
+      }
+
+      // escape the input values
+      $dbDriver = &$orm->getDbDriver();
+      $email = $dbDriver->escapeValue($email);
+
+      // create the statement and select user
+      $select = 'SELECT * FROM `ent_user`
+                 INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
+                 INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
+                 WHERE
+                     ent_application.ApplicationID = \'' . $this->applicationId . '\'
+                     AND `EMail` = \'' . $email . '\';';
+
+      return $orm->loadObjectByTextStatement('User', $select);
+
    }
 
    /**
@@ -919,6 +920,22 @@ class UmgtManager extends APFObject {
       // due to the fact, that unique'ing the array is a cost-intensive operation, we agreed to return a
       // duplicate set of permissions.
       return $permissions;
+   }
+
+   /**
+    * Loads all groups, that are assigned to a given user.
+    *
+    * @param UmgtUser $user the user
+    *
+    * @return UmgtGroup[] The group list.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.12.2008<br />
+    * Version 02, 05.09.2009 (Now using the GORM to load the related objects, to allow serialized objects to be used as arguments)<br />
+    */
+   public function loadGroupsWithUser(UmgtUser &$user) {
+      return $this->getORMapper()->loadRelatedObjects($user, 'Group2User');
    }
 
    /**
@@ -1055,6 +1072,23 @@ class UmgtManager extends APFObject {
    }
 
    /**
+    *  Associates users with a group.
+    *
+    * @param UmgtUser[] $users the user list
+    * @param UmgtGroup $group the group
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 28.12.2008<br />
+    * Version 0.2, 18.02.2009 (Bug-fix: addUser2Groups() does not exist)<br />
+    */
+   public function attachUsers2Group(array $users, UmgtGroup $group) {
+      for ($i = 0; $i < count($users); $i++) {
+         $this->attachUser2Groups($users[$i], array($group));
+      }
+   }
+
+   /**
     *  Associates a user with a list of groups.
     *
     * @param UmgtUser $user the user
@@ -1076,19 +1110,18 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    *  Associates users with a group.
+    * Associates a role with a list of users.
     *
-    * @param UmgtUser[] $users the user list
-    * @param UmgtGroup $group the group
+    * @param UmgtUser $user The user.
+    * @param UmgtRole[] $roles The role list.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 28.12.2008<br />
-    * Version 0.2, 18.02.2009 (Bug-fix: addUser2Groups() does not exist)<br />
+    * Version 0.1, 29.12.2008<br />
     */
-   public function attachUsers2Group(array $users, UmgtGroup $group) {
-      for ($i = 0; $i < count($users); $i++) {
-         $this->attachUser2Groups($users[$i], array($group));
+   public function attachUser2Roles(UmgtUser $user, array $roles) {
+      foreach ($roles as $role) {
+         $this->attachUsersToRole(array($user), $role);
       }
    }
 
@@ -1107,38 +1140,6 @@ class UmgtManager extends APFObject {
       foreach ($users as $user) {
          $orm->createAssociation('Role2User', $role, $user);
       }
-   }
-
-   /**
-    * Associates a role with a list of users.
-    *
-    * @param UmgtUser $user The user.
-    * @param UmgtRole[] $roles The role list.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.12.2008<br />
-    */
-   public function attachUser2Roles(UmgtUser $user, array $roles) {
-      foreach ($roles as $role) {
-         $this->attachUsersToRole(array($user), $role);
-      }
-   }
-
-   /**
-    * Loads all groups, that are assigned to a given user.
-    *
-    * @param UmgtUser $user the user
-    *
-    * @return UmgtGroup[] The group list.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.12.2008<br />
-    * Version 02, 05.09.2009 (Now using the GORM to load the related objects, to allow serialized objects to be used as arguments)<br />
-    */
-   public function loadGroupsWithUser(UmgtUser &$user) {
-      return $this->getORMapper()->loadRelatedObjects($user, 'Group2User');
    }
 
    /**
@@ -1375,20 +1376,6 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    *  Detaches a user from a role.
-    *
-    * @param UmgtUser $user The user.
-    * @param UmgtRole $role The desired role to detach the user from.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 28.12.2008<br />
-    */
-   public function detachUserFromRole(UmgtUser $user, UmgtRole $role) {
-      $this->getORMapper()->deleteAssociation('Role2User', $role, $user);
-   }
-
-   /**
     *  Detaches a user from one or more roles.
     *
     * @param UmgtUser $user The user.
@@ -1402,6 +1389,20 @@ class UmgtManager extends APFObject {
       foreach ($roles as $role) {
          $this->detachUserFromRole($user, $role);
       }
+   }
+
+   /**
+    *  Detaches a user from a role.
+    *
+    * @param UmgtUser $user The user.
+    * @param UmgtRole $role The desired role to detach the user from.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 28.12.2008<br />
+    */
+   public function detachUserFromRole(UmgtUser $user, UmgtRole $role) {
+      $this->getORMapper()->deleteAssociation('Role2User', $role, $user);
    }
 
    /**
@@ -1424,20 +1425,6 @@ class UmgtManager extends APFObject {
     *  Removes a user from the given groups.
     *
     * @param UmgtUser $user the desired user
-    * @param UmgtGroup $group the group
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 26.12.2008<br />
-    */
-   public function detachUserFromGroup(UmgtUser $user, UmgtGroup $group) {
-      $this->getORMapper()->deleteAssociation('Group2User', $user, $group);
-   }
-
-   /**
-    *  Removes a user from the given groups.
-    *
-    * @param UmgtUser $user the desired user
     * @param UmgtGroup[] $groups a list of groups
     *
     * @author Christian Achatz
@@ -1448,6 +1435,20 @@ class UmgtManager extends APFObject {
       for ($i = 0; $i < count($groups); $i++) {
          $this->detachUserFromGroup($user, $groups[$i]);
       }
+   }
+
+   /**
+    *  Removes a user from the given groups.
+    *
+    * @param UmgtUser $user the desired user
+    * @param UmgtGroup $group the group
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.12.2008<br />
+    */
+   public function detachUserFromGroup(UmgtUser $user, UmgtGroup $group) {
+      $this->getORMapper()->deleteAssociation('Group2User', $user, $group);
    }
 
    /**
@@ -1796,6 +1797,25 @@ class UmgtManager extends APFObject {
    }
 
    /**
+    * Loads a mixed list of users and groups, that have access to a given proxy.
+    * Sorts the result according to the display name of the user and group.
+    *
+    * @param UmgtVisibilityDefinition $proxy The proxy the users and groups have access to.
+    *
+    * @return UmgtUser[]|UmgtGroup[] A mixed list of users and groups, that have access to a given proxy.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 04.06.2010<br />
+    */
+   public function loadUsersAndGroupsWithVisibilityDefinition(UmgtVisibilityDefinition $proxy) {
+      return array_merge(
+            $this->loadUsersWithVisibilityDefinition($proxy),
+            $this->loadGroupsWithVisibilityDefinition($proxy)
+      );
+   }
+
+   /**
     * Loads the list of users, that have visibility permissions on the given proxy object.
     *
     * @param UmgtVisibilityDefinition $proxy The proxy object.
@@ -1823,25 +1843,6 @@ class UmgtManager extends APFObject {
     */
    public function loadGroupsWithVisibilityDefinition(UmgtVisibilityDefinition $proxy) {
       return $this->getORMapper()->loadRelatedObjects($proxy, 'AppProxy2Group');
-   }
-
-   /**
-    * Loads a mixed list of users and groups, that have access to a given proxy.
-    * Sorts the result according to the display name of the user and group.
-    *
-    * @param UmgtVisibilityDefinition $proxy The proxy the users and groups have access to.
-    *
-    * @return UmgtUser[]|UmgtGroup[] A mixed list of users and groups, that have access to a given proxy.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 04.06.2010<br />
-    */
-   public function loadUsersAndGroupsWithVisibilityDefinition(UmgtVisibilityDefinition $proxy) {
-      return array_merge(
-            $this->loadUsersWithVisibilityDefinition($proxy),
-            $this->loadGroupsWithVisibilityDefinition($proxy)
-      );
    }
 
    /**
@@ -1880,21 +1881,6 @@ class UmgtManager extends APFObject {
       $crit->addRelationIndicator('Application2Group', $app);
 
       return $this->getORMapper()->loadNotRelatedObjects($definition, 'AppProxy2Group', $crit);
-   }
-
-   /**
-    * Loads the list of visibility definitions for the given type.
-    *
-    * @param UmgtVisibilityDefinitionType $type The visibility definition type.
-    *
-    * @return UmgtVisibilityDefinition[] A list of visibility definitions of the given type.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 08.05.2010<br />
-    */
-   public function loadVisibilityDefinitionsByType(UmgtVisibilityDefinitionType $type) {
-      return $this->getORMapper()->loadRelatedObjects($type, 'AppProxy2AppProxyType');
    }
 
    /**
@@ -2042,6 +2028,21 @@ class UmgtManager extends APFObject {
          $orm->deleteObject($proxy);
       }
       $orm->deleteObject($proxyType);
+   }
+
+   /**
+    * Loads the list of visibility definitions for the given type.
+    *
+    * @param UmgtVisibilityDefinitionType $type The visibility definition type.
+    *
+    * @return UmgtVisibilityDefinition[] A list of visibility definitions of the given type.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 08.05.2010<br />
+    */
+   public function loadVisibilityDefinitionsByType(UmgtVisibilityDefinitionType $type) {
+      return $this->getORMapper()->loadRelatedObjects($type, 'AppProxy2AppProxyType');
    }
 
    /**

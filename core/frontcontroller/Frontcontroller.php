@@ -24,6 +24,8 @@ use APF\core\benchmark\BenchmarkTimer;
 use APF\core\filter\InputFilterChain;
 use APF\core\filter\OutputFilterChain;
 use APF\core\http\mixins\GetRequestResponse;
+use APF\core\http\RequestImpl;
+use APF\core\http\ResponseImpl;
 use APF\core\pagecontroller\APFObject;
 use APF\core\pagecontroller\Page;
 use APF\core\registry\Registry;
@@ -66,7 +68,7 @@ class Frontcontroller extends APFObject {
     *
     * @var string The fully-qualified name of the request implementation.
     */
-   public static $requestImplClass = 'APF\core\http\RequestImpl';
+   public static $requestImplClass = RequestImpl::class;
 
    /**
     * Allows you to exchange the APF implementation of the Response interface with your custom one.
@@ -79,7 +81,7 @@ class Frontcontroller extends APFObject {
     *
     * @var string The fully-qualified name of the request implementation.
     */
-   public static $responseImplClass = 'APF\core\http\ResponseImpl';
+   public static $responseImplClass = ResponseImpl::class;
 
    /**
     * The front controller's action stack.
@@ -263,6 +265,48 @@ class Frontcontroller extends APFObject {
    }
 
    /**
+    * Executes all actions with the given type. Possible types are
+    * <ul>
+    * <li>prepagecreate</li>
+    * <li>pretransform</li>
+    * <li>posttransform</li>
+    * </ul>
+    *
+    * @param string $type Type of the actions to execute.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 27.01.2007<br />
+    * Version 0.2, 31.01.2007<br />
+    * Version 0.3, 03.02.2007 (Added benchmarker)<br />
+    * Version 0.4, 01.07.2007 (Removed debug output)<br />
+    * Version 0.5, 08.11.2007<br />
+    * Version 0.6, 28.03.2008 (Optimized benchmarker call)<br />
+    * Version 0.7, 07.08.2010 (Added action activation indicator to disable actions on demand)<br />
+    */
+   protected function runActions($type = Action::TYPE_PRE_PAGE_CREATE) {
+
+      /* @var $t BenchmarkTimer */
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
+
+      foreach ($this->actionStack as $offset => $DUMMY) {
+
+         // only execute, when the current action has a suitable type
+         if ($this->actionStack[$offset]->getType() == $type
+               && $this->actionStack[$offset]->isActive()
+         ) {
+
+            $id = get_class($this->actionStack[$offset]) . '::run()';
+            $t->start($id);
+
+            $this->actionStack[$offset]->run();
+
+            $t->stop($id);
+         }
+      }
+   }
+
+   /**
     * Returns the action specified by the input param.
     *
     * @param string $actionName The name of the action to return.
@@ -305,21 +349,6 @@ class Frontcontroller extends APFObject {
     */
    public function &getActions() {
       return $this->actionStack;
-   }
-
-   /**
-    * Creates the url representation of a given namespace.
-    *
-    * @param string $namespaceUrlRepresentation The url string.
-    *
-    * @return string The namespace of the action.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 03.06.2007<br />
-    */
-   protected function getActionNamespaceByURLString($namespaceUrlRepresentation) {
-      return str_replace($this->namespaceURLDelimiter, '\\', $namespaceUrlRepresentation);
    }
 
    /**
@@ -474,7 +503,7 @@ class Frontcontroller extends APFObject {
 
       // include input implementation in case a custom implementation is desired
       if (empty($inputClass)) {
-         $inputClass = 'APF\core\frontcontroller\FrontcontrollerInput';
+         $inputClass = FrontcontrollerInput::class;
       }
 
       // check for class being present
@@ -508,6 +537,57 @@ class Frontcontroller extends APFObject {
       // uksort() in order to both respect Action::getPriority()
       // and the order of registration for equivalence groups.
       uksort($this->actionStack, array($this, 'sortActions'));
+   }
+
+   /**
+    * Creates the url representation of a given namespace.
+    *
+    * @param string $namespaceUrlRepresentation The url string.
+    *
+    * @return string The namespace of the action.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 03.06.2007<br />
+    */
+   protected function getActionNamespaceByURLString($namespaceUrlRepresentation) {
+      return str_replace($this->namespaceURLDelimiter, '\\', $namespaceUrlRepresentation);
+   }
+
+   /**
+    * Create an array from a input param string (scheme: <code>a:b|c:d</code>).
+    *
+    * @param string $inputConfig The config string contained in the action config.
+    *
+    * @return string[] The resulting param-value array.
+    *
+    * @author Christian W. Schäfer
+    * @version
+    * Version 0.1, 08.09.2007<br />
+    */
+   protected function generateParamsFromInputConfig($inputConfig = '') {
+
+      $inputParams = array();
+
+      $inputConfig = trim($inputConfig);
+
+      if (strlen($inputConfig) > 0) {
+
+         // first: explode couples by "|"
+         $paramsArray = explode($this->inputDelimiter, $inputConfig);
+
+         for ($i = 0; $i < count($paramsArray); $i++) {
+
+            // second: explode key and value by ":"
+            $tmpAry = explode($this->keyValueDelimiter, $paramsArray[$i]);
+
+            if (isset($tmpAry[0]) && isset($tmpAry[1]) && !empty($tmpAry[0]) && !empty($tmpAry[1])) {
+               $inputParams[$tmpAry[0]] = $tmpAry[1];
+            }
+         }
+      }
+
+      return $inputParams;
    }
 
    /**
@@ -618,84 +698,6 @@ class Frontcontroller extends APFObject {
       }
 
       return $this->actionStack[$a]->getPriority() > $this->actionStack[$b]->getPriority() ? -1 : 1;
-   }
-
-   /**
-    * Create an array from a input param string (scheme: <code>a:b|c:d</code>).
-    *
-    * @param string $inputConfig The config string contained in the action config.
-    *
-    * @return string[] The resulting param-value array.
-    *
-    * @author Christian W. Schäfer
-    * @version
-    * Version 0.1, 08.09.2007<br />
-    */
-   protected function generateParamsFromInputConfig($inputConfig = '') {
-
-      $inputParams = array();
-
-      $inputConfig = trim($inputConfig);
-
-      if (strlen($inputConfig) > 0) {
-
-         // first: explode couples by "|"
-         $paramsArray = explode($this->inputDelimiter, $inputConfig);
-
-         for ($i = 0; $i < count($paramsArray); $i++) {
-
-            // second: explode key and value by ":"
-            $tmpAry = explode($this->keyValueDelimiter, $paramsArray[$i]);
-
-            if (isset($tmpAry[0]) && isset($tmpAry[1]) && !empty($tmpAry[0]) && !empty($tmpAry[1])) {
-               $inputParams[$tmpAry[0]] = $tmpAry[1];
-            }
-         }
-      }
-
-      return $inputParams;
-   }
-
-   /**
-    * Executes all actions with the given type. Possible types are
-    * <ul>
-    * <li>prepagecreate</li>
-    * <li>pretransform</li>
-    * <li>posttransform</li>
-    * </ul>
-    *
-    * @param string $type Type of the actions to execute.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 27.01.2007<br />
-    * Version 0.2, 31.01.2007<br />
-    * Version 0.3, 03.02.2007 (Added benchmarker)<br />
-    * Version 0.4, 01.07.2007 (Removed debug output)<br />
-    * Version 0.5, 08.11.2007<br />
-    * Version 0.6, 28.03.2008 (Optimized benchmarker call)<br />
-    * Version 0.7, 07.08.2010 (Added action activation indicator to disable actions on demand)<br />
-    */
-   protected function runActions($type = Action::TYPE_PRE_PAGE_CREATE) {
-
-      /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
-
-      foreach ($this->actionStack as $offset => $DUMMY) {
-
-         // only execute, when the current action has a suitable type
-         if ($this->actionStack[$offset]->getType() == $type
-               && $this->actionStack[$offset]->isActive()
-         ) {
-
-            $id = get_class($this->actionStack[$offset]) . '::run()';
-            $t->start($id);
-
-            $this->actionStack[$offset]->run();
-
-            $t->stop($id);
-         }
-      }
    }
 
 }

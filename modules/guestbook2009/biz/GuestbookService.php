@@ -82,14 +82,12 @@ final class GuestbookService extends APFObject {
    public function loadPagedEntryList() {
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
       $t->start('loadPagedEntryList');
 
       $pager = &$this->getPager();
 
-      /* @var $model GuestbookModel */
-      $model = &$this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
-      $entryIds = $pager->loadEntries(array('GuestbookID' => $model->getGuestbookId()));
+      $entryIds = $pager->loadEntries(array('GuestbookID' => $this->getModel()->getGuestbookId()));
 
       $entries = array();
       $mapper = &$this->getMapper();
@@ -103,6 +101,48 @@ final class GuestbookService extends APFObject {
    }
 
    /**
+    * Returns the pager instance for the current guestbook instance.
+    * Internally abstracts the access of the pager instance to enable
+    * lazy initialization.
+    *
+    * @return PagerManager The pager instance.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 13.06.2009<br />
+    */
+   private function &getPager() {
+
+      if ($this->pager === null) {
+         /* @var $pMF PagerManagerFabric */
+         $pMF = &$this->getServiceObject(PagerManagerFabric::class);
+         $this->pager = &$pMF->getPagerManager($this->pagerConfigSection);
+      }
+
+      return $this->pager;
+   }
+
+   /**
+    * @return GuestbookModel
+    */
+   protected function &getModel() {
+      return $this->getServiceObject(GuestbookModel::class);
+   }
+
+   /**
+    * Returns the configured instance of the guestbook's data component.
+    *
+    * @return GuestbookMapper The mapper instance.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 10.05.2009<br />
+    */
+   private function &getMapper() {
+      return $this->getDIServiceObject('APF\modules\guestbook2009\data', 'GuestbookMapper');
+   }
+
+   /**
     * Returns the string representation of the current pager status.
     *
     * @return string The pager output.
@@ -113,7 +153,7 @@ final class GuestbookService extends APFObject {
     */
    public function getPagerOutput() {
       /* @var $model GuestbookModel */
-      $model = &$this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
+      $model = &$this->getModel();
       $pager = &$this->getPager();
 
       return $pager->getPager(array('GuestbookID' => $model->getGuestbookId()));
@@ -132,28 +172,6 @@ final class GuestbookService extends APFObject {
       $pager = &$this->getPager();
 
       return $pager->getPagerURLParameters();
-   }
-
-   /**
-    * Returns the pager instance for the current guestbook instance.
-    * Internally abstracts the access of the pager instance to enable
-    * lazy initialization.
-    *
-    * @return PagerManager The pager instance.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 13.06.2009<br />
-    */
-   private function &getPager() {
-
-      if ($this->pager === null) {
-         /* @var $pMF PagerManagerFabric */
-         $pMF = &$this->getServiceObject('APF\modules\pager\biz\PagerManagerFabric');
-         $this->pager = &$pMF->getPagerManager($this->pagerConfigSection);
-      }
-
-      return $this->pager;
    }
 
    /**
@@ -237,9 +255,7 @@ final class GuestbookService extends APFObject {
    public function logout() {
 
       // logout by cleaning the session
-      /* @var $model GuestbookModel */
-      $model = &$this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
-      $session = $this->getSession($model->getGuestbookId());
+      $session = $this->getSession($this->getModel()->getGuestbookId());
       $session->delete('LoggedIn');
 
       // display the list view
@@ -264,9 +280,7 @@ final class GuestbookService extends APFObject {
     */
    public function checkAccessAllowed() {
 
-      /* @var $model GuestbookModel */
-      $model = &$this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
-      $session = $this->getSession($model->getGuestbookId());
+      $session = $this->getSession($this->getModel()->getGuestbookId());
       $loggedId = $session->load('LoggedIn');
 
       // redirect to admin page
@@ -297,9 +311,7 @@ final class GuestbookService extends APFObject {
       if ($mapper->validateCredentials($user)) {
 
          // log user in
-         /* @var $model GuestbookModel */
-         $model = &$this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
-         $session = $this->getSession($model->getGuestbookId());
+         $session = $this->getSession($this->getModel()->getGuestbookId());
          $session->save('LoggedIn', 'true');
 
          // redirect to admin page
@@ -339,19 +351,6 @@ final class GuestbookService extends APFObject {
          )));
       }
       $this->getResponse()->forward($link);
-   }
-
-   /**
-    * Returns the configured instance of the guestbook's data component.
-    *
-    * @return GuestbookMapper The mapper instance.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 10.05.2009<br />
-    */
-   private function &getMapper() {
-      return $this->getDIServiceObject('APF\modules\guestbook2009\data', 'GuestbookMapper');
    }
 
 }

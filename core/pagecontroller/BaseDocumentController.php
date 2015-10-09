@@ -21,7 +21,9 @@
 namespace APF\core\pagecontroller;
 
 use APF\core\http\mixins\GetRequestResponse;
+use APF\tools\form\HtmlForm;
 use APF\tools\form\taglib\HtmlFormTag;
+use APF\tools\html\Iterator;
 use APF\tools\html\taglib\HtmlIteratorTag;
 use InvalidArgumentException;
 
@@ -47,14 +49,6 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     */
    protected $document;
 
-   public function setDocument(Document &$document) {
-      $this->document = &$document;
-   }
-
-   public function &getDocument() {
-      return $this->document;
-   }
-
    /**
     * Sets the given value as the content of the specified place holder.
     *
@@ -78,6 +72,14 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
          throw new InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] No place holders '
                . 'found for name "' . $name . '" in document controller "' . get_class($this) . '"!', E_USER_ERROR, $e);
       }
+   }
+
+   public function &getDocument() {
+      return $this->document;
+   }
+
+   public function setDocument(Document &$document) {
+      $this->document = &$document;
    }
 
    /**
@@ -160,7 +162,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     */
    protected function &getForm($formName) {
       try {
-         return $this->getDocument()->getChildNode('name', $formName, 'APF\tools\form\HtmlForm');
+         return $this->getDocument()->getChildNode('name', $formName, HtmlForm::class);
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[' . get_class($this) . '::getForm()] No form object with name "'
                . $formName . '" composed in current document for document controller "' . get_class($this)
@@ -187,7 +189,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     */
    protected function &getTemplate($name) {
       try {
-         return $this->getDocument()->getChildNode('name', $name, 'APF\core\pagecontroller\Template');
+         return $this->getDocument()->getChildNode('name', $name, Template::class);
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[' . get_class($this) . '::getTemplate()] No template with name "'
                . $name . '" composed in current document for document controller "' . get_class($this)
@@ -211,7 +213,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     */
    protected function &getLabel($name) {
       try {
-         return $this->getDocument()->getChildNode('name', $name, 'APF\core\pagecontroller\LanguageLabel');
+         return $this->getDocument()->getChildNode('name', $name, LanguageLabel::class);
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[' . get_class($this) . '::getLabel()] No label with name "'
                . $name . '" composed in current document for document controller "' . get_class($this)
@@ -235,7 +237,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     */
    protected function placeHolderExists($name) {
       try {
-         $this->getDocument()->getChildNode('name', $name, 'APF\core\pagecontroller\PlaceHolder');
+         $this->getDocument()->getChildNode('name', $name, PlaceHolder::class);
 
          return true;
       } catch (InvalidArgumentException $e) {
@@ -260,7 +262,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     */
    protected function templatePlaceHolderExists(TemplateTag &$template, $name) {
       try {
-         $template->getChildNode('name', $name, 'APF\core\pagecontroller\PlaceHolder');
+         $template->getChildNode('name', $name, PlaceHolder::class);
 
          return true;
       } catch (InvalidArgumentException $e) {
@@ -284,7 +286,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     */
    protected function &getIterator($name) {
       try {
-         return $this->getDocument()->getChildNode('name', $name, 'APF\tools\html\Iterator');
+         return $this->getDocument()->getChildNode('name', $name, Iterator::class);
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[' . get_class($this) . '::getIterator()] No iterator with name "'
                . $name . '" composed in current document for document controller "' . get_class($this) . '"! '
@@ -297,6 +299,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     *
     * @param string $name The reference name of the data field to set/add.
     * @param mixed $data The data to inject to the current node.
+    *
     * @return Document The document instance this controller is responsible to transform.
     *
     * @author Christian Achatz

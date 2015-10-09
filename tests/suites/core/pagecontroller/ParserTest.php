@@ -57,12 +57,22 @@ This is text after a place holder...
       try {
          $this->getMethod()->invoke($doc);
 
-         $placeHolder = $doc->getChildNode('name', 'foo', 'APF\core\pagecontroller\PlaceHolderTag');
+         $placeHolder = $doc->getChildNode('name', 'foo', PlaceHolderTag::class);
          $this->assertTrue($placeHolder instanceof PlaceHolderTag);
       } catch (Exception $e) {
          $this->fail('Parsing comments failed. Message: ' . $e->getMessage());
       }
 
+   }
+
+   /**
+    * @return ReflectionMethod
+    */
+   protected function getMethod() {
+      $method = new ReflectionMethod(Document::class, 'extractTagLibTags');
+      $method->setAccessible(true);
+
+      return $method;
    }
 
    /**
@@ -90,22 +100,12 @@ This is text after a place holder...
       try {
          $this->getMethod()->invoke($doc);
 
-         $placeHolder = $doc->getChildNode('name', 'foo', 'APF\core\pagecontroller\PlaceHolderTag');
+         $placeHolder = $doc->getChildNode('name', 'foo', PlaceHolderTag::class);
          $this->assertTrue($placeHolder instanceof PlaceHolderTag);
       } catch (Exception $e) {
          $this->fail('Parsing lists failed. Message: ' . $e->getMessage());
       }
 
-   }
-
-   /**
-    * @return ReflectionMethod
-    */
-   protected function getMethod() {
-      $method = new ReflectionMethod('APF\core\pagecontroller\Document', 'extractTagLibTags');
-      $method->setAccessible(true);
-
-      return $method;
    }
 
 }

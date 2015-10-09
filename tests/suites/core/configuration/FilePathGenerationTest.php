@@ -50,14 +50,27 @@ class FilePathGenerationTest extends \PHPUnit_Framework_TestCase {
       RootClassLoader::addLoader(new StandardClassLoader(self::VENDOR_NAME, null, $this->configRootPath));
    }
 
-   /**
-    * @return ReflectionMethod The <em>BaseConfigurationProvider::getFilePath()</em> method instance.
-    */
-   private function getFilePathMethod() {
-      $method = new ReflectionMethod('APF\core\configuration\provider\ini\IniConfigurationProvider', 'getFilePath');
-      $method->setAccessible(true);
+   public function testVendorOnlyFilePath() {
 
-      return $method;
+      $provider = $this->getProvider();
+
+      $filePath = $this->getFilePathMethod()->invokeArgs(
+            $provider,
+            // $namespace, $context, $language, $environment, $name
+            array(self::VENDOR_NAME, 'foo', null, 'DEFAULT', 'test.ini')
+      );
+
+      assertEquals($this->configRootPath . '/config/foo/DEFAULT_test.ini', $filePath);
+
+      $provider->setOmitContext(true);
+      $filePath = $this->getFilePathMethod()->invokeArgs(
+            $provider,
+            // $namespace, $context, $language, $environment, $name
+            array(self::VENDOR_NAME, 'foo', null, 'DEFAULT', 'test.ini')
+      );
+
+      assertEquals($this->configRootPath . '/config/DEFAULT_test.ini', $filePath);
+
    }
 
    /**
@@ -69,27 +82,14 @@ class FilePathGenerationTest extends \PHPUnit_Framework_TestCase {
       return $provider;
    }
 
-   public function testVendorOnlyFilePath() {
+   /**
+    * @return ReflectionMethod The <em>BaseConfigurationProvider::getFilePath()</em> method instance.
+    */
+   private function getFilePathMethod() {
+      $method = new ReflectionMethod(IniConfigurationProvider::class, 'getFilePath');
+      $method->setAccessible(true);
 
-      $provider = $this->getProvider();
-
-      $filePath = $this->getFilePathMethod()->invokeArgs(
-         $provider,
-         // $namespace, $context, $language, $environment, $name
-         array(self::VENDOR_NAME, 'foo', null, 'DEFAULT', 'test.ini')
-      );
-
-      assertEquals($this->configRootPath . '/config/foo/DEFAULT_test.ini', $filePath);
-
-      $provider->setOmitContext(true);
-      $filePath = $this->getFilePathMethod()->invokeArgs(
-         $provider,
-         // $namespace, $context, $language, $environment, $name
-         array(self::VENDOR_NAME, 'foo', null, 'DEFAULT', 'test.ini')
-      );
-
-      assertEquals($this->configRootPath . '/config/DEFAULT_test.ini', $filePath);
-
+      return $method;
    }
 
    /**
@@ -100,9 +100,9 @@ class FilePathGenerationTest extends \PHPUnit_Framework_TestCase {
       $provider = $this->getProvider();
 
       $filePath = $this->getFilePathMethod()->invokeArgs(
-         $provider,
-         // $namespace, $context, $language, $environment, $name
-         array(self::VENDOR_NAME . '\foo\bar', 'baz', 'en', 'DEFAULT', 'test.ini')
+            $provider,
+            // $namespace, $context, $language, $environment, $name
+            array(self::VENDOR_NAME . '\foo\bar', 'baz', 'en', 'DEFAULT', 'test.ini')
       );
 
       assertEquals($this->configRootPath . '/config/foo/bar/baz/DEFAULT_test.ini', $filePath);
@@ -118,9 +118,9 @@ class FilePathGenerationTest extends \PHPUnit_Framework_TestCase {
       $provider->setOmitContext(true);
 
       $filePath = $this->getFilePathMethod()->invokeArgs(
-         $provider,
-         // $namespace, $context, $language, $environment, $name
-         array(self::VENDOR_NAME . '\foo\bar', 'baz', 'en', 'DEFAULT', 'test.ini')
+            $provider,
+            // $namespace, $context, $language, $environment, $name
+            array(self::VENDOR_NAME . '\foo\bar', 'baz', 'en', 'DEFAULT', 'test.ini')
       );
 
       assertEquals($this->configRootPath . '/config/foo/bar/DEFAULT_test.ini', $filePath);
@@ -136,9 +136,9 @@ class FilePathGenerationTest extends \PHPUnit_Framework_TestCase {
       $provider->setOmitEnvironment(true);
 
       $filePath = $this->getFilePathMethod()->invokeArgs(
-         $provider,
-         // $namespace, $context, $language, $environment, $name
-         array(self::VENDOR_NAME . '\foo\bar', 'baz', 'en', 'DEFAULT', 'test.ini')
+            $provider,
+            // $namespace, $context, $language, $environment, $name
+            array(self::VENDOR_NAME . '\foo\bar', 'baz', 'en', 'DEFAULT', 'test.ini')
       );
 
       assertEquals($this->configRootPath . '/config/foo/bar/baz/test.ini', $filePath);
@@ -154,9 +154,9 @@ class FilePathGenerationTest extends \PHPUnit_Framework_TestCase {
       $provider->setOmitConfigSubFolder(true);
 
       $filePath = $this->getFilePathMethod()->invokeArgs(
-         $provider,
-         // $namespace, $context, $language, $environment, $name
-         array(self::VENDOR_NAME . '\foo\bar', 'baz', 'en', 'DEFAULT', 'test.ini')
+            $provider,
+            // $namespace, $context, $language, $environment, $name
+            array(self::VENDOR_NAME . '\foo\bar', 'baz', 'en', 'DEFAULT', 'test.ini')
       );
 
       assertEquals($this->configRootPath . '/foo/bar/baz/DEFAULT_test.ini', $filePath);
@@ -173,9 +173,9 @@ class FilePathGenerationTest extends \PHPUnit_Framework_TestCase {
       $provider->setOmitEnvironment(true);
 
       $filePath = $this->getFilePathMethod()->invokeArgs(
-         $provider,
-         // $namespace, $context, $language, $environment, $name
-         array(self::VENDOR_NAME . '\foo\bar', 'baz', 'en', 'DEFAULT', 'test.ini')
+            $provider,
+            // $namespace, $context, $language, $environment, $name
+            array(self::VENDOR_NAME . '\foo\bar', 'baz', 'en', 'DEFAULT', 'test.ini')
       );
 
       assertEquals($this->configRootPath . '/config/foo/bar/test.ini', $filePath);

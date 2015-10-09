@@ -22,22 +22,23 @@ namespace APF\tests\suites\core\expression;
 
 use APF\core\expression\ModelEvaluationExpression;
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\ParserException;
 use DateTime;
 
 class ModelEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
 
    const DATA_ATTRIBUTE_NAME = 'foo';
 
+   public function testHappyCase() {
+      $expression = new ModelEvaluationExpression(self::DATA_ATTRIBUTE_NAME, $this->getDocument(self::DATA_ATTRIBUTE_NAME));
+      assertTrue($expression->getResult() instanceof ContentModel);
+   }
+
    private function getDocument($dataAttributeName) {
       $document = new Document();
       $document->setData($dataAttributeName, new ContentModel());
 
       return $document;
-   }
-
-   public function testHappyCase() {
-      $expression = new ModelEvaluationExpression(self::DATA_ATTRIBUTE_NAME, $this->getDocument(self::DATA_ATTRIBUTE_NAME));
-      assertTrue($expression->getResult() instanceof ContentModel);
    }
 
    public function testWithArrayAccess() {
@@ -51,12 +52,12 @@ class ModelEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testWrongPreviousResult() {
-      $this->setExpectedException('APF\core\pagecontroller\ParserException');
+      $this->setExpectedException(ParserException::class);
       new ModelEvaluationExpression('', new DateTime());
    }
 
    public function testMissingPreviousResult() {
-      $this->setExpectedException('APF\core\pagecontroller\ParserException');
+      $this->setExpectedException(ParserException::class);
       new ModelEvaluationExpression('', null);
    }
 

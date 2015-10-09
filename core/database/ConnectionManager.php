@@ -33,7 +33,7 @@ use InvalidArgumentException;
  * must be created as a service object.
  * <p/>
  * <pre>
- * $connMgr = &$this->getServiceObject('APF\core\database\ConnectionManager');
+ * $connMgr = &$this->getServiceObject(ConnectionManager::class);
  * $dBConn = &$connMgr->getConnection('{ConnectionKey}');
  * </pre>
  * The appropriate configuration file must reside under the <em>core::database</em> namespace

@@ -42,7 +42,7 @@ trait GetIterator {
     */
    public function getIterator($name) {
       /* @var $this Document */
-      return $this->getChildNode('name', $name, 'APF\tools\html\Iterator');
+      return $this->getChildNode('name', $name, Iterator::class);
    }
 
 }

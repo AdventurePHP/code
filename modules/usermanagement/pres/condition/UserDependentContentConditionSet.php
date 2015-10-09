@@ -34,11 +34,11 @@ use Exception;
  * as follows:
  * <pre>
  * // add condition
- * $condSet = &$this->getServiceObject('APF\modules\usermanagement\pres\condition\UserDependentContentConditionSet');
+ * $condSet = &$this->getServiceObject(UserDependentContentConditionSet::class);
  * $condSet->addCondition(new FooCondition());
  *
  * // initialize with custom condition
- * $condSet = &$this->getServiceObject('APF\modules\usermanagement\pres\condition\UserDependentContentConditionSet');
+ * $condSet = &$this->getServiceObject(UserDependentContentConditionSet::class);
  * $condSet
  *         ->resetConditionList()
  *         ->addCondition(new BarCondition());
@@ -180,7 +180,7 @@ class UserDependentContentConditionSet extends APFObject {
     * @return UmgtUserSessionStore The session store of the umgt module.
     */
    private function &getUserSessionStore() {
-      return $this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', [],
+      return $this->getServiceObject(UmgtUserSessionStore::class, [],
             APFService::SERVICE_TYPE_SESSION_SINGLETON);
    }
 

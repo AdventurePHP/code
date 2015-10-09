@@ -32,7 +32,7 @@ use InvalidArgumentException;
  * using the service manager:
  * <pre>
  * $store = &$this->getServiceObject(
- *             'APF\modules\usermanagement\biz\UmgtUserSessionStore',
+ *             UmgtUserSessionStore::class,
  *             [],
  *             APFService::SERVICE_TYPE_SESSION_SINGLETON
  * );

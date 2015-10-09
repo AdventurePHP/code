@@ -56,7 +56,7 @@ class NewsPagerController extends BaseDocumentController {
 
       // load default news page
       /* @var $provider NewsPagerProvider */
-      $provider = & $this->getServiceObject('APF\modules\newspager\data\NewsPagerProvider');
+      $provider = &$this->getServiceObject(NewsPagerProvider::class);
       $newsItem = $provider->getNewsByPage($dataDir, 1);
 
       // fill place holders

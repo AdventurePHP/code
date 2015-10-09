@@ -69,7 +69,7 @@ class TemplateTag extends Document implements Template {
     */
    public function &getLabel($name) {
       try {
-         return $this->getChildNode('name', $name, 'APF\core\pagecontroller\LanguageLabel');
+         return $this->getChildNode('name', $name, LanguageLabel::class);
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[TemplateTag::getLabel()] No label found with name "' . $name
                . '" composed in template with name "' . $this->getAttribute('name') . '" for document controller "'

@@ -22,6 +22,7 @@ namespace APF\tools\html\taglib;
 
 use APF\core\expression\ExpressionEvaluator;
 use APF\core\pagecontroller\Document;
+use APF\tools\html\Iterator;
 
 /**
  * Allows to initialize an HtmlIteratorTag used within an HtmlIteratorItemTag with the
@@ -57,7 +58,7 @@ class FillHtmlIteratorTag extends Document {
       $name = $this->getRequiredAttribute('name');
 
       /* @var $iterator HtmlIteratorTag */
-      $iterator = $this->getParentObject()->getChildNode('name', $name, 'APF\tools\html\Iterator');
+      $iterator = $this->getParentObject()->getChildNode('name', $name, Iterator::class);
 
       $expression = $this->getRequiredAttribute('data');
       $data = ExpressionEvaluator::evaluate($this->getParentObject(), $expression);

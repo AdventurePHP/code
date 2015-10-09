@@ -106,7 +106,7 @@ class DefaultExceptionHandler implements ExceptionHandler {
    protected function logException() {
       $message = '[' . ($this->generateExceptionID()) . '] ' . $this->exceptionMessage . ' (Number: ' . $this->exceptionNumber . ', File: ' . $this->exceptionFile . ', Line: ' . $this->exceptionLine . ')';
 
-      $log = Singleton::getInstance('APF\core\logging\Logger');
+      $log = Singleton::getInstance(Logger::class);
       /* @var $log Logger */
       $log->addEntry(
             new SimpleLogEntry(

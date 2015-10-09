@@ -20,6 +20,7 @@
  */
 namespace APF\tools\string;
 
+use APF\core\database\ConnectionManager;
 use APF\core\pagecontroller\APFObject;
 use InvalidArgumentException;
 
@@ -115,29 +116,6 @@ class RandomStringManager extends APFObject {
    }
 
    /**
-    * Creates a RandomString using the parameters set by init-function.
-    *
-    * @return string The created random string.
-    *
-    * @author dave
-    * @version
-    * Version 0.1, 07.09.2011<br />
-    * Version 0.2, 15.10.2012 (Optimized performance of the method)<br />
-    * Verison 0.3, 20.03.2013 (At start reset randomString)<br />
-    */
-   public function createHash() {
-      $this->randomString = null;
-      $chars = $this->mbStringToArray($this->chars);
-      $charactersCount = count($chars);
-
-      for ($i = 0; $i < $this->length; $i++) {
-         $this->randomString .= $chars[mt_rand(0, $charactersCount - 1)];
-      }
-
-      return $this->randomString;
-   }
-
-   /**
     * Creates a RandomString using the parameters set by init-function
     * until there was no corresponding string in the database found.
     *
@@ -163,10 +141,9 @@ class RandomStringManager extends APFObject {
          throw new InvalidArgumentException('[RandomStringManager::advancedCreateHash()] You must provide a ConnectionKey for the SQL Statement!', E_USER_ERROR);
       }
 
-      $cM = & $this->getServiceObject('APF\core\database\ConnectionManager');
-      /* @var $cM \APF\core\database\ConnectionManager */
-      $conn = & $cM->getConnection($connectionKey);
-      /* @var $conn \APF\core\database\AbstractDatabaseHandler */
+      /* @var $cM ConnectionManager */
+      $cM = &$this->getServiceObject(ConnectionManager::class);
+      $conn = &$cM->getConnection($connectionKey);
 
       $hash = $this->createHash();
       $hash = $conn->escapeValue($hash);
@@ -179,6 +156,52 @@ class RandomStringManager extends APFObject {
       }
 
       return $this->randomString;
+   }
+
+   /**
+    * Creates a RandomString using the parameters set by init-function.
+    *
+    * @return string The created random string.
+    *
+    * @author dave
+    * @version
+    * Version 0.1, 07.09.2011<br />
+    * Version 0.2, 15.10.2012 (Optimized performance of the method)<br />
+    * Verison 0.3, 20.03.2013 (At start reset randomString)<br />
+    */
+   public function createHash() {
+      $this->randomString = null;
+      $chars = $this->mbStringToArray($this->chars);
+      $charactersCount = count($chars);
+
+      for ($i = 0; $i < $this->length; $i++) {
+         $this->randomString .= $chars[mt_rand(0, $charactersCount - 1)];
+      }
+
+      return $this->randomString;
+   }
+
+   /**
+    * Converting characters into UTF-8 conform format (for example: §%#).
+    *
+    * @param string $string The characters to convert.
+    *
+    * @return array The converted characters as array.
+    *
+    * @author dave
+    * @version
+    * Version 0.1, 07.09.2011<br />
+    */
+   private function mbStringToArray($string) {
+      $strLen = mb_strlen($string);
+      $array = array();
+      while ($strLen) {
+         $array[] = mb_substr($string, 0, 1, "UTF-8");
+         $string = mb_substr($string, 1, $strLen, "UTF-8");
+         $strLen = mb_strlen($string);
+      }
+
+      return $array;
    }
 
    /**
@@ -212,29 +235,6 @@ class RandomStringManager extends APFObject {
       }
 
       return $serialNumber;
-   }
-
-   /**
-    * Converting characters into UTF-8 conform format (for example: §%#).
-    *
-    * @param string $string The characters to convert.
-    *
-    * @return array The converted characters as array.
-    *
-    * @author dave
-    * @version
-    * Version 0.1, 07.09.2011<br />
-    */
-   private function mbStringToArray($string) {
-      $strLen = mb_strlen($string);
-      $array = array();
-      while ($strLen) {
-         $array[] = mb_substr($string, 0, 1, "UTF-8");
-         $string = mb_substr($string, 1, $strLen, "UTF-8");
-         $strLen = mb_strlen($string);
-      }
-
-      return $array;
    }
 
    /**

@@ -451,7 +451,7 @@ class HtmlFormTag extends Document implements HtmlForm {
 
    public function transformForm() {
 
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
       /* @var $t BenchmarkTimer */
       $id = '(HtmlFormTag) ' . $this->getObjectId() . '::transformForm()';
       $t->start($id);

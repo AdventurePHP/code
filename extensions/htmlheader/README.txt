@@ -73,7 +73,7 @@ following. (And for meta-refreshs you need to use it)
 
 <source lang="php">
 // Get an instance of HtmlHeaderManager:
-$HHM = $this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
+$HHM = $this->getServiceObject(HtmlHeaderManager::class);
 
 // Add a refresh on index.php?test=abc, with a delay of 5 seconds:
 $HHM->addRefresh('index.php', 5, array("test" => "abc"));

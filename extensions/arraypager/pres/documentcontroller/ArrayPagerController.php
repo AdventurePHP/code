@@ -64,7 +64,7 @@ class ArrayPagerController extends BaseDocumentController {
       }
 
       /* @var $t BenchmarkTimer */
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
       $t->start('ArrayPager');
 
       $content = $this->getTemplate('pager');

@@ -43,37 +43,6 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
     */
    private $initialIniProvider;
 
-   protected function setUp() {
-
-      // setup config provider to fake tests
-      $this->initialIniProvider = ConfigurationManager::retrieveProvider('ini');
-
-      // setup fake ini provider to avoid file-based configuration files
-      $provider = new FakeIniProvider();
-
-      $config = new IniConfiguration();
-
-      // setup section for action
-      $action = new IniConfiguration();
-      $action->setValue('ActionClass', 'APF\tests\suites\core\filter\FilterTestAction');
-
-      $config->setSection('say-foo', $action);
-      $provider->registerConfiguration('VENDOR\foo', self::TEST_ACTION_CONFIG_NAME, $config);
-
-      $config->setSection('say-bar', $action);
-      $provider->registerConfiguration('VENDOR\bar', self::TEST_ACTION_CONFIG_NAME, $config);
-
-      $config->setSection('say-baz', $action);
-      $provider->registerConfiguration('VENDOR\baz', self::TEST_ACTION_CONFIG_NAME, $config);
-
-      ConfigurationManager::registerProvider('ini', $provider);
-   }
-
-   protected function tearDown() {
-      // restore previous setup to not influence further tests
-      ConfigurationManager::registerProvider('ini', $this->initialIniProvider);
-   }
-
    /**
     * Tests standard action as before realization of CR ID#63.
     */
@@ -362,6 +331,37 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
 
       assertEquals(array(), $fC->getActions());
 
+   }
+
+   protected function setUp() {
+
+      // setup config provider to fake tests
+      $this->initialIniProvider = ConfigurationManager::retrieveProvider('ini');
+
+      // setup fake ini provider to avoid file-based configuration files
+      $provider = new FakeIniProvider();
+
+      $config = new IniConfiguration();
+
+      // setup section for action
+      $action = new IniConfiguration();
+      $action->setValue('ActionClass', FilterTestAction::class);
+
+      $config->setSection('say-foo', $action);
+      $provider->registerConfiguration('VENDOR\foo', self::TEST_ACTION_CONFIG_NAME, $config);
+
+      $config->setSection('say-bar', $action);
+      $provider->registerConfiguration('VENDOR\bar', self::TEST_ACTION_CONFIG_NAME, $config);
+
+      $config->setSection('say-baz', $action);
+      $provider->registerConfiguration('VENDOR\baz', self::TEST_ACTION_CONFIG_NAME, $config);
+
+      ConfigurationManager::registerProvider('ini', $provider);
+   }
+
+   protected function tearDown() {
+      // restore previous setup to not influence further tests
+      ConfigurationManager::registerProvider('ini', $this->initialIniProvider);
    }
 
 }

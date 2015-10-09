@@ -1,7 +1,10 @@
 <?php
+use APF\tests\suites\core\service\DummyService;
+use APF\tests\suites\core\service\DummyServiceTwo;
+
 return [
       'DummyService-constructor' => [
-            'class'       => 'APF\tests\suites\core\service\DummyService',
+            'class' => DummyService::class,
             'servicetype' => 'SINGLETON',
             'construct'   => [
                   'string'  => [
@@ -15,7 +18,7 @@ return [
             ]
       ],
       'DummyServiceTwo'          => [
-            'class'       => 'APF\tests\suites\core\service\DummyServiceTwo',
+            'class' => DummyServiceTwo::class,
             'servicetype' => 'SINGLETON'
       ]
 ];

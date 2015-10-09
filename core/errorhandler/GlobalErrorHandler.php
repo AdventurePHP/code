@@ -71,36 +71,6 @@ abstract class GlobalErrorHandler {
    }
 
    /**
-    * This method is used as the central entry point to the APF's error management. It delegates the
-    * error handling to the registered handler. In case no handler is registered or the mechanism is
-    * disables, nothing will happen.
-    *
-    * @param int $errorNumber The error number.
-    * @param string $errorMessage The error message.
-    * @param string $errorFile The file the error occurred in.
-    * @param int $errorLine The line the error occurred at.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 03.03.2012<br />
-    */
-   public static function handleError($errorNumber, $errorMessage, $errorFile, $errorLine) {
-
-      // Don't raise error, if @ was applied
-      if (error_reporting() == 0) {
-         return;
-      }
-
-      if (self::$HANDLER === null) {
-         // restore the PHP default error handler to avoid loops or other issues
-         restore_error_handler();
-         trigger_error($errorMessage, (int) $errorNumber);
-      } else {
-         self::$HANDLER->handleError($errorNumber, $errorMessage, $errorFile, $errorLine);
-      }
-   }
-
-   /**
     * Disables the APF error handling mechanism. From this point in time, the PHP default
     * error handler will be used to handle the error.
     *
@@ -133,14 +103,14 @@ abstract class GlobalErrorHandler {
       }
 
       // (re-)register the APF error handler
-      set_error_handler(array('APF\core\errorhandler\GlobalErrorHandler', 'handleError'));
+      set_error_handler(array(GlobalErrorHandler::class, 'handleError'));
 
       // enable fatal error catching
       self::$catchFatalErrors = true;
 
       // Register callback for catching fatal errors. As this registration cannot be undone, a
       // separate flag is maintained to switch off this handling using <em>disable()</em>.
-      register_shutdown_function(array('APF\core\errorhandler\GlobalErrorHandler', 'handleFatalError'));
+      register_shutdown_function(array(GlobalErrorHandler::class, 'handleFatalError'));
    }
 
    /**
@@ -169,6 +139,36 @@ abstract class GlobalErrorHandler {
          self::handleError((int) $error['type'], $error['message'], $error['file'], (int) $error['line']);
       }
 
+   }
+
+   /**
+    * This method is used as the central entry point to the APF's error management. It delegates the
+    * error handling to the registered handler. In case no handler is registered or the mechanism is
+    * disables, nothing will happen.
+    *
+    * @param int $errorNumber The error number.
+    * @param string $errorMessage The error message.
+    * @param string $errorFile The file the error occurred in.
+    * @param int $errorLine The line the error occurred at.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 03.03.2012<br />
+    */
+   public static function handleError($errorNumber, $errorMessage, $errorFile, $errorLine) {
+
+      // Don't raise error, if @ was applied
+      if (error_reporting() == 0) {
+         return;
+      }
+
+      if (self::$HANDLER === null) {
+         // restore the PHP default error handler to avoid loops or other issues
+         restore_error_handler();
+         trigger_error($errorMessage, (int) $errorNumber);
+      } else {
+         self::$HANDLER->handleError($errorNumber, $errorMessage, $errorFile, $errorLine);
+      }
    }
 
 }

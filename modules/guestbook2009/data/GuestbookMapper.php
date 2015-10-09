@@ -79,6 +79,114 @@ class GuestbookMapper extends APFObject {
    }
 
    /**
+    * Returns the current instance of the guestbook.
+    *
+    * @return GenericDomainObject The current instance of the guestbook.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 16.05.2009<br />
+    */
+   private function getCurrentGuestbook() {
+      /* @var $model GuestbookModel */
+      $model = &$this->getServiceObject(GuestbookModel::class);
+
+      return $this->orm->loadObjectByID('Guestbook', $model->getGuestbookId());
+   }
+
+   /**
+    * Returns the desired instance of the GenericORMapper configured for this application case.
+    *
+    * @param GenericDomainObject[] A list of generic entries.
+    * @param boolean $addEditor Indicates, if the editor should be mapped to the entry object.
+    *
+    * @return Entry[] A list of guestbook domain objects.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 06.05.2009<br />
+    */
+   private function mapGenericEntries2DomainObjects(array $entries = array(), $addEditor = true) {
+
+      // return empty array, because having no entries means nothing to do!
+      if (count($entries) == 0) {
+         return array();
+      }
+
+      // invoke benchmarker to be able to monitor the performance
+      /* @var $t BenchmarkTimer */
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t->start('mapGenericEntries2DomainObjects()');
+
+      // load the language object for the current language to enable
+      // language dependent mapping!
+      $lang = $this->getCurrentLanguage();
+
+      // define the criterion
+      $critEntries = new GenericCriterionObject();
+      $critEntries->addRelationIndicator('Attribute2Language', $lang);
+
+      $gbEntries = array();
+      /* @var $current GenericDomainObject */
+      foreach ($entries as $current) {
+
+         // Check, whether there are attributes related in the current language.
+         // If not, do NOT add an entry, because it will be empty!
+         $attributes = $this->orm->loadRelatedObjects($current, 'Entry2LangDepValues', $critEntries);
+         if (count($attributes) > 0) {
+
+            // load the entry itself
+            $entry = new Entry();
+            $entry->setCreationTimestamp($current->getProperty('CreationTimestamp'));
+
+            foreach ($attributes as $attribute) {
+
+               if ($attribute->getProperty('Name') == 'title') {
+                  $entry->setTitle($attribute->getProperty('Value'));
+               }
+               if ($attribute->getProperty('Name') == 'text') {
+                  $entry->setText($attribute->getProperty('Value'));
+               }
+
+            }
+
+            // add the editor's data
+            if ($addEditor === true) {
+               $editor = new User();
+               $user = $this->orm->loadRelatedObjects($current, 'Editor2Entry');
+               $editor->setName($user[0]->getProperty('Name'));
+               $editor->setEmail($user[0]->getProperty('Email'));
+               $editor->setWebsite($user[0]->getProperty('Website'));
+               $editor->setId($user[0]->getProperty('UserID'));
+               $entry->setEditor($editor);
+            }
+
+            $entry->setId($current->getProperty('EntryID'));
+            $gbEntries[] = $entry;
+         }
+
+      }
+
+      $t->stop('mapGenericEntries2DomainObjects()');
+
+      return $gbEntries;
+   }
+
+   /**
+    * @return GenericDomainObject The active language's representation object.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 06.05.2009<br />
+    */
+   private function getCurrentLanguage() {
+      $crit = new GenericCriterionObject();
+      $crit->addPropertyIndicator('ISOCode', $this->language);
+
+      return $this->orm->loadObjectByCriterion('Language', $crit);
+   }
+
+   /**
     * Returns the list of all entries for filling a selection field.
     *
     * @return Entry[] The desired entry list.
@@ -100,7 +208,6 @@ class GuestbookMapper extends APFObject {
 
    }
 
-
    /**
     * Returns the current guestbook domain object.
     *
@@ -115,7 +222,6 @@ class GuestbookMapper extends APFObject {
 
       return $this->mapGenericGuestbook2DomainObject($gb);
    }
-
 
    /**
     * Translates the generic guestbook object into the guestbook's
@@ -134,7 +240,7 @@ class GuestbookMapper extends APFObject {
 
       if ($guestbook == null) {
          /* @var $model GuestbookModel */
-         $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
+         $model = &$this->getServiceObject(GuestbookModel::class);
          $gbId = $model->getGuestbookId();
          throw new InvalidArgumentException('[GuestbookManager::mapGenericGuestbook2DomainObject()] '
                . 'No guestbook with id "' . $gbId . '" stored in database! Please check your guestbook tag '
@@ -161,7 +267,6 @@ class GuestbookMapper extends APFObject {
 
       return $domGuestbook;
    }
-
 
    /**
     * Loads a single entry with it's editor to perform an update.
@@ -199,59 +304,6 @@ class GuestbookMapper extends APFObject {
       $genericEntry = $this->mapDomainObject2GenericEntry($entry);
       $this->orm->saveObject($genericEntry);
    }
-
-   /**
-    * Deletes the given entry from the database.
-    *
-    * @param Entry $domEntry The guestbook entry to delete.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 21.05.2009<br />
-    */
-   public function deleteEntry(Entry $domEntry) {
-
-      $entry = new GenericDomainObject('Entry');
-      $entry->setProperty('EntryID', $domEntry->getId());
-
-      // Delete the attributes of the entry, so that the object
-      // itself can be deleted. If we don't do this, the ORM
-      // will not be glad, because the entry still has child objects!
-      $attributes = $this->orm->loadRelatedObjects($entry, 'Entry2LangDepValues');
-      foreach ($attributes as $attribute) {
-         $this->orm->deleteObject($attribute);
-      }
-
-      // delete associated users, because we don't need them anymore.
-      $users = $this->orm->loadRelatedObjects($entry, 'Editor2Entry');
-      foreach ($users as $user) {
-         $this->orm->deleteObject($user);
-      }
-
-      // now delete entry object (associations are deleted automatically)
-      $this->orm->deleteObject($entry);
-   }
-
-   /**
-    * Checks the user's credentials.
-    *
-    * @param User $user The user to authenticate.
-    *
-    * @return boolean True in case, the user is allowed to login, false otherwise.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 17.05.2009<br />
-    */
-   public function validateCredentials(User $user) {
-      $authCrit = new GenericCriterionObject();
-      $authCrit->addPropertyIndicator('Username', $user->getUsername());
-      $authCrit->addPropertyIndicator('Password', md5($user->getPassword()));
-      $gbUser = $this->orm->loadObjectByCriterion('User', $authCrit);
-
-      return $gbUser !== null;
-   }
-
 
    /**
     * Maps a domain object to a GenericDomainObject to prepare the entry for saving it.
@@ -339,81 +391,55 @@ class GuestbookMapper extends APFObject {
    }
 
    /**
-    * Returns the desired instance of the GenericORMapper configured for this application case.
+    * Deletes the given entry from the database.
     *
-    * @param GenericDomainObject[] A list of generic entries.
-    * @param boolean $addEditor Indicates, if the editor should be mapped to the entry object.
-    *
-    * @return Entry[] A list of guestbook domain objects.
+    * @param Entry $domEntry The guestbook entry to delete.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 06.05.2009<br />
+    * Version 0.1, 21.05.2009<br />
     */
-   private function mapGenericEntries2DomainObjects(array $entries = array(), $addEditor = true) {
+   public function deleteEntry(Entry $domEntry) {
 
-      // return empty array, because having no entries means nothing to do!
-      if (count($entries) == 0) {
-         return array();
+      $entry = new GenericDomainObject('Entry');
+      $entry->setProperty('EntryID', $domEntry->getId());
+
+      // Delete the attributes of the entry, so that the object
+      // itself can be deleted. If we don't do this, the ORM
+      // will not be glad, because the entry still has child objects!
+      $attributes = $this->orm->loadRelatedObjects($entry, 'Entry2LangDepValues');
+      foreach ($attributes as $attribute) {
+         $this->orm->deleteObject($attribute);
       }
 
-      // invoke benchmarker to be able to monitor the performance
-      /* @var $t BenchmarkTimer */
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
-      $t->start('mapGenericEntries2DomainObjects()');
-
-      // load the language object for the current language to enable
-      // language dependent mapping!
-      $lang = $this->getCurrentLanguage();
-
-      // define the criterion
-      $critEntries = new GenericCriterionObject();
-      $critEntries->addRelationIndicator('Attribute2Language', $lang);
-
-      $gbEntries = array();
-      /* @var $current GenericDomainObject */
-      foreach ($entries as $current) {
-
-         // Check, whether there are attributes related in the current language.
-         // If not, do NOT add an entry, because it will be empty!
-         $attributes = $this->orm->loadRelatedObjects($current, 'Entry2LangDepValues', $critEntries);
-         if (count($attributes) > 0) {
-
-            // load the entry itself
-            $entry = new Entry();
-            $entry->setCreationTimestamp($current->getProperty('CreationTimestamp'));
-
-            foreach ($attributes as $attribute) {
-
-               if ($attribute->getProperty('Name') == 'title') {
-                  $entry->setTitle($attribute->getProperty('Value'));
-               }
-               if ($attribute->getProperty('Name') == 'text') {
-                  $entry->setText($attribute->getProperty('Value'));
-               }
-
-            }
-
-            // add the editor's data
-            if ($addEditor === true) {
-               $editor = new User();
-               $user = $this->orm->loadRelatedObjects($current, 'Editor2Entry');
-               $editor->setName($user[0]->getProperty('Name'));
-               $editor->setEmail($user[0]->getProperty('Email'));
-               $editor->setWebsite($user[0]->getProperty('Website'));
-               $editor->setId($user[0]->getProperty('UserID'));
-               $entry->setEditor($editor);
-            }
-
-            $entry->setId($current->getProperty('EntryID'));
-            $gbEntries[] = $entry;
-         }
-
+      // delete associated users, because we don't need them anymore.
+      $users = $this->orm->loadRelatedObjects($entry, 'Editor2Entry');
+      foreach ($users as $user) {
+         $this->orm->deleteObject($user);
       }
 
-      $t->stop('mapGenericEntries2DomainObjects()');
+      // now delete entry object (associations are deleted automatically)
+      $this->orm->deleteObject($entry);
+   }
 
-      return $gbEntries;
+   /**
+    * Checks the user's credentials.
+    *
+    * @param User $user The user to authenticate.
+    *
+    * @return boolean True in case, the user is allowed to login, false otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 17.05.2009<br />
+    */
+   public function validateCredentials(User $user) {
+      $authCrit = new GenericCriterionObject();
+      $authCrit->addPropertyIndicator('Username', $user->getUsername());
+      $authCrit->addPropertyIndicator('Password', md5($user->getPassword()));
+      $gbUser = $this->orm->loadObjectByCriterion('User', $authCrit);
+
+      return $gbUser !== null;
    }
 
    /**
@@ -441,36 +467,6 @@ class GuestbookMapper extends APFObject {
     */
    public function setORM(GenericORRelationMapper $orm) {
       $this->orm = $orm;
-   }
-
-   /**
-    * @return GenericDomainObject The active language's representation object.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 06.05.2009<br />
-    */
-   private function getCurrentLanguage() {
-      $crit = new GenericCriterionObject();
-      $crit->addPropertyIndicator('ISOCode', $this->language);
-
-      return $this->orm->loadObjectByCriterion('Language', $crit);
-   }
-
-   /**
-    * Returns the current instance of the guestbook.
-    *
-    * @return GenericDomainObject The current instance of the guestbook.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 16.05.2009<br />
-    */
-   private function getCurrentGuestbook() {
-      /* @var $model GuestbookModel */
-      $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
-
-      return $this->orm->loadObjectByID('Guestbook', $model->getGuestbookId());
    }
 
 }

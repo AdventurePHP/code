@@ -55,8 +55,8 @@ class SocialBookmarkBarTag extends Document {
 
    public function transform() {
 
-      $bm = & $this->getServiceObject('APF\modules\socialbookmark\biz\SocialBookmarkBarManager');
       /* @var $bm SocialBookmarkBarManager */
+      $bm = &$this->getServiceObject(SocialBookmarkBarManager::class);
 
       $bm->setImageWidth($this->getAttributes('width'));
       $bm->setImageHeight($this->getAttributes('height'));

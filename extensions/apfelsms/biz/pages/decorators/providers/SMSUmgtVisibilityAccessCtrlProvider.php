@@ -72,8 +72,7 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
       }
 
       /** @var $umgtUS UmgtUserSessionStore */
-      $umgtUS = &$this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', [],
-            APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      $umgtUS = &$this->getServiceObject(UmgtUserSessionStore::class, [], APFService::SERVICE_TYPE_SESSION_SINGLETON);
 
       // load current user
       $user = $umgtUS->getUser($this->getContext());

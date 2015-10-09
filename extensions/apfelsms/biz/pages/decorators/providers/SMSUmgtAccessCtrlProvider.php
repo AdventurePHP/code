@@ -63,14 +63,13 @@ class SMSUmgtAccessCtrlProvider extends APFObject implements SMSAccessCtrlProvid
    public function isAccessProtected(SMSPage $page, $permissionName) {
 
 
-      // try to return chached protection status
+      // try to return cached protection status
       if (isset($this->cache[$permissionName])) {
          return $this->cache[$permissionName];
       }
 
       /** @var $umgtUS UmgtUserSessionStore */
-      $umgtUS = &$this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', [],
-            APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      $umgtUS = &$this->getServiceObject(UmgtUserSessionStore::class, [], APFService::SERVICE_TYPE_SESSION_SINGLETON);
 
       // load current user
       $user = $umgtUS->getUser($this->getContext());
