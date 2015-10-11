@@ -47,8 +47,8 @@ class ProxyAddController extends UmgtBaseController {
       $proxyTypeId = $request->getParameter('proxytypeid');
       $appObjectId = $request->getParameter('appobjectid');
       $proxyId = $request->getParameter('proxyid');
-      $selectedUsers = array();
-      $selectedGroups = array();
+      $selectedUsers = [];
+      $selectedGroups = [];
       if ($proxyTypeId != null && $appObjectId != null) {
          $proxy = new UmgtVisibilityDefinition();
          $proxy->setObjectId($proxyId);
@@ -115,7 +115,7 @@ class ProxyAddController extends UmgtBaseController {
          );
 
          // setup users
-         $users = array();
+         $users = [];
          foreach ($usersElement->getSelectedOptions() as $option) {
             $user = new UmgtUser();
             $user->setObjectId($option->getAttribute('value'));
@@ -124,7 +124,7 @@ class ProxyAddController extends UmgtBaseController {
          }
 
          // setup groups
-         $groups = array();
+         $groups = [];
          foreach ($groupsElement->getSelectedOptions() as $option) {
             $group = new UmgtGroup();
             $group->setObjectId($option->getAttribute('value'));
@@ -139,7 +139,7 @@ class ProxyAddController extends UmgtBaseController {
          $definition->setDeletePermission($form->getFormElementByID('delete-perm')->isChecked() ? 1 : 0);
 
          $uM->createVisibilityDefinition($type, $definition, $users, $groups);
-         $this->getResponse()->forward($this->generateLink(array('mainview' => 'proxy', 'proxyview' => null, 'proxytypeid' => null)));
+         $this->getResponse()->forward($this->generateLink(['mainview' => 'proxy', 'proxyview' => null, 'proxytypeid' => null]));
 
       } else {
          $form->transformOnPlace();

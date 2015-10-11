@@ -57,7 +57,7 @@ interface DatabaseConnection extends APFDIService {
     * @version
     * Version 0.1, 10.02.2008<br />
     */
-   public function executeStatement($namespace, $statementName, array $params = array(), $logStatement = false);
+   public function executeStatement($namespace, $statementName, array $params = [], $logStatement = false);
 
    /**
     * Executes a statement applied as a string to the method and returns the

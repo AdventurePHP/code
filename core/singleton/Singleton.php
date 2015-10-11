@@ -48,7 +48,7 @@ class Singleton {
     *
     * @var string[] $CACHE
     */
-   protected static $CACHE = array();
+   protected static $CACHE = [];
 
    private function __construct() {
    }

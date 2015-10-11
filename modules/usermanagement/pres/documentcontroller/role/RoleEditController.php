@@ -63,7 +63,7 @@ class RoleEditController extends UmgtBaseController {
             $role->setDescription($description->getValue());
 
             $uM->saveRole($role);
-            $this->getResponse()->forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
+            $this->getResponse()->forward($this->generateLink(['mainview' => 'role', 'roleview' => '', 'roleid' => '']));
 
          } else {
             $form->transformOnPlace();

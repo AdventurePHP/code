@@ -46,7 +46,7 @@ class GroupRemoveUserFromGroupsController extends UmgtBaseController {
       if (count($groups) === 0) {
          $tmpl = & $this->getTemplate('NoGroups');
          $tmpl->getLabel('message-1')->setPlaceHolder('display-name', $user->getDisplayName());
-         $tmpl->getLabel('message-2')->setPlaceHolder('user-view-link', $this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
+         $tmpl->getLabel('message-2')->setPlaceHolder('user-view-link', $this->generateLink(['mainview' => 'user', 'groupview' => null, 'userid' => null]));
          $tmpl->transformOnPlace();
 
          return;
@@ -61,7 +61,7 @@ class GroupRemoveUserFromGroupsController extends UmgtBaseController {
       if ($form->isSent() && $form->isValid()) {
 
          $options = & $groupsControl->getSelectedOptions();
-         $groupsToRemove = array();
+         $groupsToRemove = [];
          foreach ($options as $option) {
             /* @var $option SelectBoxOptionTag */
             $groupToRemove = new UmgtGroup();
@@ -73,7 +73,7 @@ class GroupRemoveUserFromGroupsController extends UmgtBaseController {
          $uM->detachUserFromGroups($user, $groupsToRemove);
 
          // back to user main view
-         $this->getResponse()->forward($this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
+         $this->getResponse()->forward($this->generateLink(['mainview' => 'user', 'groupview' => null, 'userid' => null]));
       } else {
          $form->transformOnPlace();
       }

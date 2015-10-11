@@ -46,7 +46,7 @@ class GroupRemoveRoleFromGroupsController extends UmgtBaseController {
       if (count($groups) === 0) {
          $tmpl = & $this->getTemplate('NoMoreGroups');
          $tmpl->getLabel('message-1')->setPlaceHolder('display-name', $role->getDisplayName());
-         $tmpl->getLabel('message-2')->setPlaceHolder('role-view-link', $this->generateLink(array('mainview' => 'role', 'groupview' => null, 'roleid' => null)));
+         $tmpl->getLabel('message-2')->setPlaceHolder('role-view-link', $this->generateLink(['mainview' => 'role', 'groupview' => null, 'roleid' => null]));
          $tmpl->transformOnPlace();
 
          return;
@@ -61,7 +61,7 @@ class GroupRemoveRoleFromGroupsController extends UmgtBaseController {
       if ($form->isSent() && $form->isValid()) {
 
          $options = & $groupsControl->getSelectedOptions();
-         $additionalGroups = array();
+         $additionalGroups = [];
          foreach ($options as $option) {
             /* @var $option SelectBoxOptionTag */
             $additionalGroup = new UmgtGroup();
@@ -73,7 +73,7 @@ class GroupRemoveRoleFromGroupsController extends UmgtBaseController {
          $uM->detachRoleToGroups($role, $additionalGroups);
 
          // back to user main view
-         $this->getResponse()->forward($this->generateLink(array('mainview' => 'role', 'groupview' => null, 'roleid' => null)));
+         $this->getResponse()->forward($this->generateLink(['mainview' => 'role', 'groupview' => null, 'roleid' => null]));
       } else {
          $form->transformOnPlace();
       }

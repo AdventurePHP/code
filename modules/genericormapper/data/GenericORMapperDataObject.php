@@ -95,7 +95,7 @@ interface GenericORMapperDataObject {
     */
    public function getProperty($name);
 
-   public function setProperties($properties = array());
+   public function setProperties($properties = []);
 
    /**
     * @return string[] An associative array of the object's properties.

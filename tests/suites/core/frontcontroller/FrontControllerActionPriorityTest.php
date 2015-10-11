@@ -104,7 +104,7 @@ class FrontControllerActionPriorityTest extends \PHPUnit_Framework_TestCase {
       $fC = new Frontcontroller();
 
       PriorityAwareTestAction::$INITIAL_PRIORITY = 10;
-      $fC->addAction(self::TEST_ACTION_NAMESPACE, self::TEST_ACTION_NAME, array('id' => '10-1'));
+      $fC->addAction(self::TEST_ACTION_NAMESPACE, self::TEST_ACTION_NAME, ['id' => '10-1']);
 
       PriorityAwareTestAction::$INITIAL_PRIORITY = 1;
       $fC->addAction(self::TEST_ACTION_NAMESPACE, self::TEST_ACTION_NAME);
@@ -113,19 +113,19 @@ class FrontControllerActionPriorityTest extends \PHPUnit_Framework_TestCase {
       $fC->addAction(self::TEST_ACTION_NAMESPACE, self::TEST_ACTION_NAME);
 
       PriorityAwareTestAction::$INITIAL_PRIORITY = 10;
-      $fC->addAction(self::TEST_ACTION_NAMESPACE, self::TEST_ACTION_NAME, array('id' => '10-2'));
+      $fC->addAction(self::TEST_ACTION_NAMESPACE, self::TEST_ACTION_NAME, ['id' => '10-2']);
 
       PriorityAwareTestAction::$INITIAL_PRIORITY = 10;
-      $fC->addAction(self::TEST_ACTION_NAMESPACE, self::TEST_ACTION_NAME, array('id' => '10-3'));
+      $fC->addAction(self::TEST_ACTION_NAMESPACE, self::TEST_ACTION_NAME, ['id' => '10-3']);
 
       PriorityAwareTestAction::$INITIAL_PRIORITY = 20;
-      $fC->addAction(self::TEST_ACTION_NAMESPACE, self::TEST_ACTION_NAME, array('id' => '20-1'));
+      $fC->addAction(self::TEST_ACTION_NAMESPACE, self::TEST_ACTION_NAME, ['id' => '20-1']);
 
       PriorityAwareTestAction::$INITIAL_PRIORITY = 15;
       $fC->addAction(self::TEST_ACTION_NAMESPACE, self::TEST_ACTION_NAME);
 
       PriorityAwareTestAction::$INITIAL_PRIORITY = 20;
-      $fC->addAction(self::TEST_ACTION_NAMESPACE, self::TEST_ACTION_NAME, array('id' => '20-2'));
+      $fC->addAction(self::TEST_ACTION_NAMESPACE, self::TEST_ACTION_NAME, ['id' => '20-2']);
 
 
       $actions = &$fC->getActions();

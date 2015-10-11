@@ -92,20 +92,6 @@ class Postbox extends APFObject {
    }
 
    /**
-    * Returns a folder which is related to the postbox and has the given name.
-    *
-    * @param string $Name The name of the folder.
-    *
-    * @return PostboxFolder
-    */
-   public function getPostboxFolderByName($Name) {
-      $crit = new GenericCriterionObject();
-      $crit->addPropertyIndicator('Name', $Name);
-
-      return $this->User->loadRelatedObject('User2PostboxFolder', $crit);
-   }
-
-   /**
     * Returns a folder which is related to the postbox and has the given ID
     *
     * @param string $ID The folder's ID
@@ -120,7 +106,6 @@ class Postbox extends APFObject {
 
       return $Folder;
    }
-
 
    /**
     * Creates a new folder with the given name in the postbox.
@@ -142,6 +127,20 @@ class Postbox extends APFObject {
       $Folder->save();
 
       return $Folder;
+   }
+
+   /**
+    * Returns a folder which is related to the postbox and has the given name.
+    *
+    * @param string $Name The name of the folder.
+    *
+    * @return PostboxFolder
+    */
+   public function getPostboxFolderByName($Name) {
+      $crit = new GenericCriterionObject();
+      $crit->addPropertyIndicator('Name', $Name);
+
+      return $this->User->loadRelatedObject('User2PostboxFolder', $crit);
    }
 
    /**
@@ -199,14 +198,25 @@ class Postbox extends APFObject {
    }
 
    /**
+    * Checks if the current user is being blocked by the given user.
+    *
+    * @param GenericORMapperDataObject $User
+    *
+    * @return bool
+    */
+   public function isOnUsersBlacklist(GenericORMapperDataObject &$User) {
+      return $this->ORM->isAssociated('User2BlockedUser', $User, $this->User);
+   }
+
+   /**
     * Returns the number of channels of the postbox which are *NOT* in a folder.
     *
     * @return int
     */
    public function countChannelsWithoutFolder() {
-      $result = $this->ORM->getDBDriver()->executeStatement('extensions::postbox', 'Postbox_countChannelsWithoutFolder.sql', array(
+      $result = $this->ORM->getDBDriver()->executeStatement('extensions::postbox', 'Postbox_countChannelsWithoutFolder.sql', [
             'UserID' => (int) $this->User->getObjectId()
-      ));
+      ]);
 
       return (int) $this->ORM->getDBDriver()->getNumRows($result);
    }
@@ -235,11 +245,11 @@ class Postbox extends APFObject {
     * @return MessageChannel[] A list of message channels.
     */
    public function getChannelsWithoutFolder($start = 0, $count = 15) {
-      return $this->ORM->loadObjectListByStatement('MessageChannel', 'extensions::postbox', 'Postbox_getChannelsWithoutFolder.sql', array(
+      return $this->ORM->loadObjectListByStatement('MessageChannel', 'extensions::postbox', 'Postbox_getChannelsWithoutFolder.sql', [
             'UserID' => (int) $this->User->getObjectId(),
             'Start'  => (int) $start,
             'Count'  => (int) $count
-      ));
+      ]);
    }
 
    /**
@@ -333,17 +343,6 @@ class Postbox extends APFObject {
     */
    public function hasUserOnBlacklist(GenericORMapperDataObject &$User) {
       return $this->ORM->isAssociated('User2BlockedUser', $this->User, $User);
-   }
-
-   /**
-    * Checks if the current user is being blocked by the given user.
-    *
-    * @param GenericORMapperDataObject $User
-    *
-    * @return bool
-    */
-   public function isOnUsersBlacklist(GenericORMapperDataObject &$User) {
-      return $this->ORM->isAssociated('User2BlockedUser', $User, $this->User);
    }
 
 }

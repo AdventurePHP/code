@@ -31,36 +31,13 @@ use APF\tools\link\Url;
 class SMSExternalURLPageDec extends SMSAbstractPageDec {
 
 
+   public static $mapVars = [
+         'externalURL' => null
+   ];
    /**
     * @var string $externalURL
     */
    protected $externalURL = '';
-
-
-   public static $mapVars = array(
-         'externalURL' => null
-   );
-
-
-   /**
-    * @param string $externalURL
-    */
-   public function setExternalURL($externalURL) {
-
-
-      $this->externalURL = $externalURL;
-   }
-
-
-   /**
-    * @return string
-    */
-   public function getExternalURL() {
-
-
-      return $this->externalURL;
-   }
-
 
    /**
     * @param Url $url (Unused)
@@ -71,6 +48,24 @@ class SMSExternalURLPageDec extends SMSAbstractPageDec {
 
 
       return $this->getExternalURL();
+   }
+
+   /**
+    * @return string
+    */
+   public function getExternalURL() {
+
+
+      return $this->externalURL;
+   }
+
+   /**
+    * @param string $externalURL
+    */
+   public function setExternalURL($externalURL) {
+
+
+      $this->externalURL = $externalURL;
    }
 
 }

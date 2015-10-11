@@ -138,7 +138,7 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
                   $actionName = $requestArray[1];
                   $actionParams = array_slice($requestArray, 2);
 
-                  $actionParamsArray = array();
+                  $actionParamsArray = [];
 
                   $actionParamCount = count($actionParams);
                   if ($actionParamCount > 0) {
@@ -203,7 +203,7 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
       $requestArray = explode(self::$REWRITE_URL_DELIMITER, strip_tags($url));
 
       // initialize some vars
-      $returnArray = array();
+      $returnArray = [];
       $x = 0;
 
       // walk through the new request array and combine the key (offset x) and

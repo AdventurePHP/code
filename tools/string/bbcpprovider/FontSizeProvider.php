@@ -52,7 +52,7 @@ class FontSizeProvider extends BBCodeParserProvider {
       $sizes = $config->getSection('Sizes');
 
       foreach ($sizes->getValueNames() as $key) {
-         $string = strtr($string, array('[' . $key . ']' => '<span style="font-size: ' . $sizes->getValue($key) . ';">', '[/' . $key . ']' => '</span>'));
+         $string = strtr($string, ['[' . $key . ']' => '<span style="font-size: ' . $sizes->getValue($key) . ';">', '[/' . $key . ']' => '</span>']);
       }
 
       return $string;

@@ -40,16 +40,16 @@ use APF\tools\form\validator\AbstractFormValidator;
  */
 abstract class AbstractFormControl extends Document implements FormControl {
 
-   public static $CORE_ATTRIBUTES = array('id', 'class', 'style', 'title');
-   public static $EVENT_ATTRIBUTES = array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover',
-         'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup');
-   public static $I18N_ATTRIBUTES = array('lang', 'xml:lang', 'dir');
+   public static $CORE_ATTRIBUTES = ['id', 'class', 'style', 'title'];
+   public static $EVENT_ATTRIBUTES = ['onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover',
+         'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'];
+   public static $I18N_ATTRIBUTES = ['lang', 'xml:lang', 'dir'];
 
-   public static $HTML5_ATTRIBUTES = array('placeholder', 'name', 'disabled', 'form', 'autocomplete', 'autofocus',
+   public static $HTML5_ATTRIBUTES = ['placeholder', 'name', 'disabled', 'form', 'autocomplete', 'autofocus',
          'list', 'maxlength', 'pattern', 'readonly', 'required', 'size', 'min',
          'max', 'step', 'multiple', 'formaction', 'formenctype', 'formmethod',
          'formtarget', 'formnovalidate', 'height', 'width', 'alt', 'src',
-         'contenteditable', 'contextmenu', 'dir', 'draggable', 'dropzone');
+         'contenteditable', 'contextmenu', 'dir', 'draggable', 'dropzone'];
 
    /**
     * Indicates, whether the form control is valid or not.
@@ -83,14 +83,14 @@ abstract class AbstractFormControl extends Document implements FormControl {
     *
     * @var AbstractFormValidator[] $validators
     */
-   protected $validators = array();
+   protected $validators = [];
 
    /**
     * The list of validators registered for the current control.
     *
     * @var AbstractFormFilter[] $filters
     */
-   protected $filters = array();
+   protected $filters = [];
 
    /**
     * The attributes, that are allowed to render into the XHTML/1.1 strict document.
@@ -99,7 +99,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
     *
     * @since 1.12
     */
-   protected $attributeWhiteList = array(
+   protected $attributeWhiteList = [
       // core attributes
          'id', 'style', 'class',
 
@@ -114,7 +114,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
          'placeholder', 'name', 'disabled', 'form', 'autocomplete', 'autofocus', 'list', 'maxlength', 'pattern', 'readonly',
          'required', 'size', 'min', 'max', 'step', 'multiple', 'formaction', 'formenctype', 'formmethod', 'formtarget',
          'formnovalidate', 'height', 'width', 'alt', 'src', 'contenteditable', 'contextmenu', 'dir', 'draggable', 'dropzone'
-   );
+   ];
 
    /**
     * Initiate presetting of the form control. If you cannot use
@@ -614,14 +614,14 @@ abstract class AbstractFormControl extends Document implements FormControl {
    protected function &getDependentFields() {
       $dependentFields = $this->getAttribute('dependent-controls');
       if ($dependentFields === null) {
-         $fields = array();
+         $fields = [];
 
          return $fields;
       }
 
       $form = & $this->getForm();
 
-      $fields = array();
+      $fields = [];
 
       foreach (explode('|', $dependentFields) as $fieldName) {
          $fields[] = & $form->getFormElementByName(trim($fieldName));

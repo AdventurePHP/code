@@ -45,9 +45,7 @@ class AbstractPostboxFolder extends GenericDomainObject {
       $result = $DBDriver->executeStatement(
             'postbox',
             'PostboxFolder_hasUnreadMessages.sql',
-            array(
-                  'PostboxFolderID' => (int) $this->getObjectId()
-            )
+            ['PostboxFolderID' => (int) $this->getObjectId()]
       );
 
       // limit is 1 - just convert 0 or 1 to a boolean

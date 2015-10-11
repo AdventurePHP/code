@@ -87,7 +87,7 @@ class GenericORMapper extends BaseMapper {
     * Version 0.1, 11.05.2008<br />
     * Version 0.2, 25.06.2008 (Added the $StatementParams parameter)<br />
     */
-   public function loadObjectListByStatement($objectName, $namespace, $statementName, $statementParams = array()) {
+   public function loadObjectListByStatement($objectName, $namespace, $statementName, $statementParams = []) {
       return $this->loadObjectListByStatementResult(
             $objectName,
             $this->dbDriver->executeStatement($namespace, $statementName, $statementParams, $this->logStatements)
@@ -106,10 +106,10 @@ class GenericORMapper extends BaseMapper {
     * @version
     * Version 0.1, 14.05.2008<br />
     */
-   public function loadObjectListByIDs($objectName, $ids = array()) {
+   public function loadObjectListByIDs($objectName, $ids = []) {
 
       // initialize return list
-      $objects = array();
+      $objects = [];
       $count = count($ids);
 
       // load objects
@@ -153,7 +153,7 @@ class GenericORMapper extends BaseMapper {
     * Version 0.1, 11.05.2008<br />
     * Version 0.2, 25.06.2008 (Added the $StatementParams parameter)<br />
     */
-   public function loadObjectByStatement($objectName, $namespace, $statementName, $statementParams = array()) {
+   public function loadObjectByStatement($objectName, $namespace, $statementName, $statementParams = []) {
       $result = $this->dbDriver->executeStatement($namespace, $statementName, $statementParams, $this->logStatements);
       $data = $this->dbDriver->fetchData($result);
 
@@ -241,11 +241,11 @@ class GenericORMapper extends BaseMapper {
                . 'Please check your object configuration.', E_USER_ERROR);
       }
       $pkName = $this->mappingTable[$objectName]['ID'];
-      $attrExceptions = array(
+      $attrExceptions = [
             $pkName,
             'ModificationTimestamp',
             'CreationTimestamp'
-      );
+      ];
 
 
       // check if object must be saved or updated
@@ -255,8 +255,8 @@ class GenericORMapper extends BaseMapper {
          // do an INSERT
          $insert = 'INSERT INTO ' . $this->mappingTable[$objectName]['Table'];
 
-         $names = array();
-         $values = array();
+         $names = [];
+         $values = [];
          foreach ($object->getProperties() as $propertyName => $propertyValue) {
 
             if (!in_array($propertyName, $attrExceptions)) {
@@ -303,7 +303,7 @@ class GenericORMapper extends BaseMapper {
          // UPDATE object in database
          $update = 'UPDATE ' . $this->mappingTable[$objectName]['Table'];
 
-         $queryParams = array();
+         $queryParams = [];
          foreach ($object->getProperties() as $propertyName => $propertyValue) {
 
             if (!in_array($propertyName, $attrExceptions)) {
@@ -405,7 +405,7 @@ class GenericORMapper extends BaseMapper {
     */
    protected function loadObjectListByStatementResult($objectName, $stmtResult) {
 
-      $objectList = array();
+      $objectList = [];
       while ($data = $this->dbDriver->fetchData($stmtResult)) {
          $objectList[] = $this->mapResult2DomainObject($objectName, $data);
       }

@@ -71,7 +71,7 @@ abstract class SMSBaseNavTagController extends BaseDocumentController {
 
       // explode comma-seperated list of parameters
       $keepParams = explode(',', $keepRequestParams);
-      $keepedParams = array();
+      $keepedParams = [];
 
       // uugh, this is a bad case which normaly never should happen...
       // if array is empty, also delete all params

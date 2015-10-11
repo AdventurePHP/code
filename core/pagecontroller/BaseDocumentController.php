@@ -86,13 +86,13 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * This method is for convenient setting of multiple place holders. The applied
     * array must contain a structure like this:
     * <code>
-    * array(
+    * [
     *    'key-a' => 'value-a',
     *    'key-b' => 'value-b',
     *    'key-c' => 'value-c',
     *    'key-d' => 'value-d',
     *    'key-e' => 'value-e',
-    * )
+    * ]
     * </code>
     * Thereby, the <em>key-*</em> offsets define the name of the place holders, their
     * values are used as the place holder's values.

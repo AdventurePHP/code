@@ -59,7 +59,7 @@ final class BenchmarkTimer {
     *
     * @var BenchmarkProcess[] $runningProcesses
     */
-   private $runningProcesses = array();
+   private $runningProcesses = [];
 
    /**
     * References the current parent process (=last process created).

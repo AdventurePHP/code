@@ -48,10 +48,10 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
       $method = $this->getMethod();
       $document = new Document();
 
-      $filePath = $method->invokeArgs($document, array(self::VENDOR . '\foo', 'bar'));
+      $filePath = $method->invokeArgs($document, [self::VENDOR . '\foo', 'bar']);
       assertEquals(self::SOURCE_PATH . '/foo/bar.html', $filePath);
 
-      $filePath = $method->invokeArgs($document, array(self::VENDOR . '\foo\bar', 'baz'));
+      $filePath = $method->invokeArgs($document, [self::VENDOR . '\foo\bar', 'baz']);
       assertEquals(self::SOURCE_PATH . '/foo/bar/baz.html', $filePath);
 
    }
@@ -67,7 +67,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testWithVendorOnly() {
-      $filePath = $this->getMethod()->invokeArgs(new Document(), array(self::VENDOR, 'foo'));
+      $filePath = $this->getMethod()->invokeArgs(new Document(), [self::VENDOR, 'foo']);
       assertEquals(self::SOURCE_PATH . '/foo.html', $filePath);
    }
 

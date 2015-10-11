@@ -53,9 +53,9 @@ class ArrayPagerController extends BaseDocumentController {
 
       $request = $this->getRequest();
 
-      $urlParams = array($config['ParameterEntries'] => $config['Entries']);
+      $urlParams = [$config['ParameterEntries'] => $config['Entries']];
       if ($config['EntriesChangeable'] === true) {
-         $urlParams = array($config['ParameterEntries'] => $request->getParameter($config['Entries']));
+         $urlParams = [$config['ParameterEntries'] => $request->getParameter($config['Entries'])];
       }
 
       // Pager leer zurückgeben, falls keine Seiten vorhanden sind.
@@ -91,7 +91,7 @@ class ArrayPagerController extends BaseDocumentController {
          }
 
          $stringURL = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
-               array($config['ParameterPage'] => $integerPage)
+               [$config['ParameterPage'] => $integerPage]
          ));
 
          // Pager zusammenbauen
@@ -122,7 +122,7 @@ class ArrayPagerController extends BaseDocumentController {
          $objectTemplatePreviousPage = $this->getTemplate('PreviousPage_Active');
 
          $stringURL = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
-               array($config['ParameterPage'] => ($integerCurrentPage - 1))
+               [$config['ParameterPage'] => ($integerCurrentPage - 1)]
          ));
 
          if (!empty($anchorName)) {
@@ -145,7 +145,7 @@ class ArrayPagerController extends BaseDocumentController {
       if ($integerCurrentPage < $integerPageCount) {
 
          $stringURL = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
-               array($config['ParameterPage'] => ($integerCurrentPage + 1))
+               [$config['ParameterPage'] => ($integerCurrentPage + 1)]
          ));
 
          $objectTemplateNextPage = $this->getTemplate('NextPage_Active');
@@ -180,9 +180,10 @@ class ArrayPagerController extends BaseDocumentController {
             }
 
             $stringURL = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
-                  array($config['ParameterPage']    => 1,
+                  [
+                        $config['ParameterPage'] => 1,
                         $config['ParameterEntries'] => $integerEntries
-                  )
+                  ]
             ));
 
             if (isset($anchorName) === true) {

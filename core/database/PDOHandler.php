@@ -181,7 +181,7 @@ class PDOHandler extends AbstractDatabaseHandler {
     * @version
     * Version 0.1, 11.04.2012<br />
     */
-   public function executeStatement($namespace, $statementFile, array $params = array(), $logStatement = false) {
+   public function executeStatement($namespace, $statementFile, array $params = [], $logStatement = false) {
       // load statement file content
       $statement = $this->getPreparedStatement($namespace, $statementFile, $params);
 

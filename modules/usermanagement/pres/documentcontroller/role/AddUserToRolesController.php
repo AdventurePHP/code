@@ -46,7 +46,7 @@ class AddUserToRolesController extends UmgtBaseController {
       if (count($roles) === 0) {
          $tmpl = & $this->getTemplate('NoMoreRoles');
          $tmpl->getLabel('message-1')->setPlaceHolder('display-name', $user->getDisplayName());
-         $tmpl->getLabel('message-2')->setPlaceHolder('user-view-link', $this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
+         $tmpl->getLabel('message-2')->setPlaceHolder('user-view-link', $this->generateLink(['mainview' => 'user', 'groupview' => null, 'userid' => null]));
          $tmpl->transformOnPlace();
 
          return;
@@ -61,7 +61,7 @@ class AddUserToRolesController extends UmgtBaseController {
       if ($form->isSent() && $form->isValid()) {
 
          $options = & $rolesControl->getSelectedOptions();
-         $additionalRoles = array();
+         $additionalRoles = [];
          foreach ($options as $option) {
             /* @var $option SelectBoxOptionTag */
             $additionalRole = new UmgtRole();
@@ -73,7 +73,7 @@ class AddUserToRolesController extends UmgtBaseController {
          $uM->attachUser2Roles($user, $additionalRoles);
 
          // back to user main view
-         $this->getResponse()->forward($this->generateLink(array('mainview' => 'user', 'roleview' => null, 'userid' => null)));
+         $this->getResponse()->forward($this->generateLink(['mainview' => 'user', 'roleview' => null, 'userid' => null]));
 
       } else {
          $form->transformOnPlace();

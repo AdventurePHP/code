@@ -30,8 +30,8 @@ namespace APF\modules\usermanagement\pres\documentcontroller;
 class GroupNavigationController extends UmgtBaseController {
 
    public function transformContent() {
-      $this->setPlaceHolder('manage_groups', $this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
-      $this->setPlaceHolder('add_group', $this->generateLink(array('mainview' => 'group', 'groupview' => 'add', 'groupid' => '')));
+      $this->setPlaceHolder('manage_groups', $this->generateLink(['mainview' => 'group', 'groupview' => '', 'groupid' => '']));
+      $this->setPlaceHolder('add_group', $this->generateLink(['mainview' => 'group', 'groupview' => 'add', 'groupid' => '']));
    }
 
 }

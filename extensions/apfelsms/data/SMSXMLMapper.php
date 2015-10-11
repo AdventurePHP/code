@@ -237,7 +237,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
       $childNodeList = $pageDOMNode->childNodes;
 
-      $decList = array();
+      $decList = [];
       for ($i = 0; $i < $childNodeList->length; $i++) {
 
          $childNode = $childNodeList->item($i);
@@ -289,7 +289,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
    protected function extractVarsFromXML(array $varArray, \DOMElement $nodeInXML, $pageId) {
 
 
-      $mapVarsBuffer = array();
+      $mapVarsBuffer = [];
 
 
       foreach ($varArray as $varName => $default) {
@@ -300,7 +300,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
          $allChildNodes = $nodeInXML->childNodes;
 
          // fetch childs with varName
-         $varNodeList = array();
+         $varNodeList = [];
          for ($i = 0; $i < $allChildNodes->length; $i++) {
 
             $node = $allChildNodes->item($i);
@@ -332,7 +332,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
             $value = $varNode->nodeValue;
             $mapVarsBuffer[$varName] = $value;
          } else {
-            $arrayBuffer = array();
+            $arrayBuffer = [];
             for ($i = 0; $i < count($varNodeList); $i++) {
                $varNode = $varNodeList[$i];
 
@@ -398,7 +398,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
       $childNodeList = $pageDOMNode->childNodes;
 
-      $idList = array();
+      $idList = [];
 
       for ($i = 0; $i < $childNodeList->length; $i++) {
 
@@ -444,10 +444,10 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
       $parentChildNodes = $parentNode->childNodes;
 
       if ($parentChildNodes->length < 1) {
-         return array();
+         return [];
       }
 
-      $siblingIds = array();
+      $siblingIds = [];
 
       for ($i = 0; $i < $parentChildNodes->length; $i++) {
 

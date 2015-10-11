@@ -63,7 +63,7 @@ class SMSBreadcrumbNavTagController extends SMSBaseNavTagController {
       // collect all breadcrumbs
 
       /** @var $reverseCrumbArray \APF\extensions\apfelsms\biz\pages\SMSPage[] */
-      $reverseCrumbArray = array();
+      $reverseCrumbArray = [];
       $crumb = $currentPage;
 
       do {

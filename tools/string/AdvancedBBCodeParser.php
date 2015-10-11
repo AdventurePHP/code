@@ -107,7 +107,7 @@ class AdvancedBBCodeParser extends APFObject {
    /**
     *  Represents the list of provider.
     */
-   private $provider = array();
+   private $provider = [];
 
    /**
     *  Sets up the default parser provider. To modify / delete them use the addProvider() or

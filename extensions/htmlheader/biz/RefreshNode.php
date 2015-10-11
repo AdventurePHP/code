@@ -40,7 +40,7 @@ class RefreshNode extends HtmlNode implements MetaNode {
     * @param string $time The time to wait until to reload the page.
     * @param array $additionalParameters Optional. Array of url parameters.
     */
-   public function __construct($target, $time, array $additionalParameters = array()) {
+   public function __construct($target, $time, array $additionalParameters = []) {
       $this->setAttribute('http-equiv', 'refresh');
       $link = LinkGenerator::generateUrl(Url::fromString($target)->mergeQuery($additionalParameters));
       $this->setAttribute('content', $time . ';URL=' . $link);

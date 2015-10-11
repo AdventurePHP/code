@@ -46,7 +46,8 @@ class FontStyleProvider extends BBCodeParserProvider {
    public function getOutput($string) {
       return strtr(
             $string,
-            array('[b]'  => '<strong>',
+            [
+                  '[b]' => '<strong>',
                   '[B]'  => '<strong>',
                   '[/b]' => '</strong>',
                   '[/B]' => '</strong>',
@@ -58,7 +59,7 @@ class FontStyleProvider extends BBCodeParserProvider {
                   '[U]'  => '<u>',
                   '[/u]' => '</u>',
                   '[/U]' => '</u>'
-            )
+            ]
       );
    }
 

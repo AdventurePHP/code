@@ -28,10 +28,8 @@
     $(document).ready(function () {
         jQuery.APFFormValidator.addClientValidator('MultiSelectFieldValidator', {
             validate: function (control, options) {
-                if (control.val() !== null) {
-                    return true;
-                }
-                return false;
+                return control.val() !== null;
+
             }
         });
     });

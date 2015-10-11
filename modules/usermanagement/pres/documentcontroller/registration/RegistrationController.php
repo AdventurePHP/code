@@ -164,7 +164,7 @@ class RegistrationController extends UmgtBaseController {
 
       $uM = $this->getManager();
 
-      $groups = array();
+      $groups = [];
 
       if ($section->hasSection('group')) {
          $initialGroups = $section->getSection('group');
@@ -202,7 +202,7 @@ class RegistrationController extends UmgtBaseController {
 
       $uM = $this->getManager();
 
-      $roles = array();
+      $roles = [];
 
       if ($section->hasSection('role')) {
          $initialRoles = $section->getSection('role');

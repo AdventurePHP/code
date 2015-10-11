@@ -63,7 +63,7 @@ class NewsPagerProvider extends APFObject {
 
       // get files, that match the current language
       /* @var $files FilesystemItem[] */
-      $files = array();
+      $files = [];
       foreach ($rawFiles as $data) {
          if (substr_count($data->getName(), 'news_' . $this->getLanguage() . '_') > 0) {
             $files[] = $data;

@@ -58,7 +58,7 @@ class PermissionEditController extends UmgtBaseController {
             $permission->setName($name->getValue());
             $permission->setValue($value->getValue());
             $uM->savePermission($permission);
-            $this->getResponse()->forward($this->generateLink(array('mainview' => 'permission', 'permissionview' => '', 'permissionid' => '')));
+            $this->getResponse()->forward($this->generateLink(['mainview' => 'permission', 'permissionview' => '', 'permissionid' => '']));
 
          } else {
             $form->transformOnPlace();

@@ -46,7 +46,7 @@ class HtmlListTag extends Document {
     *
     * @return string The object id of the list.
     */
-   public function addList($elementType, array $elementAttributes = array()) {
+   public function addList($elementType, array $elementAttributes = []) {
 
       // create list element
       $objectId = $this->createList($elementType, $elementAttributes);
@@ -67,7 +67,7 @@ class HtmlListTag extends Document {
     * @return string The object id of the created list.
     * @throws InvalidArgumentException In case the desired list cannot be created.
     */
-   protected function createList($elementType, array $elementAttributes = array()) {
+   protected function createList($elementType, array $elementAttributes = []) {
 
       if (!isset($this->listTypes[$elementType])) {
          throw new InvalidArgumentException('[HtmlListTag::createList()] Invalid element type found. '

@@ -153,7 +153,7 @@ class SelectBoxGroupTag extends AbstractFormControl {
     */
    public function &getSelectedOptions() {
 
-      $selectedOptions = array();
+      $selectedOptions = [];
 
       foreach ($this->children as $objectId => $DUMMY) {
          if ($this->children[$objectId]->getAttribute('selected') === 'selected') {

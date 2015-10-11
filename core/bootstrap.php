@@ -132,7 +132,7 @@ include_once(dirname(__FILE__) . '/loader/RootClassLoader.php');
             $apfClassLoaderConfigurationRootPath
       )
 );
-spl_autoload_register(array('\APF\core\loader\RootClassLoader', 'load'));
+spl_autoload_register(['\APF\core\loader\RootClassLoader', 'load']);
 
 // register the APF error handler to be able to easily configure the error handling mechanism
 GlobalExceptionHandler::registerExceptionHandler(new DefaultExceptionHandler());

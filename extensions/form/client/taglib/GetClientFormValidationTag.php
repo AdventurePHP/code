@@ -35,8 +35,8 @@ use APF\tools\form\taglib\HtmlFormTag;
 class GetClientFormValidationTag extends AbstractFormControl {
 
    // Cache all button names/control names which already have an onClick/onBlur event
-   private $buttonEventCache = array();
-   private $controlEventCache = array();
+   private $buttonEventCache = [];
+   private $controlEventCache = [];
 
    private $optionsStore = null;
 
@@ -85,11 +85,10 @@ class GetClientFormValidationTag extends AbstractFormControl {
 
       // We handle all js-functions which need to be called on the form element in a
       // separate index, in order to avoid multiple selecting of the form.
-      $javascript = array(
+      $javascript = [
             'general' => '',
             'form'    => '$(\'form[id=' . $this->getFormId() . ']\')'
-      );
-
+      ];
 
       /* @var $CVSS ClientValidationScriptStore */
       $CVSS = &$this->getServiceObject(ClientValidationScriptStore::class, [], APFService::SERVICE_TYPE_SINGLETON);
@@ -135,10 +134,10 @@ class GetClientFormValidationTag extends AbstractFormControl {
 
       // We handle all js-functions which need to be called on the form element in a
       // separate index, in order to avoid multiple selecting of the form.
-      $output = array(
+      $output = [
             'general' => '',
             'form'    => ''
-      );
+      ];
 
       // Check if we already set an event on this button
       if (!isset($this->buttonEventCache[$definition['button']])) {

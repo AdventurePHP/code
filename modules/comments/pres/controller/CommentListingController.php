@@ -96,11 +96,11 @@ class CommentListingController extends CommentBaseDocumentController {
 
       // generate the add comment link
       $this->setPlaceHolder('Link',
-            LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
+            LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery([
                         $urlParams['PageName']  => '',
                         $urlParams['CountName'] => '',
                         'coview'                => 'form'
-                  )
+                  ]
             )
             )
       );

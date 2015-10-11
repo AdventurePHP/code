@@ -111,7 +111,7 @@ class GenericImportTemplateTag extends ImportTemplateTag {
       if ($dependentActionNamespace !== null && $dependentActionName !== null) {
 
          // create param list
-         $actionParamList = array();
+         $actionParamList = [];
          if ($dependentActionParams !== null) {
 
             $paramPieces = explode('|', $dependentActionParams);

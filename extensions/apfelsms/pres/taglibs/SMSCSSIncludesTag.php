@@ -81,8 +81,8 @@ class SMSCSSIncludesTag extends Document {
 
 
          $stringBuffer .= str_replace(
-               array('{MEDIA}', '{URL}'),
-               array($mediaReplacer, $urlReplacer),
+               ['{MEDIA}', '{URL}'],
+               [$mediaReplacer, $urlReplacer],
                self::$CSSIncludeTemplate
          );
 

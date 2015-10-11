@@ -30,8 +30,8 @@ namespace APF\modules\usermanagement\pres\documentcontroller;
 class UserNavigationController extends UmgtBaseController {
 
    public function transformContent() {
-      $this->setPlaceHolder('manage_user', $this->generateLink(array('mainview' => 'user', 'userview' => '', 'userid' => '')));
-      $this->setPlaceHolder('user_add', $this->generateLink(array('mainview' => 'user', 'userview' => 'add', 'userid' => '')));
+      $this->setPlaceHolder('manage_user', $this->generateLink(['mainview' => 'user', 'userview' => '', 'userid' => '']));
+      $this->setPlaceHolder('user_add', $this->generateLink(['mainview' => 'user', 'userview' => 'add', 'userid' => '']));
    }
 
 }

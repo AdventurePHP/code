@@ -49,7 +49,7 @@ class ContactMapper extends APFObject {
       $config = $this->getConfiguration('APF\modules\contact', 'recipients.ini');
 
       /* @var $recipients ContactFormRecipient[] */
-      $recipients = array();
+      $recipients = [];
       foreach ($config->getSectionNames() as $name) {
 
          $section = $config->getSection($name);

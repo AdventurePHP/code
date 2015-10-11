@@ -184,14 +184,14 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
       try {
          return $this->getExtensions();
       } catch (ConfigurationException $e) {
-         return array(
+         return [
                'png'  => 'image/png',
                'jpeg' => 'image/jpg',
                'jpg'  => 'image/jpg',
                'gif'  => 'image/gif',
                'css'  => 'text/css',
                'js'   => 'text/javascript'
-         );
+         ];
       }
    }
 
@@ -211,7 +211,7 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
     * </code>
     * This method converts the above content to this:
     * <code>
-    * array('jpg' => 'image/jpg', 'foo' => 'text/foo', 'bar' => 'text/bar')
+    * ['jpg' => 'image/jpg', 'foo' => 'text/foo', 'bar' => 'text/bar']
     * </code>
     *
     * @throws ConfigurationException In case of missing configuration.
@@ -230,7 +230,7 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
 
       $section = $config->getSection('Default');
 
-      $extensions = array();
+      $extensions = [];
       foreach ($section->getValueNames() as $name) {
          // ID#108: map extensions to lower case to allow case insensitive checks
          $extensions[strtolower($name)] = $section->getValue($name);

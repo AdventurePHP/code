@@ -62,10 +62,10 @@ class ProxyDeleteController extends UmgtBaseController {
       }
 
       $this->getResponse()->forward($this->generateLink(
-                  array(
+            [
                         'mainview'  => 'proxy',
                         'proxyview' => null
-                  )
+            ]
             )
       );
 

@@ -30,7 +30,7 @@ class FakeIniProvider extends IniConfigurationProvider {
    /**
     * @var Configuration[]
     */
-   private $configurations = array();
+   private $configurations = [];
 
    public function registerConfiguration($namespace, $name, IniConfiguration $config) {
       $this->configurations[$namespace . $name] = $config;

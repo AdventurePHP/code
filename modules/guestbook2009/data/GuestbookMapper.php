@@ -106,11 +106,11 @@ class GuestbookMapper extends APFObject {
     * @version
     * Version 0.1, 06.05.2009<br />
     */
-   private function mapGenericEntries2DomainObjects(array $entries = array(), $addEditor = true) {
+   private function mapGenericEntries2DomainObjects(array $entries = [], $addEditor = true) {
 
       // return empty array, because having no entries means nothing to do!
       if (count($entries) == 0) {
-         return array();
+         return [];
       }
 
       // invoke benchmarker to be able to monitor the performance
@@ -126,7 +126,7 @@ class GuestbookMapper extends APFObject {
       $critEntries = new GenericCriterionObject();
       $critEntries->addRelationIndicator('Attribute2Language', $lang);
 
-      $gbEntries = array();
+      $gbEntries = [];
       /* @var $current GenericDomainObject */
       foreach ($entries as $current) {
 

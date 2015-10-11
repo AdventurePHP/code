@@ -52,7 +52,7 @@ class FontColorProvider extends BBCodeParserProvider {
       $colors = $config->getSection('Colors');
 
       foreach ($colors->getValueNames() as $key) {
-         $string = strtr($string, array('[' . $key . ']' => '<span style="color: ' . $colors->getValue($key) . ';">', '[/' . $key . ']' => '</span>'));
+         $string = strtr($string, ['[' . $key . ']' => '<span style="color: ' . $colors->getValue($key) . ';">', '[/' . $key . ']' => '</span>']);
       }
 
       return $string;

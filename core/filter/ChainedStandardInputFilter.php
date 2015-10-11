@@ -84,7 +84,7 @@ class ChainedStandardInputFilter implements ChainedContentFilter {
             $actionNamespace = substr($key, 0, strpos($key, '-'));
 
             // initialize the input params
-            $inputParams = array();
+            $inputParams = [];
 
             // create param array
             $paramsArray = explode('|', $value);

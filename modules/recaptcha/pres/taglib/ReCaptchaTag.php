@@ -179,7 +179,7 @@ class ReCaptchaTag extends AbstractFormControl {
     */
    private function getCustomTranslations() {
 
-      $l10nOptions = array();
+      $l10nOptions = [];
 
       $instructionsVisual = $this->getAttribute('label-instructions-visual');
       if (!empty($instructionsVisual)) {
@@ -226,7 +226,7 @@ class ReCaptchaTag extends AbstractFormControl {
          $l10nOptions['incorrect_try_again'] = $incorrectTryAgain;
       }
 
-      $combinedL10NOptions = array();
+      $combinedL10NOptions = [];
 
       foreach ($l10nOptions as $key => $value) {
          $combinedL10NOptions[] = $key . ': \'' . $value . '\'';

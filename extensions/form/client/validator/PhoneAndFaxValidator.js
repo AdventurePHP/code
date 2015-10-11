@@ -30,10 +30,8 @@
             validate: function (control, options) {
                 var ctrlvalue = control.attr('value');
                 ctrlvalue = $.trim(ctrlvalue);
-                if (ctrlvalue.match(/^[0-9\-\+\(\)\/ ]{6,}$/)) {
-                    return true;
-                }
-                return false;
+                return !!ctrlvalue.match(/^[0-9\-\+\(\)\/ ]{6,}$/);
+
             }
         });
     });

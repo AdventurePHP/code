@@ -107,13 +107,13 @@ class UserEditController extends UmgtBaseController {
 
                   // save the user
                   $uM->saveUser($user);
-                  $response->forward($this->generateLink(array('mainview' => 'user', 'userview' => '', 'userid' => '')));
+                  $response->forward($this->generateLink(['mainview' => 'user', 'userview' => '', 'userid' => '']));
 
                }
 
             } else {
                $uM->saveUser($user);
-               $response->forward($this->generateLink(array('mainview' => 'user', 'userview' => '', 'userid' => '')));
+               $response->forward($this->generateLink(['mainview' => 'user', 'userview' => '', 'userid' => '']));
             }
 
          } else {

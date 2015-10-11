@@ -46,7 +46,7 @@ class RemoveUserFromRolesController extends UmgtBaseController {
       if (count($roles) === 0) {
          $tmpl = & $this->getTemplate('NoMoreRoles');
          $tmpl->getLabel('message-1')->setPlaceHolder('display-name', $user->getDisplayName());
-         $tmpl->getLabel('message-2')->setPlaceHolder('user-view-link', $this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
+         $tmpl->getLabel('message-2')->setPlaceHolder('user-view-link', $this->generateLink(['mainview' => 'user', 'groupview' => null, 'userid' => null]));
          $tmpl->transformOnPlace();
 
          return;
@@ -61,7 +61,7 @@ class RemoveUserFromRolesController extends UmgtBaseController {
       if ($form->isSent() && $form->isValid()) {
 
          $options = & $rolesControl->getSelectedOptions();
-         $rolesToRemove = array();
+         $rolesToRemove = [];
          foreach ($options as $option) {
             /* @var $option SelectBoxOptionTag */
             $roleToRemove = new UmgtRole();
@@ -73,7 +73,7 @@ class RemoveUserFromRolesController extends UmgtBaseController {
          $uM->detachUserFromRoles($user, $rolesToRemove);
 
          // back to user main view
-         $this->getResponse()->forward($this->generateLink(array('mainview' => 'user', 'roleview' => null, 'userid' => null)));
+         $this->getResponse()->forward($this->generateLink(['mainview' => 'user', 'roleview' => null, 'userid' => null]));
       } else {
          $form->transformOnPlace();
       }

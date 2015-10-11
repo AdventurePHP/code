@@ -50,34 +50,34 @@ class NewsListController extends NewsBaseController {
          return;
       }
 
-      $DataArray = array();
+      $dataArray = [];
 
       // retrieve the charset from the registry to guarantee interoperability!
       $charset = Registry::retrieve('APF\core', 'Charset');
 
       foreach ($NewsList as &$News) {
-         $DataArray[] = array(
+         $dataArray[] = [
                'Title'      => htmlentities($News->getTitle(), ENT_QUOTES, $charset, false),
                'Date'       => $News->getProperty('CreationTimestamp'),
                'LinkEdit'   => LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
-                                 array(
-                                       'backendview' => 'edit',
-                                       'editnewsid'  => (int) $News->getObjectId()
-                                 )
-                           )
-                     ),
+                     [
+                           'backendview' => 'edit',
+                           'editnewsid'  => (int) $News->getObjectId()
+                     ]
+               )
+               ),
                'LinkDelete' => LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
-                                 array(
-                                       'backendview'  => 'delete',
-                                       'deletenewsid' => (int) $News->getObjectId()
-                                 )
-                           )
-                     )
-         );
+                     [
+                           'backendview'  => 'delete',
+                           'deletenewsid' => (int) $News->getObjectId()
+                     ]
+               )
+               )
+         ];
       }
 
       $I = $this->getIterator('newslist');
-      $I->fillDataContainer($DataArray);
+      $I->fillDataContainer($dataArray);
       $I->transformOnPlace();
    }
 

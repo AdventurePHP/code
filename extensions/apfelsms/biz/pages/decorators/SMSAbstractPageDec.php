@@ -52,7 +52,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
    /**
     * @var array $mapVars
     */
-   public static $mapVars = array();
+   public static $mapVars = [];
 
 
    /**
@@ -100,7 +100,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
     *
     * @return array
     */
-   public function getDecoratorTypes(array $giveThrough = array()) {
+   public function getDecoratorTypes(array $giveThrough = []) {
 
       $giveThrough[] = $this->getDecType();
 
@@ -120,7 +120,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
     *
     * @return array
     */
-   public function getAllDecorators(array $giveThrough = array()) {
+   public function getAllDecorators(array $giveThrough = []) {
 
 
       $giveThrough[] = $this;
@@ -149,7 +149,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
 
 
       return call_user_func_array(
-            array($this->SMSPage, $name),
+            [$this->SMSPage, $name],
             $arguments
       );
    }
@@ -312,7 +312,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
 
 
    /**
-    * @return array(string) CSS includes of underlying SMSPage
+    * @return string[] CSS includes of underlying SMSPage
     */
    public function getCSS() {
 
@@ -333,7 +333,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
 
 
    /**
-    * @return array(string) JS includes of underlying SMSPage
+    * @return string[] JS includes of underlying SMSPage
     */
    public function getJS() {
 

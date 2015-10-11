@@ -48,7 +48,7 @@ final class Guestbook {
     *
     * @var Entry[] $entries
     */
-   private $entries = array();
+   private $entries = [];
 
    public function getTitle() {
       return $this->title;

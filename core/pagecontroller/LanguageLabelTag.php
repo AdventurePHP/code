@@ -51,7 +51,7 @@ class LanguageLabelTag extends Document implements LanguageLabel {
     *
     * @var array $placeHolders
     */
-   private $placeHolders = array();
+   private $placeHolders = [];
 
    /**
     * Implements the functionality to retrieve a language dependent value form a
@@ -143,7 +143,7 @@ class LanguageLabelTag extends Document implements LanguageLabel {
     * Version 0.1, 05.05.2013<br />
     */
    public function &clearPlaceHolders() {
-      $this->placeHolders = array();
+      $this->placeHolders = [];
 
       return $this;
    }

@@ -268,7 +268,7 @@ final class PagerManager extends APFObject {
     * Version 0.4, 25.01.2009 (Refactored the function. Now uses the $this->loadEntries() to load the ids)<br />
     * Version 0.5, 27.12.2010 (Bug-fix: In case of empty results, no empty objects are returned any more.)<br />
     */
-   public function loadEntriesByAppDataComponent(&$dataComponent, $loadMethod, $addStmtParams = array()) {
+   public function loadEntriesByAppDataComponent(&$dataComponent, $loadMethod, $addStmtParams = []) {
 
       // check, if the load method exists
       if (in_array($loadMethod, get_class_methods($dataComponent))) {
@@ -276,11 +276,11 @@ final class PagerManager extends APFObject {
          // select the ids of the desired entries
          $entryIds = $this->loadEntries($addStmtParams);
          if ($entryIds === false) {
-            return array();
+            return [];
          }
 
          // load the entries using the data layer component
-         $entries = array();
+         $entries = [];
          for ($i = 0; $i < count($entryIds); $i++) {
             $entries[] = $dataComponent->{$loadMethod}($entryIds[$i]);
          }
@@ -307,7 +307,7 @@ final class PagerManager extends APFObject {
     * Version 0.3, 16.08.2006 (Added the enhanced param configuration opportunity)<br />
     * Version 0.4, 24.01.2009 (Changed the API of the method. Moved the additional param handling to this method)<br />
     */
-   public function loadEntries($addStmtParams = array()) {
+   public function loadEntries($addStmtParams = []) {
       $m = &$this->getMapper();
 
       return $m->loadEntries(
@@ -336,7 +336,7 @@ final class PagerManager extends APFObject {
     * @version
     * Version 0.1, 24.01.2009<br />
     */
-   private function getStatementParams(array $addStmtParams = array()) {
+   private function getStatementParams(array $addStmtParams = []) {
       if ($this->isDynamicPageSizeActivated()) {
          $entriesCount = (int) $this->getRequest()->getParameter($this->countUrlParameterName, $this->entriesPerPage);
       } else {
@@ -350,10 +350,10 @@ final class PagerManager extends APFObject {
          $start = ($page * $entriesCount) - $entriesCount;
       }
 
-      $defaultParams = array(
+      $defaultParams = [
             'Start'        => $start,
             'EntriesCount' => $entriesCount
-      );
+      ];
 
       return array_merge($defaultParams, $this->generateStatementParams($this->statementParameters), $addStmtParams);
    }
@@ -389,7 +389,7 @@ final class PagerManager extends APFObject {
     */
    private function generateStatementParams($configString) {
 
-      $stmtParams = array();
+      $stmtParams = [];
 
       if (!empty($configString)) {
 
@@ -407,9 +407,7 @@ final class PagerManager extends APFObject {
 
                $stmtParams = array_merge(
                      $stmtParams,
-                     array(
-                           trim($temp[0]) => $request->getParameter(trim($temp[0]), trim($temp[1]))
-                     )
+                     [trim($temp[0]) => $request->getParameter(trim($temp[0]), trim($temp[1]))]
                );
 
                unset($temp);
@@ -437,7 +435,7 @@ final class PagerManager extends APFObject {
     * Version 0.3, 29.08.2007 (Anchor name is not set as the document's attribute)<br />
     * Version 0.4, 02.03.2008 (The page is now applied the context and language)<br />
     */
-   public function getPager($addStmtParams = array()) {
+   public function getPager($addStmtParams = []) {
 
       $pager = new Page();
 
@@ -481,7 +479,7 @@ final class PagerManager extends APFObject {
     * Version 0.6, 19.01.2009 (Changed the implementation due to refactoring)<br />
     * Version 0.7, 10.04.2011 (Switched to LinkGenerator due to new link generation concept in 1.14)<br />
     */
-   private function createPages4PagerDisplay($addStmtParams = array()) {
+   private function createPages4PagerDisplay($addStmtParams = []) {
 
       /* @var $t BenchmarkTimer */
       $t = &Singleton::getInstance(BenchmarkTimer::class);
@@ -506,14 +504,14 @@ final class PagerManager extends APFObject {
 
       // create the page representation objects
       /* @var $pages PageItem[] */
-      $pages = array();
+      $pages = [];
       for ($i = 0; $i < $pageCount; $i++) {
 
          // create a new pager page object
          $pages[$i] = new PageItem();
 
          // generate the link
-         $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($this->pageUrlParameterName => $start)));
+         $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery([$this->pageUrlParameterName => $start]));
          $pages[$i]->setLink($link);
 
          // set the number of the page
@@ -579,10 +577,10 @@ final class PagerManager extends APFObject {
     * Version 0.1, 17.03.2007<br />
     */
    public function getPagerURLParameters() {
-      return array(
+      return [
             'PageName'  => $this->pageUrlParameterName,
             'CountName' => $this->countUrlParameterName
-      );
+      ];
    }
 
    /**
@@ -596,7 +594,7 @@ final class PagerManager extends APFObject {
     * @version
     * Version 0.1, 22.08.2010
     */
-   public function getPageCount($addStmtParams = array()) {
+   public function getPageCount($addStmtParams = []) {
       $countPerPage = $this->getCountPerPage();
 
       // initialize page delimiter params
@@ -624,7 +622,7 @@ final class PagerManager extends APFObject {
     * Version 0.1, 22.08.2010
     */
    public function getPageLink($page, $baseURI = null) {
-      $linkParams = array($this->pageUrlParameterName => $page);
+      $linkParams = [$this->pageUrlParameterName => $page];
       if ($this->isDynamicPageSizeActivated()) {
          $linkParams[$this->countUrlParameterName] = $this->getCountPerPage();
       }

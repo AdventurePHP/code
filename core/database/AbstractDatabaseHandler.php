@@ -457,7 +457,7 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
     */
    protected function initCharsetAndCollation() {
       if ($this->dbCharset !== null || $this->dbCollation !== null) {
-         $setArray = array();
+         $setArray = [];
          if ($this->dbCharset !== null) {
             $setArray[] = ' NAMES \'' . $this->dbCharset . '\'';
          }
@@ -484,7 +484,7 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
     * @version
     * Version 0.1, 03.02.2011<br />
     */
-   protected function getPreparedStatement($namespace, $name, array $params = array()) {
+   protected function getPreparedStatement($namespace, $name, array $params = []) {
       try {
          $config = $this->getConfiguration($namespace, $name);
       } catch (ConfigurationException $e) {

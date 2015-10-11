@@ -105,7 +105,7 @@ abstract class BasicLinkScheme {
     * <em>foo</em> (=1) and <em>bar</em> (=2) and is added manually by
     * <code>
     * $url = Url::fromCurrent();
-    * $link = LinkGenerator::generateActionUrl($url, 'APF\tools\media', 'streamMedia', array('baz' => 1));
+    * $link = LinkGenerator::generateActionUrl($url, 'APF\tools\media', 'streamMedia', ['baz' => 1]);
     * </code>
     * the resulting url will be <em>...?APF_tools_media-action:streamMedia=baz:1</em> instead of
     * <em>...?APF_tools_media-action:streamMedia=foo:1|bar:2</em>.

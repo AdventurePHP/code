@@ -84,7 +84,7 @@ class BaseMapper extends APFObject {
     *
     * @var string[] $mappingTable
     */
-   protected $mappingTable = array();
+   protected $mappingTable = [];
 
    /**
     * Additional indices for the object tables.
@@ -93,7 +93,7 @@ class BaseMapper extends APFObject {
     *
     * @since 1.12
     */
-   protected $mappingIndexTable = array();
+   protected $mappingIndexTable = [];
 
    /**
     * Storage Engine for the object tables.
@@ -102,7 +102,7 @@ class BaseMapper extends APFObject {
     *
     * @since 2.1
     */
-   protected $mappingStorageEngineTable = array();
+   protected $mappingStorageEngineTable = [];
 
    /**
     * Storage Engine for the relation tables.
@@ -111,14 +111,14 @@ class BaseMapper extends APFObject {
     *
     * @since 2.1
     */
-   protected $relationStorageEngineTable = array();
+   protected $relationStorageEngineTable = [];
 
    /**
     * Object relation table.
     *
     * @var array $relationTable
     */
-   protected $relationTable = array();
+   protected $relationTable = [];
 
    /**
     * Domain object table
@@ -127,14 +127,14 @@ class BaseMapper extends APFObject {
     *
     * @since 1.14
     */
-   protected $domainObjectsTable = array();
+   protected $domainObjectsTable = [];
 
    /**
     * Indicates, if a additional configuration was already imported.
     *
     * @var string[] $importedConfigCache
     */
-   protected $importedConfigCache = array();
+   protected $importedConfigCache = [];
 
    /**
     * Indicates, whether the generated statements should be logged for debugging purposes.
@@ -278,10 +278,10 @@ class BaseMapper extends APFObject {
          $addConfig = $this->getConfiguration($configNamespace, $configNameAffix . '_objects.' . $this->getConfigFileExtension());
 
          // extract configuration to support pre 1.13 GORM config
-         $addObjects = array();
+         $addObjects = [];
          foreach ($addConfig->getSectionNames() as $sectionName) {
             $section = $addConfig->getSection($sectionName);
-            $addObjects[$sectionName] = array();
+            $addObjects[$sectionName] = [];
             foreach ($section->getValueNames() as $valueName) {
                $addObjects[$sectionName][$valueName] = $section->getValue($valueName);
             }
@@ -387,10 +387,10 @@ class BaseMapper extends APFObject {
          $addConfig = $this->getConfiguration($configNamespace, $configNameAffix . '_relations.' . $this->getConfigFileExtension());
 
          // extract configuration to support pre 1.13 GORM config
-         $addRelations = array();
+         $addRelations = [];
          foreach ($addConfig->getSectionNames() as $sectionName) {
             $section = $addConfig->getSection($sectionName);
-            $addRelations[$sectionName] = array();
+            $addRelations[$sectionName] = [];
             foreach ($section->getValueNames() as $valueName) {
                $addRelations[$sectionName][$valueName] = $section->getValue($valueName);
             }
@@ -477,14 +477,14 @@ class BaseMapper extends APFObject {
             // extract configuration to support pre 1.13 GORM config
             foreach ($addConfig->getSectionNames() as $sectionName) {
                $section = $addConfig->getSection($sectionName);
-               $this->domainObjectsTable[$sectionName] = array();
+               $this->domainObjectsTable[$sectionName] = [];
                foreach ($section->getValueNames() as $valueName) {
                   $this->domainObjectsTable[$sectionName][$valueName] = $section->getValue($valueName);
                }
                if ($section->hasSection('Base')) {
-                  $this->domainObjectsTable[$sectionName]['Base'] = array(
-                        'Class' => $section->getSection('Base')->getValue('Class'),
-                  );
+                  $this->domainObjectsTable[$sectionName]['Base'] = [
+                        'Class' => $section->getSection('Base')->getValue('Class')
+                  ];
                }
             }
          } catch (ConfigurationException $e) {

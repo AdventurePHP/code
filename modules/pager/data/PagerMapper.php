@@ -77,7 +77,7 @@ final class PagerMapper extends APFObject {
     * Version 0.4, 24.01.2009 (Added session caching)<br />
     * Version 0.5, 25.01.2009 (Removed nullpointer bug due to session object definition)<br />
     */
-   public function getEntriesCount($namespace, $statement, array $params = array(), $cache = true) {
+   public function getEntriesCount($namespace, $statement, array $params = [], $cache = true) {
 
       $t = &Singleton::getInstance(BenchmarkTimer::class);
       /* @var $t BenchmarkTimer */
@@ -118,7 +118,7 @@ final class PagerMapper extends APFObject {
     *
     * @return array The sanitized list of pager statement parameters.
     */
-   private function sanitizeParameters(array $params = array()) {
+   private function sanitizeParameters(array $params = []) {
       $conn = &$this->getConnection();
       foreach ($params as $key => $value) {
          $params[$conn->escapeValue($key)] = $conn->escapeValue($value);
@@ -158,7 +158,7 @@ final class PagerMapper extends APFObject {
     * @version
     * Version 0.1, 24.01.2009<br />
     */
-   protected function getSessionKey($namespace, $statement, array $params = array()) {
+   protected function getSessionKey($namespace, $statement, array $params = []) {
       return 'PagerMapper_' . md5($namespace . $statement . implode('', $params));
    }
 
@@ -180,7 +180,7 @@ final class PagerMapper extends APFObject {
     * Version 0.4, 25.01.2009 (Removed null pointer bug due to session object definition)<br />
     * Version 0.5, 27.12.2010 (Bug-fix: In case of empty results, no empty objects are returned any more.)<br />
     */
-   public function loadEntries($namespace, $statement, array $params = array(), $cache = true) {
+   public function loadEntries($namespace, $statement, array $params = [], $cache = true) {
 
       $t = &Singleton::getInstance(BenchmarkTimer::class);
       /* @var $t BenchmarkTimer */
@@ -207,10 +207,10 @@ final class PagerMapper extends APFObject {
 
          // map empty results to empty array
          if ($result === false) {
-            return array();
+            return [];
          }
 
-         $entryIds = array();
+         $entryIds = [];
          while ($data = $conn->fetchData($result)) {
             $entryIds[] = $data['DB_ID'];
          }

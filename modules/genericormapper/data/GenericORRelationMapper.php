@@ -40,32 +40,6 @@ class GenericORRelationMapper extends GenericORMapper {
    const RELATION_TARGET = 'rel_target';
 
    /**
-    * Load an object list by a given criterion object.
-    *
-    * @param string $objectName name of the desired objects.
-    * @param GenericCriterionObject $criterion criterion object.
-    *
-    * @return GenericORMapperDataObject[] List of domain objects.
-    * @throws GenericORMapperException In case no valid criterion is passed.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 17.05.2008<br />
-    * Version 0.2, 21.06.2008 (Sourced out statement creation into an extra method)<br />
-    * Version 0.3, 17.01.2009 (Added a check, if the criterion object is present. Otherwise return null.)<br />
-    */
-   public function loadObjectListByCriterion($objectName, GenericCriterionObject $criterion) {
-
-      if ($criterion === null) {
-         throw new GenericORMapperException('[GenericORRelationMapper::loadObjectListByCriterion()] '
-               . 'No criterion object given as second argument! Please consult the manual.',
-               E_USER_ERROR);
-      }
-
-      return $this->loadObjectListByTextStatement($objectName, $this->buildSelectStatementByCriterion($objectName, $criterion));
-   }
-
-   /**
     * Load an object by a given criterion object.
     *
     * @param string $objectName The name of the desired objects.
@@ -113,13 +87,13 @@ class GenericORRelationMapper extends GenericORMapper {
       $compositionTable = $this->relationTable[$compositionName]['Table'];
       $sql = 'SELECT * FROM `' . $compositionTable . '`';
       $resultCursor = $this->dbDriver->executeTextStatement($sql, $this->logStatements);
-      $compositions = array();
+      $compositions = [];
       while ($row = $this->dbDriver->fetchData($resultCursor)) {
          $compositions[] = $row;
       }
 
       // we have to find the root-object(s) of the tree
-      $objectTree = array();
+      $objectTree = [];
       foreach ($treeItems as $treeItem) {
          $isRootObject = true;
          if ($rootObjectId <= 0) {
@@ -188,169 +162,29 @@ class GenericORRelationMapper extends GenericORMapper {
    }
 
    /**
-    * Loads all children of the given tree item list recursively.
+    * Load an object list by a given criterion object.
     *
-    * @param TreeItem[] $treeItems A list of tree items to load it's children.
-    * @param array $compositions The compositions list to load the children from.
-    * @param string $compositionName The name of the relation.
-    * @param TreeItem $parentItem The parent TreeItem.
-    * @param int $maxDepth The maximum depth of the tree.
-    * @param int $depth The actual depth of the tree.
+    * @param string $objectName name of the desired objects.
+    * @param GenericCriterionObject $criterion criterion object.
     *
-    * @return TreeItem[] A list of tree items of the actual node.
-    *
-    * @author Nicolas Pecher
-    * @version
-    * Version 0.1. 23.04.2012
-    */
-   protected function loadChildTreeItems(array $treeItems, array $compositions, $compositionName, TreeItem $parentItem, $maxDepth, $depth = 0) {
-      $layer = array();
-      if ($maxDepth === 0 || $depth <= $maxDepth) {
-         foreach ($treeItems as $treeItem) {
-            foreach ($compositions as $composition) {
-               if ($composition[$this->relationTable[$compositionName]['TargetID']] === $treeItem->getObjectId() &&
-                     $composition[$this->relationTable[$compositionName]['SourceID']] === $parentItem->getObjectId()
-               ) {
-                  $cDepth = $depth + 1;
-                  $childItems = $this->loadChildTreeItems(
-                        $treeItems,
-                        $compositions,
-                        $compositionName,
-                        $treeItem,
-                        $maxDepth,
-                        $cDepth
-                  );
-                  $treeItem->setParentItem($parentItem);
-                  $treeItem->addChildren($childItems);
-                  $layer[] = $treeItem;
-                  break;
-               }
-            }
-         }
-      }
-
-      return $layer;
-   }
-
-   /**
-    * Creates a list of WHERE statements by a given object name and a criterion object.<br />
-    *
-    * @param string $objectName name of the desired objects
-    * @param GenericCriterionObject $criterion criterion object
-    *
-    * @return string[] List of WHERE statements.
+    * @return GenericORMapperDataObject[] List of domain objects.
+    * @throws GenericORMapperException In case no valid criterion is passed.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 26.06.2008 (Extracted from buildSelectStatementByCriterion())<br />
-    * Version 0.2, 16.02.2010 (Added value escaping to avoid SQL injection)<br />
-    * Version 0.3, 28.05.2010 (Bug-fix: corrected where definition creation)<br />
+    * Version 0.1, 17.05.2008<br />
+    * Version 0.2, 21.06.2008 (Sourced out statement creation into an extra method)<br />
+    * Version 0.3, 17.01.2009 (Added a check, if the criterion object is present. Otherwise return null.)<br />
     */
-   protected function buildWhere($objectName, GenericCriterionObject $criterion) {
+   public function loadObjectListByCriterion($objectName, GenericCriterionObject $criterion) {
 
-      $whereList = array();
-
-      // retrieve property indicators
-      $properties = $criterion->getPropertyDefinition();
-
-      if (count($properties) > 0) {
-
-         // add additional where statements
-         foreach ($properties as $property) {
-
-            $propertyName = $this->dbDriver->escapeValue($property['Name']);
-
-            if (is_object($property['Value']) === true) {
-               $whereList[] = '(' . implode('', $this->buildWhere($objectName, $property['Value'])) . ')';
-            } else {
-               $propertyValue = $this->dbDriver->escapeValue($property['Value']);
-
-               if ((substr_count($propertyValue, '%') > 0 || substr_count($propertyValue, '_') > 0) && $property['ComparisonOperator'] == '=') {
-                  $whereList[] = '`' . $this->mappingTable[$objectName]['Table'] . '`.`' . $propertyName . '` LIKE \'' . $propertyValue . '\'';
-               } else {
-                  $whereList[] = '`' . $this->mappingTable[$objectName]['Table'] . '`.`' . $propertyName . '` ' . $property['ComparisonOperator'] . ' \'' . $propertyValue . '\'';
-               }
-            }
-
-            $whereList = array(implode(' ' . $property['LogicalOperator'] . ' ', $whereList));
-         }
+      if ($criterion === null) {
+         throw new GenericORMapperException('[GenericORRelationMapper::loadObjectListByCriterion()] '
+               . 'No criterion object given as second argument! Please consult the manual.',
+               E_USER_ERROR);
       }
 
-      return $whereList;
-   }
-
-   /**
-    * Creates a list of ORDER statements by a given object name and a criterion object.<br />
-    *
-    * @param string $objectName name of the desired objects
-    * @param GenericCriterionObject $criterion criterion object
-    *
-    * @return array List of ORDER statements.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 26.06.2008 (Extracted from buildSelectStatementByCriterion())<br />
-    * Version 0.2, 16.02.2010 (Added value escaping to avoid SQL injection)<br />
-    */
-   protected function buildOrder($objectName, GenericCriterionObject $criterion) {
-
-      // initialize return list
-      $ORDER = array();
-
-      // retrieve order indicators
-      $orders = $criterion->getOrderIndicators();
-
-      if (count($orders) > 0) {
-
-         // create order list
-         foreach ($orders as $propertyName => $direction) {
-            $ORDER[] = '`' . $this->mappingTable[$objectName]['Table'] . '`.`'
-                  . $this->dbDriver->escapeValue($propertyName) . '` '
-                  . $this->dbDriver->escapeValue($direction);
-         }
-      }
-
-      return $ORDER;
-   }
-
-   /**
-    * Creates a list of properties by a given object name and a criterion object.
-    *
-    * @param string $objectName Name of the desired objects.
-    * @param GenericCriterionObject $criterion Criterion object.
-    *
-    * @return string List of properties.
-    * @throws GenericORMapperException In case the object definition is not complete.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 26.06.2008 (Extracted from buildSelectStatementByCriterion())<br />
-    */
-   protected function buildProperties($objectName, GenericCriterionObject $criterion) {
-
-      // check for valid object definition
-      if (!isset($this->mappingTable[$objectName])) {
-         throw new GenericORMapperException('[GenericORRelationMapper::buildProperties()] No '
-               . 'object with name \'' . $objectName . '\' was found within the mapping table. '
-               . 'Please double check your mapping configuration file or refresh the mapping table!');
-      }
-
-      // retrieve object properties to load
-      $objectProperties = $criterion->getLoadedProperties();
-      if (count($objectProperties) > 0) {
-
-         $propertyList = array();
-
-         foreach ($objectProperties as $objectProperty) {
-            $propertyList[] = '`' . $this->mappingTable[$objectName]['Table'] . '`.`' . $objectProperty . '`';
-         }
-
-         $properties = implode(', ', $propertyList);
-      } else {
-         $properties = '`' . $this->mappingTable[$objectName]['Table'] . '`.*';
-      }
-
-      return $properties;
+      return $this->loadObjectListByTextStatement($objectName, $this->buildSelectStatementByCriterion($objectName, $criterion));
    }
 
    /**
@@ -398,6 +232,321 @@ class GenericORRelationMapper extends GenericORMapper {
       }
 
       return $select;
+   }
+
+   /**
+    * Creates JOIN statements by a given object name and criterion<br />
+    *
+    * @param string $objectName The given object name
+    * @param GenericCriterionObject $criterion criterion object
+    *
+    * @return string[] JOIN statements.
+    * @throws GenericORMapperException In case of issues with evaluation of the target object name.
+    *
+    * @author Tobias Lückel
+    * @version
+    * Version 0.1, 27.04.2011<br />
+    */
+   protected function buildJoinStatementsByCriterion($objectName, GenericCriterionObject $criterion) {
+      $joinList = [];
+
+      $relations = $criterion->getRelations();
+
+      foreach ($relations as $relationName => $relatedObject) {
+         // gets the 'source' and 'target' uniqid from criterion to avoid conflicts with other tables
+         $uniqueRelationSourceId = $criterion->getUniqueRelationId($relationName, true);
+         $uniqueRelationTargetId = $criterion->getUniqueRelationId($relationName, false);
+         // gather information about the object relations
+         $relationTable = $this->relationTable[$relationName]['Table'];
+         $fromTable = $this->mappingTable[$objectName]['Table'];
+         $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName, $relationName);
+
+         // avoid "undefined index" errors
+         if ($targetObjectName === null) {
+            throw new GenericORMapperException('There is no relation defined with name "' . $relationName
+                  . '" for object "' . $objectName . '"! Please re-check your criterion definition.');
+         }
+
+         $toTable = $this->mappingTable[$targetObjectName]['Table'];
+         $sourceObjectId = $this->mappingTable[$objectName]['ID'];
+         $targetObjectId = $this->mappingTable[$targetObjectName]['ID'];
+
+         $relationSourceObjectId = $this->getRelationIdColumn($objectName, $relationName, self::RELATION_SOURCE);
+         $relationTargetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
+
+         // add statement to join list
+         $joinList[] = 'INNER JOIN `' . $relationTable . '` AS `' . $uniqueRelationSourceId . '_' . $relationTable . '` ON `' . $fromTable . '`.`' . $sourceObjectId . '` = `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`' . $relationSourceObjectId . '`';
+         $joinList[] = 'INNER JOIN `' . $toTable . '` AS `' . $uniqueRelationTargetId . '_' . $toTable . '` ON `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`' . $relationTargetObjectId . '` = `' . $uniqueRelationTargetId . '_' . $toTable . '`.`' . $targetObjectId . '`';
+      }
+
+      return $joinList;
+   }
+
+   /**
+    * Returns the name of the related object concerning the given arguments.<br />
+    *
+    * @param string $objectName Name of the current object
+    * @param string $relationName Name of the desired relation
+    *
+    * @return string Name of the releated object or null, in case the object definition was not found.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 14.05.2008<br />
+    */
+   protected function getRelatedObjectNameByRelationName($objectName, $relationName) {
+
+      // look for suitable related object
+      foreach ($this->relationTable as $sectionName => $attributes) {
+
+         if ($sectionName == $relationName) {
+
+            if ($attributes['SourceObject'] == $objectName) {
+               return $attributes['TargetObject'];
+            }
+
+            if ($attributes['TargetObject'] == $objectName) {
+               return $attributes['SourceObject'];
+            }
+         }
+      }
+
+      // return null to indicate, that the desired object was not found or has no relations
+      return null;
+   }
+
+   /**
+    * Returns the name of the ID Column concerning the given arguments.
+    *
+    * @param string $objectName Name of the current object.
+    * @param string $relationName Name of the desired relation.
+    * @param string $startPoint The desired relation start point in case of self references.
+    *
+    * @return string Name of the ID Column
+    * @throws GenericORMapperException In case of undefined relation.
+    *
+    * @author Tobias Lückel
+    * @version
+    * Version 0.1, 24.03.2011<br />
+    */
+   protected function getRelationIdColumn($objectName, $relationName, $startPoint) {
+
+      if (isset($this->relationTable[$relationName])) {
+
+         // in case of self relations, the source and target column name must be
+         // evaluated by the desired point type
+         if ($this->relationTable[$relationName]['SourceObject'] === $this->relationTable[$relationName]['TargetObject']) {
+            return $startPoint === self::RELATION_SOURCE ? $this->relationTable[$relationName]['SourceID']
+                  : $this->relationTable[$relationName]['TargetID'];
+         }
+
+         // look for suitable related object
+         return $this->relationTable[$relationName]['SourceObject'] == $objectName
+               ? $this->relationTable[$relationName]['SourceID'] : $this->relationTable[$relationName]['TargetID'];
+      }
+
+      throw new GenericORMapperException('[GenericORRelationMapper::getRelationIdColumn()] '
+            . 'The given relation "' . $relationName . '" is not defined within the current relation '
+            . 'table! Please revise your configuration.');
+   }
+
+   /**
+    * Creates WHERE statements by a given object name and criterion<br />
+    *
+    * @param string $objectName The given object name
+    * @param GenericCriterionObject $criterion criterion object
+    *
+    * @return string[] WHERE statements.
+    *
+    * @author Tobias Lückel
+    * @version
+    * Version 0.1, 27.04.2011<br />
+    */
+   protected function buildWhereStatementsByCriterion($objectName, GenericCriterionObject $criterion) {
+      $whereList = [];
+
+      $relations = $criterion->getRelations();
+
+      foreach ($relations as $relationName => $relatedObject) {
+         /* @var $relatedObject GenericORMapperDataObject */
+         // gets the 'target' uniqid from criterion to avoid conflicts with other tables
+         $uniqueRelationTargetId = $criterion->getUniqueRelationId($relationName, false);
+         // gather information about the object relations
+         $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName, $relationName);
+         $toTable = $this->mappingTable[$targetObjectName]['Table'];
+         $targetObjectId = $this->mappingTable[$targetObjectName]['ID'];
+
+         // add statement to where list
+         $whereList[] = '`' . $uniqueRelationTargetId . '_' . $toTable . '`.`' . $targetObjectId . '` = ' . $relatedObject->getObjectId();
+      }
+
+      return $whereList;
+   }
+
+   /**
+    * Creates a list of properties by a given object name and a criterion object.
+    *
+    * @param string $objectName Name of the desired objects.
+    * @param GenericCriterionObject $criterion Criterion object.
+    *
+    * @return string List of properties.
+    * @throws GenericORMapperException In case the object definition is not complete.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.06.2008 (Extracted from buildSelectStatementByCriterion())<br />
+    */
+   protected function buildProperties($objectName, GenericCriterionObject $criterion) {
+
+      // check for valid object definition
+      if (!isset($this->mappingTable[$objectName])) {
+         throw new GenericORMapperException('[GenericORRelationMapper::buildProperties()] No '
+               . 'object with name \'' . $objectName . '\' was found within the mapping table. '
+               . 'Please double check your mapping configuration file or refresh the mapping table!');
+      }
+
+      // retrieve object properties to load
+      $objectProperties = $criterion->getLoadedProperties();
+      if (count($objectProperties) > 0) {
+
+         $propertyList = [];
+
+         foreach ($objectProperties as $objectProperty) {
+            $propertyList[] = '`' . $this->mappingTable[$objectName]['Table'] . '`.`' . $objectProperty . '`';
+         }
+
+         $properties = implode(', ', $propertyList);
+      } else {
+         $properties = '`' . $this->mappingTable[$objectName]['Table'] . '`.*';
+      }
+
+      return $properties;
+   }
+
+   /**
+    * Creates a list of WHERE statements by a given object name and a criterion object.<br />
+    *
+    * @param string $objectName name of the desired objects
+    * @param GenericCriterionObject $criterion criterion object
+    *
+    * @return string[] List of WHERE statements.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.06.2008 (Extracted from buildSelectStatementByCriterion())<br />
+    * Version 0.2, 16.02.2010 (Added value escaping to avoid SQL injection)<br />
+    * Version 0.3, 28.05.2010 (Bug-fix: corrected where definition creation)<br />
+    */
+   protected function buildWhere($objectName, GenericCriterionObject $criterion) {
+
+      $whereList = [];
+
+      // retrieve property indicators
+      $properties = $criterion->getPropertyDefinition();
+
+      if (count($properties) > 0) {
+
+         // add additional where statements
+         foreach ($properties as $property) {
+
+            $propertyName = $this->dbDriver->escapeValue($property['Name']);
+
+            if (is_object($property['Value']) === true) {
+               $whereList[] = '(' . implode('', $this->buildWhere($objectName, $property['Value'])) . ')';
+            } else {
+               $propertyValue = $this->dbDriver->escapeValue($property['Value']);
+
+               if ((substr_count($propertyValue, '%') > 0 || substr_count($propertyValue, '_') > 0) && $property['ComparisonOperator'] == '=') {
+                  $whereList[] = '`' . $this->mappingTable[$objectName]['Table'] . '`.`' . $propertyName . '` LIKE \'' . $propertyValue . '\'';
+               } else {
+                  $whereList[] = '`' . $this->mappingTable[$objectName]['Table'] . '`.`' . $propertyName . '` ' . $property['ComparisonOperator'] . ' \'' . $propertyValue . '\'';
+               }
+            }
+
+            $whereList = [implode(' ' . $property['LogicalOperator'] . ' ', $whereList)];
+         }
+      }
+
+      return $whereList;
+   }
+
+   /**
+    * Creates a list of ORDER statements by a given object name and a criterion object.<br />
+    *
+    * @param string $objectName name of the desired objects
+    * @param GenericCriterionObject $criterion criterion object
+    *
+    * @return array List of ORDER statements.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.06.2008 (Extracted from buildSelectStatementByCriterion())<br />
+    * Version 0.2, 16.02.2010 (Added value escaping to avoid SQL injection)<br />
+    */
+   protected function buildOrder($objectName, GenericCriterionObject $criterion) {
+
+      // initialize return list
+      $ORDER = [];
+
+      // retrieve order indicators
+      $orders = $criterion->getOrderIndicators();
+
+      if (count($orders) > 0) {
+
+         // create order list
+         foreach ($orders as $propertyName => $direction) {
+            $ORDER[] = '`' . $this->mappingTable[$objectName]['Table'] . '`.`'
+                  . $this->dbDriver->escapeValue($propertyName) . '` '
+                  . $this->dbDriver->escapeValue($direction);
+         }
+      }
+
+      return $ORDER;
+   }
+
+   /**
+    * Loads all children of the given tree item list recursively.
+    *
+    * @param TreeItem[] $treeItems A list of tree items to load it's children.
+    * @param array $compositions The compositions list to load the children from.
+    * @param string $compositionName The name of the relation.
+    * @param TreeItem $parentItem The parent TreeItem.
+    * @param int $maxDepth The maximum depth of the tree.
+    * @param int $depth The actual depth of the tree.
+    *
+    * @return TreeItem[] A list of tree items of the actual node.
+    *
+    * @author Nicolas Pecher
+    * @version
+    * Version 0.1. 23.04.2012
+    */
+   protected function loadChildTreeItems(array $treeItems, array $compositions, $compositionName, TreeItem $parentItem, $maxDepth, $depth = 0) {
+      $layer = [];
+      if ($maxDepth === 0 || $depth <= $maxDepth) {
+         foreach ($treeItems as $treeItem) {
+            foreach ($compositions as $composition) {
+               if ($composition[$this->relationTable[$compositionName]['TargetID']] === $treeItem->getObjectId() &&
+                     $composition[$this->relationTable[$compositionName]['SourceID']] === $parentItem->getObjectId()
+               ) {
+                  $cDepth = $depth + 1;
+                  $childItems = $this->loadChildTreeItems(
+                        $treeItems,
+                        $compositions,
+                        $compositionName,
+                        $treeItem,
+                        $maxDepth,
+                        $cDepth
+                  );
+                  $treeItem->setParentItem($parentItem);
+                  $treeItem->addChildren($childItems);
+                  $layer[] = $treeItem;
+                  break;
+               }
+            }
+         }
+      }
+
+      return $layer;
    }
 
    /**
@@ -542,6 +691,28 @@ class GenericORRelationMapper extends GenericORMapper {
 
       // load target object list
       return $this->extractRelationTimestamps($this->loadObjectListByTextStatement($targetObjectName, $select), $uniqueRelationPrefix);
+   }
+
+   /**
+    * Extracts the timestamps for the relation from the given GDO<br />
+    *
+    * @param GenericDomainObject[] $objects The given list of objects.
+    * @param string $prefix The unique prefix.
+    *
+    * @return GenericORMapperDataObject[] List of the objects.
+    *
+    * @author Lutz Mahlstedt
+    * @version
+    * Version 0.1, 27.07.2012<br />
+    */
+   protected function extractRelationTimestamps(array $objects, $prefix) {
+      if ($prefix !== null) {
+         foreach ($objects AS &$object) {
+            $object->extractRelationTimestamps($prefix);
+         }
+      }
+
+      return $objects;
    }
 
    /**
@@ -732,7 +903,7 @@ class GenericORRelationMapper extends GenericORMapper {
       }
 
       // check if object has related objects in it
-      $relatedObjects = & $object->getAllRelatedObjects();
+      $relatedObjects = &$object->getAllRelatedObjects();
       if (count($relatedObjects) > 0) {
 
          foreach ($relatedObjects as $relationKey => $DUMMY) {
@@ -863,6 +1034,78 @@ class GenericORRelationMapper extends GenericORMapper {
       }
 
       return $ID;
+   }
+
+   /**
+    * Returns all compositions concerning one object name.<br />
+    *
+    * @param string $objectName Name of the current object
+    * @param string $direction Direction of the relation (legal values: source, target)
+    *
+    * @return string[] List of relations of the given type.
+    * @throws GenericORMapperException In case of missing direction specification.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 30.05.2008<br />
+    */
+   protected function getCompositionsByObjectName($objectName, $direction = null) {
+
+      // initialize list
+      $relationList = [];
+
+      // declare attribute to indicate the direction of the relation
+      if ($direction == 'source') {
+         $directionAttribute = 'SourceObject';
+      } elseif ($direction == 'target') {
+         $directionAttribute = 'TargetObject';
+      } else {
+         throw new GenericORMapperException('Direction of the composition not specified! Please '
+               . 'use "source" or "target" as values!', E_USER_WARNING);
+      }
+
+      // look for suitable relation entries
+      foreach ($this->relationTable as $sectionName => $attributes) {
+
+         if ($attributes['Type'] == 'COMPOSITION' && $attributes[$directionAttribute] == $objectName) {
+            $relationList[] = &$this->relationTable[$sectionName];
+         }
+      }
+
+      return $relationList;
+   }
+
+   /**
+    * Returns all associations concerning one object.
+    *
+    * @param string $objectName name of the current object
+    *
+    * @return string[] List of relations of the given object.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 30.05.2008<br />
+    * Version 0.2, 28.12.2008 (Bug-fix: only associations are returned, where the object is involved)<br />
+    */
+   protected function &getAssociationsByObjectName($objectName) {
+
+      // initialize list
+      $relationList = [];
+
+      // look for suitable relation entries
+      foreach ($this->relationTable as $sectionName => $attributes) {
+
+         // only allow associations
+         if ($attributes['Type'] == 'ASSOCIATION') {
+
+            // only add, if the current object is involved in the association
+            if ($attributes['SourceObject'] === $objectName || $attributes['TargetObject'] === $objectName) {
+               $relationList[] = &$this->relationTable[$sectionName];
+            }
+         }
+      }
+
+      return $relationList;
    }
 
    /**
@@ -1125,146 +1368,6 @@ class GenericORRelationMapper extends GenericORMapper {
    }
 
    /**
-    * Returns all associations concerning one object.
-    *
-    * @param string $objectName name of the current object
-    *
-    * @return string[] List of relations of the given object.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 30.05.2008<br />
-    * Version 0.2, 28.12.2008 (Bug-fix: only associations are returned, where the object is involved)<br />
-    */
-   protected function &getAssociationsByObjectName($objectName) {
-
-      // initialize list
-      $relationList = array();
-
-      // look for suitable relation entries
-      foreach ($this->relationTable as $sectionName => $attributes) {
-
-         // only allow associations
-         if ($attributes['Type'] == 'ASSOCIATION') {
-
-            // only add, if the current object is involved in the association
-            if ($attributes['SourceObject'] === $objectName || $attributes['TargetObject'] === $objectName) {
-               $relationList[] = & $this->relationTable[$sectionName];
-            }
-         }
-      }
-
-      return $relationList;
-   }
-
-   /**
-    * Returns all compositions concerning one object name.<br />
-    *
-    * @param string $objectName Name of the current object
-    * @param string $direction Direction of the relation (legal values: source, target)
-    *
-    * @return string[] List of relations of the given type.
-    * @throws GenericORMapperException In case of missing direction specification.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 30.05.2008<br />
-    */
-   protected function getCompositionsByObjectName($objectName, $direction = null) {
-
-      // initialize list
-      $relationList = array();
-
-      // declare attribute to indicate the direction of the relation
-      if ($direction == 'source') {
-         $directionAttribute = 'SourceObject';
-      } elseif ($direction == 'target') {
-         $directionAttribute = 'TargetObject';
-      } else {
-         throw new GenericORMapperException('Direction of the composition not specified! Please '
-               . 'use "source" or "target" as values!', E_USER_WARNING);
-      }
-
-      // look for suitable relation entries
-      foreach ($this->relationTable as $sectionName => $attributes) {
-
-         if ($attributes['Type'] == 'COMPOSITION' && $attributes[$directionAttribute] == $objectName) {
-            $relationList[] = & $this->relationTable[$sectionName];
-         }
-      }
-
-      return $relationList;
-   }
-
-   /**
-    * Returns the name of the related object concerning the given arguments.<br />
-    *
-    * @param string $objectName Name of the current object
-    * @param string $relationName Name of the desired relation
-    *
-    * @return string Name of the releated object or null, in case the object definition was not found.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 14.05.2008<br />
-    */
-   protected function getRelatedObjectNameByRelationName($objectName, $relationName) {
-
-      // look for suitable related object
-      foreach ($this->relationTable as $sectionName => $attributes) {
-
-         if ($sectionName == $relationName) {
-
-            if ($attributes['SourceObject'] == $objectName) {
-               return $attributes['TargetObject'];
-            }
-
-            if ($attributes['TargetObject'] == $objectName) {
-               return $attributes['SourceObject'];
-            }
-         }
-      }
-
-      // return null to indicate, that the desired object was not found or has no relations
-      return null;
-   }
-
-   /**
-    * Returns the name of the ID Column concerning the given arguments.
-    *
-    * @param string $objectName Name of the current object.
-    * @param string $relationName Name of the desired relation.
-    * @param string $startPoint The desired relation start point in case of self references.
-    *
-    * @return string Name of the ID Column
-    * @throws GenericORMapperException In case of undefined relation.
-    *
-    * @author Tobias Lückel
-    * @version
-    * Version 0.1, 24.03.2011<br />
-    */
-   protected function getRelationIdColumn($objectName, $relationName, $startPoint) {
-
-      if (isset($this->relationTable[$relationName])) {
-
-         // in case of self relations, the source and target column name must be
-         // evaluated by the desired point type
-         if ($this->relationTable[$relationName]['SourceObject'] === $this->relationTable[$relationName]['TargetObject']) {
-            return $startPoint === self::RELATION_SOURCE ? $this->relationTable[$relationName]['SourceID']
-                  : $this->relationTable[$relationName]['TargetID'];
-         }
-
-         // look for suitable related object
-         return $this->relationTable[$relationName]['SourceObject'] == $objectName
-               ? $this->relationTable[$relationName]['SourceID'] : $this->relationTable[$relationName]['TargetID'];
-      }
-
-      throw new GenericORMapperException('[GenericORRelationMapper::getRelationIdColumn()] '
-            . 'The given relation "' . $relationName . '" is not defined within the current relation '
-            . 'table! Please revise your configuration.');
-   }
-
-   /**
     * Implements php's magic __sleep() method to indicate, which class vars have to be serialized.<br />
     *
     * @return string[] List of serializable properties.
@@ -1277,7 +1380,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * Version 0.4, 16.03.2010 (Added missing attributes due to bug 299)<br />
     */
    public function __sleep() {
-      return array(
+      return [
             'mappingTable',
             'relationTable',
             'domainObjectsTable',
@@ -1289,7 +1392,8 @@ class GenericORRelationMapper extends GenericORMapper {
             'connectionName',
             'logStatements',
             'configNamespace',
-            'configNameAffix');
+            'configNameAffix'
+      ];
    }
 
    /**
@@ -1373,24 +1477,6 @@ class GenericORRelationMapper extends GenericORMapper {
     */
    public function loadObjectsWithRelation($objectName, $relationName, GenericCriterionObject $criterion = null) {
       return $this->loadObjects4RelationName($objectName, $relationName, $criterion, 'IS NOT NULL');
-   }
-
-   /**
-    * Loads a list of objects specified by the applied object type (object name as
-    * noted within the configuration) and the relation it should *not* have.
-    *
-    * @param string $objectName The type of the objects to load.
-    * @param string $relationName The name of relation, the object should have to or not.
-    * @param GenericCriterionObject $criterion An additional criterion to specify custom limitations.
-    *
-    * @return GenericORMapperDataObject[] The desired list of domain objects.
-    *
-    * @author Tobias Lückel
-    * @version
-    * Version 0.1, 01.09.2010<br />
-    */
-   public function loadObjectsWithoutRelation($objectName, $relationName, GenericCriterionObject $criterion = null) {
-      return $this->loadObjects4RelationName($objectName, $relationName, $criterion, 'IS NULL');
    }
 
    /**
@@ -1493,106 +1579,21 @@ class GenericORRelationMapper extends GenericORMapper {
    }
 
    /**
-    * Creates JOIN statements by a given object name and criterion<br />
+    * Loads a list of objects specified by the applied object type (object name as
+    * noted within the configuration) and the relation it should *not* have.
     *
-    * @param string $objectName The given object name
-    * @param GenericCriterionObject $criterion criterion object
+    * @param string $objectName The type of the objects to load.
+    * @param string $relationName The name of relation, the object should have to or not.
+    * @param GenericCriterionObject $criterion An additional criterion to specify custom limitations.
     *
-    * @return string[] JOIN statements.
-    * @throws GenericORMapperException In case of issues with evaluation of the target object name.
-    *
-    * @author Tobias Lückel
-    * @version
-    * Version 0.1, 27.04.2011<br />
-    */
-   protected function buildJoinStatementsByCriterion($objectName, GenericCriterionObject $criterion) {
-      $joinList = array();
-
-      $relations = $criterion->getRelations();
-
-      foreach ($relations as $relationName => $relatedObject) {
-         // gets the 'source' and 'target' uniqid from criterion to avoid conflicts with other tables
-         $uniqueRelationSourceId = $criterion->getUniqueRelationId($relationName, true);
-         $uniqueRelationTargetId = $criterion->getUniqueRelationId($relationName, false);
-         // gather information about the object relations
-         $relationTable = $this->relationTable[$relationName]['Table'];
-         $fromTable = $this->mappingTable[$objectName]['Table'];
-         $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName, $relationName);
-
-         // avoid "undefined index" errors
-         if ($targetObjectName === null) {
-            throw new GenericORMapperException('There is no relation defined with name "' . $relationName
-                  . '" for object "' . $objectName . '"! Please re-check your criterion definition.');
-         }
-
-         $toTable = $this->mappingTable[$targetObjectName]['Table'];
-         $sourceObjectId = $this->mappingTable[$objectName]['ID'];
-         $targetObjectId = $this->mappingTable[$targetObjectName]['ID'];
-
-         $relationSourceObjectId = $this->getRelationIdColumn($objectName, $relationName, self::RELATION_SOURCE);
-         $relationTargetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
-
-         // add statement to join list
-         $joinList[] = 'INNER JOIN `' . $relationTable . '` AS `' . $uniqueRelationSourceId . '_' . $relationTable . '` ON `' . $fromTable . '`.`' . $sourceObjectId . '` = `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`' . $relationSourceObjectId . '`';
-         $joinList[] = 'INNER JOIN `' . $toTable . '` AS `' . $uniqueRelationTargetId . '_' . $toTable . '` ON `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`' . $relationTargetObjectId . '` = `' . $uniqueRelationTargetId . '_' . $toTable . '`.`' . $targetObjectId . '`';
-      }
-
-      return $joinList;
-   }
-
-   /**
-    * Creates WHERE statements by a given object name and criterion<br />
-    *
-    * @param string $objectName The given object name
-    * @param GenericCriterionObject $criterion criterion object
-    *
-    * @return string[] WHERE statements.
+    * @return GenericORMapperDataObject[] The desired list of domain objects.
     *
     * @author Tobias Lückel
     * @version
-    * Version 0.1, 27.04.2011<br />
+    * Version 0.1, 01.09.2010<br />
     */
-   protected function buildWhereStatementsByCriterion($objectName, GenericCriterionObject $criterion) {
-      $whereList = array();
-
-      $relations = $criterion->getRelations();
-
-      foreach ($relations as $relationName => $relatedObject) {
-         /* @var $relatedObject GenericORMapperDataObject */
-         // gets the 'target' uniqid from criterion to avoid conflicts with other tables
-         $uniqueRelationTargetId = $criterion->getUniqueRelationId($relationName, false);
-         // gather information about the object relations
-         $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName, $relationName);
-         $toTable = $this->mappingTable[$targetObjectName]['Table'];
-         $targetObjectId = $this->mappingTable[$targetObjectName]['ID'];
-
-         // add statement to where list
-         $whereList[] = '`' . $uniqueRelationTargetId . '_' . $toTable . '`.`' . $targetObjectId . '` = ' . $relatedObject->getObjectId();
-      }
-
-      return $whereList;
-   }
-
-   /**
-    * Extracts the timestamps for the relation from the given GDO<br />
-    *
-    * @param GenericDomainObject[] $objects The given list of objects.
-    * @param string $prefix The unique prefix.
-    *
-    * @return GenericORMapperDataObject[] List of the objects.
-    *
-    * @author Lutz Mahlstedt
-    * @version
-    * Version 0.1, 27.07.2012<br />
-    */
-   protected function extractRelationTimestamps(array $objects, $prefix) {
-      if ($prefix !== null) {
-         foreach ($objects AS &$object) {
-            $object->extractRelationTimestamps($prefix);
-         }
-      }
-
-      return $objects;
+   public function loadObjectsWithoutRelation($objectName, $relationName, GenericCriterionObject $criterion = null) {
+      return $this->loadObjects4RelationName($objectName, $relationName, $criterion, 'IS NULL');
    }
 
 }

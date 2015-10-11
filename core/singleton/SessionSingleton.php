@@ -26,7 +26,7 @@ use APF\core\pagecontroller\APFObject;
 use Exception;
 use ReflectionClass;
 
-// ID#178: use closure functions instead of array() to avoid issued with PHP 5.4.x
+// ID#178: use closure functions instead of [] to avoid issued with PHP 5.4.x
 register_shutdown_function(function () {
    SessionSingleton::saveObjects();
 });

@@ -62,7 +62,7 @@ class DateSelectorTag extends AbstractFormControl {
    public function __construct() {
 
       // initialize the offset names
-      $this->offsetNames = array('Day' => 'Day', 'Month' => 'Month', 'Year' => 'Year');
+      $this->offsetNames = ['Day' => 'Day', 'Month' => 'Month', 'Year' => 'Year'];
 
       // initialize the year range
       $this->yearRange['Start'] = (int) date('Y') - 10;
@@ -196,23 +196,86 @@ class DateSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * Returns the id of the date element. In case the developer does not
-    * provide the <em>id</em> attribute within the tag definition, the
-    * <em>name</em> attribute is used instead.
-    *
-    * @return string The id to display within the HTML tag.
+    * Initializes the year range to display.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 18.03.2010<br />
+    * Version 0.1, 29.08.2009<br />
+    * Version 0.2, 30.12.2009 (Replaced split() with explode() because it is marked deprecated in PHP5.3.0)<br />
     */
-   private function getId() {
-      $id = $this->getAttribute('id');
-      if ($id === null) {
-         return $this->getAttribute('name');
+   protected function initYearRange() {
+
+      // read the range for the year select box
+      if (isset($this->attributes['yearrange'])) {
+
+         $yearRange = explode('-', $this->attributes['yearrange']);
+
+         if (count($yearRange) == 2) {
+            $this->yearRange['Start'] = trim($yearRange[0]);
+            $this->yearRange['End'] = trim($yearRange[1]);
+         }
+      }
+   }
+
+   /**
+    * Initializes the offset names of the fields.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.08.2009<br />
+    * Version 0.2, 09.04.2010 (Replaced split() with explode() because it is marked deprecated in PHP5.3.0)<br />
+    */
+   protected function initOffsetNames() {
+
+      if (isset($this->attributes['offsetnames'])) {
+
+         $offsetNames = explode(';', $this->attributes['offsetnames']);
+
+         if (count($offsetNames) == 3) {
+            $this->offsetNames = [
+                  'Day'   => $offsetNames[0],
+                  'Month' => $offsetNames[1],
+                  'Year'  => $offsetNames[2]
+            ];
+         }
+      }
+   }
+
+   /**
+    * @return array|null The list of tab indices for the day, month, and year field or <em>null</em>.
+    */
+   private function getTabIndices() {
+      $indices = $this->getAttribute('tab-indexes');
+
+      if ($indices === null) {
+         return null;
       }
 
-      return $id;
+      $indexList = explode(';', $indices);
+      if (count($indexList) == 3) {
+         return [
+               trim($indexList[0]),
+               trim($indexList[1]),
+               trim($indexList[2])
+         ];
+      }
+
+      return null;
+   }
+
+   /**
+    * Appends a zero for month or day numbers without leading zeros.
+    *
+    * @param int $input The month or day number.
+    *
+    * @return string Month or day number with leading zero.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.08.2009<br />
+    */
+   protected function appendZero($input) {
+      return sprintf('%02s', $input);
    }
 
    /**
@@ -256,6 +319,41 @@ class DateSelectorTag extends AbstractFormControl {
    }
 
    /**
+    * Returns the id of the date element. In case the developer does not
+    * provide the <em>id</em> attribute within the tag definition, the
+    * <em>name</em> attribute is used instead.
+    *
+    * @return string The id to display within the HTML tag.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 18.03.2010<br />
+    */
+   private function getId() {
+      $id = $this->getAttribute('id');
+      if ($id === null) {
+         return $this->getAttribute('name');
+      }
+
+      return $id;
+   }
+
+   /**
+    * Re-implements the retrieving of values for date controls.
+    *
+    * @return DateTime The current value or content of the control.
+    *
+    * @since 1.14
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 26.07.2011<br />
+    */
+   public function getValue() {
+      return $this->getDate();
+   }
+
+   /**
     * Returns the date as DateTime instance with the pattern YYYY-MM-DD.
     *
     * @return DateTime Instance of DateTime with pattern YYYY-MM-DD.
@@ -288,28 +386,6 @@ class DateSelectorTag extends AbstractFormControl {
       }
 
       return $date;
-   }
-
-   /**
-    * Allows you to initialize the date control with a given date (e.g. "2010-06-16" or the respective instance or DateTime).
-    *
-    * @param DateTime|string $date The date to initialize the control with (either DateTime instance or string).
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 16.06.2010<br />
-    * Version 0.2, 30.04.2012 (Introduced a more fail-safe way of initializing the date)<br />
-    * Version 0.3, 27.07.2014 (ID#208: added DateTime support)<br />
-    */
-   public function setDate($date) {
-
-      if (!($date instanceof DateTime)) {
-         $date = DateTime::createFromFormat('Y-m-d', $date);
-      }
-
-      $this->getDayControl()->setOption2Selected($this->appendZero($date->format('d')));
-      $this->getMonthControl()->setOption2Selected($this->appendZero($date->format('m')));
-      $this->getYearControl()->setOption2Selected($date->format('Y'));
    }
 
    /**
@@ -352,82 +428,6 @@ class DateSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * Initializes the year range to display.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.08.2009<br />
-    * Version 0.2, 30.12.2009 (Replaced split() with explode() because it is marked deprecated in PHP5.3.0)<br />
-    */
-   protected function initYearRange() {
-
-      // read the range for the year select box
-      if (isset($this->attributes['yearrange'])) {
-
-         $yearRange = explode('-', $this->attributes['yearrange']);
-
-         if (count($yearRange) == 2) {
-            $this->yearRange['Start'] = trim($yearRange[0]);
-            $this->yearRange['End'] = trim($yearRange[1]);
-         }
-      }
-   }
-
-   /**
-    * Initializes the offset names of the fields.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.08.2009<br />
-    * Version 0.2, 09.04.2010 (Replaced split() with explode() because it is marked deprecated in PHP5.3.0)<br />
-    */
-   protected function initOffsetNames() {
-
-      if (isset($this->attributes['offsetnames'])) {
-
-         $offsetNames = explode(';', $this->attributes['offsetnames']);
-
-         if (count($offsetNames) == 3) {
-            $this->offsetNames = array(
-                  'Day'   => $offsetNames[0],
-                  'Month' => $offsetNames[1],
-                  'Year'  => $offsetNames[2]
-            );
-         }
-      }
-   }
-
-   /**
-    * Appends a zero for month or day numbers without leading zeros.
-    *
-    * @param int $input The month or day number.
-    *
-    * @return string Month or day number with leading zero.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.08.2009<br />
-    */
-   protected function appendZero($input) {
-      return sprintf('%02s', $input);
-   }
-
-   /**
-    * Re-implements the retrieving of values for date controls.
-    *
-    * @return DateTime The current value or content of the control.
-    *
-    * @since 1.14
-    *
-    * @author Ralf Schubert
-    * @version
-    * Version 0.1, 26.07.2011<br />
-    */
-   public function getValue() {
-      return $this->getDate();
-   }
-
-   /**
     * Re-implements the setting of values for date controls.
     *
     * @param DateTime|string $value The date to set (e.g. DateTime or "2012-04-30").
@@ -447,25 +447,25 @@ class DateSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @return array|null The list of tab indices for the day, month, and year field or <em>null</em>.
+    * Allows you to initialize the date control with a given date (e.g. "2010-06-16" or the respective instance or DateTime).
+    *
+    * @param DateTime|string $date The date to initialize the control with (either DateTime instance or string).
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 16.06.2010<br />
+    * Version 0.2, 30.04.2012 (Introduced a more fail-safe way of initializing the date)<br />
+    * Version 0.3, 27.07.2014 (ID#208: added DateTime support)<br />
     */
-   private function getTabIndices() {
-      $indices = $this->getAttribute('tab-indexes');
+   public function setDate($date) {
 
-      if ($indices === null) {
-         return null;
+      if (!($date instanceof DateTime)) {
+         $date = DateTime::createFromFormat('Y-m-d', $date);
       }
 
-      $indexList = explode(';', $indices);
-      if (count($indexList) == 3) {
-         return array(
-               trim($indexList[0]),
-               trim($indexList[1]),
-               trim($indexList[2])
-         );
-      }
-
-      return null;
+      $this->getDayControl()->setOption2Selected($this->appendZero($date->format('d')));
+      $this->getMonthControl()->setOption2Selected($this->appendZero($date->format('m')));
+      $this->getYearControl()->setOption2Selected($date->format('Y'));
    }
 
    public function reset() {

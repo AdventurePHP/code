@@ -38,7 +38,7 @@ class CheckBoxTagTest extends \PHPUnit_Framework_TestCase {
       $form->setAttribute('name', 'test-form');
       $form->setAttribute(HtmlForm::METHOD_ATTRIBUTE_NAME, HtmlForm::METHOD_POST_VALUE_NAME);
 
-      $form->addFormElement('form:button', array('name' => self::BUTTON_NAME, 'value' => self::BUTTON_VALUE));
+      $form->addFormElement('form:button', ['name' => self::BUTTON_NAME, 'value' => self::BUTTON_VALUE]);
 
       return $form;
    }
@@ -60,7 +60,7 @@ class CheckBoxTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testFormSubmitUnChecked() {
 
-      $_POST = array();
+      $_POST = [];
       $_POST[self::BUTTON_NAME] = self::BUTTON_VALUE;
 
       $checkBox = new CheckBoxTag();
@@ -78,10 +78,10 @@ class CheckBoxTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testFormSubmitChecked() {
 
-      $_POST = array();
+      $_POST = [];
       $_POST[self::BUTTON_NAME] = self::BUTTON_VALUE;
 
-      $_REQUEST = array();
+      $_REQUEST = [];
       $checkBoxName = 'foo';
       $checkBoxValue = 'bar';
       $_REQUEST[$checkBoxName] = $checkBoxValue;

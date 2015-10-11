@@ -70,11 +70,11 @@ class MediaInclusionTag extends Document {
     */
    public function transform() {
       // generate action url using the APF's new link generation mechanism since 1.14
-      return LinkGenerator::generateActionUrl(Url::fromCurrent(), 'APF\tools\media', 'streamMedia', array(
+      return LinkGenerator::generateActionUrl(Url::fromCurrent(), 'APF\tools\media', 'streamMedia', [
             'namespace' => str_replace('\\', '_', $this->getAttribute('namespace')),
             'extension' => $this->getAttribute('extension'),
             'filebody'  => $this->getAttribute('filebody')
-      ));
+      ]);
    }
 
 }

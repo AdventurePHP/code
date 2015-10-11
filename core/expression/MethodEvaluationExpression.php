@@ -54,7 +54,7 @@ class MethodEvaluationExpression extends EvaluationExpressionBase implements Eva
       // extract arguments passed to the method (only trivial data types such as int and string supported)
       $argumentsExpression = substr($this->expression, $open + 1, $close - $open - 1);
       if (empty($argumentsExpression)) {
-         $arguments = array();
+         $arguments = [];
       } else {
          // sanitize arguments string to pass arguments as they are meant to be
          $arguments = explode(',', str_replace('\'', '', str_replace(' ', '', $argumentsExpression)));
@@ -65,7 +65,7 @@ class MethodEvaluationExpression extends EvaluationExpressionBase implements Eva
                . '" has no method defined with name "' . $method . '()". Expression: "' . $this->expression . '".');
       }
 
-      return call_user_func_array(array($this->previousResult, $method), $arguments);
+      return call_user_func_array([$this->previousResult, $method], $arguments);
    }
 
    protected function check($expression, $previousResult) {

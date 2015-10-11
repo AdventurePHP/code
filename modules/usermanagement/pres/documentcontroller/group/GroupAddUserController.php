@@ -52,7 +52,7 @@ class GroupAddUserController extends UmgtBaseController {
       if ($count == 0) {
          $template = & $this->getTemplate('NoMoreUser');
          $template->getLabel('message-1')->setPlaceHolder('display-name', $group->getDisplayName());
-         $template->getLabel('message-2')->setPlaceHolder('group-view-link', $this->generateLink(array('mainview' => 'group', 'groupview' => null, 'groupid' => null)));
+         $template->getLabel('message-2')->setPlaceHolder('group-view-link', $this->generateLink(['mainview' => 'group', 'groupview' => null, 'groupid' => null]));
          $template->transformOnPlace();
 
          return;
@@ -68,7 +68,7 @@ class GroupAddUserController extends UmgtBaseController {
          $options = & $userControl->getSelectedOptions();
          $count = count($options);
 
-         $newUsers = array();
+         $newUsers = [];
          for ($i = 0; $i < $count; $i++) {
             $newUser = new UmgtUser();
             $newUser->setObjectId($options[$i]->getAttribute('value'));
@@ -77,7 +77,7 @@ class GroupAddUserController extends UmgtBaseController {
          }
 
          $uM->attachUsers2Group($newUsers, $group);
-         $this->getResponse()->forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
+         $this->getResponse()->forward($this->generateLink(['mainview' => 'group', 'groupview' => '', 'groupid' => '']));
 
       } else {
          $form->transformOnPlace();

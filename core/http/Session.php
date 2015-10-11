@@ -74,7 +74,7 @@ final class Session {
 
       // init the session if not existent yet to avoid array access issues and weired error messages.
       if (!isset($_SESSION[$namespace])) {
-         $_SESSION[$namespace] = array();
+         $_SESSION[$namespace] = [];
       }
 
    }
@@ -88,7 +88,7 @@ final class Session {
     * Version 0.2, 18.07.2006 (Fixed bug, that after a post request, the session was valid again!)<br />
     */
    public function destroy() {
-      $_SESSION[$this->namespace] = array();
+      $_SESSION[$this->namespace] = [];
    }
 
    /**

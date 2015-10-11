@@ -50,17 +50,17 @@ class RoleListController extends UmgtBaseController {
          $template->setPlaceHolder('Users', $this->getUserList($role));
          $template->setPlaceHolder('Groups', $this->getGroupList($role));
 
-         $template->setPlaceHolder('role_details', $this->generateLink(array('mainview' => 'role', 'roleview' => 'details', 'roleid' => $roleId)));
-         $template->setPlaceHolder('role_edit', $this->generateLink(array('mainview' => 'role', 'roleview' => 'edit', 'roleid' => $roleId)));
-         $template->setPlaceHolder('role_delete', $this->generateLink(array('mainview' => 'role', 'roleview' => 'delete', 'roleid' => $roleId)));
+         $template->setPlaceHolder('role_details', $this->generateLink(['mainview' => 'role', 'roleview' => 'details', 'roleid' => $roleId]));
+         $template->setPlaceHolder('role_edit', $this->generateLink(['mainview' => 'role', 'roleview' => 'edit', 'roleid' => $roleId]));
+         $template->setPlaceHolder('role_delete', $this->generateLink(['mainview' => 'role', 'roleview' => 'delete', 'roleid' => $roleId]));
 
-         $template->setPlaceHolder('AddPermissionToRole', $this->generateLink(array('mainview' => 'role', 'roleview' => 'add_permission_to_role', 'roleid' => $roleId)));
-         $template->setPlaceHolder('RemoveRoleFromPermission', $this->generateLink(array('mainview' => 'role', 'roleview' => 'remove_permission_from_role', 'roleid' => $roleId)));
-         $template->setPlaceHolder('AssignRoleToUser', $this->generateLink(array('mainview' => 'role', 'roleview' => 'ass2user', 'roleid' => $roleId)));
-         $template->setPlaceHolder('DetachRoleFromUser', $this->generateLink(array('mainview' => 'role', 'roleview' => 'detachfromuser', 'roleid' => $roleId)));
+         $template->setPlaceHolder('AddPermissionToRole', $this->generateLink(['mainview' => 'role', 'roleview' => 'add_permission_to_role', 'roleid' => $roleId]));
+         $template->setPlaceHolder('RemoveRoleFromPermission', $this->generateLink(['mainview' => 'role', 'roleview' => 'remove_permission_from_role', 'roleid' => $roleId]));
+         $template->setPlaceHolder('AssignRoleToUser', $this->generateLink(['mainview' => 'role', 'roleview' => 'ass2user', 'roleid' => $roleId]));
+         $template->setPlaceHolder('DetachRoleFromUser', $this->generateLink(['mainview' => 'role', 'roleview' => 'detachfromuser', 'roleid' => $roleId]));
 
-         $template->setPlaceHolder('AddGroupToRole', $this->generateLink(array('mainview' => 'group', 'groupview' => 'add_role_to_groups', 'roleid' => $roleId)));
-         $template->setPlaceHolder('RemoveGroupFromRole', $this->generateLink(array('mainview' => 'group', 'groupview' => 'remove_role_from_groups', 'roleid' => $roleId)));
+         $template->setPlaceHolder('AddGroupToRole', $this->generateLink(['mainview' => 'group', 'groupview' => 'add_role_to_groups', 'roleid' => $roleId]));
+         $template->setPlaceHolder('RemoveGroupFromRole', $this->generateLink(['mainview' => 'group', 'groupview' => 'remove_role_from_groups', 'roleid' => $roleId]));
 
          $buffer .= $template->transformTemplate();
 

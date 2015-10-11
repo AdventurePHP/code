@@ -40,7 +40,7 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
     *
     * @var bool[] $cache
     */
-   protected $cache = array();
+   protected $cache = [];
 
 
    /**

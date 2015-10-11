@@ -34,7 +34,7 @@ abstract class AbstractFilterChain implements FilterChain {
     *
     * @var ChainedContentFilter[] $filters
     */
-   private $filters = array();
+   private $filters = [];
 
    /**
     * Marks the offset of the filter that is currently executed.
@@ -166,7 +166,7 @@ abstract class AbstractFilterChain implements FilterChain {
     * Version 0.1, 22.03.2011<br />
     */
    public function &clear() {
-      $this->filters = array();
+      $this->filters = [];
       $this->count = 0;
       $this->offset = 0;
 

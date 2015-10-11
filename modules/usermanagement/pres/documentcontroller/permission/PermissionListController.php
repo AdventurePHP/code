@@ -45,8 +45,8 @@ class PermissionListController extends UmgtBaseController {
          $template->setPlaceHolder('Name', $permission->getName());
          $template->setPlaceHolder('Value', $permission->getValue());
          $id = $permission->getObjectId();
-         $template->setPlaceHolder('permission_edit', $this->generateLink(array('mainview' => 'permission', 'permissionview' => 'edit', 'permissionid' => $id)));
-         $template->setPlaceHolder('permission_delete', $this->generateLink(array('mainview' => 'permission', 'permissionview' => 'delete', 'permissionid' => $id)));
+         $template->setPlaceHolder('permission_edit', $this->generateLink(['mainview' => 'permission', 'permissionview' => 'edit', 'permissionid' => $id]));
+         $template->setPlaceHolder('permission_delete', $this->generateLink(['mainview' => 'permission', 'permissionview' => 'delete', 'permissionid' => $id]));
 
          $buffer .= $template->transformTemplate();
       }

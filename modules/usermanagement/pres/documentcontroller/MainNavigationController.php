@@ -32,16 +32,16 @@ class MainNavigationController extends UmgtBaseController {
    public function transformContent() {
 
       // define the general param exclusion array
-      $generalExclusion = array('userid'         => '', 'groupid' => '', 'roleid' => '', 'permissionid' => '', 'proxyid' => '',
+      $generalExclusion = ['userid'         => '', 'groupid' => '', 'roleid' => '', 'permissionid' => '', 'proxyid' => '',
                                 'userview'       => '', 'groupview' => '', 'roleview' => '', 'permissionsetview' => '',
-                                'permissionview' => '', 'proxyview' => '');
+                           'permissionview' => '', 'proxyview' => ''];
 
       // display the links
-      $this->setPlaceHolder('manage_user', $this->generateLink(array_merge($generalExclusion, array('mainview' => 'user'))));
-      $this->setPlaceHolder('manage_groups', $this->generateLink(array_merge($generalExclusion, array('mainview' => 'group'))));
-      $this->setPlaceHolder('manage_roles', $this->generateLink(array_merge($generalExclusion, array('mainview' => 'role'))));
-      $this->setPlaceHolder('manage_permissions', $this->generateLink(array_merge($generalExclusion, array('mainview' => 'permission'))));
-      $this->setPlaceHolder('manage_proxies', $this->generateLink(array_merge($generalExclusion, array('mainview' => 'proxy'))));
+      $this->setPlaceHolder('manage_user', $this->generateLink(array_merge($generalExclusion, ['mainview' => 'user'])));
+      $this->setPlaceHolder('manage_groups', $this->generateLink(array_merge($generalExclusion, ['mainview' => 'group'])));
+      $this->setPlaceHolder('manage_roles', $this->generateLink(array_merge($generalExclusion, ['mainview' => 'role'])));
+      $this->setPlaceHolder('manage_permissions', $this->generateLink(array_merge($generalExclusion, ['mainview' => 'permission'])));
+      $this->setPlaceHolder('manage_proxies', $this->generateLink(array_merge($generalExclusion, ['mainview' => 'proxy'])));
 
    }
 

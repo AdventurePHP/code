@@ -34,51 +34,38 @@ class SMSAccessCtrlPageDec extends SMSAbstractPageDec {
 
 
    /**
+    * @var array $mapVars
+    */
+   public static $mapVars = [
+         'providerServiceNamespace' => 'APF\extensions\apfelsms\pages\decorators\provider',
+         'providerServiceName'      => null,
+         'permissionName'           => 'SMSViewPermission'
+   ];
+   /**
     * @var string $providerServiceNamespace
     */
    protected $providerServiceNamespace;
-
-
    /**
     * @var string $providerServiceName
     */
    protected $providerServiceName;
-
-
    /**
     * @var mixed $permissionName
     *
     * @since v0.2
     */
    protected $permissionName;
-
-
    /**
     * @var SMSAccessCtrlProvider $provider
     */
    protected $provider;
 
-
-   /**
-    * @var array $mapVars
-    */
-   public static $mapVars = array(
-         'providerServiceNamespace' => 'APF\extensions\apfelsms\pages\decorators\provider',
-         'providerServiceName'      => null,
-         'permissionName'           => 'SMSViewPermission'
-   );
-
-
    /**
     * @return bool
     */
    public function isAccessProtected() {
-
-
       return $this->getProvider()->isAccessProtected($this->getOuterPage(), $this->permissionName);
-
    }
-
 
    /**
     * @return SMSAccessCtrlProvider

@@ -30,10 +30,10 @@ namespace APF\modules\usermanagement\pres\documentcontroller;
 class ProxyNavigationController extends UmgtBaseController {
 
    public function transformContent() {
-      $this->setPlaceHolder('display_proxy_types', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => '', 'proxytypeid' => '', 'appobjectid' => null, 'proxyid' => null, 'objectid' => null, 'objecttype' => null)));
-      $this->setPlaceHolder('proxy_type_add', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typeadd', 'proxytypeid' => '', 'appobjectid' => null, 'proxyid' => null, 'objectid' => null, 'objecttype' => null)));
-      $this->setPlaceHolder('proxy_add', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'proxyadd', 'proxytypeid' => '', 'appobjectid' => null, 'proxyid' => null, 'objectid' => null, 'objecttype' => null)));
-      $this->setPlaceHolder('proxy_type_list', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typelist', 'proxytypeid' => '', 'appobjectid' => null, 'proxyid' => null, 'objectid' => null, 'objecttype' => null)));
+      $this->setPlaceHolder('display_proxy_types', $this->generateLink(['mainview' => 'proxy', 'proxyview' => '', 'proxytypeid' => '', 'appobjectid' => null, 'proxyid' => null, 'objectid' => null, 'objecttype' => null]));
+      $this->setPlaceHolder('proxy_type_add', $this->generateLink(['mainview' => 'proxy', 'proxyview' => 'typeadd', 'proxytypeid' => '', 'appobjectid' => null, 'proxyid' => null, 'objectid' => null, 'objecttype' => null]));
+      $this->setPlaceHolder('proxy_add', $this->generateLink(['mainview' => 'proxy', 'proxyview' => 'proxyadd', 'proxytypeid' => '', 'appobjectid' => null, 'proxyid' => null, 'objectid' => null, 'objecttype' => null]));
+      $this->setPlaceHolder('proxy_type_list', $this->generateLink(['mainview' => 'proxy', 'proxyview' => 'typelist', 'proxytypeid' => '', 'appobjectid' => null, 'proxyid' => null, 'objectid' => null, 'objecttype' => null]));
    }
 
 }

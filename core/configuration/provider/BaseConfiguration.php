@@ -37,14 +37,14 @@ abstract class BaseConfiguration implements Configuration {
     *
     * @var array $values
     */
-   protected $values = array();
+   protected $values = [];
 
    /**
     * Stores the sections of the current config.
     *
     * @var Configuration[] $sections
     */
-   protected $sections = array();
+   protected $sections = [];
 
    public function getSection($name) {
 

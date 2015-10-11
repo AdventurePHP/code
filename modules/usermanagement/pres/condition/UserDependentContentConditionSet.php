@@ -59,7 +59,7 @@ class UserDependentContentConditionSet extends APFObject {
     *
     * @var array $conditions
     */
-   private $conditions = array();
+   private $conditions = [];
 
    /**
     * Initializes the condition set with the shipped conditions of the user management module.
@@ -97,7 +97,7 @@ class UserDependentContentConditionSet extends APFObject {
     * @return UserDependentContentConditionSet This instance for further usage.
     */
    public function resetConditionList() {
-      $this->conditions = array();
+      $this->conditions = [];
 
       return $this;
    }
@@ -168,7 +168,7 @@ class UserDependentContentConditionSet extends APFObject {
     * @return array The options list.
     */
    private function getOptions($rawOptions) {
-      $options = array();
+      $options = [];
       foreach (explode(',', $rawOptions) as $option) {
          $options[] = trim($option);
       }

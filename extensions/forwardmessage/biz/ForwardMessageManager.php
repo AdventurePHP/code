@@ -38,7 +38,7 @@ class ForwardMessageManager extends APFObject {
     *
     * @var ForwardMessage[] $messages
     */
-   private $messages = array();
+   private $messages = [];
 
    /**
     * Adds a status message.
@@ -121,14 +121,14 @@ class ForwardMessageManager extends APFObject {
     * Version 0.1, 10.09.2010
     * Version 0.2 25.2.2011, Group option added by Werner Liemberger
     */
-   public function getMessages(array $groups = array()) {
+   public function getMessages(array $groups = []) {
 
       // in case no groups are applied, all groups will be displayed
       if (count($groups) === 0) {
          $groups = array_keys($this->messages);
       }
 
-      $messages = array();
+      $messages = [];
       foreach ($groups as $group) {
          /* @var $group string */
          if (isset($this->messages[$group]) && is_array($this->messages[$group])) {

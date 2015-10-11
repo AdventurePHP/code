@@ -60,7 +60,7 @@ interface SMSPageDec extends SMSPage {
     *
     * @return array
     */
-   public function getDecoratorTypes(array $giveThrough = array());
+   public function getDecoratorTypes(array $giveThrough = []);
 
 
    /**
@@ -68,7 +68,7 @@ interface SMSPageDec extends SMSPage {
     *
     * @return array
     */
-   public function getAllDecorators(array $giveThrough = array());
+   public function getAllDecorators(array $giveThrough = []);
 
 
    /**

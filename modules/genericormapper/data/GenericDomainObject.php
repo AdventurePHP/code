@@ -35,34 +35,30 @@ use InvalidArgumentException;
 class GenericDomainObject implements GenericORMapperDataObject {
 
    /**
+    * Name of the object (see mapping table!).
+    *
+    * @var string $objectName
+    */
+   protected $objectName = null;
+   /**
+    * Properties of a domain object.
+    *
+    * @var string[] $properties
+    */
+   protected $properties = [];
+   /**
+    * Objects related to the current object. Sorted by composition or association key.
+    *
+    * @var GenericORMapperDataObject[] $relatedObjects
+    */
+   protected $relatedObjects = [];
+   /**
     * Data component, that can be used to lazy load attributes.
     * To set the member, use setDataComponent().
     *
     * @var GenericORRelationMapper $dataComponent
     */
    private $dataComponent = null;
-
-   /**
-    * Name of the object (see mapping table!).
-    *
-    * @var string $objectName
-    */
-   protected $objectName = null;
-
-   /**
-    * Properties of a domain object.
-    *
-    * @var string[] $properties
-    */
-   protected $properties = array();
-
-   /**
-    * Objects related to the current object. Sorted by composition or association key.
-    *
-    * @var GenericORMapperDataObject[] $relatedObjects
-    */
-   protected $relatedObjects = array();
-
    /**
     * Timestamp value of relation-creation.
     *
@@ -84,24 +80,10 @@ class GenericDomainObject implements GenericORMapperDataObject {
    public function __construct($objectName = null) {
       if (empty($objectName)) {
          throw new InvalidArgumentException('[GenericDomainObject::__construct()] Creating a '
-            . 'GenericDomainObject must include an object name specification. Otherwise, '
-            . 'the GenericORMapper cannot handle this instance.', E_USER_ERROR);
+               . 'GenericDomainObject must include an object name specification. Otherwise, '
+               . 'the GenericORMapper cannot handle this instance.', E_USER_ERROR);
       }
       $this->objectName = $objectName;
-   }
-
-   /**
-    * Returns the name of the object as given during creation of the object
-    * or loading of the object by the GORM.
-    *
-    * @return string The name of the object.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 23.02.2010<br />
-    */
-   public function getObjectName() {
-      return $this->objectName;
    }
 
    /**
@@ -118,6 +100,26 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
+    * Abstract method to get a domain object's simple property.
+    *
+    * @param string $name name of the specified domain object property
+    *
+    * @return string Value of the specified domain object property
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.04.2008<br />
+    */
+   public function getProperty($name) {
+
+      if (isset($this->properties[$name])) {
+         return $this->properties[$name];
+      } else {
+         return null;
+      }
+   }
+
+   /**
     * Convenience function to set the object id depending on the object type.
     *
     * @param int $id The object's internal id (id of the object in database).
@@ -128,6 +130,20 @@ class GenericDomainObject implements GenericORMapperDataObject {
     */
    public function setObjectId($id) {
       $this->setProperty($this->objectName . 'ID', $id);
+   }
+
+   /**
+    * Abstract method to set a domain object's simple property.
+    *
+    * @param string $name name of the specified domain object property
+    * @param string $value value of the specified domain object property
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.04.2008<br />
+    */
+   public function setProperty($name, $value) {
+      $this->properties[$name] = $value;
    }
 
    /**
@@ -143,7 +159,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
       return $this->getProperty('CreationTimestamp');
    }
 
-
    /**
     * Convenience method to retrieve the modification timestamp of an object.
     *
@@ -155,19 +170,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
     */
    public function getModificationTimestamp() {
       return $this->getProperty('ModificationTimestamp');
-   }
-
-   /**
-    * Injects the current mapper instance for further usage (load related objects).
-    *
-    * @param GenericORRelationMapper $orm The current mapper instance.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 11.10.2009<br />
-    */
-   public function setDataComponent(GenericORRelationMapper &$orm) {
-      $this->dataComponent = & $orm;
    }
 
    /**
@@ -195,6 +197,19 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
+    * Injects the current mapper instance for further usage (load related objects).
+    *
+    * @param GenericORRelationMapper $orm The current mapper instance.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.10.2009<br />
+    */
+   public function setDataComponent(GenericORRelationMapper &$orm) {
+      $this->dataComponent = &$orm;
+   }
+
+   /**
     * Load one related object.
     *
     * @param string $relationName name of the desired relation
@@ -212,10 +227,10 @@ class GenericDomainObject implements GenericORMapperDataObject {
       // check weather data component is there
       if ($this->dataComponent === null) {
          throw new GenericORMapperException('[GenericDomainObject::loadRelatedObject()] '
-            . 'The data component is not initialized, so related object cannot be loaded! '
-            . 'Please use the or mapper\'s loadRelatedObject() method or call '
-            . 'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
-            . 'object first!', E_USER_ERROR);
+               . 'The data component is not initialized, so related object cannot be loaded! '
+               . 'Please use the or mapper\'s loadRelatedObject() method or call '
+               . 'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
+               . 'object first!', E_USER_ERROR);
       }
 
       // return objects that are related to the current object
@@ -243,10 +258,10 @@ class GenericDomainObject implements GenericORMapperDataObject {
       // check weather data component is there
       if ($this->dataComponent === null) {
          throw new GenericORMapperException('[GenericDomainObject::loadRelatedObjects()] '
-            . 'The data component is not initialized, so related objects cannot be loaded! '
-            . 'Please use the or mapper\'s loadRelatedObjects() method or call '
-            . 'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
-            . 'object first!', E_USER_ERROR);
+               . 'The data component is not initialized, so related objects cannot be loaded! '
+               . 'Please use the or mapper\'s loadRelatedObjects() method or call '
+               . 'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
+               . 'object first!', E_USER_ERROR);
       }
 
       // return objects that are related to the current object
@@ -271,10 +286,10 @@ class GenericDomainObject implements GenericORMapperDataObject {
       // check weather data component is there
       if ($this->dataComponent === null) {
          throw new GenericORMapperException('[GenericDomainObject::createAssociation()] '
-            . 'The data component is not initialized, so related objects cannot be loaded! '
-            . 'Please use the or mapper\'s createAssociation() method or call '
-            . 'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
-            . 'object first!', E_USER_ERROR);
+               . 'The data component is not initialized, so related objects cannot be loaded! '
+               . 'Please use the or mapper\'s createAssociation() method or call '
+               . 'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
+               . 'object first!', E_USER_ERROR);
       }
 
       // create association as desired
@@ -299,10 +314,10 @@ class GenericDomainObject implements GenericORMapperDataObject {
       // check weather data component is there
       if ($this->dataComponent === null) {
          throw new GenericORMapperException('[GenericDomainObject::deleteAssociation()] '
-            . 'The data component is not initialized, so related objects cannot be loaded! '
-            . 'Please use the or mapper\'s createAssociation() method or call '
-            . 'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
-            . 'object first!', E_USER_ERROR);
+               . 'The data component is not initialized, so related objects cannot be loaded! '
+               . 'Please use the or mapper\'s createAssociation() method or call '
+               . 'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
+               . 'object first!', E_USER_ERROR);
       }
 
       // delete association as desired
@@ -326,10 +341,10 @@ class GenericDomainObject implements GenericORMapperDataObject {
       // check weather data component is there
       if ($this->dataComponent === null) {
          throw new GenericORMapperException('[GenericDomainObject::deleteAssociations()] '
-            . 'The data component is not initialized, so related objects cannot be loaded! '
-            . 'Please use the or mapper\'s createAssociation() method or call '
-            . 'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
-            . 'object first!', E_USER_ERROR);
+               . 'The data component is not initialized, so related objects cannot be loaded! '
+               . 'Please use the or mapper\'s createAssociation() method or call '
+               . 'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
+               . 'object first!', E_USER_ERROR);
       }
 
       // delete associations as desired
@@ -391,55 +406,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * Abstract method to set a domain object's simple property.
-    *
-    * @param string $name name of the specified domain object property
-    * @param string $value value of the specified domain object property
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 26.04.2008<br />
-    */
-   public function setProperty($name, $value) {
-      $this->properties[$name] = $value;
-   }
-
-   /**
-    * Abstract method to get a domain object's simple property.
-    *
-    * @param string $name name of the specified domain object property
-    *
-    * @return string Value of the specified domain object property
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 26.04.2008<br />
-    */
-   public function getProperty($name) {
-
-      if (isset($this->properties[$name])) {
-         return $this->properties[$name];
-      } else {
-         return null;
-      }
-   }
-
-   /**
-    * Abstract method to set all domain object's simple properties.
-    *
-    * @param string[] $properties list of defined properties to apply to the domain object
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 26.04.2008<br />
-    */
-   public function setProperties($properties = array()) {
-      if (count($properties) > 0) {
-         $this->properties = $properties;
-      }
-   }
-
-   /**
     * Abstract method to get all domain object's simple properties.
     *
     * @return string[] List of defined domain object properties.
@@ -453,16 +419,32 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * Removes an attribute from the list.
+    * Abstract method to set all domain object's simple properties.
     *
-    * @param string $name The name of the property to delete.
+    * @param string[] $properties list of defined properties to apply to the domain object
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 20.09.2009 (Introduces because of bug 202)<br />
+    * Version 0.1, 26.04.2008<br />
     */
-   public function deleteProperty($name) {
-      unset($this->properties[$name]);
+   public function setProperties($properties = []) {
+      if (count($properties) > 0) {
+         $this->properties = $properties;
+      }
+   }
+
+   /**
+    * Implements the PHP wrapper for generating the string
+    * representation of the current domain object.
+    *
+    * @return string The string representation of the current domain object.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 05.06.2010<br />
+    */
+   public function __toString() {
+      return $this->toString();
    }
 
    /**
@@ -478,12 +460,12 @@ class GenericDomainObject implements GenericORMapperDataObject {
     */
    public function toString() {
 
-      $stringRep = (string)'[' . get_class($this) . ' ';
+      $stringRep = (string) '[' . get_class($this) . ' ';
 
-      $properties = array_merge(array('ObjectName' => $this->getObjectName()), $this->properties);
+      $properties = array_merge(['ObjectName' => $this->getObjectName()], $this->properties);
 
       $propCount = count($properties);
-      $current = (int)1;
+      $current = (int) 1;
 
       foreach ($properties as $name => $value) {
 
@@ -504,17 +486,17 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * Implements the PHP wrapper for generating the string
-    * representation of the current domain object.
+    * Returns the name of the object as given during creation of the object
+    * or loading of the object by the GORM.
     *
-    * @return string The string representation of the current domain object.
+    * @return string The name of the object.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 05.06.2010<br />
+    * Version 0.1, 23.02.2010<br />
     */
-   public function __toString() {
-      return $this->toString();
+   public function getObjectName() {
+      return $this->objectName;
    }
 
    /**
@@ -528,7 +510,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * Version 0.2, 10.06.2010 (Bug-fix: corrected serialization)<br />
     */
    public function __sleep() {
-      return array('objectName', 'properties', 'relatedObjects');
+      return ['objectName', 'properties', 'relatedObjects'];
    }
 
    /**
@@ -576,6 +558,19 @@ class GenericDomainObject implements GenericORMapperDataObject {
 
       $this->relationCreationTimestamp = $this->properties[$creationTimestamp];
       $this->deleteProperty($creationTimestamp);
+   }
+
+   /**
+    * Removes an attribute from the list.
+    *
+    * @param string $name The name of the property to delete.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.09.2009 (Introduces because of bug 202)<br />
+    */
+   public function deleteProperty($name) {
+      unset($this->properties[$name]);
    }
 
    /**

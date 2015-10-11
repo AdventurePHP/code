@@ -49,7 +49,7 @@ class PermissionAddController extends UmgtBaseController {
          $permission->setName($name->getValue());
          $permission->setValue($value->getValue());
          $uM->savePermission($permission);
-         $this->getResponse()->forward($this->generateLink(array('mainview' => 'permission', 'permissionview' => '')));
+         $this->getResponse()->forward($this->generateLink(['mainview' => 'permission', 'permissionview' => '']));
 
       }
 

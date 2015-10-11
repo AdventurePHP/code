@@ -151,7 +151,7 @@ final class XmlParser {
     */
    public static function getAttributesFromString($attributesString) {
 
-      $attributes = array();
+      $attributes = [];
       $offset = 0;
 
       $parserLoops = 0;

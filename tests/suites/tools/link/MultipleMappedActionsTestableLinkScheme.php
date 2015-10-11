@@ -34,7 +34,7 @@ trait MultipleMappedActionsTestableLinkScheme {
    /**
     * @var AbstractFrontcontrollerAction[]
     */
-   private $actions = array();
+   private $actions = [];
 
    public function addAction(AbstractFrontcontrollerAction $action) {
       $this->actions[] = $action;

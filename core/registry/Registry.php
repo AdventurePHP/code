@@ -42,7 +42,7 @@ final class Registry {
     *
     * @var string[] $REGISTRY_STORE
     */
-   private static $REGISTRY_STORE = array();
+   private static $REGISTRY_STORE = [];
 
    private function __construct() {
    }

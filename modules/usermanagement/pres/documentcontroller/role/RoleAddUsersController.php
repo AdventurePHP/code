@@ -52,7 +52,7 @@ class RoleAddUsersController extends UmgtBaseController {
       if ($count == 0) {
          $template = & $this->getTemplate('NoMoreUser');
          $template->getLabel('message-1')->setPlaceHolder('display-name', $role->getDisplayName());
-         $template->getLabel('message-2')->setPlaceHolder('role-view-link', $this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
+         $template->getLabel('message-2')->setPlaceHolder('role-view-link', $this->generateLink(['mainview' => 'role', 'roleview' => null, 'roleid' => null]));
          $template->transformOnPlace();
 
          return;
@@ -67,7 +67,7 @@ class RoleAddUsersController extends UmgtBaseController {
       if ($form->isSent() && $form->isValid()) {
 
          $options = & $user->getSelectedOptions();
-         $newUsers = array();
+         $newUsers = [];
 
          for ($i = 0; $i < count($options); $i++) {
             $newUser = new UmgtUser();
@@ -77,7 +77,7 @@ class RoleAddUsersController extends UmgtBaseController {
          }
 
          $uM->attachUsersToRole($newUsers, $role);
-         $this->getResponse()->forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
+         $this->getResponse()->forward($this->generateLink(['mainview' => 'role', 'roleview' => '', 'roleid' => '']));
 
       } else {
          $form->transformOnPlace();

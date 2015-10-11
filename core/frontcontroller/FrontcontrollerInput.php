@@ -44,7 +44,7 @@ class FrontcontrollerInput extends APFObject implements ActionParameters {
     *
     * @var array $parameters
     */
-   protected $parameters = array();
+   protected $parameters = [];
 
    public function &getAction() {
       return $this->action;

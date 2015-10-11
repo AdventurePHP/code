@@ -48,13 +48,13 @@ class GroupListController extends UmgtBaseController {
          $template->setPlaceHolder('Users', $this->getUsers($group));
          $template->setPlaceHolder('Roles', $this->getRoles($group));
 
-         $template->setPlaceHolder('group_edit', $this->generateLink(array('mainview' => 'group', 'groupview' => 'edit', 'groupid' => $groupId)));
-         $template->setPlaceHolder('group_details', $this->generateLink(array('mainview' => 'group', 'groupview' => 'details', 'groupid' => $groupId)));
-         $template->setPlaceHolder('group_delete', $this->generateLink(array('mainview' => 'group', 'groupview' => 'delete', 'groupid' => $groupId)));
-         $template->setPlaceHolder('AddUsersToGroup', $this->generateLink(array('mainview' => 'group', 'groupview' => 'useradd', 'groupid' => $groupId)));
-         $template->setPlaceHolder('RemoveUsersFromGroup', $this->generateLink(array('mainview' => 'group', 'groupview' => 'userrem', 'groupid' => $groupId)));
-         $template->setPlaceHolder('AddRolesToGroup', $this->generateLink(array('mainview' => 'role', 'roleview' => 'add_group_to_roles', 'groupid' => $groupId)));
-         $template->setPlaceHolder('RemoveRolesFromGroup', $this->generateLink(array('mainview' => 'role', 'roleview' => 'remove_group_from_roles', 'groupid' => $groupId)));
+         $template->setPlaceHolder('group_edit', $this->generateLink(['mainview' => 'group', 'groupview' => 'edit', 'groupid' => $groupId]));
+         $template->setPlaceHolder('group_details', $this->generateLink(['mainview' => 'group', 'groupview' => 'details', 'groupid' => $groupId]));
+         $template->setPlaceHolder('group_delete', $this->generateLink(['mainview' => 'group', 'groupview' => 'delete', 'groupid' => $groupId]));
+         $template->setPlaceHolder('AddUsersToGroup', $this->generateLink(['mainview' => 'group', 'groupview' => 'useradd', 'groupid' => $groupId]));
+         $template->setPlaceHolder('RemoveUsersFromGroup', $this->generateLink(['mainview' => 'group', 'groupview' => 'userrem', 'groupid' => $groupId]));
+         $template->setPlaceHolder('AddRolesToGroup', $this->generateLink(['mainview' => 'role', 'roleview' => 'add_group_to_roles', 'groupid' => $groupId]));
+         $template->setPlaceHolder('RemoveRolesFromGroup', $this->generateLink(['mainview' => 'role', 'roleview' => 'remove_group_from_roles', 'groupid' => $groupId]));
 
          $buffer .= $template->transformTemplate();
       }

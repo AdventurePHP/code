@@ -36,32 +36,32 @@ use APF\core\registry\Registry;
  */
 class Logger {
 
-   public static $LOGGER_THRESHOLD_ALL = array(
+   public static $LOGGER_THRESHOLD_ALL = [
          LogEntry::SEVERITY_TRACE,
          LogEntry::SEVERITY_DEBUG,
          LogEntry::SEVERITY_WARNING,
          LogEntry::SEVERITY_INFO,
          LogEntry::SEVERITY_ERROR,
          LogEntry::SEVERITY_FATAL
-   );
+   ];
 
-   public static $LOGGER_THRESHOLD_WARN = array(
+   public static $LOGGER_THRESHOLD_WARN = [
          LogEntry::SEVERITY_WARNING,
          LogEntry::SEVERITY_INFO,
          LogEntry::SEVERITY_ERROR,
          LogEntry::SEVERITY_FATAL
-   );
+   ];
 
-   public static $LOGGER_THRESHOLD_INFO = array(
+   public static $LOGGER_THRESHOLD_INFO = [
          LogEntry::SEVERITY_INFO,
          LogEntry::SEVERITY_ERROR,
          LogEntry::SEVERITY_FATAL
-   );
+   ];
 
-   public static $LOGGER_THRESHOLD_ERROR = array(
+   public static $LOGGER_THRESHOLD_ERROR = [
          LogEntry::SEVERITY_ERROR,
          LogEntry::SEVERITY_FATAL
-   );
+   ];
 
    /**
     * Defines the severity types that are written to the log file.
@@ -75,7 +75,7 @@ class Logger {
     *
     * @var LogEntry[][] $logEntries
     */
-   protected $logEntries = array();
+   protected $logEntries = [];
 
    /**
     * The maximum number of log entries before the log buffer is flushed automatically.
@@ -96,7 +96,7 @@ class Logger {
     *
     * @var LogWriter[] $writers
     */
-   protected $writers = array();
+   protected $writers = [];
 
    /**
     * Initializes the logger.
@@ -125,34 +125,6 @@ class Logger {
                   str_replace('\\', '/', getcwd()) . '/logs'
             )
       );
-   }
-
-   /**
-    * Calling this method you can define the maximum number of entries
-    * before auto-flush takes place.
-    *
-    * @param int $maxBufferLength The threshold number.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 02.05.2011<br />
-    */
-   public function setMaxBufferLength($maxBufferLength) {
-      $this->maxBufferLength = $maxBufferLength;
-   }
-
-   /**
-    * Let's you set the logging threshold. This is a list of severity that are
-    * written to the log. All other severity are ignored.
-    *
-    * @param array $threshold The threshold configuration to apply to the log statements.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 18.03.2012<br />
-    */
-   public function setLogThreshold(array $threshold) {
-      $this->logThreshold = $threshold;
    }
 
    /**
@@ -188,6 +160,34 @@ class Logger {
    }
 
    /**
+    * Calling this method you can define the maximum number of entries
+    * before auto-flush takes place.
+    *
+    * @param int $maxBufferLength The threshold number.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 02.05.2011<br />
+    */
+   public function setMaxBufferLength($maxBufferLength) {
+      $this->maxBufferLength = $maxBufferLength;
+   }
+
+   /**
+    * Let's you set the logging threshold. This is a list of severity that are
+    * written to the log. All other severity are ignored.
+    *
+    * @param array $threshold The threshold configuration to apply to the log statements.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 18.03.2012<br />
+    */
+   public function setLogThreshold(array $threshold) {
+      $this->logThreshold = $threshold;
+   }
+
+   /**
     * Removes a registered writer identified by the applied target name.
     *
     * @param string $target The log target name.
@@ -198,25 +198,6 @@ class Logger {
     */
    public function removeLogWriter($target) {
       unset($this->writers[$target]);
-   }
-
-   /**
-    * Let's you retrieve a log writer identified by the applied target name.
-    *
-    * @param string $target The log target name.
-    *
-    * @return LogWriter $writer The respective writer.
-    * @throws LoggerException In case the desired log writer is not registered.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 12.01.2013<br />
-    */
-   public function getLogWriter($target) {
-      if (isset($this->writers[$target])) {
-         return $this->writers[$target];
-      }
-      throw new LoggerException('Log writer with name "' . $target . '" is not registered!');
    }
 
    /**
@@ -308,8 +289,27 @@ class Logger {
       }
 
       // reset the buffer and the counter
-      $this->logEntries = array();
+      $this->logEntries = [];
       $this->logEntryCount = 0;
+   }
+
+   /**
+    * Let's you retrieve a log writer identified by the applied target name.
+    *
+    * @param string $target The log target name.
+    *
+    * @return LogWriter $writer The respective writer.
+    * @throws LoggerException In case the desired log writer is not registered.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.01.2013<br />
+    */
+   public function getLogWriter($target) {
+      if (isset($this->writers[$target])) {
+         return $this->writers[$target];
+      }
+      throw new LoggerException('Log writer with name "' . $target . '" is not registered!');
    }
 
 }

@@ -46,11 +46,11 @@ class NewsFrontendController extends NewsBaseController {
       }
 
       $Cfg = $this->getConfiguration('APF\extensions\news', 'news.ini');
-      $AllowHtml = ($Cfg->getSection('General')->getValue('AllowHtml') == 'TRUE') ? true : false;
+      $allowHtml = ($Cfg->getSection('General')->getValue('AllowHtml') == 'TRUE') ? true : false;
 
       $List = $this->getIterator('list');
 
-      $Data = array();
+      $Data = [];
 
       // retrieve the charset from the registry to guarantee interoperability!
       $charset = Registry::retrieve('APF\core', 'Charset');
@@ -65,13 +65,13 @@ class NewsFrontendController extends NewsBaseController {
             $Author = $authorTpl->transformTemplate();
          }
 
-         $Text = $AllowHtml ? $news->getText() : htmlentities($news->getText(), ENT_QUOTES, $charset, false);
-         $Data[] = array(
+         $Text = $allowHtml ? $news->getText() : htmlentities($news->getText(), ENT_QUOTES, $charset, false);
+         $Data[] = [
                'title'  => htmlentities($news->getTitle(), ENT_QUOTES, $charset, false),
                'text'   => $Text,
                'date'   => $Date->format('d.m.Y H:i:s'),
                'author' => $Author
-         );
+         ];
       }
 
       $List->fillDataContainer($Data);
@@ -100,27 +100,20 @@ class NewsFrontendController extends NewsBaseController {
       $PageParameter = $Cfg->getSection('Paging')->getValue('PageParameter');
 
       $Page = $newsManager->getPageNumber($appKey);
-      $Links = array();
+      $Links = [];
       for ($x = 1; $x <= $PageCount; $x++) {
-         $Link = LinkGenerator::generateUrl(
-               Url::fromCurrent()
-                     ->mergeQuery(
-                           array(
-                                 $PageParameter => $x
-                           )
-                     )
-         );
+         $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery([$PageParameter => $x]));
          if ($Page === $x) {
-            $Links[] = '<a href="' . $Link . '" class="active">' . $x . '</a>';
+            $Links[] = '<a href="' . $link . '" class="active">' . $x . '</a>';
          } else {
-            $Links[] = '<a href="' . $Link . '">' . $x . '</a>';
+            $Links[] = '<a href="' . $link . '">' . $x . '</a>';
          }
       }
 
-      $Tpl = $this->getTemplate('pager');
-      $Tpl->setPlaceHolder('pages', implode('&nbsp;&nbsp;|&nbsp;&nbsp;', $Links));
+      $tpl = $this->getTemplate('pager');
+      $tpl->setPlaceHolder('pages', implode('&nbsp;&nbsp;|&nbsp;&nbsp;', $Links));
 
-      return $Tpl->transformTemplate();
+      return $tpl->transformTemplate();
    }
 
 }

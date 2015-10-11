@@ -442,7 +442,7 @@ class FilesystemManager {
     */
    public static function formatByte($size, $round = 2, $server = false, $unit = null, $decimal = null) {
 
-      $units = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB');
+      $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB'];
 
       if ($decimal === null) {
          if ($server == false) {

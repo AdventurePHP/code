@@ -66,7 +66,7 @@ final class ConnectionManager extends APFObject {
     *
     * @var AbstractDatabaseHandler[]
     */
-   private $connections = array();
+   private $connections = [];
    private static $STATEMENT_FILE_EXTENSION = 'sql';
 
    /**
@@ -140,7 +140,7 @@ final class ConnectionManager extends APFObject {
       $section = $config->getSection($connectionKey);
 
       // re-map options to array to be able to initialize the database connection using the service manager
-      $options = array();
+      $options = [];
       foreach ($section->getValueNames() as $key) {
          $options[$key] = $section->getValue($key);
       }

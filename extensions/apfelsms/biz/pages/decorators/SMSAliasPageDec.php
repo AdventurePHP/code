@@ -34,22 +34,24 @@ use APF\extensions\apfelsms\biz\SMSManager;
 class SMSAliasPageDec extends SMSAbstractPageDec {
 
 
+   public static $mapVars = [
+         'referencedPageId' => null
+   ];
    /**
     * @var SMSPage $referencedPage
     */
    protected $referencedPage;
-
-
    /**
     * @var string $referencedPageId
     */
    protected $referencedPageId;
 
-
-   public static $mapVars = array(
-         'referencedPageId' => null
-   );
-
+   /**
+    * @return string
+    */
+   public function getTemplateName() {
+      return $this->getReferencedPage()->getTemplateName();
+   }
 
    /**
     * @return SMSPage
@@ -69,17 +71,6 @@ class SMSAliasPageDec extends SMSAbstractPageDec {
       return $this->referencedPage;
 
    }
-
-
-   /**
-    * @return string
-    */
-   public function getTemplateName() {
-
-
-      return $this->getReferencedPage()->getTemplateName();
-   }
-
 
    /**
     * @return string

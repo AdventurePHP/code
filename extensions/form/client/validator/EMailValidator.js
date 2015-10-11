@@ -29,10 +29,8 @@
             validate: function (control, options) {
                 var ctrlvalue = control.attr('value');
                 ctrlvalue = $.trim(ctrlvalue);
-                if ((ctrlvalue.length !== 0) && (ctrlvalue.match(/^([a-zA-Z0-9\.\_\-]+)@([a-zA-Z0-9\.\-]+\.[A-Za-z][A-Za-z]+)$/))) {
-                    return true;
-                }
-                return false;
+                return !!((ctrlvalue.length !== 0) && (ctrlvalue.match(/^([a-zA-Z0-9\.\_\-]+)@([a-zA-Z0-9\.\-]+\.[A-Za-z][A-Za-z]+)$/)));
+
             }
         });
     });

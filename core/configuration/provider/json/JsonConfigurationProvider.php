@@ -151,7 +151,7 @@ class JsonConfigurationProvider extends BaseConfigurationProvider implements Con
     */
    private function resolveStructure(Configuration $config) {
 
-      $rawConfig = array();
+      $rawConfig = [];
 
       foreach ($config->getSectionNames() as $name) {
          $rawConfig[$name] = $this->resolveSection($config->getSection($name));
@@ -173,7 +173,7 @@ class JsonConfigurationProvider extends BaseConfigurationProvider implements Con
     */
    private function resolveSection(Configuration $config) {
 
-      $rawConfig = array();
+      $rawConfig = [];
 
       foreach ($config->getValueNames() as $name) {
          $rawConfig[$name] = $config->getValue($name);

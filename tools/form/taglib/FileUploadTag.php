@@ -102,7 +102,7 @@ class FileUploadTag extends TextFieldTag {
             $name .= '[]';
          }
 
-         return '<input type="file" ' . $this->getSanitizedAttributesAsString(array_merge($this->attributes, array('name' => $name))) . ' />';
+         return '<input type="file" ' . $this->getSanitizedAttributesAsString(array_merge($this->attributes, ['name' => $name])) . ' />';
       }
 
       return '';
@@ -137,7 +137,7 @@ class FileUploadTag extends TextFieldTag {
          }
 
          // if type is not multiple return array with only 1 file
-         return array($this->getFile());
+         return [$this->getFile()];
       }
 
       return null;
@@ -178,13 +178,13 @@ class FileUploadTag extends TextFieldTag {
     * Version 0.1, 24.01.2014<br />
     */
    private function mapFilesArray2DomainObject($filesArray) {
-      $files = array();
+      $files = [];
       foreach ($filesArray['name'] as $key => $name) {
-         $files[] = $this->mapFileArray2DomainObject(array(
+         $files[] = $this->mapFileArray2DomainObject([
                'name'     => $name,
                'tmp_name' => $filesArray['tmp_name'][$key],
                'type'     => $filesArray['type'][$key]
-         ));
+         ]);
       }
 
       return $files;

@@ -34,7 +34,7 @@ trait TestableActionUrlMappingLinkScheme {
    /**
     * @var ActionUrlMapping[]
     */
-   private $actionMappings = array();
+   private $actionMappings = [];
 
    public function addActionMapping(ActionUrlMapping $mapping) {
       $this->actionMappings[] = $mapping;
@@ -51,7 +51,7 @@ trait TestableActionUrlMappingLinkScheme {
    }
 
    protected function getActionUrMappingTokens() {
-      $keys = array();
+      $keys = [];
       foreach ($this->actionMappings as $mapping) {
          $keys[] = $mapping->getUrlToken();
       }

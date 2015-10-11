@@ -38,113 +38,67 @@ class SMSStdPage extends APFObject implements SMSPage {
 
 
    /**
+    * @var array $mapVars
+    */
+   public static $mapVars = [
+         'title'    => '',
+         'navTitle' => '',
+         'js'       => [],
+         'css'      => []
+   ];
+   /**
     * @var string $id
     */
    protected $id;
-
-
    /**
     * @var integer $level
     */
    protected $level;
-
-
    /**
     * @var string $title
     */
    protected $title = '';
-
-
    /**
     * @var string|null $navTitle
     */
    protected $navTitle = null;
-
-
    /**
     * @var array $js
     */
-   protected $js = array();
-
-
+   protected $js = [];
    /**
     * @var array $css
     */
-   protected $css = array();
-
-
+   protected $css = [];
    /**
     * @var SMSPage|null $parent
     */
    protected $parent = null;
-
-
    /**
     * @var SMSPage[] $children
     */
-   protected $children = array();
-
-
-   /**
-    * @var array $mapVars
-    */
-   public static $mapVars = array(
-         'title'    => '',
-         'navTitle' => '',
-         'js'       => array(),
-         'css'      => array()
-   );
-
-
-   /**
-    * @return string
-    */
-   public function getId() {
-
-
-      return $this->id;
-   }
-
-
-   /**
-    * @param $id
-    */
-   public function setId($id) {
-
-
-      $this->id = $id;
-   }
-
+   protected $children = [];
 
    /**
     * @return integer
     */
    public function getLevel() {
-
-
       return $this->level;
    }
-
 
    /**
     * @param int $level
     */
    public function setLevel($level) {
-
-
       $this->level = $level;
    }
-
 
    /**
     * @return array
     */
    public function getCSS() {
-
-
       return $this->css;
    }
-
 
    /**
     * @param string $css
@@ -163,7 +117,6 @@ class SMSStdPage extends APFObject implements SMSPage {
 
    }
 
-
    /**
     * @return array
     */
@@ -172,7 +125,6 @@ class SMSStdPage extends APFObject implements SMSPage {
 
       return $this->js;
    }
-
 
    /**
     * @param string $js
@@ -183,7 +135,6 @@ class SMSStdPage extends APFObject implements SMSPage {
       $this->js[] = $js;
    }
 
-
    /**
     * @return string
     */
@@ -193,7 +144,6 @@ class SMSStdPage extends APFObject implements SMSPage {
       return $this->title;
    }
 
-
    /**
     * @param string $title
     */
@@ -202,7 +152,6 @@ class SMSStdPage extends APFObject implements SMSPage {
 
       $this->title = $title;
    }
-
 
    /**
     * @return string
@@ -218,7 +167,6 @@ class SMSStdPage extends APFObject implements SMSPage {
 
    }
 
-
    /**
     * @param string $navTitle
     */
@@ -227,7 +175,6 @@ class SMSStdPage extends APFObject implements SMSPage {
 
       $this->navTitle = $navTitle;
    }
-
 
    /**
     * @param Url $url
@@ -241,7 +188,6 @@ class SMSStdPage extends APFObject implements SMSPage {
 
       return LinkGenerator::generateUrl($url);
    }
-
 
    /**
     * @param Url $url
@@ -260,6 +206,23 @@ class SMSStdPage extends APFObject implements SMSPage {
       return $url;
    }
 
+   /**
+    * @return string
+    */
+   public function getId() {
+
+
+      return $this->id;
+   }
+
+   /**
+    * @param $id
+    */
+   public function setId($id) {
+
+
+      $this->id = $id;
+   }
 
    /**
     * @return string
@@ -269,44 +232,6 @@ class SMSStdPage extends APFObject implements SMSPage {
 
       return $this->getId();
    }
-
-
-   /**
-    * @return SMSPage[]
-    */
-   public function getChildren() {
-
-
-      if (empty($this->children)) {
-         $this->loadChildren();
-      }
-
-      return $this->children;
-
-   }
-
-
-   /**
-    *
-    */
-   protected function loadChildren() {
-
-
-      /** @var $SMSM SMSManager */
-      $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
-
-      $ids = $SMSM->getMapper()->getChildrenIds($this);
-
-      if (count($ids) < 1) {
-         return;
-      }
-
-      foreach ($ids AS $id) {
-         $this->children[] = $SMSM->getPage($id);
-      }
-
-   }
-
 
    /**
     * @param boolean $includeMe Include this page in returned array
@@ -325,7 +250,7 @@ class SMSStdPage extends APFObject implements SMSPage {
          return null;
       }
 
-      $siblings = array();
+      $siblings = [];
       foreach ($siblingIds AS $siblingId) {
 
          // skip this id, if not required
@@ -341,7 +266,6 @@ class SMSStdPage extends APFObject implements SMSPage {
 
    }
 
-
    /**
     * @return SMSPage
     */
@@ -355,7 +279,6 @@ class SMSStdPage extends APFObject implements SMSPage {
       return $this->parent;
 
    }
-
 
    /**
     *
@@ -376,7 +299,6 @@ class SMSStdPage extends APFObject implements SMSPage {
 
    }
 
-
    /**
     * @return SMSPage
     */
@@ -390,7 +312,6 @@ class SMSStdPage extends APFObject implements SMSPage {
 
    }
 
-
    /**
     * @return bool
     */
@@ -399,7 +320,6 @@ class SMSStdPage extends APFObject implements SMSPage {
 
       return false;
    }
-
 
    /**
     * @return bool
@@ -410,7 +330,6 @@ class SMSStdPage extends APFObject implements SMSPage {
       return false;
    }
 
-
    /**
     * @return bool
     */
@@ -419,29 +338,6 @@ class SMSStdPage extends APFObject implements SMSPage {
 
       return false;
    }
-
-
-   /**
-    * @return bool
-    */
-   public function isCurrentPage() {
-
-
-      /* @var $SMSS SMSSite */
-      $SMSS = $this->getDIServiceObject('APF\extensions\apfelsms', 'Site');
-
-      $currentPageId = $SMSS->getCurrentPageId();
-      $thisId = $this->getId();
-
-      if ($thisId == $currentPageId) {
-         return true;
-      }
-
-
-      return false;
-
-   }
-
 
    /**
     * @return boolean
@@ -469,6 +365,61 @@ class SMSStdPage extends APFObject implements SMSPage {
 
    }
 
+   /**
+    * @return bool
+    */
+   public function isCurrentPage() {
+
+
+      /* @var $SMSS SMSSite */
+      $SMSS = $this->getDIServiceObject('APF\extensions\apfelsms', 'Site');
+
+      $currentPageId = $SMSS->getCurrentPageId();
+      $thisId = $this->getId();
+
+      if ($thisId == $currentPageId) {
+         return true;
+      }
+
+
+      return false;
+
+   }
+
+   /**
+    * @return SMSPage[]
+    */
+   public function getChildren() {
+
+
+      if (empty($this->children)) {
+         $this->loadChildren();
+      }
+
+      return $this->children;
+
+   }
+
+   /**
+    *
+    */
+   protected function loadChildren() {
+
+
+      /** @var $SMSM SMSManager */
+      $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
+
+      $ids = $SMSM->getMapper()->getChildrenIds($this);
+
+      if (count($ids) < 1) {
+         return;
+      }
+
+      foreach ($ids AS $id) {
+         $this->children[] = $SMSM->getPage($id);
+      }
+
+   }
 
    /**
     * @param array $data

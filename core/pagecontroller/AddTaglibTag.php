@@ -67,7 +67,7 @@ class AddTaglibTag extends Document {
       // node when requesting a node by the "name" attribute. See bug
       // http://forum.adventure-php-framework.org/viewtopic.php?f=8&t=1192
       // for more details.
-      $this->attributes = array();
+      $this->attributes = [];
    }
 
    /**

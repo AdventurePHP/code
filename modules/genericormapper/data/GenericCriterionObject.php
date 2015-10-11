@@ -59,28 +59,28 @@ final class GenericCriterionObject {
     *
     * @var string[] $relations
     */
-   private $relations = array();
+   private $relations = [];
 
    /**
     * Stores an uniqid per relation name.
     *
     * @var string[] $uniqueRelationIds
     */
-   private $uniqueRelationIds = array('source' => array(), 'target' => array());
+   private $uniqueRelationIds = ['source' => [], 'target' => []];
 
    /**
     * Stores the limit indicator.
     *
     * @var string[] $limit
     */
-   private $limit = array();
+   private $limit = [];
 
    /**
     * Stores the property indicator.
     *
     * @var string[] $properties
     */
-   private $properties = array();
+   private $properties = [];
 
    /**
     * Stores the current logical operator.
@@ -94,14 +94,14 @@ final class GenericCriterionObject {
     *
     * @var string[] $loadedProperties
     */
-   private $loadedProperties = array();
+   private $loadedProperties = [];
 
    /**
     * Stores the order indicator.
     *
     * @var string[] $orders
     */
-   private $orders = array();
+   private $orders = [];
 
    /**
     * Method to set the current link between properties.
@@ -240,11 +240,11 @@ final class GenericCriterionObject {
     * Version 0.2, 18.07.2010 (Added "Fluent Interface" support.)<br />
     */
    public function addPropertyIndicator($attributeName, $attributeValue, $comparisonOperator = '=') {
-      $this->properties[] = array('Name'               => $attributeName,
+      $this->properties[] = ['Name' => $attributeName,
                                   'Value'              => $attributeValue,
                                   'ComparisonOperator' => $comparisonOperator,
                                   'LogicalOperator'    => $this->logicalOperator
-      );
+      ];
 
       return $this;
    }

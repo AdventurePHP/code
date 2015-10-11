@@ -37,7 +37,7 @@ namespace APF\tools\form\taglib;
 class FormLabelTag extends AbstractFormControl {
 
    public function __construct() {
-      $this->attributeWhiteList = array('for', 'id', 'class');
+      $this->attributeWhiteList = ['for', 'id', 'class'];
    }
 
    public function onParseTime() {

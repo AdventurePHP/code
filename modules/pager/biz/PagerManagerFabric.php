@@ -41,7 +41,7 @@ final class PagerManagerFabric extends APFObject {
    /**
     * @var $pager PagerManager[] Cache list if concrete pager manager instances.
     */
-   private $pager = array();
+   private $pager = [];
 
    /**
     * Returns a reference on the desired pager manager. Initializes newly created ones.

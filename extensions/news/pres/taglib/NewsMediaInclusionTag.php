@@ -64,7 +64,7 @@ class NewsMediaInclusionTag extends MediaInclusionTag {
       $width = $this->getAttribute('width', '20px');
       $height = $this->getAttribute('height', '20px');
 
-      $attributes = $this->getAttributesAsString($this->getAttributes(), array('alt', 'title'));
+      $attributes = $this->getAttributesAsString($this->getAttributes(), ['alt', 'title']);
 
       return '<img src="' . $imgSrc . '" ' . $attributes . ' style="width: ' . $width . '; height: ' . $height . '; border-width: 0px;" />';
    }

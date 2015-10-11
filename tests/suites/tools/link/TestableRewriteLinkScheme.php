@@ -35,7 +35,7 @@ class TestableRewriteLinkScheme extends RewriteLinkScheme {
 
    protected function &getFrontcontrollerActions() {
 
-      $actions = array();
+      $actions = [];
       $action = new TestFrontControllerAction();
       $action->setActionNamespace('APF\cms\core\biz\setmodel');
       $action->setActionName('setModel');

@@ -62,8 +62,8 @@ class SMSTitleTag extends Document {
       $pageTitle = StringAssistant::escapeSpecialCharacters($pageTitle);
 
       return str_replace(
-            array('{PAGETITLE}', '{SITETITLE}'),
-            array($pageTitle, $siteTitle),
+            ['{PAGETITLE}', '{SITETITLE}'],
+            [$pageTitle, $siteTitle],
             self::$titleTemplate
       );
 

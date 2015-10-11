@@ -47,7 +47,7 @@ class AddPermissionToRoleController extends UmgtBaseController {
       if (count($permissions) === 0) {
          $template = & $this->getTemplate('NoMorePermissions');
          $template->getLabel('message-1')->setPlaceHolder('display-name', $role->getDisplayName());
-         $template->getLabel('message-2')->setPlaceHolder('role-view-link', $this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
+         $template->getLabel('message-2')->setPlaceHolder('role-view-link', $this->generateLink(['mainview' => 'role', 'roleview' => null, 'roleid' => null]));
          $template->transformOnPlace();
 
          return;
@@ -63,7 +63,7 @@ class AddPermissionToRoleController extends UmgtBaseController {
       if ($form->isSent() && $form->isValid()) {
 
          $options = $permissionControl->getSelectedOptions();
-         $permissionsToAdd = array();
+         $permissionsToAdd = [];
          foreach ($options as $option) {
             /* @var $option SelectBoxOptionTag */
             $permissionToAdd = new UmgtPermission();
@@ -73,7 +73,7 @@ class AddPermissionToRoleController extends UmgtBaseController {
          }
 
          $uM->attachPermissions2Role($permissionsToAdd, $role);
-         $this->getResponse()->forward($this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
+         $this->getResponse()->forward($this->generateLink(['mainview' => 'role', 'roleview' => null, 'roleid' => null]));
 
       } else {
          $form->transformOnPlace();

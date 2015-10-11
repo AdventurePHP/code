@@ -40,7 +40,7 @@ class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
     *
     * @var array $fonts
     */
-   private $fonts = array('XFILES.TTF');
+   private $fonts = ['XFILES.TTF'];
 
    /**
     * Implements the front controller's run method.

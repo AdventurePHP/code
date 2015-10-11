@@ -44,8 +44,8 @@ class ProxyTypeListController extends UmgtBaseController {
          $template->setPlaceHolder('AppObjectName', $list[$id]->getAppObjectName());
 
          $proxyTypeId = $list[$id]->getObjectId();
-         $template->setPlaceHolder('type_edit', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typeedit', 'proxytypeid' => $proxyTypeId)));
-         $template->setPlaceHolder('type_delete', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typedelete', 'proxytypeid' => $proxyTypeId)));
+         $template->setPlaceHolder('type_edit', $this->generateLink(['mainview' => 'proxy', 'proxyview' => 'typeedit', 'proxytypeid' => $proxyTypeId]));
+         $template->setPlaceHolder('type_delete', $this->generateLink(['mainview' => 'proxy', 'proxyview' => 'typedelete', 'proxytypeid' => $proxyTypeId]));
 
          $buffer .= $template->transformTemplate();
       }

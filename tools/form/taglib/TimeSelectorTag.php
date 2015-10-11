@@ -47,7 +47,7 @@ class TimeSelectorTag extends AbstractFormControl {
    public function __construct() {
 
       // initialize the offset names
-      $this->offsetNames = array('Hours' => 'Hours', 'Minutes' => 'Minutes', 'Seconds' => 'Seconds');
+      $this->offsetNames = ['Hours' => 'Hours', 'Minutes' => 'Minutes', 'Seconds' => 'Seconds'];
 
       // initialize the year range
       $this->hoursRange['Start'] = 00;
@@ -363,17 +363,17 @@ class TimeSelectorTag extends AbstractFormControl {
          $offsetNames = explode(';', $this->attributes['offsetnames']);
 
          if (count($offsetNames) == 3) {
-            $this->offsetNames = array(
+            $this->offsetNames = [
                   'Hours'   => $offsetNames[0],
                   'Minutes' => $offsetNames[1],
                   'Seconds' => $offsetNames[2]
-            );
+            ];
          }
          if (count($offsetNames) == 2) {
-            $this->offsetNames = array(
+            $this->offsetNames = [
                   'Hours'   => $offsetNames[0],
                   'Minutes' => $offsetNames[1]
-            );
+            ];
          }
       }
    }

@@ -44,10 +44,8 @@
                 var todayYear = todayDate.getFullYear();
 
                 var today = parseInt(todayYear + todayMonth + todayDay);
-                if (today >= date) {
-                    return false;
-                }
-                return true;
+                return today < date;
+
             }
         });
     });

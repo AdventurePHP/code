@@ -49,15 +49,15 @@ class UserListController extends UmgtBaseController {
          $userId = $user->getObjectId();
 
          // user main actions
-         $template->setPlaceHolder('LinkUserDetails', $this->generateLink(array('mainview' => 'user', 'userview' => 'details', 'userid' => $userId)));
-         $template->setPlaceHolder('LinkUserEdit', $this->generateLink(array('mainview' => 'user', 'userview' => 'edit', 'userid' => $userId)));
-         $template->setPlaceHolder('LinkUserDelete', $this->generateLink(array('mainview' => 'user', 'userview' => 'delete', 'userid' => $userId)));
+         $template->setPlaceHolder('LinkUserDetails', $this->generateLink(['mainview' => 'user', 'userview' => 'details', 'userid' => $userId]));
+         $template->setPlaceHolder('LinkUserEdit', $this->generateLink(['mainview' => 'user', 'userview' => 'edit', 'userid' => $userId]));
+         $template->setPlaceHolder('LinkUserDelete', $this->generateLink(['mainview' => 'user', 'userview' => 'delete', 'userid' => $userId]));
 
          // relating actions
-         $template->setPlaceHolder('AddUserToGroup', $this->generateLink(array('mainview' => 'group', 'groupview' => 'add_user_to_groups', 'userid' => $userId)));
-         $template->setPlaceHolder('RemoveUserFromGroup', $this->generateLink(array('mainview' => 'group', 'groupview' => 'remove_user_from_groups', 'userid' => $userId)));
-         $template->setPlaceHolder('AssignRoleToUser', $this->generateLink(array('mainview' => 'role', 'roleview' => 'add_user_to_roles', 'userid' => $userId)));
-         $template->setPlaceHolder('RemoveRoleFromUser', $this->generateLink(array('mainview' => 'role', 'roleview' => 'remove_user_from_roles', 'userid' => $userId)));
+         $template->setPlaceHolder('AddUserToGroup', $this->generateLink(['mainview' => 'group', 'groupview' => 'add_user_to_groups', 'userid' => $userId]));
+         $template->setPlaceHolder('RemoveUserFromGroup', $this->generateLink(['mainview' => 'group', 'groupview' => 'remove_user_from_groups', 'userid' => $userId]));
+         $template->setPlaceHolder('AssignRoleToUser', $this->generateLink(['mainview' => 'role', 'roleview' => 'add_user_to_roles', 'userid' => $userId]));
+         $template->setPlaceHolder('RemoveRoleFromUser', $this->generateLink(['mainview' => 'role', 'roleview' => 'remove_user_from_roles', 'userid' => $userId]));
 
          $buffer .= $template->transformTemplate();
       }

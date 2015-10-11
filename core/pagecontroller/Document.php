@@ -84,19 +84,19 @@ class Document extends APFObject {
     *
     * @var string[] $knownTags
     */
-   protected static $knownTags = array();
+   protected static $knownTags = [];
 
    /**
     * List of known expressions used to process APF templates.
     *
     * @var TemplateExpression[]
     */
-   protected static $knownExpressions = array();
+   protected static $knownExpressions = [];
 
    /**
     * @var Document[] The list of documents indexed by the <em>dom-id</em> attribute.
     */
-   protected static $documentIndex = array();
+   protected static $documentIndex = [];
 
    /**
     * Unique object identifier.
@@ -117,7 +117,7 @@ class Document extends APFObject {
     *
     * @var string[] $attributes
     */
-   protected $attributes = array();
+   protected $attributes = [];
 
    /**
     * The content of the tag. Example:
@@ -139,21 +139,21 @@ class Document extends APFObject {
     *
     * @var Document[] $children
     */
-   protected $children = array();
+   protected $children = [];
 
    /**
     * Data attributes of the current DOM document (similar to Java Script).
     *
     * @var string[][] $data
     */
-   protected $data = array();
+   protected $data = [];
 
    /**
     * List of known tags for a dedicated DOM node the APF parser uses to create tag instances during analysis phase.
     *
     * @var string[] $knownInstanceTags
     */
-   protected $knownInstanceTags = array();
+   protected $knownInstanceTags = [];
 
    /**
     * Default constructor of an APF document. The APF DOM tree is constructed by objects derived from this class.
@@ -314,10 +314,10 @@ class Document extends APFObject {
     * @version
     * Version 0.1, 28.12.2006<br />
     */
-   public function setAttributes(array $attributes = array()) {
+   public function setAttributes(array $attributes = []) {
       if (count($attributes) > 0) {
          if (!is_array($this->attributes)) {
-            $this->attributes = array();
+            $this->attributes = [];
          }
          $this->attributes = array_merge($this->attributes, $attributes);
       }
@@ -428,7 +428,7 @@ class Document extends APFObject {
     * Version 0.2, 09.02.2013 (Now public access since DocumentController is now derived from APFObject instead of Document)<br />
     */
    public function &getChildNodes($attributeName, $value, $tagLibClass) {
-      $result = array();
+      $result = [];
 
       $children = &$this->getChildren();
 
@@ -452,13 +452,13 @@ class Document extends APFObject {
     * This method is for conveniently setting of multiple place holders. The applied
     * array must contain a structure like this:
     * <code>
-    * array(
+    * [
     *    'key-a' => 'value-a',
     *    'key-b' => 'value-b',
     *    'key-c' => 'value-c',
     *    'key-d' => 'value-d',
     *    'key-e' => 'value-e',
-    * )
+    * ]
     * </code>
     * Thereby, the <em>key-*</em> offsets define the name of the place holders, their
     * values are used as the place holder's values.
@@ -957,7 +957,7 @@ class Document extends APFObject {
        *
        * @var array
        */
-      $tags = array();
+      $tags = [];
 
       /**
        * The number of tokens within the current document (introduced also for performance reasons).
@@ -1446,9 +1446,9 @@ class Document extends APFObject {
     * Version 0.1, 13.02.2010 (Replaced old implementation with the white list feature.)<br />
     * Version 0.2, 27.11.2013 (Added default data-* attribute support to ease white list maintenance)<br />
     */
-   protected function getAttributesAsString(array $attributes, array $whiteList = array()) {
+   protected function getAttributesAsString(array $attributes, array $whiteList = []) {
 
-      $attributeParts = array();
+      $attributeParts = [];
 
       // process white list entries only, when attribute is given
       // code duplication is done here due to performance reasons!!!

@@ -30,8 +30,8 @@ namespace APF\modules\usermanagement\pres\documentcontroller;
 class RoleNavigationController extends UmgtBaseController {
 
    public function transformContent() {
-      $this->setPlaceHolder('manage_roles', $this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
-      $this->setPlaceHolder('role_add', $this->generateLink(array('mainview' => 'role', 'roleview' => 'add', 'roleid' => null)));
+      $this->setPlaceHolder('manage_roles', $this->generateLink(['mainview' => 'role', 'roleview' => null, 'roleid' => null]));
+      $this->setPlaceHolder('role_add', $this->generateLink(['mainview' => 'role', 'roleview' => 'add', 'roleid' => null]));
    }
 
 }

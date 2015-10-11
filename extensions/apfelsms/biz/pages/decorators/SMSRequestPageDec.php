@@ -31,18 +31,15 @@ use APF\tools\link\Url;
 class SMSRequestPageDec extends SMSAbstractPageDec {
 
 
+   public static $mapVars = [
+         'requestParam' => []
+   ];
    /**
     * Request parameter storage
     *
     * @var array $requestParams
     */
-   protected $requestParams = array();
-
-
-   public static $mapVars = array(
-         'requestParam' => array()
-   );
-
+   protected $requestParams = [];
 
    /**
     * @param Url $url

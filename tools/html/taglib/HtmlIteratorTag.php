@@ -89,7 +89,7 @@ class HtmlIteratorTag extends Document implements Iterator {
     *
     * @var array $dataContainer
     */
-   protected $dataContainer = array();
+   protected $dataContainer = [];
 
    /**
     * Indicates, whether the iterator template should be displayed

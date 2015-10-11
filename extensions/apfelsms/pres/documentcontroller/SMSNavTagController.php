@@ -117,7 +117,7 @@ class SMSNavTagController extends SMSBaseNavTagController {
 
          while ($currentCollectingLevel < $targetLevel) {
 
-            $tmp = array();
+            $tmp = [];
 
             foreach ($collectedPages AS $page) {
                /** @var $page SMSPage */
@@ -245,7 +245,7 @@ class SMSNavTagController extends SMSBaseNavTagController {
    protected function cullEntries(array $navPages) {
 
 
-      $buffer = array();
+      $buffer = [];
 
       // detect hidden and protected files
       foreach ($navPages AS $navPage) {

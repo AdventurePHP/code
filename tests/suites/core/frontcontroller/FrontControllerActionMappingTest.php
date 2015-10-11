@@ -56,7 +56,7 @@ class FrontControllerActionMappingTest extends \PHPUnit_Framework_TestCase {
       $fC->registerActionUrlMapping($barMapping);
       $fC->registerActionUrlMapping($bazMapping);
 
-      assertEquals(array($fooUrlToken, $barUrlToken, $bazUrlToken), $fC->getActionUrlMappingTokens());
+      assertEquals([$fooUrlToken, $barUrlToken, $bazUrlToken], $fC->getActionUrlMappingTokens());
       assertCount(3, $fC->getActionUrlMappingTokens());
 
       assertEquals($fooMapping, $fC->getActionUrlMapping($fooUrlToken));

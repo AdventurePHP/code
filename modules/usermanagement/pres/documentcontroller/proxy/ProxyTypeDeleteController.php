@@ -37,7 +37,7 @@ class ProxyTypeDeleteController extends UmgtBaseController {
          if ($formYes->isSent()) {
             $uM->deleteVisibilityDefinitionType($proxyType);
          }
-         $this->getResponse()->forward($this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typelist', 'proxytypeid' => null)));
+         $this->getResponse()->forward($this->generateLink(['mainview' => 'proxy', 'proxyview' => 'typelist', 'proxytypeid' => null]));
       }
 
       // fill the intro text

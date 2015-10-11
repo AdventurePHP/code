@@ -39,7 +39,7 @@ class TreeItem extends GenericDomainObject {
     *
     * @var GenericDomainObject $children
     */
-   protected $children = array();
+   protected $children = [];
 
    /**
     * Sets the parent object

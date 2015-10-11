@@ -181,7 +181,7 @@ trait FormControlFinder {
     * @return AbstractFormControl[] The list of form controls with the given name.
     */
    public function &getFormElementsByName($name) {
-      $elements = array();
+      $elements = [];
       if (count($this->children) > 0) {
          foreach ($this->children as $objectId => $DUMMY) {
 
@@ -219,7 +219,7 @@ trait FormControlFinder {
 
       if (count($this->children) > 0) {
 
-         $formElements = array();
+         $formElements = [];
          foreach ($this->children as $objectId => $DUMMY) {
 
             // when we directly find something - get it!

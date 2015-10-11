@@ -59,24 +59,24 @@ class NewsDeleteController extends NewsBaseController {
       $tpl = $this->getTemplate('delete');
       $tpl->setPlaceHolder(
             'LinkYes', LinkGenerator::generateUrl(
-                  Url::fromCurrent()->mergeQuery(
-                        array(
-                              'backendview'  => 'delete',
-                              'deletenewsid' => (int) $deleteId,
-                              'deleteyes'    => 'true'
-                        )
-                  )
+            Url::fromCurrent()->mergeQuery(
+                  [
+                        'backendview'  => 'delete',
+                        'deletenewsid' => (int) $deleteId,
+                        'deleteyes'    => 'true'
+                  ]
             )
+      )
       );
       $tpl->setPlaceHolder(
             'LinkNo', LinkGenerator::generateUrl(
-                  Url::fromCurrent()->mergeQuery(
-                        array(
-                              'backendview'  => 'list',
-                              'deletenewsid' => null
-                        )
-                  )
+            Url::fromCurrent()->mergeQuery(
+                  [
+                        'backendview'  => 'list',
+                        'deletenewsid' => null
+                  ]
             )
+      )
       );
       $tpl->transformOnPlace();
    }

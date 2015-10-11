@@ -36,7 +36,7 @@ class SelectBoxTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testControllerPresetting() {
 
-      $_REQUEST = array();
+      $_REQUEST = [];
 
       $select = $this->getSelectBox();
 
@@ -60,7 +60,7 @@ class SelectBoxTagTest extends \PHPUnit_Framework_TestCase {
 
       $selectedOption = 4;
 
-      $_REQUEST = array();
+      $_REQUEST = [];
       $_REQUEST[self::SELECT_BOX_NAME] = $selectedOption;
 
       $select = $this->getSelectBox();
@@ -76,7 +76,7 @@ class SelectBoxTagTest extends \PHPUnit_Framework_TestCase {
       assertEquals($select->getSelectedOption()->getValue(), $selectedOption);
 
       // re-test with complex name
-      $_REQUEST = array();
+      $_REQUEST = [];
       $_REQUEST[self::SELECT_BOX_NAME]['bar'] = $selectedOption;
 
       $select = $this->getSelectBox(self::COMPLEX_SELECT_BOX_NAME);
@@ -95,7 +95,7 @@ class SelectBoxTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testControllerPresettingWithGroups() {
 
-      $_REQUEST = array();
+      $_REQUEST = [];
 
       $select = $this->getSelectBox();
 
@@ -119,7 +119,7 @@ class SelectBoxTagTest extends \PHPUnit_Framework_TestCase {
 
       $selectedOption = 4;
 
-      $_REQUEST = array();
+      $_REQUEST = [];
       $_REQUEST[self::SELECT_BOX_NAME] = $selectedOption;
 
       $select = $this->getSelectBox();
@@ -135,7 +135,7 @@ class SelectBoxTagTest extends \PHPUnit_Framework_TestCase {
       assertEquals($select->getSelectedOption()->getValue(), $selectedOption);
 
       // re-test with complex name
-      $_REQUEST = array();
+      $_REQUEST = [];
       $_REQUEST[self::SELECT_BOX_NAME]['bar'] = $selectedOption;
 
       $select = $this->getSelectBox(self::COMPLEX_SELECT_BOX_NAME);

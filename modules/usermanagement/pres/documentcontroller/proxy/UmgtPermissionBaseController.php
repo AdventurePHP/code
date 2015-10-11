@@ -44,7 +44,7 @@ abstract class UmgtPermissionBaseController extends UmgtBaseController {
       $control = $form->getFormElementByName($elementName);
       $selectedOptions = $control->getSelectedOptions();
 
-      $objects = array();
+      $objects = [];
       foreach ($selectedOptions as $selectedUser) {
          $class = 'APF\modules\usermanagement\biz\model\\' . $objectName;
          $object = new $class;

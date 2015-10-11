@@ -56,9 +56,9 @@ class ImageButtonTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testInitialFormLoad() {
 
-      $_GET = array();
-      $_POST = array();
-      $_REQUEST = array();
+      $_GET = [];
+      $_POST = [];
+      $_REQUEST = [];
 
       $form = $this->getForm(HtmlForm::METHOD_POST_VALUE_NAME);
 
@@ -75,9 +75,9 @@ class ImageButtonTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testGetRequestWithPostDefined() {
 
-      $_GET = array();
-      $_POST = array();
-      $_REQUEST = array();
+      $_GET = [];
+      $_POST = [];
+      $_REQUEST = [];
 
       $_GET[self::BUTTON_NAME . '_x'] = self::BUTTON_NAME;
       $_GET[self::BUTTON_NAME . '_y'] = self::BUTTON_NAME;
@@ -97,9 +97,9 @@ class ImageButtonTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testPostRequestWithPostDefined() {
 
-      $_GET = array();
-      $_POST = array();
-      $_REQUEST = array();
+      $_GET = [];
+      $_POST = [];
+      $_REQUEST = [];
 
       $_POST[self::BUTTON_NAME . '_x'] = self::BUTTON_VALUE;
       $_POST[self::BUTTON_NAME . '_y'] = self::BUTTON_VALUE;
@@ -119,9 +119,9 @@ class ImageButtonTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testPostRequestWithGetDefined() {
 
-      $_GET = array();
-      $_POST = array();
-      $_REQUEST = array();
+      $_GET = [];
+      $_POST = [];
+      $_REQUEST = [];
 
       $_POST[self::BUTTON_NAME . '_x'] = self::BUTTON_VALUE;
       $_POST[self::BUTTON_NAME . '_y'] = self::BUTTON_VALUE;
@@ -141,9 +141,9 @@ class ImageButtonTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testGetRequestWithGetDefined() {
 
-      $_GET = array();
-      $_POST = array();
-      $_REQUEST = array();
+      $_GET = [];
+      $_POST = [];
+      $_REQUEST = [];
 
       $_GET[self::BUTTON_NAME . '_x'] = self::BUTTON_VALUE;
       $_GET[self::BUTTON_NAME . '_y'] = self::BUTTON_VALUE;

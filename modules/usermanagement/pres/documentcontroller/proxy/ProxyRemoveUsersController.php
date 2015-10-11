@@ -56,7 +56,7 @@ class ProxyRemoveUsersController extends UmgtPermissionBaseController {
                ->setPlaceHolder('app-object-id', $proxy->getAppObjectId())
                ->setPlaceHolder('object-type', $proxyType->getObjectName());
          $tmpl->getLabel('message-2')->setPlaceHolder('proxy-view-link',
-               $this->generateLink(array('mainview' => 'proxy', 'proxyview' => null, 'proxyid' => null)));
+               $this->generateLink(['mainview' => 'proxy', 'proxyview' => null, 'proxyid' => null]));
          $tmpl->transformOnPlace();
 
          return;
@@ -75,10 +75,11 @@ class ProxyRemoveUsersController extends UmgtPermissionBaseController {
 
          $this->getResponse()->forward(
                $this->generateLink(
-                     array(
+                     [
                            'mainview'  => 'proxy',
                            'proxyview' => null,
-                           'proxyid'   => null)
+                           'proxyid' => null
+                     ]
                )
          );
 

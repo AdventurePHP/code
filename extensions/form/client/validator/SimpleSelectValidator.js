@@ -27,10 +27,8 @@
     $(document).ready(function () {
         jQuery.APFFormValidator.addClientValidator('SimpleSelectValidator', {
             validate: function (control, options) {
-                if (control.val().length > 0) {
-                    return true;
-                }
-                return false;
+                return control.val().length > 0;
+
             }
         });
     });

@@ -42,14 +42,14 @@ final class ConfigurationManager {
     *
     * @var ConfigurationProvider[] $PROVIDER
     */
-   private static $PROVIDER = array();
+   private static $PROVIDER = [];
 
    /**
     * The configuration files, that have been requested before.
     *
     * @var Configuration[] $CONFIG_CACHE
     */
-   private static $CONFIG_CACHE = array();
+   private static $CONFIG_CACHE = [];
 
    /**
     * Allows to register a configuration provider that is specified by the

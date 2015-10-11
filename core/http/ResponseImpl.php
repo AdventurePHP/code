@@ -62,7 +62,7 @@ class ResponseImpl implements Response {
    /**
     * @var string[] Defines the default reason phrases to send along with the HTTP response as per RFC 2616
     */
-   protected $reasonPhrases = array(
+   protected $reasonPhrases = [
          100 => 'Continue',
          101 => 'Switching Protocols',
          200 => 'OK',
@@ -103,7 +103,7 @@ class ResponseImpl implements Response {
          503 => 'Service Unavailable',
          504 => 'Gateway Time-out',
          505 => 'HTTP Version not supported'
-   );
+   ];
 
    /**
     * @var int The HTTP status code.
@@ -123,12 +123,12 @@ class ResponseImpl implements Response {
    /**
     * @var Header[] The list of HTTP headers to send along with the response.
     */
-   protected $headers = array();
+   protected $headers = [];
 
    /**
     * @var Cookie[] The list of cookies ("special" headers) to send along with the response.
     */
-   protected $cookies = array();
+   protected $cookies = [];
 
    /**
     * @var bool Marks this response instance as sent (<em>true</em>) or not (<em>false</em>).
@@ -237,7 +237,7 @@ class ResponseImpl implements Response {
     * @return ResponseImpl This instance for further usage.
     */
    public function resetHeaders() {
-      $this->headers = array();
+      $this->headers = [];
 
       return $this;
    }

@@ -37,18 +37,18 @@ class RequestImplTest extends \PHPUnit_Framework_TestCase {
 
    public function testSimpleValues() {
 
-      $testData = array(
+      $testData = [
             self::PARAMETER_FOO   => self::PARAMETER_BAR,
             self::PARAMETER_BAR   => '!"§$%&/()=}][{1223{[]}',
             '4356J76tiojoigztfgu' => 'µ0815{[]}\][€edrftgzhujhgvcdewrtzujhgfdsaölkjhiug u qwhph phpihpiqw ph p9h pwoq',
             'urlencoded-data'     => urlencode('This is a message with spaces and other content like "/", "&", "%", "$", and "§".'),
             0                     => 'zero',
             '1'                   => 'one'
-      );
+      ];
 
       $request = new RequestImpl();
 
-      $_REQUEST = array();
+      $_REQUEST = [];
       foreach ($testData as $key => $value) {
 
          $_GET[$key] = $value;
@@ -67,13 +67,13 @@ class RequestImplTest extends \PHPUnit_Framework_TestCase {
 
       $request = new RequestImpl();
 
-      $_GET = array();
+      $_GET = [];
       assertNull($request->getGetParameter(self::PARAMETER_FOO));
 
-      $_POST = array();
+      $_POST = [];
       assertNull($request->getPostParameter(self::PARAMETER_FOO));
 
-      $_REQUEST = array();
+      $_REQUEST = [];
       assertNull($request->getParameter(self::PARAMETER_FOO));
 
       $_GET[self::PARAMETER_BAR] = '';
@@ -90,7 +90,7 @@ class RequestImplTest extends \PHPUnit_Framework_TestCase {
 
       $request = new RequestImpl();
 
-      $_GET = array();
+      $_GET = [];
 
       $_GET[self::PARAMETER_FOO] = 0;
       assertEquals(0, $request->getGetParameter(self::PARAMETER_FOO));
@@ -98,7 +98,7 @@ class RequestImplTest extends \PHPUnit_Framework_TestCase {
       $_GET[self::PARAMETER_BAR] = '0';
       assertEquals('0', $request->getGetParameter(self::PARAMETER_BAR));
 
-      $_POST = array();
+      $_POST = [];
 
       $_POST[self::PARAMETER_FOO] = 0;
       assertEquals(0, $request->getPostParameter(self::PARAMETER_FOO));
@@ -106,7 +106,7 @@ class RequestImplTest extends \PHPUnit_Framework_TestCase {
       $_POST[self::PARAMETER_BAR] = '0';
       assertEquals('0', $request->getPostParameter(self::PARAMETER_BAR));
 
-      $_REQUEST = array();
+      $_REQUEST = [];
 
       $_REQUEST[self::PARAMETER_FOO] = 0;
       assertEquals(0, $request->getParameter(self::PARAMETER_FOO));
@@ -119,9 +119,9 @@ class RequestImplTest extends \PHPUnit_Framework_TestCase {
    public function testParameterBoundaries() {
 
       // separation of GET and POST - starting at GET
-      $_GET = array();
-      $_POST = array();
-      $_REQUEST = array();
+      $_GET = [];
+      $_POST = [];
+      $_REQUEST = [];
       $_GET[self::PARAMETER_FOO] = self::PARAMETER_BAR;
       $_REQUEST[self::PARAMETER_FOO] = $_GET[self::PARAMETER_FOO];
 
@@ -132,9 +132,9 @@ class RequestImplTest extends \PHPUnit_Framework_TestCase {
       assertEquals(null, $request->getPostParameter(self::PARAMETER_FOO));
 
       // separation of GET and POST - starting at POST
-      $_GET = array();
-      $_POST = array();
-      $_REQUEST = array();
+      $_GET = [];
+      $_POST = [];
+      $_REQUEST = [];
       $_POST[self::PARAMETER_FOO] = self::PARAMETER_BAR;
       $_REQUEST[self::PARAMETER_FOO] = $_POST[self::PARAMETER_FOO];
 
@@ -146,9 +146,9 @@ class RequestImplTest extends \PHPUnit_Framework_TestCase {
 
    public function testDefaultValue() {
 
-      $_GET = array();
-      $_POST = array();
-      $_REQUEST = array();
+      $_GET = [];
+      $_POST = [];
+      $_REQUEST = [];
       $_GET[self::PARAMETER_FOO] = self::PARAMETER_BAR;
       $_REQUEST[self::PARAMETER_FOO] = $_GET[self::PARAMETER_FOO];
 
@@ -223,9 +223,9 @@ class RequestImplTest extends \PHPUnit_Framework_TestCase {
    }
 
    protected function setUp() {
-      $_GET = array();
-      $_POST = array();
-      $_REQUEST = array();
+      $_GET = [];
+      $_POST = [];
+      $_REQUEST = [];
    }
 
    protected function tearDown() {

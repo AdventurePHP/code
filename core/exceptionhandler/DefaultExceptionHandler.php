@@ -77,7 +77,7 @@ class DefaultExceptionHandler implements ExceptionHandler {
     *
     * @var string[] $exceptionTrace
     */
-   protected $exceptionTrace = array();
+   protected $exceptionTrace = [];
 
    public function handleException(Exception $exception) {
 

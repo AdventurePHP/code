@@ -42,20 +42,20 @@ abstract class PackageNode extends HtmlNode {
 
    protected abstract function getLocationAttributeName();
 
-   protected abstract function getTypeIndicator();
-
-   public function getChecksum() {
-      return md5($this->getAttribute($this->getLocationAttributeName()));
-   }
-
    protected function buildPackageLink($url, $name) {
 
       // Generate url if not given
       $url = ($url === null) ? Url::fromCurrent(true) : Url::fromString($url);
 
-      return LinkGenerator::generateActionUrl($url, 'APF\extensions\htmlheader', 'JsCss', array(
+      return LinkGenerator::generateActionUrl($url, 'APF\extensions\htmlheader', 'JsCss', [
             'package' => $name . '.' . $this->getTypeIndicator()
-      ));
+      ]);
+   }
+
+   protected abstract function getTypeIndicator();
+
+   public function getChecksum() {
+      return md5($this->getAttribute($this->getLocationAttributeName()));
    }
 
 }

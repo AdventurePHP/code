@@ -52,9 +52,9 @@ class GroupDeleteController extends UmgtBaseController {
          $group = new UmgtGroup();
          $group->setObjectId($groupId);
          $uM->deleteGroup($group);
-         $response->forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
+         $response->forward($this->generateLink(['mainview' => 'group', 'groupview' => '', 'groupid' => '']));
       } elseif ($formNo->isSent()) {
-         $response->forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
+         $response->forward($this->generateLink(['mainview' => 'group', 'groupview' => '', 'groupid' => '']));
       } else {
          $formNo->transformOnPlace();
          $formYes->transformOnPlace();

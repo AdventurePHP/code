@@ -39,22 +39,22 @@ class GuestbookAdminController extends GuestbookBaseController {
       $this->getGuestbookService()->checkAccessAllowed();
 
       // generate the admin menu links to be able to include the module in either page.
-      $editLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
+      $editLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery([
             'gbview'    => 'admin',
             'adminview' => 'edit'
-      )));
+      ]));
       $this->setPlaceHolder('editLink', $editLink);
 
-      $deleteLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
+      $deleteLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery([
             'gbview'    => 'admin',
             'adminview' => 'delete'
-      )));
+      ]));
       $this->setPlaceHolder('deleteLink', $deleteLink);
 
-      $logoutLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
+      $logoutLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery([
             'gbview'    => 'admin',
             'adminview' => 'logout'
-      )));
+      ]));
       $this->setPlaceHolder('logoutLink', $logoutLink);
    }
 

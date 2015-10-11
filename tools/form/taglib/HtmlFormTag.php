@@ -178,7 +178,7 @@ class HtmlFormTag extends Document implements HtmlForm {
     * Version 0.4, 10.09.2008 (Added the $ElementAttributes param)<br />
     * Version 0.5, 23.08.2014 (ID#198: added unlimited form control nesting capability)<br />
     */
-   public function &addFormElement($elementType, array $elementAttributes = array()) {
+   public function &addFormElement($elementType, array $elementAttributes = []) {
 
       // create form element
       $control = &$this->createFormElement($this, $elementType, $elementAttributes);
@@ -212,7 +212,7 @@ class HtmlFormTag extends Document implements HtmlForm {
     * Version 0.3, 12.11.2008 (Bug-fix: language and context initialisation were wrong)<br />
     * Version 0.4, 23.08.2014 (ID#198: added unlimited form control nesting capability)<br />
     */
-   protected function &createFormElement(Document &$parent, $elementType, array $elementAttributes = array()) {
+   protected function &createFormElement(Document &$parent, $elementType, array $elementAttributes = []) {
 
       $class = $this->getTagClass($elementType);
       if ($class === null) {
@@ -334,7 +334,7 @@ class HtmlFormTag extends Document implements HtmlForm {
     * Version 0.2, 10.09.2008 (Added the $elementAttributes param)<br />
     * Version 0.3, 23.08.2014 (ID#198: added unlimited form control nesting capability)<br />
     */
-   public function &addFormElementBeforeMarker($markerName, $elementType, array $elementAttributes = array()) {
+   public function &addFormElementBeforeMarker($markerName, $elementType, array $elementAttributes = []) {
 
       $marker = &$this->getMarker($markerName);
       $control = &$this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);
@@ -374,7 +374,7 @@ class HtmlFormTag extends Document implements HtmlForm {
     * Version 0.2, 10.09.2008 (Added the $ElementAttributes param)<br />
     * Version 0.3, 23.08.2014 (ID#198: added unlimited form control nesting capability)<br />
     */
-   public function &addFormElementAfterMarker($markerName, $elementType, array $elementAttributes = array()) {
+   public function &addFormElementAfterMarker($markerName, $elementType, array $elementAttributes = []) {
 
       $marker = &$this->getMarker($markerName);
       $control = &$this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);

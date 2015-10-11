@@ -103,7 +103,7 @@ class HtmlHeaderOutputFilter extends APFObject implements ChainedContentFilter {
          }
       }
 
-      return array($outputHead, $outputBody);
+      return [$outputHead, $outputBody];
    }
 
    /**
@@ -118,7 +118,7 @@ class HtmlHeaderOutputFilter extends APFObject implements ChainedContentFilter {
     * Version 0.1, 10.05.2011<br />
     */
    protected function sortNodes(array $nodes) {
-      usort($nodes, array($this, 'compare'));
+      usort($nodes, [$this, 'compare']);
 
       return $nodes;
    }

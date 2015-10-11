@@ -68,14 +68,14 @@ class ContactManager extends APFObject {
       $mail->setRecipient($recipient->getEmailAddress(), $recipient->getName());
       $mail->setContent(
             $this->getNotificationText(
-                  array(
+                  [
                         'sender-name'     => $formData->getSenderName(),
                         'sender-email'    => $formData->getSenderEmail(),
                         'sender-subject'  => $formData->getSubject(),
                         'sender-message'  => $formData->getMessage(),
                         'recipient-name'  => $recipient->getName(),
                         'recipient-email' => $recipient->getEmailAddress()
-                  )
+                  ]
             )
       );
 
@@ -92,14 +92,14 @@ class ContactManager extends APFObject {
 
       $mail->setContent(
             $this->getConfirmationText(
-                  array(
+                  [
                         'sender-name'     => $formData->getSenderName(),
                         'sender-email'    => $formData->getSenderEmail(),
                         'sender-subject'  => $formData->getSubject(),
                         'sender-message'  => $formData->getMessage(),
                         'recipient-name'  => $recipient->getName(),
                         'recipient-email' => $recipient->getEmailAddress()
-                  )
+                  ]
             )
       );
 
@@ -109,7 +109,7 @@ class ContactManager extends APFObject {
       $mail->sendMail();
 
       // redirect to the thanks page to avoid F5 bugs!
-      $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('contactview' => 'thanks')));
+      $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(['contactview' => 'thanks']));
       $this->getResponse()->forward($link);
    }
 
@@ -140,7 +140,7 @@ class ContactManager extends APFObject {
     * @version
     * Version 0.1, 19.10.2011<br />
     */
-   private function getNotificationText(array $values = array()) {
+   private function getNotificationText(array $values = []) {
 
       $config = $this->getConfiguration('APF\modules\contact', 'mail_templates.ini');
 
@@ -173,7 +173,7 @@ class ContactManager extends APFObject {
     * @version
     * Version 0.1, 19.10.2011<br />
     */
-   private function fillPlaceHolders($text, array $values = array()) {
+   private function fillPlaceHolders($text, array $values = []) {
       foreach ($values as $key => $value) {
          $text = str_replace('{' . $key . '}', $value, $text);
       }
@@ -230,7 +230,7 @@ class ContactManager extends APFObject {
     * @version
     * Version 0.1, 19.10.2011<br />
     */
-   private function getConfirmationText(array $values = array()) {
+   private function getConfirmationText(array $values = []) {
       $config = $this->getConfiguration('APF\modules\contact', 'mail_templates.ini');
 
       if (!$config->hasSection($this->getLanguage())) {

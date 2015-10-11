@@ -55,7 +55,7 @@ class MimeTypeValidator extends TextFieldValidator {
          // retrieve file model to check the MIME type against the accepted types
          $fileModel = $control->getFile();
 
-         // store values in variables to not break the in_array() functionality
+         // store values in variables to not break the in_[] functionality
          $acceptedTypes = $this->getAcceptedMIMETypes();
          $mimeType = $fileModel->getMimeType();
          if (in_array($mimeType, $acceptedTypes, true)) {
@@ -80,7 +80,7 @@ class MimeTypeValidator extends TextFieldValidator {
    private function getAcceptedMIMETypes() {
       $accepts = $this->control->getAttribute(self::$ACCEPTS_ATTRIBUTE_NAME);
       if (empty($accepts)) {
-         return array();
+         return [];
       }
 
       return explode('|', $accepts);

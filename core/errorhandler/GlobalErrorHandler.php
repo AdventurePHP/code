@@ -103,14 +103,14 @@ abstract class GlobalErrorHandler {
       }
 
       // (re-)register the APF error handler
-      set_error_handler(array(GlobalErrorHandler::class, 'handleError'));
+      set_error_handler([GlobalErrorHandler::class, 'handleError']);
 
       // enable fatal error catching
       self::$catchFatalErrors = true;
 
       // Register callback for catching fatal errors. As this registration cannot be undone, a
       // separate flag is maintained to switch off this handling using <em>disable()</em>.
-      register_shutdown_function(array(GlobalErrorHandler::class, 'handleFatalError'));
+      register_shutdown_function([GlobalErrorHandler::class, 'handleFatalError']);
    }
 
    /**
@@ -130,7 +130,7 @@ abstract class GlobalErrorHandler {
       }
 
       // only handle *real* issues but not warnings (e.g. deprecated PHP API) or notices
-      $errorTypes = array(E_ERROR, E_PARSE, E_CORE_ERROR, E_CORE_WARNING, E_COMPILE_ERROR, E_COMPILE_WARNING);
+      $errorTypes = [E_ERROR, E_PARSE, E_CORE_ERROR, E_CORE_WARNING, E_COMPILE_ERROR, E_COMPILE_WARNING];
 
       // Chain to the "normal" error handling for consistency reasons (e.g. using a logging-only
       // production error handler for security reasons).

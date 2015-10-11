@@ -163,7 +163,7 @@ final class Folder extends FilesystemItem {
       $children = scandir($this->getPath());
 
       /* @var $content FilesystemItem[] */
-      $content = array();
+      $content = [];
 
       $i = 0;
       foreach ($children as $child) {

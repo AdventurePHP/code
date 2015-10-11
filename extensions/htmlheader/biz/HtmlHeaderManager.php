@@ -40,7 +40,7 @@ class HtmlHeaderManager extends APFObject {
     *
     * @var HeaderNode[] $nodes
     */
-   protected $nodes = array();
+   protected $nodes = [];
 
    /**
     * Let's you add a header node to the container.
@@ -79,7 +79,7 @@ class HtmlHeaderManager extends APFObject {
     * @return HeaderNode[] The list of header nodes that is described by the given type.
     */
    protected function getNodesByType($type) {
-      $nodes = array();
+      $nodes = [];
 
       foreach ($this->nodes as $node) {
          if ($node instanceof $type) {

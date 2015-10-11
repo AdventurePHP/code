@@ -86,7 +86,7 @@ class FallbackImportTemplateTag extends ImportTemplateTag {
 
             // if the template is not necessary needed, give the last chance to ignore the failure here
             $fallbackFailureIgnore = $this->getAttribute('fallbackFailureIgnore');
-            if ($fallbackFailureIgnore != null && in_array($fallbackFailureIgnore, array('true', 'yes'))) {
+            if ($fallbackFailureIgnore != null && in_array($fallbackFailureIgnore, ['true', 'yes'])) {
                $this->content = $this->getAttribute('errormsg');
             }
 

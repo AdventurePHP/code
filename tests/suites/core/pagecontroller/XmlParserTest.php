@@ -44,11 +44,11 @@ class XmlParserTest extends \PHPUnit_Framework_TestCase {
       $templateValue = 'baz';
 
       // assemble expected result
-      $expectedAttributes = array(
+      $expectedAttributes = [
             $namespaceAttribute => $namespaceValue,
             $templateAttribute  => $templateValue
 
-      );
+      ];
       $expectedContent = '';
 
       // test simple on-liner
@@ -75,9 +75,9 @@ class XmlParserTest extends \PHPUnit_Framework_TestCase {
       $nameValue = 'MyTemplate';
 
       // assemble expected result
-      $expectedAttributes = array(
+      $expectedAttributes = [
             $nameAttribute => $nameValue
-      );
+      ];
       $expectedContent = '<p>My name is <template:placeholder name="Name" />! I am 20 years old and I live in Berlin.</p>';
 
       // test simple on-liner
@@ -124,9 +124,9 @@ class XmlParserTest extends \PHPUnit_Framework_TestCase {
 </' . $prefix . ':' . $name . '>';
 
       // assemble expected result
-      $expectedAttributes = array(
+      $expectedAttributes = [
             'key' => 'foo'
-      );
+      ];
       $expectedContent = '
 
    <' . $prefix . ':' . $name . '>

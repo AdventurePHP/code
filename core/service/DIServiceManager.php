@@ -100,28 +100,28 @@ final class DIServiceManager {
     *
     * @var array $INJECTION_CALL_CACHE
     */
-   private static $INJECTION_CALL_CACHE = array();
+   private static $INJECTION_CALL_CACHE = [];
 
    /**
     * Contains the service objects, that were already configured.
     *
     * @var array $SERVICE_OBJECT_CACHE
     */
-   private static $SERVICE_OBJECT_CACHE = array();
+   private static $SERVICE_OBJECT_CACHE = [];
 
    /**
     * Contains the configuration of already delivered services
     *
     * @var array $SERVICE_CONFIG_CACHE
     */
-   private static $SERVICE_CONFIG_CACHE = array();
+   private static $SERVICE_CONFIG_CACHE = [];
 
    /**
     * Contains the cached service types
     *
     * @var array $SERVICE_TYPE_CACHE
     */
-   private static $SERVICE_TYPE_CACHE = array();
+   private static $SERVICE_TYPE_CACHE = [];
 
    /**
     * Defines the configuration extension and thus the file type to be used for DI service configurations.

@@ -25,7 +25,7 @@ use APF\tools\validation\PhoneNumberValidator;
 class PhoneNumberValidationTest extends \PHPUnit_Framework_TestCase {
 
    public function testStandard() {
-      $numbers = array(
+      $numbers = [
          // US
             '(844) 207-6002',
             '(833) 138-4854',
@@ -44,7 +44,7 @@ class PhoneNumberValidationTest extends \PHPUnit_Framework_TestCase {
             '(01342) 23693',
             '0800 154 0793',
             '0845 46 47'
-      );
+      ];
 
       $validator = new PhoneNumberValidator();
       foreach ($numbers as $number) {
@@ -54,7 +54,7 @@ class PhoneNumberValidationTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testInternationalNumbers() {
-      $numbers = array(
+      $numbers = [
          // US
             '+1 855 192 5323',
             '+1 811 631 5079',
@@ -64,7 +64,7 @@ class PhoneNumberValidationTest extends \PHPUnit_Framework_TestCase {
          // UK
             '+44 024 3659 6672',
             '+44 07852 756132',
-      );
+      ];
 
       $validator = new PhoneNumberValidator(PhoneNumberValidator::INTERNATIONAL);
       foreach ($numbers as $number) {
@@ -73,7 +73,7 @@ class PhoneNumberValidationTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testInternationalEppNumbers() {
-      $numbers = array(
+      $numbers = [
          // US
             '+1.8551925323',
             '+1.8116315079',
@@ -83,7 +83,7 @@ class PhoneNumberValidationTest extends \PHPUnit_Framework_TestCase {
          // UK
             '+44.02436596672',
             '+44.07852756132',
-      );
+      ];
 
       $validator = new PhoneNumberValidator(PhoneNumberValidator::INTERNATIONAL_EPP);
       foreach ($numbers as $number) {

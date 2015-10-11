@@ -41,7 +41,7 @@ final class ArrayPagerManagerFabric extends APFObject {
     *
     * @var ArrayPagerManager[] $pagers
     */
-   private $pagers = array();
+   private $pagers = [];
 
    /**
     * Returns a reference on the desired pager manager. Initializes newly created ones.

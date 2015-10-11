@@ -34,29 +34,21 @@ use APF\tools\link\Url;
 class AdminNavigationController extends BaseDocumentController {
 
    public function transformContent() {
-      $generalExclusion = array('deleteyes' => null, 'deletenewsid' => null, 'editnewsid' => null);
+      $generalExclusion = ['deleteyes' => null, 'deletenewsid' => null, 'editnewsid' => null];
 
       $this->setPlaceHolder(
             'list', LinkGenerator::generateUrl(
-                  Url::fromCurrent()
-                        ->mergeQuery($generalExclusion)
-                        ->mergeQuery(
-                              array(
-                                    'backendview' => 'list'
-                              )
-                        )
-            )
+            Url::fromCurrent()
+                  ->mergeQuery($generalExclusion)
+                  ->mergeQuery(['backendview' => 'list'])
+      )
       );
       $this->setPlaceHolder(
             'new', LinkGenerator::generateUrl(
-                  Url::fromCurrent()
-                        ->mergeQuery($generalExclusion)
-                        ->mergeQuery(
-                              array(
-                                    'backendview' => 'edit'
-                              )
-                        )
-            )
+            Url::fromCurrent()
+                  ->mergeQuery($generalExclusion)
+                  ->mergeQuery(['backendview' => 'edit'])
+      )
       );
    }
 

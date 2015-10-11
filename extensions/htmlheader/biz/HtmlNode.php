@@ -57,14 +57,14 @@ abstract class HtmlNode extends Document implements HeaderNode {
       return $this;
    }
 
+   public function getAppendToBody() {
+      return $this->appendToBody;
+   }
+
    public function setAppendToBody($value) {
       $this->appendToBody = $value;
 
       return $this;
-   }
-
-   public function getAppendToBody() {
-      return $this->appendToBody;
    }
 
    /**
@@ -117,11 +117,11 @@ abstract class HtmlNode extends Document implements HeaderNode {
       if ($fcaction) {
          $UrlObj = ($url === null) ? Url::fromCurrent(true) : Url::fromString($url);
 
-         return LinkGenerator::generateActionUrl($UrlObj, 'APF\extensions\htmlheader', 'JsCss', array(
+         return LinkGenerator::generateActionUrl($UrlObj, 'APF\extensions\htmlheader', 'JsCss', [
                'path' => str_replace('\\', '_', $namespace),
                'type' => $type,
                'file' => $filename
-         ));
+         ]);
       } else {
          $namespace = str_replace('\\', '/', $namespace);
          $url .= (substr($url, -1, 1) !== '/') ? '/' : '';

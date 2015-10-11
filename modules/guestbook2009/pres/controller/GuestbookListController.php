@@ -61,7 +61,7 @@ class GuestbookListController extends GuestbookBaseController {
       $this->setPlaceHolder('pager', $gS->getPagerOutput());
 
       // add dynamic link
-      $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('gbview' => 'create')));
+      $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(['gbview' => 'create']));
       $this->setPlaceHolder('createlink', $link);
    }
 

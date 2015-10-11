@@ -40,7 +40,7 @@ final class CacheManagerFabric extends APFObject {
     *
     * @var CacheManager[] $cacheManagerCache
     */
-   private $cacheManagerCache = array();
+   private $cacheManagerCache = [];
 
    /**
     * Returns the cache manager instance by the desired config section.

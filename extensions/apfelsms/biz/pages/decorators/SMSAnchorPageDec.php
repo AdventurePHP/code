@@ -31,18 +31,15 @@ use APF\tools\link\Url;
 class SMSAnchorPageDec extends SMSAbstractPageDec {
 
 
+   public static $mapVars = [
+         'anchor' => ''
+   ];
    /**
     * The anchor
     *
     * @var string $anchor
     */
    protected $anchor = '';
-
-
-   public static $mapVars = array(
-         'anchor' => ''
-   );
-
 
    /**
     * @param Url $url
@@ -58,6 +55,13 @@ class SMSAnchorPageDec extends SMSAbstractPageDec {
 
    }
 
+   /**
+    * @return string
+    */
+   public function getAnchor() {
+
+      return $this->anchor;
+   }
 
    /**
     * @param string $anchor
@@ -65,15 +69,6 @@ class SMSAnchorPageDec extends SMSAbstractPageDec {
    public function setAnchor($anchor) {
 
       $this->anchor = $anchor;
-   }
-
-
-   /**
-    * @return string
-    */
-   public function getAnchor() {
-
-      return $this->anchor;
    }
 
 }

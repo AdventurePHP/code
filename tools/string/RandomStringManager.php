@@ -194,7 +194,7 @@ class RandomStringManager extends APFObject {
     */
    private function mbStringToArray($string) {
       $strLen = mb_strlen($string);
-      $array = array();
+      $array = [];
       while ($strLen) {
          $array[] = mb_substr($string, 0, 1, "UTF-8");
          $string = mb_substr($string, 1, $strLen, "UTF-8");

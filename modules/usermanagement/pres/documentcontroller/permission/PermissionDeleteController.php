@@ -49,10 +49,10 @@ class PermissionDeleteController extends UmgtBaseController {
          $permission = new UmgtPermission();
          $permission->setObjectId($permissionId);
          $uM->deletePermission($permission);
-         $response->forward($this->generateLink(array('mainview' => 'permission', 'permissionview' => '', 'permissionid' => '')));
+         $response->forward($this->generateLink(['mainview' => 'permission', 'permissionview' => '', 'permissionid' => '']));
 
       } elseif ($formNo->isSent()) {
-         $response->forward($this->generateLink(array('mainview' => 'permission', 'permissionview' => '', 'permissionid' => '')));
+         $response->forward($this->generateLink(['mainview' => 'permission', 'permissionview' => '', 'permissionid' => '']));
       } else {
          $formNo->transformOnPlace();
          $formYes->transformOnPlace();

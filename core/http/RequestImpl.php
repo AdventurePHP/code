@@ -129,7 +129,7 @@ class RequestImpl implements Request {
     * @return array The request parameters of the given type.
     */
    protected function getGenericParameters($type) {
-      return is_array($GLOBALS['_' . $type]) ? $GLOBALS['_' . $type] : array();
+      return is_array($GLOBALS['_' . $type]) ? $GLOBALS['_' . $type] : [];
    }
 
    public function getParameters() {
@@ -285,9 +285,9 @@ class RequestImpl implements Request {
    }
 
    public function resetParameters() {
-      $_REQUEST = array();
-      $_GET = array();
-      $_POST = array();
+      $_REQUEST = [];
+      $_GET = [];
+      $_POST = [];
 
       return $this;
    }
@@ -298,7 +298,7 @@ class RequestImpl implements Request {
          unset($_REQUEST[$key]);
       }
 
-      $_GET = array();
+      $_GET = [];
 
       return $this;
    }
@@ -309,7 +309,7 @@ class RequestImpl implements Request {
          unset($_REQUEST[$key]);
       }
 
-      $_POST = array();
+      $_POST = [];
 
       return $this;
    }
@@ -354,7 +354,7 @@ class RequestImpl implements Request {
    }
 
    public function getCookies() {
-      $cookies = array();
+      $cookies = [];
       foreach ($_COOKIE as $key => $value) {
          $cookie = new Cookie($key);
          $cookie->setValue($value);
@@ -401,7 +401,7 @@ class RequestImpl implements Request {
 
    // we are not using getallheaders() as we would limit the APF to be used with Apache only.
    public function getHeaders() {
-      $headers = array();
+      $headers = [];
 
       foreach ($_SERVER as $name => $value) {
          if (substr($name, 0, 5) == 'HTTP_') {

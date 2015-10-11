@@ -62,7 +62,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * @version
     * Version 0.1, 10.03.2010<br />
     */
-   public function executeStatement($namespace, $statementFile, array $params = array(), $logStatement = false) {
+   public function executeStatement($namespace, $statementFile, array $params = [], $logStatement = false) {
 
       // load statement file content
       $statement = $this->getPreparedStatement($namespace, $statementFile, $params);
@@ -110,7 +110,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * @version
     * Version 0.1, 08.03.2010<br />
     */
-   public function executeBindStatement($namespace, $statementFile, array $params = array(), $logStatement = false) {
+   public function executeBindStatement($namespace, $statementFile, array $params = [], $logStatement = false) {
 
       // load statement file content (params will be replaced "manually")
       $statement = $this->getPreparedStatement($namespace, $statementFile);
@@ -125,7 +125,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       $t->start($id);
       preg_match_all('/\[([A-Za-z0-9_\-]+)\]/u', $statement, $matches, PREG_SET_ORDER);
 
-      $sortedParams = array();
+      $sortedParams = [];
       $bindVariablesAvailable = (count($matches) > 0);
 
       // binding variables is only necessary, if we have dynamic statement
@@ -235,15 +235,15 @@ class MySQLiHandler extends AbstractDatabaseHandler {
          return;
       }
 
-      $binds = array();
+      $binds = [];
       foreach ($params as $key => $DUMMY) {
          // Bug 694: bind via reference to avoid "expected to be a reference, value given in" errors.
          $binds[] = &$params[$key];
       }
       call_user_func_array(
-            array(&$query, 'bind_param'),
+            [&$query, 'bind_param'],
             array_merge(
-                  array(str_repeat('s', count($params))),
+                  [str_repeat('s', count($params))],
                   $binds
             )
       );
@@ -274,17 +274,17 @@ class MySQLiHandler extends AbstractDatabaseHandler {
             break;
          }
 
-         $resultRow = array();
-         $resultParams = array();
+         $resultRow = [];
+         $resultParams = [];
          while ($field = $metaData->fetch_field()) {
             $resultParams[] = &$resultRow[$field->name];
          }
 
-         $bindResult = array();
+         $bindResult = [];
 
-         call_user_func_array(array(&$query, 'bind_result'), $resultParams);
+         call_user_func_array([&$query, 'bind_result'], $resultParams);
          while ($query->fetch()) {
-            $currentRow = array();
+            $currentRow = [];
             foreach ($resultRow as $key => $val) {
                $currentRow[$key] = $val;
             }
@@ -310,7 +310,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * @version
     * Version 0.1, 08.03.2010<br />
     */
-   public function executeTextBindStatement($statement, array $params = array(), $logStatement = false) {
+   public function executeTextBindStatement($statement, array $params = [], $logStatement = false) {
 
       /* @var $t BenchmarkTimer */
       $t = &Singleton::getInstance(BenchmarkTimer::class);

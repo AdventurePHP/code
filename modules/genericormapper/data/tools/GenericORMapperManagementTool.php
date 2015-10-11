@@ -46,22 +46,22 @@ class GenericORMapperManagementTool extends BaseMapper {
     *
     * @var string[] $rowTypeMappingFrom
     */
-   protected $rowTypeMappingFrom = array(
+   protected $rowTypeMappingFrom = [
          '/^VARCHAR\(([0-9]+)\)$/i',
          '/^TEXT$/i',
          '/^DATE$/i',
-   );
+   ];
 
    /**
     * Replace strings for the data type mapping.
     *
     * @var string[] $rowTypeMappingTo
     */
-   protected $rowTypeMappingTo = array(
+   protected $rowTypeMappingTo = [
          'VARCHAR($1) character set [charset] NOT NULL default \'\'',
          'TEXT character set [charset] NOT NULL',
          'DATE NOT NULL default \'0000-00-00\'',
-   );
+   ];
 
    /**
     * Stores the default MySQL storage engine type.
@@ -89,77 +89,77 @@ class GenericORMapperManagementTool extends BaseMapper {
     *
     * @var array $tablesFromConfig
     */
-   protected $tablesFromConfig = array();
+   protected $tablesFromConfig = [];
 
    /**
     * Mapping and relation tables constructed from the given database connection
     *
     * @var array $tablesFromDatabase
     */
-   protected $tablesFromDatabase = array();
+   protected $tablesFromDatabase = [];
 
    /**
     * Stores the new tables
     *
     * @var array $tablesToCreate
     */
-   protected $tablesToCreate = array();
+   protected $tablesToCreate = [];
 
    /**
     * Stores the removed tables
     *
     * @var array $tablesToDrop
     */
-   protected $tablesToDrop = array();
+   protected $tablesToDrop = [];
 
    /**
     * Stores the new columns
     *
     * @var array $columnsToCreate
     */
-   protected $columnsToCreate = array();
+   protected $columnsToCreate = [];
 
    /**
     * Stores the removed columns
     *
     * @var array $columnsToDrop
     */
-   protected $columnsToDrop = array();
+   protected $columnsToDrop = [];
 
    /**
     * Stores the changed columns
     *
     * @var array $columnsToChange
     */
-   protected $columnsToChange = array();
+   protected $columnsToChange = [];
 
    /**
     * Stores the new indices
     *
     * @var array $indicesToCreate
     */
-   protected $indicesToCreate = array();
+   protected $indicesToCreate = [];
 
    /**
     * Stores the removed indices
     *
     * @var array $indicesToDrop
     */
-   protected $indicesToDrop = array();
+   protected $indicesToDrop = [];
 
    /**
     * Stores the changed storage engines
     *
     * @var array $storageEngineToChange
     */
-   protected $storageEngineToChange = array();
+   protected $storageEngineToChange = [];
 
    /**
     * Stores the update statements
     *
     * @var array $updateStatements
     */
-   protected $updateStatements = array();
+   protected $updateStatements = [];
 
    /**
     * Stores alias used by MySQL to avoid unnecessary update statements
@@ -167,7 +167,7 @@ class GenericORMapperManagementTool extends BaseMapper {
     *
     * @var array $mysqlAlias
     */
-   protected $mysqlAlias = array(
+   protected $mysqlAlias = [
          'int'       => 'int(11)',
          'integer'   => 'int(11)',
          'boolean'   => 'tinyint(1)',
@@ -175,7 +175,7 @@ class GenericORMapperManagementTool extends BaseMapper {
          'smallint'  => 'smallint(6)',
          'mediumint' => 'mediumint(9)',
          'bigint'    => 'bigint(20)'
-   );
+   ];
 
    public function getStorageEngine() {
       return $this->storageEngine;
@@ -257,17 +257,17 @@ class GenericORMapperManagementTool extends BaseMapper {
    public function run($updateInPlace = false) {
 
       // ID#104: clean up volatile data to allow multiple runs with deterministic results
-      $this->tablesFromConfig = array();
-      $this->tablesFromDatabase = array();
-      $this->tablesToCreate = array();
-      $this->tablesToDrop = array();
-      $this->columnsToCreate = array();
-      $this->columnsToDrop = array();
-      $this->columnsToChange = array();
-      $this->indicesToCreate = array();
-      $this->indicesToDrop = array();
-      $this->storageEngineToChange = array();
-      $this->updateStatements = array();
+      $this->tablesFromConfig = [];
+      $this->tablesFromDatabase = [];
+      $this->tablesToCreate = [];
+      $this->tablesToDrop = [];
+      $this->columnsToCreate = [];
+      $this->columnsToDrop = [];
+      $this->columnsToChange = [];
+      $this->indicesToCreate = [];
+      $this->indicesToDrop = [];
+      $this->storageEngineToChange = [];
+      $this->updateStatements = [];
 
       // Add mapping and relation configuration if passed along with the call.
       // To support setup with multiple configurations, please add each of the
@@ -323,19 +323,22 @@ class GenericORMapperManagementTool extends BaseMapper {
 
    protected function getTablesFromConfig() {
 
-      $attrExceptions = array('ID', 'Table');
-      $tables = array();
+      $attrExceptions = ['ID', 'Table'];
+      $tables = [];
 
       foreach ($this->mappingTable as $table => $property) {
          $tableName = $property['Table'];
-         $tables[$tableName] = array(
+         $tables[$tableName] = [
                'Indices'       => $this->getIndices($table),
-               'StorageEngine' => (isset($this->mappingStorageEngineTable[$tableName])) ? $this->mappingStorageEngineTable[$tableName] : $this->storageEngine,
-               'Columns'       => array(
+               'StorageEngine' => (isset($this->mappingStorageEngineTable[$tableName]))
+                     ? $this->mappingStorageEngineTable[$tableName]
+                     : $this->storageEngine,
+               'Columns'       => [
                      $property['ID'] => $this->indexColumnDataType . ' NOT NULL auto_increment'
-               ),
+               ],
                'autoIncrement' => $property['ID']
-         );
+         ];
+
          foreach ($property as $key => $value) {
             if (!in_array($key, $attrExceptions)) {
                $value1 = preg_replace(
@@ -353,18 +356,20 @@ class GenericORMapperManagementTool extends BaseMapper {
 
       foreach ($this->relationTable as $property) {
          $tableName = $property['Table'];
-         $tables[$tableName] = array(
-               'Indices'       => array(
-                     $property['TargetID'] . ',' . $property['SourceID'] => array('REVERSEJOIN' => 'INDEX'),
-                     $property['SourceID'] . ',' . $property['TargetID'] => array('JOIN' => 'INDEX')
-               ),
-               'StorageEngine' => (isset($this->relationStorageEngineTable[$tableName])) ? $this->relationStorageEngineTable[$tableName] : $this->storageEngine,
-               'Columns'       => array(
+         $tables[$tableName] = [
+               'Indices'       => [
+                     $property['TargetID'] . ',' . $property['SourceID'] => ['REVERSEJOIN' => 'INDEX'],
+                     $property['SourceID'] . ',' . $property['TargetID'] => ['JOIN' => 'INDEX']
+               ],
+               'StorageEngine' => (isset($this->relationStorageEngineTable[$tableName]))
+                     ? $this->relationStorageEngineTable[$tableName]
+                     : $this->storageEngine,
+               'Columns'       => [
                      $property['SourceID'] => $this->indexColumnDataType . ' NOT NULL default 0',
                      $property['TargetID'] => $this->indexColumnDataType . ' NOT NULL default 0',
-               )
-         );
-         if (isset ($property['Timestamps']) && strcasecmp($property['Timestamps'], 'TRUE') === 0) {
+               ]
+         ];
+         if (isset($property['Timestamps']) && strcasecmp($property['Timestamps'], 'TRUE') === 0) {
             $tables[$tableName]['Columns']['CreationTimestamp'] = 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP';
          }
 
@@ -376,8 +381,8 @@ class GenericORMapperManagementTool extends BaseMapper {
 
    protected function getIndices($tableName) {
 
-      $indexDefinition = array();
-      $indexDefinition[$tableName . 'ID'] = array('PRIMARY' => 'PRIMARY');
+      $indexDefinition = [];
+      $indexDefinition[$tableName . 'ID'] = ['PRIMARY' => 'PRIMARY'];
       if (!isset($this->mappingIndexTable[$tableName])) {
          return $indexDefinition;
       }
@@ -393,7 +398,7 @@ class GenericORMapperManagementTool extends BaseMapper {
          // replace index type to extract fields
          $current = substr_replace($current, '', $startPos, $endPos + 1 - $startPos);
 
-         $indexDefinition[str_replace(' ', '', $current)][str_replace(array(',', ' '), '', $current) . $type] = $type;
+         $indexDefinition[str_replace(' ', '', $current)][str_replace([',', ' '], '', $current) . $type] = $type;
       }
 
       return $indexDefinition;
@@ -446,7 +451,7 @@ class GenericORMapperManagementTool extends BaseMapper {
          $columnName = $columnsData['columnName'];
          unset($columnsData['tableName'], $columnsData['columnName']);
          $this->tablesFromDatabase[$tableName]['Columns'][$columnName] = $columnsData;
-         $this->tablesFromDatabase[$tableName]['Indices'] = array();
+         $this->tablesFromDatabase[$tableName]['Indices'] = [];
       }
 
       $getEngine = '(select
@@ -544,13 +549,13 @@ class GenericORMapperManagementTool extends BaseMapper {
       foreach ($intersect as $columnName => $type) {
 
          // column property from database are presented as array for better comparison
-         // array(
+         // [
          //      'charset' => null,
          //      'defaultValue' => '0',
          //      'isNullable' => 'NO',
          //      'type' => 'int(5)',
          //      'extra' => '',
-         // )
+         // ]
          $columnProperties = $columnsFromDatabase[$columnName];
 
          if ($columnProperties['charset'] !== null) {
@@ -711,7 +716,7 @@ class GenericORMapperManagementTool extends BaseMapper {
             $create .= '  `' . $columnName . '` ' . $columnType . ',' . PHP_EOL;
          }
 
-         $indexDefinition = array();
+         $indexDefinition = [];
 
          foreach ($property['Indices'] as $columns => $indices) {
             foreach ($indices as $indexName => $indexType) {

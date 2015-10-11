@@ -39,7 +39,7 @@ class TextAreaTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testControllerPresetting() {
 
-      $_REQUEST = array();
+      $_REQUEST = [];
 
       $area = $this->getTextField();
 
@@ -55,7 +55,7 @@ class TextAreaTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testSubmitPresetting() {
 
-      $_REQUEST = array();
+      $_REQUEST = [];
 
       $userInput = 'This is a user input...';
       $_REQUEST[self::FIELD_NAME] = $userInput;

@@ -59,7 +59,7 @@ final class GenericORMapperFactory extends APFObject {
     *
     * @var GenericORRelationMapper[] $orMapperCache
     */
-   private $orMapperCache = array();
+   private $orMapperCache = [];
 
    /**
     * Defines the config file extension the GORM instance uses.

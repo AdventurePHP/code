@@ -36,19 +36,19 @@ class ClientValidationScriptStore extends APFObject {
     *
     * @var array $scriptStore
     */
-   protected $scriptStore = array();
+   protected $scriptStore = [];
    /**
     * Contains all valmarkerclasses
     *
     * @var array $valmarkerclassStore
     */
-   protected $valmarkerclassStore = array();
+   protected $valmarkerclassStore = [];
    /**
     * Contains all options for the controls
     *
     * @var array $optionsStore
     */
-   protected $optionsStore = array();
+   protected $optionsStore = [];
 
    /**
     * Adds a validator snipped to the script store, and adds validator file to file store if necessary.
@@ -67,12 +67,12 @@ class ClientValidationScriptStore extends APFObject {
 
       // add each control which needs this validator to scriptStore
       foreach ($controls as $control => $DUMMY) {
-         $this->scriptStore[] = array(
+         $this->scriptStore[] = [
                'class'   => $class,
                'button'  => $button,
                'control' => $control,
                'onblur'  => $onblur
-         );
+         ];
 
          if (!isset($this->optionsStore[$control])) {
             $this->optionsStore[$control] = $options[$control];
@@ -131,8 +131,8 @@ class ClientValidationScriptStore extends APFObject {
     * Version 1.0, 18.03.2010<br />
     */
    public function clean() {
-      $this->scriptStore = array();
-      $this->valmarkerclassStore = array();
-      $this->optionsStore = array();
+      $this->scriptStore = [];
+      $this->valmarkerclassStore = [];
+      $this->optionsStore = [];
    }
 }

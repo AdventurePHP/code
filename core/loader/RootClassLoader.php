@@ -38,7 +38,7 @@ class RootClassLoader {
     *
     * @var ClassLoader[] $loaders
     */
-   private static $loaders = array();
+   private static $loaders = [];
 
    /**
     * Registers a given class loader.

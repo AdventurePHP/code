@@ -43,7 +43,7 @@ class TestableDoubleActionStandardLinkScheme extends DefaultLinkScheme {
 
    protected function &getFrontcontrollerActions() {
 
-      $actions = array();
+      $actions = [];
       $action = new TestFrontControllerAction();
       $action->setActionNamespace($this->actionNamespace);
       $action->setActionName($this->actionName);

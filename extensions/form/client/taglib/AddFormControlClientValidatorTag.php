@@ -52,7 +52,7 @@ class AddFormControlClientValidatorTag extends AbstractFormControl {
       $button = $this->getAttribute('button');
       $onblur = false;
       $options = null;
-      $controls = array();
+      $controls = [];
 
       if ($this->getAttribute('onblur') === 'true') {
          $onblur = true;
@@ -76,7 +76,7 @@ class AddFormControlClientValidatorTag extends AbstractFormControl {
          }
       }
 
-      $options = array();
+      $options = [];
       foreach ($controlsTmp as $control) {
          //Get valmarkerclass of each control
          $valmarkerclass = 'apf-form-error';
@@ -85,7 +85,7 @@ class AddFormControlClientValidatorTag extends AbstractFormControl {
             $valmarkerclass = $val;
             unset($val);
          }
-         $controls[$control] = array('control' => $control, 'valmarkerclass' => $valmarkerclass);
+         $controls[$control] = ['control' => $control, 'valmarkerclass' => $valmarkerclass];
          unset($valmarkerclass);
 
          //Get parameters of each control

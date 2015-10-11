@@ -40,11 +40,10 @@ class MultiFileUploadManager extends APFObject {
 
    use GetRequestResponse;
 
-   private $sessionNamespace;
    private static $DEFAULT_SESSION_NAMESPACE = 'APF\tools\form\multifileupload';
-
+   private $sessionNamespace;
    private $maxFileSize = null;
-   private $mimeTypes = array();
+   private $mimeTypes = [];
    private $settingsLoaded = false;
    private $formName;
    private $name;
@@ -102,17 +101,10 @@ class MultiFileUploadManager extends APFObject {
    }
 
    /**
-    * Funktion liefert alle Dateien die mit dem Formular übertragen wurden.
-    *
-    * @return array Files
-    *
-    * @author Werner Liemberger <wpublicmail@gmail.com>
-    * @version 1.0, 14.3.2011<br>
+    * @return string The root path of the APF class loader.
     */
-   public function getFiles() {
-      $this->checkSessionFiles();
-
-      return $this->session->load('files');
+   private function getRootPath() {
+      return RootClassLoader::getLoaderByVendor('APF')->getRootPath();
    }
 
    /**
@@ -223,12 +215,93 @@ class MultiFileUploadManager extends APFObject {
          if ($js == false) {
             return true;
          } else {
-            return array('name' => $file['name'], 'type' => $file['type'], 'filesize' => $file['filesize'], 'size' => $file['size'], 'uploadname' => $file['uploadname'], 'deletelink' => $file['deletelink'], 'filelink' => $file['filelink']);
+            return [
+                  'name'       => $file['name'],
+                  'type'       => $file['type'],
+                  'filesize'   => $file['filesize'],
+                  'size'       => $file['size'],
+                  'uploadname' => $file['uploadname'],
+                  'deletelink' => $file['deletelink'],
+                  'filelink'   => $file['filelink']
+            ];
          }
       } else {
          throw new FormException('[' . get_class($this) . '::addFile()] This file "'
                . $file['name'] . '" has not been uploaded!', E_USER_ERROR);
       }
+   }
+
+   /**
+    * Läd alle Einstellungen aus der Session
+    *
+    * @author Werner Liemberger <wpublicmail@gmail.com>
+    * @version 1.0, 14.3.2011<br>
+    */
+   public function loadSettings() {
+      $settings = $this->session->load('settings');
+      $this->mimeTypes = $settings['mime'];
+      $this->maxFileSize = $settings['max'];
+      $this->settingsLoaded = true;
+   }
+
+   /**
+    * Funktion die die übermittelte Größe in Byte auf eine komfortable einheit umrechnet.
+    *
+    * @param integer $size
+    *
+    * @return string
+    *
+    * @author Werner Liemberger <wpublicmail@gmail.com>
+    * @version 1.0, 14.3.2011<br>
+    */
+   private function formatBytes($size) {
+      $units = [' B', ' KB', ' MB', ' GB', ' TB'];
+      for ($i = 0; $size >= 1024 && $i < 4; $i++)
+         $size /= 1024;
+
+      return round($size, 2) . $units[$i];
+   }
+
+   /**
+    * Erstellt den Link um anhand des übergebenen Dateinamen diese zu löschen
+    *
+    * @param string $uploadname
+    *
+    * @return string
+    *
+    * @author Werner Liemberger <wpublicmail@gmail.com>
+    * @version 1.0, 14.3.2011<br>
+    */
+   public function getDeleteLink($uploadname) {
+      $scheme = LinkGenerator::cloneLinkScheme();
+      $scheme->setEncodeAmpersands(false);
+      $link = LinkGenerator::generateActionUrl(Url::fromCurrent(), 'APF\tools\form\multifileupload', 'multifiledelete', [
+            'formname'   => $this->formName,
+            'name'       => $this->name,
+            'uploadname' => $uploadname], $scheme);
+
+      return $link;
+   }
+
+   /**
+    * Erzeugt den Link mit dem Dateien angezeigt werden können.
+    *
+    * @param string $uploadname
+    *
+    * @return string
+    *
+    * @author Werner Liemberger <wpublicmail@gmail.com>
+    * @version 1.0, 14.3.2011<br>
+    */
+   private function getFileLink($uploadname) {
+      $scheme = LinkGenerator::cloneLinkScheme();
+      $scheme->setEncodeAmpersands(true);
+
+      return LinkGenerator::generateActionUrl(
+            Url::fromCurrent(), 'APF\tools\form\multifileupload', 'multifilegetfile', [
+            'formname'   => $this->formName,
+            'name'       => $this->name,
+            'uploadname' => $uploadname], $scheme);
    }
 
    /**
@@ -258,6 +331,49 @@ class MultiFileUploadManager extends APFObject {
       $targetDir = new Folder();
       $targetDir->create($dir); //Create directory if not already done
       return $File->moveTo($targetDir);
+   }
+
+   /**
+    * Löscht die mittels uploadname übergebene Datei aus der Session.
+    * Wenn nichts übergeben wird, werden alle gelöscht.
+    *
+    * @param string $uploadname
+    *
+    * @author Werner Liemberger <wpublicmail@gmail.com>
+    * @version 1.0, 14.3.2011<br>
+    */
+   public function deleteFileFromSession($uploadname) {
+      $files = $this->getFiles();
+      if (is_array($files)) {
+         $files_buff = null;
+         foreach ($files as $file) {
+            if ($uploadname === null) {
+               #unlink($this->tmpUploadPath . '/' . $files[$i]['uploadname']);
+               unset($file);
+               continue;
+            } elseif ($file['uploadname'] == $uploadname) {
+               #unlink($this->tmpUploadPath . '/' . $files[$i]['uploadname']);
+               unset($file);
+               continue;
+            }
+            $files_buff[] = $file;
+         }
+         $this->session->save('files', $files_buff);
+      }
+   }
+
+   /**
+    * Funktion liefert alle Dateien die mit dem Formular übertragen wurden.
+    *
+    * @return array Files
+    *
+    * @author Werner Liemberger <wpublicmail@gmail.com>
+    * @version 1.0, 14.3.2011<br>
+    */
+   public function getFiles() {
+      $this->checkSessionFiles();
+
+      return $this->session->load('files');
    }
 
    /**
@@ -313,35 +429,6 @@ class MultiFileUploadManager extends APFObject {
    }
 
    /**
-    * Löscht die mittels uploadname übergebene Datei aus der Session.
-    * Wenn nichts übergeben wird, werden alle gelöscht.
-    *
-    * @param string $uploadname
-    *
-    * @author Werner Liemberger <wpublicmail@gmail.com>
-    * @version 1.0, 14.3.2011<br>
-    */
-   public function deleteFileFromSession($uploadname) {
-      $files = $this->getFiles();
-      if (is_array($files)) {
-         $files_buff = null;
-         foreach ($files as $file) {
-            if ($uploadname === null) {
-               #unlink($this->tmpUploadPath . '/' . $files[$i]['uploadname']);
-               unset($file);
-               continue;
-            } elseif ($file['uploadname'] == $uploadname) {
-               #unlink($this->tmpUploadPath . '/' . $files[$i]['uploadname']);
-               unset($file);
-               continue;
-            }
-            $files_buff[] = $file;
-         }
-         $this->session->save('files', $files_buff);
-      }
-   }
-
-   /**
     * Saves all settings that have applied by the responsible taglib.
     *
     * @param string $fileSize - Byte value of the maximum file size (default: 10 MB)
@@ -350,9 +437,9 @@ class MultiFileUploadManager extends APFObject {
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     */
-   public function setSettings($fileSize = null, array $mimeTypes = array()) {
+   public function setSettings($fileSize = null, array $mimeTypes = []) {
 
-      $settings = array();
+      $settings = [];
       $settings['max'] = 10485760; // 10485760 is 10 MB
 
       if ($fileSize !== null) {
@@ -376,19 +463,6 @@ class MultiFileUploadManager extends APFObject {
    }
 
    /**
-    * Läd alle Einstellungen aus der Session
-    *
-    * @author Werner Liemberger <wpublicmail@gmail.com>
-    * @version 1.0, 14.3.2011<br>
-    */
-   public function loadSettings() {
-      $settings = $this->session->load('settings');
-      $this->mimeTypes = $settings['mime'];
-      $this->maxFileSize = $settings['max'];
-      $this->settingsLoaded = true;
-   }
-
-   /**
     * Creates the upload link.
     *
     * @return string
@@ -399,50 +473,11 @@ class MultiFileUploadManager extends APFObject {
    public function link() {
       $scheme = LinkGenerator::cloneLinkScheme();
       $scheme->setEncodeAmpersands(false);
-      $link = LinkGenerator::generateActionUrl(Url::fromCurrent(), 'APF\tools\form\multifileupload', 'multifileupload', array(
+      $link = LinkGenerator::generateActionUrl(Url::fromCurrent(), 'APF\tools\form\multifileupload', 'multifileupload', [
             'formname' => $this->formName,
-            'name'     => $this->name), $scheme);
+            'name' => $this->name], $scheme);
 
       return $link;
-   }
-
-   /**
-    * Erstellt den Link um anhand des übergebenen Dateinamen diese zu löschen
-    *
-    * @param string $uploadname
-    *
-    * @return string
-    *
-    * @author Werner Liemberger <wpublicmail@gmail.com>
-    * @version 1.0, 14.3.2011<br>
-    */
-   public function getDeleteLink($uploadname) {
-      $scheme = LinkGenerator::cloneLinkScheme();
-      $scheme->setEncodeAmpersands(false);
-      $link = LinkGenerator::generateActionUrl(Url::fromCurrent(), 'APF\tools\form\multifileupload', 'multifiledelete', array(
-            'formname'   => $this->formName,
-            'name'       => $this->name,
-            'uploadname' => $uploadname), $scheme);
-
-      return $link;
-   }
-
-   /**
-    * Funktion die die übermittelte Größe in Byte auf eine komfortable einheit umrechnet.
-    *
-    * @param integer $size
-    *
-    * @return string
-    *
-    * @author Werner Liemberger <wpublicmail@gmail.com>
-    * @version 1.0, 14.3.2011<br>
-    */
-   private function formatBytes($size) {
-      $units = array(' B', ' KB', ' MB', ' GB', ' TB');
-      for ($i = 0; $size >= 1024 && $i < 4; $i++)
-         $size /= 1024;
-
-      return round($size, 2) . $units[$i];
    }
 
    /**
@@ -482,27 +517,6 @@ class MultiFileUploadManager extends APFObject {
    }
 
    /**
-    * Erzeugt den Link mit dem Dateien angezeigt werden können.
-    *
-    * @param string $uploadname
-    *
-    * @return string
-    *
-    * @author Werner Liemberger <wpublicmail@gmail.com>
-    * @version 1.0, 14.3.2011<br>
-    */
-   private function getFileLink($uploadname) {
-      $scheme = LinkGenerator::cloneLinkScheme();
-      $scheme->setEncodeAmpersands(true);
-
-      return LinkGenerator::generateActionUrl(
-            Url::fromCurrent(), 'APF\tools\form\multifileupload', 'multifilegetfile', array(
-            'formname'   => $this->formName,
-            'name'       => $this->name,
-            'uploadname' => $uploadname), $scheme);
-   }
-
-   /**
     * Reads a file and streams it back to the user.
     *
     * @param string $uploadFileName The file to output.
@@ -512,13 +526,6 @@ class MultiFileUploadManager extends APFObject {
     */
    public function deliverFile($uploadFileName) {
       readfile($this->getUploadPath() . '/' . $uploadFileName);
-   }
-
-   /**
-    * @return string The root path of the APF class loader.
-    */
-   private function getRootPath() {
-      return RootClassLoader::getLoaderByVendor('APF')->getRootPath();
    }
 
 }

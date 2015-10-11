@@ -71,14 +71,14 @@ class UmgtManager extends APFObject {
     *
     * @var PasswordHashProvider[] $passwordHashProviders
     */
-   protected $passwordHashProviders = array();
+   protected $passwordHashProviders = [];
 
    /**
     * Marks all password hash providers used within this instance. This marker is used as reminder for session wake-up, too.
     *
     * @var array $passwordHashProviderList
     */
-   protected $passwordHashProviderList = array();
+   protected $passwordHashProviderList = [];
 
    /**
     * The current instance of the generic o/r mapper.
@@ -116,13 +116,13 @@ class UmgtManager extends APFObject {
             if (count($providerSectionNames) === 0) {
                $passHashClass = $passwordHashProvider->getValue('Class');
                if ($passHashClass !== null) {
-                  $this->passwordHashProviderList[] = array($passHashClass);
+                  $this->passwordHashProviderList[] = [$passHashClass];
                }
             } else { // multiple providers given
                foreach ($providerSectionNames as $subSection) {
                   $passHashClass = $passwordHashProvider->getSection($subSection)->getValue('Class');
                   if ($passHashClass !== null) {
-                     $this->passwordHashProviderList[] = array($passHashClass);
+                     $this->passwordHashProviderList[] = [$passHashClass];
                   }
                }
             }
@@ -139,7 +139,7 @@ class UmgtManager extends APFObject {
       // initialize the password hash providers or re-initialize because it
       // might contain incomplete objects
       if (count($this->passwordHashProviders) === 0) {
-         $this->passwordHashProviders = array();
+         $this->passwordHashProviders = [];
          foreach ($this->passwordHashProviderList as $provider) {
             $passwordHashProviderObject = $this->getServiceObject($provider[0]);
             $this->passwordHashProviders[] = $passwordHashProviderObject;
@@ -181,13 +181,13 @@ class UmgtManager extends APFObject {
     * Version 0.1, 14.07.2011 <br />
     */
    public function __sleep() {
-      return array(
+      return [
             'language',
             'context',
             'serviceType',
             'applicationId',
             'passwordHashProviderList'
-      );
+      ];
    }
 
    /**
@@ -907,7 +907,7 @@ class UmgtManager extends APFObject {
 
       // we can use array_unique() here, because GenericORMapperDataObject implements __toString() method
       $roles = array_unique($roles);
-      $permissions = array();
+      $permissions = [];
       foreach ($roles as $role) {
          $select = 'SELECT DISTINCT `ent_permission`.*
                     FROM `ent_permission`
@@ -1084,7 +1084,7 @@ class UmgtManager extends APFObject {
     */
    public function attachUsers2Group(array $users, UmgtGroup $group) {
       for ($i = 0; $i < count($users); $i++) {
-         $this->attachUser2Groups($users[$i], array($group));
+         $this->attachUser2Groups($users[$i], [$group]);
       }
    }
 
@@ -1121,7 +1121,7 @@ class UmgtManager extends APFObject {
     */
    public function attachUser2Roles(UmgtUser $user, array $roles) {
       foreach ($roles as $role) {
-         $this->attachUsersToRole(array($user), $role);
+         $this->attachUsersToRole([$user], $role);
       }
    }
 
@@ -1648,7 +1648,7 @@ class UmgtManager extends APFObject {
     * @version
     * Version 0.1, 26.05.2010<br />
     */
-   public function createVisibilityDefinition(UmgtVisibilityDefinitionType $type, UmgtVisibilityDefinition $definition, array $users = array(), array $groups = array()) {
+   public function createVisibilityDefinition(UmgtVisibilityDefinitionType $type, UmgtVisibilityDefinition $definition, array $users = [], array $groups = []) {
 
       $orm = &$this->getORMapper();
 

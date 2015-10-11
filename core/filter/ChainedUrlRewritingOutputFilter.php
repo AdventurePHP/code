@@ -44,14 +44,14 @@ class ChainedUrlRewritingOutputFilter implements ChainedContentFilter {
     *
     * @var string[] $REPLACE_PATTERN
     */
-   private static $REPLACE_PATTERN = array(
+   private static $REPLACE_PATTERN = [
          '/?'    => '/',
          './?'   => '/',
          '='     => '/',
          '&'     => '/',
          '&amp;' => '/',
          '?'     => '/'
-   );
+   ];
 
    /**
     * The link rewrite deactivation indicator.
@@ -119,10 +119,10 @@ class ChainedUrlRewritingOutputFilter implements ChainedContentFilter {
 
       $input = preg_replace_callback(
             '/<form (.*?)action="(.*?)"(.*?)>(.*?)<\/form>/ims',
-            array(ChainedUrlRewritingOutputFilter::class, 'replaceForm'),
+            [ChainedUrlRewritingOutputFilter::class, 'replaceForm'],
             preg_replace_callback(
                   '/<a (.*?)href="(.*?)"(.*?)>(.*?)<\/a>/ims',
-                  array(ChainedUrlRewritingOutputFilter::class, 'replaceLink'),
+                  [ChainedUrlRewritingOutputFilter::class, 'replaceLink'],
                   $input)
       );
 

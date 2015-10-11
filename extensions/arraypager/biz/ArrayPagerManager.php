@@ -60,7 +60,7 @@ final class ArrayPagerManager extends APFObject {
       $config = $this->getConfiguration($namespace, $configName);
 
       // remap configuration
-      $configParams = array();
+      $configParams = [];
       if ($config->hasSection($initParam)) {
          $section = $config->getSection($initParam);
          foreach ($section->getValueNames() as $name) {
@@ -73,12 +73,12 @@ final class ArrayPagerManager extends APFObject {
                . 'Please double check you configuration!');
       }
 
-      $arrayParameter = array(
+      $arrayParameter = [
             'ParameterPage'    => 'page',
             'ParameterEntries' => 'entries',
             'Entries'          => 10,
             'EntriesPossible'  => '5|10|15'
-      );
+      ];
 
       $this->pagerConfig = array_merge($arrayParameter, $configParams);
 
@@ -197,13 +197,16 @@ final class ArrayPagerManager extends APFObject {
             $rootDoc = $pager->getRootDocument();
 
             $rootDoc->setAttribute('Config',
-                  array('ParameterPage'     => $this->pagerConfig['ParameterPage'],
+                  [
+                        'ParameterPage' => $this->pagerConfig['ParameterPage'],
                         'ParameterEntries'  => $this->pagerConfig['ParameterEntries'],
-                        'Entries' => intval($this->getRequest()->getParameter($this->pagerConfig['ParameterEntries'],
-                              $this->pagerConfig['Entries'])),
+                        'Entries'       => intval(
+                              $this->getRequest()->getParameter($this->pagerConfig['ParameterEntries'],
+                                    $this->pagerConfig['Entries'])
+                        ),
                         'EntriesPossible'   => $this->pagerConfig['EntriesPossible'],
                         'EntriesChangeable' => $this->pagerConfig['EntriesChangeable']
-                  )
+                  ]
             );
 
             $rootDoc->setAttribute('DataCount',

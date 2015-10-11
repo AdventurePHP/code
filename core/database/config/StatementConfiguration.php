@@ -53,7 +53,7 @@ class StatementConfiguration extends BaseConfiguration {
     */
    public function getParameterNames() {
       preg_match_all('/\[([A-Za-z0-9_\-]+)\]/u', $this->statement, $matches, PREG_SET_ORDER);
-      $paramNames = array();
+      $paramNames = [];
       for ($i = 0; $i < count($matches); $i++) {
          $paramNames[] = $matches[$i][1];
       }

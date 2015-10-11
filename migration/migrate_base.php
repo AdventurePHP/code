@@ -16,7 +16,7 @@ function find($dir, $pattern) {
 }
 
 function filterApfDirectories($files) {
-   $filteredFiles = array();
+   $filteredFiles = [];
 
    foreach ($files as $file) {
       if (preg_match('#\.[/|\\\\](core|modules|tools|tests|extensions|examples|migration)[/|\\\\]#', $file)) {
@@ -29,7 +29,7 @@ function filterApfDirectories($files) {
 }
 
 function filterApplicationDirectories($files) {
-   $filteredFiles = array();
+   $filteredFiles = [];
 
    foreach ($files as $file) {
       if (preg_match('#\.[/|\\\\](core|modules|tools|extensions)[/|\\\\]#', $file)) {

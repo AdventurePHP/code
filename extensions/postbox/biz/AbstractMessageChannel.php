@@ -98,10 +98,10 @@ abstract class AbstractMessageChannel extends GenericDomainObject {
       $DBDriver->executeStatement(
             'APF\extensions\postbox',
             'MessageChannel_setReadForUser.sql',
-            array(
+            [
                   'MessageChannelID' => (int) $this->getObjectId(),
                   'UserID'           => (int) $User->getObjectId()
-            )
+            ]
       );
       $this->deleteAssociation('User2UnreadMessageChannel', $User);
 

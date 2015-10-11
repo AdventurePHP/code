@@ -68,7 +68,7 @@ class UmgtMediaInclusionTag extends MediaInclusionTag {
 
       // generate the image tag
       $imgSrc = parent::transform();
-      $attributes = $this->getAttributesAsString($this->getAttributes(), array('alt', 'title'));
+      $attributes = $this->getAttributesAsString($this->getAttributes(), ['alt', 'title']);
 
       return '<img src="' . $imgSrc . '" ' . $attributes . ' class="icon" />';
    }

@@ -67,7 +67,7 @@ class UmgtPermissionCondition extends UmgtRoleConditionBase implements UserDepen
    private function getPermissions(UmgtUser $user) {
 
       $roles = $this->getRoles($user);
-      $result = array();
+      $result = [];
 
       foreach ($roles as $role) {
          $permissions = $role->loadRelatedObjects('Role2Permission');

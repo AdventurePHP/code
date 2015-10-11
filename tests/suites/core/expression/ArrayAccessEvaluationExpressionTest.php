@@ -27,24 +27,6 @@ class ArrayAccessEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
 
    const DATA_ATTRIBUTE_NAME = 'foo';
 
-   private function getPreviousResult() {
-      $model = new ContentModel();
-
-      return array(
-            0     => $model,
-            4711  => $model,
-            'foo' => $model,
-            'bar' => array(
-                  42    => $model,
-                  'baz' => $model
-            ),
-            42    => array(
-                  0 => $model,
-                  1 => $model
-            )
-      );
-   }
-
    public function testNumericAccess() {
       $previousResult = $this->getPreviousResult();
 
@@ -53,6 +35,24 @@ class ArrayAccessEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
 
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME . '[4711]', $previousResult);
       assertTrue($expression->getResult() instanceof ContentModel);
+   }
+
+   private function getPreviousResult() {
+      $model = new ContentModel();
+
+      return [
+            0     => $model,
+            4711  => $model,
+            'foo' => $model,
+            'bar' => [
+                  42    => $model,
+                  'baz' => $model
+            ],
+            42    => [
+                  0 => $model,
+                  1 => $model
+            ]
+      ];
    }
 
    public function testAssociativeAccess() {
@@ -83,7 +83,7 @@ class ArrayAccessEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
 
    public function testInvalidExpression() {
       $this->setExpectedException(ParserException::class);
-      $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME, array());
+      $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME, []);
       $expression->getResult();
    }
 

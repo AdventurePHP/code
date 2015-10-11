@@ -76,7 +76,7 @@ final class BenchmarkProcess {
     *
     * @var BenchmarkProcess[] $processes
     */
-   private $processes = array();
+   private $processes = [];
 
    public function setProcessId($id) {
       $this->processId = $id;

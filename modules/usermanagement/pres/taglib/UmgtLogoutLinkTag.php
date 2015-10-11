@@ -35,7 +35,7 @@ use APF\tools\link\Url;
 class UmgtLogoutLinkTag extends Document {
 
    public function transform() {
-      $params = array('logout' => 'true');
+      $params = ['logout' => 'true'];
 
       return LinkGenerator::generateActionUrl(Url::fromCurrent(), 'APF\modules\usermanagement\biz', 'logout', $params);
    }

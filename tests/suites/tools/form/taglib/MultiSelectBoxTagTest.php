@@ -35,7 +35,7 @@ class MultiSelectBoxTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testControllerPresetting() {
 
-      $_REQUEST = array();
+      $_REQUEST = [];
 
       $select = $this->getSelectBox();
 
@@ -59,7 +59,7 @@ class MultiSelectBoxTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testSubmitPresetting() {
 
-      $_REQUEST = array();
+      $_REQUEST = [];
       $_REQUEST[self::SELECT_BOX_NAME][] = 2;
       $_REQUEST[self::SELECT_BOX_NAME][] = 4;
 
@@ -80,7 +80,7 @@ class MultiSelectBoxTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testControllerPresettingWithGroups() {
 
-      $_REQUEST = array();
+      $_REQUEST = [];
 
       $select = $this->getSelectBox();
 
@@ -105,7 +105,7 @@ class MultiSelectBoxTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testSubmitPresettingWithGroups() {
 
-      $_REQUEST = array();
+      $_REQUEST = [];
       $_REQUEST[self::SELECT_BOX_NAME][] = 2;
       $_REQUEST[self::SELECT_BOX_NAME][] = 4;
 

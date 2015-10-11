@@ -57,9 +57,9 @@ class ProxyRevokeAccessController extends UmgtBaseController {
       if ($formYes->isSent()) {
 
          if ($objectType == 'User') {
-            $uM->detachUsersFromVisibilityDefinition($proxy, array($object));
+            $uM->detachUsersFromVisibilityDefinition($proxy, [$object]);
          } else {
-            $uM->detachGroupsFromVisibilityDefinition($proxy, array($object));
+            $uM->detachGroupsFromVisibilityDefinition($proxy, [$object]);
          }
 
       } elseif ($formNo->isSent()) {
@@ -96,11 +96,11 @@ class ProxyRevokeAccessController extends UmgtBaseController {
       }
 
       $this->getResponse()->forward($this->generateLink(
-                  array(
+            [
                         'mainview'  => 'proxy',
                         'proxyview' => 'details',
                         'proxyid'   => $proxyId
-                  )
+            ]
             )
       );
 

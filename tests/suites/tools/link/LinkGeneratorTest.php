@@ -62,13 +62,13 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
    public function testFrontcontrollerUrlGeneration() {
       $url = Url::fromString('')->setHost('localhost')->setScheme('http');
       $link = LinkGenerator::generateUrl(
-            $url->mergeQuery(array('foo' => 'bar', 'blubber' => null)),
+            $url->mergeQuery(['foo' => 'bar', 'blubber' => null]),
             new TestableDefaultLinkScheme()
       );
       assertEquals('http://localhost?foo=bar&amp;APF_cms_core_biz_setmodel-action:setModel=page.config.section:external', $link);
 
       $link = LinkGenerator::generateUrl(
-            $url->mergeQuery(array('foo' => 'bar', 'blubber' => null)),
+            $url->mergeQuery(['foo' => 'bar', 'blubber' => null]),
             new TestableRewriteLinkScheme()
       );
       assertEquals('http://localhost/foo/bar/~/APF_cms_core_biz_setmodel-action/setModel/page.config.section/external', $link);
@@ -90,7 +90,7 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $paramTwoName = 'zicke';
       $paramOneValue = 'bla';
       $paramTwoValue = 'zacke';
-      $url = Url::fromCurrent(true)->mergeQuery(array($paramOneName => $paramOneValue, $paramTwoName => $paramTwoValue));
+      $url = Url::fromCurrent(true)->mergeQuery([$paramOneName => $paramOneValue, $paramTwoName => $paramTwoValue]);
       assertEquals($host, $url->getHost());
       assertEquals($scheme, $url->getScheme());
       assertEquals($paramOneValue, $url->getQueryParameter($paramOneName));
@@ -109,7 +109,7 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testLinkGenerationSimpleWithRewriteLinkScheme() {
-      $url = new Url(null, null, null, '/foo/1/bar/2/blubber/3', array('foo' => '2'));
+      $url = new Url(null, null, null, '/foo/1/bar/2/blubber/3', ['foo' => '2']);
       $link = LinkGenerator::generateUrl($url, new RewriteLinkScheme());
       assertContains('/foo/2/', $link);
    }
@@ -131,7 +131,7 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $paramOneValue = 'my-page';
       $paramTwoName = 'topic';
       $paramTwoValue = '2-research';
-      $url = new Url(null, null, null, null, array($paramOneName => $paramOneValue, $paramTwoName => $paramTwoValue));
+      $url = new Url(null, null, null, null, [$paramOneName => $paramOneValue, $paramTwoName => $paramTwoValue]);
 
       $link = LinkGenerator::generateUrl($url);
       assertEquals('?' . $paramOneName . '=' . $paramOneValue . '&amp;' . $paramTwoName . '=' . $paramTwoValue, $link);
@@ -148,12 +148,12 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $bar = 'bar';
 
       $urlOne = new Url(null, null, null, $path);
-      $link = LinkGenerator::generateActionUrl($urlOne, $actionNamespace, $actionName, array($foo => '1', $bar => '2'), new RewriteLinkScheme());
+      $link = LinkGenerator::generateActionUrl($urlOne, $actionNamespace, $actionName, [$foo => '1', $bar => '2'], new RewriteLinkScheme());
       // the rewrite link scheme supports no path since the path is interpreted as params and their values!
       assertEquals('/~/APF_tools_media-action/streamMedia/' . $foo . '/1/' . $bar . '/2', $link);
 
       $urlTwo = new Url(null, null, null, $path);
-      $link = LinkGenerator::generateActionUrl($urlTwo, $actionNamespace, $actionName, array($foo => '1', $bar => '2'), new DefaultLinkScheme());
+      $link = LinkGenerator::generateActionUrl($urlTwo, $actionNamespace, $actionName, [$foo => '1', $bar => '2'], new DefaultLinkScheme());
       assertEquals($path . '?APF_tools_media-action:streamMedia=' . $foo . ':1|' . $bar . ':2', $link);
    }
 
@@ -173,12 +173,12 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $rewriteScheme = new TestableDoubleActionRewriteLinkScheme($actionNamespace, $actionName);
 
       $urlOne = new Url(null, null, null, $path);
-      $link = LinkGenerator::generateActionUrl($urlOne, $actionNamespace, $actionName, array($foo => '1', $bar => '2'), $rewriteScheme);
+      $link = LinkGenerator::generateActionUrl($urlOne, $actionNamespace, $actionName, [$foo => '1', $bar => '2'], $rewriteScheme);
       // the rewrite link scheme supports no path since the path is interpreted as params and their values!
       assertEquals('/~/APF_tools_media-action/streamMedia/' . $foo . '/1/' . $bar . '/2', $link);
 
       $urlTwo = new Url(null, null, null, $path);
-      $link = LinkGenerator::generateActionUrl($urlTwo, $actionNamespace, $actionName, array($foo => '1', $bar => '2'), $defaultScheme);
+      $link = LinkGenerator::generateActionUrl($urlTwo, $actionNamespace, $actionName, [$foo => '1', $bar => '2'], $defaultScheme);
       assertEquals($path . '?APF_tools_media-action:streamMedia=' . $foo . ':1|' . $bar . ':2', $link);
 
       // without explicit action definition, the registered front controller action makes it into the url
@@ -194,13 +194,13 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
 
    public function testExclusionOfNullValueAndInclusionOfZeroValueParameters() {
       $url = Url::fromString('/');
-      $url->mergeQuery(array(
+      $url->mergeQuery([
             'foo'         => 'bar',
             'exclude'     => null,
          // see bug with ignoring zero values in 1.15 (fixed in 1.16)
             'include-one' => '0',
             'include-two' => 0
-      ));
+      ]);
 
       $link = LinkGenerator::generateUrl($url, new DefaultLinkScheme(false));
       assertEquals('/?foo=bar&include-one=0&include-two=0', $link);
@@ -213,7 +213,7 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $foo = 'foo';
       $bar = 'bar';
       $baz = 'baz';
-      $url = new Url(null, null, null, $path, array($foo => $bar, $bar => $baz), $anchor);
+      $url = new Url(null, null, null, $path, [$foo => $bar, $bar => $baz], $anchor);
 
       $linkScheme = new DefaultLinkScheme(false);
       $link = LinkGenerator::generateUrl($url, $linkScheme);
@@ -234,7 +234,7 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $foo = 'foo';
       $bar = 'bar';
       $baz = 'baz';
-      $url = new Url(null, null, null, null, array($foo => $bar, $bar => $baz), $anchor);
+      $url = new Url(null, null, null, null, [$foo => $bar, $bar => $baz], $anchor);
 
       $linkScheme = new RewriteLinkScheme(false);
       $link = LinkGenerator::generateUrl($url, $linkScheme);
@@ -257,14 +257,14 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $urlOne = new Url(null, null, null, null);
       $scheme = new TestableActionUrlMappingRewriteLinkScheme();
       $scheme->addActionMapping(new ActionUrlMapping(TestableActionUrlMappingRewriteLinkScheme::URL_TOKEN, $actionNamespace, $actionName));
-      $link = LinkGenerator::generateActionUrl($urlOne, $actionNamespace, $actionName, array(), $scheme);
+      $link = LinkGenerator::generateActionUrl($urlOne, $actionNamespace, $actionName, [], $scheme);
       // the rewrite link scheme supports no path since the path is interpreted as params and their values!
       assertEquals('/~/' . TestableActionUrlMappingRewriteLinkScheme::URL_TOKEN, $link);
 
       $urlTwo = new Url(null, null, null, null);
       $scheme = new TestableActionUrlMappingStandardLinkScheme();
       $scheme->addActionMapping(new ActionUrlMapping(TestableActionUrlMappingStandardLinkScheme::URL_TOKEN, $actionNamespace, $actionName));
-      $link = LinkGenerator::generateActionUrl($urlTwo, $actionNamespace, $actionName, array(), $scheme);
+      $link = LinkGenerator::generateActionUrl($urlTwo, $actionNamespace, $actionName, [], $scheme);
       assertEquals('?' . TestableActionUrlMappingStandardLinkScheme::URL_TOKEN, $link);
    }
 
@@ -279,14 +279,14 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $urlOne = new Url(null, null, null, $path);
       $scheme = new TestableActionUrlMappingRewriteLinkScheme();
       $scheme->addActionMapping(new ActionUrlMapping(TestableActionUrlMappingRewriteLinkScheme::URL_TOKEN, $actionNamespace, $actionName));
-      $link = LinkGenerator::generateActionUrl($urlOne, $actionNamespace, $actionName, array($foo => '1', $bar => '2'), $scheme);
+      $link = LinkGenerator::generateActionUrl($urlOne, $actionNamespace, $actionName, [$foo => '1', $bar => '2'], $scheme);
       // the rewrite link scheme supports no path since the path is interpreted as params and their values!
       assertEquals('/~/' . TestableActionUrlMappingRewriteLinkScheme::URL_TOKEN . '/' . $foo . '/1/' . $bar . '/2', $link);
 
       $urlTwo = new Url(null, null, null, $path);
       $scheme = new TestableActionUrlMappingStandardLinkScheme();
       $scheme->addActionMapping(new ActionUrlMapping(TestableActionUrlMappingStandardLinkScheme::URL_TOKEN, $actionNamespace, $actionName));
-      $link = LinkGenerator::generateActionUrl($urlTwo, $actionNamespace, $actionName, array($foo => '1', $bar => '2'), $scheme);
+      $link = LinkGenerator::generateActionUrl($urlTwo, $actionNamespace, $actionName, [$foo => '1', $bar => '2'], $scheme);
       assertEquals($path . '?' . TestableActionUrlMappingStandardLinkScheme::URL_TOKEN . '=' . $foo . ':1|' . $bar . ':2', $link);
    }
 
@@ -304,7 +304,7 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $urlOne = new Url(null, null, null, '/VENDOR_actions-action:doIt');
       $scheme = new TestableActionUrlMappingRewriteLinkScheme();
       $scheme->addActionMapping(new ActionUrlMapping(TestableActionUrlMappingRewriteLinkScheme::URL_TOKEN, $actionNamespace, $actionName));
-      $link = LinkGenerator::generateActionUrl($urlOne, $actionNamespace, $actionName, array($foo => '1', $bar => '2'), $scheme);
+      $link = LinkGenerator::generateActionUrl($urlOne, $actionNamespace, $actionName, [$foo => '1', $bar => '2'], $scheme);
       // the rewrite link scheme supports no path since the path is interpreted as params and their values!
       assertEquals('/~/' . TestableActionUrlMappingRewriteLinkScheme::URL_TOKEN . '/' . $foo . '/1/' . $bar . '/2', $link);
 
@@ -315,14 +315,14 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       assertEquals('/foo/bar', $link);
 
       // normal action within URL but no keepInUrl=true set for action; generate action url
-      $urlThree = new Url(null, null, null, null, array('VENDOR_actions-action:doIt' => ''));
+      $urlThree = new Url(null, null, null, null, ['VENDOR_actions-action:doIt' => '']);
       $scheme = new TestableActionUrlMappingStandardLinkScheme();
       $scheme->addActionMapping(new ActionUrlMapping(TestableActionUrlMappingStandardLinkScheme::URL_TOKEN, $actionNamespace, $actionName));
-      $link = LinkGenerator::generateActionUrl($urlThree, $actionNamespace, $actionName, array($foo => '1', $bar => '2'), $scheme);
+      $link = LinkGenerator::generateActionUrl($urlThree, $actionNamespace, $actionName, [$foo => '1', $bar => '2'], $scheme);
       assertEquals('?' . TestableActionUrlMappingStandardLinkScheme::URL_TOKEN . '=' . $foo . ':1|' . $bar . ':2', $link);
 
       // mapped action is within url but no keepInUrl=true set for action; generate normal url
-      $urlFour = new Url(null, null, null, '/foo/bar', array('media' => ''));
+      $urlFour = new Url(null, null, null, '/foo/bar', ['media' => '']);
       $link = LinkGenerator::generateUrl($urlFour, $scheme);
       // the rewrite link scheme supports no path since the path is interpreted as params and their values!
       assertEquals('/foo/bar', $link);
@@ -375,32 +375,32 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
 
       // normal action URL containing mapped actions - w/o params
       $url = new Url(null, null, null, '/categories');
-      $link = LinkGenerator::generateActionUrl($url, 'VENDOR\baz', 'say-baz', array(), $standardScheme);
+      $link = LinkGenerator::generateActionUrl($url, 'VENDOR\baz', 'say-baz', [], $standardScheme);
       assertEquals('/categories?VENDOR_baz-action:say-baz&amp;foo&amp;bar', $link);
 
       // rewrite action URL containing mapped actions - w/o params
       $url = new Url(null, null, null, null);
-      $link = LinkGenerator::generateActionUrl($url, 'VENDOR\baz', 'say-baz', array(), $rewriteScheme);
+      $link = LinkGenerator::generateActionUrl($url, 'VENDOR\baz', 'say-baz', [], $rewriteScheme);
       assertEquals('/~/VENDOR_baz-action/say-baz/~/foo/~/bar', $link);
 
       // simple normal URL containing mapped actions - w/ params
-      $url = new Url(null, null, null, '/categories', array('one' => '1', 'two' => '2'));
+      $url = new Url(null, null, null, '/categories', ['one' => '1', 'two' => '2']);
       $link = LinkGenerator::generateUrl($url, $standardScheme);
       assertEquals('/categories?one=1&amp;two=2&amp;foo&amp;bar', $link);
 
       // simple rewrite URL containing mapped actions - w/ params
-      $url = new Url(null, null, null, null, array('one' => '1', 'two' => '2'));
+      $url = new Url(null, null, null, null, ['one' => '1', 'two' => '2']);
       $link = LinkGenerator::generateUrl($url, $rewriteScheme);
       assertEquals('/one/1/two/2/~/foo/~/bar', $link);
 
       // normal action URL containing mapped actions - w/ params
-      $url = new Url(null, null, null, '/categories', array('one' => '1', 'two' => '2'));
-      $link = LinkGenerator::generateActionUrl($url, 'VENDOR\baz', 'say-baz', array(), $standardScheme);
+      $url = new Url(null, null, null, '/categories', ['one' => '1', 'two' => '2']);
+      $link = LinkGenerator::generateActionUrl($url, 'VENDOR\baz', 'say-baz', [], $standardScheme);
       assertEquals('/categories?one=1&amp;two=2&amp;VENDOR_baz-action:say-baz&amp;foo&amp;bar', $link);
 
       // rewrite action URL containing mapped actions - w/ params
-      $url = new Url(null, null, null, null, array('one' => '1', 'two' => '2'));
-      $link = LinkGenerator::generateActionUrl($url, 'VENDOR\baz', 'say-baz', array(), $rewriteScheme);
+      $url = new Url(null, null, null, null, ['one' => '1', 'two' => '2']);
+      $link = LinkGenerator::generateActionUrl($url, 'VENDOR\baz', 'say-baz', [], $rewriteScheme);
       assertEquals('/one/1/two/2/~/VENDOR_baz-action/say-baz/~/foo/~/bar', $link);
 
    }

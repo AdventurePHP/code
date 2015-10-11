@@ -210,9 +210,9 @@ class SimpleCaptchaTag extends AbstractFormControl {
       $disableInlineStyle = $disableInlineStyle === 'true' ? true : false;
 
       // create desired media url
-      $captchaUrl = LinkGenerator::generateActionUrl(Url::fromCurrent(), 'APF\modules\captcha\biz', 'showCaptcha', array(
+      $captchaUrl = LinkGenerator::generateActionUrl(Url::fromCurrent(), 'APF\modules\captcha\biz', 'showCaptcha', [
             'name' => $this->textFieldName
-      ));
+      ]);
 
       // initialize captcha source
       $captchaCode = '<div class="captcha"><img src="' . $captchaUrl . '" alt="CAPTCHA" ';

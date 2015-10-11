@@ -82,13 +82,13 @@ class ProxyListController extends UmgtBaseController {
          $template->setPlaceHolder('Users', $this->getUsers($proxy));
          $template->setPlaceHolder('Groups', $this->getGroups($proxy));
 
-         $template->setPlaceHolder('proxy_details', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'details', 'proxyid' => $proxyId)));
-         $template->setPlaceHolder('proxy_delete', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'proxydelete', 'proxyid' => $proxyId)));
+         $template->setPlaceHolder('proxy_details', $this->generateLink(['mainview' => 'proxy', 'proxyview' => 'details', 'proxyid' => $proxyId]));
+         $template->setPlaceHolder('proxy_delete', $this->generateLink(['mainview' => 'proxy', 'proxyview' => 'proxydelete', 'proxyid' => $proxyId]));
 
-         $template->setPlaceHolder('proxy_add_user', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'proxy_add_users', 'proxyid' => $proxyId)));
-         $template->setPlaceHolder('proxy_remove_user', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'proxy_remove_users', 'proxyid' => $proxyId)));
-         $template->setPlaceHolder('proxy_add_group', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'proxy_add_groups', 'proxyid' => $proxyId)));
-         $template->setPlaceHolder('proxy_remove_group', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'proxy_remove_groups', 'proxyid' => $proxyId)));
+         $template->setPlaceHolder('proxy_add_user', $this->generateLink(['mainview' => 'proxy', 'proxyview' => 'proxy_add_users', 'proxyid' => $proxyId]));
+         $template->setPlaceHolder('proxy_remove_user', $this->generateLink(['mainview' => 'proxy', 'proxyview' => 'proxy_remove_users', 'proxyid' => $proxyId]));
+         $template->setPlaceHolder('proxy_add_group', $this->generateLink(['mainview' => 'proxy', 'proxyview' => 'proxy_add_groups', 'proxyid' => $proxyId]));
+         $template->setPlaceHolder('proxy_remove_group', $this->generateLink(['mainview' => 'proxy', 'proxyview' => 'proxy_remove_groups', 'proxyid' => $proxyId]));
 
          $buffer .= $template->transformTemplate();
       }

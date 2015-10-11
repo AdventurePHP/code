@@ -42,13 +42,13 @@ class SMSPageLinkTag extends Document {
 
    public static $template = '<a {ATTR}>{TEXT}</a>';
 
-   protected static $attributeList = array('id', 'style', 'class', 'onabort',
+   protected static $attributeList = ['id', 'style', 'class', 'onabort',
          'onclick', 'ondblclick', 'onmousedown', 'onmouseup',
          'onmouseover', 'onmousemove', 'onmouseout',
          'onkeypress', 'onkeydown', 'onkeyup', 'tabindex',
          'dir', 'accesskey', 'title', 'charset',
          'coords', 'href', 'hreflang', 'name', 'rel',
-         'rev', 'shape', 'target', 'xml:lang', 'onblur');
+         'rev', 'shape', 'target', 'xml:lang', 'onblur'];
 
 
    public function transform() {
@@ -60,7 +60,7 @@ class SMSPageLinkTag extends Document {
 
       if (empty($pageId)) {
          $pageId = $this->getAttribute('id');
-         $attList = array_diff(self::$attributeList, array('id')); // remove id from attribute list
+         $attList = array_diff(self::$attributeList, ['id']); // remove id from attribute list
       }
 
       if (empty($pageId)) {
@@ -74,7 +74,7 @@ class SMSPageLinkTag extends Document {
       ////
       // evaluate magic page ids
 
-      $magicPageIds = array('__current', '__referer', '__start', '__parent', '__next', '__prev');
+      $magicPageIds = ['__current', '__referer', '__start', '__parent', '__next', '__prev'];
       if (in_array($pageId, $magicPageIds)) {
 
          switch ($pageId) {
@@ -146,7 +146,7 @@ class SMSPageLinkTag extends Document {
                }
 
                /** @var SMSPage[] $visibleSiblings */
-               $visibleSiblings = array();
+            $visibleSiblings = [];
                foreach ($siblings AS $sibling) {
                   if ($sibling->isHidden()) {
                      continue;
@@ -218,11 +218,11 @@ class SMSPageLinkTag extends Document {
 
 
       return str_replace(
-            array('{ATTR}', '{TEXT}'),
-            array(
+            ['{ATTR}', '{TEXT}'],
+            [
                   $this->getAttributesAsString($this->attributes, $attList),
                   $content
-            ),
+            ],
             self::$template
       );
    }

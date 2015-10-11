@@ -38,7 +38,7 @@ class MemCacheProvider extends CacheBase implements CacheProvider {
     *  Remembers the cache keys within a certain namespace to be able to clear a whole
     *  namespace.
     */
-   protected $cacheKeyStore = array();
+   protected $cacheKeyStore = [];
 
    public function read(CacheKey $cacheKey) {
 

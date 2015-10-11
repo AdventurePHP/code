@@ -87,9 +87,9 @@ final class GuestbookService extends APFObject {
 
       $pager = &$this->getPager();
 
-      $entryIds = $pager->loadEntries(array('GuestbookID' => $this->getModel()->getGuestbookId()));
+      $entryIds = $pager->loadEntries(['GuestbookID' => $this->getModel()->getGuestbookId()]);
 
-      $entries = array();
+      $entries = [];
       $mapper = &$this->getMapper();
       foreach ($entryIds as $entryId) {
          $entries[] = $mapper->loadEntry($entryId);
@@ -156,7 +156,7 @@ final class GuestbookService extends APFObject {
       $model = &$this->getModel();
       $pager = &$this->getPager();
 
-      return $pager->getPager(array('GuestbookID' => $model->getGuestbookId()));
+      return $pager->getPager(['GuestbookID' => $model->getGuestbookId()]);
    }
 
    /**
@@ -238,10 +238,10 @@ final class GuestbookService extends APFObject {
       }
 
       // display the admin start page
-      $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
+      $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery([
             'gbview'    => 'admin',
             'adminview' => null
-      )));
+      ]));
       $this->getResponse()->forward($link);
    }
 
@@ -259,10 +259,10 @@ final class GuestbookService extends APFObject {
       $session->delete('LoggedIn');
 
       // display the list view
-      $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
+      $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery([
             'gbview'    => 'list',
             'adminview' => null
-      )));
+      ]));
       $this->getResponse()->forward($link);
    }
 
@@ -285,10 +285,10 @@ final class GuestbookService extends APFObject {
 
       // redirect to admin page
       if ($loggedId !== 'true') {
-         $startLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
+         $startLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery([
                'gbview'    => 'list',
                'adminview' => null
-         )));
+         ]));
          $this->getResponse()->forward($startLink);
       }
    }
@@ -315,10 +315,10 @@ final class GuestbookService extends APFObject {
          $session->save('LoggedIn', 'true');
 
          // redirect to admin page
-         $adminLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
+         $adminLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery([
                'gbview'    => 'admin',
                'adminview' => null
-         )));
+         ]));
          $this->getResponse()->forward($adminLink);
       }
 
@@ -342,13 +342,13 @@ final class GuestbookService extends APFObject {
       // Forward to the desired view to prevent F5-bugs.
       $entryId = $entry->getId();
       if (!empty($entryId)) {
-         $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
+         $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery([
                'gbview' => 'admin'
-         )));
+         ]));
       } else {
-         $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
+         $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery([
                'gbview' => 'list'
-         )));
+         ]));
       }
       $this->getResponse()->forward($link);
    }

@@ -56,9 +56,9 @@ class ButtonTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testInitialFormLoad() {
 
-      $_GET = array();
-      $_POST = array();
-      $_REQUEST = array();
+      $_GET = [];
+      $_POST = [];
+      $_REQUEST = [];
 
       $form = $this->getForm(HtmlForm::METHOD_POST_VALUE_NAME);
 
@@ -75,9 +75,9 @@ class ButtonTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testGetRequestWithPostDefined() {
 
-      $_GET = array();
-      $_POST = array();
-      $_REQUEST = array();
+      $_GET = [];
+      $_POST = [];
+      $_REQUEST = [];
 
       $_GET[self::BUTTON_NAME] = self::BUTTON_NAME;
 
@@ -96,9 +96,9 @@ class ButtonTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testPostRequestWithPostDefined() {
 
-      $_GET = array();
-      $_POST = array();
-      $_REQUEST = array();
+      $_GET = [];
+      $_POST = [];
+      $_REQUEST = [];
 
       $_POST[self::BUTTON_NAME] = self::BUTTON_VALUE;
 
@@ -117,9 +117,9 @@ class ButtonTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testPostRequestWithGetDefined() {
 
-      $_GET = array();
-      $_POST = array();
-      $_REQUEST = array();
+      $_GET = [];
+      $_POST = [];
+      $_REQUEST = [];
 
       $_POST[self::BUTTON_NAME] = self::BUTTON_VALUE;
 
@@ -138,9 +138,9 @@ class ButtonTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testGetRequestWithGetDefined() {
 
-      $_GET = array();
-      $_POST = array();
-      $_REQUEST = array();
+      $_GET = [];
+      $_POST = [];
+      $_REQUEST = [];
 
       $_GET[self::BUTTON_NAME] = self::BUTTON_VALUE;
 

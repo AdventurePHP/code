@@ -66,7 +66,7 @@ class DisplayForwardMessagesTag extends Document {
    protected function getMessages() {
       $groups = $this->getAttribute('groups');
       if (empty($groups)) {
-         $groups = array();
+         $groups = [];
       } else {
          $groups = explode(',', $groups);
       }

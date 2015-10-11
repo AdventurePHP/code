@@ -118,7 +118,7 @@ class MultiSelectBoxTag extends SelectBoxTag {
          return $values;
       }
 
-      return array();
+      return [];
    }
 
    /**
@@ -140,7 +140,7 @@ class MultiSelectBoxTag extends SelectBoxTag {
 
       if ($this->isVisible) {
          // add brackets for the "name" attribute to ensure multi select capability!
-         $name = array('name' => $this->getAttribute('name') . '[]');
+         $name = ['name' => $this->getAttribute('name') . '[]'];
          $select = '<select ' . $this->getSanitizedAttributesAsString(array_merge($this->attributes, $name)) . '>';
          $select .= $this->content . '</select>';
 
@@ -190,7 +190,7 @@ class MultiSelectBoxTag extends SelectBoxTag {
          $this->presetValue();
       }
 
-      $selectedOptions = array();
+      $selectedOptions = [];
       foreach ($this->children as $objectId => $DUMMY) {
 
          if ($this->children[$objectId] instanceof SelectBoxGroupTag) {

@@ -136,7 +136,7 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
    protected function updateServiceObject($name, $baseFileName) {
 
       $content = file_get_contents($baseFileName);
-      $newCode = $this->generateBaseObjectCode($name, $this->getNamespaceByObjectName($name));
+      $newCode = $this->generateBaseObjectCode($name);
 
       // replace only base object area, don't change anything else!
       // <<< *IMPORTANT* There seems to be a bug in preg_replace() which
@@ -313,13 +313,13 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
 
       // create base class file
       $content = '<?php' . PHP_EOL . 'namespace ' . $namespace . ';'
-            . PHP_EOL . PHP_EOL . $this->generateBaseObjectCode($name, $namespace) . PHP_EOL;
+            . PHP_EOL . PHP_EOL . $this->generateBaseObjectCode($name) . PHP_EOL;
       $baseFile = new File();
       $baseFile->create($baseFileName)->writeContent($content);
 
       // create class file
       $content = '<?php' . PHP_EOL . 'namespace ' . $namespace . ';'
-            . PHP_EOL . PHP_EOL . $this->generateObjectCode($name, $namespace) . PHP_EOL;
+            . PHP_EOL . PHP_EOL . $this->generateObjectCode($name) . PHP_EOL;
       $file = new File();
       $file->create($fileName)->writeContent($content);
 

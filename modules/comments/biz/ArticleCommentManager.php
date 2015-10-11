@@ -67,7 +67,7 @@ class ArticleCommentManager extends APFObject {
       $pager = &$this->getPagerManager();
       $m = &$this->getServiceObject(ArticleCommentMapper::class);
 
-      return $pager->loadEntriesByAppDataComponent($m, 'loadArticleCommentByID', array('CategoryKey' => $this->categoryKey));
+      return $pager->loadEntriesByAppDataComponent($m, 'loadArticleCommentByID', ['CategoryKey' => $this->categoryKey]);
    }
 
    /**
@@ -94,7 +94,7 @@ class ArticleCommentManager extends APFObject {
       $pager = &$this->getPagerManager();
       $pager->setAnchorName($anchorName);
 
-      return $pager->getPager(array('CategoryKey' => $this->categoryKey));
+      return $pager->getPager(['CategoryKey' => $this->categoryKey]);
    }
 
    /**
@@ -131,7 +131,7 @@ class ArticleCommentManager extends APFObject {
 
       $link = LinkGenerator::generateUrl(
             Url::fromCurrent()
-                  ->mergeQuery(array('coview' => 'listing'))
+                  ->mergeQuery(['coview' => 'listing'])
                   ->setAnchor('comments')
       );
       $this->getResponse()->forward($link);

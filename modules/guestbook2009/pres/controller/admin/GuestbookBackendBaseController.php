@@ -62,10 +62,10 @@ abstract class GuestbookBackendBaseController extends GuestbookBaseController {
       }
 
       // define form action url concerning the view it is rendered in
-      $action = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
+      $action = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery([
             'gbview'    => 'admin',
             'adminview' => $adminView
-      )));
+      ]));
 
       $form->setAttribute('action', $action);
 

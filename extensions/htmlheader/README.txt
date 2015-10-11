@@ -76,7 +76,7 @@ following. (And for meta-refreshs you need to use it)
 $HHM = $this->getServiceObject(HtmlHeaderManager::class);
 
 // Add a refresh on index.php?test=abc, with a delay of 5 seconds:
-$HHM->addRefresh('index.php', 5, array("test" => "abc"));
+$HHM->addRefresh('index.php', 5, ['test' => 'abc']);
 
 // Add a title (direct edit the $title variable of HHM)
 $HHM->title = "Example title";

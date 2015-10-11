@@ -37,7 +37,7 @@ class HtmlLinkTag extends LinkGenerationTag {
 
    const TITLE_ATTRIBUTE_NAME = 'title';
 
-   protected $attributeWhiteList = array(
+   protected $attributeWhiteList = [
          'id',
          'style',
          'class',
@@ -64,7 +64,8 @@ class HtmlLinkTag extends LinkGenerationTag {
          'rel',
          'rev',
          'shape',
-         'target');
+         'target'
+   ];
 
    public function onParseTime() {
 
@@ -74,22 +75,6 @@ class HtmlLinkTag extends LinkGenerationTag {
       // analyze tags which might add some attributes to this one.
       $this->extractTagLibTags();
    }
-
-   protected function getUrlParameters() {
-
-      // only non-white-list parameters are allowed as URL parameters
-      // to not interfere with HTML attributes
-      $attributes = [];
-
-      foreach ($this->getAttributes() as $key => $value) {
-         if (!in_array($key, $this->attributeWhiteList)) {
-            $attributes[$key] = $value;
-         }
-      }
-
-      return $attributes;
-   }
-
 
    public function transform() {
       // If no Content is set, this taglib tries to set the title as content.
@@ -145,6 +130,21 @@ class HtmlLinkTag extends LinkGenerationTag {
       }
 
       return false;
+   }
+
+   protected function getUrlParameters() {
+
+      // only non-white-list parameters are allowed as URL parameters
+      // to not interfere with HTML attributes
+      $attributes = [];
+
+      foreach ($this->getAttributes() as $key => $value) {
+         if (!in_array($key, $this->attributeWhiteList)) {
+            $attributes[$key] = $value;
+         }
+      }
+
+      return $attributes;
    }
 
 }

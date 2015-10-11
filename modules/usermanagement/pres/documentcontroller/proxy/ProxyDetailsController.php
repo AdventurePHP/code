@@ -45,7 +45,7 @@ class ProxyDetailsController extends UmgtBaseController {
       $list = $uM->loadUsersAndGroupsWithVisibilityDefinition($proxy);
 
       // sort list with respect to the display name of the current element
-      $sortedList = array();
+      $sortedList = [];
       foreach ($list as $offset => $DUMMY) {
          $key = $list[$offset]->getDisplayName() . '-' . $list[$offset]->getObjectId();
          $sortedList[$key] = $list[$offset];
@@ -73,12 +73,12 @@ class ProxyDetailsController extends UmgtBaseController {
          $template->setPlaceHolder(
                'delete_link',
                $this->generateLink(
-                     array(
+                     [
                            'proxyview'  => 'proxyrevokeaccess',
                            'proxyid'    => $proxyId,
                            'objectid'   => $item->getObjectId(),
                            'objecttype' => $item->getObjectName()
-                     )
+                     ]
                )
          );
 

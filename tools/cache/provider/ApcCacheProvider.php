@@ -141,7 +141,7 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
     * Version 0.1, 12.01.2013<br />
     */
    protected function getCacheEntriesByNamespace($namespace) {
-      $namespaceEntries = array();
+      $namespaceEntries = [];
       foreach ($this->getCacheEntries() as $entry) {
          if (strpos($entry, $namespace . self::CACHE_KEY_DELIMITER) !== false) {
             $namespaceEntries[] = $entry;
@@ -163,7 +163,7 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
     */
    protected function getCacheEntries() {
       $cacheInfo = apc_cache_info('user');
-      $entries = array();
+      $entries = [];
       foreach ($cacheInfo['cache_list'] as $cacheEntryInfo) {
          // distinguish between WIN vs. LINUX implementation of APC API.
          if (isset($cacheEntryInfo['info'])) {
@@ -190,7 +190,7 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
     * Version 0.1, 12.01.2013<br />
     */
    protected function getCacheEntriesByNamespaceAndKey($namespace, $key) {
-      $namespaceAndKeyEntries = array();
+      $namespaceAndKeyEntries = [];
       foreach ($this->getCacheEntries() as $entry) {
          if (strpos($entry, $namespace . self::CACHE_KEY_DELIMITER . $key . self::CACHE_KEY_DELIMITER) !== false) {
             $namespaceAndKeyEntries[] = $entry;

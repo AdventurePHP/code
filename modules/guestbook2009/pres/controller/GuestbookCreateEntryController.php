@@ -76,7 +76,7 @@ class GuestbookCreateEntryController extends GuestbookBaseController {
       $form->transformOnPlace();
 
       // add dynamic link
-      $this->setPlaceHolder('overviewlink', LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('gbview' => 'list'))));
+      $this->setPlaceHolder('overviewlink', LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(['gbview' => 'list'])));
    }
 
 }

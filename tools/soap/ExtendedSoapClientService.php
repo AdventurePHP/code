@@ -37,7 +37,7 @@ class ExtendedSoapClientService extends APFObject {
     *
     * @var string[] $options
     */
-   private $options = array();
+   private $options = [];
 
    /**
     * The url of the WSDL.
@@ -61,7 +61,7 @@ class ExtendedSoapClientService extends APFObject {
    public function __construct() {
 
       // set default values and merge array
-      $this->options = array(
+      $this->options = [
 
          /**
           * The soap_version option specifies whether to use SOAP 1.1 (default), or SOAP 1.2 client.
@@ -84,24 +84,7 @@ class ExtendedSoapClientService extends APFObject {
           * The exceptions option is a boolean value defining whether soap errors throw exceptions of type SoapFault.
           */
             'exceptions'   => true
-      );
-   }
-
-   /**
-    * Factory method for the PHP SoapClient.
-    *
-    * @return \SoapClient The instance of the soap client.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 26.01.2012<br />
-    */
-   protected function getClient() {
-      if ($this->client === null) {
-         $this->client = new \SoapClient($this->wsdlUrl, $this->options);
-      }
-
-      return $this->client;
+      ];
    }
 
    /**
@@ -149,10 +132,10 @@ class ExtendedSoapClientService extends APFObject {
     *    'VENDOR\sample\namespace\LoginResponse'
     * ));
     *
-    * $params = array(
+    * $params = [
     *    'alias' => 'my user name',
     *    'secret' => 'my secret'
-    * );
+    * ];
     *
     * $response = $client->Authenticate($params);
     *
@@ -175,7 +158,7 @@ class ExtendedSoapClientService extends APFObject {
       // we are taking the first argument only since it contains the parameters to pass to the
       // SOAP request (specialty of PHP's magic __call() method that passes the list of
       // arguments as list)
-      $params = isset($arguments[0]) ? array($arguments[0]) : array();
+      $params = isset($arguments[0]) ? [$arguments[0]] : [];
       $response = $client->__soapCall($action, $params);
 
       // check for hidden soap faults
@@ -185,6 +168,23 @@ class ExtendedSoapClientService extends APFObject {
       }
 
       return $response;
+   }
+
+   /**
+    * Factory method for the PHP SoapClient.
+    *
+    * @return \SoapClient The instance of the soap client.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.01.2012<br />
+    */
+   protected function getClient() {
+      if ($this->client === null) {
+         $this->client = new \SoapClient($this->wsdlUrl, $this->options);
+      }
+
+      return $this->client;
    }
 
    /**
@@ -251,6 +251,17 @@ class ExtendedSoapClientService extends APFObject {
    }
 
    /**
+    * @return int The soap version.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.01.2012<br />
+    */
+   public function getSoapVersion() {
+      return $this->options['soap_version'];
+   }
+
+   /**
     * @param string $location The location of the SOAP service.
     *
     * @return ExtendedSoapClientService This instance for further usage.
@@ -276,17 +287,6 @@ class ExtendedSoapClientService extends APFObject {
    }
 
    /**
-    * @param string $wsdlUrl The location of the WSDL of the web service to consume.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 26.01.2012<br />
-    */
-   public function setWsdlUrl($wsdlUrl) {
-      $this->wsdlUrl = $wsdlUrl;
-   }
-
-   /**
     * @return string The location of the WSDL service that is currently configured.
     *
     * @author Christian Achatz
@@ -295,6 +295,17 @@ class ExtendedSoapClientService extends APFObject {
     */
    public function getWsdlUrl() {
       return $this->wsdlUrl;
+   }
+
+   /**
+    * @param string $wsdlUrl The location of the WSDL of the web service to consume.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.01.2012<br />
+    */
+   public function setWsdlUrl($wsdlUrl) {
+      $this->wsdlUrl = $wsdlUrl;
    }
 
    /**
@@ -424,17 +435,6 @@ class ExtendedSoapClientService extends APFObject {
       $this->client = null;
 
       return $this;
-   }
-
-   /**
-    * @return int The soap version.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 26.01.2012<br />
-    */
-   public function getSoapVersion() {
-      return $this->options['soap_version'];
    }
 
    /**

@@ -80,7 +80,7 @@ class ImageManager {
       $flags[4] = 'swf';
 
       // initialize the return list
-      $imageAttributes = array();
+      $imageAttributes = [];
 
       // analyze the image attributes
       if (($attributes = getimagesize($image)) === false) {

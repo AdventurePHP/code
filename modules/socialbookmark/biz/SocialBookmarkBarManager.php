@@ -86,7 +86,7 @@ class SocialBookmarkBarManager extends APFObject {
     *
     * @var SocialBookmarkItem[] $bookmarkServices
     */
-   private $bookmarkServices = array();
+   private $bookmarkServices = [];
 
    /**
     * Let's you add a bookmark service.
@@ -189,10 +189,10 @@ class SocialBookmarkBarManager extends APFObject {
 
       $code = '<a rel="nofollow" href="';
       $code .= LinkGenerator::generateUrl(
-            Url::fromString($bookmarkEntry->getServiceBaseUrl())->mergeQuery(array(
+            Url::fromString($bookmarkEntry->getServiceBaseUrl())->mergeQuery([
                   $bookmarkEntry->getUrlParamName()   => $this->url,
                   $bookmarkEntry->getTitleParamName() => $this->title
-            )), new DefaultLinkScheme(true));
+            ]), new DefaultLinkScheme(true));
       $code .= '" title="';
       $code .= $bookmarkEntry->getTitle();
       $code .= '" linkrewrite="false"><img src="';

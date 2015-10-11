@@ -47,10 +47,10 @@ class ExpressionEvaluatorTest extends \PHPUnit_Framework_TestCase {
       $model = new ContentModel();
       $node->setData(
             'foo',
-            array(
+            [
                   0     => $model,
                   'foo' => $model
-            )
+            ]
       );
       assertEquals($model->getCssClass(), ExpressionEvaluator::evaluate($node, 'foo[0]->getCssClass()'));
       assertEquals($model->getMoreLinkModel()->getMoreLabel(), ExpressionEvaluator::evaluate($node, 'foo[\'foo\']->getMoreLinkModel()->getMoreLabel()'));
@@ -69,11 +69,11 @@ class ExpressionEvaluatorTest extends \PHPUnit_Framework_TestCase {
       $model = new ContentModel();
       $node->setData(
             'foo',
-            array(
-                  1 => array(
+            [
+                  1 => [
                         2 => $model
-                  )
-            )
+                  ]
+            ]
       );
       assertEquals($model->getCssClass(), ExpressionEvaluator::evaluate($node, 'foo[1]->bar[2]->getCssClass()'));
    }

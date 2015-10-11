@@ -94,7 +94,7 @@ class CommentCreateEntryController extends CommentBaseDocumentController {
 
       $form->transformOnPlace();
 
-      $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('coview' => 'listing')));
+      $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(['coview' => 'listing']));
       $this->setPlaceHolder('back', $link);
    }
 

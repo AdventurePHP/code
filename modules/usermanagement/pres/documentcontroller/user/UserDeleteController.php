@@ -49,9 +49,9 @@ class UserDeleteController extends UmgtBaseController {
          $user = new UmgtUser();
          $user->setObjectId($userId);
          $uM->deleteUser($user);
-         $response->forward($this->generateLink(array('mainview' => 'user', 'userview' => null, 'userid' => null)));
+         $response->forward($this->generateLink(['mainview' => 'user', 'userview' => null, 'userid' => null]));
       } elseif ($formNo->isSent()) {
-         $response->forward($this->generateLink(array('mainview' => 'user', 'userview' => null, 'userid' => null)));
+         $response->forward($this->generateLink(['mainview' => 'user', 'userview' => null, 'userid' => null]));
       } else {
          $formNo->transformOnPlace();
          $formYes->transformOnPlace();

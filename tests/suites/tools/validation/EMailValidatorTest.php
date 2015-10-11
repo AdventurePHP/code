@@ -24,7 +24,7 @@ use APF\tools\validation\EMailValidator;
 
 class EMailValidatorTest extends \PHPUnit_Framework_TestCase {
 
-   private $validList = array(
+   private $validList = [
          'email@example.com',
          'firstname.lastname@example.com',
          'email@subdomain.example.com',
@@ -35,14 +35,14 @@ class EMailValidatorTest extends \PHPUnit_Framework_TestCase {
          'email@example.museum',
          'email@example.co.jp',
          'firstname-lastname@example.com'
-   );
+   ];
 
-   private $specialList = array(
+   private $specialList = [
          'firstname+lastname@example.com',
          'email@123.123.123.123'
-   );
+   ];
 
-   private $invalidList = array(
+   private $invalidList = [
          '            plainaddress',
          '#@%^%#$@#$@#.com',
          '@example . com',
@@ -60,7 +60,7 @@ class EMailValidatorTest extends \PHPUnit_Framework_TestCase {
          'email@111.222.333.44444',
          'email@example ..com',
          'Abc . .123@example . com'
-   );
+   ];
 
    public function testValidEMailAddresses() {
       $validator = new EMailValidator();

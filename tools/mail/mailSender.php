@@ -49,7 +49,7 @@ class mailSender extends APFObject {
     * <pre>$this->sender['Name']  = '...';
     * $this->sender['EMail'] = '...';</pre>
     */
-   protected $sender = array();
+   protected $sender = [];
 
    /**
     * Indicates the recipients.
@@ -58,7 +58,7 @@ class mailSender extends APFObject {
     * $this->recipients[1]['Name']  = '...';
     * $this->recipients[1]['EMail'] = '...';</pre>
     */
-   protected $recipients = array();
+   protected $recipients = [];
 
    /**
     * Indicates the CC recipients.
@@ -67,7 +67,7 @@ class mailSender extends APFObject {
     * $this->ccRecipients[1]['Name']  = '...';
     * $this->ccRecipients[1]['EMail'] = '...';</pre>
     */
-   protected $ccRecipients = array();
+   protected $ccRecipients = [];
 
    /**
     * Indicates the BCC recipients.
@@ -76,7 +76,7 @@ class mailSender extends APFObject {
     * $this->bccRecipients[1]['Name']  = '...';
     * $this->bccRecipients[1]['EMail'] = '...';</pre>
     */
-   protected $bccRecipients = array();
+   protected $bccRecipients = [];
 
    /**
     * Header of the mail.
@@ -184,7 +184,7 @@ class mailSender extends APFObject {
       // add cc recipients
       if (count($this->ccRecipients) > 0) {
 
-         $ccRecipients = array();
+         $ccRecipients = [];
 
          for ($i = 0; $i < count($this->ccRecipients); $i++) {
             $ccRecipients[] = '"' . ($this->ccRecipients[$i]['Name']) . '" <' . ($this->ccRecipients[$i]['EMail']) . '>';
@@ -197,7 +197,7 @@ class mailSender extends APFObject {
       // add bcc recipients
       if (count($this->bccRecipients) > 0) {
 
-         $bccRecipients = array();
+         $bccRecipients = [];
 
          for ($i = 0; $i < count($this->bccRecipients); $i++) {
             $bccRecipients[] = '"' . ($this->bccRecipients[$i]['Name']) . '" <' . ($this->bccRecipients[$i]['EMail']) . '>';
@@ -251,9 +251,9 @@ class mailSender extends APFObject {
     */
    public function setRecipient($recipientEMail, $recipientName) {
       if ($this->validateEMail($recipientEMail)) {
-         $this->recipients[count($this->recipients)] = array('Name'  => $recipientName,
+         $this->recipients[count($this->recipients)] = ['Name' => $recipientName,
                                                              'EMail' => $recipientEMail
-         );
+         ];
       }
    }
 
@@ -265,7 +265,7 @@ class mailSender extends APFObject {
     * Version 0.1, 31.03.2007<br />
     */
    public function clearRecipients() {
-      $this->recipients = array();
+      $this->recipients = [];
    }
 
    /**
@@ -280,9 +280,9 @@ class mailSender extends APFObject {
     */
    public function setCCRecipient($recipientEMail, $recipientName) {
       if ($this->validateEMail($recipientEMail)) {
-         $this->ccRecipients[count($this->ccRecipients)] = array('Name'  => $recipientName,
+         $this->ccRecipients[count($this->ccRecipients)] = ['Name' => $recipientName,
                                                                  'EMail' => $recipientEMail
-         );
+         ];
       }
    }
 
@@ -294,7 +294,7 @@ class mailSender extends APFObject {
     * Version 0.1, 31.03.2007<br />
     */
    public function clearCCRecipients() {
-      $this->ccRecipients = array();
+      $this->ccRecipients = [];
    }
 
    /**
@@ -309,9 +309,9 @@ class mailSender extends APFObject {
     */
    public function setBCCRecipient($recipientEMail, $recipientName) {
       if ($this->validateEMail($recipientEMail)) {
-         $this->bccRecipients[count($this->bccRecipients)] = array('Name'  => $recipientName,
+         $this->bccRecipients[count($this->bccRecipients)] = ['Name' => $recipientName,
                                                                    'EMail' => $recipientEMail
-         );
+         ];
       }
    }
 
@@ -323,7 +323,7 @@ class mailSender extends APFObject {
     * Version 0.1, 31.03.2007<br />
     */
    public function clearBCCRecipients() {
-      $this->bccRecipients = array();
+      $this->bccRecipients = [];
    }
 
    /**
@@ -426,7 +426,7 @@ class mailSender extends APFObject {
       $header = $this->generateHeader();
       /* @var $log Logger */
       $log = &Singleton::getInstance(Logger::class);
-      $sentEmails = array();
+      $sentEmails = [];
 
       for ($i = 0; $i < count($this->recipients); $i++) {
 

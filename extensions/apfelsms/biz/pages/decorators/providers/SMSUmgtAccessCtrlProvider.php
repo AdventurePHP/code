@@ -41,7 +41,7 @@ class SMSUmgtAccessCtrlProvider extends APFObject implements SMSAccessCtrlProvid
     *
     * @var bool[] $cache
     */
-   protected $cache = array();
+   protected $cache = [];
 
 
    /**

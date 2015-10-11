@@ -52,7 +52,7 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
       $actionName = 'say-foo';
 
       // action on stack w/o params
-      $_REQUEST = array();
+      $_REQUEST = [];
       $_REQUEST['VENDOR_foo-action:' . $actionName] = '';
 
       $filter = new TestableChainedStandardInputFilter();
@@ -63,10 +63,10 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
       $actions = $fC->getActions();
       assertEquals($actionNamespace, $actions[0]->getActionNamespace());
       assertEquals($actionName, $actions[0]->getActionName());
-      assertEquals(array(), $actions[0]->getInput()->getParameters());
+      assertEquals([], $actions[0]->getInput()->getParameters());
 
       // action on stack w/ params
-      $_REQUEST = array();
+      $_REQUEST = [];
       $_REQUEST['VENDOR_foo-action:' . $actionName] = 'one:1|two:2';
 
       $filter = new TestableChainedStandardInputFilter();
@@ -77,14 +77,14 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
       $actions = $fC->getActions();
       assertEquals($actionNamespace, $actions[0]->getActionNamespace());
       assertEquals($actionName, $actions[0]->getActionName());
-      assertEquals(array('one' => '1', 'two' => '2'), $actions[0]->getInput()->getParameters());
+      assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getInput()->getParameters());
 
    }
 
    public function testSimpleMultipleActions() {
 
       // action on stack w/o params
-      $_REQUEST = array();
+      $_REQUEST = [];
       $_REQUEST['VENDOR_foo-action:say-foo'] = '';
       $_REQUEST['VENDOR_bar-action:say-bar'] = '';
 
@@ -97,14 +97,14 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
 
       assertEquals('VENDOR\foo', $actions[0]->getActionNamespace());
       assertEquals('say-foo', $actions[0]->getActionName());
-      assertEquals(array(), $actions[0]->getInput()->getParameters());
+      assertEquals([], $actions[0]->getInput()->getParameters());
 
       assertEquals('VENDOR\bar', $actions[1]->getActionNamespace());
       assertEquals('say-bar', $actions[1]->getActionName());
-      assertEquals(array(), $actions[1]->getInput()->getParameters());
+      assertEquals([], $actions[1]->getInput()->getParameters());
 
       // action on stack w/ params
-      $_REQUEST = array();
+      $_REQUEST = [];
       $_REQUEST['VENDOR_foo-action:say-foo'] = 'one:1|two:2';
       $_REQUEST['VENDOR_bar-action:say-bar'] = 'one:1|two:2';
 
@@ -117,17 +117,17 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
 
       assertEquals('VENDOR\foo', $actions[0]->getActionNamespace());
       assertEquals('say-foo', $actions[0]->getActionName());
-      assertEquals(array('one' => '1', 'two' => '2'), $actions[0]->getInput()->getParameters());
+      assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getInput()->getParameters());
 
       assertEquals('VENDOR\bar', $actions[1]->getActionNamespace());
       assertEquals('say-bar', $actions[1]->getActionName());
-      assertEquals(array('one' => '1', 'two' => '2'), $actions[1]->getInput()->getParameters());
+      assertEquals(['one' => '1', 'two' => '2'], $actions[1]->getInput()->getParameters());
 
    }
 
    public function testSimpleMultipleActionsMixedWithParams() {
 
-      $_REQUEST = array();
+      $_REQUEST = [];
       $_REQUEST['zero'] = '0';
       $_REQUEST['VENDOR_foo-action:say-foo'] = 'one:1|two:2';
       $_REQUEST['VENDOR_bar-action:say-bar'] = 'one:1|two:2';
@@ -143,11 +143,11 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
 
       assertEquals('VENDOR\foo', $actions[0]->getActionNamespace());
       assertEquals('say-foo', $actions[0]->getActionName());
-      assertEquals(array('one' => '1', 'two' => '2'), $actions[0]->getInput()->getParameters());
+      assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getInput()->getParameters());
 
       assertEquals('VENDOR\bar', $actions[1]->getActionNamespace());
       assertEquals('say-bar', $actions[1]->getActionName());
-      assertEquals(array('one' => '1', 'two' => '2'), $actions[1]->getInput()->getParameters());
+      assertEquals(['one' => '1', 'two' => '2'], $actions[1]->getInput()->getParameters());
 
    }
 
@@ -158,7 +158,7 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
       $actionName = 'say-foo';
 
       // action on stack w/o params
-      $_REQUEST = array();
+      $_REQUEST = [];
       $_REQUEST[$urlToken] = '';
 
       $filter = new TestableChainedStandardInputFilter();
@@ -171,10 +171,10 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
       $actions = $fC->getActions();
       assertEquals($actionNamespace, $actions[0]->getActionNamespace());
       assertEquals($actionName, $actions[0]->getActionName());
-      assertEquals(array(), $actions[0]->getInput()->getParameters());
+      assertEquals([], $actions[0]->getInput()->getParameters());
 
       // action on stack w/ params
-      $_REQUEST = array();
+      $_REQUEST = [];
       $_REQUEST[$urlToken] = 'one:1|two:2';
 
       $filter = new TestableChainedStandardInputFilter();
@@ -187,7 +187,7 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
       $actions = $fC->getActions();
       assertEquals($actionNamespace, $actions[0]->getActionNamespace());
       assertEquals($actionName, $actions[0]->getActionName());
-      assertEquals(array('one' => '1', 'two' => '2'), $actions[0]->getInput()->getParameters());
+      assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getInput()->getParameters());
 
    }
 
@@ -202,7 +202,7 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
       $barActionName = 'say-bar';
 
       // action on stack w/o params
-      $_REQUEST = array();
+      $_REQUEST = [];
       $_REQUEST[$fooUrlToken] = '';
       $_REQUEST[$barUrlToken] = '';
 
@@ -218,14 +218,14 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
 
       assertEquals($fooActionNamespace, $actions[0]->getActionNamespace());
       assertEquals($fooActionName, $actions[0]->getActionName());
-      assertEquals(array(), $actions[0]->getInput()->getParameters());
+      assertEquals([], $actions[0]->getInput()->getParameters());
 
       assertEquals($barActionNamespace, $actions[1]->getActionNamespace());
       assertEquals($barActionName, $actions[1]->getActionName());
-      assertEquals(array(), $actions[1]->getInput()->getParameters());
+      assertEquals([], $actions[1]->getInput()->getParameters());
 
       // action on stack w/ params
-      $_REQUEST = array();
+      $_REQUEST = [];
       $_REQUEST[$fooUrlToken] = 'one:1|two:2';
       $_REQUEST[$barUrlToken] = 'one:1|two:2';
 
@@ -241,11 +241,11 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
 
       assertEquals($fooActionNamespace, $actions[0]->getActionNamespace());
       assertEquals($fooActionName, $actions[0]->getActionName());
-      assertEquals(array('one' => '1', 'two' => '2'), $actions[0]->getInput()->getParameters());
+      assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getInput()->getParameters());
 
       assertEquals($barActionNamespace, $actions[1]->getActionNamespace());
       assertEquals($barActionName, $actions[1]->getActionName());
-      assertEquals(array('one' => '1', 'two' => '2'), $actions[1]->getInput()->getParameters());
+      assertEquals(['one' => '1', 'two' => '2'], $actions[1]->getInput()->getParameters());
 
    }
 
@@ -260,7 +260,7 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
       $barActionName = 'say-bar';
 
       // action on stack w/o params
-      $_REQUEST = array();
+      $_REQUEST = [];
       $_REQUEST[$fooUrlToken] = '';
       $_REQUEST['VENDOR_baz-action:say-baz'] = '';
       $_REQUEST[$barUrlToken] = '';
@@ -277,18 +277,18 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
 
       assertEquals($fooActionNamespace, $actions[0]->getActionNamespace());
       assertEquals($fooActionName, $actions[0]->getActionName());
-      assertEquals(array(), $actions[0]->getInput()->getParameters());
+      assertEquals([], $actions[0]->getInput()->getParameters());
 
       assertEquals('VENDOR\baz', $actions[1]->getActionNamespace());
       assertEquals('say-baz', $actions[1]->getActionName());
-      assertEquals(array(), $actions[1]->getInput()->getParameters());
+      assertEquals([], $actions[1]->getInput()->getParameters());
 
       assertEquals($barActionNamespace, $actions[2]->getActionNamespace());
       assertEquals($barActionName, $actions[2]->getActionName());
-      assertEquals(array(), $actions[2]->getInput()->getParameters());
+      assertEquals([], $actions[2]->getInput()->getParameters());
 
       // action on stack w/ params
-      $_REQUEST = array();
+      $_REQUEST = [];
       $_REQUEST[$fooUrlToken] = 'one:1|two:2';
       $_REQUEST['VENDOR_baz-action:say-baz'] = 'one:1|two:2';
       $_REQUEST[$barUrlToken] = 'one:1|two:2';
@@ -305,21 +305,21 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
 
       assertEquals($fooActionNamespace, $actions[0]->getActionNamespace());
       assertEquals($fooActionName, $actions[0]->getActionName());
-      assertEquals(array('one' => '1', 'two' => '2'), $actions[0]->getInput()->getParameters());
+      assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getInput()->getParameters());
 
       assertEquals('VENDOR\baz', $actions[1]->getActionNamespace());
       assertEquals('say-baz', $actions[1]->getActionName());
-      assertEquals(array('one' => '1', 'two' => '2'), $actions[1]->getInput()->getParameters());
+      assertEquals(['one' => '1', 'two' => '2'], $actions[1]->getInput()->getParameters());
 
       assertEquals($barActionNamespace, $actions[2]->getActionNamespace());
       assertEquals($barActionName, $actions[2]->getActionName());
-      assertEquals(array('one' => '1', 'two' => '2'), $actions[2]->getInput()->getParameters());
+      assertEquals(['one' => '1', 'two' => '2'], $actions[2]->getInput()->getParameters());
 
    }
 
    public function testParametersOnly() {
 
-      $_REQUEST = array();
+      $_REQUEST = [];
       $_REQUEST['zero'] = '0';
       $_REQUEST['one'] = '1';
       $_REQUEST['two'] = '2';
@@ -329,7 +329,7 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
       $filter->setFrontcontroller($fC);
       $filter->filter(new TestableFilterChain(), null);
 
-      assertEquals(array(), $fC->getActions());
+      assertEquals([], $fC->getActions());
 
    }
 

@@ -30,8 +30,8 @@ namespace APF\modules\usermanagement\pres\documentcontroller;
 class PermissionNavigationController extends UmgtBaseController {
 
    public function transformContent() {
-      $this->setPlaceHolder('manage_permissions', $this->generateLink(array('mainview' => 'permission', 'permissionview' => '', 'permissionid' => '')));
-      $this->setPlaceHolder('permission_add', $this->generateLink(array('mainview' => 'permission', 'permissionview' => 'add', 'permissionsetid' => '', 'permissionid' => '')));
+      $this->setPlaceHolder('manage_permissions', $this->generateLink(['mainview' => 'permission', 'permissionview' => '', 'permissionid' => '']));
+      $this->setPlaceHolder('permission_add', $this->generateLink(['mainview' => 'permission', 'permissionview' => 'add', 'permissionsetid' => '', 'permissionid' => '']));
    }
 
 }
