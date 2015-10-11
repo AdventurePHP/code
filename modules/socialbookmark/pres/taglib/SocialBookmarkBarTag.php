@@ -58,8 +58,8 @@ class SocialBookmarkBarTag extends Document {
       /* @var $bm SocialBookmarkBarManager */
       $bm = &$this->getServiceObject(SocialBookmarkBarManager::class);
 
-      $bm->setImageWidth($this->getAttributes('width'));
-      $bm->setImageHeight($this->getAttributes('height'));
+      $bm->setImageWidth($this->getAttribute('width'));
+      $bm->setImageHeight($this->getAttribute('height'));
       $bm->setUrl($this->getAttribute('url'));
       $bm->setTitle($this->getAttribute('title'));
 

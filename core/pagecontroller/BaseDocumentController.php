@@ -260,7 +260,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * Version 0.3, 02.07.2011 (Renaming to fit the APF naming convention)<br />
     * Version 0.4, 13.08.2014 (ID#231: Allow custom form tag while still using this method to obtain an instance)<br />
     */
-   protected function templatePlaceHolderExists(TemplateTag &$template, $name) {
+   protected function templatePlaceHolderExists(Template &$template, $name) {
       try {
          $template->getChildNode('name', $name, PlaceHolder::class);
 
