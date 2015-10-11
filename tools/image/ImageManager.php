@@ -40,96 +40,6 @@ class ImageManager {
    }
 
    /**
-    * Returns information about an image. The return list contains the following offsets:
-    * <ul>
-    *   <li>width: the width of the image</li>
-    *   <li>height: the height of the image</li>
-    *   <li>type: the type of the image</li>
-    *   <li>mimetype: the mime type of the image</li>
-    *   <li>bitdepth: the bitdepth of the image</li>
-    *   <li>colormode: the color mode (RGB or CMYK)</li>
-    * </ul>
-    * If the second argument contains a image attribute, the value is returned instead of a list!
-    *
-    * @param string $image a full qualified image path.
-    * @param string $attributeName the name of the attribute, that should be returned.
-    *
-    * @return string[] The attributes of an image.
-    * @throws InvalidArgumentException In case the applied image or the applied attribute does not exist.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 22.11.2004<br />
-    * Version 0.2, 15.07.2006 (Added the extension in the attributes list; added another algo to guess the extension)<br />
-    * Version 0.3, 31.01.2009 (Refactoring of the method. Now only the relevant image indicators are returned)<br />
-    * Version 0.4, 01.02.2009 (Added a check, if the channel attribute is returned by getimagesize())<br />
-    */
-   public static function getImageAttributes($image, $attributeName = null) {
-
-      // check if the image is present on disk
-      if (!file_exists($image)) {
-         throw new InvalidArgumentException('[ImageManager::showImageAttributes()] The given '
-               . 'image ("' . $image . '") does not exist! Hence, no attributes can be analyzed.',
-               E_USER_ERROR);
-      }
-
-      // declare image flags
-      $flags[1] = 'gif';
-      $flags[2] = 'jpg';
-      $flags[3] = 'png';
-      $flags[4] = 'swf';
-
-      // initialize the return list
-      $imageAttributes = [];
-
-      // analyze the image attributes
-      if (($attributes = getimagesize($image)) === false) {
-         throw new InvalidArgumentException('[ImageManager::showImageAttributes()] The attributes of the image ("'
-               . $image . '") cannot be analyzed since it is corrupt!');
-      }
-
-      // image define the image dimensions
-      $imageAttributes['width'] = $attributes[0];
-      $imageAttributes['height'] = $attributes[1];
-
-      // define the image type
-      $imageAttributes['type'] = $flags[$attributes[2]];
-
-      // define the mime type
-      if (isset($attributes['mime'])) {
-         $imageAttributes['mimetype'] = $attributes['mime'];
-      }
-
-      // define the bit depth
-      if (isset($attributes['bits'])) {
-         $imageAttributes['bitdepth'] = $attributes['bits'];
-      }
-
-      // define the color mode
-      if (isset($attributes['channels'])) {
-         if ($attributes['channels'] == '3') {
-            $imageAttributes['colormode'] = 'RGB';
-         } else {
-            $imageAttributes['colormode'] = 'CMYK';
-         }
-      }
-
-      // return attribute
-      if ($attributeName !== null) {
-
-         if (isset($imageAttributes[$attributeName])) {
-            return $imageAttributes[$attributeName];
-         } else {
-            throw new InvalidArgumentException('[ImageManager::getImageAttributes()] The desired image attribute ("' . $attributeName . '") does not exist!');
-         }
-
-      }
-
-      // return the complete list
-      return $imageAttributes;
-   }
-
-   /**
     * Resizes an image to the given dimensions. If a target image is given, the file is saved to
     * the desired file.
     *
@@ -146,12 +56,20 @@ class ImageManager {
     * @version
     * Version 0.1, 31.01.2009<br />
     * Version 0.2, 01.05.2013 (Werner Liemberger: added pngCompression and bug-fix of the way the target image is saved.
+    * Version 0.3, 11.10.2015 (ID#260: added safety check)<br />
     */
    public static function resizeImage($sourceImage, $width, $height, $targetImage = null, $jpgQuality = 80, $pngCompression = 0) {
+
       // check if the image is present on disk
       if (!file_exists($sourceImage)) {
          throw new InvalidArgumentException('[ImageManager::resizeImage()] The given image ("'
                . $sourceImage . '") does not exist! Hence, it cannot be adjusted.', E_USER_ERROR);
+      }
+
+      // ID#260: check whether target image is really null and NOT empty to avoid issues
+      if ($targetImage !== null && empty($targetImage)) {
+         throw new InvalidArgumentException('[ImageManager::resizeImage()] The target image name is empty! '
+               . 'Hence, it cannot be adjusted.', E_USER_ERROR);
       }
 
       // gather the current dimensions of the image
@@ -232,6 +150,97 @@ class ImageManager {
       // clean memory
       imagedestroy($targetImageStream);
       imagedestroy($sourceImageStream);
+   }
+
+   /**
+    * Returns information about an image. The return list contains the following offsets:
+    * <ul>
+    *   <li>width: the width of the image</li>
+    *   <li>height: the height of the image</li>
+    *   <li>type: the type of the image</li>
+    *   <li>mimetype: the mime type of the image</li>
+    *   <li>bitdepth: the bitdepth of the image</li>
+    *   <li>colormode: the color mode (RGB or CMYK)</li>
+    * </ul>
+    * If the second argument contains a image attribute, the value is returned instead of a list!
+    *
+    * @param string $image a full qualified image path.
+    * @param string $attributeName the name of the attribute, that should be returned.
+    *
+    * @return string[] The attributes of an image.
+    * @throws InvalidArgumentException In case the applied image or the applied attribute does not exist.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 22.11.2004<br />
+    * Version 0.2, 15.07.2006 (Added the extension in the attributes list; added another algo to guess the extension)<br />
+    * Version 0.3, 31.01.2009 (Refactoring of the method. Now only the relevant image indicators are returned)<br />
+    * Version 0.4, 01.02.2009 (Added a check, if the channel attribute is returned by getimagesize())<br />
+    */
+   public static function getImageAttributes($image, $attributeName = null) {
+
+      // check if the image is present on disk
+      if (!file_exists($image)) {
+         throw new InvalidArgumentException('[ImageManager::showImageAttributes()] The given '
+               . 'image ("' . $image . '") does not exist! Hence, no attributes can be analyzed.',
+               E_USER_ERROR);
+      }
+
+      // declare image flags
+      $flags[1] = 'gif';
+      $flags[2] = 'jpg';
+      $flags[3] = 'png';
+      $flags[4] = 'swf';
+
+      // initialize the return list
+      $imageAttributes = [];
+
+      // analyze the image attributes
+      if (($attributes = getimagesize($image)) === false) {
+         throw new InvalidArgumentException('[ImageManager::showImageAttributes()] The attributes of the image ("'
+               . $image . '") cannot be analyzed since it is corrupt!');
+      }
+
+      // image define the image dimensions
+      $imageAttributes['width'] = $attributes[0];
+      $imageAttributes['height'] = $attributes[1];
+
+      // define the image type
+      $imageAttributes['type'] = $flags[$attributes[2]];
+
+      // define the mime type
+      if (isset($attributes['mime'])) {
+         $imageAttributes['mimetype'] = $attributes['mime'];
+      }
+
+      // define the bit depth
+      if (isset($attributes['bits'])) {
+         $imageAttributes['bitdepth'] = $attributes['bits'];
+      }
+
+      // define the color mode
+      if (isset($attributes['channels'])) {
+         if ($attributes['channels'] == '3') {
+            $imageAttributes['colormode'] = 'RGB';
+         } else {
+            $imageAttributes['colormode'] = 'CMYK';
+         }
+      }
+
+      // return attribute
+      if ($attributeName !== null) {
+
+         if (isset($imageAttributes[$attributeName])) {
+            return $imageAttributes[$attributeName];
+         } else {
+            throw new InvalidArgumentException('[ImageManager::getImageAttributes()] The desired image attribute ("'
+                  . $attributeName . '") does not exist!');
+         }
+
+      }
+
+      // return the complete list
+      return $imageAttributes;
    }
 
 }
