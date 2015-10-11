@@ -221,4 +221,19 @@ class XmlParserTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   public function testGenerateUniqueId() {
+
+      // test starting point and format
+      $id = XmlParser::generateUniqID();
+      $this->assertTrue(strlen($id) === 32);
+      $this->assertEquals('node-000000000000000000000000001', $id);
+
+      // test incrementation by 123 => expect counter at 124
+      for ($i = 1; $i < 124; $i++) {
+         $id = XmlParser::generateUniqID();
+      }
+
+      $this->assertEquals('node-000000000000000000000000124', $id);
+   }
+
 }

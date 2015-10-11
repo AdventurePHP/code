@@ -39,7 +39,7 @@ final class XmlParser {
    /**
     * @var int Internal counter to generate unique APF DOM tree node IDs.
     */
-   private static $domNodeCounter = 1;
+   private static $domNodeCounter = 0;
 
    private function __construct() {
    }
