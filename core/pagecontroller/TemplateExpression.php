@@ -59,7 +59,7 @@ interface TemplateExpression {
     *
     * @param string $token The extended templating syntax token currently being processed.
     *
-    * @return Document The DOM node representation of the given token.
+    * @return DomNode The DOM node representation of the given token.
     *
     * @author Christian Achatz
     * @version

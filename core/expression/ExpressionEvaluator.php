@@ -20,7 +20,7 @@
  */
 namespace APF\core\expression;
 
-use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\DomNode;
 use APF\core\pagecontroller\ParserException;
 use Exception;
 
@@ -37,7 +37,7 @@ abstract class ExpressionEvaluator {
     * Evaluates a dynamic expression. Acts both as a factory as well as an
     * abstraction component to evaluate expressions.
     *
-    * @param Document $dataNode The APF DOM node that can be used to retrieve the model information.
+    * @param DomNode $dataNode The APF DOM node that can be used to retrieve the model information.
     * @param string $expressionString The APF dynamic expression string.
     *
     * @return string The result of the expression evaluation.
@@ -47,7 +47,7 @@ abstract class ExpressionEvaluator {
     * @version
     * Version 0.1, 29.01.2014<br />
     */
-   public static function evaluate(Document &$dataNode, $expressionString) {
+   public static function evaluate(DomNode &$dataNode, $expressionString) {
 
       $parts = explode('->', $expressionString);
 

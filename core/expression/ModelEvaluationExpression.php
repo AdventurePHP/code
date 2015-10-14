@@ -20,7 +20,7 @@
  */
 namespace APF\core\expression;
 
-use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\DomNode;
 use APF\core\pagecontroller\ParserException;
 
 /**
@@ -62,7 +62,7 @@ class ModelEvaluationExpression extends EvaluationExpressionBase implements Eval
       if ($name === self::THIS_MODEL_PARAM_NAME) {
          return $this->previousResult;
       } else {
-         /* @var $document Document */
+         /* @var $document DomNode */
          $document = $this->previousResult;
 
          return $document->getData($name);
@@ -70,7 +70,7 @@ class ModelEvaluationExpression extends EvaluationExpressionBase implements Eval
    }
 
    protected function check($expression, $previousResult) {
-      if (!($previousResult instanceof Document)) {
+      if (!($previousResult instanceof DomNode)) {
          throw new ParserException('$previousResult is not of type Document but "' . gettype($previousResult) . '"! Expression: "' . $expression . '".');
       }
    }

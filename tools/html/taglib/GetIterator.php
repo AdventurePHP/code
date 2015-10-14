@@ -20,7 +20,7 @@
  */
 namespace APF\tools\html\taglib;
 
-use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\DomNode;
 use APF\tools\html\Iterator;
 
 /**
@@ -41,7 +41,7 @@ trait GetIterator {
     * @return Iterator
     */
    public function getIterator($name) {
-      /* @var $this Document */
+      /* @var $this DomNode */
       return $this->getChildNode('name', $name, 'APF\tools\html\Iterator');
    }
 

@@ -22,6 +22,7 @@ namespace APF\tests\suites\core\expression;
 
 use APF\core\expression\ModelEvaluationExpression;
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\DomNode;
 use DateTime;
 
 class ModelEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
@@ -71,7 +72,7 @@ class ModelEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
 
       $expression = new ModelEvaluationExpression('this', $expected);
 
-      /* @var $result Document */
+      /* @var $result DomNode */
       $result = $expression->getResult();
 
       assertEquals($expected, $result);

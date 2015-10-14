@@ -21,6 +21,7 @@
 namespace APF\extensions\htmllist\taglib;
 
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\DomNode;
 use APF\core\pagecontroller\XmlParser;
 use InvalidArgumentException;
 
@@ -105,7 +106,7 @@ class HtmlListTag extends Document {
       // generate object id
       $objectId = XmlParser::generateUniqID();
 
-      /* @var $listObject Document */
+      /* @var $listObject DomNode */
       $listObject = new $tagClass();
 
       // add standard and user defined attributes
