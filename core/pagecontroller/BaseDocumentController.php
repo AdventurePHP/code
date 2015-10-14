@@ -45,9 +45,17 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    /**
     * References the document, the document controller is responsible for transformation.
     *
-    * @var Document $document
+    * @var DomNode $document
     */
    protected $document;
+
+   public function setDocument(DomNode &$document) {
+      $this->document = &$document;
+   }
+
+   public function &getDocument() {
+      return $this->document;
+   }
 
    /**
     * Sets the given value as the content of the specified place holder.
@@ -72,14 +80,6 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
          throw new InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] No place holders '
                . 'found for name "' . $name . '" in document controller "' . get_class($this) . '"!', E_USER_ERROR, $e);
       }
-   }
-
-   public function &getDocument() {
-      return $this->document;
-   }
-
-   public function setDocument(Document &$document) {
-      $this->document = &$document;
    }
 
    /**
@@ -300,7 +300,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * @param string $name The reference name of the data field to set/add.
     * @param mixed $data The data to inject to the current node.
     *
-    * @return Document The document instance this controller is responsible to transform.
+    * @return DomNode The document instance this controller is responsible to transform.
     *
     * @author Christian Achatz
     * @version
@@ -331,7 +331,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     *
     * @param string $id The id of the DOM node to return.
     *
-    * @return Document The desired DOM node within the tree.
+    * @return DomNode The desired DOM node within the tree.
     * @throws InvalidArgumentException In case no DOM node exists with the given id.
     *
     * @author Christian Achatz

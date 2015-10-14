@@ -51,11 +51,11 @@
     <testsuites>
 
         <testsuite name="AdventurePHPFramework - Core">
-            <directory suffix="Test.php" phpVersion="5.3.0" phpVersionOperator=">=">suites/core</directory>
+            <directory suffix="Test.php" phpVersion="5.4.0" phpVersionOperator=">=">suites/core</directory>
         </testsuite>
 
         <testsuite name="AdventurePHPFramework - Tools">
-            <directory suffix="Test.php" phpVersion="5.3.0" phpVersionOperator=">=">suites/tools</directory>
+            <directory suffix="Test.php" phpVersion="5.4.0" phpVersionOperator=">=">suites/tools</directory>
         </testsuite>
 
     </testsuites>

@@ -34,16 +34,16 @@ namespace APF\core\pagecontroller;
 class Page extends APFObject {
 
    /**
-    * Container for the root <em>Document</em> of the page.
+    * Container for the root <em>DomNode</em> of the page.
     *
-    * @var Document $document
+    * @var DomNode $document
     */
    private $document;
 
    /**
     * Returns the root document of the APF DOM tree.
     *
-    * @return Document The root document of the page controller's APF DOM tree.
+    * @return DomNode The root document of the page controller's APF DOM tree.
     *
     * @author Christian Achatz
     * @version

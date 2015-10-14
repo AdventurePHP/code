@@ -94,7 +94,6 @@ class AppendNodeTag extends Document {
       $this->extractExpressionTags();
 
       // get parent children list
-      /* @var $parentChildren Document[] */
       $parentChildren = & $this->parentObject->getChildren();
       $parentContent = $this->parentObject->getContent();
       $currentObjectId = $this->getObjectId();

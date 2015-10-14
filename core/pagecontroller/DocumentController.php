@@ -38,19 +38,19 @@ interface DocumentController extends APFDIService {
     * to retrieve information and DOM elements stored in the node, the controller
     * is responsible to transform.
     *
-    * @param Document $document The dom node, the controller is intended to transform.
+    * @param DomNode $document The dom node, the controller is intended to transform.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 20.02.2010<br />
     */
-   public function setDocument(Document &$document);
+   public function setDocument(DomNode &$document);
 
    /**
     * Returns the document that represents the present DOM node the
     * controller is responsible for.
     *
-    * @return Document The present DOM node.
+    * @return DomNode The present DOM node.
     *
     * @author Christian Achatz
     * @version
