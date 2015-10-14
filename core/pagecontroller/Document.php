@@ -84,19 +84,19 @@ class Document extends APFObject implements DomNode {
     *
     * @var string[] $knownTags
     */
-   protected static $knownTags = array();
+   protected static $knownTags = [];
 
    /**
     * List of known expressions used to process APF templates.
     *
     * @var TemplateExpression[]
     */
-   protected static $knownExpressions = array();
+   protected static $knownExpressions = [];
 
    /**
-    * @var DomNode The list of documents indexed by the <em>dom-id</em> attribute.
+    * @var Document[] The list of documents indexed by the <em>dom-id</em> attribute.
     */
-   protected static $documentIndex = array();
+   protected static $documentIndex = [];
 
    /**
     * Unique object identifier.
@@ -117,7 +117,7 @@ class Document extends APFObject implements DomNode {
     *
     * @var string[] $attributes
     */
-   protected $attributes = array();
+   protected $attributes = [];
 
    /**
     * The content of the tag. Example:
@@ -139,21 +139,21 @@ class Document extends APFObject implements DomNode {
     *
     * @var DomNode[] $children
     */
-   protected $children = array();
+   protected $children = [];
 
    /**
     * Data attributes of the current DOM document (similar to Java Script).
     *
     * @var string[][] $data
     */
-   protected $data = array();
+   protected $data = [];
 
    /**
     * List of known tags for a dedicated DOM node the APF parser uses to create tag instances during analysis phase.
     *
     * @var string[] $knownInstanceTags
     */
-   protected $knownInstanceTags = array();
+   protected $knownInstanceTags = [];
 
    /**
     * Default constructor of an APF document. The APF DOM tree is constructed by objects derived from this class.
@@ -205,10 +205,10 @@ class Document extends APFObject implements DomNode {
       return $this->attributes;
    }
 
-   public function &setAttributes(array $attributes = array()) {
+   public function &setAttributes(array $attributes = []) {
       if (count($attributes) > 0) {
          if (!is_array($this->attributes)) {
-            $this->attributes = array();
+            $this->attributes = [];
          }
          $this->attributes = array_merge($this->attributes, $attributes);
       }
@@ -255,7 +255,7 @@ class Document extends APFObject implements DomNode {
    }
 
    public function &getChildNodes($attributeName, $value, $tagLibClass) {
-      $result = array();
+      $result = [];
 
       $children = &$this->getChildren();
 
@@ -344,7 +344,7 @@ class Document extends APFObject implements DomNode {
       try {
          $this->setPlaceHolder($name, $value, $append);
       } catch (Exception $e) {
-         $log = &Singleton::getInstance('APF\core\logging\Logger');
+         $log = &Singleton::getInstance(Logger::class);
          /* @var $log Logger */
          $log->addEntry(
                new SimpleLogEntry(
@@ -361,8 +361,8 @@ class Document extends APFObject implements DomNode {
       return $this;
    }
 
-   public function getDocumentController() {
-      return $this->documentController === null ? null : get_class($this->documentController);
+   public function &getDocumentController() {
+      return $this->documentController;
    }
 
    public function addInstanceTagLib($class, $prefix, $name) {
@@ -562,6 +562,9 @@ class Document extends APFObject implements DomNode {
 
       $this->documentController = $docCon;
 
+      // inject this document to be able to work on the DOM
+      $this->documentController->setDocument($this);
+
       // remove definition from content to be not displayed
       $this->content = substr_replace($this->content, '', $tagStartPos, ($tagEndPos - $tagStartPos) + 2); // for @>
    }
@@ -618,7 +621,7 @@ class Document extends APFObject implements DomNode {
        *
        * @var array
        */
-      $tags = array();
+      $tags = [];
 
       /**
        * The number of tokens within the current document (introduced also for performance reasons).
@@ -628,7 +631,7 @@ class Document extends APFObject implements DomNode {
       $count = 0;
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
 
       $benchId = '(' . get_class($this) . ') ' . $this->getObjectId() . '::onParseTime()';
       $t->start($benchId);
@@ -1036,43 +1039,6 @@ class Document extends APFObject implements DomNode {
 
    }
 
-   public function transform() {
-
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
-      /* @var $t BenchmarkTimer */
-      $t->start('(' . get_class($this) . ') ' . $this->getObjectId() . '::transform()');
-
-      // create copy, to preserve it!
-      $content = $this->content;
-
-      // execute the document controller if applicable
-      if ($this->documentController instanceof DocumentController) {
-
-         // start benchmark timer
-         $id = '(' . get_class($this->documentController) . ') ' . (XmlParser::generateUniqID()) . '::transformContent()';
-         $t->start($id);
-
-         // inject this document to be able to work on the DOM
-         $this->documentController->setDocument($this);
-
-         // execute the document controller by using a standard method
-         $this->documentController->transformContent();
-
-         $t->stop($id);
-      }
-
-      // transform child nodes and replace XML marker to place the output at the right position
-      if (count($this->children) > 0) {
-         foreach ($this->children as $objectId => $DUMMY) {
-            $content = str_replace('<' . $objectId . ' />', $this->children[$objectId]->transform(), $content);
-         }
-      }
-
-      $t->stop('(' . get_class($this) . ') ' . $this->getObjectId() . '::transform()');
-
-      return $content;
-   }
-
    public function &getNodeById($id) {
       if (isset(self::$documentIndex[$id])) {
          return self::$documentIndex[$id];
@@ -1095,9 +1061,9 @@ class Document extends APFObject implements DomNode {
     * Version 0.1, 13.02.2010 (Replaced old implementation with the white list feature.)<br />
     * Version 0.2, 27.11.2013 (Added default data-* attribute support to ease white list maintenance)<br />
     */
-   protected function getAttributesAsString(array $attributes, array $whiteList = array()) {
+   protected function getAttributesAsString(array $attributes, array $whiteList = []) {
 
-      $attributeParts = array();
+      $attributeParts = [];
 
       // process white list entries only, when attribute is given
       // code duplication is done here due to performance reasons!!!
@@ -1135,6 +1101,40 @@ class Document extends APFObject implements DomNode {
                '<' . $objectId . ' />', $this->children[$objectId]->transform(), $this->content
          );
       }
+   }
+
+   public function transform() {
+
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      /* @var $t BenchmarkTimer */
+      $t->start('(' . get_class($this) . ') ' . $this->getObjectId() . '::transform()');
+
+      // create copy, to preserve it!
+      $content = $this->content;
+
+      // execute the document controller if applicable
+      if ($this->documentController instanceof DocumentController) {
+
+         // start benchmark timer
+         $id = '(' . get_class($this->documentController) . ') ' . (XmlParser::generateUniqID()) . '::transformContent()';
+         $t->start($id);
+
+         // execute the document controller by using a standard method
+         $this->documentController->transformContent();
+
+         $t->stop($id);
+      }
+
+      // transform child nodes and replace XML marker to place the output at the right position
+      if (count($this->children) > 0) {
+         foreach ($this->children as $objectId => $DUMMY) {
+            $content = str_replace('<' . $objectId . ' />', $this->children[$objectId]->transform(), $content);
+         }
+      }
+
+      $t->stop('(' . get_class($this) . ') ' . $this->getObjectId() . '::transform()');
+
+      return $content;
    }
 
    /**
