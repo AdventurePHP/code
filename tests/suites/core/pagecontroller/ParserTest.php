@@ -136,14 +136,4 @@ This is text after a place holder...
       }
    }
 
-   /**
-    * @return ReflectionMethod
-    */
-   protected function getMethod() {
-      $method = new ReflectionMethod('APF\core\pagecontroller\Document', 'extractTagLibTags');
-      $method->setAccessible(true);
-
-      return $method;
-   }
-
 }
