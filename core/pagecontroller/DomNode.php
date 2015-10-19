@@ -302,7 +302,7 @@ interface DomNode extends APFDIService {
     * @param string $value The value of the attribute to select the desired node.
     * @param string $tagLibClass The expected class name of the nodes.
     *
-    * @return DomNode The desired list of child nodes.
+    * @return DomNode[] The desired list of child nodes.
     * @throws InvalidArgumentException In case the node has no children or no child node can be found with the given selectors.
     *
     * @author Christian Achatz
