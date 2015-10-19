@@ -661,8 +661,12 @@ class Document extends APFObject implements DomNode {
          // do offset correction due to internal
          $start = $colon - $area + $start; // $area (12 by default) for the sub-string part
 
-         // avoid issue with "<li>FOO:" constructs that will be recognized as tag
-         if (strpos(substr($this->content, $start, $colon - $start), '>') !== false) {
+         // Avoid issue with "<li>FOO:" constructs that will be recognized as tag,
+         // AND
+         // avoid issues with "<a href="/?:action=logout">Logout</a>" structures
+         // to be recognized as a tag (see ID#266).
+         $prefix = substr($this->content, $start, $colon - $start);
+         if (strpos($prefix, '>') !== false || strpos($prefix, '"') !== false) {
             $offset = $colon + 1;
             continue;
          }
