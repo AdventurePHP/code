@@ -99,6 +99,34 @@ This is text after a place holder...
    }
 
    /**
+    * Tests whether the parser ignores "normal" HTML code with colons (":") in tag attributes.
+    * <p/>
+    * See http://tracker.adventure-php-framework.org/view.php?id=266 for details.
+    */
+   public function testColonsInTagAttributes() {
+
+      $doc = new Document();
+      $doc->setContent(
+            '<p>
+   This is static content...
+</p>
+<p>
+   To quit your session, please <a href="/?:action=logout">Logout</a>
+</p>
+<p>
+   This is static content...
+</p>'
+      );
+
+      try {
+         $this->getMethod()->invoke($doc);
+         $this->assertEmpty($doc->getChildren());
+      } catch (Exception $e) {
+         $this->fail('Parsing HTML failed. Message: ' . $e->getMessage());
+      }
+   }
+
+   /**
     * @return ReflectionMethod
     */
    protected function getMethod() {
