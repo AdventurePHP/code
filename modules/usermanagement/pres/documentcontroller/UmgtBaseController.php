@@ -82,10 +82,9 @@ abstract class UmgtBaseController extends BaseDocumentController {
     * Version 0.1, 05.06.2010<br />
     */
    protected function &getIcon(TemplateTag $template) {
-      $children = &$template->getChildren();
-      foreach ($children as $objectId => $DUMMY) {
-         if ($children[$objectId] instanceof UmgtMediaInclusionTag) {
-            return $children[$objectId];
+      foreach ($template->getChildren() as &$child) {
+         if ($child instanceof UmgtMediaInclusionTag) {
+            return $child;
          }
       }
 

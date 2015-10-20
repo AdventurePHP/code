@@ -113,12 +113,6 @@ class HtmlIteratorTag extends Document implements Iterator {
       $this->extractTagLibTags();
    }
 
-   public function fillDataContainer($data) {
-      $this->dataContainer = $data;
-
-      return $this;
-   }
-
    /**
     * Activates the transform-on-place feature for the iterator tag.
     *
@@ -128,6 +122,12 @@ class HtmlIteratorTag extends Document implements Iterator {
     */
    public function transformOnPlace() {
       $this->transformOnPlace = true;
+   }
+
+   public function fillDataContainer($data) {
+      $this->dataContainer = $data;
+
+      return $this;
    }
 
    /**
@@ -141,6 +141,23 @@ class HtmlIteratorTag extends Document implements Iterator {
     */
    public function setIterationNumber($number) {
       $this->iterationNumber = intval($number);
+   }
+
+   /**
+    * Implements the transform method for the iterator tag.
+    *
+    * @return string Content of the tag or an empty string.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 01.06.2008<br />
+    */
+   public function transform() {
+      if ($this->transformOnPlace === true) {
+         return $this->transformIterator();
+      }
+
+      return '';
    }
 
    /**
@@ -166,7 +183,7 @@ class HtmlIteratorTag extends Document implements Iterator {
       // set iteration number if it's value is zero
       if ($this->iterationNumber == 0) {
 
-         $this->iterationNumber = 1; // Default value 
+         $this->iterationNumber = 1; // Default value
 
          $pager = $this->getAttribute('pager', false);
 
@@ -256,34 +273,34 @@ class HtmlIteratorTag extends Document implements Iterator {
 
             if (is_array($this->dataContainer[$i])) {
 
-               foreach ($placeHolders as $objectId => $DUMMY) {
+               foreach ($placeHolders as &$placeHolder) {
 
                   // if we find a place holder with IterationNumber as name-Attribute-Value set Iteration number
-                  if ($placeHolders[$objectId]->getAttribute('name') == 'IterationNumber') {
-                     $placeHolders[$objectId]->setContent($this->iterationNumber);
+                  if ($placeHolder->getAttribute('name') == 'IterationNumber') {
+                     $placeHolder->setContent($this->iterationNumber);
                      continue;
                   }
 
-                  $placeHolders[$objectId]->setContent($this->dataContainer[$i][$placeHolders[$objectId]->getAttribute('name')]);
+                  $placeHolder->setContent($this->dataContainer[$i][$placeHolder->getAttribute('name')]);
                }
 
                $buffer .= $iteratorItem->transform();
 
             } elseif (is_object($this->dataContainer[$i])) {
 
-               foreach ($placeHolders as $objectId => $DUMMY) {
+               foreach ($placeHolders as &$placeHolder) {
 
                   // if we find a place holder with IterationNumber as name-Attribute-Value set Iteration number
-                  if ($placeHolders[$objectId]->getAttribute('name') == 'IterationNumber') {
-                     $placeHolders[$objectId]->setContent($this->iterationNumber);
+                  if ($placeHolder->getAttribute('name') == 'IterationNumber') {
+                     $placeHolder->setContent($this->iterationNumber);
                      continue;
                   }
 
                   // use getter defined with <iterator:item /> to retrieve appropriate value
-                  $placeHolders[$objectId]->setContent($this->dataContainer[$i]->{
+                  $placeHolder->setContent($this->dataContainer[$i]->{
                   $getter
                   }(
-                        $placeHolders[$objectId]->getAttribute('name'))
+                        $placeHolder->getAttribute('name'))
                   );
 
                }
@@ -308,32 +325,15 @@ class HtmlIteratorTag extends Document implements Iterator {
 
       // Transform all other child tags except the iterator item(s).
       // ID#105: this also includes the default content in case no items available (case: mode=normal)
-      foreach ($this->children as $objectId => $DUMMY) {
+      foreach ($this->children as &$child) {
 
-         if (!($this->children[$objectId] instanceof HtmlIteratorItemTag)) {
-            $html = str_replace('<' . $objectId . ' />', $this->children[$objectId]->transform(), $html);
+         if (!($child instanceof HtmlIteratorItemTag)) {
+            $html = str_replace('<' . $child->getObjectId() . ' />', $child->transform(), $html);
          }
 
       }
 
       return $html;
-   }
-
-   /**
-    * Implements the transform method for the iterator tag.
-    *
-    * @return string Content of the tag or an empty string.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 01.06.2008<br />
-    */
-   public function transform() {
-      if ($this->transformOnPlace === true) {
-         return $this->transformIterator();
-      }
-
-      return '';
    }
 
    /**
@@ -350,9 +350,9 @@ class HtmlIteratorTag extends Document implements Iterator {
     */
    protected function getIteratorItemObjectId() {
 
-      foreach ($this->children as $objectId => $DUMMY) {
-         if ($this->children[$objectId] instanceof HtmlIteratorItemTag) {
-            return $objectId;
+      foreach ($this->children as &$child) {
+         if ($child instanceof HtmlIteratorItemTag) {
+            return $child->getObjectId();
          }
       }
 
@@ -377,9 +377,9 @@ class HtmlIteratorTag extends Document implements Iterator {
     */
    protected function getFallbackContentItemObjectId() {
 
-      foreach ($this->children as $objectId => $DUMMY) {
-         if ($this->children[$objectId] instanceof TemplateTag) {
-            return $objectId;
+      foreach ($this->children as &$child) {
+         if ($child instanceof TemplateTag) {
+            return $child->getObjectId();
          }
       }
 

@@ -110,11 +110,11 @@ class SelectBoxGroupTag extends AbstractFormControl {
     * Version 0.1, 15.02.2010<br />
     */
    public function setOption2Selected($displayNameOrValue) {
-      foreach ($this->children as $objectId => $DUMMY) {
-         if ($this->children[$objectId]->getAttribute('value') == $displayNameOrValue
-               || $this->children[$objectId]->getContent() == $displayNameOrValue
+      foreach ($this->children as &$child) {
+         if ($child->getAttribute('value') == $displayNameOrValue
+               || $child->getContent() == $displayNameOrValue
          ) {
-            $this->children[$objectId]->setAttribute('selected', 'selected');
+            $child->setAttribute('selected', 'selected');
          }
       }
    }
@@ -122,7 +122,7 @@ class SelectBoxGroupTag extends AbstractFormControl {
    /**
     * Returns the selected options.
     *
-    * @return SelectBoxOptionTag[] The selected options.
+    * @return SelectBoxOptionTag The selected options.
     *
     * @author Christian Achatz
     * @version
@@ -132,9 +132,9 @@ class SelectBoxGroupTag extends AbstractFormControl {
 
       $selectedOption = null;
 
-      foreach ($this->children as $objectId => $DUMMY) {
-         if ($this->children[$objectId]->getAttribute('selected') === 'selected') {
-            $selectedOption = & $this->children[$objectId];
+      foreach ($this->children as &$child) {
+         if ($child->getAttribute('selected') === 'selected') {
+            $selectedOption = &$child;
             break;
          }
       }
@@ -145,7 +145,7 @@ class SelectBoxGroupTag extends AbstractFormControl {
    /**
     * Returns the selected option.
     *
-    * @return SelectBoxOptionTag The selected option.
+    * @return SelectBoxOptionTag[] The selected option.
     *
     * @author Christian Achatz
     * @version
@@ -155,9 +155,9 @@ class SelectBoxGroupTag extends AbstractFormControl {
 
       $selectedOptions = [];
 
-      foreach ($this->children as $objectId => $DUMMY) {
-         if ($this->children[$objectId]->getAttribute('selected') === 'selected') {
-            $selectedOptions[] = & $this->children[$objectId];
+      foreach ($this->children as &$child) {
+         if ($child->getAttribute('selected') === 'selected') {
+            $selectedOptions[] = &$child;
          }
       }
 
@@ -175,16 +175,16 @@ class SelectBoxGroupTag extends AbstractFormControl {
     */
    public function transform() {
       $html = '<optgroup ' . $this->getSanitizedAttributesAsString($this->attributes) . '>';
-      foreach ($this->children as $objectId => $DUMMY) {
-         $html .= $this->children[$objectId]->transform();
+      foreach ($this->children as &$child) {
+         $html .= $child->transform();
       }
 
       return $html . '</optgroup>';
    }
 
    public function reset() {
-      foreach ($this->children as $objectId => $DUMMY) {
-         $this->children[$objectId]->deleteAttribute('selected');
+      foreach ($this->children as &$child) {
+         $child->deleteAttribute('selected');
       }
    }
 

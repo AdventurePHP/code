@@ -73,6 +73,101 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
+    * Returns the value of the present form control from the request.
+    * Enables sub-elements of form controls (date control!).
+    *
+    * @return string The form control value in request or null in case the form is not sent.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.08.2009<br />
+    */
+   protected function getRequestValue() {
+
+      $name = $this->getAttribute('name');
+
+      $subMarkerStart = '[';
+      $subMarkerEnd = ']';
+
+      $request = $this->getRequest();
+
+      // analyze sub-elements by the start marker bracket
+      if (substr_count($name, $subMarkerStart) > 0) {
+         $startBracketPos = strpos($name, $subMarkerStart);
+         $endBracketPos = strpos($name, $subMarkerEnd);
+         $mainName = substr($name, 0, $startBracketPos);
+         $subName = substr($name, $startBracketPos + 1,
+               $endBracketPos - $startBracketPos - strlen($subMarkerEnd)
+         );
+
+         $value = $request->getParameter($mainName);
+         if ($value !== null && isset($value[$subName])) {
+            $value = $value[$subName];
+         } else {
+            $value = null;
+         }
+      } else {
+         $value = $request->getParameter($name);
+      }
+
+      return $value;
+   }
+
+   /**
+    * Pre-selects an option by a given display name or value.
+    *
+    * @param string $displayNameOrValue The display name or the value of the option to pre-select.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 15.02.2010<br />
+    * Version 0.2, 17.06.2010 (Bug-fix: introduced un-setting for previously selected options)<br />
+    */
+   public function setOption2Selected($displayNameOrValue) {
+
+      $this->isDynamicField = false;
+
+      $selectedObjectId = null;
+      foreach ($this->children as &$child) {
+
+         // treat groups as a special case, because a group has more options in it!
+         if ($child instanceof SelectBoxGroupTag) {
+            $child->setOption2Selected($displayNameOrValue);
+         } else {
+            // bug 981: introduced string-based comparison to avoid pre-select issues with "0".
+            if ($child->getAttribute('value') == (string) $displayNameOrValue
+                  || $child->getContent() == (string) $displayNameOrValue
+            ) {
+               $child->setAttribute('selected', 'selected');
+               $selectedObjectId = $child->getObjectId();
+            }
+         }
+      }
+
+      $this->removeSelectedOptions($selectedObjectId);
+   }
+
+   /**
+    * Un-selects all other option to do not have interference with the currently selected option!
+    * This is only necessary within the simple select field - not multi select.
+    *
+    * @param string $selectedObjectId The objectId of the selected option.
+    *
+    * @author Daniel Basedow
+    * @version
+    * Version 0.1, 22.03.2013<br />
+    */
+   protected function removeSelectedOptions($selectedObjectId) {
+      if ($selectedObjectId !== null) {
+         foreach ($this->children as &$child) {
+            if ($child->getObjectId() != $selectedObjectId) {
+               $child->deleteAttribute('selected');
+            }
+         }
+      }
+   }
+
+   /**
     * Adds an option to the select field.
     *
     * @param string $displayName The display text of the option.
@@ -148,26 +243,6 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * Adds an option to a group specified by the applied label (OO-style).
-    *
-    * @param string $groupLabel The name of the group.
-    * @param SelectBoxOptionTag $option The option to add.
-    *
-    * @author Ralf Schubert
-    * @version
-    * Version 0.1, 07.01.2014<br />
-    */
-   public function addGroupOptionTag($groupLabel, SelectBoxOptionTag $option) {
-      // mark as dynamic field
-      $this->isDynamicField = true;
-
-      // retrieve or lazily create group
-      $group = &$this->getOrCreateGroup($groupLabel);
-
-      $group->addOptionTag($option);
-   }
-
-   /**
     * Returns - or lazily creates - a desired option group.
     *
     * @param string $groupLabel The name of the group.
@@ -220,9 +295,9 @@ class SelectBoxTag extends AbstractFormControl {
 
       $group = null;
 
-      foreach ($this->children as $objectId => $DUMMY) {
-         if ($this->children[$objectId]->getAttribute('label') == $label) {
-            $group = &$this->children[$objectId];
+      foreach ($this->children as &$child) {
+         if ($child->getAttribute('label') == $label) {
+            $group = &$child;
             break;
          }
       }
@@ -231,97 +306,23 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * Returns the selected option.
+    * Adds an option to a group specified by the applied label (OO-style).
     *
-    * @return SelectBoxOptionTag|null The selected option.
+    * @param string $groupLabel The name of the group.
+    * @param SelectBoxOptionTag $option The option to add.
     *
-    * @author Christian Achatz
+    * @author Ralf Schubert
     * @version
-    * Version 0.1, 15.02.2010<br />
+    * Version 0.1, 07.01.2014<br />
     */
-   public function &getSelectedOption() {
+   public function addGroupOptionTag($groupLabel, SelectBoxOptionTag $option) {
+      // mark as dynamic field
+      $this->isDynamicField = true;
 
-      // lazily do request presetting when not already done
-      if ($this->isDynamicField === true) {
-         $value = $this->getRequestValue();
-         if ($value !== null) {
-            $this->setOption2Selected($value);
-         }
-      }
+      // retrieve or lazily create group
+      $group = &$this->getOrCreateGroup($groupLabel);
 
-      $selectedOption = null;
-      foreach ($this->children as $objectId => $DUMMY) {
-
-         if ($this->children[$objectId] instanceof SelectBoxGroupTag) {
-            $selectedOption = &$this->children[$objectId]->getSelectedOption();
-
-            // Bug-436: exit at the first hit to not overwrite this hit with another miss!
-            if ($selectedOption !== null) {
-               break;
-            }
-         } else {
-            if ($this->children[$objectId]->getAttribute('selected') === 'selected') {
-               $selectedOption = &$this->children[$objectId];
-               break;
-            }
-         }
-      }
-
-      return $selectedOption;
-   }
-
-   /**
-    * Pre-selects an option by a given display name or value.
-    *
-    * @param string $displayNameOrValue The display name or the value of the option to pre-select.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 15.02.2010<br />
-    * Version 0.2, 17.06.2010 (Bug-fix: introduced un-setting for previously selected options)<br />
-    */
-   public function setOption2Selected($displayNameOrValue) {
-
-      $this->isDynamicField = false;
-
-      $selectedObjectId = null;
-      foreach ($this->children as $objectId => $DUMMY) {
-
-         // treat groups as a special case, because a group has more options in it!
-         if ($this->children[$objectId] instanceof SelectBoxGroupTag) {
-            $this->children[$objectId]->setOption2Selected($displayNameOrValue);
-         } else {
-            // bug 981: introduced string-based comparison to avoid pre-select issues with "0".
-            if ($this->children[$objectId]->getAttribute('value') == (string) $displayNameOrValue
-                  || $this->children[$objectId]->getContent() == (string) $displayNameOrValue
-            ) {
-               $this->children[$objectId]->setAttribute('selected', 'selected');
-               $selectedObjectId = $objectId;
-            }
-         }
-      }
-
-      $this->removeSelectedOptions($selectedObjectId);
-   }
-
-   /**
-    * Un-selects all other option to do not have interference with the currently selected option!
-    * This is only necessary within the simple select field - not multi select.
-    *
-    * @param string $selectedObjectId The objectId of the selected option.
-    *
-    * @author Daniel Basedow
-    * @version
-    * Version 0.1, 22.03.2013<br />
-    */
-   protected function removeSelectedOptions($selectedObjectId) {
-      if ($selectedObjectId !== null) {
-         foreach ($this->children as $objectId => $DUMMY) {
-            if ($objectId != $selectedObjectId) {
-               $this->children[$objectId]->deleteAttribute('selected');
-            }
-         }
-      }
+      $group->addOptionTag($option);
    }
 
    /**
@@ -400,47 +401,6 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * Returns the value of the present form control from the request.
-    * Enables sub-elements of form controls (date control!).
-    *
-    * @return string The form control value in request or null in case the form is not sent.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.08.2009<br />
-    */
-   protected function getRequestValue() {
-
-      $name = $this->getAttribute('name');
-
-      $subMarkerStart = '[';
-      $subMarkerEnd = ']';
-
-      $request = $this->getRequest();
-
-      // analyze sub-elements by the start marker bracket
-      if (substr_count($name, $subMarkerStart) > 0) {
-         $startBracketPos = strpos($name, $subMarkerStart);
-         $endBracketPos = strpos($name, $subMarkerEnd);
-         $mainName = substr($name, 0, $startBracketPos);
-         $subName = substr($name, $startBracketPos + 1,
-               $endBracketPos - $startBracketPos - strlen($subMarkerEnd)
-         );
-
-         $value = $request->getParameter($mainName);
-         if ($value !== null && isset($value[$subName])) {
-            $value = $value[$subName];
-         } else {
-            $value = null;
-         }
-      } else {
-         $value = $request->getParameter($name);
-      }
-
-      return $value;
-   }
-
-   /**
     * Re-implements the retrieving of values for select controls
     *
     * @return SelectBoxOptionTag The selected option.
@@ -453,6 +413,46 @@ class SelectBoxTag extends AbstractFormControl {
     */
    public function getValue() {
       return $this->getSelectedOption();
+   }
+
+   /**
+    * Returns the selected option.
+    *
+    * @return SelectBoxOptionTag|null The selected option.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 15.02.2010<br />
+    */
+   public function &getSelectedOption() {
+
+      // lazily do request presetting when not already done
+      if ($this->isDynamicField === true) {
+         $value = $this->getRequestValue();
+         if ($value !== null) {
+            $this->setOption2Selected($value);
+         }
+      }
+
+      $selectedOption = null;
+      foreach ($this->children as &$child) {
+
+         if ($child instanceof SelectBoxGroupTag) {
+            $selectedOption = &$child->getSelectedOption();
+
+            // Bug-436: exit at the first hit to not overwrite this hit with another miss!
+            if ($selectedOption !== null) {
+               break;
+            }
+         } else {
+            if ($child->getAttribute('selected') === 'selected') {
+               $selectedOption = &$child;
+               break;
+            }
+         }
+      }
+
+      return $selectedOption;
    }
 
    /**
@@ -494,12 +494,12 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    public function reset() {
-      foreach ($this->children as $objectId => $DUMMY) {
+      foreach ($this->children as &$child) {
          // treat groups as a special case, because a group has more options in it!
-         if ($this->children[$objectId] instanceof SelectBoxGroupTag) {
-            $this->children[$objectId]->reset();
+         if ($child instanceof SelectBoxGroupTag) {
+            $child->reset();
          } else {
-            $this->children[$objectId]->deleteAttribute('selected');
+            $child->deleteAttribute('selected');
          }
       }
    }
