@@ -47,13 +47,13 @@ class MultiSelectBoxTagTest extends \PHPUnit_Framework_TestCase {
          $select->addOption($number, $number);
       }
 
-      assertEmpty($select->getSelectedOptions());
+      $this->assertEmpty($select->getSelectedOptions());
 
       $select->setOption2Selected(2);
       $select->setOption2Selected(4);
 
-      assertEquals($select->getSelectedOptions()[0]->getValue(), 2);
-      assertEquals($select->getSelectedOptions()[1]->getValue(), 4);
+      $this->assertEquals($select->getSelectedOptions()[0]->getValue(), 2);
+      $this->assertEquals($select->getSelectedOptions()[1]->getValue(), 4);
 
    }
 
@@ -73,8 +73,8 @@ class MultiSelectBoxTagTest extends \PHPUnit_Framework_TestCase {
          $select->addOption($number, $number);
       }
 
-      assertEquals($select->getSelectedOptions()[0]->getValue(), 2);
-      assertEquals($select->getSelectedOptions()[1]->getValue(), 4);
+      $this->assertEquals($select->getSelectedOptions()[0]->getValue(), 2);
+      $this->assertEquals($select->getSelectedOptions()[1]->getValue(), 4);
 
    }
 
@@ -92,13 +92,13 @@ class MultiSelectBoxTagTest extends \PHPUnit_Framework_TestCase {
          $select->addGroupOption('number-' . $number % 2, $number, $number);
       }
 
-      assertEmpty($select->getSelectedOptions());
+      $this->assertEmpty($select->getSelectedOptions());
 
       $select->setOption2Selected(2);
       $select->setOption2Selected(4);
 
-      assertEquals($select->getSelectedOptions()[0]->getValue(), 2);
-      assertEquals($select->getSelectedOptions()[1]->getValue(), 4);
+      $this->assertEquals($select->getSelectedOptions()[0]->getValue(), 2);
+      $this->assertEquals($select->getSelectedOptions()[1]->getValue(), 4);
 
    }
 
@@ -119,8 +119,8 @@ class MultiSelectBoxTagTest extends \PHPUnit_Framework_TestCase {
          $select->addGroupOption('number-' . $number % 2, $number, $number);
       }
 
-      assertEquals($select->getSelectedOptions()[0]->getValue(), 2);
-      assertEquals($select->getSelectedOptions()[1]->getValue(), 4);
+      $this->assertEquals($select->getSelectedOptions()[0]->getValue(), 2);
+      $this->assertEquals($select->getSelectedOptions()[1]->getValue(), 4);
 
    }
 

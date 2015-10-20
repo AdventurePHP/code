@@ -237,12 +237,12 @@ class Document extends APFObject implements DomNode {
    }
 
    public function &getChildNode($attributeName, $value, $tagLibClass) {
-      $children = &$this->getChildren();
-      foreach ($children as $objectId => $DUMMY) {
-         if ($children[$objectId] instanceof $tagLibClass
-               && $children[$objectId]->getAttribute($attributeName) == $value
+      foreach ($this->children as &$child) {
+         /* @var $child DomNode */
+         if ($child instanceof $tagLibClass
+               && $child->getAttribute($attributeName) == $value
          ) {
-            return $children[$objectId];
+            return $child;
          }
       }
       throw new InvalidArgumentException('[' . get_class($this) . '::getChildNode()] No child node with type "'
@@ -257,13 +257,12 @@ class Document extends APFObject implements DomNode {
    public function &getChildNodes($attributeName, $value, $tagLibClass) {
       $result = [];
 
-      $children = &$this->getChildren();
-
-      foreach ($children as $objectId => $DUMMY) {
-         if ($children[$objectId] instanceof $tagLibClass
-               && $children[$objectId]->getAttribute($attributeName) == $value
+      foreach ($this->children as &$child) {
+         /* @var $child DomNode */
+         if ($child instanceof $tagLibClass
+               && $child->getAttribute($attributeName) == $value
          ) {
-            $result[] = &$children[$objectId];
+            $result[] = &$child;
          }
       }
       if (count($result) == 0) {
@@ -285,16 +284,17 @@ class Document extends APFObject implements DomNode {
 
    public function &setPlaceHolder($name, $value, $append = false) {
       $count = 0;
-      foreach ($this->children as $objectId => $DUMMY) {
-         if ($this->children[$objectId] instanceof PlaceHolder
-               && $this->children[$objectId]->getAttribute('name') === $name
+      foreach ($this->children as &$child) {
+         /* @var $child DomNode */
+         if ($child instanceof PlaceHolder
+               && $child->getAttribute('name') === $name
          ) {
             // false handled first, since most usages don't append --> slightly faster
             if ($append === false) {
-               $this->children[$objectId]->setContent($value);
+               $child->setContent($value);
             } else {
-               $this->children[$objectId]->setContent(
-                     $this->children[$objectId]->getContent() . $value
+               $child->setContent(
+                     $child->getContent() . $value
                );
             }
             $count++;
@@ -896,8 +896,8 @@ class Document extends APFObject implements DomNode {
          $benchId = '(' . get_class($this) . ') ' . $this->getObjectId() . '::children[]::onAfterAppend()';
          $t->start($benchId);
 
-         foreach ($this->children as $objectId => $DUMMY) {
-            $this->children[$objectId]->onAfterAppend();
+         foreach ($this->children as &$child) {
+            $child->onAfterAppend();
          }
 
          $t->stop($benchId);
@@ -1051,6 +1051,40 @@ class Document extends APFObject implements DomNode {
             . 'Please review your template setup and/or controller code!');
    }
 
+   public function transform() {
+
+      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      /* @var $t BenchmarkTimer */
+      $t->start('(' . get_class($this) . ') ' . $this->getObjectId() . '::transform()');
+
+      // create copy, to preserve it!
+      $content = $this->content;
+
+      // execute the document controller if applicable
+      if ($this->documentController instanceof DocumentController) {
+
+         // start benchmark timer
+         $id = '(' . get_class($this->documentController) . ') ' . (XmlParser::generateUniqID()) . '::transformContent()';
+         $t->start($id);
+
+         // execute the document controller by using a standard method
+         $this->documentController->transformContent();
+
+         $t->stop($id);
+      }
+
+      // transform child nodes and replace XML marker to place the output at the right position
+      if (count($this->children) > 0) {
+         foreach ($this->children as &$child) {
+            $content = str_replace('<' . $child->getObjectId() . ' />', $child->transform(), $content);
+         }
+      }
+
+      $t->stop('(' . get_class($this) . ') ' . $this->getObjectId() . '::transform()');
+
+      return $content;
+   }
+
    /**
     * Creates a string representation of the given attributes list, using a
     * white list to especially include attributes.
@@ -1100,45 +1134,11 @@ class Document extends APFObject implements DomNode {
     * Version 0.1, 23.10.2012<br />
     */
    protected function transformChildren() {
-      foreach ($this->children as $objectId => $DUMMY) {
+      foreach ($this->children as &$child) {
          $this->content = str_replace(
-               '<' . $objectId . ' />', $this->children[$objectId]->transform(), $this->content
+               '<' . $child->getObjectId() . ' />', $child->transform(), $this->content
          );
       }
-   }
-
-   public function transform() {
-
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
-      /* @var $t BenchmarkTimer */
-      $t->start('(' . get_class($this) . ') ' . $this->getObjectId() . '::transform()');
-
-      // create copy, to preserve it!
-      $content = $this->content;
-
-      // execute the document controller if applicable
-      if ($this->documentController instanceof DocumentController) {
-
-         // start benchmark timer
-         $id = '(' . get_class($this->documentController) . ') ' . (XmlParser::generateUniqID()) . '::transformContent()';
-         $t->start($id);
-
-         // execute the document controller by using a standard method
-         $this->documentController->transformContent();
-
-         $t->stop($id);
-      }
-
-      // transform child nodes and replace XML marker to place the output at the right position
-      if (count($this->children) > 0) {
-         foreach ($this->children as $objectId => $DUMMY) {
-            $content = str_replace('<' . $objectId . ' />', $this->children[$objectId]->transform(), $content);
-         }
-      }
-
-      $t->stop('(' . get_class($this) . ') ' . $this->getObjectId() . '::transform()');
-
-      return $content;
    }
 
    /**
@@ -1154,9 +1154,9 @@ class Document extends APFObject implements DomNode {
     */
    protected function transformChildrenAndPreserveContent() {
       $content = $this->getContent();
-      foreach ($this->children as $objectId => $DUMMY) {
+      foreach ($this->children as &$child) {
          $content = str_replace(
-               '<' . $objectId . ' />', $this->children[$objectId]->transform(), $content
+               '<' . $child->getObjectId() . ' />', $child->transform(), $content
          );
       }
 
@@ -1176,8 +1176,8 @@ class Document extends APFObject implements DomNode {
     * Version 0.1, 23.10.2012<br />
     */
    protected function transformChildrenAsEmpty() {
-      foreach ($this->children as $objectId => $DUMMY) {
-         $this->content = str_replace('<' . $objectId . ' />', '', $this->content);
+      foreach ($this->children as &$child) {
+         $this->content = str_replace('<' . $child->getObjectId() . ' />', '', $this->content);
       }
    }
 
@@ -1194,8 +1194,8 @@ class Document extends APFObject implements DomNode {
     */
    protected function transformChildrenAsEmptyAndPreserveContent() {
       $content = $this->getContent();
-      foreach ($this->children as $objectId => $DUMMY) {
-         $content = str_replace('<' . $objectId . ' />', '', $content);
+      foreach ($this->children as &$child) {
+         $content = str_replace('<' . $child->getObjectId() . ' />', '', $content);
       }
 
       return $content;

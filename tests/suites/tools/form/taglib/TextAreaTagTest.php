@@ -48,8 +48,8 @@ class TextAreaTagTest extends \PHPUnit_Framework_TestCase {
 
       $area->setContent(self::FIELD_VALUE);
 
-      assertEquals($area->getContent(), self::FIELD_VALUE);
-      assertTrue($area->isFilled());
+      $this->assertEquals($area->getContent(), self::FIELD_VALUE);
+      $this->assertTrue($area->isFilled());
 
    }
 
@@ -66,8 +66,8 @@ class TextAreaTagTest extends \PHPUnit_Framework_TestCase {
       $area->onParseTime();
       $area->onAfterAppend();
 
-      assertEquals($area->getContent(), $userInput);
-      assertTrue($area->isFilled());
+      $this->assertEquals($area->getContent(), $userInput);
+      $this->assertTrue($area->isFilled());
 
       // re-test with "0" as input in URL
       $userInput = '0';
@@ -76,8 +76,8 @@ class TextAreaTagTest extends \PHPUnit_Framework_TestCase {
       $area->onParseTime();
       $area->onAfterAppend();
 
-      assertEquals($area->getContent(), $userInput);
-      assertTrue($area->isFilled());
+      $this->assertEquals($area->getContent(), $userInput);
+      $this->assertTrue($area->isFilled());
 
    }
 

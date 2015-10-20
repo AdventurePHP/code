@@ -91,11 +91,11 @@ class FrontControllerActionPriorityTest extends \PHPUnit_Framework_TestCase {
       $actions = &$fC->getActions();
       $keys = array_keys($actions);
 
-      assertEquals(20, $actions[$keys[0]]->getPriority());
-      assertEquals(15, $actions[$keys[1]]->getPriority());
-      assertEquals(10, $actions[$keys[2]]->getPriority());
-      assertEquals(5, $actions[$keys[3]]->getPriority());
-      assertEquals(1, $actions[$keys[4]]->getPriority());
+      $this->assertEquals(20, $actions[$keys[0]]->getPriority());
+      $this->assertEquals(15, $actions[$keys[1]]->getPriority());
+      $this->assertEquals(10, $actions[$keys[2]]->getPriority());
+      $this->assertEquals(5, $actions[$keys[3]]->getPriority());
+      $this->assertEquals(1, $actions[$keys[4]]->getPriority());
 
    }
 
@@ -131,26 +131,26 @@ class FrontControllerActionPriorityTest extends \PHPUnit_Framework_TestCase {
       $actions = &$fC->getActions();
       $keys = array_keys($actions);
 
-      assertEquals(20, $actions[$keys[0]]->getPriority());
-      assertEquals('20-1', $actions[$keys[0]]->getInput()->getParameter('id'));
+      $this->assertEquals(20, $actions[$keys[0]]->getPriority());
+      $this->assertEquals('20-1', $actions[$keys[0]]->getInput()->getParameter('id'));
 
-      assertEquals(20, $actions[$keys[1]]->getPriority());
-      assertEquals('20-2', $actions[$keys[1]]->getInput()->getParameter('id'));
+      $this->assertEquals(20, $actions[$keys[1]]->getPriority());
+      $this->assertEquals('20-2', $actions[$keys[1]]->getInput()->getParameter('id'));
 
-      assertEquals(15, $actions[$keys[2]]->getPriority());
+      $this->assertEquals(15, $actions[$keys[2]]->getPriority());
 
-      assertEquals(10, $actions[$keys[3]]->getPriority());
-      assertEquals('10-1', $actions[$keys[3]]->getInput()->getParameter('id'));
+      $this->assertEquals(10, $actions[$keys[3]]->getPriority());
+      $this->assertEquals('10-1', $actions[$keys[3]]->getInput()->getParameter('id'));
 
-      assertEquals(10, $actions[$keys[4]]->getPriority());
-      assertEquals('10-2', $actions[$keys[4]]->getInput()->getParameter('id'));
+      $this->assertEquals(10, $actions[$keys[4]]->getPriority());
+      $this->assertEquals('10-2', $actions[$keys[4]]->getInput()->getParameter('id'));
 
-      assertEquals(10, $actions[$keys[5]]->getPriority());
-      assertEquals('10-3', $actions[$keys[5]]->getInput()->getParameter('id'));
+      $this->assertEquals(10, $actions[$keys[5]]->getPriority());
+      $this->assertEquals('10-3', $actions[$keys[5]]->getInput()->getParameter('id'));
 
-      assertEquals(5, $actions[$keys[6]]->getPriority());
+      $this->assertEquals(5, $actions[$keys[6]]->getPriority());
 
-      assertEquals(1, $actions[$keys[7]]->getPriority());
+      $this->assertEquals(1, $actions[$keys[7]]->getPriority());
 
    }
 

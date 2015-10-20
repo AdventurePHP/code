@@ -76,13 +76,13 @@ class PhpConfigurationProviderTest extends \PHPUnit_Framework_TestCase {
             self::TEST_CONFIG_NAME
       );
 
-      assertEquals($config->getValue('value 1'), 'foo');
-      assertEquals($config->getValue('value 2'), 'bar');
-      assertEquals($config->getValue('php-version'), PHP_VERSION_ID);
+      $this->assertEquals($config->getValue('value 1'), 'foo');
+      $this->assertEquals($config->getValue('value 2'), 'bar');
+      $this->assertEquals($config->getValue('php-version'), PHP_VERSION_ID);
 
-      assertInstanceOf(Configuration::class, $config->getSection('section 1'));
-      assertInstanceOf(Configuration::class, $config->getSection('section 1')->getSection('subsection 1'));
-      assertInstanceOf(Configuration::class, $config->getSection('section 1')->getSection('subsection 2'));
+      $this->assertInstanceOf(Configuration::class, $config->getSection('section 1'));
+      $this->assertInstanceOf(Configuration::class, $config->getSection('section 1')->getSection('subsection 1'));
+      $this->assertInstanceOf(Configuration::class, $config->getSection('section 1')->getSection('subsection 2'));
    }
 
    public function testFailToLoadConfigurationFile() {
@@ -116,29 +116,29 @@ class PhpConfigurationProviderTest extends \PHPUnit_Framework_TestCase {
             self::TEST_NEW_CONFIG_NAME
       );
 
-      assertEquals($config, $newConfig);
+      $this->assertEquals($config, $newConfig);
 
-      assertEquals($config->getValue('value 1'), $newConfig->getValue('value 1'));
-      assertEquals($config->getValue('value 2'), $newConfig->getValue('value 2'));
-      assertEquals($config->getValue('php-version'), $newConfig->getValue('php-version'));
+      $this->assertEquals($config->getValue('value 1'), $newConfig->getValue('value 1'));
+      $this->assertEquals($config->getValue('value 2'), $newConfig->getValue('value 2'));
+      $this->assertEquals($config->getValue('php-version'), $newConfig->getValue('php-version'));
 
-      assertInstanceOf(Configuration::class, $newConfig->getSection('section 1'));
-      assertInstanceOf(Configuration::class, $newConfig->getSection('section 1')->getSection('subsection 1'));
-      assertInstanceOf(Configuration::class, $newConfig->getSection('section 1')->getSection('subsection 2'));
+      $this->assertInstanceOf(Configuration::class, $newConfig->getSection('section 1'));
+      $this->assertInstanceOf(Configuration::class, $newConfig->getSection('section 1')->getSection('subsection 1'));
+      $this->assertInstanceOf(Configuration::class, $newConfig->getSection('section 1')->getSection('subsection 2'));
 
-      assertEquals(
+      $this->assertEquals(
             $config->getSection('section 1')->getSection('subsection 1')->getValue('value 1'),
             $newConfig->getSection('section 1')->getSection('subsection 1')->getValue('value 1')
       );
-      assertEquals(
+      $this->assertEquals(
             $config->getSection('section 1')->getSection('subsection 1')->getValue('value 2'),
             $newConfig->getSection('section 1')->getSection('subsection 1')->getValue('value 2')
       );
-      assertEquals(
+      $this->assertEquals(
             $config->getSection('section 1')->getSection('subsection 2')->getValue('value 1'),
             $newConfig->getSection('section 1')->getSection('subsection 2')->getValue('value 1')
       );
-      assertEquals(
+      $this->assertEquals(
             $config->getSection('section 1')->getSection('subsection 2')->getValue('value 2'),
             $newConfig->getSection('section 1')->getSection('subsection 2')->getValue('value 2')
       );
@@ -161,7 +161,7 @@ class PhpConfigurationProviderTest extends \PHPUnit_Framework_TestCase {
       if (file_exists($fileName)) {
          $this->fail('File "' . $fileName . '" has not been deleted by configuration manager!');
       } else {
-         assertTrue(true);
+         $this->assertTrue(true);
       }
 
    }

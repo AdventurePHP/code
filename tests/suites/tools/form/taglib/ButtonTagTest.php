@@ -69,7 +69,7 @@ class ButtonTagTest extends \PHPUnit_Framework_TestCase {
       $button->onParseTime();
       $button->onAfterAppend();
 
-      assertFalse($button->isSent());
+      $this->assertFalse($button->isSent());
 
    }
 
@@ -90,7 +90,7 @@ class ButtonTagTest extends \PHPUnit_Framework_TestCase {
       $button->onParseTime();
       $button->onAfterAppend();
 
-      assertFalse($button->isSent());
+      $this->assertFalse($button->isSent());
 
    }
 
@@ -111,7 +111,7 @@ class ButtonTagTest extends \PHPUnit_Framework_TestCase {
       $button->onParseTime();
       $button->onAfterAppend();
 
-      assertTrue($button->isSent());
+      $this->assertTrue($button->isSent());
 
    }
 
@@ -132,7 +132,7 @@ class ButtonTagTest extends \PHPUnit_Framework_TestCase {
       $button->onParseTime();
       $button->onAfterAppend();
 
-      assertFalse($button->isSent());
+      $this->assertFalse($button->isSent());
 
    }
 
@@ -153,7 +153,7 @@ class ButtonTagTest extends \PHPUnit_Framework_TestCase {
       $button->onParseTime();
       $button->onAfterAppend();
 
-      assertTrue($button->isSent());
+      $this->assertTrue($button->isSent());
 
    }
 

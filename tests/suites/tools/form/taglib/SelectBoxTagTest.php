@@ -48,11 +48,11 @@ class SelectBoxTagTest extends \PHPUnit_Framework_TestCase {
          $select->addOption($number, $number);
       }
 
-      assertNull($select->getSelectedOption());
+      $this->assertNull($select->getSelectedOption());
 
       $selectedOption = 4;
       $select->setOption2Selected($selectedOption);
-      assertEquals($select->getSelectedOption()->getValue(), $selectedOption);
+      $this->assertEquals($select->getSelectedOption()->getValue(), $selectedOption);
 
    }
 
@@ -73,7 +73,7 @@ class SelectBoxTagTest extends \PHPUnit_Framework_TestCase {
          $select->addOption($number, $number);
       }
 
-      assertEquals($select->getSelectedOption()->getValue(), $selectedOption);
+      $this->assertEquals($select->getSelectedOption()->getValue(), $selectedOption);
 
       // re-test with complex name
       $_REQUEST = [];
@@ -89,7 +89,7 @@ class SelectBoxTagTest extends \PHPUnit_Framework_TestCase {
          $select->addOption($number, $number);
       }
 
-      assertEquals($select->getSelectedOption()->getValue(), $selectedOption);
+      $this->assertEquals($select->getSelectedOption()->getValue(), $selectedOption);
 
    }
 
@@ -107,11 +107,11 @@ class SelectBoxTagTest extends \PHPUnit_Framework_TestCase {
          $select->addGroupOption('number-' . $number % 2, $number, $number);
       }
 
-      assertNull($select->getSelectedOption());
+      $this->assertNull($select->getSelectedOption());
 
       $selectedOption = 4;
       $select->setOption2Selected($selectedOption);
-      assertEquals($select->getSelectedOption()->getValue(), $selectedOption);
+      $this->assertEquals($select->getSelectedOption()->getValue(), $selectedOption);
 
    }
 
@@ -132,7 +132,7 @@ class SelectBoxTagTest extends \PHPUnit_Framework_TestCase {
          $select->addGroupOption('number-' . $number % 2, $number, $number);
       }
 
-      assertEquals($select->getSelectedOption()->getValue(), $selectedOption);
+      $this->assertEquals($select->getSelectedOption()->getValue(), $selectedOption);
 
       // re-test with complex name
       $_REQUEST = [];
@@ -148,7 +148,7 @@ class SelectBoxTagTest extends \PHPUnit_Framework_TestCase {
          $select->addGroupOption('number-' . $number % 2, $number, $number);
       }
 
-      assertEquals($select->getSelectedOption()->getValue(), $selectedOption);
+      $this->assertEquals($select->getSelectedOption()->getValue(), $selectedOption);
 
    }
 

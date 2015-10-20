@@ -71,8 +71,8 @@ class RadioButtonTagTest extends \PHPUnit_Framework_TestCase {
       $buttonTwo->onParseTime();
       $buttonTwo->onAfterAppend();
 
-      assertFalse($buttonOne->isChecked());
-      assertFalse($buttonTwo->isChecked());
+      $this->assertFalse($buttonOne->isChecked());
+      $this->assertFalse($buttonTwo->isChecked());
 
    }
 
@@ -91,8 +91,8 @@ class RadioButtonTagTest extends \PHPUnit_Framework_TestCase {
       $buttonTwo->onParseTime();
       $buttonTwo->onAfterAppend();
 
-      assertFalse($buttonOne->isChecked());
-      assertFalse($buttonTwo->isChecked());
+      $this->assertFalse($buttonOne->isChecked());
+      $this->assertFalse($buttonTwo->isChecked());
 
    }
 
@@ -115,8 +115,8 @@ class RadioButtonTagTest extends \PHPUnit_Framework_TestCase {
       $buttonTwo->onParseTime();
       $buttonTwo->onAfterAppend();
 
-      assertTrue($buttonOne->isChecked());
-      assertFalse($buttonTwo->isChecked());
+      $this->assertTrue($buttonOne->isChecked());
+      $this->assertFalse($buttonTwo->isChecked());
 
    }
 
@@ -140,8 +140,8 @@ class RadioButtonTagTest extends \PHPUnit_Framework_TestCase {
       $buttonTwo->onAfterAppend();
 
 
-      assertFalse($buttonOne->isChecked());
-      assertTrue($buttonTwo->isChecked());
+      $this->assertFalse($buttonOne->isChecked());
+      $this->assertTrue($buttonTwo->isChecked());
 
    }
 

@@ -43,7 +43,7 @@ class DateControlTest extends \PHPUnit_Framework_TestCase {
       $tag->onAfterAppend();
 
       $result = '<span id="date1"><select name="date1[Day]" id="date1[Day]"><option value="" selected="selected"></option><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select><select name="date1[Month]" id="date1[Month]"><option value="" selected="selected"></option><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><select name="date1[Year]" id="date1[Year]"><option value="" selected="selected"></option><option value="2002">2002</option><option value="2003">2003</option><option value="2004">2004</option><option value="2005">2005</option><option value="2006">2006</option><option value="2007">2007</option><option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option><option value="2011">2011</option><option value="2012">2012</option></select></span>';
-      assertEquals($result, $tag->transform());
+      $this->assertEquals($result, $tag->transform());
    }
 
    public function testSimplePresetting() {
@@ -54,7 +54,7 @@ class DateControlTest extends \PHPUnit_Framework_TestCase {
       $tag->onAfterAppend();
 
       $today = new DateTime();
-      assertEquals($today, $tag->getDate());
+      $this->assertEquals($today, $tag->getDate());
    }
 
    public function testPresettingWithPrependEmptyOptions() {
@@ -65,7 +65,7 @@ class DateControlTest extends \PHPUnit_Framework_TestCase {
       $tag->onParseTime();
       $tag->onAfterAppend();
 
-      assertEquals(null, $tag->getDate());
+      $this->assertEquals(null, $tag->getDate());
    }
 
    public function testPresettingWithPrependEmptyOptionsAfterPost() {
@@ -81,7 +81,7 @@ class DateControlTest extends \PHPUnit_Framework_TestCase {
       $tag->onParseTime();
       $tag->onAfterAppend();
 
-      assertEquals(null, $tag->getDate());
+      $this->assertEquals(null, $tag->getDate());
    }
 
    public function testGetDateWithCorrectDate() {
@@ -101,7 +101,7 @@ class DateControlTest extends \PHPUnit_Framework_TestCase {
       $tag->onAfterAppend();
 
       $expected = DateTime::createFromFormat('Y-m-d', $year . '-' . $month . '-' . $day);
-      assertEquals($expected, $tag->getDate());
+      $this->assertEquals($expected, $tag->getDate());
    }
 
    public function testGetDateWithImplausibleDate() {
@@ -118,7 +118,7 @@ class DateControlTest extends \PHPUnit_Framework_TestCase {
       $tag->onAfterAppend();
 
       $expected = DateTime::createFromFormat('Y-m-d', '2012-02-31');
-      assertEquals($expected, $tag->getDate());
+      $this->assertEquals($expected, $tag->getDate());
    }
 
    public function testPresettingWithImplausibleDate() {
@@ -136,9 +136,9 @@ class DateControlTest extends \PHPUnit_Framework_TestCase {
 
       $result = $tag->transform();
 
-      assertTrue(preg_match('/<option value="02" selected="selected">02<\/option>/', $result) === 1);
-      assertTrue(preg_match('/<option value="03" selected="selected">03<\/option>/', $result) === 1);
-      assertTrue(preg_match('/<option value="2012" selected="selected">2012<\/option>/', $result) === 1);
+      $this->assertTrue(preg_match('/<option value="02" selected="selected">02<\/option>/', $result) === 1);
+      $this->assertTrue(preg_match('/<option value="03" selected="selected">03<\/option>/', $result) === 1);
+      $this->assertTrue(preg_match('/<option value="2012" selected="selected">2012<\/option>/', $result) === 1);
    }
 
    public function testPresettingWithImplausibleDateAndPrependEmptyOptions() {
@@ -153,9 +153,9 @@ class DateControlTest extends \PHPUnit_Framework_TestCase {
 
       $result = $tag->transform();
 
-      assertTrue(preg_match('/<option value="" selected="selected"><\/option>/', $result) === 1);
-      assertTrue(preg_match('/<option value="" selected="selected"><\/option>/', $result) === 1);
-      assertTrue(preg_match('/<option value="" selected="selected"><\/option>/', $result) === 1);
+      $this->assertTrue(preg_match('/<option value="" selected="selected"><\/option>/', $result) === 1);
+      $this->assertTrue(preg_match('/<option value="" selected="selected"><\/option>/', $result) === 1);
+      $this->assertTrue(preg_match('/<option value="" selected="selected"><\/option>/', $result) === 1);
    }
 
 }

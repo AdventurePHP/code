@@ -54,7 +54,7 @@ class CheckBoxTagTest extends \PHPUnit_Framework_TestCase {
       $checkBox->onParseTime();
       $checkBox->onAfterAppend();
 
-      assertFalse($checkBox->isChecked());
+      $this->assertFalse($checkBox->isChecked());
 
    }
 
@@ -72,7 +72,7 @@ class CheckBoxTagTest extends \PHPUnit_Framework_TestCase {
       $checkBox->onParseTime();
       $checkBox->onAfterAppend();
 
-      assertFalse($checkBox->isChecked());
+      $this->assertFalse($checkBox->isChecked());
 
    }
 
@@ -95,7 +95,7 @@ class CheckBoxTagTest extends \PHPUnit_Framework_TestCase {
       $checkBox->onParseTime();
       $checkBox->onAfterAppend();
 
-      assertTrue($checkBox->isChecked());
+      $this->assertTrue($checkBox->isChecked());
 
    }
 

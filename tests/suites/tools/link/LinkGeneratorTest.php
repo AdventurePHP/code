@@ -39,7 +39,7 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
 
    public function testSimpleLinkScheme() {
       $url = new Url(null, null, null, self::$DEFAULT_URL);
-      assertEquals(
+      $this->assertEquals(
             self::$DEFAULT_URL,
             LinkGenerator::generateUrl($url, new DefaultLinkScheme())
       );
@@ -52,11 +52,11 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $paramName = 'foo';
       $paramValue = 'bar';
       $url = Url::fromString('' . $scheme . '://' . $domain . '' . $path . '?' . $paramName . '=' . $paramValue . '');
-      assertEquals($scheme, $url->getScheme());
-      assertEquals(null, $url->getPort());
-      assertEquals($domain, $url->getHost());
-      assertEquals($path, $url->getPath());
-      assertEquals($paramValue, $url->getQueryParameter($paramName));
+      $this->assertEquals($scheme, $url->getScheme());
+      $this->assertEquals(null, $url->getPort());
+      $this->assertEquals($domain, $url->getHost());
+      $this->assertEquals($path, $url->getPath());
+      $this->assertEquals($paramValue, $url->getQueryParameter($paramName));
    }
 
    public function testFrontcontrollerUrlGeneration() {
@@ -65,22 +65,22 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
             $url->mergeQuery(['foo' => 'bar', 'blubber' => null]),
             new TestableDefaultLinkScheme()
       );
-      assertEquals('http://localhost?foo=bar&amp;APF_cms_core_biz_setmodel-action:setModel=page.config.section:external', $link);
+      $this->assertEquals('http://localhost?foo=bar&amp;APF_cms_core_biz_setmodel-action:setModel=page.config.section:external', $link);
 
       $link = LinkGenerator::generateUrl(
             $url->mergeQuery(['foo' => 'bar', 'blubber' => null]),
             new TestableRewriteLinkScheme()
       );
-      assertEquals('http://localhost/foo/bar/~/APF_cms_core_biz_setmodel-action/setModel/page.config.section/external', $link);
+      $this->assertEquals('http://localhost/foo/bar/~/APF_cms_core_biz_setmodel-action/setModel/page.config.section/external', $link);
    }
 
    public function testConstructorPlusFluentConfiguration() {
       $host = 'localhost';
       $scheme = 'https';
       $url = Url::fromCurrent(true)->setHost($host)->setScheme($scheme);
-      assertEquals($host, $url->getHost());
-      assertEquals($scheme, $url->getScheme());
-      assertEmpty($url->getQuery());
+      $this->assertEquals($host, $url->getHost());
+      $this->assertEquals($scheme, $url->getScheme());
+      $this->assertEmpty($url->getQuery());
    }
 
    public function testConstructorPlusParameterMerge() {
@@ -91,10 +91,10 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $paramOneValue = 'bla';
       $paramTwoValue = 'zacke';
       $url = Url::fromCurrent(true)->mergeQuery([$paramOneName => $paramOneValue, $paramTwoName => $paramTwoValue]);
-      assertEquals($host, $url->getHost());
-      assertEquals($scheme, $url->getScheme());
-      assertEquals($paramOneValue, $url->getQueryParameter($paramOneName));
-      assertEquals($paramTwoValue, $url->getQueryParameter($paramTwoName));
+      $this->assertEquals($host, $url->getHost());
+      $this->assertEquals($scheme, $url->getScheme());
+      $this->assertEquals($paramOneValue, $url->getQueryParameter($paramOneName));
+      $this->assertEquals($paramTwoValue, $url->getQueryParameter($paramTwoName));
    }
 
    public function testConstructorPlusQueryParameterSetting() {
@@ -104,14 +104,14 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $url = Url::fromCurrent(true)
             ->setQueryParameter($paramOneName, $paramOneValue)
             ->setQueryParameter($paramTwoName, null);
-      assertEquals($paramOneValue, $url->getQueryParameter($paramOneName));
-      assertEquals(null, $url->getQueryParameter($paramTwoName));
+      $this->assertEquals($paramOneValue, $url->getQueryParameter($paramOneName));
+      $this->assertEquals(null, $url->getQueryParameter($paramTwoName));
    }
 
    public function testLinkGenerationSimpleWithRewriteLinkScheme() {
       $url = new Url(null, null, null, '/foo/1/bar/2/blubber/3', ['foo' => '2']);
       $link = LinkGenerator::generateUrl($url, new RewriteLinkScheme());
-      assertContains('/foo/2/', $link);
+      $this->assertContains('/foo/2/', $link);
    }
 
    public function testLinkGenerationFrontcontrollerActionWithActionParsing() {
@@ -119,11 +119,11 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
 
       $url = Url::fromString('/de/my-page/topic/2-user-research/~/' . $actionNamespace . '-action/setModel/page.config.section/external');
       $link = LinkGenerator::generateUrl($url, new RewriteLinkScheme());
-      assertNotContains($actionNamespace, $link);
+      $this->assertNotContains($actionNamespace, $link);
 
       $url = Url::fromString('/?de=my-page&topic=2-user-research&' . $actionNamespace . '-action:setModel=page.config.section:external');
       $link = LinkGenerator::generateUrl($url, new DefaultLinkScheme());
-      assertNotContains($actionNamespace, $link);
+      $this->assertNotContains($actionNamespace, $link);
    }
 
    public function testLinkGenerationFromParametersOnly() {
@@ -134,10 +134,10 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $url = new Url(null, null, null, null, [$paramOneName => $paramOneValue, $paramTwoName => $paramTwoValue]);
 
       $link = LinkGenerator::generateUrl($url);
-      assertEquals('?' . $paramOneName . '=' . $paramOneValue . '&amp;' . $paramTwoName . '=' . $paramTwoValue, $link);
+      $this->assertEquals('?' . $paramOneName . '=' . $paramOneValue . '&amp;' . $paramTwoName . '=' . $paramTwoValue, $link);
 
       $link = LinkGenerator::generateUrl($url, new RewriteLinkScheme());
-      assertEquals('/' . $paramOneName . '/' . $paramOneValue . '/' . $paramTwoName . '/' . $paramTwoValue, $link);
+      $this->assertEquals('/' . $paramOneName . '/' . $paramOneValue . '/' . $paramTwoName . '/' . $paramTwoValue, $link);
    }
 
    public function testLinkGenerationForActionLinks() {
@@ -150,11 +150,11 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $urlOne = new Url(null, null, null, $path);
       $link = LinkGenerator::generateActionUrl($urlOne, $actionNamespace, $actionName, [$foo => '1', $bar => '2'], new RewriteLinkScheme());
       // the rewrite link scheme supports no path since the path is interpreted as params and their values!
-      assertEquals('/~/APF_tools_media-action/streamMedia/' . $foo . '/1/' . $bar . '/2', $link);
+      $this->assertEquals('/~/APF_tools_media-action/streamMedia/' . $foo . '/1/' . $bar . '/2', $link);
 
       $urlTwo = new Url(null, null, null, $path);
       $link = LinkGenerator::generateActionUrl($urlTwo, $actionNamespace, $actionName, [$foo => '1', $bar => '2'], new DefaultLinkScheme());
-      assertEquals($path . '?APF_tools_media-action:streamMedia=' . $foo . ':1|' . $bar . ':2', $link);
+      $this->assertEquals($path . '?APF_tools_media-action:streamMedia=' . $foo . ':1|' . $bar . ':2', $link);
    }
 
    /**
@@ -175,21 +175,21 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $urlOne = new Url(null, null, null, $path);
       $link = LinkGenerator::generateActionUrl($urlOne, $actionNamespace, $actionName, [$foo => '1', $bar => '2'], $rewriteScheme);
       // the rewrite link scheme supports no path since the path is interpreted as params and their values!
-      assertEquals('/~/APF_tools_media-action/streamMedia/' . $foo . '/1/' . $bar . '/2', $link);
+      $this->assertEquals('/~/APF_tools_media-action/streamMedia/' . $foo . '/1/' . $bar . '/2', $link);
 
       $urlTwo = new Url(null, null, null, $path);
       $link = LinkGenerator::generateActionUrl($urlTwo, $actionNamespace, $actionName, [$foo => '1', $bar => '2'], $defaultScheme);
-      assertEquals($path . '?APF_tools_media-action:streamMedia=' . $foo . ':1|' . $bar . ':2', $link);
+      $this->assertEquals($path . '?APF_tools_media-action:streamMedia=' . $foo . ':1|' . $bar . ':2', $link);
 
       // without explicit action definition, the registered front controller action makes it into the url
       $urlThree = new Url(null, null, null, $path);
       $link = LinkGenerator::generateUrl($urlThree, $rewriteScheme);
       // the rewrite link scheme supports no path since the path is interpreted as params and their values!
-      assertEquals('/~/APF_tools_media-action/streamMedia', $link);
+      $this->assertEquals('/~/APF_tools_media-action/streamMedia', $link);
 
       $urlFour = new Url(null, null, null, $path);
       $link = LinkGenerator::generateUrl($urlFour, $defaultScheme);
-      assertEquals($path . '?APF_tools_media-action:streamMedia', $link);
+      $this->assertEquals($path . '?APF_tools_media-action:streamMedia', $link);
    }
 
    public function testExclusionOfNullValueAndInclusionOfZeroValueParameters() {
@@ -203,7 +203,7 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       ]);
 
       $link = LinkGenerator::generateUrl($url, new DefaultLinkScheme(false));
-      assertEquals('/?foo=bar&include-one=0&include-two=0', $link);
+      $this->assertEquals('/?foo=bar&include-one=0&include-two=0', $link);
    }
 
    public function testAnchorWithNormalUrl() {
@@ -219,10 +219,10 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $link = LinkGenerator::generateUrl($url, $linkScheme);
 
       // expect anchor at the very end
-      assertTrue(preg_match('/#' . $anchor . '$/', $link) === 1);
+      $this->assertTrue(preg_match('/#' . $anchor . '$/', $link) === 1);
 
       // "normal" of URL generation should be left as-is (exclusion/regression test)
-      assertEquals(
+      $this->assertEquals(
             $path . '?' . $foo . '=' . $bar . '&' . $bar . '=' . $baz,
             LinkGenerator::generateUrl($url->setAnchor(null), $linkScheme)
       );
@@ -240,10 +240,10 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $link = LinkGenerator::generateUrl($url, $linkScheme);
 
       // expect anchor at the very end
-      assertTrue(preg_match('/#' . $anchor . '$/', $link) === 1);
+      $this->assertTrue(preg_match('/#' . $anchor . '$/', $link) === 1);
 
       // "normal" of URL generation should be left as-is (exclusion/regression test)
-      assertEquals(
+      $this->assertEquals(
             '/' . $foo . '/' . $bar . '/' . $bar . '/' . $baz,
             LinkGenerator::generateUrl($url->setAnchor(null), $linkScheme)
       );
@@ -259,13 +259,13 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $scheme->addActionMapping(new ActionUrlMapping(TestableActionUrlMappingRewriteLinkScheme::URL_TOKEN, $actionNamespace, $actionName));
       $link = LinkGenerator::generateActionUrl($urlOne, $actionNamespace, $actionName, [], $scheme);
       // the rewrite link scheme supports no path since the path is interpreted as params and their values!
-      assertEquals('/~/' . TestableActionUrlMappingRewriteLinkScheme::URL_TOKEN, $link);
+      $this->assertEquals('/~/' . TestableActionUrlMappingRewriteLinkScheme::URL_TOKEN, $link);
 
       $urlTwo = new Url(null, null, null, null);
       $scheme = new TestableActionUrlMappingStandardLinkScheme();
       $scheme->addActionMapping(new ActionUrlMapping(TestableActionUrlMappingStandardLinkScheme::URL_TOKEN, $actionNamespace, $actionName));
       $link = LinkGenerator::generateActionUrl($urlTwo, $actionNamespace, $actionName, [], $scheme);
-      assertEquals('?' . TestableActionUrlMappingStandardLinkScheme::URL_TOKEN, $link);
+      $this->assertEquals('?' . TestableActionUrlMappingStandardLinkScheme::URL_TOKEN, $link);
    }
 
    public function testActionMappingWithPath() {
@@ -281,13 +281,13 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $scheme->addActionMapping(new ActionUrlMapping(TestableActionUrlMappingRewriteLinkScheme::URL_TOKEN, $actionNamespace, $actionName));
       $link = LinkGenerator::generateActionUrl($urlOne, $actionNamespace, $actionName, [$foo => '1', $bar => '2'], $scheme);
       // the rewrite link scheme supports no path since the path is interpreted as params and their values!
-      assertEquals('/~/' . TestableActionUrlMappingRewriteLinkScheme::URL_TOKEN . '/' . $foo . '/1/' . $bar . '/2', $link);
+      $this->assertEquals('/~/' . TestableActionUrlMappingRewriteLinkScheme::URL_TOKEN . '/' . $foo . '/1/' . $bar . '/2', $link);
 
       $urlTwo = new Url(null, null, null, $path);
       $scheme = new TestableActionUrlMappingStandardLinkScheme();
       $scheme->addActionMapping(new ActionUrlMapping(TestableActionUrlMappingStandardLinkScheme::URL_TOKEN, $actionNamespace, $actionName));
       $link = LinkGenerator::generateActionUrl($urlTwo, $actionNamespace, $actionName, [$foo => '1', $bar => '2'], $scheme);
-      assertEquals($path . '?' . TestableActionUrlMappingStandardLinkScheme::URL_TOKEN . '=' . $foo . ':1|' . $bar . ':2', $link);
+      $this->assertEquals($path . '?' . TestableActionUrlMappingStandardLinkScheme::URL_TOKEN . '=' . $foo . ':1|' . $bar . ':2', $link);
    }
 
    /**
@@ -306,26 +306,26 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $scheme->addActionMapping(new ActionUrlMapping(TestableActionUrlMappingRewriteLinkScheme::URL_TOKEN, $actionNamespace, $actionName));
       $link = LinkGenerator::generateActionUrl($urlOne, $actionNamespace, $actionName, [$foo => '1', $bar => '2'], $scheme);
       // the rewrite link scheme supports no path since the path is interpreted as params and their values!
-      assertEquals('/~/' . TestableActionUrlMappingRewriteLinkScheme::URL_TOKEN . '/' . $foo . '/1/' . $bar . '/2', $link);
+      $this->assertEquals('/~/' . TestableActionUrlMappingRewriteLinkScheme::URL_TOKEN . '/' . $foo . '/1/' . $bar . '/2', $link);
 
       // mapped action is within url but no keepInUrl=true set for action; generate normal url
       $urlTwo = new Url(null, null, null, '/foo/bar/~/media');
       $link = LinkGenerator::generateUrl($urlTwo, $scheme);
       // the rewrite link scheme supports no path since the path is interpreted as params and their values!
-      assertEquals('/foo/bar', $link);
+      $this->assertEquals('/foo/bar', $link);
 
       // normal action within URL but no keepInUrl=true set for action; generate action url
       $urlThree = new Url(null, null, null, null, ['VENDOR_actions-action:doIt' => '']);
       $scheme = new TestableActionUrlMappingStandardLinkScheme();
       $scheme->addActionMapping(new ActionUrlMapping(TestableActionUrlMappingStandardLinkScheme::URL_TOKEN, $actionNamespace, $actionName));
       $link = LinkGenerator::generateActionUrl($urlThree, $actionNamespace, $actionName, [$foo => '1', $bar => '2'], $scheme);
-      assertEquals('?' . TestableActionUrlMappingStandardLinkScheme::URL_TOKEN . '=' . $foo . ':1|' . $bar . ':2', $link);
+      $this->assertEquals('?' . TestableActionUrlMappingStandardLinkScheme::URL_TOKEN . '=' . $foo . ':1|' . $bar . ':2', $link);
 
       // mapped action is within url but no keepInUrl=true set for action; generate normal url
       $urlFour = new Url(null, null, null, '/foo/bar', ['media' => '']);
       $link = LinkGenerator::generateUrl($urlFour, $scheme);
       // the rewrite link scheme supports no path since the path is interpreted as params and their values!
-      assertEquals('/foo/bar', $link);
+      $this->assertEquals('/foo/bar', $link);
 
    }
 
@@ -366,42 +366,42 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       // simple normal URL containing mapped actions - w/o params
       $url = new Url(null, null, null, '/categories');
       $link = LinkGenerator::generateUrl($url, $standardScheme);
-      assertEquals('/categories?foo&amp;bar', $link);
+      $this->assertEquals('/categories?foo&amp;bar', $link);
 
       // simple rewrite URL containing mapped actions - w/o params
       $url = new Url(null, null, null, null);
       $link = LinkGenerator::generateUrl($url, $rewriteScheme);
-      assertEquals('/~/foo/~/bar', $link);
+      $this->assertEquals('/~/foo/~/bar', $link);
 
       // normal action URL containing mapped actions - w/o params
       $url = new Url(null, null, null, '/categories');
       $link = LinkGenerator::generateActionUrl($url, 'VENDOR\baz', 'say-baz', [], $standardScheme);
-      assertEquals('/categories?VENDOR_baz-action:say-baz&amp;foo&amp;bar', $link);
+      $this->assertEquals('/categories?VENDOR_baz-action:say-baz&amp;foo&amp;bar', $link);
 
       // rewrite action URL containing mapped actions - w/o params
       $url = new Url(null, null, null, null);
       $link = LinkGenerator::generateActionUrl($url, 'VENDOR\baz', 'say-baz', [], $rewriteScheme);
-      assertEquals('/~/VENDOR_baz-action/say-baz/~/foo/~/bar', $link);
+      $this->assertEquals('/~/VENDOR_baz-action/say-baz/~/foo/~/bar', $link);
 
       // simple normal URL containing mapped actions - w/ params
       $url = new Url(null, null, null, '/categories', ['one' => '1', 'two' => '2']);
       $link = LinkGenerator::generateUrl($url, $standardScheme);
-      assertEquals('/categories?one=1&amp;two=2&amp;foo&amp;bar', $link);
+      $this->assertEquals('/categories?one=1&amp;two=2&amp;foo&amp;bar', $link);
 
       // simple rewrite URL containing mapped actions - w/ params
       $url = new Url(null, null, null, null, ['one' => '1', 'two' => '2']);
       $link = LinkGenerator::generateUrl($url, $rewriteScheme);
-      assertEquals('/one/1/two/2/~/foo/~/bar', $link);
+      $this->assertEquals('/one/1/two/2/~/foo/~/bar', $link);
 
       // normal action URL containing mapped actions - w/ params
       $url = new Url(null, null, null, '/categories', ['one' => '1', 'two' => '2']);
       $link = LinkGenerator::generateActionUrl($url, 'VENDOR\baz', 'say-baz', [], $standardScheme);
-      assertEquals('/categories?one=1&amp;two=2&amp;VENDOR_baz-action:say-baz&amp;foo&amp;bar', $link);
+      $this->assertEquals('/categories?one=1&amp;two=2&amp;VENDOR_baz-action:say-baz&amp;foo&amp;bar', $link);
 
       // rewrite action URL containing mapped actions - w/ params
       $url = new Url(null, null, null, null, ['one' => '1', 'two' => '2']);
       $link = LinkGenerator::generateActionUrl($url, 'VENDOR\baz', 'say-baz', [], $rewriteScheme);
-      assertEquals('/one/1/two/2/~/VENDOR_baz-action/say-baz/~/foo/~/bar', $link);
+      $this->assertEquals('/one/1/two/2/~/VENDOR_baz-action/say-baz/~/foo/~/bar', $link);
 
    }
 
@@ -411,33 +411,33 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $url = Url::fromString('/foo/bar/?\'>' . $injection . '=test');
 
       $link = LinkGenerator::generateUrl($url, new DefaultLinkScheme());
-      assertNotContains($injection, $link, true);
+      $this->assertNotContains($injection, $link, true);
 
       $url = Url::fromString('/foo/bar/\'>' . $injection . '/test');
 
       $link = LinkGenerator::generateUrl($url, new RewriteLinkScheme());
-      assertNotContains($injection, $link, true);
+      $this->assertNotContains($injection, $link, true);
 
    }
 
    public function testSimpleParameterOverwriting() {
       $url = Url::fromString('/?foo=1&amp;foo=2');
-      assertEquals('2', $url->getQueryParameter('foo'));
+      $this->assertEquals('2', $url->getQueryParameter('foo'));
    }
 
    public function testArrayParameterOverwriting() {
       $url = Url::fromString('/?a[x]=1&a[y]=2&b[]=1&b[]=2&b[2]=3&b[1]=7');
 
       $a = $url->getQueryParameter('a');
-      assertTrue(is_array($a));
-      assertEquals('1', $a['x']);
-      assertEquals('2', $a['y']);
+      $this->assertTrue(is_array($a));
+      $this->assertEquals('1', $a['x']);
+      $this->assertEquals('2', $a['y']);
 
       $b = $url->getQueryParameter('b');
-      assertTrue(is_array($b));
-      assertEquals('1', $b[0]);
-      assertEquals('7', $b[1]);
-      assertEquals('3', $b[2]);
+      $this->assertTrue(is_array($b));
+      $this->assertEquals('1', $b[0]);
+      $this->assertEquals('7', $b[1]);
+      $this->assertEquals('3', $b[2]);
    }
 
    public function testNestedArrayParameters() {
@@ -447,21 +447,21 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
 
       $a = $url->getQueryParameter('a');
 
-      assertTrue(is_array($a));
-      assertTrue(is_array($a[0]));
-      assertTrue(is_array($a[1]));
+      $this->assertTrue(is_array($a));
+      $this->assertTrue(is_array($a[0]));
+      $this->assertTrue(is_array($a[1]));
 
-      assertEquals('123', $a[0]['foo']);
-      assertEquals('123', $a[1]['foo']);
-      assertEquals('456', $a[1]['bar']);
+      $this->assertEquals('123', $a[0]['foo']);
+      $this->assertEquals('123', $a[1]['foo']);
+      $this->assertEquals('456', $a[1]['bar']);
 
       $b = $url->getQueryParameter('b');
 
-      assertTrue(is_array($b));
-      assertTrue(is_array($b['c']));
-      assertTrue(is_array($b['c']['d']));
-      assertTrue(is_array($b['c']['d']['e']));
-      assertEquals('123', $b['c']['d']['e']['f']);
+      $this->assertTrue(is_array($b));
+      $this->assertTrue(is_array($b['c']));
+      $this->assertTrue(is_array($b['c']['d']));
+      $this->assertTrue(is_array($b['c']['d']['e']));
+      $this->assertEquals('123', $b['c']['d']['e']['f']);
    }
 
    public function testMixedParameterResolvingEdgeCase() {
@@ -470,8 +470,8 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $url = Url::fromString('/?a=123&a[b]=456');
       $a = $url->getQueryParameter('a');
 
-      assertTrue(is_array($a));
-      assertEquals('456', $a['b']);
+      $this->assertTrue(is_array($a));
+      $this->assertEquals('456', $a['b']);
 
    }
 
@@ -492,7 +492,7 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       ]);
 
       $link = $link = LinkGenerator::generateUrl($url, $scheme);
-      assertEquals('/?a[x]=1&amp;a[y]=2&amp;b[0]=1&amp;b[1]=2', $link);
+      $this->assertEquals('/?a[x]=1&amp;a[y]=2&amp;b[0]=1&amp;b[1]=2', $link);
 
       $url->setQuery([
             'a' => [
@@ -513,7 +513,7 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
             ]
       ]);
 
-      assertEquals(
+      $this->assertEquals(
             '/?a[0][foo]=123&amp;a[1][foo]=123&amp;a[1][bar]=456&amp;b[c][d][e][f]=123',
             LinkGenerator::generateUrl($url, $scheme)
       );

@@ -94,7 +94,7 @@ class AppendNodeTag extends Document {
       $this->extractExpressionTags();
 
       // get parent children list
-      $parentChildren = & $this->parentObject->getChildren();
+      $parentChildren = &$this->parentObject->getChildren();
       $parentContent = $this->parentObject->getContent();
       $currentObjectId = $this->getObjectId();
 
@@ -103,13 +103,13 @@ class AppendNodeTag extends Document {
       $includeStatic = $this->getAttribute(self::$INCLUDE_STATIC_CONTENT_ATTRIBUTE_NAME);
       if ($includeStatic === 'true') {
 
-         foreach ($this->children as $objectId => $DUMMY) {
+         foreach ($this->children as &$child) {
 
             // append node to parent object's children list
-            $parentChildren[$objectId] = & $this->children[$objectId];
+            $parentChildren[$child->getObjectId()] = &$child;
 
             // correct the parent object reference
-            $parentChildren[$objectId]->setParentObject($this->parentObject);
+            $parentChildren[$child->getObjectId()]->setParentObject($this->parentObject);
          }
 
          // include complete content of the current document and append it to
@@ -122,17 +122,20 @@ class AppendNodeTag extends Document {
 
       } else {
 
-         foreach ($this->children as $objectId => $DUMMY) {
+         foreach ($this->children as &$child) {
 
             // append node to parent object's children list
-            $parentChildren[$objectId] = & $this->children[$objectId];
+            $parentChildren[$child->getObjectId()] = &$child;
 
             // correct the parent object reference
-            $parentChildren[$objectId]->setParentObject($this->parentObject);
+            $parentChildren[$child->getObjectId()]->setParentObject($this->parentObject);
 
             // add a marker tag to the parent object after the tag's marker
-            $parentContent = str_replace('<' . $currentObjectId . ' />', '<' . $currentObjectId . ' /><' . $objectId . ' />', $parentContent);
-            $currentObjectId = $objectId;
+            $parentContent = str_replace(
+                  '<' . $currentObjectId . ' />',
+                  '<' . $currentObjectId . ' /><' . $child->getObjectId() . ' />',
+                  $parentContent);
+            $currentObjectId = $child->getObjectId();
 
          }
 

@@ -32,7 +32,7 @@ class ModelEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
 
    public function testHappyCase() {
       $expression = new ModelEvaluationExpression(self::DATA_ATTRIBUTE_NAME, $this->getDocument(self::DATA_ATTRIBUTE_NAME));
-      assertTrue($expression->getResult() instanceof ContentModel);
+      $this->assertTrue($expression->getResult() instanceof ContentModel);
    }
 
    private function getDocument($dataAttributeName) {
@@ -45,10 +45,10 @@ class ModelEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
    public function testWithArrayAccess() {
 
       $expression = new ModelEvaluationExpression(self::DATA_ATTRIBUTE_NAME . '[123]', $this->getDocument(self::DATA_ATTRIBUTE_NAME));
-      assertTrue($expression->getResult() instanceof ContentModel);
+      $this->assertTrue($expression->getResult() instanceof ContentModel);
 
       $expression = new ModelEvaluationExpression(self::DATA_ATTRIBUTE_NAME . '[\'123\']', $this->getDocument(self::DATA_ATTRIBUTE_NAME));
-      assertTrue($expression->getResult() instanceof ContentModel);
+      $this->assertTrue($expression->getResult() instanceof ContentModel);
 
    }
 
@@ -64,7 +64,7 @@ class ModelEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
 
    public function testWrongDataAttributeReference() {
       $expression = new ModelEvaluationExpression('bar', $this->getDocument(self::DATA_ATTRIBUTE_NAME));
-      assertTrue($expression->getResult() === null);
+      $this->assertTrue($expression->getResult() === null);
    }
 
    public function testThisModelExpression() {
@@ -76,8 +76,8 @@ class ModelEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
       /* @var $result DomNode */
       $result = $expression->getResult();
 
-      assertEquals($expected, $result);
-      assertEquals($expected->getAttribute('foo'), $result->getAttribute('foo'));
+      $this->assertEquals($expected, $result);
+      $this->assertEquals($expected->getAttribute('foo'), $result->getAttribute('foo'));
    }
 
 }

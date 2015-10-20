@@ -56,19 +56,19 @@ class FrontControllerActionMappingTest extends \PHPUnit_Framework_TestCase {
       $fC->registerActionUrlMapping($barMapping);
       $fC->registerActionUrlMapping($bazMapping);
 
-      assertEquals([$fooUrlToken, $barUrlToken, $bazUrlToken], $fC->getActionUrlMappingTokens());
-      assertCount(3, $fC->getActionUrlMappingTokens());
+      $this->assertEquals([$fooUrlToken, $barUrlToken, $bazUrlToken], $fC->getActionUrlMappingTokens());
+      $this->assertCount(3, $fC->getActionUrlMappingTokens());
 
-      assertEquals($fooMapping, $fC->getActionUrlMapping($fooUrlToken));
-      assertEquals($fooMapping, $fC->getActionUrlMapping($fooNamespace, $fooName));
+      $this->assertEquals($fooMapping, $fC->getActionUrlMapping($fooUrlToken));
+      $this->assertEquals($fooMapping, $fC->getActionUrlMapping($fooNamespace, $fooName));
 
-      assertEquals($barMapping, $fC->getActionUrlMapping($barUrlToken));
-      assertEquals($barMapping, $fC->getActionUrlMapping($barNamespace, $barName));
+      $this->assertEquals($barMapping, $fC->getActionUrlMapping($barUrlToken));
+      $this->assertEquals($barMapping, $fC->getActionUrlMapping($barNamespace, $barName));
 
-      assertEquals($bazMapping, $fC->getActionUrlMapping($bazUrlToken));
-      assertEquals($bazMapping, $fC->getActionUrlMapping($bazNamespace, $bazName));
+      $this->assertEquals($bazMapping, $fC->getActionUrlMapping($bazUrlToken));
+      $this->assertEquals($bazMapping, $fC->getActionUrlMapping($bazNamespace, $bazName));
 
-      assertNull($fC->getActionUrlMapping('123456'));
+      $this->assertNull($fC->getActionUrlMapping('123456'));
 
    }
 

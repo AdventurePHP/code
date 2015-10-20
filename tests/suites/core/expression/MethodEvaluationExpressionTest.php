@@ -28,23 +28,23 @@ class MethodEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
    public function testSimpleCall() {
       $model = new ContentModel();
       $expression = new MethodEvaluationExpression('getCssClass()', $model);
-      assertEquals($model->getCssClass(), $expression->getResult());
+      $this->assertEquals($model->getCssClass(), $expression->getResult());
    }
 
    public function testWithoutArguments() {
       $model = new MethodArgumentsModel();
       $expression = new MethodEvaluationExpression('singleParamCall()', $model);
-      assertEquals($model->singleParamCall(), $expression->getResult());
+      $this->assertEquals($model->singleParamCall(), $expression->getResult());
    }
 
    public function testWithOneArgument() {
       $model = new MethodArgumentsModel();
 
       $expression = new MethodEvaluationExpression('singleParamCall(false)', $model);
-      assertEquals($model->singleParamCall('false'), $expression->getResult());
+      $this->assertEquals($model->singleParamCall('false'), $expression->getResult());
 
       $expression = new MethodEvaluationExpression('singleParamCall(true)', $model);
-      assertEquals($model->singleParamCall('true'), $expression->getResult());
+      $this->assertEquals($model->singleParamCall('true'), $expression->getResult());
    }
 
    public function testWithMultipleArguments() {
@@ -52,14 +52,14 @@ class MethodEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
       $model = new MethodArgumentsModel();
 
       $expression = new MethodEvaluationExpression('sumUp(1, 2, 3, 4)', $model);
-      assertEquals($model->sumUp(1, 2, 3, 4), $expression->getResult());
+      $this->assertEquals($model->sumUp(1, 2, 3, 4), $expression->getResult());
 
 
       $expression = new MethodEvaluationExpression('concatenate(1, 2, 3, 4)', $model);
-      assertEquals($model->concatenate('1', '2', '3', '4'), $expression->getResult());
+      $this->assertEquals($model->concatenate('1', '2', '3', '4'), $expression->getResult());
 
       $expression = new MethodEvaluationExpression('concatenate(\'1\', \'2\', \'3\', \'4\')', $model);
-      assertEquals($model->concatenate('1', '2', '3', '4'), $expression->getResult());
+      $this->assertEquals($model->concatenate('1', '2', '3', '4'), $expression->getResult());
 
    }
 

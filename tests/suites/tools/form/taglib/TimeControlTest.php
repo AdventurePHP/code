@@ -40,7 +40,7 @@ class TimeControlTest extends \PHPUnit_Framework_TestCase {
       $tag->onAfterAppend();
 
       $today = new DateTime();
-      assertEquals($today, $tag->getTime());
+      $this->assertEquals($today, $tag->getTime());
    }
 
    public function testGetTimeWithCorrectTime() {
@@ -60,7 +60,7 @@ class TimeControlTest extends \PHPUnit_Framework_TestCase {
       $tag->onAfterAppend();
 
       $expected = DateTime::createFromFormat('H:i:s', $hour . ':' . $minute . ':' . $second);
-      assertEquals($expected, $tag->getTime());
+      $this->assertEquals($expected, $tag->getTime());
 
       // same test again for the showSeconds=false case
       unset($_REQUEST['time1']['Seconds']);
@@ -73,7 +73,7 @@ class TimeControlTest extends \PHPUnit_Framework_TestCase {
       $tag->onAfterAppend();
 
       $expected = DateTime::createFromFormat('H:i', $hour . ':' . $minute);
-      assertEquals($expected, $tag->getTime());
+      $this->assertEquals($expected, $tag->getTime());
    }
 
    public function testGetDateWithImplausibleTime() {
@@ -88,8 +88,8 @@ class TimeControlTest extends \PHPUnit_Framework_TestCase {
       $tag->onParseTime();
       $tag->onAfterAppend();
 
-      assertEquals(null, $tag->getTime(true));
-      assertEquals(null, $tag->getTime());
+      $this->assertEquals(null, $tag->getTime(true));
+      $this->assertEquals(null, $tag->getTime());
    }
 
    public function testPresettingWithImplausibleDate() {
@@ -106,8 +106,8 @@ class TimeControlTest extends \PHPUnit_Framework_TestCase {
 
       $result = $tag->transform();
 
-      assertTrue(preg_match('/<option value="02" selected="selected">02<\/option>/', $result) === 1);
-      assertTrue(preg_match('/<option value="03" selected="selected">03<\/option>/', $result) === 1);
+      $this->assertTrue(preg_match('/<option value="02" selected="selected">02<\/option>/', $result) === 1);
+      $this->assertTrue(preg_match('/<option value="03" selected="selected">03<\/option>/', $result) === 1);
    }
 
    public function testSetTime() {
@@ -123,7 +123,7 @@ class TimeControlTest extends \PHPUnit_Framework_TestCase {
       $tag->setTime($time);
 
       $expected = DateTime::createFromFormat('H:i:s', $time);
-      assertEquals($expected, $tag->getTime());
+      $this->assertEquals($expected, $tag->getTime());
 
       // set time without seconds
       $tag = new TimeSelectorTag();
@@ -137,7 +137,7 @@ class TimeControlTest extends \PHPUnit_Framework_TestCase {
       $tag->setTime($time);
 
       $expected = DateTime::createFromFormat('H:i', $time);
-      assertEquals($expected, $tag->getTime());
+      $this->assertEquals($expected, $tag->getTime());
    }
 
 }

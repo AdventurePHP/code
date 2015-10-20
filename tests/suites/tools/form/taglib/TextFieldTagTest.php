@@ -48,8 +48,8 @@ class TextFieldTagTest extends \PHPUnit_Framework_TestCase {
 
       $field->setValue(self::FIELD_VALUE);
 
-      assertEquals($field->getValue(), self::FIELD_VALUE);
-      assertTrue($field->isFilled());
+      $this->assertEquals($field->getValue(), self::FIELD_VALUE);
+      $this->assertTrue($field->isFilled());
 
    }
 
@@ -66,8 +66,8 @@ class TextFieldTagTest extends \PHPUnit_Framework_TestCase {
       $field->onParseTime();
       $field->onAfterAppend();
 
-      assertEquals($field->getValue(), $userInput);
-      assertTrue($field->isFilled());
+      $this->assertEquals($field->getValue(), $userInput);
+      $this->assertTrue($field->isFilled());
 
       // re-test with "0" as input in URL
       $userInput = '0';
@@ -76,8 +76,8 @@ class TextFieldTagTest extends \PHPUnit_Framework_TestCase {
       $field->onParseTime();
       $field->onAfterAppend();
 
-      assertEquals($field->getValue(), $userInput);
-      assertTrue($field->isFilled());
+      $this->assertEquals($field->getValue(), $userInput);
+      $this->assertTrue($field->isFilled());
 
    }
 

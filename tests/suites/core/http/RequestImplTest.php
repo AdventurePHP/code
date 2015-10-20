@@ -52,13 +52,13 @@ class RequestImplTest extends \PHPUnit_Framework_TestCase {
       foreach ($testData as $key => $value) {
 
          $_GET[$key] = $value;
-         assertEquals($request->getGetParameter($key), $value);
+         $this->assertEquals($request->getGetParameter($key), $value);
 
          $_POST[$key] = $value;
-         assertEquals($request->getPostParameter($key), $value);
+         $this->assertEquals($request->getPostParameter($key), $value);
 
          $_REQUEST[$key] = $value;
-         assertEquals($request->getParameter($key), $value);
+         $this->assertEquals($request->getParameter($key), $value);
       }
 
    }
@@ -68,22 +68,22 @@ class RequestImplTest extends \PHPUnit_Framework_TestCase {
       $request = new RequestImpl();
 
       $_GET = [];
-      assertNull($request->getGetParameter(self::PARAMETER_FOO));
+      $this->assertNull($request->getGetParameter(self::PARAMETER_FOO));
 
       $_POST = [];
-      assertNull($request->getPostParameter(self::PARAMETER_FOO));
+      $this->assertNull($request->getPostParameter(self::PARAMETER_FOO));
 
       $_REQUEST = [];
-      assertNull($request->getParameter(self::PARAMETER_FOO));
+      $this->assertNull($request->getParameter(self::PARAMETER_FOO));
 
       $_GET[self::PARAMETER_BAR] = '';
-      assertNull($request->getGetParameter(self::PARAMETER_BAR));
+      $this->assertNull($request->getGetParameter(self::PARAMETER_BAR));
 
       $_POST[self::PARAMETER_BAR] = '';
-      assertNull($request->getPostParameter(self::PARAMETER_BAR));
+      $this->assertNull($request->getPostParameter(self::PARAMETER_BAR));
 
       $_REQUEST[self::PARAMETER_BAR] = '';
-      assertNull($request->getParameter(self::PARAMETER_BAR));
+      $this->assertNull($request->getParameter(self::PARAMETER_BAR));
    }
 
    public function testZeroValues() {
@@ -93,26 +93,26 @@ class RequestImplTest extends \PHPUnit_Framework_TestCase {
       $_GET = [];
 
       $_GET[self::PARAMETER_FOO] = 0;
-      assertEquals(0, $request->getGetParameter(self::PARAMETER_FOO));
+      $this->assertEquals(0, $request->getGetParameter(self::PARAMETER_FOO));
 
       $_GET[self::PARAMETER_BAR] = '0';
-      assertEquals('0', $request->getGetParameter(self::PARAMETER_BAR));
+      $this->assertEquals('0', $request->getGetParameter(self::PARAMETER_BAR));
 
       $_POST = [];
 
       $_POST[self::PARAMETER_FOO] = 0;
-      assertEquals(0, $request->getPostParameter(self::PARAMETER_FOO));
+      $this->assertEquals(0, $request->getPostParameter(self::PARAMETER_FOO));
 
       $_POST[self::PARAMETER_BAR] = '0';
-      assertEquals('0', $request->getPostParameter(self::PARAMETER_BAR));
+      $this->assertEquals('0', $request->getPostParameter(self::PARAMETER_BAR));
 
       $_REQUEST = [];
 
       $_REQUEST[self::PARAMETER_FOO] = 0;
-      assertEquals(0, $request->getParameter(self::PARAMETER_FOO));
+      $this->assertEquals(0, $request->getParameter(self::PARAMETER_FOO));
 
       $_REQUEST[self::PARAMETER_BAR] = '0';
-      assertEquals('0', $request->getParameter(self::PARAMETER_BAR));
+      $this->assertEquals('0', $request->getParameter(self::PARAMETER_BAR));
 
    }
 
@@ -127,9 +127,9 @@ class RequestImplTest extends \PHPUnit_Framework_TestCase {
 
       $request = new RequestImpl();
 
-      assertEquals(self::PARAMETER_BAR, $request->getParameter(self::PARAMETER_FOO));
-      assertEquals(self::PARAMETER_BAR, $request->getGetParameter(self::PARAMETER_FOO));
-      assertEquals(null, $request->getPostParameter(self::PARAMETER_FOO));
+      $this->assertEquals(self::PARAMETER_BAR, $request->getParameter(self::PARAMETER_FOO));
+      $this->assertEquals(self::PARAMETER_BAR, $request->getGetParameter(self::PARAMETER_FOO));
+      $this->assertEquals(null, $request->getPostParameter(self::PARAMETER_FOO));
 
       // separation of GET and POST - starting at POST
       $_GET = [];
@@ -138,9 +138,9 @@ class RequestImplTest extends \PHPUnit_Framework_TestCase {
       $_POST[self::PARAMETER_FOO] = self::PARAMETER_BAR;
       $_REQUEST[self::PARAMETER_FOO] = $_POST[self::PARAMETER_FOO];
 
-      assertEquals(self::PARAMETER_BAR, $request->getParameter(self::PARAMETER_FOO));
-      assertEquals(self::PARAMETER_BAR, $request->getPostParameter(self::PARAMETER_FOO));
-      assertEquals(null, $request->getGetParameter(self::PARAMETER_FOO));
+      $this->assertEquals(self::PARAMETER_BAR, $request->getParameter(self::PARAMETER_FOO));
+      $this->assertEquals(self::PARAMETER_BAR, $request->getPostParameter(self::PARAMETER_FOO));
+      $this->assertEquals(null, $request->getGetParameter(self::PARAMETER_FOO));
 
    }
 
@@ -154,12 +154,12 @@ class RequestImplTest extends \PHPUnit_Framework_TestCase {
 
       $request = new RequestImpl();
 
-      assertNull($request->getPostParameter(self::PARAMETER_FOO));
+      $this->assertNull($request->getPostParameter(self::PARAMETER_FOO));
 
       $default = 'OneTwoThree';
-      assertEquals($default, $request->getPostParameter(self::PARAMETER_FOO, $default));
+      $this->assertEquals($default, $request->getPostParameter(self::PARAMETER_FOO, $default));
 
-      assertEquals(self::PARAMETER_BAR, $request->getParameter(self::PARAMETER_FOO, $default));
+      $this->assertEquals(self::PARAMETER_BAR, $request->getParameter(self::PARAMETER_FOO, $default));
 
    }
 
@@ -177,15 +177,15 @@ class RequestImplTest extends \PHPUnit_Framework_TestCase {
       ];
 
       $a = $request->getParameter('a');
-      assertTrue(is_array($a));
-      assertEquals('1', $a['x']);
-      assertEquals('2', $a['y']);
+      $this->assertTrue(is_array($a));
+      $this->assertEquals('1', $a['x']);
+      $this->assertEquals('2', $a['y']);
 
       $b = $request->getParameter('b');
-      assertTrue(is_array($b));
-      assertEquals('1', $b[0]);
-      assertEquals('7', $b[1]);
-      assertEquals('3', $b[2]);
+      $this->assertTrue(is_array($b));
+      $this->assertEquals('1', $b[0]);
+      $this->assertEquals('7', $b[1]);
+      $this->assertEquals('3', $b[2]);
 
       // ?a[][foo]=123&a[][foo]=123&a[1][bar]=456&b[c][d][e][f]=123
       $_REQUEST = [
@@ -208,17 +208,17 @@ class RequestImplTest extends \PHPUnit_Framework_TestCase {
       ];
 
       $a = $request->getParameter('a');
-      assertTrue(is_array($a));
-      assertEquals('123', $a[0]['foo']);
-      assertEquals('123', $a[1]['foo']);
-      assertEquals('456', $a[1]['bar']);
+      $this->assertTrue(is_array($a));
+      $this->assertEquals('123', $a[0]['foo']);
+      $this->assertEquals('123', $a[1]['foo']);
+      $this->assertEquals('456', $a[1]['bar']);
 
       $b = $request->getParameter('b');
-      assertTrue(is_array($b));
-      assertTrue(is_array($b['c']));
-      assertTrue(is_array($b['c']['d']));
-      assertTrue(is_array($b['c']['d']['e']));
-      assertEquals('123', $b['c']['d']['e']['f']);
+      $this->assertTrue(is_array($b));
+      $this->assertTrue(is_array($b['c']));
+      $this->assertTrue(is_array($b['c']['d']));
+      $this->assertTrue(is_array($b['c']['d']['e']));
+      $this->assertEquals('123', $b['c']['d']['e']['f']);
 
    }
 

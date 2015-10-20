@@ -31,10 +31,10 @@ class ArrayAccessEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
       $previousResult = $this->getPreviousResult();
 
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME . '[0]', $previousResult);
-      assertTrue($expression->getResult() instanceof ContentModel);
+      $this->assertTrue($expression->getResult() instanceof ContentModel);
 
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME . '[4711]', $previousResult);
-      assertTrue($expression->getResult() instanceof ContentModel);
+      $this->assertTrue($expression->getResult() instanceof ContentModel);
    }
 
    private function getPreviousResult() {
@@ -57,22 +57,22 @@ class ArrayAccessEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
 
    public function testAssociativeAccess() {
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME . '[\'foo\']', $this->getPreviousResult());
-      assertTrue($expression->getResult() instanceof ContentModel);
+      $this->assertTrue($expression->getResult() instanceof ContentModel);
    }
 
    public function testMultiArrayNumericAccess() {
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME . '[42][1]', $this->getPreviousResult());
-      assertTrue($expression->getResult() instanceof ContentModel);
+      $this->assertTrue($expression->getResult() instanceof ContentModel);
    }
 
    public function testMultiArrayAssociativeAccess() {
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME . '[42][1]', $this->getPreviousResult());
-      assertTrue($expression->getResult() instanceof ContentModel);
+      $this->assertTrue($expression->getResult() instanceof ContentModel);
    }
 
    public function testMultiArrayMixedAccess() {
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME . '[\'bar\'][42]', $this->getPreviousResult());
-      assertTrue($expression->getResult() instanceof ContentModel);
+      $this->assertTrue($expression->getResult() instanceof ContentModel);
    }
 
    public function testInvalidOffset() {

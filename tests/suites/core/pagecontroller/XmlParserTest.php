@@ -22,6 +22,7 @@ namespace APF\tests\suites\core\pagecontroller;
 
 use APF\core\pagecontroller\ParserException;
 use APF\core\pagecontroller\XmlParser;
+use ReflectionProperty;
 
 /**
  * Tests the XmlParser's capabilities.
@@ -223,6 +224,13 @@ class XmlParserTest extends \PHPUnit_Framework_TestCase {
 
    public function testGenerateUniqueId() {
 
+      // reset counter to avoid influence from other unit tests using this static counter
+      $counter = new ReflectionProperty(XmlParser::class, 'domNodeCounter');
+      $counter->setAccessible(true);
+
+      $original = $counter->getValue();
+      $counter->setValue(1);
+
       // test starting point and format
       $id = XmlParser::generateUniqID();
       $this->assertTrue(strlen($id) === 32);
@@ -234,6 +242,9 @@ class XmlParserTest extends \PHPUnit_Framework_TestCase {
       }
 
       $this->assertEquals('node-000000000000000000000000124', $id);
+
+      // reset to state before the test
+      $counter->setValue($original);
    }
 
 }

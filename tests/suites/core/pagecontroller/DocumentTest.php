@@ -24,10 +24,12 @@ use APF\core\expression\taglib\ExpressionEvaluationTag;
 use APF\core\loader\RootClassLoader;
 use APF\core\loader\StandardClassLoader;
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\DomNode;
 use APF\core\pagecontroller\ParserException;
 use APF\core\pagecontroller\PlaceHolderTag;
 use APF\core\pagecontroller\TemplateTag;
 use APF\modules\usermanagement\pres\documentcontroller\registration\RegistrationController;
+use Exception;
 use InvalidArgumentException;
 use ReflectionMethod;
 
@@ -45,21 +47,21 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 
    public function testWithNormalNamespace() {
 
-      $method = $this->getMethod();
+      $method = $this->getFilePathMethod();
       $document = new Document();
 
       $filePath = $method->invokeArgs($document, [self::VENDOR . '\foo', 'bar']);
-      assertEquals(self::SOURCE_PATH . '/foo/bar.html', $filePath);
+      $this->assertEquals(self::SOURCE_PATH . '/foo/bar.html', $filePath);
 
       $filePath = $method->invokeArgs($document, [self::VENDOR . '\foo\bar', 'baz']);
-      assertEquals(self::SOURCE_PATH . '/foo/bar/baz.html', $filePath);
+      $this->assertEquals(self::SOURCE_PATH . '/foo/bar/baz.html', $filePath);
 
    }
 
    /**
     * @return ReflectionMethod The <em>APF\core\pagecontroller\Document::getTemplateFilePath()</em> method.
     */
-   private function getMethod() {
+   private function getFilePathMethod() {
       $method = new ReflectionMethod(Document::class, 'getTemplateFilePath');
       $method->setAccessible(true);
 
@@ -67,8 +69,8 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testWithVendorOnly() {
-      $filePath = $this->getMethod()->invokeArgs(new Document(), [self::VENDOR, 'foo']);
-      assertEquals(self::SOURCE_PATH . '/foo.html', $filePath);
+      $filePath = $this->getFilePathMethod()->invokeArgs(new Document(), [self::VENDOR, 'foo']);
+      $this->assertEquals(self::SOURCE_PATH . '/foo.html', $filePath);
    }
 
    public function testGetChildNode() {
@@ -78,6 +80,13 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
       $template = $doc->getChildNode('name', 'foo', TemplateTag::class);
       $this->assertNotNull($template);
       $this->assertEquals('bar', $template->getContent());
+
+      // ensure that a reference is returned instead of a clone or copy
+      $children = $doc->getChildren();
+      $this->assertEquals(
+            spl_object_hash($template),
+            spl_object_hash($children[array_keys($children)[0]])
+      );
    }
 
    public function testGetChildNodeWithException() {
@@ -91,9 +100,21 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
       $doc = new TemplateTag();
       $doc->setContent('<html:placeholder name="foo" /><html:placeholder name="foo" /><html:placeholder name="foo" />');
       $doc->onParseTime();
+      /* @var $placeHolders DomNode[] */
       $placeHolders = $doc->getChildNodes('name', 'foo', PlaceHolderTag::class);
       $this->assertEquals(3, count($placeHolders));
       $this->assertEquals('foo', $placeHolders[0]->getAttribute('name'));
+
+      // ensure that a reference is returned instead of a clone or copy
+      $children = $doc->getChildren();
+      $keys = array_keys($children);
+
+      for ($i = 0; $i < 3; $i++) {
+         $this->assertEquals(
+               spl_object_hash($placeHolders[$i]),
+               spl_object_hash($children[$keys[$i]])
+         );
+      }
    }
 
    public function testGetChildNodesWithException() {
@@ -234,6 +255,177 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 
       $this->assertEquals(TestDocumentController::VALUE, trim($result));
 
+   }
+
+   /**
+    * Tests whether the parser ignores an HTML comment such as <em>&lt;!-- foo:bar --&gt;</em> going
+    * through the document.
+    * <p/>
+    * See http://tracker.adventure-php-framework.org/view.php?id=238 for details.
+    */
+   public function testHtmlCommentWithTagNotation() {
+
+      $doc = new Document();
+      $doc->setContent('This is the content of a document with tags and comments:
+
+<!-- app:footer -->
+
+This is text after a comment...
+
+<html:placeholder name="foo" />
+
+This is text after a place holder...
+');
+
+      try {
+         $this->getParserMethod()->invoke($doc);
+
+         $placeHolder = $doc->getChildNode('name', 'foo', PlaceHolderTag::class);
+         $this->assertTrue($placeHolder instanceof PlaceHolderTag);
+      } catch (Exception $e) {
+         $this->fail('Parsing comments failed. Message: ' . $e->getMessage());
+      }
+
+   }
+
+   /**
+    * @return ReflectionMethod
+    */
+   protected function getParserMethod() {
+      $method = new ReflectionMethod(Document::class, 'extractTagLibTags');
+      $method->setAccessible(true);
+
+      return $method;
+   }
+
+   /**
+    * Tests parser capabilities with <em>&lt;li&gt;FOO:</em> statements in e.g. HTML lists.
+    */
+   public function testClosingBracket() {
+
+      $doc = new Document();
+      $doc->setContent('<p>
+   This is the content of a document with tags and lists:
+</p>
+<ul>
+   <li>Foo: Foo is the first part of the &quot;foo bar&quot; phrase.</li>
+   <li>Bar: Bar is the second part of the &quot;foo bar&quot; phrase.</li>
+</ul>
+<p>
+ This is text after a list...
+</p>
+<html:placeholder name="foo" />
+<p>
+   This is text after a place holder...
+</p>
+');
+
+      try {
+         $this->getParserMethod()->invoke($doc);
+
+         $placeHolder = $doc->getChildNode('name', 'foo', PlaceHolderTag::class);
+         $this->assertTrue($placeHolder instanceof PlaceHolderTag);
+      } catch (Exception $e) {
+         $this->fail('Parsing lists failed. Message: ' . $e->getMessage());
+      }
+
+   }
+
+   /**
+    * Tests whether the parser ignores "normal" HTML code with colons (":") in tag attributes.
+    * <p/>
+    * See http://tracker.adventure-php-framework.org/view.php?id=266 for details.
+    */
+   public function testColonsInTagAttributes() {
+
+      $doc = new Document();
+      $doc->setContent(
+            '<p>
+   This is static content...
+</p>
+<p>
+   To quit your session, please <a href="/?:action=logout">Logout</a>
+</p>
+<p>
+   This is static content...
+</p>'
+      );
+
+      try {
+         $this->getParserMethod()->invoke($doc);
+         $this->assertEmpty($doc->getChildren());
+      } catch (Exception $e) {
+         $this->fail('Parsing HTML failed. Message: ' . $e->getMessage());
+      }
+   }
+
+   public function testTransformation() {
+
+      $doc = new Document();
+      $doc->setContent('<html:placeholder name="test" />');
+
+      $method = new ReflectionMethod('APF\core\pagecontroller\Document', 'extractTagLibTags');
+      $method->setAccessible(true);
+      $method->invoke($doc);
+
+      $expected = 'foo';
+
+      /* @var $placeHolder PlaceHolderTag */
+      $placeHolder = $doc->getChildNode('name', 'test', 'APF\core\pagecontroller\PlaceHolderTag');
+      $placeHolder->setContent($expected);
+
+      $this->assertEquals($expected, $doc->transform());
+
+   }
+
+   /**
+    * Test exception raised with not-existing place holder specified.
+    */
+   public function testSetPlaceHolder1() {
+      $this->setExpectedException(InvalidArgumentException::class);
+      $this->getTemplateWithPlaceHolder()->setPlaceHolder('foo', 'bar');
+   }
+
+   protected function getTemplateWithPlaceHolder($content = '<html:placeholder name="test"/>') {
+      $doc = new TemplateTag();
+      $doc->setContent($content);
+      $doc->onParseTime();
+
+      return $doc;
+   }
+
+   /**
+    * Test simple existing place holder setting.
+    */
+   public function testSetPlaceHolder2() {
+      $template = $this->getTemplateWithPlaceHolder();
+      $expected = 'foo';
+      $template->setPlaceHolder('test', $expected);
+      $template->transformOnPlace();
+      $this->assertEquals($expected, $template->transform());
+   }
+
+   /**
+    * Test multiple place holders within one document.
+    */
+   public function testSetPlaceHolder3() {
+      $template = $this->getTemplateWithPlaceHolder('<html:placeholder name="test"/><html:placeholder name="test"/>');
+      $expected = 'foo';
+      $template->setPlaceHolder('test', $expected);
+      $template->transformOnPlace();
+      $this->assertEquals($expected . $expected, $template->transform());
+   }
+
+   /**
+    * Test place holder appending.
+    */
+   public function testSetPlaceHolder4() {
+      $template = $this->getTemplateWithPlaceHolder();
+      $expected = 'foo';
+      $template->setPlaceHolder('test', $expected, true);
+      $template->setPlaceHolder('test', $expected, true);
+      $template->transformOnPlace();
+      $this->assertEquals($expected . $expected, $template->transform());
    }
 
    protected function setUp() {

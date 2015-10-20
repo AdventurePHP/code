@@ -25,6 +25,7 @@
  * @author Florian Horn
  * @version
  * Version 0.1, 17.12.2011<br />
+ * Version 0.2, 19.10.2015 (Removed static assertions include to ensure compatibility with newer PHPUnit and composer)<br />
  */
 $_SERVER['SERVER_PORT'] = '80';
 $_SERVER['HTTP_HOST'] = 'localhost';
@@ -36,7 +37,6 @@ date_default_timezone_set('Europe/Berlin');
 // --- Loading first resources
 //
 require_once('../core/bootstrap.php');
-require_once('PHPUnit/Framework/Assert/Functions.php');
 
 use APF\core\errorhandler\GlobalErrorHandler;
 

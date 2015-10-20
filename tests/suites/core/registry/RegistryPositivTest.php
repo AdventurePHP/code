@@ -71,7 +71,7 @@ class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
     */
    public function testConstructorNotCallable() {
       $oReflectionRegistry = new ReflectionClass(Registry::class);
-      assertFalse($oReflectionRegistry->isInstantiable(), 'Registry object should not be abled to be instanced!');
+      $this->assertFalse($oReflectionRegistry->isInstantiable(), 'Registry object should not be abled to be instanced!');
    }
 
    /**
@@ -88,7 +88,7 @@ class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
     */
    public function testStaticClassHasFinalAttribute() {
       $oReflectionRegistry = new ReflectionClass(Registry::class);
-      assertTrue($oReflectionRegistry->isFinal(), 'Registry object should be declared as final!');
+      $this->assertTrue($oReflectionRegistry->isFinal(), 'Registry object should be declared as final!');
    }
 
    /**
@@ -105,8 +105,8 @@ class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
     */
    public function testMethodsExisting() {
       $oReflectionRegistry = new ReflectionClass(Registry::class);
-      assertTrue($oReflectionRegistry->hasMethod('register'));
-      assertTrue($oReflectionRegistry->hasMethod('retrieve'));
+      $this->assertTrue($oReflectionRegistry->hasMethod('register'));
+      $this->assertTrue($oReflectionRegistry->hasMethod('retrieve'));
    }
 
    /**
@@ -126,8 +126,8 @@ class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
       $aProperties = $oReflectionRegistry->getStaticProperties();
       $aRegistryStore = $aProperties['REGISTRY_STORE'];
       // --- Prefilled with default values
-      assertEquals(1, count($aRegistryStore));
-      assertEquals(3, count($aRegistryStore['APF\core']));
+      $this->assertEquals(1, count($aRegistryStore));
+      $this->assertEquals(3, count($aRegistryStore['APF\core']));
 
       Registry::register(
             self::$REGISTRY_NAMESPACE,
@@ -136,14 +136,14 @@ class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
 
       $aProperties = $oReflectionRegistry->getStaticProperties();
       $aRegistryStore = $aProperties['REGISTRY_STORE'];
-      assertEquals(2, count($aRegistryStore));
-      assertEquals(3, count($aRegistryStore['APF\core']));
-      assertEquals(1, count($aRegistryStore[self::$REGISTRY_NAMESPACE]));
-      assertTrue(array_key_exists(self::$REGISTRY_NAME, $aRegistryStore[self::$REGISTRY_NAMESPACE]));
-      assertTrue(array_key_exists('value', $aRegistryStore[self::$REGISTRY_NAMESPACE][self::$REGISTRY_NAME]));
-      assertTrue(array_key_exists('readonly', $aRegistryStore[self::$REGISTRY_NAMESPACE][self::$REGISTRY_NAME]));
-      assertEquals(self::$REGISTRY_VALUE, $aRegistryStore[self::$REGISTRY_NAMESPACE][self::$REGISTRY_NAME]['value']);
-      assertFalse($aRegistryStore[self::$REGISTRY_NAMESPACE][self::$REGISTRY_NAME]['readonly']);
+      $this->assertEquals(2, count($aRegistryStore));
+      $this->assertEquals(3, count($aRegistryStore['APF\core']));
+      $this->assertEquals(1, count($aRegistryStore[self::$REGISTRY_NAMESPACE]));
+      $this->assertTrue(array_key_exists(self::$REGISTRY_NAME, $aRegistryStore[self::$REGISTRY_NAMESPACE]));
+      $this->assertTrue(array_key_exists('value', $aRegistryStore[self::$REGISTRY_NAMESPACE][self::$REGISTRY_NAME]));
+      $this->assertTrue(array_key_exists('readonly', $aRegistryStore[self::$REGISTRY_NAMESPACE][self::$REGISTRY_NAME]));
+      $this->assertEquals(self::$REGISTRY_VALUE, $aRegistryStore[self::$REGISTRY_NAMESPACE][self::$REGISTRY_NAME]['value']);
+      $this->assertFalse($aRegistryStore[self::$REGISTRY_NAMESPACE][self::$REGISTRY_NAME]['readonly']);
    }
 
    /**
@@ -168,14 +168,14 @@ class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
       $oReflectionRegistry = new ReflectionClass(Registry::class);
       $aProperties = $oReflectionRegistry->getStaticProperties();
       $aRegistryStore = $aProperties['REGISTRY_STORE'];
-      assertEquals(2, count($aRegistryStore));
-      assertEquals(3, count($aRegistryStore['APF\core']));
-      assertEquals(1, count($aRegistryStore[self::$REGISTRY_NAMESPACE]));
-      assertTrue(array_key_exists(self::$REGISTRY_NAME, $aRegistryStore[self::$REGISTRY_NAMESPACE]));
-      assertTrue(array_key_exists('value', $aRegistryStore[self::$REGISTRY_NAMESPACE][self::$REGISTRY_NAME]));
-      assertTrue(array_key_exists('readonly', $aRegistryStore[self::$REGISTRY_NAMESPACE][self::$REGISTRY_NAME]));
-      assertEquals(self::$REGISTRY_VALUE, $aRegistryStore[self::$REGISTRY_NAMESPACE][self::$REGISTRY_NAME]['value']);
-      assertTrue($aRegistryStore[self::$REGISTRY_NAMESPACE][self::$REGISTRY_NAME]['readonly']);
+      $this->assertEquals(2, count($aRegistryStore));
+      $this->assertEquals(3, count($aRegistryStore['APF\core']));
+      $this->assertEquals(1, count($aRegistryStore[self::$REGISTRY_NAMESPACE]));
+      $this->assertTrue(array_key_exists(self::$REGISTRY_NAME, $aRegistryStore[self::$REGISTRY_NAMESPACE]));
+      $this->assertTrue(array_key_exists('value', $aRegistryStore[self::$REGISTRY_NAMESPACE][self::$REGISTRY_NAME]));
+      $this->assertTrue(array_key_exists('readonly', $aRegistryStore[self::$REGISTRY_NAMESPACE][self::$REGISTRY_NAME]));
+      $this->assertEquals(self::$REGISTRY_VALUE, $aRegistryStore[self::$REGISTRY_NAMESPACE][self::$REGISTRY_NAME]['value']);
+      $this->assertTrue($aRegistryStore[self::$REGISTRY_NAMESPACE][self::$REGISTRY_NAME]['readonly']);
    }
 
    /**
@@ -227,45 +227,45 @@ class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
       $sReturnValue = Registry::retrieve(
             self::$REGISTRY_NAMESPACE,
             self::$REGISTRY_NAME);
-      assertEquals(self::$REGISTRY_VALUE, $sReturnValue);
+      $this->assertEquals(self::$REGISTRY_VALUE, $sReturnValue);
 
       $sReturnValue = Registry::retrieve(
             self::$REGISTRY_NAMESPACE,
             self::$REGISTRY_NAME,
             self::$REGISTRY_DEFAULT_VALUE);
-      assertEquals(self::$REGISTRY_VALUE, $sReturnValue);
+      $this->assertEquals(self::$REGISTRY_VALUE, $sReturnValue);
 
       $sReturnValue = Registry::retrieve(
             self::$REGISTRY_NAMESPACE . '42',
             self::$REGISTRY_NAME);
-      assertNull($sReturnValue);
+      $this->assertNull($sReturnValue);
 
       $sReturnValue = Registry::retrieve(
             self::$REGISTRY_NAMESPACE . '42',
             self::$REGISTRY_NAME,
             self::$REGISTRY_DEFAULT_VALUE);
-      assertEquals(self::$REGISTRY_DEFAULT_VALUE, $sReturnValue);
+      $this->assertEquals(self::$REGISTRY_DEFAULT_VALUE, $sReturnValue);
 
       $sReturnValue = Registry::retrieve(
             self::$REGISTRY_NAMESPACE,
             self::$REGISTRY_NAME . '42');
-      assertNull($sReturnValue);
+      $this->assertNull($sReturnValue);
 
       $sReturnValue = Registry::retrieve(
             self::$REGISTRY_NAMESPACE,
             self::$REGISTRY_NAME . '42',
             self::$REGISTRY_DEFAULT_VALUE);
-      assertEquals(self::$REGISTRY_DEFAULT_VALUE, $sReturnValue);
+      $this->assertEquals(self::$REGISTRY_DEFAULT_VALUE, $sReturnValue);
 
       $sReturnValue = Registry::retrieve(
             self::$REGISTRY_NAMESPACE . '42',
             self::$REGISTRY_NAME . '42');
-      assertNull($sReturnValue);
+      $this->assertNull($sReturnValue);
 
       $sReturnValue = Registry::retrieve(
             self::$REGISTRY_NAMESPACE . '42',
             self::$REGISTRY_NAME . '42',
             self::$REGISTRY_DEFAULT_VALUE);
-      assertEquals(self::$REGISTRY_DEFAULT_VALUE, $sReturnValue);
+      $this->assertEquals(self::$REGISTRY_DEFAULT_VALUE, $sReturnValue);
    }
 }
