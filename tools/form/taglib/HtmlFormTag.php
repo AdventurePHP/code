@@ -22,6 +22,7 @@ namespace APF\tools\form\taglib;
 
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\DomNode;
 use APF\core\pagecontroller\XmlParser;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
@@ -321,7 +322,7 @@ class HtmlFormTag extends Document implements HtmlForm {
    /**
     * Adds a new form element to the child list.
     *
-    * @param Document $parent The parent document to create the object in.
+    * @param DomNode $parent The parent document to create the object in.
     * @param string $elementType Type of the element (e.g. "form:text")
     * @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
     *
@@ -335,7 +336,7 @@ class HtmlFormTag extends Document implements HtmlForm {
     * Version 0.3, 12.11.2008 (Bug-fix: language and context initialisation were wrong)<br />
     * Version 0.4, 23.08.2014 (ID#198: added unlimited form control nesting capability)<br />
     */
-   protected function &createFormElement(Document &$parent, $elementType, array $elementAttributes = array()) {
+   protected function &createFormElement(DomNode &$parent, $elementType, array $elementAttributes = array()) {
 
       $class = $this->getTagClass($elementType);
       if ($class === null) {
