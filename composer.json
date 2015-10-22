@@ -1,0 +1,14 @@
+{
+  "name": "Adventure PHP Framework (APF)",
+  "homepage": "https://github.com/AdventurePHP/code",
+  "license": "LGPL",
+  "version": "3.1-GIT",
+  "require": {
+    "php": ">=5.5.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "5.0.*",
+    "phpunit/phpunit-mock-objects": "3.0.*",
+    "phpunit/php-code-coverage": "dev-master#b8436b000263f6d72fbad1d36890e247ce84857e"
+  }
+}
