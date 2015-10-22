@@ -45,11 +45,8 @@ class MultiSelectBoxTag extends SelectBoxTag {
     * Version 0.4, 28.08.2010 (Added option groups)<br />
     */
    public function __construct() {
+      parent::__construct();
       $this->setAttribute('multiple', 'multiple');
-      $this->attributeWhiteList[] = 'disabled';
-      $this->attributeWhiteList[] = 'name';
-      $this->attributeWhiteList[] = 'size';
-      $this->attributeWhiteList[] = 'tabindex';
       $this->attributeWhiteList[] = 'multiple';
    }
 
@@ -141,19 +138,19 @@ class MultiSelectBoxTag extends SelectBoxTag {
       if ($this->isVisible) {
          // add brackets for the "name" attribute to ensure multi select capability!
          $name = ['name' => $this->getAttribute('name') . '[]'];
-         $select = '<select ' . $this->getSanitizedAttributesAsString(array_merge($this->attributes, $name)) . '>';
-         $select .= $this->content . '</select>';
+         $html = '<select ' . $this->getSanitizedAttributesAsString(array_merge($this->attributes, $name)) . '>';
+         $html .= $this->content . '</select>';
 
          if (count($this->children) > 0) {
-            foreach ($this->children as $objectId => $DUMMY) {
-               $select = str_replace('<' . $objectId . ' />',
-                     $this->children[$objectId]->transform(),
-                     $select
+            foreach ($this->children as &$child) {
+               $html = str_replace('<' . $child->getObjectId() . ' />',
+                     $child->transform(),
+                     $html
                );
             }
          }
 
-         return $select;
+         return $html;
       }
 
       return '';
@@ -191,16 +188,16 @@ class MultiSelectBoxTag extends SelectBoxTag {
       }
 
       $selectedOptions = [];
-      foreach ($this->children as $objectId => $DUMMY) {
+      foreach ($this->children as &$child) {
 
-         if ($this->children[$objectId] instanceof SelectBoxGroupTag) {
-            $options = &$this->children[$objectId]->getSelectedOptions();
-            foreach ($options as $id => $INNER_DUMMY) {
-               $selectedOptions[] = &$options[$id];
+         if ($child instanceof SelectBoxGroupTag) {
+            // manually assignment over array_merge() to preserve references
+            foreach ($child->getSelectedOptions() as &$option) {
+               $selectedOptions[] = &$option;
             }
          } else {
-            if ($this->children[$objectId]->getAttribute('selected') === 'selected') {
-               $selectedOptions[] = &$this->children[$objectId];
+            if ($child->getAttribute('selected') === 'selected') {
+               $selectedOptions[] = &$child;
             }
          }
 

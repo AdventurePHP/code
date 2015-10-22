@@ -36,12 +36,11 @@ date_default_timezone_set('Europe/Berlin');
 //
 // --- Loading first resources
 //
-require_once('../core/bootstrap.php');
+require_once(__DIR__ . '/../../../core/bootstrap.php');
 
 use APF\core\errorhandler\GlobalErrorHandler;
+use APF\core\exceptionhandler\GlobalExceptionHandler;
 
 GlobalErrorHandler::disable();
-
-use APF\core\exceptionhandler\GlobalExceptionHandler;
 
 GlobalExceptionHandler::disable();

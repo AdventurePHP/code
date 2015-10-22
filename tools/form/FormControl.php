@@ -69,4 +69,36 @@ interface FormControl {
     */
    public function reset();
 
+   /**
+    * Hides a form control from the HTML output of the form it is contained in. Together with
+    * it's <em>dependent controls</em> you can hide entire parts of a form from being displayed
+    * on transformation.
+    * <p/>
+    * This feature can be used to build up forms that display fields that are only displayed
+    * at certain conditions evaluated within custom form controls or document controllers.
+    *
+    * @return FormControl This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 16.12.2012<br />
+    */
+   public function &hide();
+
+   /**
+    * Shows a previously hidden form control from the HTML output of the form it is contained in.
+    * Together with it's <em>dependent controls</em> you can show entire parts of a form from being
+    * displayed on transformation.
+    * <p/>
+    * This feature can be used to build up forms that display fields that are only displayed
+    * at certain conditions evaluated within custom form controls or document controllers.
+    *
+    * @return FormControl This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 16.12.2012<br />
+    */
+   public function &show();
+
 }

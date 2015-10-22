@@ -21,17 +21,12 @@
 namespace APF\tests\suites\tools\form\taglib;
 
 use APF\tools\form\taglib\MultiSelectBoxTag;
+use APF\tools\form\taglib\SelectBoxGroupTag;
+use APF\tools\form\taglib\SelectBoxOptionTag;
 
 class MultiSelectBoxTagTest extends \PHPUnit_Framework_TestCase {
 
    const SELECT_BOX_NAME = 'foo';
-
-   protected function getSelectBox() {
-      $select = new MultiSelectBoxTag();
-      $select->setAttribute('name', self::SELECT_BOX_NAME);
-
-      return $select;
-   }
 
    public function testControllerPresetting() {
 
@@ -55,6 +50,13 @@ class MultiSelectBoxTagTest extends \PHPUnit_Framework_TestCase {
       $this->assertEquals($select->getSelectedOptions()[0]->getValue(), 2);
       $this->assertEquals($select->getSelectedOptions()[1]->getValue(), 4);
 
+   }
+
+   protected function getSelectBox() {
+      $select = new MultiSelectBoxTag();
+      $select->setAttribute('name', self::SELECT_BOX_NAME);
+
+      return $select;
    }
 
    public function testSubmitPresetting() {
@@ -102,7 +104,6 @@ class MultiSelectBoxTagTest extends \PHPUnit_Framework_TestCase {
 
    }
 
-
    public function testSubmitPresettingWithGroups() {
 
       $_REQUEST = [];
@@ -121,6 +122,60 @@ class MultiSelectBoxTagTest extends \PHPUnit_Framework_TestCase {
 
       $this->assertEquals($select->getSelectedOptions()[0]->getValue(), 2);
       $this->assertEquals($select->getSelectedOptions()[1]->getValue(), 4);
+
+   }
+
+   /**
+    * Tests transformation of a complex multi-select box.
+    */
+   public function testTransformation() {
+
+      $select = $this->getSelectBox();
+
+      $group = new SelectBoxGroupTag();
+      $group->setAttribute('label', 'foo');
+
+      $option1 = new SelectBoxOptionTag();
+      $option1->setAttribute('value', '1');
+      $option1->setContent('1');
+      $option1->setAttribute('selected', 'selected');
+
+      $option2 = new SelectBoxOptionTag();
+      $option2->setAttribute('value', '2');
+      $option2->setContent('2');
+
+      $option3 = new SelectBoxOptionTag();
+      $option3->setAttribute('value', '3');
+      $option3->setContent('3');
+      $option3->setAttribute('selected', 'selected');
+
+      $option4 = new SelectBoxOptionTag();
+      $option4->setAttribute('value', '4');
+      $option4->setContent('4');
+      $option4->setAttribute('selected', 'selected');
+
+      $group->addOptionTag($option1);
+      $group->addOptionTag($option2);
+      $group->addOptionTag($option3);
+
+      $select->addGroupTag($group);
+
+      $select->addOptionTag($option4);
+
+      $actual = $select->transform();
+
+      // general structure
+      $this->assertContains('<select multiple="multiple" name="' . self::SELECT_BOX_NAME . '[]"', $actual);
+      $this->assertContains('</select>', $actual);
+
+      $this->assertContains('<optgroup label="foo">', $actual);
+      $this->assertContains('</optgroup>', $actual);
+
+      // selected items
+      $this->assertContains('<option value="1" selected="selected">1</option>', $actual);
+      $this->assertContains('<option value="2"', $actual);
+      $this->assertContains('<option value="3" selected="selected">3</option>', $actual);
+      $this->assertContains('<option value="4" selected="selected">4</option>', $actual);
 
    }
 

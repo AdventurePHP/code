@@ -20,7 +20,7 @@
  */
 namespace APF\tools\form\taglib;
 
-use APF\core\pagecontroller\XmlParser;
+use APF\tools\form\mixin\AddSelectBoxEntry;
 
 /**
  * Represents a select option group of an APF select field.
@@ -30,6 +30,8 @@ use APF\core\pagecontroller\XmlParser;
  * Version 0.3, 13.02.2010<br />
  */
 class SelectBoxGroupTag extends AbstractFormControl {
+
+   use AddSelectBoxEntry;
 
    public function __construct() {
       $this->attributeWhiteList[] = 'label';
@@ -82,22 +84,7 @@ class SelectBoxGroupTag extends AbstractFormControl {
     * Version 0.1, 07.01.2014<br />
     */
    public function addOptionTag(SelectBoxOptionTag $option) {
-
-      $objectId = XmlParser::generateUniqID();
-      $this->children[$objectId] = $option;
-
-      $this->children[$objectId]->setObjectId($objectId);
-      $this->children[$objectId]->setLanguage($this->language);
-      $this->children[$objectId]->setContext($this->context);
-      $this->children[$objectId]->onParseTime();
-
-      // inject parent object (=this) to guarantee native DOM tree environment
-      $this->children[$objectId]->setParentObject($this);
-      $this->children[$objectId]->onAfterAppend();
-
-      // add xml marker, necessary for transformation
-      $this->content .= '<' . $objectId . ' />';
-
+      $this->addEntry($option);
    }
 
    /**

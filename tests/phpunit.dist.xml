@@ -27,37 +27,58 @@
     Description:
         PHPUnit Testsuite Configuration
 -->
-
-<phpunit backupGlobals="false"
-         backupStaticAttributes="true"
-         bootstrap="lib/core/bootstrap.php"
-         colors="false"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         forceCoversAnnotation="false"
-         mapTestClassNameToCoveredClassName="false"
-         printerClass="PHPUnit_TextUI_ResultPrinter"
-         processIsolation="false"
-         stopOnError="false"
-         stopOnFailure="false"
-         stopOnIncomplete="false"
-         stopOnSkipped="false"
-         syntaxCheck="false"
-         testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
-         verbose="true"
-         strict="true">
-
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.5/phpunit.xsd"
+        backupGlobals="false"
+        backupStaticAttributes="true"
+        cacheTokens="false"
+        colors="false"
+        bootstrap="lib/core/bootstrap.php"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true"
+        forceCoversAnnotation="false"
+        mapTestClassNameToCoveredClassName="false"
+        printerClass="PHPUnit_TextUI_ResultPrinter"
+        processIsolation="false"
+        stopOnError="false"
+        stopOnFailure="false"
+        stopOnIncomplete="false"
+        stopOnSkipped="false"
+        stopOnRisky="false"
+        testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
+        timeoutForSmallTests="1"
+        timeoutForMediumTests="10"
+        timeoutForLargeTests="60"
+        verbose="false">
     <testsuites>
 
         <testsuite name="AdventurePHPFramework - Core">
-            <directory suffix="Test.php" phpVersion="5.4.0" phpVersionOperator=">=">suites/core</directory>
+            <directory phpVersion="5.5.0" phpVersionOperator=">=">suites/core</directory>
         </testsuite>
 
         <testsuite name="AdventurePHPFramework - Tools">
-            <directory suffix="Test.php" phpVersion="5.4.0" phpVersionOperator=">=">suites/tools</directory>
+            <directory phpVersion="5.5.0" phpVersionOperator=">=">suites/tools</directory>
         </testsuite>
 
     </testsuites>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">../core</directory>
+            <directory suffix=".php">../extensions</directory>
+            <directory suffix=".php">../modules</directory>
+            <directory suffix=".php">../tools</directory>
+            <exclude>
+                <file>../modules/genericormapper/data/tools/generate_domain_objects.php</file>
+                <file>../modules/genericormapper/data/tools/setup.php</file>
+                <file>../modules/genericormapper/data/tools/update.php</file>
+                <file>../modules/guestbook2009/data/setup/init.php</file>
+                <file>../modules/guestbook2009/data/setup/setup.php</file>
+                <file>../modules/usermanagement/pres/umgt.php</file>
+            </exclude>
+        </whitelist>
+    </filter>
 
 </phpunit>

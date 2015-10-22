@@ -22,6 +22,7 @@ namespace APF\tools\form\taglib;
 
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\DomNode;
 use APF\core\pagecontroller\XmlParser;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
@@ -29,6 +30,7 @@ use APF\tools\form\FormControl;
 use APF\tools\form\FormException;
 use APF\tools\form\HtmlForm;
 use APF\tools\form\mixin\FormControlFinder as FormControlFinderImpl;
+use BadMethodCallException;
 
 /**
  * Represents a APF form element (DOM node).
@@ -113,14 +115,14 @@ class HtmlFormTag extends Document implements HtmlForm {
 
    public function isSent() {
 
-      foreach ($this->children as $objectId => $DUMMY) {
+      foreach ($this->children as &$child) {
          // Only include real form elements to avoid unnecessary
          // implementation overhead for elements that just want to
          // be used within forms but do not act as form elements!
          // See http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=1387
          // for details.
-         if ($this->children[$objectId] instanceof FormControl) {
-            if ($this->children[$objectId]->isSent() === true) {
+         if ($child instanceof FormControl) {
+            if ($child->isSent() === true) {
                return true;
             }
          }
@@ -132,14 +134,14 @@ class HtmlFormTag extends Document implements HtmlForm {
    // TODO give it another try to refactor validation to isValid() rather than direct validation per addValidator() to streamline API
    public function isValid() {
 
-      foreach ($this->children as $objectId => $DUMMY) {
+      foreach ($this->children as &$child) {
          // Only include real form elements to avoid unnecessary
          // implementation overhead for elements that just want to
          // be used within forms but do not act as form elements!
          // See http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=1387
          // for details.
-         if ($this->children[$objectId] instanceof FormControl) {
-            if ($this->children[$objectId]->isValid() === false) {
+         if ($child instanceof FormControl) {
+            if ($child->isValid() === false) {
                return false;
             }
          }
@@ -149,14 +151,14 @@ class HtmlFormTag extends Document implements HtmlForm {
    }
 
    public function reset() {
-      foreach ($this->children as $objectId => $DUMMY) {
+      foreach ($this->children as &$child) {
          // Only include real form elements to avoid unnecessary
          // implementation overhead for elements that just want to
          // be used within forms but do not act as form elements!
          // See http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=1387
          // for details.
-         if ($this->children[$objectId] instanceof FormControl) {
-            $this->children[$objectId]->reset();
+         if ($child instanceof FormControl) {
+            $child->reset();
          }
       }
    }
@@ -198,7 +200,7 @@ class HtmlFormTag extends Document implements HtmlForm {
    /**
     * Adds a new form element to the child list.
     *
-    * @param Document $parent The parent document to create the object in.
+    * @param DomNode $parent The parent document to create the object in.
     * @param string $elementType Type of the element (e.g. "form:text")
     * @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
     *
@@ -212,7 +214,7 @@ class HtmlFormTag extends Document implements HtmlForm {
     * Version 0.3, 12.11.2008 (Bug-fix: language and context initialisation were wrong)<br />
     * Version 0.4, 23.08.2014 (ID#198: added unlimited form control nesting capability)<br />
     */
-   protected function &createFormElement(Document &$parent, $elementType, array $elementAttributes = []) {
+   protected function &createFormElement(DomNode &$parent, $elementType, array $elementAttributes = []) {
 
       $class = $this->getTagClass($elementType);
       if ($class === null) {
@@ -480,12 +482,12 @@ class HtmlFormTag extends Document implements HtmlForm {
 
       if (count($this->children) > 0) {
 
-         foreach ($this->children as $objectId => $DUMMY) {
-            $childId = '(' . get_class($this->children[$objectId]) . ') ' . $objectId . '::transform()';
+         foreach ($this->children as &$child) {
+            $childId = '(' . get_class($child) . ') ' . $child->getObjectId() . '::transform()';
             $t->start($childId);
 
-            $this->content = str_replace('<' . $objectId . ' />',
-                  $this->children[$objectId]->transform(), $this->content);
+            $this->content = str_replace('<' . $child->getObjectId() . ' />',
+                  $child->transform(), $this->content);
 
             $t->stop($childId);
          }
@@ -497,6 +499,16 @@ class HtmlFormTag extends Document implements HtmlForm {
       $t->stop($id);
 
       return $htmlCode;
+   }
+
+   public function &hide() {
+      throw new BadMethodCallException('Hiding forms is not supported! Please use $form->transformOnPlace() '
+            . 'to display a form or omit to hide it.');
+   }
+
+   public function &show() {
+      throw new BadMethodCallException('Hiding forms is not supported! Please use $form->transformOnPlace() '
+            . 'to display a form or omit to hide it.');
    }
 
 }

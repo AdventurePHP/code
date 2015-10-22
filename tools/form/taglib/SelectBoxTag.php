@@ -20,7 +20,7 @@
  */
 namespace APF\tools\form\taglib;
 
-use APF\core\pagecontroller\XmlParser;
+use APF\tools\form\mixin\AddSelectBoxEntry;
 use APF\tools\form\validator\AbstractFormValidator;
 
 /**
@@ -33,6 +33,8 @@ use APF\tools\form\validator\AbstractFormValidator;
  * Version 0.3, 15.02.2010 (Added option groups)<br />
  */
 class SelectBoxTag extends AbstractFormControl {
+
+   use AddSelectBoxEntry;
 
    /**
     * Marks the field as dynamic to do special presetting on transformation time.
@@ -199,23 +201,28 @@ class SelectBoxTag extends AbstractFormControl {
     * Version 0.1, 07.01.2014<br />
     */
    public function addOptionTag(SelectBoxOptionTag $tag) {
+
       // mark as dynamic field
       $this->isDynamicField = true;
 
-      $objectId = XmlParser::generateUniqID();
-      $this->children[$objectId] = $tag;
-      $this->children[$objectId]->setObjectId($objectId);
+      $this->addEntry($tag);
+   }
 
-      $this->children[$objectId]->setLanguage($this->language);
-      $this->children[$objectId]->setContext($this->context);
-      $this->children[$objectId]->onParseTime();
+   /**
+    * Adds a group to an existing select box (OO style).
+    *
+    * @param SelectBoxGroupTag $tag The group to add to the select box.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 21.10.2015<br />
+    */
+   public function addGroupTag(SelectBoxGroupTag $tag) {
 
-      // inject parent object (=this) to guarantee native DOM tree environment
-      $this->children[$objectId]->setParentObject($this);
-      $this->children[$objectId]->onAfterAppend();
+      // mark as dynamic field
+      $this->isDynamicField = true;
 
-      // add xml marker, necessary for transformation
-      $this->content .= '<' . $objectId . ' />';
+      $this->addEntry($tag);
    }
 
    /**
@@ -253,28 +260,14 @@ class SelectBoxTag extends AbstractFormControl {
     * @version
     * Version 0.1, 07.01.2014<br />
     */
-   public function &getOrCreateGroup($groupLabel) {
+   protected function &getOrCreateGroup($groupLabel) {
       $group = &$this->getGroup($groupLabel);
+
+      // lazily create group for convenience reason
       if ($group === null) {
-
-         $objectId = XmlParser::generateUniqID();
-         $this->children[$objectId] = new SelectBoxGroupTag();
-         $this->children[$objectId]->setObjectId($objectId);
-         $this->children[$objectId]->setAttribute('label', $groupLabel);
-
-         $this->children[$objectId]->setLanguage($this->language);
-         $this->children[$objectId]->setContext($this->context);
-         $this->children[$objectId]->onParseTime();
-
-         // inject parent object (=this) to guarantee native DOM tree environment
-         $this->children[$objectId]->setParentObject($this);
-         $this->children[$objectId]->onAfterAppend();
-
-         // add xml marker, necessary for transformation
-         $this->content .= '<' . $objectId . ' />';
-
-         // make group available for the subsequent call
-         $group = &$this->children[$objectId];
+         $tag = new SelectBoxGroupTag();
+         $tag->setAttribute('label', $groupLabel);
+         $group = &$this->addEntry($tag);
       }
 
       return $group;

@@ -43,9 +43,9 @@ class FormGroupTag extends AbstractFormControl implements FormElementGroup {
    }
 
    public function isValid() {
-      foreach ($this->children as $objectId => $DUMMY) {
-         if ($this->children[$objectId] instanceof FormControl) {
-            if ($this->children[$objectId]->isValid() === false) {
+      foreach ($this->children as &$child) {
+         if ($child instanceof FormControl) {
+            if ($child->isValid() === false) {
                return false;
             }
          }
@@ -55,9 +55,9 @@ class FormGroupTag extends AbstractFormControl implements FormElementGroup {
    }
 
    public function isSent() {
-      foreach ($this->children as $objectId => $DUMMY) {
-         if ($this->children[$objectId] instanceof FormControl) {
-            if ($this->children[$objectId]->isSent() === true) {
+      foreach ($this->children as &$child) {
+         if ($child instanceof FormControl) {
+            if ($child->isSent() === true) {
                return true;
             }
          }
@@ -67,9 +67,9 @@ class FormGroupTag extends AbstractFormControl implements FormElementGroup {
    }
 
    public function &hide() {
-      foreach ($this->children as $objectId => $DUMMY) {
-         if ($this->children[$objectId] instanceof FormControl) {
-            $this->children[$objectId]->hide();
+      foreach ($this->children as &$child) {
+         if ($child instanceof FormControl) {
+            $child->hide();
          }
       }
       $this->isVisible = false;
@@ -78,22 +78,22 @@ class FormGroupTag extends AbstractFormControl implements FormElementGroup {
    }
 
    public function reset() {
-      foreach ($this->children as $objectId => $DUMMY) {
+      foreach ($this->children as &$child) {
          // Only include real form elements to avoid unnecessary
          // implementation overhead for elements that just want to
          // be used within forms but do not act as form elements!
          // See http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=1387
          // for details.
-         if ($this->children[$objectId] instanceof FormControl) {
-            $this->children[$objectId]->reset();
+         if ($child instanceof FormControl) {
+            $child->reset();
          }
       }
    }
 
    public function &show() {
-      foreach ($this->children as $objectId => $DUMMY) {
-         if ($this->children[$objectId] instanceof FormControl) {
-            $this->children[$objectId]->show();
+      foreach ($this->children as &$child) {
+         if ($child instanceof FormControl) {
+            $child->show();
          }
       }
       $this->isVisible = true;

@@ -130,6 +130,69 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
+    * Pre-fills the value of the current control.
+    *
+    * @throws FormException In case the form control has no name.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.01.2007<br />
+    * Version 0.2, 08.08.2008 (Fixed bug, that the number "0" was not automatically pre-filled)<br />
+    * Version 0.3, 23.11.2010 (Bug-fix: presetting did not work in combination with existing value attributes)<br />
+    */
+   protected function presetValue() {
+
+      // check, whether the control has a name. if not, complain about that, because presetting
+      // is only only possible for named controls!
+      $controlName = $this->getAttribute('name');
+      if ($controlName === null) {
+         $formName = $this->getForm()->getAttribute('name');
+         throw new FormException('[' . get_class($this) . '::presetValue()] A form control is missing '
+               . ' the required tag attribute "name". Please check the taglib definition of the '
+               . 'form with name "' . $formName . '"!', E_USER_ERROR);
+      }
+
+      // try to preset the field with the url parameter if applicable (or contains 0)
+      $value = $this->getRequest()->getParameter($controlName);
+
+      if ($value !== null) {
+         $this->setAttribute('value', $value);
+      }
+   }
+
+   /**
+    * Convenience method to obtain the form a control is located in. Lays the foundation for
+    * recursive form structure and form group support.
+    *
+    * @return HtmlFormTag The desired form instance.
+    *
+    * @throws FormException In case no form can be found within the document tree.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 21.08.2014<br />
+    */
+   public function &getForm() {
+
+      $form = &$this->getParentObject();
+
+      if ($form instanceof HtmlForm) {
+         return $form;
+      }
+
+      while (!($form instanceof HtmlForm)) {
+         $form = &$form->getParentObject();
+
+         if ($form === null) {
+            throw new FormException('Cannot find form starting at form control with name '
+                  . $this->getAttribute('name') . '! Please check your template setup.');
+         }
+      }
+
+      return $form;
+   }
+
+   /**
     * Returns true in case the form is valid and false otherwise.
     *
     * @return boolean The validity status.
@@ -338,6 +401,44 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
+    * Returns the value of the form control. Does not always return the 'value'
+    * attribute. This returns the attribute/content which contains the user input.
+    * (For example text areas store the input in the content, not in the value
+    * attribute)
+    *
+    * @return string The current value or content of the control.
+    *
+    * @since 1.14
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 26.07.2011<br />
+    */
+   public function getValue() {
+      return $this->getAttribute('value', '');
+   }
+
+   /**
+    * Set's the value of the form control. Should not always set the 'value'
+    * attribute. This set's the same attribute/content as the user would type it.
+    *
+    * @param string $value The value to set.
+    *
+    * @return AbstractFormControl This instance for further usage.
+    *
+    * @since 1.14
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 26.07.2011<br />
+    */
+   public function setValue($value) {
+      $this->setAttribute('value', $value);
+
+      return $this;
+   }
+
+   /**
     * Executes the given form validator in context of the current form element.
     *
     * @param AbstractFormValidator $validator The desired validator.
@@ -392,50 +493,16 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * Pre-fills the value of the current control.
+    * Returns the current control's visibility status.
     *
-    * @throws FormException In case the form control has no name.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 07.01.2007<br />
-    * Version 0.2, 08.08.2008 (Fixed bug, that the number "0" was not automatically pre-filled)<br />
-    * Version 0.3, 23.11.2010 (Bug-fix: presetting did not work in combination with existing value attributes)<br />
-    */
-   protected function presetValue() {
-
-      // check, whether the control has a name. if not, complain about that, because presetting
-      // is only only possible for named controls!
-      $controlName = $this->getAttribute('name');
-      if ($controlName === null) {
-         $formName = $this->getForm()->getAttribute('name');
-         throw new FormException('[' . get_class($this) . '::presetValue()] A form control is missing '
-               . ' the required tag attribute "name". Please check the taglib definition of the '
-               . 'form with name "' . $formName . '"!', E_USER_ERROR);
-      }
-
-      // try to preset the field with the url parameter if applicable (or contains 0)
-      $value = $this->getRequest()->getParameter($controlName);
-
-      if ($value !== null) {
-         $this->setAttribute('value', $value);
-      }
-   }
-
-   /**
-    * Converts an attributes array into a xml string including the black list
-    * and white list definition within the taglib instance.
-    *
-    * @param string[] $attributes The attributes to convert to string.
-    *
-    * @return string The attributes' xml string representation.
+    * @return bool True in case the control is visible, false otherwise.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 12.02.2010<br />
+    * Version 16.12.2012<br />
     */
-   protected function getSanitizedAttributesAsString($attributes) {
-      return $this->getAttributesAsString($attributes, $this->attributeWhiteList);
+   public function isVisible() {
+      return $this->isVisible;
    }
 
    /**
@@ -468,44 +535,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * Returns the value of the form control. Does not always return the 'value'
-    * attribute. This returns the attribute/content which contains the user input.
-    * (For example text areas store the input in the content, not in the value
-    * attribute)
-    *
-    * @return string The current value or content of the control.
-    *
-    * @since 1.14
-    *
-    * @author Ralf Schubert
-    * @version
-    * Version 0.1, 26.07.2011<br />
-    */
-   public function getValue() {
-      return $this->getAttribute('value', '');
-   }
-
-   /**
-    * Set's the value of the form control. Should not always set the 'value'
-    * attribute. This set's the same attribute/content as the user would type it.
-    *
-    * @param string $value The value to set.
-    *
-    * @return AbstractFormControl This instance for further usage.
-    *
-    * @since 1.14
-    *
-    * @author Ralf Schubert
-    * @version
-    * Version 0.1, 26.07.2011<br />
-    */
-   public function setValue($value) {
-      $this->setAttribute('value', $value);
-
-      return $this;
-   }
-
-   /**
     * Let's check if the form:text or form:area was filled with content.
     *
     * @return bool True in case the control is filled, false otherwise.
@@ -534,20 +563,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return false;
    }
 
-   /**
-    * Hides a form control from the HTML output of the form it is contained in. Together with
-    * it's <em>dependent controls</em> you can hide entire parts of a form from being displayed
-    * on transformation.
-    * <p/>
-    * This feature can be used to build up forms that display fields that are only displayed
-    * at certain conditions evaluated within custom form controls or document controllers.
-    *
-    * @return AbstractFormControl This instance for further usage.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 16.12.2012<br />
-    */
    public function &hide() {
       $this->isVisible = false;
 
@@ -558,45 +573,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
       }
 
       return $this;
-   }
-
-   /**
-    * Shows a previously hidden form control from the HTML output of the form it is contained in.
-    * Together with it's <em>dependent controls</em> you can show entire parts of a form from being
-    * displayed on transformation.
-    * <p/>
-    * This feature can be used to build up forms that display fields that are only displayed
-    * at certain conditions evaluated within custom form controls or document controllers.
-    *
-    * @return AbstractFormControl This instance for further usage.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 16.12.2012<br />
-    */
-   public function &show() {
-      $this->isVisible = true;
-
-      // show all dependent fields
-      $fields = $this->getDependentFields();
-      foreach ($fields as $field) {
-         $field->show();
-      }
-
-      return $this;
-   }
-
-   /**
-    * Returns the current control's visibility status.
-    *
-    * @return bool True in case the control is visible, false otherwise.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 16.12.2012<br />
-    */
-   public function isVisible() {
-      return $this->isVisible;
    }
 
    /**
@@ -619,15 +595,27 @@ abstract class AbstractFormControl extends Document implements FormControl {
          return $fields;
       }
 
-      $form = & $this->getForm();
+      $form = &$this->getForm();
 
       $fields = [];
 
       foreach (explode('|', $dependentFields) as $fieldName) {
-         $fields[] = & $form->getFormElementByName(trim($fieldName));
+         $fields[] = &$form->getFormElementByName(trim($fieldName));
       }
 
       return $fields;
+   }
+
+   public function &show() {
+      $this->isVisible = true;
+
+      // show all dependent fields
+      $fields = $this->getDependentFields();
+      foreach ($fields as $field) {
+         $field->show();
+      }
+
+      return $this;
    }
 
    /**
@@ -662,35 +650,19 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * Convenience method to obtain the form a control is located in. Lays the foundation for
-    * recursive form structure and form group support.
+    * Converts an attributes array into a xml string including the black list
+    * and white list definition within the taglib instance.
     *
-    * @return HtmlFormTag The desired form instance.
+    * @param string[] $attributes The attributes to convert to string.
     *
-    * @throws FormException In case no form can be found within the document tree.
+    * @return string The attributes' xml string representation.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 21.08.2014<br />
+    * Version 0.1, 12.02.2010<br />
     */
-   public function &getForm() {
-
-      $form = & $this->getParentObject();
-
-      if ($form instanceof HtmlForm) {
-         return $form;
-      }
-
-      while (!($form instanceof HtmlForm)) {
-         $form = & $form->getParentObject();
-
-         if ($form === null) {
-            throw new FormException('Cannot find form starting at form control with name '
-                  . $this->getAttribute('name') . '! Please check your template setup.');
-         }
-      }
-
-      return $form;
+   protected function getSanitizedAttributesAsString($attributes) {
+      return $this->getAttributesAsString($attributes, $this->attributeWhiteList);
    }
 
 }

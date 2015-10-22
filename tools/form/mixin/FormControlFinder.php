@@ -48,17 +48,17 @@ trait FormControlFinder {
    public function &getFormElementByID($id) {
 
       if (count($this->children) > 0) {
-         foreach ($this->children as $objectId => $DUMMY) {
+         foreach ($this->children as &$child) {
 
             // when we directly find something - get it!
-            if ($this->children[$objectId]->getAttribute('id') == $id) {
-               return $this->children[$objectId];
+            if ($child->getAttribute('id') == $id) {
+               return $child;
             }
 
             // facing a group, let's recurs into it!
-            if ($this->children[$objectId] instanceof FormElementGroup) {
+            if ($child instanceof FormElementGroup) {
                try {
-                  return $this->children[$objectId]->getFormElementByID($id);
+                  return $child->getFormElementByID($id);
                } catch (FormException $e) {
                   // nothing to do here, it's just a not found status...
                }
@@ -101,17 +101,17 @@ trait FormControlFinder {
    public function &getFormElementByName($name) {
 
       if (count($this->children) > 0) {
-         foreach ($this->children as $objectId => $DUMMY) {
+         foreach ($this->children as &$child) {
 
             // when we directly find something - get it!
-            if ($this->children[$objectId]->getAttribute('name') == $name) {
-               return $this->children[$objectId];
+            if ($child->getAttribute('name') == $name) {
+               return $child;
             }
 
             // facing a group, let's recurs into it!
-            if ($this->children[$objectId] instanceof FormElementGroup) {
+            if ($child instanceof FormElementGroup) {
                try {
-                  return $this->children[$objectId]->getFormElementByName($name);
+                  return $child->getFormElementByName($name);
                } catch (FormException $e) {
                   // nothing to do here, it's just a not found status...
                }
@@ -142,21 +142,23 @@ trait FormControlFinder {
     * @throws FormException In case no label can be found.
     */
    public function &getLabel($name) {
-      foreach ($this->children as $objectId => $DUMMY) {
+      if (count($this->children) > 0) {
+         foreach ($this->children as &$child) {
 
-         // when we directly find something - get it!
-         if ($this->children[$objectId] instanceof LanguageLabel) {
-            if ($this->children[$objectId]->getAttribute('name') == $name) {
-               return $this->children[$objectId];
+            // when we directly find something - get it!
+            if ($child instanceof LanguageLabel) {
+               if ($child->getAttribute('name') == $name) {
+                  return $child;
+               }
             }
-         }
 
-         // facing a group, let's recurs into it!
-         if ($this->children[$objectId] instanceof FormElementGroup) {
-            try {
-               return $this->children[$objectId]->getLabel($name);
-            } catch (FormException $e) {
-               // nothing to do here, it's just a not found status...
+            // facing a group, let's recurs into it!
+            if ($child instanceof FormElementGroup) {
+               try {
+                  return $child->getLabel($name);
+               } catch (FormException $e) {
+                  // nothing to do here, it's just a not found status...
+               }
             }
          }
       }
@@ -183,16 +185,16 @@ trait FormControlFinder {
    public function &getFormElementsByName($name) {
       $elements = [];
       if (count($this->children) > 0) {
-         foreach ($this->children as $objectId => $DUMMY) {
+         foreach ($this->children as &$child) {
 
             // when we directly find something - get it!
-            if ($this->children[$objectId]->getAttribute('name') == $name) {
-               $elements[] = &$this->children[$objectId];
+            if ($child->getAttribute('name') == $name) {
+               $elements[] = &$child;
             }
 
             // facing a group, let's recurs into it!
-            if ($this->children[$objectId] instanceof FormElementGroup) {
-               $elements = array_merge($elements, $this->children[$objectId]->getFormElementsByName($name));
+            if ($child instanceof FormElementGroup) {
+               $elements = array_merge($elements, $child->getFormElementsByName($name));
             }
          }
       }
@@ -220,16 +222,16 @@ trait FormControlFinder {
       if (count($this->children) > 0) {
 
          $formElements = [];
-         foreach ($this->children as $objectId => $DUMMY) {
+         foreach ($this->children as &$child) {
 
             // when we directly find something - get it!
-            if ($this->children[$objectId] instanceof $tagClassName) {
-               $formElements[] = &$this->children[$objectId];
+            if ($child instanceof $tagClassName) {
+               $formElements[] = &$child;
             }
 
             // facing a group, let's recurs into it!
-            if ($this->children[$objectId] instanceof FormElementGroup) {
-               $formElements = array_merge($formElements, $this->children[$objectId]->getFormElementsByTagName($tagName));
+            if ($child instanceof FormElementGroup) {
+               $formElements = array_merge($formElements, $child->getFormElementsByTagName($tagName));
             }
          }
 
