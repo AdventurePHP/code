@@ -78,6 +78,7 @@ class UserDependentContentConditionSet extends APFObject {
       $this->addCondition(new UmgtRoleCondition());
       $this->addCondition(new UmgtNotRoleCondition());
       $this->addCondition(new UmgtPermissionCondition());
+      $this->addCondition(new UmgtNotPermissionCondition());
    }
 
    /**
