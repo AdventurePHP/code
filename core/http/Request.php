@@ -230,6 +230,16 @@ interface Request {
    public function resetPostParameters();
 
    /**
+    * Returns the content of the request body. In case of POST and PUT requests this is
+    * the raw content posted or put by the browser or user agent.
+    * <p/>
+    * Returns an empty string in case of e.g. GET requests.
+    *
+    * @return string The current request body.
+    */
+   public function getRequestBody();
+
+   /**
     * @return string Value of the <em>return $_SERVER['REQUEST_URI']</em> offset.
     */
    public function getRequestUri();

@@ -44,6 +44,21 @@ class RequestImpl implements Request {
    }
 
    /**
+    * Checks whether or not the applied parameter is contained in the current request.
+    *
+    * @param string $name The name of the parameter to check.
+    *
+    * @return bool <em>True</em> in case the given parameter is contained in the current request, <em>false</em> otherwise.
+    */
+   public function hasParameter($name) {
+      return $this->getParameter($name) !== null;
+   }
+
+   public function getParameter($name, $default = null) {
+      return $this->getGenericParameter($name, $default, self::USE_REQUEST_PARAMS);
+   }
+
+   /**
     * @param string $name The name of the URL parameter to get.
     * @param string $default The default value to return in case the parameter is not present (default: <em>null</em>).
     * @param string $type The request parameter type.
@@ -61,25 +76,6 @@ class RequestImpl implements Request {
             : $default;
    }
 
-   public function getParameter($name, $default = null) {
-      return $this->getGenericParameter($name, $default, self::USE_REQUEST_PARAMS);
-   }
-
-   /**
-    * Checks whether or not the applied parameter is contained in the current request.
-    *
-    * @param string $name The name of the parameter to check.
-    *
-    * @return bool <em>True</em> in case the given parameter is contained in the current request, <em>false</em> otherwise.
-    */
-   public function hasParameter($name) {
-      return $this->getParameter($name) !== null;
-   }
-
-   public function getGetParameter($name, $default = null) {
-      return $this->getGenericParameter($name, $default, self::USE_GET_PARAMS);
-   }
-
    /**
     * Checks whether or not the applied parameter is contained in the current GET request.
     *
@@ -91,8 +87,8 @@ class RequestImpl implements Request {
       return $this->getGetParameter($name) !== null;
    }
 
-   public function getPostParameter($name, $default = null) {
-      return $this->getGenericParameter($name, $default, self::USE_POST_PARAMS);
+   public function getGetParameter($name, $default = null) {
+      return $this->getGenericParameter($name, $default, self::USE_GET_PARAMS);
    }
 
    /**
@@ -104,6 +100,10 @@ class RequestImpl implements Request {
     */
    public function hasPostParameter($name) {
       return $this->getPostParameter($name) !== null;
+   }
+
+   public function getPostParameter($name, $default = null) {
+      return $this->getGenericParameter($name, $default, self::USE_POST_PARAMS);
    }
 
    public function getSession($name) {
@@ -123,6 +123,10 @@ class RequestImpl implements Request {
       return ini_get('session.name');
    }
 
+   public function getParameters() {
+      return $this->getGenericParameters(self::USE_REQUEST_PARAMS);
+   }
+
    /**
     * @param string $type The request parameter type.
     *
@@ -132,36 +136,12 @@ class RequestImpl implements Request {
       return is_array($GLOBALS['_' . $type]) ? $GLOBALS['_' . $type] : [];
    }
 
-   public function getParameters() {
-      return $this->getGenericParameters(self::USE_REQUEST_PARAMS);
-   }
-
    public function getGetParameters() {
       return $this->getGenericParameters(self::USE_GET_PARAMS);
    }
 
    public function getPostParameters() {
       return $this->getGenericParameters(self::USE_POST_PARAMS);
-   }
-
-   public function setParameter($name, $value) {
-      $_REQUEST[$name] = $value;
-
-      return $this;
-   }
-
-   public function setGetParameter($name, $value) {
-      $_GET[$name] = $value;
-      $_REQUEST[$name] = $value;
-
-      return $this;
-   }
-
-   public function setPostParameter($name, $value) {
-      $_POST[$name] = $value;
-      $_REQUEST[$name] = $value;
-
-      return $this;
    }
 
    /**
@@ -175,6 +155,12 @@ class RequestImpl implements Request {
       foreach ($parameters as $name => $value) {
          $this->setParameter($name, $value);
       }
+
+      return $this;
+   }
+
+   public function setParameter($name, $value) {
+      $_REQUEST[$name] = $value;
 
       return $this;
    }
@@ -194,6 +180,13 @@ class RequestImpl implements Request {
       return $this;
    }
 
+   public function setGetParameter($name, $value) {
+      $_GET[$name] = $value;
+      $_REQUEST[$name] = $value;
+
+      return $this;
+   }
+
    /**
     * Convenience method to set a list of POST parameters. Overwrites existing values without further notice.
     *
@@ -209,28 +202,9 @@ class RequestImpl implements Request {
       return $this;
    }
 
-   public function deleteParameter($name) {
-      unset($_GET[$name]);
-      unset($_POST[$name]);
-      unset($_REQUEST[$name]);
-
-      return $this;
-   }
-
-   public function deleteGetParameter($name) {
-      if (isset($_GET[$name])) {
-         unset($_GET[$name]);
-         unset($_REQUEST[$name]);
-      }
-
-      return $this;
-   }
-
-   public function deletePostParameter($name) {
-      if (isset($_POST[$name])) {
-         unset($_POST[$name]);
-         unset($_REQUEST[$name]);
-      }
+   public function setPostParameter($name, $value) {
+      $_POST[$name] = $value;
+      $_REQUEST[$name] = $value;
 
       return $this;
    }
@@ -246,6 +220,14 @@ class RequestImpl implements Request {
       foreach ($names as $name) {
          $this->deleteParameter($name);
       }
+
+      return $this;
+   }
+
+   public function deleteParameter($name) {
+      unset($_GET[$name]);
+      unset($_POST[$name]);
+      unset($_REQUEST[$name]);
 
       return $this;
    }
@@ -267,6 +249,15 @@ class RequestImpl implements Request {
       return $this;
    }
 
+   public function deleteGetParameter($name) {
+      if (isset($_GET[$name])) {
+         unset($_GET[$name]);
+         unset($_REQUEST[$name]);
+      }
+
+      return $this;
+   }
+
    /**
     * Convenience method to delete a list of POST parameters.
     * <p/>
@@ -279,6 +270,15 @@ class RequestImpl implements Request {
    public function deletePostParameters(array $names) {
       foreach ($names as $name) {
          $this->deletePostParameter($name);
+      }
+
+      return $this;
+   }
+
+   public function deletePostParameter($name) {
+      if (isset($_POST[$name])) {
+         unset($_POST[$name]);
+         unset($_REQUEST[$name]);
       }
 
       return $this;
@@ -314,12 +314,8 @@ class RequestImpl implements Request {
       return $this;
    }
 
-   public function isSecure() {
-      if ($_SERVER['SERVER_PORT'] === 443) {
-         return true;
-      }
-
-      return isset($_SERVER['HTTPS']) && (strtolower($_SERVER['HTTPS']) == 'on' || $_SERVER['HTTPS'] == 1);
+   public function getRequestBody() {
+      return file_get_contents('php://input');
    }
 
    public function getUrl($absolute = false) {
@@ -336,6 +332,14 @@ class RequestImpl implements Request {
       }
 
       return $url;
+   }
+
+   public function isSecure() {
+      if ($_SERVER['SERVER_PORT'] === 443) {
+         return true;
+      }
+
+      return isset($_SERVER['HTTPS']) && (strtolower($_SERVER['HTTPS']) == 'on' || $_SERVER['HTTPS'] == 1);
    }
 
    public function getReferrerUrl($absolute = false) {
@@ -379,10 +383,6 @@ class RequestImpl implements Request {
       return isset($_COOKIE[$name]);
    }
 
-   public function getRequestUri() {
-      return $_SERVER['REQUEST_URI'];
-   }
-
    public function getHost() {
       return $_SERVER['HTTP_HOST'];
    }
@@ -399,23 +399,11 @@ class RequestImpl implements Request {
       return $parts['path'];
    }
 
-   // we are not using getallheaders() as we would limit the APF to be used with Apache only.
-   public function getHeaders() {
-      $headers = [];
-
-      foreach ($_SERVER as $name => $value) {
-         if (substr($name, 0, 5) == 'HTTP_') {
-            $name = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))));
-            $headers[] = new HeaderImpl($name, $value);
-         } else if ($name == 'CONTENT_TYPE') {
-            $headers[] = new HeaderImpl('Content-Type', $value);
-         } else if ($name == 'CONTENT_LENGTH') {
-            $headers[] = new HeaderImpl('Content-Length', $value);
-         }
-      }
-
-      return $headers;
+   public function getRequestUri() {
+      return $_SERVER['REQUEST_URI'];
    }
+
+   // we are not using getallheaders() as we would limit the APF to be used with Apache only.
 
    /**
     * Returns a HTTP header instance by a given name. In case the header has not been sent
@@ -436,8 +424,21 @@ class RequestImpl implements Request {
       return null;
    }
 
-   public function getMethod() {
-      return $_SERVER['REQUEST_METHOD'];
+   public function getHeaders() {
+      $headers = [];
+
+      foreach ($_SERVER as $name => $value) {
+         if (substr($name, 0, 5) == 'HTTP_') {
+            $name = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))));
+            $headers[] = new HeaderImpl($name, $value);
+         } else if ($name == 'CONTENT_TYPE') {
+            $headers[] = new HeaderImpl('Content-Type', $value);
+         } else if ($name == 'CONTENT_LENGTH') {
+            $headers[] = new HeaderImpl('Content-Length', $value);
+         }
+      }
+
+      return $headers;
    }
 
    /**
@@ -456,6 +457,10 @@ class RequestImpl implements Request {
     */
    public function isGet() {
       return $this->getMethod() === self::METHOD_GET;
+   }
+
+   public function getMethod() {
+      return $_SERVER['REQUEST_METHOD'];
    }
 
    /**
@@ -513,6 +518,13 @@ class RequestImpl implements Request {
    }
 
    /**
+    * @return string The Accept header content.
+    */
+   protected function getAcceptHeaderContent() {
+      return isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : '';
+   }
+
+   /**
     * Convenience Method to determine whether we have an HTML request (e.g. useful for front controller
     * actions).
     *
@@ -532,26 +544,19 @@ class RequestImpl implements Request {
    }
 
    /**
+    * @return string The Accept-Encoding header content.
+    */
+   protected function getAcceptedEncodingHeader() {
+      return isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : '';
+   }
+
+   /**
     * Convenience method to determine whether the client supports DEFLATE content encoding or not.
     *
     * @return bool <em>True</em> in case the client supports GZIP encoding, <em>false</em> otherwise.
     */
    public function isDeflateSupported() {
       return stripos($this->getAcceptedEncodingHeader(), 'deflate') !== false;
-   }
-
-   /**
-    * @return string The Accept header content.
-    */
-   protected function getAcceptHeaderContent() {
-      return isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : '';
-   }
-
-   /**
-    * @return string The Accept-Encoding header content.
-    */
-   protected function getAcceptedEncodingHeader() {
-      return isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : '';
    }
 
 }
