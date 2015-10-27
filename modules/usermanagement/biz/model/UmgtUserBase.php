@@ -388,6 +388,33 @@ abstract class UmgtUserBase extends GenericDomainObject {
       return $this;
    }
 
+   /**
+    * @return string The value for property "Birthday".
+    */
+   public function getBirthday() {
+      return $this->getProperty('Birthday');
+   }
+
+   /**
+    * @param string $value The value to set for property "Birthday".
+    *
+    * @return UmgtUser The domain object for further usage.
+    */
+   public function setBirthday($value) {
+      $this->setProperty('Birthday', $value);
+
+      return $this;
+   }
+
+   /**
+    * @return UmgtUser The domain object for further usage.
+    */
+   public function deleteBirthday() {
+      $this->deleteProperty('Birthday');
+
+      return $this;
+   }
+
 }
 
 // DO NOT CHANGE THIS COMMENT! <*UmgtUserBase:end*>
