@@ -30,7 +30,13 @@ use APF\core\registry\Registry;
 use PHPUnit_Framework_MockObject_MockObject;
 use ReflectionProperty;
 
+/**
+ * Tests all capabilities of the Logger.
+ */
 class LoggerTest extends \PHPUnit_Framework_TestCase {
+
+   const LOG_MESSAGE_ONE = 'This is a log message!';
+   const LOG_MESSAGE_TWO = 'This is another log message!';
 
    /**
     * Tests whether a initial file log writer is created.
@@ -128,11 +134,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
 
       $target = Registry::retrieve('APF\core', 'InternalLogTarget');
 
-      $messageOne = 'This is a log message!';
-      $logger->logEntry($target, $messageOne);
-
-      $messageTwo = 'This is another log message!';
-      $logger->logEntry($target, $messageTwo, LogEntry::SEVERITY_FATAL);
+      $logger->logEntry($target, self::LOG_MESSAGE_ONE);
+      $logger->logEntry($target, self::LOG_MESSAGE_TWO, LogEntry::SEVERITY_FATAL);
 
       $entries = new ReflectionProperty(Logger::class, 'logEntries');
       $entries->setAccessible(true);
@@ -146,11 +149,11 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
 
       /* @var $entryOne SimpleLogEntry */
       $entryOne = $actual[$target][0];
-      $this->assertEquals($messageOne, $entryOne->getMessage());
+      $this->assertEquals(self::LOG_MESSAGE_ONE, $entryOne->getMessage());
 
       /* @var $entryTwo SimpleLogEntry */
       $entryTwo = $actual[$target][1];
-      $this->assertEquals($messageTwo, $entryTwo->getMessage());
+      $this->assertEquals(self::LOG_MESSAGE_TWO, $entryTwo->getMessage());
    }
 
    /**
@@ -162,11 +165,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
 
       $target = Registry::retrieve('APF\core', 'InternalLogTarget');
 
-      $messageOne = 'This is a log message!';
-      $logger->addEntry(new SimpleLogEntry($target, $messageOne, LogEntry::SEVERITY_INFO));
-
-      $messageTwo = 'This is another log message!';
-      $logger->addEntry(new SimpleLogEntry($target, $messageTwo, LogEntry::SEVERITY_FATAL));
+      $logger->addEntry(new SimpleLogEntry($target, self::LOG_MESSAGE_ONE, LogEntry::SEVERITY_INFO));
+      $logger->addEntry(new SimpleLogEntry($target, self::LOG_MESSAGE_TWO, LogEntry::SEVERITY_FATAL));
 
       $entries = new ReflectionProperty(Logger::class, 'logEntries');
       $entries->setAccessible(true);
@@ -180,11 +180,11 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
 
       /* @var $entryOne SimpleLogEntry */
       $entryOne = $actual[$target][0];
-      $this->assertEquals($messageOne, $entryOne->getMessage());
+      $this->assertEquals(self::LOG_MESSAGE_ONE, $entryOne->getMessage());
 
       /* @var $entryTwo SimpleLogEntry */
       $entryTwo = $actual[$target][1];
-      $this->assertEquals($messageTwo, $entryTwo->getMessage());
+      $this->assertEquals(self::LOG_MESSAGE_TWO, $entryTwo->getMessage());
 
    }
 
@@ -264,23 +264,21 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
       $targetTwo = 'bar';
       $logger->addLogWriter($targetTwo, $writerTwo);
 
-      $logMessage = 'Log Message!';
-
       for ($i = 0; $i < 10; $i++) {
-         $logger->logEntry($targetOne, $logMessage);
+         $logger->logEntry($targetOne, self::LOG_MESSAGE_ONE);
       }
 
       for ($i = 0; $i < 15; $i++) {
-         $logger->logEntry($targetTwo, $logMessage);
+         $logger->logEntry($targetTwo, self::LOG_MESSAGE_ONE);
       }
 
       $logger->flushLogBuffer();
 
       $this->assertEquals(10, $counterOne);
-      $this->assertEquals(10, substr_count($bufferOne, $logMessage));
+      $this->assertEquals(10, substr_count($bufferOne, self::LOG_MESSAGE_ONE));
 
       $this->assertEquals(15, $counterTwo);
-      $this->assertEquals(15, substr_count($bufferTwo, $logMessage));
+      $this->assertEquals(15, substr_count($bufferTwo, self::LOG_MESSAGE_ONE));
 
    }
 
@@ -294,47 +292,123 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
 
       $target = Registry::retrieve('APF\core', 'InternalLogTarget');
 
-      $entries = new ReflectionProperty(Logger::class, 'logEntries');
-      $entries->setAccessible(true);
+      $writer = new RecordingLogWriter();
+      $logger->addLogWriter($target, $writer);
 
       // test hiding messages below/not within threshold
-      $logger->logEntry($target, 'This is a log message!', LogEntry::SEVERITY_DEBUG);
+      $logger->logEntry($target, self::LOG_MESSAGE_ONE, LogEntry::SEVERITY_DEBUG);
 
-      $actual = $entries->getValue($logger);
+      $logger->flushLogBuffer();
+
+      $actual = $writer->getEntries();
       $this->assertEmpty($actual);
       $this->assertCount(0, $actual);
 
       // test message will be logged once threshold adjusted
       $logger->setLogThreshold(Logger::$LOGGER_THRESHOLD_ALL);
 
-      $logger->logEntry($target, 'This is a log message!', LogEntry::SEVERITY_DEBUG);
+      $logger->logEntry($target, self::LOG_MESSAGE_ONE, LogEntry::SEVERITY_DEBUG);
 
-      $actual = $entries->getValue($logger);
+      $logger->flushLogBuffer();
+
+      $actual = $writer->getEntries();
       $this->assertNotEmpty($actual);
       $this->assertCount(1, $actual);
 
       // test hiding all messages with empty threshold definition
       $logger = new Logger();
+
+      $writer = new RecordingLogWriter();
+      $logger->addLogWriter($target, $writer);
+
       $logger->setLogThreshold([]);
 
-      $logger->logEntry($target, 'This is a log message!', LogEntry::SEVERITY_DEBUG);
-      $logger->logEntry($target, 'This is a log message!', LogEntry::SEVERITY_INFO);
-      $logger->logEntry($target, 'This is a log message!', LogEntry::SEVERITY_WARNING);
-      $logger->logEntry($target, 'This is a log message!', LogEntry::SEVERITY_ERROR);
-      $logger->logEntry($target, 'This is a log message!', LogEntry::SEVERITY_FATAL);
+      $logger->logEntry($target, self::LOG_MESSAGE_ONE, LogEntry::SEVERITY_DEBUG);
+      $logger->logEntry($target, self::LOG_MESSAGE_ONE, LogEntry::SEVERITY_INFO);
+      $logger->logEntry($target, self::LOG_MESSAGE_ONE, LogEntry::SEVERITY_WARNING);
+      $logger->logEntry($target, self::LOG_MESSAGE_ONE, LogEntry::SEVERITY_ERROR);
+      $logger->logEntry($target, self::LOG_MESSAGE_ONE, LogEntry::SEVERITY_FATAL);
 
-      $actual = $entries->getValue($logger);
+      $logger->flushLogBuffer();
+
+      $actual = $writer->getEntries();
       $this->assertEmpty($actual);
       $this->assertCount(0, $actual);
    }
 
    /**
-    * Tests whether a given amount of severe log entries overwrites
+    * Tests whether a given amount of error log entries overwrites
     * the log threshold settings to all. This is used to gather all
     * relevant information in case something severe happens.
     */
-   public function testOverwriteLogThreshold() {
-      // new feature ID#269
+   public function testThresholdOverride1() {
+
+      $logger = new Logger();
+
+      $target = Registry::retrieve('APF\core', 'InternalLogTarget');
+
+      $writer = new RecordingLogWriter();
+      $logger->addLogWriter($target, $writer);
+
+      $logger->setLogThreshold(Logger::$LOGGER_THRESHOLD_ERROR);
+
+      // log all in case more than 5 errors or more than 1 fatal comes up
+      $logger->setThresholdOverride([
+            LogEntry::SEVERITY_ERROR => 5
+      ]);
+
+      // test 6 errors overriding the threshold of 5
+      for ($i = 1; $i < 7; $i++) {
+         $logger->logEntry($target, self::LOG_MESSAGE_ONE, LogEntry::SEVERITY_ERROR);
+      }
+
+      $logger->logEntry($target, self::LOG_MESSAGE_ONE, LogEntry::SEVERITY_DEBUG);
+      $logger->logEntry($target, self::LOG_MESSAGE_ONE, LogEntry::SEVERITY_INFO);
+      $logger->logEntry($target, self::LOG_MESSAGE_ONE, LogEntry::SEVERITY_WARNING);
+
+      $logger->flushLogBuffer();
+
+      $actual = $writer->getEntries();
+      $this->assertNotEmpty($actual);
+      $this->assertCount(9, $actual);
+
+   }
+
+   /*
+    * Tests whether one fatal error overwrites the log threshold
+    * settings to all. This is used to gather all relevant
+    * information in case something severe happens.
+    */
+   public function testThresholdOverride2() {
+
+      $logger = new Logger();
+
+      $target = Registry::retrieve('APF\core', 'InternalLogTarget');
+
+      $writer = new RecordingLogWriter();
+      $logger->addLogWriter($target, $writer);
+
+      $logger->setLogThreshold(Logger::$LOGGER_THRESHOLD_ERROR);
+
+      // log all in case more than 20 errors or more than 1 fatal comes up
+      $logger->setThresholdOverride([
+            LogEntry::SEVERITY_ERROR => 20,
+            LogEntry::SEVERITY_FATAL => 1
+      ]);
+
+      // test than one fatal overrides
+      $logger->logEntry($target, self::LOG_MESSAGE_ONE, LogEntry::SEVERITY_FATAL);
+
+      $logger->logEntry($target, self::LOG_MESSAGE_ONE, LogEntry::SEVERITY_DEBUG);
+      $logger->logEntry($target, self::LOG_MESSAGE_ONE, LogEntry::SEVERITY_INFO);
+      $logger->logEntry($target, self::LOG_MESSAGE_ONE, LogEntry::SEVERITY_WARNING);
+      $logger->logEntry($target, self::LOG_MESSAGE_ONE, LogEntry::SEVERITY_ERROR);
+
+      $logger->flushLogBuffer();
+
+      $actual = $writer->getEntries();
+      $this->assertNotEmpty($actual);
+      $this->assertCount(5, $actual);
    }
 
 }

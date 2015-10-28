@@ -99,6 +99,16 @@ class Logger {
    protected $writers = [];
 
    /**
+    * @var array Log threshold override definition.
+    */
+   protected $thresholdOverride = [];
+
+   /**
+    * @var array Internal counter to track log entries to detect log threshold override.
+    */
+   protected $thresholdOverrideCounter = [];
+
+   /**
     * Initializes the logger.
     * <p/>
     * Please be aware, that starting with release 1.15 DEBUG and TRACE statements
@@ -188,6 +198,37 @@ class Logger {
    }
 
    /**
+    * Let's you define the threshold override definition. This is a list of severities associated
+    * to a threshold number and causes the logger to log all entries of the current request in
+    * case one of the threshold definitions is reached.
+    * <p/>
+    * Applying list
+    * <code>
+    * [
+    *  LogEntry::SEVERITY_ERROR => 20,
+    *  LogEntry::SEVERITY_FATAL => 1
+    * ]
+    * </code>
+    * makes the Logger flush all entries to the respective writers in case 20 or more ERROR or
+    * 1 or more FATAL entries have been added.
+    * <p/>
+    * The threshold override definition can contain any number of severity-threshold-couples according
+    * to the severity definition of the LogEntry interface.
+    * <p/>
+    * In case the threshold override definition is empty (default configuration of the Logger), only
+    * entries matching the given severity list definition are flushed to the configured log writers.
+    *
+    * @param array $thresholdOverride Threshold override definition.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 28.10.2015 (ID#269: added implementation)<br />
+    */
+   public function setThresholdOverride(array $thresholdOverride) {
+      $this->thresholdOverride = $thresholdOverride;
+   }
+
+   /**
     * Removes a registered writer identified by the applied target name.
     *
     * @param string $target The log target name.
@@ -245,13 +286,18 @@ class Logger {
     * @version
     * Version 0.1, 17.04.2012<br />
     * Version 0.2, 09.01.2013 (Now public to add log entries OO-style)<br />
+    * Version 0.3, 28.10.2015 (ID#269: changed implementation to allow logging all entries in case threshold override is activated)<br />
     */
    public function addEntry(LogEntry $entry) {
 
-      // check for severity to match the threshold definition
-      if (in_array($entry->getSeverity(), $this->logThreshold)) {
-         $this->logEntries[$entry->getLogTarget()][] = $entry;
-         $this->logEntryCount++;
+      $this->logEntries[$entry->getLogTarget()][] = $entry;
+      $this->logEntryCount++;
+
+      // maintain severity counter to detect threshold override
+      if (isset($this->thresholdOverrideCounter[$entry->getSeverity()])) {
+         $this->thresholdOverrideCounter[$entry->getSeverity()]++;
+      } else {
+         $this->thresholdOverrideCounter[$entry->getSeverity()] = 1;
       }
 
       // flush the log buffer in case the maximum number of entries is reached.
@@ -273,6 +319,7 @@ class Logger {
     * Version 0.4, 19.04.2009 (Suppressed mkdir() warning to make the error message nice)<br />
     * Version 0.5, 12.01.2013 (Optimized count() calls to increase performance)<br />
     * Version 0.6, 12.01.2013 (Switched to log writer concept)<br />
+    * Version 0.7, 28.10.2015 (ID#269: added log threshold override implementation)<br />
     */
    public function flushLogBuffer() {
 
@@ -280,17 +327,42 @@ class Logger {
       // To increase performance, the writers get a whole bunch of log entries instead of
       // single items. For even better performance, the log entries are grouped by writer
       // to avoid sorting when flushing the buffer.
-      foreach ($this->logEntries as $target => $logEntries) {
+      foreach ($this->logEntries as $target => $entries) {
 
-         $writer = $this->getLogWriter($target);
+         // filter entries by severity and check for threshold override
+         $list = [];
+         foreach ($entries as $entry) {
+            if (in_array($entry->getSeverity(), $this->logThreshold) || $this->thresholdOverrideDetected()) {
+               $list[] = $entry;
+            }
+         }
 
-         /* @var $logEntries LogEntry[] */
-         $writer->writeLogEntries($logEntries);
+         $this->getLogWriter($target)->writeLogEntries($list);
       }
 
       // reset the buffer and the counter
       $this->logEntries = [];
       $this->logEntryCount = 0;
+   }
+
+   /**
+    * Detects whether a threshold override has been detected for the current request
+    * or not. This allows to log the complete stack of log entries in case something
+    * severe happened during the request.
+    *
+    * @return bool <em>True</em> in case all should be logged, <em>false</em> otherwise.
+    */
+   protected function thresholdOverrideDetected() {
+
+      foreach ($this->thresholdOverride as $severity => $threshold) {
+         if (isset($this->thresholdOverrideCounter[$severity])) {
+            if ($this->thresholdOverrideCounter[$severity] >= $threshold) {
+               return true;
+            }
+         }
+      }
+
+      return false;
    }
 
    /**
