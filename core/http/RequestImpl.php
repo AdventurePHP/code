@@ -463,6 +463,10 @@ class RequestImpl implements Request {
       return $_SERVER['REQUEST_METHOD'];
    }
 
+   public function getRemoteAddress() {
+      return $_SERVER['REMOTE_ADDR'];
+   }
+
    /**
     * Convenience Method to determine whether we have a POST request.
     *

@@ -23,48 +23,41 @@ namespace APF\modules\recaptcha\pres\taglib;
 use APF\tools\form\filter\AbstractFormFilter;
 use APF\tools\form\FormException;
 use APF\tools\form\taglib\AbstractFormControl;
+use APF\tools\form\validator\AbstractFormValidator;
 
 /**
  * Implements a re-captcha wrapper for Google's ReCaptcha.
  * <p/>
- * Further docs can be found under https://developers.google.com/recaptcha/docs/php?hl=de.
+ * Further docs can be found under https://developers.google.com/recaptcha/intro.
  * <p/>
- * The lib currently included within the APF distribution is http://code.google.com/p/recaptcha/downloads/detail?name=recaptcha-php-1.11.zip&can=2&q=label%3Aphplib-Latest
- * <p/>
- * Details on the architecture of reCaptcha can be read about under https://developers.google.com/recaptcha/docs/display?hl=de.
+ * Details on the architecture of reCaptcha can be read about under https://developers.google.com/recaptcha/.
  * <p/>
  * Using APF's ReCaptcha wrapper requires download and inclusion of Google's
- * <em>recaptchalib</em> available under https://developers.google.com/recaptcha/.
- * Please include <em>recaptchalib.php</em> e.g. within your bootstrap file to
- * make the included code available.
+ * <em>recaptcha</em> available under https://github.com/google/recaptcha
+ * <p/>
+ * Please include <em>recaptcha</em> library into your project and add to
+ * auto loading.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 22.09.2012<br />
  * Version 0.2, 06.11.2013 (Removed inclusion of external recaptachalib library due to license issues described in ID#80)<br />
+ * Version 0.3, 30.10.2015 (ID#94: updated to ReCaptcha 2 lib)<br />
  */
 class ReCaptchaTag extends AbstractFormControl {
 
    /**
-    * The name of the challenge identifier url parameter.
-    *
-    * @var string RE_CAPTCHA_CHALLENGE_FIELD_IDENTIFIER
-    */
-   const RE_CAPTCHA_CHALLENGE_FIELD_IDENTIFIER = 'recaptcha_challenge_field';
-
-   /**
     * The name of the challenge answer identifier url parameter.
     *
-    * @var string RE_CAPTCHA_CHALLENGE_ANSWER_IDENTIFIER
+    * @var string RE_CAPTCHA_RESPONSE_IDENTIFIER
     */
-   const RE_CAPTCHA_CHALLENGE_ANSWER_IDENTIFIER = 'recaptcha_response_field';
+   const RE_CAPTCHA_RESPONSE_IDENTIFIER = 'g-recaptcha-response';
 
    /**
-    * The error message key to display within the reCaptcha control.
+    * The error messages key to display within the reCaptcha control.
     *
-    * @var string $errorMessageKey
     */
-   private $errorMessageKey;
+   protected $errorMessageKeys = [];
 
    /**
     * Overwrites the parent method since filtering is not necessary with the reCaptcha form.
@@ -82,23 +75,34 @@ class ReCaptchaTag extends AbstractFormControl {
    }
 
    public function onParseTime() {
+
       // do nothing except an attribute check, since presetting on reCaptcha fields is not needed.
       $name = $this->getAttribute('name');
       if (empty($name)) {
          $form = $this->getParentObject();
-         throw new FormException('ReCaptcha control within form "' . $form->getAttribute('name')
-               . '" has no "name" attribute specified! Please re-check your form definition.');
+         throw new FormException(
+               'ReCaptcha control within form "' . $form->getAttribute('name')
+               . '" has no "name" attribute specified! Please re-check your form definition.'
+         );
       }
 
-      // parse <recaptcha:getstring /> tag.
-      $this->extractTagLibTags();
-   }
+      $publicKey = $this->getAttribute('public-key');
+      if (empty($publicKey)) {
+         $form = $this->getParentObject();
+         throw new FormException(
+               'ReCaptcha control within form "' . $form->getAttribute('name')
+               . '" has no "public-key" attribute specified! Please re-check your form definition.'
+         );
+      }
 
-   /**
-    * @return string The public key to use with the reCaptcha control (needed to display the control).
-    */
-   public function getPublicKey() {
-      return $this->getAttribute('public-key');
+      $privateKey = $this->getAttribute('private-key');
+      if (empty($privateKey)) {
+         $form = $this->getParentObject();
+         throw new FormException(
+               'ReCaptcha control within form "' . $form->getAttribute('name')
+               . '" has no "private-key" attribute specified! Please re-check your form definition.'
+         );
+      }
    }
 
    /**
@@ -109,25 +113,17 @@ class ReCaptchaTag extends AbstractFormControl {
    }
 
    /**
-    * @param string $errorMessageKey The error message key to pass to the reCaptche control to display a hint to the user.
+    * @return string[] The error message keys returned by the Google API call.
     */
-   public function setErrorMessageKey($errorMessageKey) {
-      $this->errorMessageKey = $errorMessageKey;
+   public function getErrorMessageKeys() {
+      return $this->errorMessageKeys;
    }
 
    /**
-    * Returns the name of the theme configured. Default is <em>red</em>.
-    * <p/>
-    * For details, please refer to https://developers.google.com/recaptcha/docs/customization?hl=de.
-    *
-    * @return string Theme name.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 22.09.2012<br />
+    * @param string[] $errorMessageKeys The error message keys to display a hint to the user.
     */
-   private function getThemeName() {
-      return $this->getAttribute('theme', 'red');
+   public function setErrorMessageKeys(array $errorMessageKeys = []) {
+      $this->errorMessageKeys = $errorMessageKeys;
    }
 
    public function transform() {
@@ -137,109 +133,76 @@ class ReCaptchaTag extends AbstractFormControl {
          return '';
       }
 
-      $html = ' <script type="text/javascript">var RecaptchaOptions = { '
-            . 'theme : \'' . $this->getThemeName() . '\','
+      $captchaId = $this->getCaptchaId();
 
-            // map default APF DOM tree language attribute to the reCaptcha option to
-            // support easy language change
-            . ' lang : \'' . $this->getLanguage() . '\'';
+      // mark control with CSS class
+      $errorIndicator = '';
+      if ($this->controlIsValid === false) {
+         $errorIndicator = ' ' . $this->getAttribute(
+                     AbstractFormValidator::$CUSTOM_MARKER_CLASS_ATTRIBUTE,
+                     AbstractFormValidator::$DEFAULT_MARKER_CLASS
+               );
+      };
+
+      // allow language override
+      $language = $this->getAttribute('lang', $this->getLanguage());
+
+      $html = '<div class="g-recaptcha' . $errorIndicator . '" id="g-recaptcha-' . $captchaId . '"></div>' . PHP_EOL;
+      $html .= '<script src="https://www.google.com/recaptcha/api.js?hl=' . $language
+            . '&amp;onload=ReCaptchaDisplay' . $captchaId . '&amp;render=explicit" async defer></script>' . PHP_EOL;
+
+      // site key is mandatory!
+      $params = [];
+      $params[] = '      \'sitekey\' : \'' . $this->getPublicKey() . '\'';
+
+      // add theme support if desired
+      $theme = $this->getAttribute('theme');
+      if ($theme !== null) {
+         $params[] = '      \'theme\' : \'' . $theme . '\'';
+      }
 
       // add tab index support if desired
       $tabIndex = $this->getAttribute('tabindex');
       if ($tabIndex !== null) {
-         $html .= ', tabindex : ' . $tabIndex;
+         $params[] = '      \'tabindex\' : \'' . $tabIndex . '\'';
+      }
+
+      // add size support if desired
+      $size = $this->getAttribute('size');
+      if ($size !== null) {
+         $params[] = '      \'size\' : \'' . $size . '\'';
       }
 
       // support custom theme creation as described under
-      // https://developers.google.com/recaptcha/docs/customization?hl=de#Custom_Theming
+      // https://developers.google.com/recaptcha/docs/display#config
       $customThemeId = $this->getAttribute('custom-theme-id');
       if ($customThemeId !== null) {
-         $html .= ', custom_theme_widget: \'' . $customThemeId . '\'';
+         $params[] = '      \'theme\' : \'' . $customThemeId . '\'';
       }
 
-      // add custom translation options if requested
-      $customTranslation = $this->getCustomTranslations();
-      if (!empty($customTranslation)) {
-         $html .= ', custom_translations : { ' . $customTranslation . ' }';
-      }
+      $html .= '<script type="text/javascript">
+var ReCaptchaDisplay' . $captchaId . ' = function () {
+   grecaptcha.render(\'g-recaptcha-' . $captchaId . '\', {' . PHP_EOL
+            . implode(', ' . PHP_EOL, $params) . PHP_EOL
+            . '   });
+};
+</script>';
 
-      return $html . ' };</script>'
-      . PHP_EOL
-      . recaptcha_get_html($this->getPublicKey(), $this->errorMessageKey, $this->useSSL());
+      return $html;
    }
 
    /**
-    * Evaluates custom translation options and returns the JavaScript option string.
-    *
-    * @return string The custom translation option string.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 22.09.2012<br />
+    * @return string Unique id of this reCAPTCHA instance.
     */
-   private function getCustomTranslations() {
-
-      $l10nOptions = [];
-
-      $instructionsVisual = $this->getAttribute('label-instructions-visual');
-      if (!empty($instructionsVisual)) {
-         $l10nOptions['instructions_visual'] = $instructionsVisual;
-      }
-
-      $instructionsAudio = $this->getAttribute('label-instructions-audio');
-      if (!empty($instructionsAudio)) {
-         $l10nOptions['instructions_audio'] = $instructionsAudio;
-      }
-
-      $playAgain = $this->getAttribute('label-play-again');
-      if (!empty($playAgain)) {
-         $l10nOptions['play_again'] = $playAgain;
-      }
-
-      $cantHearThis = $this->getAttribute('label-cant-hear-this');
-      if (!empty($cantHearThis)) {
-         $l10nOptions['cant_hear_this'] = $cantHearThis;
-      }
-
-      $visualChallenge = $this->getAttribute('label-visual-challenge');
-      if (!empty($visualChallenge)) {
-         $l10nOptions['visual_challenge'] = $visualChallenge;
-      }
-
-      $audioChallenge = $this->getAttribute('label-audio-challenge');
-      if (!empty($audioChallenge)) {
-         $l10nOptions['audio_challenge'] = $audioChallenge;
-      }
-
-      $refreshButton = $this->getAttribute('label-refresh-btn');
-      if (!empty($refreshButton)) {
-         $l10nOptions['refresh_btn'] = $refreshButton;
-      }
-
-      $helpButton = $this->getAttribute('label-help-btn');
-      if (!empty($helpButton)) {
-         $l10nOptions['help_btn'] = $helpButton;
-      }
-
-      $incorrectTryAgain = $this->getAttribute('label-incorrect-try-again');
-      if (!empty($incorrectTryAgain)) {
-         $l10nOptions['incorrect_try_again'] = $incorrectTryAgain;
-      }
-
-      $combinedL10NOptions = [];
-
-      foreach ($l10nOptions as $key => $value) {
-         $combinedL10NOptions[] = $key . ': \'' . $value . '\'';
-      }
-
-      return implode(',', $combinedL10NOptions);
+   protected function getCaptchaId() {
+      return md5($this->getAttribute('name') . uniqid(rand(), true));
    }
 
    /**
-    * @return bool True, in case SSL should be used, false otherwise.
+    * @return string The public key to use with the reCaptcha control (needed to display the control).
     */
-   private function useSSL() {
-      return $this->getAttribute('use-ssl', 'false') === 'true';
+   protected function getPublicKey() {
+      return $this->getAttribute('public-key');
    }
 
 }

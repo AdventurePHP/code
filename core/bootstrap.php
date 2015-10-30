@@ -43,7 +43,6 @@ use APF\extensions\htmllist\taglib\DefinitionListTermTag;
 use APF\extensions\htmllist\taglib\ListElementTag;
 use APF\modules\captcha\pres\taglib\SimpleCaptchaTag;
 use APF\modules\recaptcha\pres\taglib\ReCaptchaTag;
-use APF\modules\recaptcha\pres\taglib\ReCaptchaTranslationTag;
 use APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionLanguageLabelTag;
 use APF\tools\form\multifileupload\pres\taglib\MultiFileUploadTag;
 use APF\tools\form\taglib\AddFormControlFilterTag;
@@ -241,7 +240,6 @@ Document::addTagLib(LinkLanguageTitleTag::class, 'title', 'getstring');
 Document::addTagLib(MediaInclusionTag::class, 'html', 'mediastream');
 
 // APF\modules
-Document::addTagLib(ReCaptchaTranslationTag::class, 'recaptcha', 'getstring');
 Document::addTagLib(UmgtMediaInclusionLanguageLabelTag::class, 'media', 'getstring');
 
 Document::addTagLib(SimpleCaptchaTag::class, 'form', 'captcha');

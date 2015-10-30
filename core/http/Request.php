@@ -318,4 +318,9 @@ interface Request {
     */
    public function getMethod();
 
+   /**
+    * @return string The client's IP address.
+    */
+   public function getRemoteAddress();
+
 }
