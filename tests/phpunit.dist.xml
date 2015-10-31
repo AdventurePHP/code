@@ -58,6 +58,10 @@
             <directory phpVersion="5.5.0" phpVersionOperator=">=">suites/core</directory>
         </testsuite>
 
+        <testsuite name="AdventurePHPFramework - Modules">
+            <directory phpVersion="5.5.0" phpVersionOperator=">=">suites/modules</directory>
+        </testsuite>
+
         <testsuite name="AdventurePHPFramework - Tools">
             <directory phpVersion="5.5.0" phpVersionOperator=">=">suites/tools</directory>
         </testsuite>
