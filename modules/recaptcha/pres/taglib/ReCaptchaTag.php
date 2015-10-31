@@ -155,7 +155,8 @@ class ReCaptchaTag extends AbstractFormControl {
       $params = [];
       $params[] = '      \'sitekey\' : \'' . $this->getPublicKey() . '\'';
 
-      // add theme support if desired
+      // support custom theme creation as described under
+      // https://developers.google.com/recaptcha/docs/display#config
       $theme = $this->getAttribute('theme');
       if ($theme !== null) {
          $params[] = '      \'theme\' : \'' . $theme . '\'';
@@ -171,13 +172,6 @@ class ReCaptchaTag extends AbstractFormControl {
       $size = $this->getAttribute('size');
       if ($size !== null) {
          $params[] = '      \'size\' : \'' . $size . '\'';
-      }
-
-      // support custom theme creation as described under
-      // https://developers.google.com/recaptcha/docs/display#config
-      $customThemeId = $this->getAttribute('custom-theme-id');
-      if ($customThemeId !== null) {
-         $params[] = '      \'theme\' : \'' . $customThemeId . '\'';
       }
 
       $html .= '<script type="text/javascript">
