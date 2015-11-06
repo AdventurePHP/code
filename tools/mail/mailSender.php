@@ -426,7 +426,7 @@ class mailSender extends APFObject {
       $header = $this->generateHeader();
       /* @var $log Logger */
       $log = &Singleton::getInstance(Logger::class);
-      $sentEmails = [];
+      $sentEmails = 0;
 
       for ($i = 0; $i < count($this->recipients); $i++) {
 
@@ -434,7 +434,7 @@ class mailSender extends APFObject {
 
          if ($result == 1 || $result == true) {
             $log->logEntry('mail', 'Sending mail to ' . $this->recipients[$i]['EMail'] . '.', LogEntry::SEVERITY_INFO);
-            $sentEmails[] = '1';
+            $sentEmails++;
          } else {
             $log->logEntry('mail', 'Sending mail to ' . $this->recipients[$i]['EMail'] . '.', LogEntry::SEVERITY_ERROR);
          }
@@ -442,7 +442,7 @@ class mailSender extends APFObject {
       }
 
       $status['recipientcount'] = count($this->recipients);
-      $status['successcount'] = count($sentEmails);
+      $status['successcount'] = $sentEmails;
 
       return $status;
    }
