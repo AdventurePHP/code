@@ -22,10 +22,10 @@ namespace APF\tools\form\mixin;
 
 use APF\core\pagecontroller\LanguageLabel;
 use APF\core\pagecontroller\LanguageLabelTag;
+use APF\tools\form\FormControl;
 use APF\tools\form\FormElementGroup;
 use APF\tools\form\FormException;
 use APF\tools\form\HtmlForm;
-use APF\tools\form\taglib\AbstractFormControl;
 use APF\tools\form\taglib\DynamicFormElementMarkerTag;
 use APF\tools\form\taglib\HtmlFormTag;
 
@@ -42,7 +42,7 @@ trait FormControlFinder {
    /**
     * @param string $id The ID of the desired form element.
     *
-    * @return AbstractFormControl A reference on the form element.
+    * @return FormControl A reference on the form element.
     * @throws FormException In case the form element cannot be found.
     */
    public function &getFormElementByID($id) {
@@ -95,7 +95,7 @@ trait FormControlFinder {
    /**
     * @param string $name The name of the desired form element.
     *
-    * @return AbstractFormControl A reference on the form element.
+    * @return FormControl A reference on the form element.
     * @throws FormException In case the form element cannot be found.
     */
    public function &getFormElementByName($name) {
@@ -180,7 +180,7 @@ trait FormControlFinder {
    /**
     * @param string $name The name of the form elements to collect (e.g. for radio buttons).
     *
-    * @return AbstractFormControl[] The list of form controls with the given name.
+    * @return FormControl[] The list of form controls with the given name.
     */
    public function &getFormElementsByName($name) {
       $elements = [];
@@ -205,7 +205,7 @@ trait FormControlFinder {
    /**
     * @param string $tagName The tag name of the desired form element (e.g. "form:text").
     *
-    * @return AbstractFormControl[] A list of references on the form elements.
+    * @return FormControl[] A list of references on the form elements.
     * @throws FormException In case the form element cannot be found or desired tag is not registered.
     */
    public function &getFormElementsByTagName($tagName) {

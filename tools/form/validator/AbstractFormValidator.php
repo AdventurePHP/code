@@ -22,17 +22,18 @@ namespace APF\tools\form\validator;
 
 use APF\core\http\mixins\GetRequestResponse;
 use APF\core\pagecontroller\APFObject;
-use APF\tools\form\taglib\AbstractFormControl;
+use APF\tools\form\FormControl;
 
 /**
- * This class defines the scheme of form validators. Implements some basic
- * parts of the validator implementation.
+ * Defines the base class for all form validators. In case you want to implement your
+ * own form validator, derive from this class.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 24.08.2009<br />
+ * Version 0.2, 06.11.2015 (ID#273: introduced interface)<br />
  */
-abstract class AbstractFormValidator extends APFObject {
+abstract class AbstractFormValidator extends APFObject implements FormValidator {
 
    use GetRequestResponse;
 
@@ -55,9 +56,18 @@ abstract class AbstractFormValidator extends APFObject {
    public static $CUSTOM_MARKER_CLASS_ATTRIBUTE = 'valmarkerclass';
 
    /**
+    * Indicates the special validator behaviour.
+    *
+    * @var string $SPECIAL_VALIDATOR_INDICATOR
+    *
+    * @since 1.12
+    */
+   protected static $SPECIAL_VALIDATOR_INDICATOR = 'special';
+
+   /**
     * Includes a reference on the control to validate.
     *
-    * @var AbstractFormControl $control
+    * @var FormControl $control
     */
    protected $control;
 
@@ -65,7 +75,7 @@ abstract class AbstractFormValidator extends APFObject {
     * Includes a reference on the button of the form,
     * that initiates the validation event.
     *
-    * @var AbstractFormControl $button
+    * @var FormControl $button
     */
    protected $button;
 
@@ -79,63 +89,12 @@ abstract class AbstractFormValidator extends APFObject {
     */
    protected $type = null;
 
-   /**
-    * Indicates the special validator behaviour.
-    *
-    * @var string $SPECIAL_VALIDATOR_INDICATOR
-    *
-    * @since 1.12
-    */
-   protected static $SPECIAL_VALIDATOR_INDICATOR = 'special';
-
-   /**
-    * Injects the control to validate and the button, that triggers the validation.
-    *
-    * @param AbstractFormControl $control The control, that should be validated.
-    * @param AbstractFormControl $button The button, that triggers the validate event.
-    * @param string $type The validator type regarding the listener notification.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 24.08.2009<br />
-    */
-   public function __construct(AbstractFormControl &$control, AbstractFormControl &$button, $type = null) {
-      $this->control = & $control;
-      $this->button = & $button;
+   public function __construct(FormControl &$control, FormControl &$button, $type = null) {
+      $this->control = &$control;
+      $this->button = &$button;
       $this->type = $type;
    }
 
-   /**
-    * Method, that is called to validate the element.
-    *
-    * @param string $input The input to validate.
-    *
-    * @return boolean True, in case the control is valid, false otherwise.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 28.08.2009<br />
-    */
-   public abstract function validate($input);
-
-   /**
-    * Method, that is called, when the validation fails.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 28.08.2009<br />
-    */
-   public abstract function notify();
-
-   /**
-    * Indicates, whether the current validator is active.
-    *
-    * @return boolean True, in case the validator is active, false otherwise.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 28.08.2009<br />
-    */
    public function isActive() {
       return $this->button->isSent();
    }

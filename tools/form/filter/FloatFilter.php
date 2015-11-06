@@ -27,7 +27,7 @@ namespace APF\tools\form\filter;
  * @author Lutz Mahlstedt
  * @version
  * Version 0.1, 13.05.2009<br />
- * Version 0.2, 06.06.2012 (Added check if something was typed in formfield)<br />
+ * Version 0.2, 06.06.2012 (Added check if something was typed in form control)<br />
  */
 class FloatFilter extends AbstractFormFilter {
 

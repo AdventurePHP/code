@@ -30,7 +30,6 @@ use APF\tools\form\FormControl;
 use APF\tools\form\FormException;
 use APF\tools\form\HtmlForm;
 use APF\tools\form\mixin\FormControlFinder as FormControlFinderImpl;
-use BadMethodCallException;
 
 /**
  * Represents a APF form element (DOM node).
@@ -169,7 +168,7 @@ class HtmlFormTag extends Document implements HtmlForm {
     * @param string $elementType Type of the element (e.g. "form:text")
     * @param string[] $elementAttributes Associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
     *
-    * @return AbstractFormControl The new form object or null.
+    * @return FormControl The new form object or null.
     * @throws FormException In case the form element cannot be added.
     *
     * @author Christian Achatz
@@ -204,7 +203,7 @@ class HtmlFormTag extends Document implements HtmlForm {
     * @param string $elementType Type of the element (e.g. "form:text")
     * @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
     *
-    * @return AbstractFormControl The created form element.
+    * @return FormControl The created form element.
     * @throws FormException In case form element cannot be found.
     *
     * @author Christian Achatz
@@ -327,7 +326,7 @@ class HtmlFormTag extends Document implements HtmlForm {
     * @param string $elementType type of the element (e.g. "form:text")
     * @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
     *
-    * @return AbstractFormControl The new form object or null (e.g. for addressing the new element).
+    * @return FormControl The new form object or null (e.g. for addressing the new element).
     * @throws FormException In case object creation fails.
     *
     * @author Christian Achatz
@@ -367,7 +366,7 @@ class HtmlFormTag extends Document implements HtmlForm {
     * @param string $elementType type of the element (e.g. "form:text")
     * @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
     *
-    * @return AbstractFormControl The new form object or null (e.g. for addressing the new element).
+    * @return FormControl The new form object or null (e.g. for addressing the new element).
     * @throws FormException In case object creation fails.
     *
     * @author Christian Achatz
@@ -499,16 +498,6 @@ class HtmlFormTag extends Document implements HtmlForm {
       $t->stop($id);
 
       return $htmlCode;
-   }
-
-   public function &hide() {
-      throw new BadMethodCallException('Hiding forms is not supported! Please use $form->transformOnPlace() '
-            . 'to display a form or omit to hide it.');
-   }
-
-   public function &show() {
-      throw new BadMethodCallException('Hiding forms is not supported! Please use $form->transformOnPlace() '
-            . 'to display a form or omit to hide it.');
    }
 
 }

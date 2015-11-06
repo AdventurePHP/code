@@ -20,31 +20,28 @@
  */
 namespace APF\core\filter;
 
-use APF\core\pagecontroller\APFObject;
-
 /**
- * Abstract filter class.
+ * This interface describes a generic filter.
+ * <p/>
+ * Will be used to describe input and output filters as well as form control filters.
  *
- * @author Christian Schäfer
+ * @author Christian Achatz
  * @version
- * Version 0.1, 08.06.2007<br />
+ * Version 0.1, 06.11.2015 (ID#273: introduced interface)<br />
  */
-// TODO extract interface...
-abstract class AbstractFilter extends APFObject {
+interface Filter {
 
    /**
-    * Abstract filter method. Must be implemented by concrete filter implementations.
+    * Filters a given input (mixed) and returns the result.
     *
-    * @param string $input the input of the filter.
+    * @param mixed $input the input of the filter.
     *
-    * @return string The output of the filter.
+    * @return mixed The output of the filter.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 08.06.2007<br />
-    * Version 0.2, 08.12.2008 (Added the $filterInstruction argument)<br />
-    * Version 0.3, 18.07.2009 (Removed the $filterInstruction argument and refactored the filters)<br />
+    * Version 0.1, 06.11.2015<br />
     */
-   abstract public function filter($input);
+   public function filter($input);
 
 }

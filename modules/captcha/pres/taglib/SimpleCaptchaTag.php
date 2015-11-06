@@ -22,11 +22,12 @@ namespace APF\modules\captcha\pres\taglib;
 
 use APF\core\pagecontroller\XmlParser;
 use APF\modules\captcha\biz\actions\ShowCaptchaImageAction;
-use APF\tools\form\filter\AbstractFormFilter;
+use APF\tools\form\filter\FormFilter;
 use APF\tools\form\taglib\AbstractFormControl;
 use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\form\taglib\TextFieldTag;
 use APF\tools\form\validator\AbstractFormValidator;
+use APF\tools\form\validator\FormValidator;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 use APF\tools\string\StringAssistant;
@@ -68,13 +69,13 @@ class SimpleCaptchaTag extends AbstractFormControl {
     * Can be used to add the shipped validator or a custom one
     * directly within the form definition.
     *
-    * @param AbstractFormValidator $validator The desired validator.
+    * @param FormValidator $validator The desired validator.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 30.08.2009<br />
     */
-   public function addValidator(AbstractFormValidator &$validator) {
+   public function addValidator(FormValidator &$validator) {
       $this->textField->addValidator($validator);
    }
 
@@ -83,7 +84,7 @@ class SimpleCaptchaTag extends AbstractFormControl {
     * Can be used to add the shipped filter or a custom one
     * directly within the form definition.
     *
-    * @param AbstractFormFilter $filter The desired filter.
+    * @param FormFilter $filter The desired filter.
     *
     * @since 1.11
     *
@@ -91,7 +92,7 @@ class SimpleCaptchaTag extends AbstractFormControl {
     * @version
     * Version 0.1, 30.08.2009<br />
     */
-   public function addFilter(AbstractFormFilter &$filter) {
+   public function addFilter(FormFilter &$filter) {
       $this->textField->addFilter($filter);
    }
 

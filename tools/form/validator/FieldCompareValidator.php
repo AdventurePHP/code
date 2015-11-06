@@ -20,8 +20,8 @@
  */
 namespace APF\tools\form\validator;
 
+use APF\tools\form\FormControl;
 use APF\tools\form\FormException;
-use APF\tools\form\taglib\AbstractFormControl;
 
 /**
  * Implements a validator, that compares the content of two text fields. In
@@ -52,15 +52,37 @@ class FieldCompareValidator extends TextFieldValidator {
    /**
     * The reference form control.
     *
-    * @var AbstractFormControl $refControl
+    * @var FormControl $refControl
     */
    protected $refControl = null;
 
-   public function __construct(AbstractFormControl &$control, AbstractFormControl &$button, $type = null) {
-      $this->control = &$control;
-      $this->button = &$button;
-      $this->type = $type;
+   public function __construct(FormControl &$control, FormControl &$button, $type = null) {
+      parent::__construct($control, $button, $type);
       $this->initializeReferenceControl();
+   }
+
+   /**
+    * Initializes the reference control field for the validator. Takes
+    * care, that the main field specifies the "ref" attribute.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.09.2009<br />
+    */
+   private function initializeReferenceControl() {
+
+      $refControlName = $this->control->getAttribute('ref');
+      $form = &$this->control->getForm();
+      if ($refControlName === null) {
+         throw new FormException('[FieldCompareValidator::initializeReferenceControl()] The main field '
+               . 'definition does not include the "ref" attribute. This attribute must be specified '
+               . 'to tell the validator, which form control can be used as reference. Please '
+               . 'check taglib definition of control "' . $this->control->getAttribute('name') . '" '
+               . 'within form "' . $form->getAttribute('name') . '"!',
+               E_USER_ERROR);
+      }
+
+      $this->refControl = &$form->getFormElementByName($refControlName);
    }
 
    /**
@@ -98,30 +120,6 @@ class FieldCompareValidator extends TextFieldValidator {
       $this->markControl($this->refControl);
       $this->notifyValidationListeners($this->control);
       $this->notifyValidationListeners($this->refControl);
-   }
-
-   /**
-    * Initializes the reference control field for the validator. Takes
-    * care, that the main field specifies the "ref" attribute.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 12.09.2009<br />
-    */
-   private function initializeReferenceControl() {
-
-      $refControlName = $this->control->getAttribute('ref');
-      $form = &$this->control->getForm();
-      if ($refControlName === null) {
-         throw new FormException('[FieldCompareValidator::initializeReferenceControl()] The main field '
-               . 'definition does not include the "ref" attribute. This attribute must be specified '
-               . 'to tell the validator, which form control can be used as reference. Please '
-               . 'check taglib definition of control "' . $this->control->getAttribute('name') . '" '
-               . 'within form "' . $form->getAttribute('name') . '"!',
-               E_USER_ERROR);
-      }
-
-      $this->refControl = &$form->getFormElementByName($refControlName);
    }
 
 }

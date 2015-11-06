@@ -20,8 +20,8 @@
  */
 namespace APF\tools\form\validator;
 
+use APF\tools\form\FormControl;
 use APF\tools\form\provider\csrf\CSRFHashProvider;
-use APF\tools\form\taglib\AbstractFormControl;
 
 /**
  * Checks the csrf hash from the csrfhash field.
@@ -49,7 +49,7 @@ class CSRFHashValidator extends TextFieldValidator {
       $salt = $this->control->getAttribute('salt');
 
       /* @var $provider CSRFHashProvider */
-      $provider = & $this->getServiceObject($class);
+      $provider = &$this->getServiceObject($class);
       $hash = $provider->generateHash($salt);
 
       return $hash === $input;
@@ -59,13 +59,13 @@ class CSRFHashValidator extends TextFieldValidator {
     * Overwrites the maker method to have no interference with the "class"
     * attribute when loading the hash provider.
     *
-    * @param AbstractFormControl $control The control to mark.
+    * @param FormControl $control The control to mark.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.11.2010<br />
     */
-   protected function markControl(AbstractFormControl &$control) {
+   protected function markControl(FormControl &$control) {
    }
 
 }

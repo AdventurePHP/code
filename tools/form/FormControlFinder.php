@@ -20,8 +20,7 @@
  */
 namespace APF\tools\form;
 
-use APF\core\pagecontroller\LanguageLabelTag;
-use APF\tools\form\taglib\AbstractFormControl;
+use APF\core\pagecontroller\LanguageLabel;
 use APF\tools\form\taglib\DynamicFormElementMarkerTag;
 
 /**
@@ -38,7 +37,7 @@ interface FormControlFinder {
     *
     * @param string $id The ID of the desired form element.
     *
-    * @return AbstractFormControl A reference on the form element.
+    * @return FormControl A reference on the form element.
     * @throws FormException In case the form element cannot be found.
     *
     * @author Christian Schäfer
@@ -52,7 +51,7 @@ interface FormControlFinder {
     *
     * @param string $name The name of the form elements to collect (e.g. for radio buttons).
     *
-    * @return AbstractFormControl[] The list of form controls with the given name.
+    * @return FormControl[] The list of form controls with the given name.
     *
     * @author Christian Achatz
     * @version
@@ -65,7 +64,7 @@ interface FormControlFinder {
     *
     * @param string $tagName The tag name of the desired form element (e.g. "form:text").
     *
-    * @return AbstractFormControl[] A list of references on the form elements.
+    * @return FormControl[] A list of references on the form elements.
     * @throws FormException In case the form element cannot be found or desired tag is not registered.
     *
     * @author Christian Achatz
@@ -94,7 +93,7 @@ interface FormControlFinder {
     *
     * @param string $name The name of the desired form element.
     *
-    * @return AbstractFormControl A reference on the form element.
+    * @return FormControl A reference on the form element.
     * @throws FormException In case the form element cannot be found.
     *
     * @author Christian Schäfer
@@ -109,7 +108,7 @@ interface FormControlFinder {
     *
     * @param string $name The name of the form label to return.
     *
-    * @return LanguageLabelTag The instance of the desired label.
+    * @return LanguageLabel The instance of the desired label.
     * @throws FormException In case no label can be found.
     *
     * @author Christian Achatz

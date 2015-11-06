@@ -432,7 +432,7 @@ class DateSelectorTag extends AbstractFormControl {
     *
     * @param DateTime|string $value The date to set (e.g. DateTime or "2012-04-30").
     *
-    * @return AbstractFormControl This control for further usage.
+    * @return $this This control for further usage.
     *
     * @since 1.14
     *
@@ -440,7 +440,7 @@ class DateSelectorTag extends AbstractFormControl {
     * @version
     * Version 0.1, 26.07.2011<br />
     */
-   public function setValue($value) {
+   public function &setValue($value) {
       $this->setDate($value);
 
       return $this;

@@ -20,8 +20,9 @@
  */
 namespace APF\tools\form\taglib;
 
+use APF\tools\form\filter\FormFilter;
 use APF\tools\form\FormException;
-use APF\tools\form\validator\AbstractFormValidator;
+use APF\tools\form\validator\FormValidator;
 
 /**
  * Implements a base class for the <em>form:addfilter</em> and
@@ -63,11 +64,15 @@ abstract class FormControlObserverBase extends AbstractFormControl {
       return '';
    }
 
+   public function reset() {
+      // nothing to do as observer tags create no visible output
+   }
+
    /**
     * Constructs the desired form control observer using tag attributes.
     *
     * @@param string $injectionMethod The name of the method to inject the observer with.
-    * @return AbstractFormValidator The form control observer.
+    * @return FormValidator The form control observer.
     * @throws FormException In case mandatory attributes are missing.
     *
     * @author Christian Achatz
@@ -82,7 +87,7 @@ abstract class FormControlObserverBase extends AbstractFormControl {
       $class = $this->getAttribute('class');
 
       /* @var $parent HtmlFormTag */
-      $form = & $this->getForm();
+      $form = &$this->getForm();
 
       if (empty($controlDef) || empty($buttonName) || empty($class)) {
          $formName = $form->getAttribute('name');
@@ -101,8 +106,8 @@ abstract class FormControlObserverBase extends AbstractFormControl {
          $controlName = trim($controlName);
 
          // retrieve elements to pass to the validator and validate them
-         $control = & $form->getFormElementByName($controlName);
-         $button = & $form->getFormElementByName($buttonName);
+         $control = &$form->getFormElementByName($controlName);
+         $button = &$form->getFormElementByName($buttonName);
          $type = $this->getAttribute(self::$TYPE_ATTRIBUTE_NAME);
 
          if ($control === null || $button === null) {
@@ -115,7 +120,7 @@ abstract class FormControlObserverBase extends AbstractFormControl {
          // Construct observer injecting the control to validate and the button,
          // that triggers the event. As of 1.12, the type is presented to the
          // validator to enable special listener notification.
-         /* @var $observer AbstractFormValidator */
+         /* @var $observer FormValidator|FormFilter */
          $observer = new $class($control, $button, $type);
          $observer->setContext($this->context);
          $observer->setLanguage($this->language);
@@ -125,10 +130,6 @@ abstract class FormControlObserverBase extends AbstractFormControl {
 
       }
 
-   }
-
-   public function reset() {
-      // nothing to do as observer tags create no visible output
    }
 
 }

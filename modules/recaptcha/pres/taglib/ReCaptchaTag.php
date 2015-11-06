@@ -20,7 +20,7 @@
  */
 namespace APF\modules\recaptcha\pres\taglib;
 
-use APF\tools\form\filter\AbstractFormFilter;
+use APF\tools\form\filter\FormFilter;
 use APF\tools\form\FormException;
 use APF\tools\form\taglib\AbstractFormControl;
 use APF\tools\form\validator\AbstractFormValidator;
@@ -62,13 +62,13 @@ class ReCaptchaTag extends AbstractFormControl {
    /**
     * Overwrites the parent method since filtering is not necessary with the reCaptcha form.
     *
-    * @param AbstractFormFilter $filter The desired filter.
+    * @param FormFilter $filter The desired filter.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 22.09.2012<br />
     */
-   public function addFilter(AbstractFormFilter &$filter) {
+   public function addFilter(FormFilter &$filter) {
       // Ignore adding filters to the reCaptcha control. This is because
       // reCaptcha form controls are validated externally. Hence, there
       // is no need to filter input.

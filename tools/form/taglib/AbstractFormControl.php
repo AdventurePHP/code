@@ -21,11 +21,11 @@
 namespace APF\tools\form\taglib;
 
 use APF\core\pagecontroller\Document;
-use APF\tools\form\filter\AbstractFormFilter;
+use APF\tools\form\filter\FormFilter;
 use APF\tools\form\FormControl;
 use APF\tools\form\FormException;
 use APF\tools\form\HtmlForm;
-use APF\tools\form\validator\AbstractFormValidator;
+use APF\tools\form\validator\FormValidator;
 
 /**
  * Implements a base class for all APF form elements.
@@ -37,6 +37,7 @@ use APF\tools\form\validator\AbstractFormValidator;
  * Version 0.3, 07.12.2008 (Added the filter functionality, that let's you filter user input)<br />
  * Version 0.4, 07.07.2010 (Added event attributes defined in xhtml 1.0 strict)<br />
  * Version 0.5, 21.07.2010 (Added function for adding attributes to the controls white-list)<br />
+ * Version 0.6, 06.11.2015 (ID#273: extracted documentation to FormControl interface)<br />
  */
 abstract class AbstractFormControl extends Document implements FormControl {
 
@@ -81,14 +82,14 @@ abstract class AbstractFormControl extends Document implements FormControl {
    /**
     * The list of validators registered for the current control.
     *
-    * @var AbstractFormValidator[] $validators
+    * @var FormValidator[] $validators
     */
    protected $validators = [];
 
    /**
     * The list of validators registered for the current control.
     *
-    * @var AbstractFormFilter[] $filters
+    * @var FormFilter[] $filters
     */
    protected $filters = [];
 
@@ -160,18 +161,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
       }
    }
 
-   /**
-    * Convenience method to obtain the form a control is located in. Lays the foundation for
-    * recursive form structure and form group support.
-    *
-    * @return HtmlFormTag The desired form instance.
-    *
-    * @throws FormException In case no form can be found within the document tree.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 21.08.2014<br />
-    */
    public function &getForm() {
 
       $form = &$this->getParentObject();
@@ -192,63 +181,28 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return $form;
    }
 
-   /**
-    * Returns true in case the form is valid and false otherwise.
-    *
-    * @return boolean The validity status.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 25.08.2009<br />
-    */
    public function isValid() {
       return $this->controlIsValid;
    }
 
-   /**
-    * Allows you to mark this form control as invalid.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 25.08.2009<br />
-    */
-   public function markAsInvalid() {
+   public function &markAsInvalid() {
       $this->controlIsValid = false;
+
+      return $this;
    }
 
-   /**
-    * Allows you to mark this form control as valid (again).
-    *
-    * @since 1.17
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 05.01.2013<br />
-    */
-   public function markAsValid() {
+   public function &markAsValid() {
       $this->controlIsValid = true;
+
+      return $this;
    }
 
-   /**
-    * Marks a form as sent.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 27.09.2009<br />
-    */
-   public function markAsSent() {
+   public function &markAsSent() {
       $this->controlIsSent = true;
+
+      return $this;
    }
 
-   /**
-    * Returns the sending status of the form.
-    *
-    * @return boolean True in case the form was sent, false otherwise.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 27.09.2009<br />
-    */
    public function isSent() {
       return $this->controlIsSent;
    }
@@ -258,135 +212,55 @@ abstract class AbstractFormControl extends Document implements FormControl {
       $this->setAttribute('value', '');
    }
 
-   /**
-    * Let's you check, if a radio button was checked.
-    *
-    * @return boolean True in case the radio button is checked, false otherwise.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.08.2009<br />
-    */
    public function isChecked() {
       return $this->getAttribute('checked') == 'checked';
    }
 
-   /**
-    * Method for checking the checkbox.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.08.2009<br />
-    */
-   public function check() {
+   public function &check() {
       $this->setAttribute('checked', 'checked');
+
+      return $this;
    }
 
-   /**
-    * Method for un-checking the checkbox.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.08.2009<br />
-    */
-   public function uncheck() {
+   public function &uncheck() {
       $this->deleteAttribute('checked');
+
+      return $this;
    }
 
-   /**
-    * Disables a form control for usage.
-    *
-    * @see http://www.w3.org/TR/html401/interact/forms.html#h-17.12
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 13.02.2010<br />
-    */
-   public function disable() {
+   public function &disable() {
       $this->setAttribute('disabled', 'disabled');
+
+      return $this;
    }
 
-   /**
-    * Enables a form control for user access.
-    *
-    * @see http://www.w3.org/TR/html401/interact/forms.html#h-17.12
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 13.02.2010<br />
-    */
-   public function enable() {
+   public function &enable() {
       $this->deleteAttribute('disabled');
+
+      return $this;
    }
 
-   /**
-    * Let's you query the user access status.
-    *
-    * @see http://www.w3.org/TR/html401/interact/forms.html#h-17.12
-    *
-    * @return bool True in case the control is read only, false otherwise.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 13.02.2010<br />
-    */
    public function isDisabled() {
       return $this->getAttribute('disabled') == 'disabled';
    }
 
-   /**
-    * Sets a form control to read only.
-    *
-    * @see http://www.w3.org/TR/html401/interact/forms.html#h-17.12
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 13.02.2010<br />
-    */
-   public function setReadOnly() {
+   public function &setReadOnly() {
       $this->setAttribute('readonly', 'readonly');
+
+      return $this;
    }
 
-   /**
-    * Enables a form control for write access.
-    *
-    * @see http://www.w3.org/TR/html401/interact/forms.html#h-17.12
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 13.02.2010<br />
-    */
-   public function setReadWrite() {
+   public function &setReadWrite() {
       $this->deleteAttribute('readonly');
+
+      return $this;
    }
 
-   /**
-    * Let's you query the read only status.
-    *
-    * @see http://www.w3.org/TR/html401/interact/forms.html#h-17.12
-    *
-    * @return bool True in case the control is read only, false otherwise.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 13.02.2010<br />
-    */
    public function isReadOnly() {
       return $this->getAttribute('readonly') == 'readonly';
    }
 
-   /**
-    * Applies the given filter to the present input element.
-    *
-    * @param AbstractFormFilter $filter The desired filter.
-    *
-    * @since 1.11
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 24.08.2009<br />
-    * Version 0.2, 27.03.2014 (Filters are now collected internally to allow retrieval for e.g. client validation rule generation. See ID#166.)<br />
-    */
-   public function addFilter(AbstractFormFilter &$filter) {
+   public function addFilter(FormFilter &$filter) {
 
       // ID#166: register filter for further usage.
       $this->filters[] = $filter;
@@ -400,58 +274,17 @@ abstract class AbstractFormControl extends Document implements FormControl {
       }
    }
 
-   /**
-    * Returns the value of the form control. Does not always return the 'value'
-    * attribute. This returns the attribute/content which contains the user input.
-    * (For example text areas store the input in the content, not in the value
-    * attribute)
-    *
-    * @return string The current value or content of the control.
-    *
-    * @since 1.14
-    *
-    * @author Ralf Schubert
-    * @version
-    * Version 0.1, 26.07.2011<br />
-    */
    public function getValue() {
       return $this->getAttribute('value', '');
    }
 
-   /**
-    * Set's the value of the form control. Should not always set the 'value'
-    * attribute. This set's the same attribute/content as the user would type it.
-    *
-    * @param string $value The value to set.
-    *
-    * @return AbstractFormControl This instance for further usage.
-    *
-    * @since 1.14
-    *
-    * @author Ralf Schubert
-    * @version
-    * Version 0.1, 26.07.2011<br />
-    */
-   public function setValue($value) {
+   public function &setValue($value) {
       $this->setAttribute('value', $value);
 
       return $this;
    }
 
-   /**
-    * Executes the given form validator in context of the current form element.
-    *
-    * @param AbstractFormValidator $validator The desired validator.
-    *
-    * @since 1.11
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 24.08.2009<br />
-    * Version 0.2, 01.11.2010 (Added support for optional validators)<br />
-    * Version 0.3, 27.03.2014 (Filters are now collected internally to allow retrieval for e.g. client validation rule generation. See ID#166.)<br />
-    * Version 0.4, 05.09.2014 (ID#233: Added support to omit validators for hidden fields)<br />
-    */
-   public function addValidator(AbstractFormValidator &$validator) {
+   public function addValidator(FormValidator &$validator) {
 
       // ID#166: register validator for further usage.
       $this->validators[] = $validator;
@@ -492,73 +325,30 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return true;
    }
 
-   /**
-    * Returns the current control's visibility status.
-    *
-    * @return bool True in case the control is visible, false otherwise.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 16.12.2012<br />
-    */
    public function isVisible() {
       return $this->isVisible;
    }
 
-   /**
-    * Adds an additional attribute to the white list of the control.
-    *
-    * @param string $name The attribute which should be added to the white list.
-    *
-    * @since 1.13
-    * @author Ralf Schubert
-    * @version
-    * Version 0.1, 21.07.2010<br />
-    */
-   public function addAttributeToWhitelist($name) {
+   public function &addAttributeToWhiteList($name) {
       $this->attributeWhiteList[] = $name;
    }
 
-   /**
-    * Savely appends a css class. Resolves missing attribute.
-    *
-    * @param string $class The css class to append.
-    *
-    * @since 1.14
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 03.02.2010<br />
-    */
-   public function appendCssClass($class) {
-      $this->addAttribute('class', $class, ' ');
+   public function &addAttributesToWhiteList(array $names) {
+      $this->attributeWhiteList = array_merge($this->attributeWhiteList, $names);
+
+      return $this;
    }
 
-   /**
-    * Let's check if the form:text or form:area was filled with content.
-    *
-    * @return bool True in case the control is filled, false otherwise.
-    *
-    * @since 1.15
-    *
-    * @author dave
-    * @version
-    * Version 0.1, 20.09.2011<br />
-    */
+   public function &appendCssClass($class) {
+      $this->addAttribute('class', $class, ' ');
+
+      return $this;
+   }
+
    public function isFilled() {
       return false;
    }
 
-   /**
-    * Let's check if something was selected in form:select or form:multiselect.
-    *
-    * @return bool True in case the control is selected, false otherwise.
-    * @since 1.15
-    *
-    * @author dave
-    * @version
-    * Version 0.1, 22.09.2011<br />
-    */
    public function isSelected() {
       return false;
    }
@@ -581,7 +371,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * <p/>
     * The dependent control feature can be used to hide/show controls together with their labels etc.
     *
-    * @return AbstractFormControl[] The list of controls referred to by the <em>dependent-controls</em> tag attribute.
+    * @return FormControl[] The list of controls referred to by the <em>dependent-controls</em> tag attribute.
     *
     * @author Christian Achatz
     * @version
@@ -618,33 +408,10 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return $this;
    }
 
-   /**
-    * Allows you to retrieve all registered validators for this form control added within this form
-    * instance. May be used to generate client-side validation rules.
-    *
-    * @return AbstractFormValidator[] The validators registered for the current control.
-    *
-    * @since 2.1
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 27.03.2014 (see ID#166)<br />
-    */
    public function getValidators() {
       return $this->validators;
    }
 
-   /**
-    * Allows you to retrieve all registered filters for this form control registered within this form
-    * instance. May be used to generate client-side validation rules.
-    *
-    * @return AbstractFormFilter[] The filters registered for the current control.
-    *
-    * @since 2.1
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 27.03.2014 (see ID#166)<br />
-    */
    public function getFilters() {
       return $this->filters;
    }

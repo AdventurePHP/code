@@ -170,23 +170,68 @@ class TimeSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * Returns the id of the time element. In case the developer does not
-    * provide the <em>id</em> attribute within the tag definition, the
-    * <em>name</em> attribute is used instead.
-    *
-    * @return string The id to display within the HTML tag.
+    * Initializes the hours range to display.
     *
     * @author Werner Liemberger
     * @version
     * Version 0.1, 21.2.2011<br />
     */
-   private function getId() {
-      $id = $this->getAttribute('id');
-      if ($id === null) {
-         return $this->getAttribute('name');
-      }
+   protected function initHoursRange() {
 
-      return $id;
+      // read the range for the hours select box
+      if (isset($this->attributes['hoursrange'])) {
+
+         $hoursRange = explode('-', $this->attributes['hoursrange']);
+
+         if (count($hoursRange) == 2) {
+            $this->hoursRange['Start'] = trim($this->appendZero($hoursRange[0]));
+            $this->hoursRange['End'] = trim($this->appendZero($hoursRange[1]));
+         }
+      }
+   }
+
+   /**
+    * Appends a zero for hours, minutes or seconds numbers without leading zeros.
+    *
+    * @param int $input The hour, minute or second number.
+    *
+    * @return string Hour, minute or second number with leading zero.
+    *
+    * @author Werner Liemberger
+    * @version
+    * Version 0.1, 21.2.2011<br />
+    */
+   protected function appendZero($input) {
+      return sprintf('%02s', $input);
+   }
+
+   /**
+    * Initializes the offset names of the fields.
+    *
+    * @author Werner Liemberger
+    * @version
+    * Version 0.1, 21.2.2011<br />
+    */
+   protected function initOffsetNames() {
+
+      if (isset($this->attributes['offsetnames'])) {
+
+         $offsetNames = explode(';', $this->attributes['offsetnames']);
+
+         if (count($offsetNames) == 3) {
+            $this->offsetNames = [
+                  'Hours'   => $offsetNames[0],
+                  'Minutes' => $offsetNames[1],
+                  'Seconds' => $offsetNames[2]
+            ];
+         }
+         if (count($offsetNames) == 2) {
+            $this->offsetNames = [
+                  'Hours'   => $offsetNames[0],
+                  'Minutes' => $offsetNames[1]
+            ];
+         }
+      }
    }
 
    /**
@@ -228,6 +273,41 @@ class TimeSelectorTag extends AbstractFormControl {
    }
 
    /**
+    * Returns the id of the time element. In case the developer does not
+    * provide the <em>id</em> attribute within the tag definition, the
+    * <em>name</em> attribute is used instead.
+    *
+    * @return string The id to display within the HTML tag.
+    *
+    * @author Werner Liemberger
+    * @version
+    * Version 0.1, 21.2.2011<br />
+    */
+   private function getId() {
+      $id = $this->getAttribute('id');
+      if ($id === null) {
+         return $this->getAttribute('name');
+      }
+
+      return $id;
+   }
+
+   /**
+    * Re-implements the retrieving of values for time controls
+    *
+    * @return DateTime The current value of the control.
+    *
+    * @since 1.14
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 26.07.2011<br />
+    */
+   public function getValue() {
+      return $this->getTime();
+   }
+
+   /**
     * Returns the time with the pattern HH:MM:SS or if ShowSeconds is false with HH:MM
     *
     * @return DateTime DateTime instance with pattern HH:MM:SS or if showSeconds is false with HH:MM.
@@ -258,34 +338,6 @@ class TimeSelectorTag extends AbstractFormControl {
          }
 
          return DateTime::createFromFormat('H:i:s', $hours->getValue() . ':' . $minutes->getValue() . ':' . $seconds->getValue());
-      }
-   }
-
-   /**
-    * Allows you to initialize the time control with a given time (e.g. "08:31" or "08:31:20" or "2011-02-21 08:31:00").
-    *
-    * @param string $time The time to initialize the control with.
-    *
-    * @throws FormException In case of date parsing errors.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 16.06.2010<br />
-    */
-   public function setTime($time) {
-
-      if (!($time instanceof DateTime)) {
-         if ($this->showSeconds === false) {
-            $time = DateTime::createFromFormat('H:i', $time);
-         } else {
-            $time = DateTime::createFromFormat('H:i:s', $time);
-         }
-      }
-
-      $this->getHoursControl()->setOption2Selected($this->appendZero($time->format('H')));
-      $this->getMinutesControl()->setOption2Selected($this->appendZero($time->format('i')));
-      if ($this->showSeconds !== false) {
-         $this->getSecondsControl()->setOption2Selected($time->format('s'));
       }
    }
 
@@ -329,91 +381,11 @@ class TimeSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * Initializes the hours range to display.
-    *
-    * @author Werner Liemberger
-    * @version
-    * Version 0.1, 21.2.2011<br />
-    */
-   protected function initHoursRange() {
-
-      // read the range for the hours select box
-      if (isset($this->attributes['hoursrange'])) {
-
-         $hoursRange = explode('-', $this->attributes['hoursrange']);
-
-         if (count($hoursRange) == 2) {
-            $this->hoursRange['Start'] = trim($this->appendZero($hoursRange[0]));
-            $this->hoursRange['End'] = trim($this->appendZero($hoursRange[1]));
-         }
-      }
-   }
-
-   /**
-    * Initializes the offset names of the fields.
-    *
-    * @author Werner Liemberger
-    * @version
-    * Version 0.1, 21.2.2011<br />
-    */
-   protected function initOffsetNames() {
-
-      if (isset($this->attributes['offsetnames'])) {
-
-         $offsetNames = explode(';', $this->attributes['offsetnames']);
-
-         if (count($offsetNames) == 3) {
-            $this->offsetNames = [
-                  'Hours'   => $offsetNames[0],
-                  'Minutes' => $offsetNames[1],
-                  'Seconds' => $offsetNames[2]
-            ];
-         }
-         if (count($offsetNames) == 2) {
-            $this->offsetNames = [
-                  'Hours'   => $offsetNames[0],
-                  'Minutes' => $offsetNames[1]
-            ];
-         }
-      }
-   }
-
-   /**
-    * Appends a zero for hours, minutes or seconds numbers without leading zeros.
-    *
-    * @param int $input The hour, minute or second number.
-    *
-    * @return string Hour, minute or second number with leading zero.
-    *
-    * @author Werner Liemberger
-    * @version
-    * Version 0.1, 21.2.2011<br />
-    */
-   protected function appendZero($input) {
-      return sprintf('%02s', $input);
-   }
-
-   /**
-    * Re-implements the retrieving of values for time controls
-    *
-    * @return DateTime The current value of the control.
-    *
-    * @since 1.14
-    *
-    * @author Ralf Schubert
-    * @version
-    * Version 0.1, 26.07.2011<br />
-    */
-   public function getValue() {
-      return $this->getTime();
-   }
-
-   /**
     * Re-implements the setting of values for time controls
     *
     * @param DateTime|string $value The time value to set.
     *
-    * @return AbstractFormControl
+    * @return $this This instance for further usage.
     *
     * @since 1.14
     *
@@ -421,10 +393,38 @@ class TimeSelectorTag extends AbstractFormControl {
     * @version
     * Version 0.1, 26.07.2011<br />
     */
-   public function setValue($value) {
+   public function &setValue($value) {
       $this->setTime($value);
 
       return $this;
+   }
+
+   /**
+    * Allows you to initialize the time control with a given time (e.g. "08:31" or "08:31:20" or "2011-02-21 08:31:00").
+    *
+    * @param string $time The time to initialize the control with.
+    *
+    * @throws FormException In case of date parsing errors.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 16.06.2010<br />
+    */
+   public function setTime($time) {
+
+      if (!($time instanceof DateTime)) {
+         if ($this->showSeconds === false) {
+            $time = DateTime::createFromFormat('H:i', $time);
+         } else {
+            $time = DateTime::createFromFormat('H:i:s', $time);
+         }
+      }
+
+      $this->getHoursControl()->setOption2Selected($this->appendZero($time->format('H')));
+      $this->getMinutesControl()->setOption2Selected($this->appendZero($time->format('i')));
+      if ($this->showSeconds !== false) {
+         $this->getSecondsControl()->setOption2Selected($time->format('s'));
+      }
    }
 
    public function reset() {

@@ -40,7 +40,7 @@ namespace APF\tools\form;
  * Version 1.1, 30.12.2009 (Added the form:success tag)<br />
  * Version 1.2, 15.12.2012 (Separated from form_control and refactored tag naming to 1.16 concept)<br />
  */
-interface HtmlForm extends FormControlFinder, FormControl {
+interface HtmlForm extends FormControlFinder, FormElement {
 
    const METHOD_ATTRIBUTE_NAME = 'method';
    const METHOD_POST_VALUE_NAME = 'post';

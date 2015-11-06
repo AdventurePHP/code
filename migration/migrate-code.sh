@@ -27,6 +27,10 @@ echo "Starting migration ..."
 echo "* Migrate request and response obtaining ..."
 $PHP_BINARY $PHP_SCRIPT_DIR/migrate_request_response_access.php
 
+# migrate method signature
+echo "* Migrate method signature ..."
+$PHP_BINARY $PHP_SCRIPT_DIR/migrate_method_signature.php
+
 echo
 echo "#############################################"
 echo

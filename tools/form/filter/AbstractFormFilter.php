@@ -20,8 +20,8 @@
  */
 namespace APF\tools\form\filter;
 
-use APF\core\filter\AbstractFilter;
-use APF\tools\form\taglib\AbstractFormControl;
+use APF\core\pagecontroller\APFObject;
+use APF\tools\form\FormControl;
 
 /**
  * Defines the base class for all form filters. In case you want to implement your
@@ -31,13 +31,14 @@ use APF\tools\form\taglib\AbstractFormControl;
  * @version
  * Version 0.1, 17.07.2009 (Implemented a form filter base class because of the PHP bug 48804)<br />
  * Version 0.2, 25.08.2009 (Refactored due to new form taglib concept)<br />
+ * Version 0.3, 06.11.2015 (ID#273: introduced interface)<br />
  */
-abstract class AbstractFormFilter extends AbstractFilter {
+abstract class AbstractFormFilter extends APFObject implements FormFilter {
 
    /**
     * Includes a reference on the control to filter.
     *
-    * @var AbstractFormControl $control
+    * @var FormControl $control
     */
    protected $control;
 
@@ -45,34 +46,15 @@ abstract class AbstractFormFilter extends AbstractFilter {
     * Includes a reference on the button of the form,
     * that initiates the validation event.
     *
-    * @var AbstractFormControl $button
+    * @var FormControl $button
     */
    protected $button;
 
-   /**
-    * Injects the control to validate and the trigger button into the filter.
-    *
-    * @param AbstractFormControl $control The control, that should be validated.
-    * @param AbstractFormControl $button The button, that triggers the validate event.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 28.08.2009<br />
-    */
-   public function __construct(AbstractFormControl &$control, AbstractFormControl &$button) {
-      $this->control = & $control;
-      $this->button = & $button;
+   public function __construct(FormControl &$control, FormControl &$button) {
+      $this->control = &$control;
+      $this->button = &$button;
    }
 
-   /**
-    * Indicates, whether the control should be filtered or not.
-    *
-    * @return boolean True, in case the filter should be executes, in all other cases: false.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 28.08.2009<br />
-    */
    public function isActive() {
       return $this->button->isSent();
    }

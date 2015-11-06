@@ -20,7 +20,7 @@
  */
 namespace APF\tools\form\validator;
 
-use APF\tools\form\taglib\AbstractFormControl;
+use APF\tools\form\FormControl;
 use APF\tools\form\taglib\ValidationListenerTag;
 
 /**
@@ -46,6 +46,47 @@ abstract class TextFieldValidator extends AbstractFormValidator {
    }
 
    /**
+    * Marks a form control als invalid using a css class. See
+    * http://wiki.adventure-php-framework.org/Weiterentwicklung_Formular-Validierung
+    * for details.
+    *
+    * @param FormControl $control The control to mark as invalid.
+    *
+    * @since 1.12
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 03.02.2010<br />
+    * Version 0.2, 07.03.2011 (use control's appendCssClass() now)<br />
+    */
+   protected function markControl(FormControl &$control) {
+      $marker = $this->getCssMarkerClass($control);
+      $control->appendCssClass($marker);
+   }
+
+   /**
+    * Evaluates the css class used to mark an invalid form control.
+    *
+    * @param FormControl $control The control to validate.
+    *
+    * @return string The css marker class for validation notification.
+    *
+    * @since 1.12
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 06.02.2010<br />
+    */
+   protected function getCssMarkerClass(FormControl &$control) {
+      $marker = $control->getAttribute(self::$CUSTOM_MARKER_CLASS_ATTRIBUTE);
+      if (empty($marker)) {
+         $marker = self::$DEFAULT_MARKER_CLASS;
+      }
+
+      return $marker;
+   }
+
+   /**
     * Notifies all validation listeners, who's control attribute is the same
     * as the name of the present control. This enables you to insert listener
     * tags, that output special content if notified. Hence, you can realize
@@ -56,19 +97,19 @@ abstract class TextFieldValidator extends AbstractFormValidator {
     * specified. This lets you define dedicated listener, that are only
     * displayed when triggered by a special validator.
     *
-    * @param AbstractFormControl $control The control who's listeners should be notified.
+    * @param FormControl $control The control who's listeners should be notified.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 30.08.2009<br />
     * Version 0.2, 12.02.2010 (Moved to TextFieldValidator and introduced special listener notification)<br />
     */
-   protected function notifyValidationListeners(&$control) {
+   protected function notifyValidationListeners(FormControl &$control) {
 
       $form = &$control->getForm();
 
       /* @var $listeners ValidationListenerTag[] */
-      $listeners = & $form->getFormElementsByTagName('form:listener');
+      $listeners = &$form->getFormElementsByTagName('form:listener');
       $count = count($listeners);
       $controlName = $control->getAttribute('name');
       $validatorName = $this->getValidatorName();
@@ -102,47 +143,6 @@ abstract class TextFieldValidator extends AbstractFormValidator {
       }
 
       return null;
-   }
-
-   /**
-    * Marks a form control als invalid using a css class. See
-    * http://wiki.adventure-php-framework.org/Weiterentwicklung_Formular-Validierung
-    * for details.
-    *
-    * @param AbstractFormControl $control The control to mark as invalid.
-    *
-    * @since 1.12
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 03.02.2010<br />
-    * Version 0.2, 07.03.2011 (use control's appendCssClass() now)<br />
-    */
-   protected function markControl(AbstractFormControl &$control) {
-      $marker = $this->getCssMarkerClass($control);
-      $control->appendCssClass($marker);
-   }
-
-   /**
-    * Evaluates the css class used to mark an invalid form control.
-    *
-    * @param AbstractFormControl $control The control to validate.
-    *
-    * @return string The css marker class for validation notification.
-    *
-    * @since 1.12
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 06.02.2010<br />
-    */
-   protected function getCssMarkerClass(AbstractFormControl &$control) {
-      $marker = $control->getAttribute(self::$CUSTOM_MARKER_CLASS_ATTRIBUTE);
-      if (empty($marker)) {
-         $marker = self::$DEFAULT_MARKER_CLASS;
-      }
-
-      return $marker;
    }
 
 }

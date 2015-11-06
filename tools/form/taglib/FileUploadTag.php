@@ -35,11 +35,8 @@ use APF\tools\form\model\FileModel;
 class FileUploadTag extends TextFieldTag {
 
    public function __construct() {
-      $this->attributeWhiteList[] = 'name';
+      parent::__construct();
       $this->attributeWhiteList[] = 'accesskey';
-      $this->attributeWhiteList[] = 'disabled';
-      $this->attributeWhiteList[] = 'readonly';
-      $this->attributeWhiteList[] = 'tabindex';
       $this->attributeWhiteList[] = 'accept';
       $this->attributeWhiteList[] = 'multiple';
    }

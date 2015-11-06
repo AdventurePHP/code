@@ -59,20 +59,6 @@ class TextAreaTag extends AbstractFormControl {
    }
 
    /**
-    * Implements the presetting method for the text area.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 13.01.2007<br />
-    */
-   protected function presetValue() {
-      $value = $this->getRequest()->getParameter($this->getAttribute('name'));
-      if ($value !== null) {
-         $this->content = $value;
-      }
-   }
-
-   /**
     * Re-implements the retrieving of values for text area, because
     * the text area contains it's value in the content, not in an
     * attribute.
@@ -96,7 +82,7 @@ class TextAreaTag extends AbstractFormControl {
     *
     * @param string $value
     *
-    * @return AbstractFormControl
+    * @return $this This instance for further usage.
     *
     * @since 1.14
     *
@@ -104,7 +90,7 @@ class TextAreaTag extends AbstractFormControl {
     * @version
     * Version 0.1, 26.07.2011<br />
     */
-   public function setValue($value) {
+   public function &setValue($value) {
       $this->content = $value;
 
       return $this;
@@ -127,6 +113,20 @@ class TextAreaTag extends AbstractFormControl {
 
    public function reset() {
       $this->content = null;
+   }
+
+   /**
+    * Implements the presetting method for the text area.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 13.01.2007<br />
+    */
+   protected function presetValue() {
+      $value = $this->getRequest()->getParameter($this->getAttribute('name'));
+      if ($value !== null) {
+         $this->content = $value;
+      }
    }
 
 }

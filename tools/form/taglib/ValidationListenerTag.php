@@ -29,7 +29,7 @@ namespace APF\tools\form\taglib;
  * $this->control->notifyValidatorListeners();
  * </pre>
  * within the <code>notify()</code> method of the
- * <code>AbstractFormValidator</code> implementation. The definition of
+ * <code>FormValidator</code> implementation. The definition of
  * the tag is as follows:
  * <pre>
  * &lt;form:listener control="..."&gt;

@@ -21,7 +21,7 @@
 namespace APF\tools\form\taglib;
 
 use APF\tools\form\mixin\AddSelectBoxEntry;
-use APF\tools\form\validator\AbstractFormValidator;
+use APF\tools\form\validator\FormValidator;
 
 /**
  * Represents an APF select field.
@@ -357,7 +357,7 @@ class SelectBoxTag extends AbstractFormControl {
    /**
     * Re-implements the addValidator() method for select fields.
     *
-    * @param AbstractFormValidator $validator The desired validator.
+    * @param FormValidator $validator The desired validator.
     *
     * @since 1.11
     *
@@ -366,7 +366,7 @@ class SelectBoxTag extends AbstractFormControl {
     * Version 0.1, 29.08.2009<br />
     * Version 0.2, 05.09.2014 (ID#233: Added support to omit validators for hidden fields)<br />
     */
-   public function addValidator(AbstractFormValidator &$validator) {
+   public function addValidator(FormValidator &$validator) {
 
       // ID#166: register validator for further usage.
       $this->validators[] = $validator;
@@ -461,7 +461,7 @@ class SelectBoxTag extends AbstractFormControl {
     * @version
     * Version 0.1, 26.07.2011<br />
     */
-   public function setValue($value) {
+   public function &setValue($value) {
       $this->setOption2Selected($value);
 
       return $this;
