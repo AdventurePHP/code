@@ -616,7 +616,7 @@ class UmgtManager extends APFObject {
                  INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
                  WHERE
                      ent_application.ApplicationID = \'' . $this->applicationId . '\'
-                     AND `DisplayName` = \'' . $displayName . '\';';
+                     AND ent_user.DisplayName = \'' . $displayName . '\';';
 
       return $orm->loadObjectByTextStatement('User', $select);
    }
