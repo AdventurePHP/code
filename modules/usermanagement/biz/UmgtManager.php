@@ -611,7 +611,7 @@ class UmgtManager extends APFObject {
       $displayName = $dbDriver->escapeValue($displayName);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user`
+      $select = 'SELECT ent_user.* FROM `ent_user`
                  INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
                  INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
                  WHERE
@@ -667,7 +667,7 @@ class UmgtManager extends APFObject {
       $firstName = $dbDriver->escapeValue($firstName);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user`
+      $select = 'SELECT ent_user.* FROM `ent_user`
                  INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
                  INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
                  WHERE
@@ -702,7 +702,7 @@ class UmgtManager extends APFObject {
       $lastName = $dbDriver->escapeValue($lastName);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user`
+      $select = 'SELECT ent_user.* FROM `ent_user`
                  INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
                  INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
                  WHERE
@@ -737,7 +737,7 @@ class UmgtManager extends APFObject {
       $email = $dbDriver->escapeValue($email);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user`
+      $select = 'SELECT ent_user.* FROM `ent_user`
                  INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
                  INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
                  WHERE
@@ -777,7 +777,7 @@ class UmgtManager extends APFObject {
       $lastName = $dbDriver->escapeValue($lastName);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user`
+      $select = 'SELECT ent_user.* FROM `ent_user`
                  INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
                  INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
                  WHERE
@@ -813,7 +813,7 @@ class UmgtManager extends APFObject {
       $username = $dbDriver->escapeValue($username);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user`
+      $select = 'SELECT ent_user.* FROM `ent_user`
                  INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
                  INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
                  WHERE
