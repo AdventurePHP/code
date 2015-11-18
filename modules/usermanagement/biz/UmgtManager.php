@@ -465,7 +465,7 @@ class UmgtManager extends APFObject {
       $username = $dbDriver->escapeValue($username);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user`
+      $select = 'SELECT ent_user.* FROM `ent_user`
                  INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
                  INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
                  WHERE
@@ -724,7 +724,7 @@ class UmgtManager extends APFObject {
       $firstName = $dbDriver->escapeValue($firstName);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user`
+      $select = 'SELECT ent_user.* FROM `ent_user`
                  INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
                  INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
                  WHERE
@@ -759,12 +759,47 @@ class UmgtManager extends APFObject {
       $lastName = $dbDriver->escapeValue($lastName);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user`
+      $select = 'SELECT ent_user.* FROM `ent_user`
                  INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
                  INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
                  WHERE
                      ent_application.ApplicationID = \'' . $this->applicationId . '\'
                      AND `LastName` = \'' . $lastName . '\';';
+
+      return $orm->loadObjectByTextStatement('User', $select);
+
+   }
+
+   /**
+    * Loads a user object by a given email.
+    *
+    * @param string $email The email of the user to load.
+    *
+    * @return UmgtUser The user domain object or null.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 23.06.2009<br />
+    */
+   public function loadUserByEMail($email) {
+
+      $orm = &$this->getORMapper();
+
+      if (UserFieldEncryptionProvider::propertyHasEncryptionEnabled('EMail')) {
+         $email = UserFieldEncryptionProvider::encrypt($email);
+      }
+
+      // escape the input values
+      $dbDriver = &$orm->getDbDriver();
+      $email = $dbDriver->escapeValue($email);
+
+      // create the statement and select user
+      $select = 'SELECT ent_user.* FROM `ent_user`
+                 INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
+                 INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
+                 WHERE
+                     ent_application.ApplicationID = \'' . $this->applicationId . '\'
+                     AND `EMail` = \'' . $email . '\';';
 
       return $orm->loadObjectByTextStatement('User', $select);
 
@@ -799,13 +834,48 @@ class UmgtManager extends APFObject {
       $lastName = $dbDriver->escapeValue($lastName);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user`
+      $select = 'SELECT ent_user.* FROM `ent_user`
                  INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
                  INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
                  WHERE
                      ent_application.ApplicationID = \'' . $this->applicationId . '\'
                      AND `FirstName` = \'' . $firstName . '\'
                      AND `LastName` = \'' . $lastName . '\';';
+
+      return $orm->loadObjectByTextStatement('User', $select);
+
+   }
+
+   /**
+    * Loads a user object by a user name.
+    *
+    * @param string $username The user name of the user to load.
+    *
+    * @return UmgtUser The user domain object or null.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 23.06.2009<br />
+    */
+   public function loadUserByUserName($username) {
+
+      $orm = &$this->getORMapper();
+
+      if (UserFieldEncryptionProvider::propertyHasEncryptionEnabled('Username')) {
+         $username = UserFieldEncryptionProvider::encrypt($username);
+      }
+
+      // escape the input values
+      $dbDriver = &$orm->getDbDriver();
+      $username = $dbDriver->escapeValue($username);
+
+      // create the statement and select user
+      $select = 'SELECT ent_user.* FROM `ent_user`
+                 INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
+                 INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
+                 WHERE
+                     ent_application.ApplicationID = \'' . $this->applicationId . '\'
+                     AND `Username` = \'' . $username . '\';';
 
       return $orm->loadObjectByTextStatement('User', $select);
 
