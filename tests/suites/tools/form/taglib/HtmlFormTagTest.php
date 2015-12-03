@@ -23,6 +23,7 @@ namespace APF\tests\suites\tools\form\taglib;
 use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\LanguageLabel;
 use APF\core\pagecontroller\XmlParser;
+use APF\tests\suites\tools\form\mock\TextFieldTagMock;
 use APF\tools\form\FormException;
 use APF\tools\form\taglib\ButtonTag;
 use APF\tools\form\taglib\FormGroupTag;
@@ -31,6 +32,7 @@ use APF\tools\form\taglib\RadioButtonTag;
 use APF\tools\form\taglib\SelectBoxTag;
 use APF\tools\form\taglib\TextFieldTag;
 use PHPUnit_Framework_MockObject_MockObject;
+use ReflectionMethod;
 use ReflectionProperty;
 
 class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
@@ -564,6 +566,58 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
             ->with('foo');
 
       $form->getMarker('foo');
+
+   }
+
+   /**
+    * Checks whether form control creation complies with APF DomNode creation.
+    */
+   public function testCreateFormElement() {
+
+      $name = 'foo';
+      $context = 'bar';
+      $language = 'en';
+
+      $form = new HtmlFormTag();
+      $form->setContext($context);
+      $form->setLanguage($language);
+
+      // register mock implementation to allow check of method execution
+      Document::addTagLib(TextFieldTagMock::class, 'test', 'text');
+
+      $method = new ReflectionMethod(HtmlFormTag::class, 'createFormElement');
+      $method->setAccessible(true);
+
+      // note: arguments to be passed ad reference MUST be explicitly referenced with &
+      $actual = $method->invokeArgs($form, [&$form, 'test:text', ['name' => $name, 'class' => 'text-field']]);
+
+      /* @var $field TextFieldTagMock */
+      $field = $form->getFormElementByName($name);
+      $objectId = $field->getObjectId();
+
+      // check identity to ensure references are returned
+      $this->assertEquals(spl_object_hash($actual), spl_object_hash($field));
+
+      // test element creation as part of the applied DomNode instance
+      $this->assertInstanceOf(TextFieldTag::class, $field);
+
+      // test object id, attributes, context language,
+      $this->assertNotNull($objectId);
+      $this->assertEquals($name, $field->getAttribute('name'));
+      $this->assertEquals($context, $field->getContext());
+      $this->assertEquals($language, $field->getLanguage());
+
+      // check whether parent object is initialized (form)
+      $this->assertEquals($form, $field->getParentObject());
+
+      // check whether onParseTime() and onAfterAppend() are called
+      $this->assertTrue($field->onParseTimeExecuted);
+      $this->assertTrue($field->onAfterAppendExecuted);
+
+      // check if internal array structure is valid
+      $children = $form->getChildren();
+      $this->assertNotEmpty($children);
+      $this->assertContains($objectId, array_keys($children));
 
    }
 

@@ -224,23 +224,26 @@ class HtmlFormTag extends Document implements HtmlForm {
       $objectId = XmlParser::generateUniqID();
 
       // create new form element
-      $parent->children[$objectId] = new $class();
-      /* @var $formControl AbstractFormControl */
+      /* @var FormControl $child */
+      $child = new $class();
 
       // add standard and user defined attributes
-      $parent->children[$objectId]->setObjectId($objectId);
-      $parent->children[$objectId]->setLanguage($this->getLanguage());
-      $parent->children[$objectId]->setContext($this->getContext());
-      $parent->children[$objectId]->setAttributes($elementAttributes);
+      $child->setObjectId($objectId);
+      $child->setLanguage($this->getLanguage());
+      $child->setContext($this->getContext());
+      $child->setAttributes($elementAttributes);
 
       // add form element to DOM tree and call the onParseTime() method
-      $parent->children[$objectId]->setParentObject($parent);
-      $parent->children[$objectId]->onParseTime();
+      $child->setParentObject($parent);
+      $child->onParseTime();
 
       // call the onAfterAppend() method
-      $parent->children[$objectId]->onAfterAppend();
+      $child->onAfterAppend();
 
-      return $parent->children[$objectId];
+      // add child to list
+      $parent->getChildren()[$objectId] = $child;
+
+      return $child;
    }
 
    /**
