@@ -206,12 +206,13 @@ class HtmlFormTag extends Document implements HtmlForm {
     * @return FormControl The created form element.
     * @throws FormException In case form element cannot be found.
     *
-    * @author Christian Achatz
+    * @author Christian Achatz, Danil Mihajluk
     * @version
     * Version 0.1, 06.09.2008<br />
     * Version 0.2, 10.09.2008 (Added the $elementAttributes param)<br />
     * Version 0.3, 12.11.2008 (Bug-fix: language and context initialisation were wrong)<br />
     * Version 0.4, 23.08.2014 (ID#198: added unlimited form control nesting capability)<br />
+    * Version 0.5, 03.12.2015 (ID#279: changed code to rely on interface type rather than internal structure by Danil Mihajluk)<br />
     */
    protected function &createFormElement(DomNode &$parent, $elementType, array $elementAttributes = []) {
 
