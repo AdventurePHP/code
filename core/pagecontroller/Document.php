@@ -236,6 +236,16 @@ class Document extends APFObject implements DomNode {
       return $this;
    }
 
+   public function &getChildNodeIfExists($attributeName, $value, $tagLibClass) {
+      try {
+         return $this->getChildNode($attributeName, $value, $tagLibClass);
+      } catch (InvalidArgumentException $e) {
+         $null = null;
+
+         return $null;
+      }
+   }
+
    public function &getChildNode($attributeName, $value, $tagLibClass) {
       foreach ($this->children as &$child) {
          /* @var $child DomNode */
@@ -1041,6 +1051,16 @@ class Document extends APFObject implements DomNode {
 
       }
 
+   }
+
+   public function &getNodeByIdIfExists($id) {
+      try {
+         return $this->getNodeById($id);
+      } catch (InvalidArgumentException $e) {
+         $null = null;
+
+         return $null;
+      }
    }
 
    public function &getNodeById($id) {

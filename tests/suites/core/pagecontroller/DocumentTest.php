@@ -27,6 +27,7 @@ use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\DomNode;
 use APF\core\pagecontroller\ParserException;
 use APF\core\pagecontroller\PlaceHolderTag;
+use APF\core\pagecontroller\Template;
 use APF\core\pagecontroller\TemplateTag;
 use APF\modules\usermanagement\pres\documentcontroller\registration\RegistrationController;
 use Exception;
@@ -94,6 +95,28 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
       $doc = new Document();
       $doc->onParseTime();
       $doc->getChildNode('foo', 'bar', Document::class);
+   }
+
+   public function testGetChildNodeIfExists() {
+      $doc = new TemplateTag();
+      $doc->setContent('<html:template name="foo">bar</html:template>');
+      $doc->onParseTime();
+      $template = $doc->getChildNodeIfExists('name', 'foo', TemplateTag::class);
+      $this->assertNotNull($template);
+      $this->assertEquals('bar', $template->getContent());
+
+      // ensure that a reference is returned instead of a clone or copy
+      $children = $doc->getChildren();
+      $this->assertEquals(
+            spl_object_hash($template),
+            spl_object_hash($children[array_keys($children)[0]])
+      );
+   }
+
+   public function testGetChildNodeIfExistsErrorCase() {
+      $doc = new Document();
+      $doc->onParseTime();
+      $this->assertNull($doc->getChildNodeIfExists('foo', 'bar', Document::class));
    }
 
    public function testGetChildNodes() {
@@ -426,6 +449,65 @@ This is text after a place holder...
       $template->setPlaceHolder('test', $expected, true);
       $template->transformOnPlace();
       $this->assertEquals($expected . $expected, $template->transform());
+   }
+
+   public function testGetNodeById() {
+      $doc = $this->prepareDocumentForGetNodByIdTest();
+      $placeHolder = $doc->getNodeById('baz');
+      $this->assertNotNull($placeHolder);
+      $this->assertEquals('baz', $placeHolder->getAttribute('name'));
+
+      // ensure that a reference is returned instead of a clone or copy
+      $children = $doc->getChildNode('name', 'foo', Template::class)
+            ->getChildNode('name', 'bar', Template::class)
+            ->getChildren();
+      $this->assertEquals(
+            spl_object_hash($placeHolder),
+            spl_object_hash($children[array_keys($children)[0]])
+      );
+   }
+
+   /**
+    * @return TemplateTag Template with appropriate structure for testing method Document::getNodById().
+    */
+   protected function prepareDocumentForGetNodByIdTest() {
+      $doc = new TemplateTag();
+      $doc->setContent('
+<html:template name="foo">
+   <html:template name="bar">
+      <html:placeholder name="baz" dom-id="baz" />
+   </html:template>
+</html:template>');
+      $doc->onParseTime();
+
+      return $doc;
+   }
+
+   public function testGetNodeByIdErrorCase() {
+      $this->setExpectedException(InvalidArgumentException::class);
+      $doc = new TemplateTag();
+      $doc->getNodeById('baz');
+   }
+
+   public function testGetNodeByIdIfExists() {
+      $doc = $this->prepareDocumentForGetNodByIdTest();
+      $placeHolder = $doc->getNodeByIdIfExists('baz');
+      $this->assertNotNull($placeHolder);
+      $this->assertEquals('baz', $placeHolder->getAttribute('name'));
+
+      // ensure that a reference is returned instead of a clone or copy
+      $children = $doc->getChildNode('name', 'foo', Template::class)
+            ->getChildNode('name', 'bar', Template::class)
+            ->getChildren();
+      $this->assertEquals(
+            spl_object_hash($placeHolder),
+            spl_object_hash($children[array_keys($children)[0]])
+      );
+   }
+
+   public function testGetNodeByIdIfExistsErrorCase() {
+      $doc = new TemplateTag();
+      $this->assertNull($doc->getNodeByIdIfExists('baz'));
    }
 
    protected function setUp() {
