@@ -486,7 +486,9 @@ class HtmlFormTag extends Document implements HtmlForm {
       $htmlCode .= '>';
 
       // ID#281: add hidden form fields with URL get parameters for GET forms for convenience reasons
-      if ($this->getAttribute(self::SUBMIT_ACTION_URL_PARAMS_ATTRIBUTE_NAME) === 'true') {
+      if ($this->getAttribute(self::METHOD_ATTRIBUTE_NAME) === self::METHOD_GET_VALUE_NAME
+            && $this->getAttribute(self::SUBMIT_ACTION_URL_PARAMS_ATTRIBUTE_NAME) === 'true'
+      ) {
 
          $url = Url::fromString($this->getAttribute(self::ACTION_ATTRIBUTE_NAME));
          $queryParams = $url->getQuery();

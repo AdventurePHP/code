@@ -628,29 +628,29 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
     */
    public function testSubmitGetParametersInGetMode() {
 
-      $form = new HtmlFormTag();
-
-      $form->setParentObject(new Document());
-      $form->setContent('<form:text id="text" name="text" value="123"/>
-<form:button name="submit" value="submit" />');
-
-      $form->onParseTime();
-      $form->onAfterAppend();
-
+      // "old" behaviour before change ID#281:
+      $form = $this->getSimpleForm();
       $form->setAction('/');
       $form->setAttribute(HtmlForm::METHOD_ATTRIBUTE_NAME, HtmlForm::METHOD_GET_VALUE_NAME);
-
-      // "old" behaviour before change ID#281:
       $actual = $form->transformForm();
+
       $this->assertNotContains('<input type="hidden"', $actual);
 
       // test behaviour that no additional hidden fields are rendered in case action URL does not contain query params
+      $form = $this->getSimpleForm();
+      $form->setAction('/');
+      $form->setAttribute(HtmlForm::METHOD_ATTRIBUTE_NAME, HtmlForm::METHOD_GET_VALUE_NAME);
       $form->setAttribute(HtmlFormTag::SUBMIT_ACTION_URL_PARAMS_ATTRIBUTE_NAME, 'true');
+      $actual = $form->transformForm();
+
       $this->assertNotContains('<input type="hidden"', $actual);
 
       // test "new" behaviour with hidden fields having an action URL with query params and having the new
       // behaviour activated by form attribute
+      $form = $this->getSimpleForm();
       $form->setAction('/?foo=bar&bar=baz');
+      $form->setAttribute(HtmlForm::METHOD_ATTRIBUTE_NAME, HtmlForm::METHOD_GET_VALUE_NAME);
+      $form->setAttribute(HtmlFormTag::SUBMIT_ACTION_URL_PARAMS_ATTRIBUTE_NAME, 'true');
       $actual = $form->transformForm();
 
       $this->assertContains('<input type="hidden" name="foo" value="bar" />', $actual);
@@ -661,6 +661,31 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
       $barPos = strpos($actual, 'name="bar"');
       $this->assertGreaterThan($fooPos, $barPos);
 
+      // test behaviour is only working with GET requests
+      $form = $this->getSimpleForm();
+      $form->setAction('/?foo=bar&bar=baz');
+      $form->setAttribute(HtmlForm::METHOD_ATTRIBUTE_NAME, HtmlForm::METHOD_POST_VALUE_NAME);
+      $form->setAttribute(HtmlFormTag::SUBMIT_ACTION_URL_PARAMS_ATTRIBUTE_NAME, 'true');
+      $actual = $form->transformForm();
+
+      $this->assertNotContains('<input type="hidden"', $actual);
+
+   }
+
+   /**
+    * @return HtmlFormTag
+    */
+   private function getSimpleForm() {
+      $form = new HtmlFormTag();
+
+      $form->setParentObject(new Document());
+      $form->setContent('<form:text id="text" name="text" value="123"/>
+<form:button name="submit" value="submit" />');
+
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      return $form;
    }
 
 }
