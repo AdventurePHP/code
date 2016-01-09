@@ -30,6 +30,7 @@ use APF\tools\form\FormControl;
 use APF\tools\form\FormException;
 use APF\tools\form\HtmlForm;
 use APF\tools\form\mixin\FormControlFinder as FormControlFinderImpl;
+use APF\tools\link\Url;
 
 /**
  * Represents a APF form element (DOM node).
@@ -54,6 +55,7 @@ class HtmlFormTag extends Document implements HtmlForm {
    use FormControlFinderImpl;
 
    const ACTION_ATTRIBUTE_NAME = 'action';
+   const SUBMIT_ACTION_URL_PARAMS_ATTRIBUTE_NAME = 'submit-action-url-params';
 
    /**
     * Indicates, whether the form should be transformed at it'd place of definition or not.
@@ -482,6 +484,26 @@ class HtmlFormTag extends Document implements HtmlForm {
       $htmlCode = (string) '<form ';
       $htmlCode .= $this->getAttributesAsString($this->attributes, $this->attributeWhiteList);
       $htmlCode .= '>';
+
+      // ID#281: add hidden form fields with URL get parameters for GET forms for convenience reasons
+      if ($this->getAttribute(self::SUBMIT_ACTION_URL_PARAMS_ATTRIBUTE_NAME) === 'true') {
+
+         $url = Url::fromString($this->getAttribute(self::ACTION_ATTRIBUTE_NAME));
+         $queryParams = $url->getQuery();
+
+         if (count($queryParams) > 0) {
+            $hiddenFieldMarker = '';
+
+            foreach ($queryParams as $name => $value) {
+               $control = &$this->createFormElement($this, 'form:hidden', ['name' => $name, 'value' => $value]);
+               $hiddenFieldMarker .= '<' . $control->getObjectId() . ' />';
+            }
+
+            // prepend fields to preserve parameter order
+            $this->content = $hiddenFieldMarker . $this->content;
+         }
+
+      }
 
       if (count($this->children) > 0) {
 

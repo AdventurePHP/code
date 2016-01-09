@@ -25,6 +25,7 @@ use APF\core\pagecontroller\LanguageLabel;
 use APF\core\pagecontroller\XmlParser;
 use APF\tests\suites\tools\form\mock\TextFieldTagMock;
 use APF\tools\form\FormException;
+use APF\tools\form\HtmlForm;
 use APF\tools\form\taglib\ButtonTag;
 use APF\tools\form\taglib\FormGroupTag;
 use APF\tools\form\taglib\HtmlFormTag;
@@ -618,6 +619,47 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
       $children = $form->getChildren();
       $this->assertNotEmpty($children);
       $this->assertContains($objectId, array_keys($children));
+
+   }
+
+   /**
+    * Tests whether the form implementation automatically renders hidden fields to
+    * preserve GET parameters in action urls for convenience reasons.
+    */
+   public function testSubmitGetParametersInGetMode() {
+
+      $form = new HtmlFormTag();
+
+      $form->setParentObject(new Document());
+      $form->setContent('<form:text id="text" name="text" value="123"/>
+<form:button name="submit" value="submit" />');
+
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      $form->setAction('/');
+      $form->setAttribute(HtmlForm::METHOD_ATTRIBUTE_NAME, HtmlForm::METHOD_GET_VALUE_NAME);
+
+      // "old" behaviour before change ID#281:
+      $actual = $form->transformForm();
+      $this->assertNotContains('<input type="hidden"', $actual);
+
+      // test behaviour that no additional hidden fields are rendered in case action URL does not contain query params
+      $form->setAttribute(HtmlFormTag::SUBMIT_ACTION_URL_PARAMS_ATTRIBUTE_NAME, 'true');
+      $this->assertNotContains('<input type="hidden"', $actual);
+
+      // test "new" behaviour with hidden fields having an action URL with query params and having the new
+      // behaviour activated by form attribute
+      $form->setAction('/?foo=bar&bar=baz');
+      $actual = $form->transformForm();
+
+      $this->assertContains('<input type="hidden" name="foo" value="bar" />', $actual);
+      $this->assertContains('<input type="hidden" name="bar" value="baz" />', $actual);
+
+      // test parameter order is preserved
+      $fooPos = strpos($actual, 'name="foo"');
+      $barPos = strpos($actual, 'name="bar"');
+      $this->assertGreaterThan($fooPos, $barPos);
 
    }
 
