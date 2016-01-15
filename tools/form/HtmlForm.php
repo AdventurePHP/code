@@ -44,6 +44,7 @@ interface HtmlForm extends FormControlFinder, FormElement {
 
    const METHOD_ATTRIBUTE_NAME = 'method';
    const METHOD_POST_VALUE_NAME = 'post';
+   const METHOD_GET_VALUE_NAME = 'get';
 
    /**
     * Sets the action url of the form.

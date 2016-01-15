@@ -294,6 +294,23 @@ interface DomNode extends APFDIService {
    public function &getChildNode($attributeName, $value, $tagLibClass);
 
    /**
+    * Same functionality as <em>getChildNode()</em> except returning null in case no matching node
+    * has been found instead of throwing an exception.
+    *
+    * @param string $attributeName The name of the attribute to match against the given value.
+    * @param string $value The value of the attribute to select the desired node.
+    * @param string $tagLibClass The expected class name of the node.
+    *
+    * @return DomNode|null The desired child node or null.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.12.2011<br />
+    * Version 0.2, 09.02.2013 (Now public access since DocumentController is now derived from APFObject instead of Document)<br />
+    */
+   public function &getChildNodeIfExists($attributeName, $value, $tagLibClass);
+
+   /**
     * Let's you retrieve a list of child nodes of the current document by specifying a selector
     * (attribute name and attribute value) and the expected node type (name of the taglib
     * class).
@@ -505,5 +522,19 @@ interface DomNode extends APFDIService {
     * Version 0.1, 13.08.2014<br />
     */
    public function &getNodeById($id);
+
+   /**
+    * Same functionality as <em>getNodeById()</em> except returning null in case no matching node
+    * has been found instead of throwing an exception.
+    *
+    * @param string $id The id of the DOM node to return.
+    *
+    * @return DomNode|null The desired DOM node within the tree or null in case it does not exist.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 13.08.2014<br />
+    */
+   public function &getNodeByIdIfExists($id);
 
 }

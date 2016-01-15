@@ -30,6 +30,7 @@ use APF\tools\form\FormControl;
 use APF\tools\form\FormException;
 use APF\tools\form\HtmlForm;
 use APF\tools\form\mixin\FormControlFinder as FormControlFinderImpl;
+use APF\tools\link\Url;
 
 /**
  * Represents a APF form element (DOM node).
@@ -54,6 +55,7 @@ class HtmlFormTag extends Document implements HtmlForm {
    use FormControlFinderImpl;
 
    const ACTION_ATTRIBUTE_NAME = 'action';
+   const SUBMIT_ACTION_URL_PARAMS_ATTRIBUTE_NAME = 'submit-action-url-params';
 
    /**
     * Indicates, whether the form should be transformed at it'd place of definition or not.
@@ -206,12 +208,13 @@ class HtmlFormTag extends Document implements HtmlForm {
     * @return FormControl The created form element.
     * @throws FormException In case form element cannot be found.
     *
-    * @author Christian Achatz
+    * @author Christian Achatz, Danil Mihajluk
     * @version
     * Version 0.1, 06.09.2008<br />
     * Version 0.2, 10.09.2008 (Added the $elementAttributes param)<br />
     * Version 0.3, 12.11.2008 (Bug-fix: language and context initialisation were wrong)<br />
     * Version 0.4, 23.08.2014 (ID#198: added unlimited form control nesting capability)<br />
+    * Version 0.5, 03.12.2015 (ID#279: changed code to rely on interface type rather than internal structure by Danil Mihajluk)<br />
     */
    protected function &createFormElement(DomNode &$parent, $elementType, array $elementAttributes = []) {
 
@@ -224,23 +227,26 @@ class HtmlFormTag extends Document implements HtmlForm {
       $objectId = XmlParser::generateUniqID();
 
       // create new form element
-      $parent->children[$objectId] = new $class();
-      /* @var $formControl AbstractFormControl */
+      /* @var FormControl $child */
+      $child = new $class();
 
       // add standard and user defined attributes
-      $parent->children[$objectId]->setObjectId($objectId);
-      $parent->children[$objectId]->setLanguage($this->getLanguage());
-      $parent->children[$objectId]->setContext($this->getContext());
-      $parent->children[$objectId]->setAttributes($elementAttributes);
+      $child->setObjectId($objectId);
+      $child->setLanguage($this->getLanguage());
+      $child->setContext($this->getContext());
+      $child->setAttributes($elementAttributes);
 
       // add form element to DOM tree and call the onParseTime() method
-      $parent->children[$objectId]->setParentObject($parent);
-      $parent->children[$objectId]->onParseTime();
+      $child->setParentObject($parent);
+      $child->onParseTime();
 
       // call the onAfterAppend() method
-      $parent->children[$objectId]->onAfterAppend();
+      $child->onAfterAppend();
 
-      return $parent->children[$objectId];
+      // add child to list
+      $parent->getChildren()[$objectId] = $child;
+
+      return $child;
    }
 
    /**
@@ -478,6 +484,28 @@ class HtmlFormTag extends Document implements HtmlForm {
       $htmlCode = (string) '<form ';
       $htmlCode .= $this->getAttributesAsString($this->attributes, $this->attributeWhiteList);
       $htmlCode .= '>';
+
+      // ID#281: add hidden form fields with URL get parameters for GET forms for convenience reasons
+      if ($this->getAttribute(self::METHOD_ATTRIBUTE_NAME) === self::METHOD_GET_VALUE_NAME
+            && $this->getAttribute(self::SUBMIT_ACTION_URL_PARAMS_ATTRIBUTE_NAME) === 'true'
+      ) {
+
+         $url = Url::fromString($this->getAttribute(self::ACTION_ATTRIBUTE_NAME));
+         $queryParams = $url->getQuery();
+
+         if (count($queryParams) > 0) {
+            $hiddenFieldMarker = '';
+
+            foreach ($queryParams as $name => $value) {
+               $control = &$this->createFormElement($this, 'form:hidden', ['name' => $name, 'value' => $value]);
+               $hiddenFieldMarker .= '<' . $control->getObjectId() . ' />';
+            }
+
+            // prepend fields to preserve parameter order
+            $this->content = $hiddenFieldMarker . $this->content;
+         }
+
+      }
 
       if (count($this->children) > 0) {
 

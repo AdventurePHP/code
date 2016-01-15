@@ -23,7 +23,9 @@ namespace APF\tests\suites\tools\form\taglib;
 use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\LanguageLabel;
 use APF\core\pagecontroller\XmlParser;
+use APF\tests\suites\tools\form\mock\TextFieldTagMock;
 use APF\tools\form\FormException;
+use APF\tools\form\HtmlForm;
 use APF\tools\form\taglib\ButtonTag;
 use APF\tools\form\taglib\FormGroupTag;
 use APF\tools\form\taglib\HtmlFormTag;
@@ -31,6 +33,7 @@ use APF\tools\form\taglib\RadioButtonTag;
 use APF\tools\form\taglib\SelectBoxTag;
 use APF\tools\form\taglib\TextFieldTag;
 use PHPUnit_Framework_MockObject_MockObject;
+use ReflectionMethod;
 use ReflectionProperty;
 
 class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
@@ -565,6 +568,124 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
       $form->getMarker('foo');
 
+   }
+
+   /**
+    * Checks whether form control creation complies with APF DomNode creation.
+    */
+   public function testCreateFormElement() {
+
+      $name = 'foo';
+      $context = 'bar';
+      $language = 'en';
+
+      $form = new HtmlFormTag();
+      $form->setContext($context);
+      $form->setLanguage($language);
+
+      // register mock implementation to allow check of method execution
+      Document::addTagLib(TextFieldTagMock::class, 'test', 'text');
+
+      $method = new ReflectionMethod(HtmlFormTag::class, 'createFormElement');
+      $method->setAccessible(true);
+
+      // note: arguments to be passed ad reference MUST be explicitly referenced with &
+      $actual = $method->invokeArgs($form, [&$form, 'test:text', ['name' => $name, 'class' => 'text-field']]);
+
+      /* @var $field TextFieldTagMock */
+      $field = $form->getFormElementByName($name);
+      $objectId = $field->getObjectId();
+
+      // check identity to ensure references are returned
+      $this->assertEquals(spl_object_hash($actual), spl_object_hash($field));
+
+      // test element creation as part of the applied DomNode instance
+      $this->assertInstanceOf(TextFieldTag::class, $field);
+
+      // test object id, attributes, context language,
+      $this->assertNotNull($objectId);
+      $this->assertEquals($name, $field->getAttribute('name'));
+      $this->assertEquals($context, $field->getContext());
+      $this->assertEquals($language, $field->getLanguage());
+
+      // check whether parent object is initialized (form)
+      $this->assertEquals($form, $field->getParentObject());
+
+      // check whether onParseTime() and onAfterAppend() are called
+      $this->assertTrue($field->onParseTimeExecuted);
+      $this->assertTrue($field->onAfterAppendExecuted);
+
+      // check if internal array structure is valid
+      $children = $form->getChildren();
+      $this->assertNotEmpty($children);
+      $this->assertContains($objectId, array_keys($children));
+
+   }
+
+   /**
+    * Tests whether the form implementation automatically renders hidden fields to
+    * preserve GET parameters in action urls for convenience reasons.
+    */
+   public function testSubmitGetParametersInGetMode() {
+
+      // "old" behaviour before change ID#281:
+      $form = $this->getSimpleForm();
+      $form->setAction('/');
+      $form->setAttribute(HtmlForm::METHOD_ATTRIBUTE_NAME, HtmlForm::METHOD_GET_VALUE_NAME);
+      $actual = $form->transformForm();
+
+      $this->assertNotContains('<input type="hidden"', $actual);
+
+      // test behaviour that no additional hidden fields are rendered in case action URL does not contain query params
+      $form = $this->getSimpleForm();
+      $form->setAction('/');
+      $form->setAttribute(HtmlForm::METHOD_ATTRIBUTE_NAME, HtmlForm::METHOD_GET_VALUE_NAME);
+      $form->setAttribute(HtmlFormTag::SUBMIT_ACTION_URL_PARAMS_ATTRIBUTE_NAME, 'true');
+      $actual = $form->transformForm();
+
+      $this->assertNotContains('<input type="hidden"', $actual);
+
+      // test "new" behaviour with hidden fields having an action URL with query params and having the new
+      // behaviour activated by form attribute
+      $form = $this->getSimpleForm();
+      $form->setAction('/?foo=bar&bar=baz');
+      $form->setAttribute(HtmlForm::METHOD_ATTRIBUTE_NAME, HtmlForm::METHOD_GET_VALUE_NAME);
+      $form->setAttribute(HtmlFormTag::SUBMIT_ACTION_URL_PARAMS_ATTRIBUTE_NAME, 'true');
+      $actual = $form->transformForm();
+
+      $this->assertContains('<input type="hidden" name="foo" value="bar" />', $actual);
+      $this->assertContains('<input type="hidden" name="bar" value="baz" />', $actual);
+
+      // test parameter order is preserved
+      $fooPos = strpos($actual, 'name="foo"');
+      $barPos = strpos($actual, 'name="bar"');
+      $this->assertGreaterThan($fooPos, $barPos);
+
+      // test behaviour is only working with GET requests
+      $form = $this->getSimpleForm();
+      $form->setAction('/?foo=bar&bar=baz');
+      $form->setAttribute(HtmlForm::METHOD_ATTRIBUTE_NAME, HtmlForm::METHOD_POST_VALUE_NAME);
+      $form->setAttribute(HtmlFormTag::SUBMIT_ACTION_URL_PARAMS_ATTRIBUTE_NAME, 'true');
+      $actual = $form->transformForm();
+
+      $this->assertNotContains('<input type="hidden"', $actual);
+
+   }
+
+   /**
+    * @return HtmlFormTag
+    */
+   private function getSimpleForm() {
+      $form = new HtmlFormTag();
+
+      $form->setParentObject(new Document());
+      $form->setContent('<form:text id="text" name="text" value="123"/>
+<form:button name="submit" value="submit" />');
+
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      return $form;
    }
 
 }
