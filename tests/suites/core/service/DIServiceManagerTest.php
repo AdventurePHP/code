@@ -69,6 +69,19 @@ class DIServiceManagerTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   public static function tearDownAfterClass() {
+
+      // remove configuration provider to not disturb other tests
+      ConfigurationManager::registerProvider('ini', self::$originalIniProvider);
+
+      // remove configuration provider to not disturb other tests
+      ConfigurationManager::removeProvider('php');
+
+      // remove static configuration class loader used for test purposes only
+      RootClassLoader::removeLoader(RootClassLoader::getLoaderByVendor(self::TEST_VENDOR));
+
+   }
+
    public function testSetterInjection() {
 
       /* @var $service DummyService */
@@ -130,17 +143,31 @@ class DIServiceManagerTest extends \PHPUnit_Framework_TestCase {
 
    }
 
-   public static function tearDownAfterClass() {
+   public function testSetterInjectionFailsWithMissingMethod() {
+      $this->setExpectedException(InvalidArgumentException::class);
+      DIServiceManager::getServiceObject(self::TEST_VENDOR, 'DummyService-setter-method-fail-1', self::CONTEXT,
+            self::LANGUAGE);
+   }
 
-      // remove configuration provider to not disturb other tests
-      ConfigurationManager::registerProvider('ini', self::$originalIniProvider);
+   public function testSetterInjectionFailsWithUnknownMethod() {
+      $this->setExpectedException(InvalidArgumentException::class);
+      DIServiceManager::getServiceObject(self::TEST_VENDOR, 'DummyService-setter-method-fail-2', self::CONTEXT,
+            self::LANGUAGE);
+   }
 
-      // remove configuration provider to not disturb other tests
-      ConfigurationManager::removeProvider('php');
+   public function testSetterInjectionFailsWithMissingValueSubSection() {
+      $this->setExpectedException(InvalidArgumentException::class);
+      DIServiceManager::getServiceObject(self::TEST_VENDOR, 'DummyServiceThree-missing-value-section', self::CONTEXT,
+            self::LANGUAGE);
+   }
 
-      // remove static configuration class loader used for test purposes only
-      RootClassLoader::removeLoader(RootClassLoader::getLoaderByVendor(self::TEST_VENDOR));
-
+   public function testSetterInjectionMultipleParameters() {
+      /* @var $service DummyServiceThree */
+      $service = DIServiceManager::getServiceObject(self::TEST_VENDOR, 'DummyServiceThree', self::CONTEXT,
+            self::LANGUAGE);
+      $this->assertEquals('foo', $service->getParamOne());
+      $this->assertEquals('bar', $service->getParamTwo());
+      $this->assertEquals('baz', $service->getParamThree());
    }
 
 }
