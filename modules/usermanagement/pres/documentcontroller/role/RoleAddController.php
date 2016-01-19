@@ -50,7 +50,7 @@ class RoleAddController extends UmgtBaseController {
          $permissionControl->addOption($roles[$i]->getDisplayName(), $roles[$i]->getObjectId());
       }
 
-      if ($form->isSent() == true && $form->isValid() == true) {
+      if ($form->isSent() && $form->isValid()) {
 
          $uM = & $this->getManager();
          $role = new UmgtRole();

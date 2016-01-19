@@ -22,6 +22,7 @@ namespace APF\modules\usermanagement\pres\documentcontroller\user;
 
 use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\form\taglib\DateSelectorTag;
 
 /**
  * Implements the controller to add a user.
@@ -34,25 +35,28 @@ class UserAddController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $form = & $this->getForm('UserForm');
-      if ($form->isSent() == true && $form->isValid() == true) {
+      $form = &$this->getForm('UserForm');
+      if ($form->isSent() && $form->isValid()) {
 
-         $firstName = & $form->getFormElementByName('FirstName');
-         $lastName = & $form->getFormElementByName('LastName');
-         $streetName = & $form->getFormElementByName('StreetName');
-         $streetNumber = & $form->getFormElementByName('StreetNumber');
-         $zipCode = & $form->getFormElementByName('ZIPCode');
-         $city = & $form->getFormElementByName('City');
-         $email = & $form->getFormElementByName('EMail');
-         $mobile = & $form->getFormElementByName('Mobile');
-         $username = & $form->getFormElementByName('Username');
-         $password = & $form->getFormElementByName('Password');
+         $firstName = &$form->getFormElementByName('FirstName');
+         $lastName = &$form->getFormElementByName('LastName');
+         /* @var $birthday DateSelectorTag */
+         $birthday = &$form->getFormElementByName('Birthday');
+         $streetName = &$form->getFormElementByName('StreetName');
+         $streetNumber = &$form->getFormElementByName('StreetNumber');
+         $zipCode = &$form->getFormElementByName('ZIPCode');
+         $city = &$form->getFormElementByName('City');
+         $email = &$form->getFormElementByName('EMail');
+         $mobile = &$form->getFormElementByName('Mobile');
+         $username = &$form->getFormElementByName('Username');
+         $password = &$form->getFormElementByName('Password');
 
-         $uM = & $this->getManager();
+         $uM = &$this->getManager();
          $user = new UmgtUser();
 
          $user->setFirstName($firstName->getValue());
          $user->setLastName($lastName->getValue());
+         $user->setBirthday($birthday->getValue());
          $user->setStreetName($streetName->getValue());
          $user->setStreetNumber($streetNumber->getValue());
          $user->setZIPCode($zipCode->getValue());

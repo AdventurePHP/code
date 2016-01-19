@@ -38,7 +38,7 @@ class PermissionAddController extends UmgtBaseController {
 
       $form = & $this->getForm('PermissionAdd');
 
-      if ($form->isSent() == true && $form->isValid() == true) {
+      if ($form->isSent() && $form->isValid()) {
 
          $displayName = $form->getFormElementByName('DisplayName');
          $name = $form->getFormElementByName('Name');

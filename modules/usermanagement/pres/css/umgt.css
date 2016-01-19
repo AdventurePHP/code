@@ -78,6 +78,10 @@
     background-color: #eeeeee;
 }
 
+.umgt-content form #date-of-birth select {
+    width: 68px;
+}
+
 .umgt-content table.vis-def {
     border: none;
     width: 100%;

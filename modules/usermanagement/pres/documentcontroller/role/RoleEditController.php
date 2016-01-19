@@ -51,9 +51,9 @@ class RoleEditController extends UmgtBaseController {
       // load selected roles to be able to highlight them within the select field
       $role = $uM->loadRoleByID($roleId);
 
-      if ($form->isSent() == true) {
+      if ($form->isSent()) {
 
-         if ($form->isValid() == true) {
+         if ($form->isValid()) {
 
             $displayName = & $form->getFormElementByName('DisplayName');
 

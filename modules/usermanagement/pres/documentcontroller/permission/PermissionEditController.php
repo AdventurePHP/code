@@ -48,9 +48,9 @@ class PermissionEditController extends UmgtBaseController {
 
       $uM = & $this->getManager();
 
-      if ($form->isSent() == true) {
+      if ($form->isSent()) {
 
-         if ($form->isValid() == true) {
+         if ($form->isValid()) {
 
             $permission = new UmgtPermission();
             $permission->setObjectId($permissionId);

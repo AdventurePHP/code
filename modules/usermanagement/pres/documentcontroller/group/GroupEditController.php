@@ -45,9 +45,9 @@ class GroupEditController extends UmgtBaseController {
 
       $uM = & $this->getManager();
 
-      if ($form->isSent() == true) {
+      if ($form->isSent()) {
 
-         if ($form->isValid() == true) {
+         if ($form->isValid()) {
 
             $group = new UmgtGroup();
             $group->setObjectId($groupId);

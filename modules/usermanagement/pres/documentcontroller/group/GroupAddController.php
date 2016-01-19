@@ -35,7 +35,7 @@ class GroupAddController extends UmgtBaseController {
    public function transformContent() {
 
       $form = & $this->getForm('GroupAdd');
-      if ($form->isSent() == true && $form->isValid() == true) {
+      if ($form->isSent() && $form->isValid()) {
 
          $uM = & $this->getManager();
 
