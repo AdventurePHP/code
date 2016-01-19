@@ -202,17 +202,23 @@ class DateSelectorTag extends AbstractFormControl {
     * @version
     * Version 0.1, 29.08.2009<br />
     * Version 0.2, 30.12.2009 (Replaced split() with explode() because it is marked deprecated in PHP5.3.0)<br />
+    * Version 0.3, 19.01.2016 (ID#255: added "now" keyword for current year)<br />
     */
    protected function initYearRange() {
 
       // read the range for the year select box
-      if (isset($this->attributes['yearrange'])) {
+      if ($this->hasAttribute('yearrange')) {
 
-         $yearRange = explode('-', $this->attributes['yearrange']);
+         $yearRange = explode('-', $this->getAttribute('yearrange'));
 
          if (count($yearRange) == 2) {
             $this->yearRange['Start'] = trim($yearRange[0]);
             $this->yearRange['End'] = trim($yearRange[1]);
+
+            // re-map special key "now" to current year
+            if ($this->yearRange['End'] === 'now') {
+               $this->yearRange['End'] = (new DateTime('now'))->format('Y');
+            }
          }
       }
    }
@@ -227,9 +233,9 @@ class DateSelectorTag extends AbstractFormControl {
     */
    protected function initOffsetNames() {
 
-      if (isset($this->attributes['offsetnames'])) {
+      if ($this->hasAttribute('offsetnames')) {
 
-         $offsetNames = explode(';', $this->attributes['offsetnames']);
+         $offsetNames = explode(';', $this->getAttribute('offsetnames'));
 
          if (count($offsetNames) == 3) {
             $this->offsetNames = [

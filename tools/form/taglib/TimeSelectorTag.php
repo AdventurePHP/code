@@ -179,9 +179,9 @@ class TimeSelectorTag extends AbstractFormControl {
    protected function initHoursRange() {
 
       // read the range for the hours select box
-      if (isset($this->attributes['hoursrange'])) {
+      if ($this->hasAttribute('hoursrange')) {
 
-         $hoursRange = explode('-', $this->attributes['hoursrange']);
+         $hoursRange = explode('-', $this->getAttribute('hoursrange'));
 
          if (count($hoursRange) == 2) {
             $this->hoursRange['Start'] = trim($this->appendZero($hoursRange[0]));
@@ -214,9 +214,9 @@ class TimeSelectorTag extends AbstractFormControl {
     */
    protected function initOffsetNames() {
 
-      if (isset($this->attributes['offsetnames'])) {
+      if ($this->hasAttribute('offsetnames')) {
 
-         $offsetNames = explode(';', $this->attributes['offsetnames']);
+         $offsetNames = explode(';', $this->getAttribute('offsetnames'));
 
          if (count($offsetNames) == 3) {
             $this->offsetNames = [
