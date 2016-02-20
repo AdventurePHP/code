@@ -30,14 +30,10 @@ use APF\core\pagecontroller\PlaceHolder;
  * <p/>
  * Example:
  * <code>
- * <core:addtaglib class="APF\expression\taglib\ConditionalPlaceHolderTag" prefix="cond" name="placeholder" />
- * <cond:placeholder name="" [condition="notEmpty()"] [content-name="..."]>
- *    <h3 class="foo">${content}</h3>
+ * <cond:placeholder name="" [condition=""]>
+ *    <h3 class="...">${content}</h3>
  * </cond:placeholder>
  * </code>
- * <p/>
- * To define the name of the place holder to display the real content inside, please specify tag
- * attribute <em>content-name</em>.
  *
  * @author Christian Achatz
  * @version
