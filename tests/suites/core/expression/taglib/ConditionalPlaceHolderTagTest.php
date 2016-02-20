@@ -21,6 +21,8 @@
 namespace APF\tests\suites\core\expression\taglib;
 
 use APF\core\expression\taglib\ConditionalPlaceHolderTag;
+use APF\core\pagecontroller\DomNode;
+use APF\core\pagecontroller\TemplateTag;
 use APF\tests\suites\core\expression\LinkModel;
 
 class ConditionalPlaceHolderTagTest extends \PHPUnit_Framework_TestCase {
@@ -94,6 +96,44 @@ class ConditionalPlaceHolderTagTest extends \PHPUnit_Framework_TestCase {
             '<a href="' . $model->getMoreLink() . '">' . $model->getMoreLabel() . '</a>',
             $tag->transform()
       );
+   }
+
+   public function testComplexExample() {
+
+      $doc = $this->getDocument();
+      $doc->setPlaceHolder('name', '');
+
+      $actual = $doc->transform();
+      $this->assertContains('<p>No entry available.</p>', $actual);
+      $this->assertNotContains('<p>Name: APF</p>', $actual);
+
+      $doc = $this->getDocument();
+      $doc->setPlaceHolder('name', 'APF');
+
+      $actual = $doc->transform();
+      $this->assertNotContains('<p>No entry available.</p>', $actual);
+      $this->assertContains('<p>Name: APF</p>', $actual);
+
+   }
+
+   /**
+    * @return DomNode
+    */
+   protected function getDocument() {
+
+      $doc = new TemplateTag();
+      $doc->setContent('<cond:placeholder name="name" condition="empty()">
+         <p>No entry available.</p>
+      </cond:placeholder>
+      <cond:placeholder name="name" condition="notEmpty()">
+         <p>Name: ${content}</p>
+      </cond:placeholder>');
+      $doc->onParseTime();
+      $doc->onAfterAppend();
+
+      $doc->transformOnPlace();
+
+      return $doc;
    }
 
 }
