@@ -25,6 +25,7 @@ use APF\core\errorhandler\GlobalErrorHandler;
 use APF\core\exceptionhandler\DefaultExceptionHandler;
 use APF\core\exceptionhandler\GlobalExceptionHandler;
 use APF\core\expression\taglib\ConditionalPlaceHolderTag;
+use APF\core\expression\taglib\ConditionalTemplateTag;
 use APF\core\filter\ChainedStandardInputFilter;
 use APF\core\filter\InputFilterChain;
 use APF\core\logging\Logger;
@@ -192,6 +193,7 @@ Document::addTagLib(PlaceHolderTag::class, 'html', 'placeholder');
 Document::addTagLib(TemplateTag::class, 'html', 'template');
 
 Document::addTagLib(ConditionalPlaceHolderTag::class, 'cond', 'placeholder');
+Document::addTagLib(ConditionalTemplateTag::class, 'cond', 'template');
 
 // APF\tools
 Document::addTagLib(HtmlFormTag::class, 'html', 'form');

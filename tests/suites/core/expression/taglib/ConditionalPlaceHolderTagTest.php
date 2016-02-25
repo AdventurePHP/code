@@ -77,23 +77,23 @@ class ConditionalPlaceHolderTagTest extends \PHPUnit_Framework_TestCase {
       $tag = $this->getPlaceHolder('<a href="${content[\'moreLink\']}">${content[\'moreLabel\']}</a>', []);
 
       $model = new LinkModel();
-      $tag->setContent(['moreLabel' => $model->getMoreLabel(), 'moreLink' => $model->getMoreLink()]);
+      $tag->setContent(['moreLabel' => $model->getLabel(), 'moreLink' => $model->getUrl()]);
 
       $this->assertEquals(
-            '<a href="' . $model->getMoreLink() . '">' . $model->getMoreLabel() . '</a>',
+            '<a href="' . $model->getUrl() . '">' . $model->getLabel() . '</a>',
             $tag->transform()
       );
 
    }
 
    public function testViewModelContent() {
-      $tag = $this->getPlaceHolder('<a href="${content->getMoreLink()}">${content->getMoreLabel()}</a>', []);
+      $tag = $this->getPlaceHolder('<a href="${content->getUrl()}">${content->getLabel()}</a>', []);
 
       $model = new LinkModel();
       $tag->setContent($model);
 
       $this->assertEquals(
-            '<a href="' . $model->getMoreLink() . '">' . $model->getMoreLabel() . '</a>',
+            '<a href="' . $model->getUrl() . '">' . $model->getLabel() . '</a>',
             $tag->transform()
       );
    }

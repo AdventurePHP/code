@@ -53,7 +53,7 @@ class ExpressionEvaluatorTest extends \PHPUnit_Framework_TestCase {
             ]
       );
       $this->assertEquals($model->getCssClass(), ExpressionEvaluator::evaluate($node, 'foo[0]->getCssClass()'));
-      $this->assertEquals($model->getMoreLinkModel()->getMoreLabel(), ExpressionEvaluator::evaluate($node, 'foo[\'foo\']->getMoreLinkModel()->getMoreLabel()'));
+      $this->assertEquals($model->getMoreLinkModel()->getLabel(), ExpressionEvaluator::evaluate($node, 'foo[\'foo\']->getMoreLinkModel()->getLabel()'));
    }
 
    public function testMethodChain() {
@@ -61,7 +61,7 @@ class ExpressionEvaluatorTest extends \PHPUnit_Framework_TestCase {
       $model = new ContentModel();
       $node->setData('foo', $model);
       $this->assertEquals($model, ExpressionEvaluator::evaluate($node, 'foo'));
-      $this->assertEquals($model->getMoreLinkModel()->getMoreLabel(), ExpressionEvaluator::evaluate($node, 'foo->getMoreLinkModel()->getMoreLabel()'));
+      $this->assertEquals($model->getMoreLinkModel()->getLabel(), ExpressionEvaluator::evaluate($node, 'foo->getMoreLinkModel()->getLabel()'));
    }
 
    public function testMultiArrayAccessMethodChain() {
@@ -80,7 +80,7 @@ class ExpressionEvaluatorTest extends \PHPUnit_Framework_TestCase {
 
    public function testIllegalCallChain() {
       $this->setExpectedException(ParserException::class);
-      ExpressionEvaluator::evaluate(new Document(), '->foo->getMoreLinkModel()->->getMoreLabel()');
+      ExpressionEvaluator::evaluate(new Document(), '->foo->getMoreLinkModel()->->getLabel()');
    }
 
    public function testIllegalCall() {

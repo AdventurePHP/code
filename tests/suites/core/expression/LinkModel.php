@@ -35,16 +35,15 @@ class LinkModel {
    /**
     * @return string
     */
-   public function getMoreLabel() {
+   public function getLabel() {
       return $this->moreLabel;
    }
 
    /**
     * @return string
     */
-   public function getMoreLink() {
+   public function getUrl() {
       return $this->moreLink;
    }
-
 
 }
