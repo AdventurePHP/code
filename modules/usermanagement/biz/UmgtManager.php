@@ -230,7 +230,7 @@ class UmgtManager extends APFObject {
     * @author Christian Achatz
     * @version
     * Version 0.1, 23.06.2008<br />
-    * Version 0.2, 16.03.2010 (Bugfix 299: moved the service type to the GORM factory call)<br />
+    * Version 0.2, 16.03.2010 (Bug fix 299: moved the service type to the GORM factory call)<br />
     * Version 0.1, 25.08.2011 (Switched to DI configuration)<br />
     */
    public function &getORMapper() {
@@ -442,6 +442,41 @@ class UmgtManager extends APFObject {
    }
 
    /**
+    * Loads a user object by a user name.
+    *
+    * @param string $username The user name of the user to load.
+    *
+    * @return UmgtUser The user domain object or null.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 23.06.2009<br />
+    */
+   public function loadUserByUserName($username) {
+
+      $orm = &$this->getORMapper();
+
+      if (UserFieldEncryptionProvider::propertyHasEncryptionEnabled('Username')) {
+         $username = UserFieldEncryptionProvider::encrypt($username);
+      }
+
+      // escape the input values
+      $dbDriver = &$orm->getDbDriver();
+      $username = $dbDriver->escapeValue($username);
+
+      // create the statement and select user
+      $select = 'SELECT ent_user.* FROM `ent_user`
+                 INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
+                 INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
+                 WHERE
+                     ent_application.ApplicationID = \'' . $this->applicationId . '\'
+                     AND `Username` = \'' . $username . '\';';
+
+      return $orm->loadObjectByTextStatement('User', $select);
+
+   }
+
+   /**
     * Implements the comparing of stored hash with given password,
     * supporting fallback hash-providers and on-the-fly updating
     * of hashes in database to new providers.
@@ -545,8 +580,8 @@ class UmgtManager extends APFObject {
     * @version
     * Version 0.1, 15.06.2008<br />
     * Version 0.2, 23.06.2009 (Introduced a generic possibility to create the display name.)<br />
-    * Version 0.3, 20.09.2009 (Bugfix for bug 202. Password was hased twice on update.)<br />
-    * Version 0.4, 27.09.2009 (Bugfix for bug related to 202. Password for new user was not hashed.)<br />
+    * Version 0.3, 20.09.2009 (Bug fix for bug 202. Password was hased twice on update.)<br />
+    * Version 0.4, 27.09.2009 (Bug fix for bug related to 202. Password for new user was not hashed.)<br />
     */
    public function saveUser(UmgtUser &$user) {
 
@@ -771,41 +806,6 @@ class UmgtManager extends APFObject {
                      ent_application.ApplicationID = \'' . $this->applicationId . '\'
                      AND `FirstName` = \'' . $firstName . '\'
                      AND `LastName` = \'' . $lastName . '\';';
-
-      return $orm->loadObjectByTextStatement('User', $select);
-
-   }
-
-   /**
-    * Loads a user object by a user name.
-    *
-    * @param string $username The user name of the user to load.
-    *
-    * @return UmgtUser The user domain object or null.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 23.06.2009<br />
-    */
-   public function loadUserByUserName($username) {
-
-      $orm = &$this->getORMapper();
-
-      if (UserFieldEncryptionProvider::propertyHasEncryptionEnabled('Username')) {
-         $username = UserFieldEncryptionProvider::encrypt($username);
-      }
-
-      // escape the input values
-      $dbDriver = &$orm->getDbDriver();
-      $username = $dbDriver->escapeValue($username);
-
-      // create the statement and select user
-      $select = 'SELECT ent_user.* FROM `ent_user`
-                 INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
-                 INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
-                 WHERE
-                     ent_application.ApplicationID = \'' . $this->applicationId . '\'
-                     AND `Username` = \'' . $username . '\';';
 
       return $orm->loadObjectByTextStatement('User', $select);
 
@@ -2200,7 +2200,7 @@ class UmgtManager extends APFObject {
    /**
     * Loads the user by the generated ForgotPasswordHash
     *
-    * @param $hash the hash to reset the password
+    * @param string $hash The hash to reset the password
     *
     * @return UmgtUser|null The corresponding user or null if the user cannot be found.
     *

@@ -20,13 +20,13 @@
  */
 namespace APF\modules\usermanagement\pres\documentcontroller\login;
 
+use APF\core\configuration\ConfigurationException;
 use APF\core\pagecontroller\BaseDocumentController;
 use APF\modules\usermanagement\biz\UmgtManager;
 use APF\tools\form\validator\AbstractFormValidator;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 use APF\tools\mail\mailSender;
-use APF\core\configuration\ConfigurationException;
 use Exception;
 
 /**
@@ -92,8 +92,8 @@ class ForgotPasswordController extends BaseDocumentController {
                }
                $mailContent = str_replace('{lifetime}', $lifetime / 60 / 60, $mailContent);
                $link = LinkGenerator::generateUrl(Url::fromCurrent(true)
-                  ->setQueryParameter('user', 'reset_pw')
-                  ->setQueryParameter('h', $passwordHash));
+                     ->setQueryParameter('user', 'reset_pw')
+                     ->setQueryParameter('h', $passwordHash));
                $mailContent = str_replace('{link}', $link, $mailContent);
 
                $sender->setSubject($mailSubject);
@@ -113,15 +113,9 @@ class ForgotPasswordController extends BaseDocumentController {
       } elseif ($form->isSent() && !$form->isValid()) {
          // error message
          $form->setPlaceHolder('forgotpw-error', $this->getTemplate('forgotpw-error')->transformTemplate());
-      } else {
-         // nothing to do here
       }
 
       // transform form
       $form->transformOnPlace();
-   }
-
-   private function test() {
-      // nothing to do here
    }
 }

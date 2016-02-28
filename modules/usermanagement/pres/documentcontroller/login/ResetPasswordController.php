@@ -20,12 +20,12 @@
  */
 namespace APF\modules\usermanagement\pres\documentcontroller\login;
 
+use APF\core\configuration\ConfigurationException;
 use APF\core\pagecontroller\BaseDocumentController;
 use APF\modules\usermanagement\biz\UmgtManager;
 use APF\tools\mail\mailSender;
-use DateTime;
 use DateInterval;
-use APF\core\configuration\ConfigurationException;
+use DateTime;
 
 /**
  * Manages the reset password form and changes the password.
@@ -46,7 +46,7 @@ class ResetPasswordController extends BaseDocumentController {
       $hash = $this->getRequest()->getParameter('h');
       $user = $umgt->loadUserByForgotPasswordHash($hash);
 
-      if($user === null) {
+      if ($user === null) {
          // system error meassage: no user with this hash found!?
          $this->getTemplate('system-error')->transformOnPlace();
       } else {
@@ -104,7 +104,7 @@ class ResetPasswordController extends BaseDocumentController {
 
                $sender->sendMail();
 
-               // succcess message
+               // success message
                $form->setPlaceHolder('resetpw-error', $this->getTemplate('resetpw-success')->transformTemplate());
             } elseif ($form->isSent() && !$form->isValid()) {
                // error message
