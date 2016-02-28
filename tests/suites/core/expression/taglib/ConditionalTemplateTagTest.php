@@ -75,8 +75,6 @@ class ConditionalTemplateTagTest extends \PHPUnit_Framework_TestCase {
 
       $actual = $doc->transform();
 
-      echo $actual;
-
       $this->assertContains('<h2 class="...">' . $model->getHeadline() . '</h2>', $actual);
       $this->assertContains('<p>' . $model->getText() . '</p>', $actual);
       $this->assertContains('<h3 class="...">' . $model->getSubHeadline() . '</h3>', $actual);

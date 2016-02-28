@@ -37,7 +37,7 @@ class AppendNodeTagTest extends \PHPUnit_Framework_TestCase {
       $tag->onParseTime();
       $tag->onAfterAppend();
 
-      $children = &$tag->getChildren();
+      $children = $tag->getChildren();
 
       // including append node tag we've got three child nodes
       $this->assertCount(3, $children);
@@ -48,7 +48,7 @@ class AppendNodeTagTest extends \PHPUnit_Framework_TestCase {
 
       // test whether the nodes have been re-referenced and not copied
       $appendNodeTag = &$children[$keys[0]];
-      $appendNodeChildren = &$appendNodeTag->getChildren();
+      $appendNodeChildren = $appendNodeTag->getChildren();
 
       $innerKeys = array_keys($appendNodeChildren);
 

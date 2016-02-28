@@ -36,11 +36,11 @@ class ProxyListController extends UmgtBaseController {
    public function transformContent() {
 
       // display filter form
-      $uM = & $this->getManager();
-      $form = & $this->getForm('type-filter');
+      $uM = $this->getManager();
+      $form = $this->getForm('type-filter');
 
       $types = $uM->loadVisibilityDefinitionTypes();
-      $select = & $form->getFormElementByName('proxytypeid');
+      $select = $form->getFormElementByName('proxytypeid');
       /* @var $select SelectBoxTag */
 
       // add default option that deletes any filter
@@ -69,7 +69,7 @@ class ProxyListController extends UmgtBaseController {
       }
 
       $buffer = (string) '';
-      $template = & $this->getTemplate('Proxy');
+      $template = $this->getTemplate('Proxy');
       foreach ($proxies as $proxy) {
 
          $proxyId = $proxy->getObjectId();

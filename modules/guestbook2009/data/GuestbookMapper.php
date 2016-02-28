@@ -89,7 +89,7 @@ class GuestbookMapper extends APFObject {
     */
    private function getCurrentGuestbook() {
       /* @var $model GuestbookModel */
-      $model = &$this->getServiceObject(GuestbookModel::class);
+      $model = $this->getServiceObject(GuestbookModel::class);
 
       return $this->orm->loadObjectByID('Guestbook', $model->getGuestbookId());
    }
@@ -115,7 +115,7 @@ class GuestbookMapper extends APFObject {
 
       // invoke benchmarker to be able to monitor the performance
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
       $t->start('mapGenericEntries2DomainObjects()');
 
       // load the language object for the current language to enable
@@ -240,7 +240,7 @@ class GuestbookMapper extends APFObject {
 
       if ($guestbook == null) {
          /* @var $model GuestbookModel */
-         $model = &$this->getServiceObject(GuestbookModel::class);
+         $model = $this->getServiceObject(GuestbookModel::class);
          $gbId = $model->getGuestbookId();
          throw new InvalidArgumentException('[GuestbookManager::mapGenericGuestbook2DomainObject()] '
                . 'No guestbook with id "' . $gbId . '" stored in database! Please check your guestbook tag '

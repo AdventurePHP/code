@@ -64,7 +64,7 @@ class ArrayPagerController extends BaseDocumentController {
       }
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
       $t->start('ArrayPager');
 
       $content = $this->getTemplate('pager');
@@ -181,7 +181,7 @@ class ArrayPagerController extends BaseDocumentController {
 
             $stringURL = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
                   [
-                        $config['ParameterPage'] => 1,
+                        $config['ParameterPage']    => 1,
                         $config['ParameterEntries'] => $integerEntries
                   ]
             ));

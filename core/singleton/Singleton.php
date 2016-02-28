@@ -33,7 +33,7 @@ use ReflectionClass;
  * new request.
  * <p/>
  * Usage:
- * <pre>$myObject = &Singleton::getInstance('VENDOR\..\Class');</pre>
+ * <pre>$myObject = Singleton::getInstance('VENDOR\..\Class');</pre>
  *
  * @author Christian Achatz
  * @version

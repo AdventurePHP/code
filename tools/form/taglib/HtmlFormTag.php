@@ -184,7 +184,7 @@ class HtmlFormTag extends Document implements HtmlForm {
    public function &addFormElement($elementType, array $elementAttributes = []) {
 
       // create form element
-      $control = &$this->createFormElement($this, $elementType, $elementAttributes);
+      $control = $this->createFormElement($this, $elementType, $elementAttributes);
 
       if ($control === null) {
          // notify developer that object creation failed
@@ -271,7 +271,7 @@ class HtmlFormTag extends Document implements HtmlForm {
 
       $class = $this->getTagLibClass($prefix, $name);
       if ($class === null) {
-         $parent = &$this->getParentObject();
+         $parent = $this->getParentObject();
          $documentController = get_class($parent->getDocumentController());
          throw new FormException('[HtmlFormTag::getTagClass()] No tag with name "' . $tagName
                . '" registered in form with name "' . $this->getAttribute('name') . '" in document controller '
@@ -343,8 +343,8 @@ class HtmlFormTag extends Document implements HtmlForm {
     */
    public function &addFormElementBeforeMarker($markerName, $elementType, array $elementAttributes = []) {
 
-      $marker = &$this->getMarker($markerName);
-      $control = &$this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);
+      $marker = $this->getMarker($markerName);
+      $control = $this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);
 
       if ($control === null) {
          // notify developer that object creation failed
@@ -354,7 +354,7 @@ class HtmlFormTag extends Document implements HtmlForm {
 
       // add the position place holder to the content
       $markerId = $marker->getObjectId();
-      $parent = &$marker->getParentObject();
+      $parent = $marker->getParentObject();
 
       $parent->setContent(str_replace(
             '<' . $markerId . ' />',
@@ -383,8 +383,8 @@ class HtmlFormTag extends Document implements HtmlForm {
     */
    public function &addFormElementAfterMarker($markerName, $elementType, array $elementAttributes = []) {
 
-      $marker = &$this->getMarker($markerName);
-      $control = &$this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);
+      $marker = $this->getMarker($markerName);
+      $control = $this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);
 
       if ($control === null) {
          // notify developer that object creation failed
@@ -394,7 +394,7 @@ class HtmlFormTag extends Document implements HtmlForm {
 
       // add the position place holder to the content
       $markerId = $marker->getObjectId();
-      $parent = &$marker->getParentObject();
+      $parent = $marker->getParentObject();
 
       $parent->setContent(str_replace(
             '<' . $markerId . ' />',
@@ -458,7 +458,7 @@ class HtmlFormTag extends Document implements HtmlForm {
 
    public function transformForm() {
 
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
       /* @var $t BenchmarkTimer */
       $id = '(HtmlFormTag) ' . $this->getObjectId() . '::transformForm()';
       $t->start($id);
@@ -497,7 +497,7 @@ class HtmlFormTag extends Document implements HtmlForm {
             $hiddenFieldMarker = '';
 
             foreach ($queryParams as $name => $value) {
-               $control = &$this->createFormElement($this, 'form:hidden', ['name' => $name, 'value' => $value]);
+               $control = $this->createFormElement($this, 'form:hidden', ['name' => $name, 'value' => $value]);
                $hiddenFieldMarker .= '<' . $control->getObjectId() . ' />';
             }
 

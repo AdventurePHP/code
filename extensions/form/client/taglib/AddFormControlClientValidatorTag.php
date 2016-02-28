@@ -96,7 +96,7 @@ class AddFormControlClientValidatorTag extends AbstractFormControl {
       }
 
       /* @var $CVSS ClientValidationScriptStore */
-      $CVSS = &$this->getServiceObject(ClientValidationScriptStore::class);
+      $CVSS = $this->getServiceObject(ClientValidationScriptStore::class);
       $CVSS->addClientValidator($class, $button, $controls, $options, $onblur);
    }
 

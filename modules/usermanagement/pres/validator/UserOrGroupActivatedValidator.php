@@ -48,9 +48,9 @@ class UserOrGroupActivatedValidator extends TextFieldValidator {
       $altControlName = $this->control->getAttribute('alt');
 
       // initialize alternative control for marking
-      $form = &$this->control->getParentObject();
       /* @var $form HtmlFormTag */
-      $this->alternativeControl = &$form->getFormElementByName($altControlName);
+      $form = $this->control->getParentObject();
+      $this->alternativeControl = $form->getFormElementByName($altControlName);
 
       $request = $this->getRequest();
       if ($request->getParameter($controlName) === null && $request->getParameter($altControlName) === null) {

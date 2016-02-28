@@ -68,8 +68,8 @@ class MultiSelectBoxTag extends SelectBoxTag {
       // that we can address the element with it's plain name in the template.
       $name = $this->getAttribute('name');
       if (substr_count($name, '[') > 0 || substr_count($name, ']') > 0) {
-         $form = &$this->getForm();
-         $doc = &$form->getParentObject();
+         $form = $this->getForm();
+         $doc = $form->getParentObject();
          $docCon = get_class($doc->getDocumentController());
          throw new FormException('[MultiSelectBoxTag::onParseTime()] The attribute "name" of the '
                . '&lt;form:multiselect /&gt; tag with name "' . $this->attributes['name']

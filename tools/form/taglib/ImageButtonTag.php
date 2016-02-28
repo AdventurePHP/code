@@ -53,7 +53,7 @@ class ImageButtonTag extends ButtonTag {
    public function onParseTime() {
 
       $buttonName = $this->getAttribute('name');
-      $form = &$this->getForm();
+      $form = $this->getForm();
       if ($buttonName === null) {
          $formName = $form->getAttribute('name');
          throw new FormException('[ImageButtonTag::onAfterAppend()] Missing required attribute '

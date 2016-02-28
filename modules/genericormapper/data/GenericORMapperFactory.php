@@ -34,13 +34,13 @@ use APF\core\service\APFService;
  * relation table only once per session.
  * <p/>
  * Further, the factory must be created using the service manager. Sample:
- * <pre>$gormFact = &$this->getServiceObject(GenericORMapperFactory::class);
- * $gormFact = &$this->getServiceObject(
+ * <pre>$gormFact = $this->getServiceObject(GenericORMapperFactory::class);
+ * $gormFact = $this->getServiceObject(
  *                                      GenericORMapperFactory::class,
  *                                      [],
  *                                      APFService::SERVICE_TYPE_NORMAL
  * );
- * $gormFact = &$this->getServiceObject(
+ * $gormFact = $this->getServiceObject(
  *                                      GenericORMapperFactory::class,
  *                                      [],
  *                                      APFService::SERVICE_TYPE_SESSION_SINGLETON
@@ -93,8 +93,8 @@ final class GenericORMapperFactory extends APFObject {
     * environment!
     * <p/>
     * As of 1.12, this method has to be used as follows:
-    * <pre>$gormFact = &$this->getServiceObject(GenericORMapperFactory::class);
-    * $orm = &$gormFact->getGenericORMapper('VENDOR\my\namespace', 'config_sub_key', 'db_connection'[, true|false]);</pre>
+    * <pre>$gormFact = $this->getServiceObject(GenericORMapperFactory::class);
+    * $orm = $gormFact->getGenericORMapper('VENDOR\my\namespace', 'config_sub_key', 'db_connection'[, true|false]);</pre>
     *
     * @param string $configNamespace namespace, where the desired mapper configuration is located
     * @param string $configNameAffix name affix of the object and relation definition files

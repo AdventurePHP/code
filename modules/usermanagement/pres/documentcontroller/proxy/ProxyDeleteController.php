@@ -34,22 +34,20 @@ class ProxyDeleteController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $uM = & $this->getManager();
+      $uM = $this->getManager();
 
       $proxyId = $this->getRequest()->getParameter('proxyid');
 
       $proxy = new UmgtVisibilityDefinition();
       $proxy->setObjectId($proxyId);
 
-      $formYes = & $this->getForm('DelYes');
-      $formNo = & $this->getForm('DelNo');
+      $formYes = $this->getForm('DelYes');
+      $formNo = $this->getForm('DelNo');
 
       if ($formYes->isSent()) {
          $uM->deleteVisibilityDefinition($proxy);
       } elseif ($formNo->isSent()) {
       } else {
-
-
          $proxyType = $uM->loadVisibilityDefinitionType($proxy);
          $this->getLabel('intro-text')
                ->setPlaceHolder('proxy-type', $proxyType->getAppObjectName())
@@ -63,10 +61,10 @@ class ProxyDeleteController extends UmgtBaseController {
 
       $this->getResponse()->forward($this->generateLink(
             [
-                        'mainview'  => 'proxy',
-                        'proxyview' => null
+                  'mainview'  => 'proxy',
+                  'proxyview' => null
             ]
-            )
+      )
       );
 
    }

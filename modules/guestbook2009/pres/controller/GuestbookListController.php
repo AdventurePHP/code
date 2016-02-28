@@ -35,10 +35,10 @@ class GuestbookListController extends GuestbookBaseController {
 
    public function transformContent() {
 
-      $gS = & $this->getGuestbookService();
+      $gS = $this->getGuestbookService();
       $entryList = $gS->loadPagedEntryList();
 
-      $tmpl_entry = & $this->getTemplate('entry');
+      $tmpl_entry = $this->getTemplate('entry');
       $buffer = (string) '';
       foreach ($entryList as $entry) {
 

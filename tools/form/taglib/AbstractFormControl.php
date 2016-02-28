@@ -163,14 +163,14 @@ abstract class AbstractFormControl extends Document implements FormControl {
 
    public function &getForm() {
 
-      $form = &$this->getParentObject();
+      $form = $this->getParentObject();
 
       if ($form instanceof HtmlForm) {
          return $form;
       }
 
       while (!($form instanceof HtmlForm)) {
-         $form = &$form->getParentObject();
+         $form = $form->getParentObject();
 
          if ($form === null) {
             throw new FormException('Cannot find form starting at form control with name '
@@ -385,12 +385,12 @@ abstract class AbstractFormControl extends Document implements FormControl {
          return $fields;
       }
 
-      $form = &$this->getForm();
+      $form = $this->getForm();
 
       $fields = [];
 
       foreach (explode('|', $dependentFields) as $fieldName) {
-         $fields[] = &$form->getFormElementByName(trim($fieldName));
+         $fields[] = $form->getFormElementByName(trim($fieldName));
       }
 
       return $fields;

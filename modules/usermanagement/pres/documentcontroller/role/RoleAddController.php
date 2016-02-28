@@ -36,9 +36,9 @@ class RoleAddController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $form = & $this->getForm('RoleAdd');
-      $permissionControl = & $form->getFormElementByName('Permission');
+      $form = $this->getForm('RoleAdd');
       /* @var $permissionControl MultiSelectBoxTag */
+      $permissionControl = $form->getFormElementByName('Permission');
 
       $uM = $this->getManager();
       $roles = $uM->getRoleList();
@@ -52,16 +52,16 @@ class RoleAddController extends UmgtBaseController {
 
       if ($form->isSent() && $form->isValid()) {
 
-         $uM = & $this->getManager();
+         $uM = $this->getManager();
          $role = new UmgtRole();
 
-         $displayName = & $form->getFormElementByName('DisplayName');
+         $displayName = $form->getFormElementByName('DisplayName');
          $role->setDisplayName($displayName->getValue());
 
-         $description = & $form->getFormElementByName('Description');
+         $description = $form->getFormElementByName('Description');
          $role->setDescription($description->getValue());
 
-         $options = & $permissionControl->getSelectedOptions();
+         $options = $permissionControl->getSelectedOptions();
 
          for ($i = 0; $i < count($options); $i++) {
             $newPermission = new UmgtPermission();

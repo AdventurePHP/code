@@ -34,7 +34,7 @@ class UserListController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $uM = & $this->getManager();
+      $uM = $this->getManager();
       $userList = $uM->getPagedUserList();
 
       $buffer = '';

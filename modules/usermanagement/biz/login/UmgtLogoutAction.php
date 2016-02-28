@@ -40,7 +40,7 @@ class UmgtLogoutAction extends AbstractFrontcontrollerAction {
    public function run() {
       $logout = $this->getInput()->getParameter('logout', 'false');
       if ($logout === 'true') {
-         $sessionStore = &$this->getServiceObject(UmgtUserSessionStore::class, [],
+         $sessionStore = $this->getServiceObject(UmgtUserSessionStore::class, [],
                APFService::SERVICE_TYPE_SESSION_SINGLETON);
          /* @var $sessionStore UmgtUserSessionStore */
          $sessionStore->logout($this->getContext());
@@ -51,7 +51,7 @@ class UmgtLogoutAction extends AbstractFrontcontrollerAction {
          $response->setCookie($cookie->delete());
 
          // redirect to target page
-         $urlProvider = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'LogoutRedirectUrlProvider');
+         $urlProvider = $this->getDIServiceObject('APF\modules\usermanagement\biz', 'LogoutRedirectUrlProvider');
          /* @var $urlProvider UmgtRedirectUrlProvider */
          $response->forward(LinkGenerator::generateUrl(Url::fromString($urlProvider->getRedirectUrl())));
       }

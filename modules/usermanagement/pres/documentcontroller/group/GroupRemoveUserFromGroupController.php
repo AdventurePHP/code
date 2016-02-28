@@ -37,18 +37,18 @@ class GroupRemoveUserFromGroupController extends UmgtBaseController {
    public function transformContent() {
 
       // initialize the form
-      $form = & $this->getForm('User');
-      $userControl = & $form->getFormElementByName('User');
+      $form = $this->getForm('User');
+      $userControl = $form->getFormElementByName('User');
       /* @var $userControl MultiSelectBoxTag */
       $groupId = $this->getRequest()->getParameter('groupid');
-      $uM = & $this->getManager();
-      $group = $uM->loadGroupById($groupId);
+      $uM = $this->getManager();
+      $group = $uM->loadGroupByID($groupId);
       $users = $uM->loadUsersWithGroup($group);
       $count = count($users);
 
       // display hint, if no user is assigned to this group
       if ($count == 0) {
-         $template = & $this->getTemplate('NoMoreUser');
+         $template = $this->getTemplate('NoMoreUser');
          $template->getLabel('message-1')->setPlaceHolder('display-name', $group->getDisplayName());
          $template->getLabel('message-2')->setPlaceHolder('group-view-link', $this->generateLink(['mainview' => 'group', 'groupview' => null, 'groupid' => null]));
          $template->transformOnPlace();
@@ -64,7 +64,7 @@ class GroupRemoveUserFromGroupController extends UmgtBaseController {
       // remove the desired users
       if ($form->isSent() && $form->isValid()) {
 
-         $options = & $userControl->getSelectedOptions();
+         $options = $userControl->getSelectedOptions();
 
          $users = [];
          for ($i = 0; $i < count($options); $i++) {

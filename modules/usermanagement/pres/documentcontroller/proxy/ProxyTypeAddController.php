@@ -29,14 +29,14 @@ class ProxyTypeAddController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $form = & $this->getForm('add');
+      $form = $this->getForm('add');
 
       if ($form->isSent() && $form->isValid()) {
 
-         $proxyName = & $form->getFormElementByName('proxytypename');
+         $proxyName = $form->getFormElementByName('proxytypename');
          $proxyType = new UmgtVisibilityDefinitionType();
          $proxyType->setAppObjectName($proxyName->getAttribute('value'));
-         $uM = & $this->getManager();
+         $uM = $this->getManager();
          try {
             $uM->saveVisibilityDefinitionType($proxyType);
             $this->getResponse()->forward($this->generateLink(['mainview' => 'proxy', 'proxyview' => 'typelist']));

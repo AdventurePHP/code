@@ -84,7 +84,7 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
 
       $table = 'config_' . $this->getTableNameSuffix($namespace);
 
-      $conn = &$this->getConnection($context, $language);
+      $conn = $this->getConnection($context, $language);
       $select = 'SELECT `section`, `key`, `value` FROM `' . $table . '`
                            WHERE
                               `context` = \'' . $context . '\' AND
@@ -179,7 +179,7 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
       $table = 'config_' . $this->getTableNameSuffix($namespace);
 
       // resolve entries by section since we have a flat structure only
-      $conn = &$this->getConnection($context, $language);
+      $conn = $this->getConnection($context, $language);
       $configName = $this->getConfigName($name);
 
       foreach ($config->getSectionNames() as $sectionName) {
@@ -222,7 +222,7 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
    public function deleteConfiguration($namespace, $context, $language, $environment, $name) {
       $table = 'config_' . $this->getTableNameSuffix($namespace);
 
-      $conn = &$this->getConnection($context, $language);
+      $conn = $this->getConnection($context, $language);
       $textStatement = "DELETE FROM `" . $table . "`
                           WHERE
                             `context` = '" . $context . "',

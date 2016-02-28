@@ -54,7 +54,7 @@ class ButtonTag extends AbstractFormControl {
    public function onParseTime() {
 
       $buttonName = $this->getAttribute('name');
-      $form = &$this->getForm();
+      $form = $this->getForm();
       if ($buttonName === null) {
          $formName = $form->getAttribute('name');
          throw new FormException('[ButtonTag::onAfterAppend()] Missing required attribute '

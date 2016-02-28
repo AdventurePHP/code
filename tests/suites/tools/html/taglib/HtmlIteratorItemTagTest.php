@@ -36,7 +36,7 @@ class HtmlIteratorItemTagTest extends \PHPUnit_Framework_TestCase {
       $tag->onParseTime();
       $tag->onAfterAppend();
 
-      $children = &$tag->getChildren();
+      $children = $tag->getChildren();
       $this->assertCount(3, $children);
 
       $keys = array_keys($children);

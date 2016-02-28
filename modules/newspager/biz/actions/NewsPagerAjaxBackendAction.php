@@ -52,9 +52,9 @@ class NewsPagerAjaxBackendAction extends AbstractFrontcontrollerAction {
       // inject the language here to ease service creation
       $this->setLanguage($input->getParameter('lang'));
 
-      /* @var $provider NewsPagerProvider */
       // load news object
-      $provider = &$this->getServiceObject(NewsPagerProvider::class);
+      /* @var $provider NewsPagerProvider */
+      $provider = $this->getServiceObject(NewsPagerProvider::class);
       $news = $provider->getNewsByPage($dataDir, $page);
 
       // send json

@@ -35,12 +35,12 @@ class RoleListController extends UmgtBaseController {
    public function transformContent() {
 
       // load role list
-      $uM = & $this->getManager();
+      $uM = $this->getManager();
       $roleList = $uM->getPagedRoleList();
 
       // display list
       $buffer = (string) '';
-      $template = & $this->getTemplate('Role');
+      $template = $this->getTemplate('Role');
       foreach ($roleList as $role) {
 
          $roleId = $role->getObjectId();

@@ -61,7 +61,7 @@ class TimeCaptchaValidator extends TextFieldValidator {
       }
 
       $session = $this->getRequest()->getSession(TimeCaptchaTag::SESSION_NAMESPACE);
-      $form = &$this->control->getForm();
+      $form = $this->control->getForm();
       $storedTime = intval($session->load('form_' . $form->getAttribute('name')));
       $session->delete('form_' . $form->getAttribute('name'));
       unset($session);

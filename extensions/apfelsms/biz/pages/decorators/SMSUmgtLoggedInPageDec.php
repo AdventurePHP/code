@@ -49,7 +49,7 @@ class SMSUmgtLoggedInPageDec extends SMSAbstractPageDec {
    public function isHidden() {
 
       /** @var $umgtUS UmgtUserSessionStore */
-      $umgtUS = &$this->getServiceObject(UmgtUserSessionStore::class, [], APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      $umgtUS = $this->getServiceObject(UmgtUserSessionStore::class, [], APFService::SERVICE_TYPE_SESSION_SINGLETON);
 
       // load current user
       $user = $umgtUS->getUser($this->getContext());

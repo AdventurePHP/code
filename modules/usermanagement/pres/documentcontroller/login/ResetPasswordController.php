@@ -40,7 +40,7 @@ class ResetPasswordController extends BaseDocumentController {
    public function transformContent() {
 
       /* @var $umgt UmgtManager */
-      $umgt = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
+      $umgt = $this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
 
       // get hash from request
       $hash = $this->getRequest()->getParameter('h');
@@ -68,7 +68,7 @@ class ResetPasswordController extends BaseDocumentController {
             // system error message
             $this->getTemplate('system-error')->transformOnPlace();
          } else {
-            $form = &$this->getForm('resetpw');
+            $form = $this->getForm('resetpw');
 
             // handle form
             if ($form->isSent() && $form->isValid()) {
@@ -87,7 +87,7 @@ class ResetPasswordController extends BaseDocumentController {
                      the manual for more details.');
                }
                /* @var $sender mailSender */
-               $sender = &$this->getServiceObject('APF\tools\mail\mailSender');
+               $sender = $this->getServiceObject('APF\tools\mail\mailSender');
                $sender->init('UmgtForgotPassword');
 
                $labelConfig = $this->getConfiguration('APF\modules\usermanagement\pres', 'labels.ini');

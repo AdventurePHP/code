@@ -52,8 +52,8 @@ class WeatherController extends BaseDocumentController {
       if ($XML != null) {
 
          // Get references on the templates used
-         $Template__Channel = & $this->getTemplate('Channel');
-         $Template__Item = & $this->getTemplate('Item');
+         $Template__Channel = $this->getTemplate('Channel');
+         $Template__Item = $this->getTemplate('Item');
 
          // Create DOM document and get an reference on the channel node
          $DomDoc = simplexml_load_string($XML);
@@ -95,7 +95,7 @@ class WeatherController extends BaseDocumentController {
       } else {
 
          // Display error message
-         $templateNoEntries = & $this->getTemplate('NoEntries_' . $this->language);
+         $templateNoEntries = $this->getTemplate('NoEntries_' . $this->language);
          $templateNoEntries->setPlaceHolder('Source', $this->getRSSSource());
          $this->setPlaceHolder('Content', $templateNoEntries->transformTemplate());
       }

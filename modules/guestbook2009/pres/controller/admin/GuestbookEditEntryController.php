@@ -40,32 +40,32 @@ class GuestbookEditEntryController extends GuestbookBackendBaseController {
       } else {
 
          // pre-fill edit form by directly accessing the APF form objects
-         $gS = & $this->getGuestbookService();
-         $form = & $this->getForm('edit_entry');
+         $gS = $this->getGuestbookService();
+         $form = $this->getForm('edit_entry');
          if ($form->isSent() === false) {
 
             $entry = $gS->loadEntry($entryId);
             $editor = $entry->getEditor();
 
-            $name = & $form->getFormElementByName('name');
+            $name = $form->getFormElementByName('name');
             $name->setAttribute('value', $editor->getName());
 
-            $email = & $form->getFormElementByName('email');
+            $email = $form->getFormElementByName('email');
             $email->setAttribute('value', $editor->getEmail());
 
-            $website = & $form->getFormElementByName('website');
+            $website = $form->getFormElementByName('website');
             $website->setAttribute('value', $editor->getWebsite());
 
-            $title = & $form->getFormElementByName('title');
+            $title = $form->getFormElementByName('title');
             $title->setAttribute('value', $entry->getTitle());
 
-            $text = & $form->getFormElementByName('text');
+            $text = $form->getFormElementByName('text');
             $text->setContent($entry->getText());
 
-            $hiddenEntryId = & $form->getFormElementByName('entryid');
+            $hiddenEntryId = $form->getFormElementByName('entryid');
             $hiddenEntryId->setAttribute('value', $entry->getId());
 
-            $hiddenEditorId = & $form->getFormElementByName('editorid');
+            $hiddenEditorId = $form->getFormElementByName('editorid');
             $hiddenEditorId->setAttribute('value', $editor->getId());
 
          } else {
@@ -76,27 +76,27 @@ class GuestbookEditEntryController extends GuestbookBackendBaseController {
                $entry = new Entry();
                $editor = new User();
 
-               $name = & $form->getFormElementByName('name');
+               $name = $form->getFormElementByName('name');
                $editor->setName($name->getAttribute('value'));
 
-               $email = & $form->getFormElementByName('email');
+               $email = $form->getFormElementByName('email');
                $editor->setEmail($email->getAttribute('value'));
 
-               $website = & $form->getFormElementByName('website');
+               $website = $form->getFormElementByName('website');
                $editor->setWebsite($website->getAttribute('value'));
 
-               $title = & $form->getFormElementByName('title');
+               $title = $form->getFormElementByName('title');
                $entry->setTitle($title->getAttribute('value'));
 
-               $text = & $form->getFormElementByName('text');
+               $text = $form->getFormElementByName('text');
                $entry->setText($text->getContent());
 
                // retrieve the entry id from the hidden field
-               $hiddenEntryId = & $form->getFormElementByName('entryid');
+               $hiddenEntryId = $form->getFormElementByName('entryid');
                $entry->setId($hiddenEntryId->getAttribute('value'));
 
                // retrieve the editor id from the hidden field
-               $hiddenEditorId = & $form->getFormElementByName('editorid');
+               $hiddenEditorId = $form->getFormElementByName('editorid');
                $editor->setId($hiddenEditorId->getAttribute('value'));
 
                $entry->setEditor($editor);

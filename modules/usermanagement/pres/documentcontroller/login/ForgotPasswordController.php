@@ -41,13 +41,13 @@ class ForgotPasswordController extends BaseDocumentController {
 
    public function transformContent() {
 
-      $form = &$this->getForm('forgotpw');
+      $form = $this->getForm('forgotpw');
 
       // handle form
       if ($form->isSent() && $form->isValid()) {
 
          /* @var $umgt UmgtManager */
-         $umgt = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
+         $umgt = $this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
 
          try {
             $user = $umgt->loadUserByEMail($form->getFormElementByName('email')->getValue());
@@ -74,7 +74,7 @@ class ForgotPasswordController extends BaseDocumentController {
                      the manual for more details.');
                }
                /* @var $sender mailSender */
-               $sender = &$this->getServiceObject('APF\tools\mail\mailSender');
+               $sender = $this->getServiceObject('APF\tools\mail\mailSender');
                $sender->init('UmgtForgotPassword');
 
                $labelConfig = $this->getConfiguration('APF\modules\usermanagement\pres', 'labels.ini');

@@ -59,7 +59,7 @@ class ContactManager extends APFObject {
 
       // set up the mail sender
       /* @var $mail mailSender */
-      $mail = &$this->getServiceObject(mailSender::class);
+      $mail = $this->getServiceObject(mailSender::class);
       $mail->init('ContactForm');
 
       /* @var $recipient ContactFormRecipient */

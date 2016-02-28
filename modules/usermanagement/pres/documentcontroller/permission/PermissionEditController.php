@@ -38,15 +38,15 @@ class PermissionEditController extends UmgtBaseController {
       $permissionId = $this->getRequest()->getParameter('permissionid');
 
       // initialize the form
-      $form = & $this->getForm('PermissionEdit');
-      $permissionIdControl = & $form->getFormElementByName('permissionid');
+      $form = $this->getForm('PermissionEdit');
+      $permissionIdControl = $form->getFormElementByName('permissionid');
       $permissionIdControl->setAttribute('value', $permissionId);
 
-      $displayName = & $form->getFormElementByName('DisplayName');
-      $name = & $form->getFormElementByName('Name');
-      $value = & $form->getFormElementByName('Value');
+      $displayName = $form->getFormElementByName('DisplayName');
+      $name = $form->getFormElementByName('Name');
+      $value = $form->getFormElementByName('Value');
 
-      $uM = & $this->getManager();
+      $uM = $this->getManager();
 
       if ($form->isSent()) {
 

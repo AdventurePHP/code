@@ -106,10 +106,10 @@ abstract class TextFieldValidator extends AbstractFormValidator {
     */
    protected function notifyValidationListeners(FormControl &$control) {
 
-      $form = &$control->getForm();
+      $form = $control->getForm();
 
       /* @var $listeners ValidationListenerTag[] */
-      $listeners = &$form->getFormElementsByTagName('form:listener');
+      $listeners = $form->getFormElementsByTagName('form:listener');
       $count = count($listeners);
       $controlName = $control->getAttribute('name');
       $validatorName = $this->getValidatorName();

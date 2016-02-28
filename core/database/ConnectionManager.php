@@ -33,8 +33,8 @@ use InvalidArgumentException;
  * must be created as a service object.
  * <p/>
  * <pre>
- * $connMgr = &$this->getServiceObject(ConnectionManager::class);
- * $dBConn = &$connMgr->getConnection('{ConnectionKey}');
+ * $connMgr = $this->getServiceObject(ConnectionManager::class);
+ * $dBConn = $connMgr->getConnection('{ConnectionKey}');
  * </pre>
  * The appropriate configuration file must reside under the <em>core::database</em> namespace
  * and the current application's context and environment. The content of the file is as follows:

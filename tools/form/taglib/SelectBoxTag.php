@@ -243,7 +243,7 @@ class SelectBoxTag extends AbstractFormControl {
       $this->isDynamicField = true;
 
       // retrieve or lazily create group
-      $group = &$this->getOrCreateGroup($groupLabel);
+      $group = $this->getOrCreateGroup($groupLabel);
 
       // add option to group
       $group->addOption($displayName, $value, $preSelected);
@@ -261,13 +261,13 @@ class SelectBoxTag extends AbstractFormControl {
     * Version 0.1, 07.01.2014<br />
     */
    protected function &getOrCreateGroup($groupLabel) {
-      $group = &$this->getGroup($groupLabel);
+      $group = $this->getGroup($groupLabel);
 
       // lazily create group for convenience reason
       if ($group === null) {
          $tag = new SelectBoxGroupTag();
          $tag->setAttribute('label', $groupLabel);
-         $group = &$this->addEntry($tag);
+         $group = $this->addEntry($tag);
       }
 
       return $group;
@@ -313,7 +313,7 @@ class SelectBoxTag extends AbstractFormControl {
       $this->isDynamicField = true;
 
       // retrieve or lazily create group
-      $group = &$this->getOrCreateGroup($groupLabel);
+      $group = $this->getOrCreateGroup($groupLabel);
 
       $group->addOptionTag($option);
    }
@@ -380,7 +380,7 @@ class SelectBoxTag extends AbstractFormControl {
       // ID#233: add/execute validators only in case the control is visible. Otherwise, this
       // may break the user flow with hidden mandatory fields and users end up in an endless loop.
       if ($validator->isActive() && $this->isMandatory($value) && $this->isVisible()) {
-         $option = &$this->getSelectedOption();
+         $option = $this->getSelectedOption();
          if ($option === null) {
             $value = null;
          } else {
@@ -431,7 +431,7 @@ class SelectBoxTag extends AbstractFormControl {
       foreach ($this->children as &$child) {
 
          if ($child instanceof SelectBoxGroupTag) {
-            $selectedOption = &$child->getSelectedOption();
+            $selectedOption = $child->getSelectedOption();
 
             // Bug-436: exit at the first hit to not overwrite this hit with another miss!
             if ($selectedOption !== null) {

@@ -82,7 +82,7 @@ interface DomNode extends APFDIService {
     * @version
     * Version 0.1, 20.02.2010<br />
     */
-   public function getParentObject();
+   public function &getParentObject();
 
    /**
     * Sets the object id of the current APF object.

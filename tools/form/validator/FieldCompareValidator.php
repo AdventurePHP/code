@@ -72,7 +72,7 @@ class FieldCompareValidator extends TextFieldValidator {
    private function initializeReferenceControl() {
 
       $refControlName = $this->control->getAttribute('ref');
-      $form = &$this->control->getForm();
+      $form = $this->control->getForm();
       if ($refControlName === null) {
          throw new FormException('[FieldCompareValidator::initializeReferenceControl()] The main field '
                . 'definition does not include the "ref" attribute. This attribute must be specified '
@@ -82,7 +82,7 @@ class FieldCompareValidator extends TextFieldValidator {
                E_USER_ERROR);
       }
 
-      $this->refControl = &$form->getFormElementByName($refControlName);
+      $this->refControl = $form->getFormElementByName($refControlName);
    }
 
    /**

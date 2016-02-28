@@ -30,7 +30,7 @@ use APF\core\logging\LogEntry;
  * <p/>
  * Use the following code sample to add a graphite log entry:
  * <code>
- * $logger = & Singleton::getInstance(Logger::class);
+ * $logger = Singleton::getInstance(Logger::class);
  * $logger->addEntry(new GraphiteLogEntry(
  *    'graphite',
  *    'services.web.rendering-times',

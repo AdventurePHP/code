@@ -43,8 +43,8 @@ use InvalidArgumentException;
 class HtmlHeaderAddStaticJsTag extends Document {
 
    public function transform() {
-      $header = &$this->getServiceObject(HtmlHeaderManager::class);
       /* @var $header HtmlHeaderManager */
+      $header = $this->getServiceObject(HtmlHeaderManager::class);
 
       $file = $this->getAttribute('file');
       if ($file == null) {

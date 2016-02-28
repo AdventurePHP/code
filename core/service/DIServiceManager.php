@@ -162,7 +162,7 @@ final class DIServiceManager {
 
       // Invoke benchmarker. Suppress warning for already started timers with circular calls!
       // Suppressing is here done by a dirty '@', because we will run into an error anyway.
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
       /* @var $t BenchmarkTimer */
       $benchId = 'DIServiceManager::getServiceObject(' . $configNamespace . ',' . $sectionName . ',' . $context . ',' . $language . ')';
       @$t->start($benchId);
@@ -319,7 +319,7 @@ final class DIServiceManager {
             if (isset(self::$INJECTION_CALL_CACHE[$injectionKey]) && $serviceType != APFService::SERVICE_TYPE_NORMAL) {
 
                // append error to log to provide debugging information
-               $log = &Singleton::getInstance(Logger::class);
+               $log = Singleton::getInstance(Logger::class);
                /* @var $log Logger */
                $instructions = '';
                foreach (self::$INJECTION_CALL_CACHE as $injectionInstruction => $DUMMY) {

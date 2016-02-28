@@ -38,7 +38,7 @@ register_shutdown_function(function () {
  * their validity when the web server is restarted.
  * <p/>
  * Usage:
- * <pre>$instance = &ApplicationSingleton::getInstance('VENDOR\..\Class');</pre>
+ * <pre>$instance = ApplicationSingleton::getInstance('VENDOR\..\Class');</pre>
  *
  * @author Christian Achatz
  * @version

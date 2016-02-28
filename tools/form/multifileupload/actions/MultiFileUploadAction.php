@@ -47,7 +47,7 @@ class MultiFileUploadAction extends AbstractFrontcontrollerAction {
          $formName = $this->getInput()->getParameter('formname');
 
          /* @var $manager MultiFileUploadManager */
-         $manager = &$this->getServiceObject(
+         $manager = $this->getServiceObject(
                MultiFileUploadManager::class,
                ['formname' => $formName, 'name' => $fieldName]
          );

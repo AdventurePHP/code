@@ -223,7 +223,7 @@ class HtmlIteratorTag extends Document implements Iterator {
       $getter = $iteratorItem->getAttribute('getter');
 
       // get the place holders
-      $placeHolders = &$iteratorItem->getPlaceHolders();
+      $placeHolders = $iteratorItem->getPlaceHolders();
 
       $itemCount = count($this->dataContainer);
 

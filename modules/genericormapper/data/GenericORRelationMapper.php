@@ -903,7 +903,7 @@ class GenericORRelationMapper extends GenericORMapper {
       }
 
       // check if object has related objects in it
-      $relatedObjects = &$object->getAllRelatedObjects();
+      $relatedObjects = $object->getAllRelatedObjects();
       if (count($relatedObjects) > 0) {
 
          foreach ($relatedObjects as $relationKey => $DUMMY) {

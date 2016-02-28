@@ -28,12 +28,12 @@ class ProxyAddUsersController extends UmgtPermissionBaseController {
    public function transformContent() {
 
       $proxyId = $this->getRequest()->getParameter('proxyid');
-      $form = & $this->getForm(self::$FORM_NAME);
+      $form = $this->getForm(self::$FORM_NAME);
 
       $proxyIdControl = $form->getFormElementByName('proxyid');
       $proxyIdControl->setAttribute('value', $proxyId);
 
-      $uM = & $this->getManager();
+      $uM = $this->getManager();
       $proxy = $uM->loadVisibilityDefinitionById($proxyId);
       $proxyType = $uM->loadVisibilityDefinitionType($proxy);
 
@@ -44,7 +44,7 @@ class ProxyAddUsersController extends UmgtPermissionBaseController {
       $users = $uM->loadUsersNotWithVisibilityDefinition($proxy);
 
       if (count($users) === 0) {
-         $tmpl = & $this->getTemplate('NoMoreUsers');
+         $tmpl = $this->getTemplate('NoMoreUsers');
          $tmpl->getLabel('message-1')
                ->setPlaceHolder('app-object-id', $proxy->getAppObjectId())
                ->setPlaceHolder('object-type', $proxyType->getObjectName());
@@ -55,8 +55,8 @@ class ProxyAddUsersController extends UmgtPermissionBaseController {
          return;
       }
 
-      $usersControl = & $form->getFormElementByName('users');
       /* @var $usersControl MultiSelectBoxTag */
+      $usersControl = $form->getFormElementByName('users');
       foreach ($users as $id => $DUMMY) {
          $usersControl->addOption($users[$id]->getDisplayName(), $users[$id]->getObjectId());
       }
@@ -71,7 +71,7 @@ class ProxyAddUsersController extends UmgtPermissionBaseController {
                      [
                            'mainview'  => 'proxy',
                            'proxyview' => null,
-                           'proxyid' => null
+                           'proxyid'   => null
                      ]
                )
          );

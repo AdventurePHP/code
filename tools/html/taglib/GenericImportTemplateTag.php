@@ -126,15 +126,15 @@ class GenericImportTemplateTag extends ImportTemplateTag {
 
          // register action with the front controller
          /* @var $fC Frontcontroller */
-         $fC = &Singleton::getInstance(Frontcontroller::class);
-         $action = &$fC->getActionByName($dependentActionName);
+         $fC = Singleton::getInstance(Frontcontroller::class);
+         $action = $fC->getActionByName($dependentActionName);
          if ($action === null) {
             $fC->addAction($dependentActionNamespace, $dependentActionName, $actionParamList);
          }
       }
 
       // get model
-      $model = &$this->getServiceObject($modelClass, [], $modelMode);
+      $model = $this->getServiceObject($modelClass, [], $modelMode);
 
       // check for the get method
       if (!method_exists($model, $getMethod)) {

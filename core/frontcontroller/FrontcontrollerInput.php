@@ -51,7 +51,7 @@ class FrontcontrollerInput extends APFObject implements ActionParameters {
    }
 
    public function setAction(Action &$action) {
-      $this->action = & $action;
+      $this->action = &$action;
    }
 
    public function setParameter($name, $value) {

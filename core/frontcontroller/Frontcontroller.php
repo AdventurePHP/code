@@ -229,9 +229,9 @@ class Frontcontroller extends APFObject {
       }
 
       // Create request and response implementations for OO abstraction
-      $request = &$this->getRequest();
+      $request = $this->getRequest();
 
-      $response = &$this->getResponse();
+      $response = $this->getResponse();
       $response->setContentType('text/html; charset=' . Registry::retrieve('APF\core', 'Charset'));
 
       // apply input filter to process request
@@ -287,7 +287,7 @@ class Frontcontroller extends APFObject {
    protected function runActions($type = Action::TYPE_PRE_PAGE_CREATE) {
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
 
       foreach ($this->actionStack as $offset => $DUMMY) {
 

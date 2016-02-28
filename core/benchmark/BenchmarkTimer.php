@@ -27,7 +27,7 @@ use InvalidArgumentException;
  * and your software. Must be used as a singleton to guarantee, that all benchmark tags
  * are included within the report. Usage (for each time!):
  * <pre>
- * $t = &Singleton::getInstance(BenchmarkTimer::class);
+ * $t = Singleton::getInstance(BenchmarkTimer::class);
  * $t->start('my_tag');
  * ...
  * $t->stop('my_tag');
@@ -35,7 +35,7 @@ use InvalidArgumentException;
  * In order to create a benchmark report (typically at the end of your bootstrap file,
  * please note the following:
  * <pre>
- * $t = &Singleton::getInstance(BenchmarkTimer::class);
+ * $t = Singleton::getInstance(BenchmarkTimer::class);
  * echo $t->createReport();
  * </pre>
  *
@@ -107,7 +107,7 @@ final class BenchmarkTimer {
     * Version 0.1, 31.12.2006<br />
     */
    public function __construct() {
-      $rootProcess = &$this->createRootProcess();
+      $rootProcess = $this->createRootProcess();
       $this->addRunningProcess($rootProcess);
       $this->setCurrentParent($rootProcess);
    }
@@ -421,7 +421,7 @@ final class BenchmarkTimer {
       // return, if benchmarker is disabled
       if ($this->enabled === false) {
          return 'Benchmarker is currently disabled. To generate a detailed report, please '
-         . 'enable it calling <em>$t = &Singleton::getInstance(BenchmarkTimer::class); '
+         . 'enable it calling <em>$t = Singleton::getInstance(BenchmarkTimer::class); '
          . '$t->enable();</em>!';
       }
 

@@ -123,7 +123,7 @@ abstract class BasicLinkScheme {
    protected function getActionsUrlRepresentation(array $query, $urlRewriting) {
 
       // retrieve actions from internal method (to enable testing)
-      $actions = &$this->getFrontcontrollerActions();
+      $actions = $this->getFrontcontrollerActions();
 
       $actionUrlRepresentation = [];
       foreach ($actions as $action) {

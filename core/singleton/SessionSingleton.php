@@ -40,7 +40,7 @@ register_shutdown_function(function () {
  * sessions. They loose their validity when the session ends.
  * <p/>
  * Usage:
- * <pre>$myObject = &SessionSingleton::getInstance('VENDOR\..\Class');</pre>
+ * <pre>$myObject = SessionSingleton::getInstance('VENDOR\..\Class');</pre>
  *
  * @author Christian Schäfer
  * @version

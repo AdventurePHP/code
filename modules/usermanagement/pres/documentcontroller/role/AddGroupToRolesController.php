@@ -36,15 +36,15 @@ class AddGroupToRolesController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $form = & $this->getForm('Roles');
+      $form = $this->getForm('Roles');
 
-      $uM = & $this->getManager();
+      $uM = $this->getManager();
 
       $group = $uM->loadGroupByID($this->getRequest()->getParameter('groupid'));
       $roles = $uM->loadRolesNotWithGroup($group);
 
       if (count($roles) === 0) {
-         $tmpl = & $this->getTemplate('NoMoreRoles');
+         $tmpl = $this->getTemplate('NoMoreRoles');
          $tmpl->getLabel('message-1')->setPlaceHolder('display-name', $group->getDisplayName());
          $tmpl->getLabel('message-2')->setPlaceHolder('group-view-link', $this->generateLink(['mainview' => 'group', 'roleview' => null, 'groupid' => null]));
          $tmpl->transformOnPlace();
@@ -52,7 +52,7 @@ class AddGroupToRolesController extends UmgtBaseController {
          return;
       }
 
-      $rolesControl = & $form->getFormElementByName('Roles');
+      $rolesControl = $form->getFormElementByName('Roles');
       /* @var $rolesControl MultiSelectBoxTag */
       foreach ($roles as $role) {
          $rolesControl->addOption($role->getDisplayName(), $role->getObjectId());
@@ -62,7 +62,7 @@ class AddGroupToRolesController extends UmgtBaseController {
 
       if ($form->isSent() && $form->isValid()) {
 
-         $options = & $rolesControl->getSelectedOptions();
+         $options = $rolesControl->getSelectedOptions();
          $additionalRoles = [];
          foreach ($options as $option) {
             /* @var $option SelectBoxOptionTag */

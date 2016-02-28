@@ -39,7 +39,7 @@ class GroupListController extends UmgtBaseController {
 
       // display group list
       $buffer = (string) '';
-      $template = & $this->getTemplate('Group');
+      $template = $this->getTemplate('Group');
 
       foreach ($groups as $group) {
          $groupId = $group->getObjectId();

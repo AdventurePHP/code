@@ -119,7 +119,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       // must be present in the order defined in the statement. Thus we must
       // re-order the $params array.
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
       $statementId = md5($statement);
       $id = $statementId . ' re-order bind params';
       $t->start($id);
@@ -313,7 +313,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    public function executeTextBindStatement($statement, array $params = [], $logStatement = false) {
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
       $statementId = md5($statement);
 
       // prepare statement

@@ -61,7 +61,7 @@ class ChainedStandardInputFilter implements ChainedContentFilter {
    public function filter(FilterChain &$chain, $input = null) {
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
 
       $id = get_class($this);
       $t->start($id);

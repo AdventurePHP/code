@@ -73,7 +73,7 @@ class MultiFileUploadTag extends AbstractFormControl {
       $maxFileSize = $this->getAttribute('max-file-size');
       $mimeTypes = $this->getAttribute('allowed-mime-types');
 
-      $this->manager = &$this->getServiceObject(
+      $this->manager = $this->getServiceObject(
             MultiFileUploadManager::class,
             ['formname' => $this->formName, 'name' => $this->uploadFieldName]
       );
@@ -87,7 +87,7 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 14.3.2011<br>
     */
    public function onAfterAppend() {
-      $form = &$this->getForm();
+      $form = $this->getForm();
       $form->setAttribute('enctype', 'multipart/form-data');
 
       // ensure form has an id (required for the java script stuff)
@@ -497,7 +497,7 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 14.3.2011<br>
     */
    public function uploadFiles() {
-      $name = &$this->uploadFieldName;
+      $name = $this->uploadFieldName;
       if (isset($_FILES[$name]) && $_FILES[$name]['name'] != '') {
          $addfile = $this->manager->addFile($_FILES[$name], false);
          unset($_FILES[$name]);

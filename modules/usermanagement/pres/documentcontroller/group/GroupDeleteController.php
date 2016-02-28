@@ -38,13 +38,13 @@ class GroupDeleteController extends UmgtBaseController {
       $groupId = $this->getRequest()->getParameter('groupid');
 
       // load the current group and print the display name
-      $uM = & $this->getManager();
+      $uM = $this->getManager();
       $group = $uM->loadGroupByID($groupId);
       $this->getLabel('display-name')->setPlaceHolder('display-name', $group->getDisplayName());
 
       // prepare the forms and execute action
-      $formNo = & $this->getForm('GroupDelNo');
-      $formYes = & $this->getForm('GroupDelYes');
+      $formNo = $this->getForm('GroupDelNo');
+      $formYes = $this->getForm('GroupDelYes');
 
       $response = $this->getResponse();
 

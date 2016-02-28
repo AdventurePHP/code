@@ -67,8 +67,8 @@ class FileUploadTag extends TextFieldTag {
    public function onParseTime() {
       $name = $this->getAttribute('name');
       if (substr($name, -2) === '[]') {
-         $form = &$this->getForm();
-         $doc = &$form->getParentObject();
+         $form = $this->getForm();
+         $doc = $form->getParentObject();
          $docCon = get_class($doc->getDocumentController());
          throw new FormException('[FileUploadTag::onParseTime()] The attribute "name" of the '
                . '&lt;form:file /&gt; tag with name "' . $name

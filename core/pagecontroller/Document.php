@@ -354,7 +354,7 @@ class Document extends APFObject implements DomNode {
       try {
          $this->setPlaceHolder($name, $value, $append);
       } catch (Exception $e) {
-         $log = &Singleton::getInstance(Logger::class);
+         $log = Singleton::getInstance(Logger::class);
          /* @var $log Logger */
          $log->addEntry(
                new SimpleLogEntry(
@@ -641,7 +641,7 @@ class Document extends APFObject implements DomNode {
       $count = 0;
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
 
       $benchId = '(' . get_class($this) . ') ' . $this->getObjectId() . '::onParseTime()';
       $t->start($benchId);
@@ -1073,7 +1073,7 @@ class Document extends APFObject implements DomNode {
 
    public function transform() {
 
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
       /* @var $t BenchmarkTimer */
       $t->start('(' . get_class($this) . ') ' . $this->getObjectId() . '::transform()');
 

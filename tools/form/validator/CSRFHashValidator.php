@@ -49,7 +49,7 @@ class CSRFHashValidator extends TextFieldValidator {
       $salt = $this->control->getAttribute('salt');
 
       /* @var $provider CSRFHashProvider */
-      $provider = &$this->getServiceObject($class);
+      $provider = $this->getServiceObject($class);
       $hash = $provider->generateHash($salt);
 
       return $hash === $input;

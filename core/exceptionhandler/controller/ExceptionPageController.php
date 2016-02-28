@@ -47,7 +47,7 @@ class ExceptionPageController extends BaseDocumentController {
       $buffer = (string) '';
 
       // get template
-      $templateExceptionEntry = & $this->getTemplate('ExceptionEntry');
+      $templateExceptionEntry = $this->getTemplate('ExceptionEntry');
 
       // generate stacktrace
       for ($i = 0; $i < count($exceptions); $i++) {

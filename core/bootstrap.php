@@ -159,7 +159,7 @@ ConfigurationManager::registerProvider('ini', new IniConfigurationProvider());
 // configure logger (outside namespace'd file! otherwise initialization will not work)
 register_shutdown_function(function () {
    /* @var $logger Logger */
-   $logger = &Singleton::getInstance(Logger::class);
+   $logger = Singleton::getInstance(Logger::class);
    $logger->flushLogBuffer();
 });
 
