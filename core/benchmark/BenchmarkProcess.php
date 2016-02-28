@@ -127,7 +127,7 @@ final class BenchmarkProcess {
    }
 
    public function appendProcess(BenchmarkProcess &$process) {
-      $processId = $process->getProcessID();
+      $processId = $process->getProcessId();
       $this->processes[$processId] = $process;
    }
 
