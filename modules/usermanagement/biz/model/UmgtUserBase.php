@@ -415,6 +415,33 @@ abstract class UmgtUserBase extends GenericDomainObject {
       return $this;
    }
 
+   /**
+    * @return string The value for property "ForgotPasswordHash".
+    */
+   public function getForgotPasswordHash() {
+      return $this->getProperty('ForgotPasswordHash');
+   }
+
+   /**
+    * @param string $value The value to set for property "ForgotPasswordHash".
+    *
+    * @return UmgtUser The domain object for further usage.
+    */
+   public function setForgotPasswordHash($value) {
+      $this->setProperty('ForgotPasswordHash', $value);
+
+      return $this;
+   }
+
+   /**
+    * @return UmgtUser The domain object for further usage.
+    */
+   public function deleteForgotPasswordHash() {
+      $this->deleteProperty('ForgotPasswordHash');
+
+      return $this;
+   }
+
 }
 
 // DO NOT CHANGE THIS COMMENT! <*UmgtUserBase:end*>

@@ -1,0 +1,77 @@
+<@controller
+class="APF\modules\usermanagement\pres\documentcontroller\login\ForgotPasswordController"
+@>
+<html:form class="umgt-fe-forgotpw" autocomplete="off" name="forgotpw" method="post">
+    <div>
+        ${forgotpw-error}
+        <label for="umgt-fe-forgotpw-email">
+            <html:getstring
+                    namespace="APF\modules\usermanagement\pres"
+                    config="labels.ini"
+                    entry="forgotpw.form.email.label"/>
+        </label>
+        <form:text id="umgt-fe-forgotpw-email" name="email"/>
+
+        <label for="umgt-fe-forgotpw-captcha">
+            <html:getstring
+                    namespace="APF\modules\usermanagement\pres"
+                    config="labels.ini"
+                    entry="forgotpw.form.captcha.label"/>
+        </label>
+        <form:recaptcha
+                id="umgt-fe-forgotpw-captcha"
+                name="captcha"
+                public-key="..."
+                private-key="..."
+                />
+
+        <form:button id="umgt-fe-forgotpw-send" name="sendFormForgotPw">
+            <button:getstring
+                    namespace="APF\modules\usermanagement\pres"
+                    config="labels.ini"
+                    entry="forgotpw.form.button.label"/>
+        </form:button>
+        <form:addvalidator
+                class="APF\tools\form\validator\TextLengthValidator"
+                button="sendFormForgotPw"
+                control="email"
+                />
+        <form:addvalidator
+                class="APF\tools\form\validator\EMailValidator"
+                button="sendFormForgotPw"
+                control="email"
+                />
+        <form:addvalidator
+                class="APF\modules\recaptcha\pres\validator\ReCaptchaValidator"
+                button="sendFormForgotPw"
+                control="captcha"
+                />
+    </div>
+</html:form>
+
+<html:template name="forgotpw-error">
+    <div class="credentials-error">
+        <html:getstring
+                namespace="APF\modules\usermanagement\pres"
+                config="labels.ini"
+                entry="forgotpw.credentials.error"/>
+    </div>
+</html:template>
+
+<html:template name="system-error">
+    <div class="system-error">
+        <html:getstring
+                namespace="APF\modules\usermanagement\pres"
+                config="labels.ini"
+                entry="forgotpw.system.error"/>
+    </div>
+</html:template>
+
+<html:template name="forgotpw-success">
+    <div class="credentials-ok">
+        <html:getstring
+                namespace="APF\modules\usermanagement\pres"
+                config="labels.ini"
+                entry="forgotpw.success"/>
+    </div>
+</html:template>

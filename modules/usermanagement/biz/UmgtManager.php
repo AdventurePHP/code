@@ -2197,4 +2197,22 @@ class UmgtManager extends APFObject {
       }
    }
 
+   /**
+    * Loads the user by the generated ForgotPasswordHash
+    *
+    * @param $hash the hash to reset the password
+    *
+    * @return UmgtUser|null The corresponding user or null if the user cannot be found.
+    *
+    * @author dave
+    * @version
+    * Version 0.1, 29.10.15<br />
+    */
+   public function loadUserByForgotPasswordHash($hash) {
+      $crit = new GenericCriterionObject();
+      $crit->addPropertyIndicator('ForgotPasswordHash', $hash);
+
+      return $this->getORMapper()->loadObjectByCriterion('User', $crit);
+   }
+
 }
