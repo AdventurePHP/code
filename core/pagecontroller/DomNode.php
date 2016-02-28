@@ -337,7 +337,6 @@ interface DomNode extends APFDIService {
     * @param bool $append True in case the applied value should be appended, false otherwise.
     *
     * @return $this This instance for further usage.
-    * @throws InvalidArgumentException In case the place holder cannot be found.
     *
     * @author Christian Achatz, Jan Wiese
     * @version
@@ -375,40 +374,6 @@ interface DomNode extends APFDIService {
     * Version 0.3, 06.08.2013 (Added support for appending content to place holders)<br />
     */
    public function &setPlaceHolders(array $placeHolderValues, $append = false);
-
-   /**
-    * Set's a place holder in case it exists. Otherwise it is ignored.
-    *
-    * @param string $name The name of the place holder.
-    * @param string $value The place holder's value.
-    * @param bool $append True in case the applied values should be appended, false otherwise.
-    *
-    * @return $this This instance for further usage.
-    *
-    * @author Christian Achatz, Werner Liemberger
-    * @version
-    * Version 0.1, 02.07.2011<br />
-    * Version 0.2, 06.08.2013 (Added support for appending content to place holders)<br />
-    * Version 0.3, 25.09.2104 (ID#235: moved to Document to be able to reuse in TemplateTag)<br />
-    */
-   public function setPlaceHolderIfExist($name, $value, $append = false);
-
-   /**
-    * This method is for convenient setting of multiple place holders in case they exist within
-    * the current document. See <em>BaseDocumentController::setPlaceHolderIfExist()</em> for details.
-    *
-    * @param array $placeHolderValues Key-value-couples to fill place holders.
-    * @param bool $append True in case the applied values should be appended, false otherwise.
-    *
-    * @return $this This instance for further usage.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 02.07.2011<br />
-    * Version 0.2, 06.08.2013 (Added support for appending content to place holders)<br />
-    * Version 0.3, 25.09.2104 (ID#235: moved to Document to be able to reuse in TemplateTag)<br />
-    */
-   public function setPlaceHoldersIfExist(array $placeHolderValues, $append = false);
 
    /**
     * Returns the name of the document controller in case the document should

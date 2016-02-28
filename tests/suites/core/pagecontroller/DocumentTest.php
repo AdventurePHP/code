@@ -402,17 +402,21 @@ This is text after a place holder...
    }
 
    /**
-    * Test exception raised with not-existing place holder specified.
+    * Test no exception raised with not-existing place holder specified.
     */
    public function testSetPlaceHolder1() {
-      $this->setExpectedException(InvalidArgumentException::class);
-      $this->getTemplateWithPlaceHolder()->setPlaceHolder('foo', 'bar');
+      try {
+         $this->getTemplateWithPlaceHolder()->setPlaceHolder('foo', 'bar');
+      } catch (Exception $e) {
+         $this->fail($e);
+      }
    }
 
    protected function getTemplateWithPlaceHolder($content = '<html:placeholder name="test"/>') {
       $doc = new TemplateTag();
       $doc->setContent($content);
       $doc->onParseTime();
+      $doc->onAfterAppend();
 
       return $doc;
    }
@@ -449,6 +453,29 @@ This is text after a place holder...
       $template->setPlaceHolder('test', $expected, true);
       $template->transformOnPlace();
       $this->assertEquals($expected . $expected, $template->transform());
+   }
+
+   /**
+    * Test setPlaceHolders() with multiple place holders.
+    */
+   public function testSetPlaceHolder5() {
+
+      // no place holders set
+      $template = $this->getTemplateWithPlaceHolder('${foo}|${bar}|${baz}');
+      $this->assertEquals('||', $template->transformTemplate());
+
+      // one place holder set
+      $template->setPlaceHolders(['bar' => '2']);
+      $this->assertEquals('|2|', $template->transformTemplate());
+
+      // all place holders set
+      $template->setPlaceHolders(['foo' => '4', 'bar' => '5', 'baz' => '6']);
+      $this->assertEquals('4|5|6', $template->transformTemplate());
+
+      // test mixture of existing vs. non-existing place holders
+      $template->clear();
+      $template->setPlaceHolders(['foo' => '4', 'non-existing' => '5', 'baz' => '6']);
+      $this->assertEquals('4||6', $template->transformTemplate());
    }
 
    public function testGetNodeById() {

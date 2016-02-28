@@ -23,9 +23,6 @@ namespace APF\core\pagecontroller;
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\http\mixins\GetRequestResponse;
 use APF\core\loader\RootClassLoader;
-use APF\core\logging\entry\SimpleLogEntry;
-use APF\core\logging\LogEntry;
-use APF\core\logging\Logger;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 use Exception;
@@ -311,63 +308,6 @@ class Document extends APFObject implements DomNode {
          }
       }
 
-      if ($count == 0) {
-
-         // Since this method is used within all derived classes the exception message is
-         // rather generic unfortunately. In order to be more precise, the convenience methods
-         // within BaseDocumentController catch and rethrow the exception enriched with further
-         // information.
-         $message = '[' . get_class($this) . '::setPlaceHolder()] No place holder with name "' . $name
-               . '" found within document with ';
-
-         $nodeName = $this->getAttribute('name');
-         if (!empty($nodeName)) {
-            $message .= 'name "' . $nodeName . '" and ';
-         }
-         $message .= 'node type "' . get_class($this) . '"! Please check your template code: ' . $this->getContent() . '.';
-
-         throw new InvalidArgumentException($message, E_USER_ERROR);
-      }
-
-      return $this;
-   }
-
-   public function getContent() {
-      return $this->content;
-   }
-
-   public function setContent($content) {
-      $this->content = $content;
-
-      return $this;
-   }
-
-   public function setPlaceHoldersIfExist(array $placeHolderValues, $append = false) {
-      foreach ($placeHolderValues as $key => $value) {
-         $this->setPlaceHolderIfExist($key, $value, $append);
-      }
-
-      return $this;
-   }
-
-   public function setPlaceHolderIfExist($name, $value, $append = false) {
-      try {
-         $this->setPlaceHolder($name, $value, $append);
-      } catch (Exception $e) {
-         $log = Singleton::getInstance(Logger::class);
-         /* @var $log Logger */
-         $log->addEntry(
-               new SimpleLogEntry(
-               // use the configured log target to allow custom configuration of APF-internal log statements
-               // to be written to a custom file/location
-                     Registry::retrieve('APF\core', 'InternalLogTarget'),
-                     'Place holder with name "' . $name . '" does not exist within the current document. '
-                     . 'Please check your setup. Details: ' . $e,
-                     LogEntry::SEVERITY_WARNING
-               )
-         );
-      }
-
       return $this;
    }
 
@@ -577,6 +517,16 @@ class Document extends APFObject implements DomNode {
 
       // remove definition from content to be not displayed
       $this->content = substr_replace($this->content, '', $tagStartPos, ($tagEndPos - $tagStartPos) + 2); // for @>
+   }
+
+   public function getContent() {
+      return $this->content;
+   }
+
+   public function setContent($content) {
+      $this->content = $content;
+
+      return $this;
    }
 
    /**

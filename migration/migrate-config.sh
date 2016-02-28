@@ -1,10 +1,10 @@
 #!/bin/bash
 ########################################################################################################################
-# APF 3.1 automatic configuration migration script                                                                     #
+# APF 3.2 automatic configuration migration script                                                                     #
 ########################################################################################################################
 
 echo "#############################################"
-echo "# APF 3.1 automatic configuration migration #"
+echo "# APF 3.2 automatic configuration migration #"
 echo "#############################################"
 echo
 

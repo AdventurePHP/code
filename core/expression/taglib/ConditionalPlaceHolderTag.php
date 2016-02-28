@@ -72,7 +72,7 @@ class ConditionalPlaceHolderTag extends Document implements PlaceHolder {
       if (is_string($this->placeHolderContent)) {
          // Automatically replace simple place holders.
          // Allow default content output by omitting place holder in case not necessary.
-         $this->setPlaceHolderIfExist(self::PLACE_HOLDER_NAME, $this->placeHolderContent);
+         $this->setPlaceHolder(self::PLACE_HOLDER_NAME, $this->placeHolderContent);
       } elseif (is_array($this->placeHolderContent) || is_object($this->placeHolderContent)) {
          // inject content into a data attribute for further access
          $this->setData(self::PLACE_HOLDER_NAME, $this->placeHolderContent);
