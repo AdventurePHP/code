@@ -20,7 +20,7 @@
  */
 namespace APF\extensions\postbox\biz;
 
-use APF\core\database\MySQLxHandler;
+use APF\core\database\AbstractDatabaseHandler;
 use APF\modules\genericormapper\data\GenericCriterionObject;
 use APF\modules\genericormapper\data\GenericDomainObject;
 use APF\modules\genericormapper\data\GenericORMapperDataObject;
@@ -35,15 +35,6 @@ use APF\modules\genericormapper\data\GenericORMapperDataObject;
 abstract class AbstractMessageChannel extends GenericDomainObject {
 
    /**
-    * Returns a list of all readers from the channel.
-    *
-    * @return GenericORMapperDataObject[]
-    */
-   public function getReaders() {
-      return $this->loadRelatedObjects('User2MessageChannel');
-   }
-
-   /**
     * Returns the time of the last message which was written in the channel.
     *
     * @return string The MySQL-timestamp from the last message
@@ -54,69 +45,6 @@ abstract class AbstractMessageChannel extends GenericDomainObject {
       $LastMessage = $this->loadRelatedObject('MessageChannel2Message', $crit);
 
       return $LastMessage->getProperty('CreationTimestamp');
-   }
-
-   /**
-    * Returns a list of all messages in the channel, ordered by the time of creation.
-    *
-    * @param string $OrderDirection Optional. Default: DESC. Sets the order direction in which the messages should be returned.
-    *
-    * @return Message[] A list of messages in the channel.
-    */
-   public function getMessages($OrderDirection = 'DESC') {
-      $crit = new GenericCriterionObject();
-      $crit->addOrderIndicator('CreationTimestamp', $OrderDirection);
-
-      return $this->loadRelatedObjects('MessageChannel2Message', $crit);
-   }
-
-   /**
-    * Marks the channel as unread for the given user.
-    *
-    * @param GenericORMapperDataObject $User
-    *
-    * @return AbstractMessageChannel Returns itself (fluent-interface)
-    */
-   public function setUnreadForUser(GenericORMapperDataObject &$User) {
-      if (!$this->isUnreadForUser($User)) {
-         $this->createAssociation('User2UnreadMessageChannel', $User);
-      }
-
-      return $this;
-   }
-
-   /**
-    * Marks the channel as read for the given user.
-    *
-    * @param GenericORMapperDataObject $User
-    *
-    * @return AbstractMessageChannel Returns itself (fluent-interface)
-    */
-   public function setReadForUser(GenericORMapperDataObject &$User) {
-      /* @var $DBDriver MySQLxHandler */
-      $DBDriver = $this->getDataComponent()->getDbDriver();
-      $DBDriver->executeStatement(
-            'APF\extensions\postbox',
-            'MessageChannel_setReadForUser.sql',
-            [
-                  'MessageChannelID' => (int) $this->getObjectId(),
-                  'UserID'           => (int) $User->getObjectId()
-            ]
-      );
-      $this->deleteAssociation('User2UnreadMessageChannel', $User);
-
-      return $this;
-   }
-
-   /**
-    * Checks if the channel is *NOT* read by the given user.
-    *
-    * @param GenericORMapperDataObject $User
-    *
-    * @return bool Returns true if the given user has not read at least 1 message in the channel.
-    */
-   public function isUnreadForUser(GenericORMapperDataObject &$User) {
-      return $this->getDataComponent()->isAssociated('User2UnreadMessageChannel', $User, $this);
    }
 
    /**
@@ -178,6 +106,29 @@ abstract class AbstractMessageChannel extends GenericDomainObject {
    }
 
    /**
+    * Returns a list of all readers from the channel.
+    *
+    * @return GenericORMapperDataObject[]
+    */
+   public function getReaders() {
+      return $this->loadRelatedObjects('User2MessageChannel');
+   }
+
+   /**
+    * Returns a list of all messages in the channel, ordered by the time of creation.
+    *
+    * @param string $OrderDirection Optional. Default: DESC. Sets the order direction in which the messages should be returned.
+    *
+    * @return Message[] A list of messages in the channel.
+    */
+   public function getMessages($OrderDirection = 'DESC') {
+      $crit = new GenericCriterionObject();
+      $crit->addOrderIndicator('CreationTimestamp', $OrderDirection);
+
+      return $this->loadRelatedObjects('MessageChannel2Message', $crit);
+   }
+
+   /**
     * Adds a new message to the channel and marks the channel as unread for all readers.
     *
     * @param Message $Message The Message which should be added.
@@ -202,18 +153,29 @@ abstract class AbstractMessageChannel extends GenericDomainObject {
    }
 
    /**
-    * Returns the User which "opened" the channel.
+    * Marks the channel as unread for the given user.
     *
-    * @return GenericORMapperDataObject The User which opened the channel.
+    * @param GenericORMapperDataObject $User
+    *
+    * @return AbstractMessageChannel Returns itself (fluent-interface)
     */
-   public function getAuthor() {
-      $crit = new GenericCriterionObject();
-      $crit->addCountIndicator(1);
-      $crit->addOrderIndicator('MessageID', 'ASC');
-      /* @var $FirstMessage Message */
-      $FirstMessage = $this->loadRelatedObject('MessageChannel2Message', $crit);
+   public function setUnreadForUser(GenericORMapperDataObject &$User) {
+      if (!$this->isUnreadForUser($User)) {
+         $this->createAssociation('User2UnreadMessageChannel', $User);
+      }
 
-      return $FirstMessage->getAuthor();
+      return $this;
+   }
+
+   /**
+    * Checks if the channel is *NOT* read by the given user.
+    *
+    * @param GenericORMapperDataObject $User
+    *
+    * @return bool Returns true if the given user has not read at least 1 message in the channel.
+    */
+   public function isUnreadForUser(GenericORMapperDataObject &$User) {
+      return $this->getDataComponent()->isAssociated('User2UnreadMessageChannel', $User, $this);
    }
 
    /**
@@ -231,6 +193,21 @@ abstract class AbstractMessageChannel extends GenericDomainObject {
       $this->getDataComponent()->saveObject($this, $saveTree);
 
       return $this;
+   }
+
+   /**
+    * Returns the User which "opened" the channel.
+    *
+    * @return GenericORMapperDataObject The User which opened the channel.
+    */
+   public function getAuthor() {
+      $crit = new GenericCriterionObject();
+      $crit->addCountIndicator(1);
+      $crit->addOrderIndicator('MessageID', 'ASC');
+      /* @var $FirstMessage Message */
+      $FirstMessage = $this->loadRelatedObject('MessageChannel2Message', $crit);
+
+      return $FirstMessage->getAuthor();
    }
 
    /**
@@ -276,16 +253,6 @@ abstract class AbstractMessageChannel extends GenericDomainObject {
       return $this;
    }
 
-
-   /**
-    * Returns the PostboxFolder in which the channel is currently stored.
-    *
-    * @return PostboxFolder
-    */
-   public function getPostboxFolder() {
-      return $this->loadRelatedObject('PostboxFolder2MessageChannel');
-   }
-
    /**
     * Deletes the channel with all it's relations and messages.
     */
@@ -300,6 +267,38 @@ abstract class AbstractMessageChannel extends GenericDomainObject {
       }
 
       $this->getDataComponent()->deleteObject($this);
+   }
+
+   /**
+    * Marks the channel as read for the given user.
+    *
+    * @param GenericORMapperDataObject $User
+    *
+    * @return AbstractMessageChannel Returns itself (fluent-interface)
+    */
+   public function setReadForUser(GenericORMapperDataObject &$User) {
+      /* @var $DBDriver AbstractDatabaseHandler */
+      $DBDriver = $this->getDataComponent()->getDbDriver();
+      $DBDriver->executeStatement(
+            'APF\extensions\postbox',
+            'MessageChannel_setReadForUser.sql',
+            [
+                  'MessageChannelID' => (int) $this->getObjectId(),
+                  'UserID'           => (int) $User->getObjectId()
+            ]
+      );
+      $this->deleteAssociation('User2UnreadMessageChannel', $User);
+
+      return $this;
+   }
+
+   /**
+    * Returns the PostboxFolder in which the channel is currently stored.
+    *
+    * @return PostboxFolder
+    */
+   public function getPostboxFolder() {
+      return $this->loadRelatedObject('PostboxFolder2MessageChannel');
    }
 
 }
