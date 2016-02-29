@@ -30,7 +30,7 @@ namespace APF\core\pagecontroller;
 class PlaceHolderTemplateExpression implements TemplateExpression {
 
    public static function applies($token) {
-      return preg_match('#^[A-Za-z\-0-9_]+$#', $token);
+      return preg_match('#^[A-Za-z\-0-9_\.]+$#', $token);
    }
 
    public static function getDocument($token) {
