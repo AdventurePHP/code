@@ -2,7 +2,7 @@
   "name": "Adventure PHP Framework (APF)",
   "homepage": "https://github.com/AdventurePHP/code",
   "license": "LGPL",
-  "version": "3.1-GIT",
+  "version": "3.2",
   "require": {
     "php": ">=5.5.0"
   },

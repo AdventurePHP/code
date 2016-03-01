@@ -973,6 +973,7 @@ class Document extends APFObject implements DomNode {
          foreach (self::$knownExpressions as $expression) {
             if ($expression::applies($token)) {
                $object = $expression::getDocument($token);
+               break;
             }
          }
 

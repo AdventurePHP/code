@@ -30,9 +30,12 @@ use APF\core\pagecontroller\PlaceHolderTag;
 use APF\core\pagecontroller\Template;
 use APF\core\pagecontroller\TemplateTag;
 use APF\modules\usermanagement\pres\documentcontroller\registration\RegistrationController;
+use APF\tests\suites\core\pagecontroller\expression\TestTemplateExpressionOne;
+use APF\tests\suites\core\pagecontroller\expression\TestTemplateExpressionTwo;
 use Exception;
 use InvalidArgumentException;
 use ReflectionMethod;
+use ReflectionProperty;
 
 /**
  * Tests the <em>Document::getTemplateFilePath()</em> regarding class loader usage.
@@ -535,6 +538,84 @@ This is text after a place holder...
    public function testGetNodeByIdIfExistsErrorCase() {
       $doc = new TemplateTag();
       $this->assertNull($doc->getNodeByIdIfExists('baz'));
+   }
+
+   /**
+    * Happy case for template expressions.
+    */
+   public function testExtractExpressionTags1() {
+
+      $doc = new TemplateTag();
+      $doc->setContent('${placeHolder}|${dataAttribute[0]}');
+      $doc->onParseTime();
+      $doc->onAfterAppend();
+
+      $doc->setPlaceHolder('placeHolder', 'foo');
+      $doc->setData('dataAttribute', ['bar']);
+
+      $this->assertEquals('foo|bar', $doc->transformTemplate());
+
+   }
+
+   /**
+    * Test whether 1st expressions matches and document is *not* overwritten by second.
+    */
+   public function testExtractExpressionTags2() {
+
+      $property = new ReflectionProperty(Document::class, 'knownExpressions');
+      $property->setAccessible(true);
+
+      // inject special conditions that apply for this
+      $original = $property->getValue(null);
+      $property->setValue(null, [TestTemplateExpressionOne::class, TestTemplateExpressionTwo::class]);
+
+      // setup template
+      $doc = new TemplateTag();
+      $doc->setContent('${specialExpression1}|${specialExpression2}');
+      $doc->onParseTime();
+      $doc->onAfterAppend();
+
+      $children = $doc->getChildren();
+
+      $this->assertCount(2, $children);
+      $this->assertEquals(TestTemplateExpressionOne::class, $children[array_keys($children)[0]]->getAttribute('expression'));
+
+      // reset to original setup
+      $property->setValue(null, $original);
+
+   }
+
+   public function testExtractExpressionTags3() {
+      $this->setExpectedException(ParserException::class);
+      $doc = new TemplateTag();
+      $doc->setContent('${expression');
+      $doc->onParseTime();
+      $doc->onAfterAppend();
+   }
+
+   public function testExtractExpressionTags4() {
+
+      $property = new ReflectionProperty(Document::class, 'knownExpressions');
+      $property->setAccessible(true);
+
+      // inject special conditions that apply for this
+      $original = $property->getValue(null);
+      $property->setValue(null, []);
+
+      // setup template
+      $doc = new TemplateTag();
+      $doc->setContent('${expression}');
+      $doc->onParseTime();
+
+      try {
+         $doc->onAfterAppend();
+         $this->fail('knownExpressions() should throw a ParserException in case no expression applies!');
+      } catch (ParserException $e) {
+         // this is expected behavior
+      }
+
+      // reset to original setup
+      $property->setValue(null, $original);
    }
 
    protected function setUp() {
