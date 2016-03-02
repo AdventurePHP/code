@@ -520,4 +520,62 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * Tests whether blanks are encoded properly within parameters and names.
+    */
+   public function testBlanksInParametersAndValues() {
+
+      $url = Url::fromString('/');
+      $url->setQuery(['param name' => 'param value']);
+
+      $this->assertEquals(
+            '/?param%20name=param%20value',
+            LinkGenerator::generateUrl($url, new DefaultLinkScheme())
+      );
+
+      $this->assertEquals(
+            '/param%20name/param%20value',
+            LinkGenerator::generateUrl($url, new RewriteLinkScheme())
+      );
+
+   }
+
+   public function testEncodeRfc3986() {
+
+      $scheme = new DefaultLinkScheme(true, true, true);
+      $url = Url::fromString('/');
+
+      $url->setQuery([
+            'a' => [
+                  'x' => '1',
+                  'y' => '2'
+            ],
+            'b' => [
+                  0 => '1',
+                  1 => '2'
+            ]
+      ]);
+
+      $link = $link = LinkGenerator::generateUrl($url, $scheme);
+      $this->assertEquals('/?a%5Bx%5D=1&amp;a%5By%5D=2&amp;b%5B0%5D=1&amp;b%5B1%5D=2', $link);
+
+      $scheme->setEncodeAmpersands(false);
+      $link = $link = LinkGenerator::generateUrl($url, $scheme);
+      $this->assertEquals('/?a%5Bx%5D=1&a%5By%5D=2&b%5B0%5D=1&b%5B1%5D=2', $link);
+
+      $url->setQueryParameter('param name', 'param value');
+      $link = $link = LinkGenerator::generateUrl($url, $scheme);
+      $this->assertEquals('/?a%5Bx%5D=1&a%5By%5D=2&b%5B0%5D=1&b%5B1%5D=2&param%20name=param%20value', $link);
+
+      // encodeBlanks=false, encodeRfc3986=true (RFC encoding overwrites blanks encoding, thus "%20" still included)
+      $scheme->setEncodeBlanks(false);
+      $link = $link = LinkGenerator::generateUrl($url, $scheme);
+      $this->assertEquals('/?a%5Bx%5D=1&a%5By%5D=2&b%5B0%5D=1&b%5B1%5D=2&param%20name=param%20value', $link);
+
+      // encodeBlanks=false, encodeRfc3986=false
+      $scheme->setEncodeRfc3986(false);
+      $link = $link = LinkGenerator::generateUrl($url, $scheme);
+      $this->assertEquals('/?a[x]=1&a[y]=2&b[0]=1&b[1]=2&param name=param value', $link);
+   }
+
 }

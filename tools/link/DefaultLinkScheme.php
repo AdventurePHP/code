@@ -71,12 +71,13 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
             if (!empty($queryString)) {
                $queryString .= '&';
             }
-            if (is_array($value)) {
-               $queryString .= rawurldecode(http_build_query([$name => $value], null, '&', PHP_QUERY_RFC3986));
-            } else {
-               $queryString .= $name . '=' . $value;
-            }
+            $queryString .= http_build_query([$name => $value], null, '&', PHP_QUERY_RFC3986);
          }
+      }
+
+      // decode query string in case human readable formatting is desired
+      if ($this->getEncodeRfc3986() === false) {
+         $queryString = rawurldecode($queryString);
       }
 
       if (!empty($queryString)) {
@@ -94,6 +95,11 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
 
       // escape resulting URL to avoid URL parameter script injections
       $resultUrl = $this->sanitizeUrl($resultUrl);
+
+      // encode blanks if desired
+      if ($this->getEncodeBlanks() === true) {
+         $resultUrl = strtr($resultUrl, [' ' => '%20']);
+      }
 
       // encode ampersands if desired
       if ($this->getEncodeAmpersands()) {

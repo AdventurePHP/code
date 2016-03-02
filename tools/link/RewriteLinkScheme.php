@@ -36,6 +36,14 @@ namespace APF\tools\link;
  */
 class RewriteLinkScheme extends BasicLinkScheme implements LinkScheme {
 
+   public function formatActionLink(Url $url, $namespace, $name, array $params = []) {
+      return $this->formatLink(
+            $url->setQueryParameter(
+                  $this->formatActionIdentifier($namespace, $name, true),
+                  $this->formatActionParameters($params, true)
+            ));
+   }
+
    public function formatLink(Url $url) {
 
       // save and reset query to save variable order
@@ -110,15 +118,12 @@ class RewriteLinkScheme extends BasicLinkScheme implements LinkScheme {
          $resultUrl .= self::REWRITE_PARAM_TO_ACTION_DELIMITER . $actions;
       }
 
-      return $this->sanitizeUrl($this->appendAnchor($resultUrl, $url));
-   }
+      // encode blanks if desired
+      if ($this->getEncodeBlanks() === true) {
+         $resultUrl = strtr($resultUrl, [' ' => '%20']);
+      }
 
-   public function formatActionLink(Url $url, $namespace, $name, array $params = []) {
-      return $this->formatLink(
-            $url->setQueryParameter(
-                  $this->formatActionIdentifier($namespace, $name, true),
-                  $this->formatActionParameters($params, true)
-            ));
+      return $this->sanitizeUrl($this->appendAnchor($resultUrl, $url));
    }
 
 }

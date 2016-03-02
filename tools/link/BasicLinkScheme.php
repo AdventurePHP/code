@@ -39,14 +39,35 @@ abstract class BasicLinkScheme {
    const REWRITE_PARAM_TO_ACTION_DELIMITER = '/~/';
 
    /**
-    * Indicates whether to encode ampersands or not.
+    * Indicates whether to encode ampersands or not. In case <em>true</em> is applied, "&" signs
+    * are replaced by "&amp;" to represent valid HTML entities.
     *
     * @var boolean $encodeAmpersands
     */
    private $encodeAmpersands;
 
-   public function __construct($encodeAmpersands = true) {
+   /**
+    * Indicates whether to encode blanks (replace " " with "%20") or not.
+    *
+    * @var boolean $encodeBlanks
+    */
+   private $encodeBlanks;
+
+   /**
+    * Indicates whether encode a URL with RFC 3986 standard. This includes replacing
+    * all "non-reserved" and "unsafe" characters into their hex representation.
+    * <p/>
+    * NOTE: This parameter is ignored with the RewriteLinkScheme implementation as it
+    * implements a completely different link scheme.
+    *
+    * @var boolean $encodeRfc3986
+    */
+   private $encodeRfc3986;
+
+   public function __construct($encodeAmpersands = true, $encodeBlanks = true, $encodeRfc3986 = false) {
       $this->setEncodeAmpersands($encodeAmpersands);
+      $this->setEncodeBlanks($encodeBlanks);
+      $this->setEncodeRfc3986($encodeRfc3986);
    }
 
    public function getEncodeAmpersands() {
@@ -55,6 +76,22 @@ abstract class BasicLinkScheme {
 
    public function setEncodeAmpersands($encodeAmpersands) {
       $this->encodeAmpersands = $encodeAmpersands;
+   }
+
+   public function getEncodeBlanks() {
+      return $this->encodeBlanks;
+   }
+
+   public function setEncodeBlanks($encodeBlanks) {
+      $this->encodeBlanks = $encodeBlanks;
+   }
+
+   public function getEncodeRfc3986() {
+      return $this->encodeRfc3986;
+   }
+
+   public function setEncodeRfc3986($encodeRfc3986) {
+      $this->encodeRfc3986 = $encodeRfc3986;
    }
 
    /**
