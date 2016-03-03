@@ -48,7 +48,7 @@ class Singleton {
     *
     * @var string[] $CACHE
     */
-   protected static $CACHE = [];
+   private static $CACHE = [];
 
    private function __construct() {
    }
@@ -89,23 +89,6 @@ class Singleton {
    }
 
    /**
-    * Destroys a singleton instance of given class.
-    * <p/>
-    * Provide the instance id parameter to destroy a named instance.
-    *
-    * @param string $class The name of the class to be created as singleton.
-    * @param string $instanceId The id of the instance.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 10.01.2015<br />
-    */
-   public static function deleteInstance($class, $instanceId = null) {
-      $cacheKey = self::getCacheKey($class, $instanceId);
-      unset(self::$CACHE[$cacheKey]);
-   }
-
-   /**
     * The cache key is set to the class name for "normal" singleton instances.
     * in case an instance id is given, more than one singleton instance can
     * be created specified by the instance id - but only one per instance id
@@ -122,6 +105,23 @@ class Singleton {
     */
    protected static function getCacheKey($class, $instanceId) {
       return $instanceId === null ? $class : $instanceId;
+   }
+
+   /**
+    * Destroys a singleton instance of given class.
+    * <p/>
+    * Provide the instance id parameter to destroy a named instance.
+    *
+    * @param string $class The name of the class to be created as singleton.
+    * @param string $instanceId The id of the instance.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 10.01.2015<br />
+    */
+   public static function deleteInstance($class, $instanceId = null) {
+      $cacheKey = self::getCacheKey($class, $instanceId);
+      unset(self::$CACHE[$cacheKey]);
    }
 
 }
