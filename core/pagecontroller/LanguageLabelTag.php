@@ -67,26 +67,9 @@ class LanguageLabelTag extends Document implements LanguageLabel {
     */
    public function transform() {
 
-      // check for attribute "namespace"
-      $namespace = $this->getAttribute('namespace');
-      if ($namespace === null) {
-         throw new InvalidArgumentException('[' . get_class($this) . '->transform()] No attribute '
-               . '"namespace" given in tag definition!', E_USER_ERROR);
-      }
-
-      // check for attribute "config"
-      $configName = $this->getAttribute('config');
-      if ($configName === null) {
-         throw new InvalidArgumentException('[' . get_class($this) . '->transform()] No attribute '
-               . '"config" given in tag definition!', E_USER_ERROR);
-      }
-
-      // check for attribute "entry"
-      $entry = $this->getAttribute('entry');
-      if ($entry === null) {
-         throw new InvalidArgumentException('[' . get_class($this) . '->transform()] No attribute '
-               . '"entry" given in tag definition!', E_USER_ERROR);
-      }
+      $namespace = $this->getRequiredAttribute('namespace');
+      $configName = $this->getRequiredAttribute('config');
+      $entry = $this->getRequiredAttribute('entry');
 
       // get configuration values
       $config = $this->getConfiguration($namespace, $configName);
@@ -104,6 +87,25 @@ class LanguageLabelTag extends Document implements LanguageLabel {
       }
 
       return $this->replace($value);
+   }
+
+   /**
+    * Replaces all place holders within the current label that are registered within this instance.
+    *
+    * @param string $label The raw label.
+    *
+    * @return string The label with replaced place holders.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.01.2012<br />
+    */
+   protected function replace($label) {
+      foreach ($this->placeHolders as $key => $value) {
+         $label = str_replace('{' . $key . '}', $value, $label);
+      }
+
+      return $label;
    }
 
    /**
@@ -146,25 +148,6 @@ class LanguageLabelTag extends Document implements LanguageLabel {
       $this->placeHolders = [];
 
       return $this;
-   }
-
-   /**
-    * Replaces all place holders within the current label that are registered within this instance.
-    *
-    * @param string $label The raw label.
-    *
-    * @return string The label with replaced place holders.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 11.01.2012<br />
-    */
-   protected function replace($label) {
-      foreach ($this->placeHolders as $key => $value) {
-         $label = str_replace('{' . $key . '}', $value, $label);
-      }
-
-      return $label;
    }
 
 }
