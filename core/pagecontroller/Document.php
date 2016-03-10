@@ -155,7 +155,7 @@ class Document extends APFObject implements DomNode {
    /**
     * List of place holder set for the current document.
     *
-    * @var string[][] $placeHolders
+    * @var array $placeHolders
     */
    protected $placeHolders = [];
 

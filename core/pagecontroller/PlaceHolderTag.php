@@ -46,9 +46,7 @@ class PlaceHolderTag extends Document implements PlaceHolder {
    public function transform() {
       // pull mechanism for values set to data attribute rather than letting
       // Document::setPlaceHolder() iterate over the document tree over and over again
-      $parent = $this->getParentObject();
-
-      return $parent === null ? null : $parent->getPlaceHolder($this->getAttribute('name'));
+      return $this->getParentObject()->getPlaceHolder($this->getAttribute('name'));
    }
 
 }
