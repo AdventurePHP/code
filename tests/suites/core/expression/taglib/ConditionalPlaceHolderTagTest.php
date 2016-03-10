@@ -21,6 +21,7 @@
 namespace APF\tests\suites\core\expression\taglib;
 
 use APF\core\expression\taglib\ConditionalPlaceHolderTag;
+use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\DomNode;
 use APF\core\pagecontroller\TemplateTag;
 use APF\tests\suites\core\expression\LinkModel;
@@ -29,11 +30,15 @@ class ConditionalPlaceHolderTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testSimplePlaceHolder() {
 
-      // inject place holder data
-      $tag = $this->getPlaceHolder('<h3>${content}</h3>', []);
-
+      $name = 'foo';
       $text = 'test headline';
-      $tag->setContent($text);
+
+      // inject place holder data
+      $tag = $this->getPlaceHolder('<h3>${content}</h3>', ['name' => $name]);
+
+      $parent = new Document();
+      $parent->setPlaceHolder($name, $text);
+      $tag->setParentObject($parent);
 
       $this->assertEquals('<h3>' . $text . '</h3>', $tag->transform());
    }
@@ -50,34 +55,44 @@ class ConditionalPlaceHolderTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testPlaceHolderWithLengthCondition() {
 
-      $tag = $this->getPlaceHolder('<h3>${content}</h3>', ['condition' => 'longerThan(10)']);
+      $name = 'foo';
+      $text = 'test headline';
 
       // inject place holder data
-      $text = 'test headline';
-      $tag->setContent($text);
+      $tag = $this->getPlaceHolder('<h3>${content}</h3>', ['condition' => 'longerThan(10)', 'name' => $name]);
+
+      $parent = new Document();
+      $parent->setPlaceHolder($name, $text);
+      $tag->setParentObject($parent);
 
       $this->assertEquals('<h3>' . $text . '</h3>', $tag->transform());
 
-      $tag = $this->getPlaceHolder('<h3>${content}</h3>', ['condition' => 'longerThan(10)']);
+      $tag = $this->getPlaceHolder('<h3>${content}</h3>', ['condition' => 'longerThan(10)', 'name' => $name]);
 
       // inject place holder data
       $text = 'headline';
-      $tag->setContent($text);
+      $parent = new Document();
+      $parent->setPlaceHolder($name, $text);
+      $tag->setParentObject($parent);
 
       $this->assertEquals('', $tag->transform());
    }
 
    public function testEmptyOutputForMissingContent() {
       $tag = $this->getPlaceHolder('<h3>${content}</h3>', []);
+      $tag->setParentObject(new Document());
       $this->assertEmpty($tag->transform());
    }
 
    public function testArrayContent() {
 
-      $tag = $this->getPlaceHolder('<a href="${content[\'moreLink\']}">${content[\'moreLabel\']}</a>', []);
+      $name = 'foo';
+      $tag = $this->getPlaceHolder('<a href="${content[\'moreLink\']}">${content[\'moreLabel\']}</a>', ['name' => $name]);
 
+      $parent = new Document();
       $model = new LinkModel();
-      $tag->setContent(['moreLabel' => $model->getLabel(), 'moreLink' => $model->getUrl()]);
+      $parent->setPlaceHolder($name, ['moreLabel' => $model->getLabel(), 'moreLink' => $model->getUrl()]);
+      $tag->setParentObject($parent);
 
       $this->assertEquals(
             '<a href="' . $model->getUrl() . '">' . $model->getLabel() . '</a>',
@@ -87,10 +102,14 @@ class ConditionalPlaceHolderTagTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testViewModelContent() {
-      $tag = $this->getPlaceHolder('<a href="${content->getUrl()}">${content->getLabel()}</a>', []);
 
+      $name = 'foo';
+      $tag = $this->getPlaceHolder('<a href="${content->getUrl()}">${content->getLabel()}</a>', ['name' => $name]);
+
+      $parent = new Document();
       $model = new LinkModel();
-      $tag->setContent($model);
+      $parent->setPlaceHolder($name, $model);
+      $tag->setParentObject($parent);
 
       $this->assertEquals(
             '<a href="' . $model->getUrl() . '">' . $model->getLabel() . '</a>',

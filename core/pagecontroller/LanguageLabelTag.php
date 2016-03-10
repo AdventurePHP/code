@@ -47,13 +47,6 @@ use InvalidArgumentException;
 class LanguageLabelTag extends Document implements LanguageLabel {
 
    /**
-    * A list of place holder names and values.
-    *
-    * @var array $placeHolders
-    */
-   private $placeHolders = [];
-
-   /**
     * Implements the functionality to retrieve a language dependent value form a
     * configuration file. Checks the attributes needed for displaying data.
     *

@@ -109,8 +109,7 @@ class AppendNodeTagTest extends \PHPUnit_Framework_TestCase {
       $template->setPlaceHolder('test', $expected);
       $template->transformOnPlace();
 
-      $placeHolder = $tag->getChildNode('name', 'test', PlaceHolder::class);
-      $placeHolder->setContent($expected);
+      $tag->setPlaceHolder('test', $expected);
 
       $actual = $tag->transformTemplate();
 

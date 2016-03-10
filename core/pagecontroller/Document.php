@@ -153,6 +153,13 @@ class Document extends APFObject implements DomNode {
    protected $knownInstanceTags = [];
 
    /**
+    * List of place holder set for the current document.
+    *
+    * @var string[][] $placeHolders
+    */
+   protected $placeHolders = [];
+
+   /**
     * Default constructor of an APF document. The APF DOM tree is constructed by objects derived from this class.
     *
     * @author Christian Schäfer
@@ -281,6 +288,10 @@ class Document extends APFObject implements DomNode {
       }
    }
 
+   public function getPlaceHolders() {
+      return $this->placeHolders;
+   }
+
    public function &setPlaceHolders(array $placeHolderValues, $append = false) {
       foreach ($placeHolderValues as $key => $value) {
          $this->setPlaceHolder($key, $value, $append);
@@ -290,33 +301,18 @@ class Document extends APFObject implements DomNode {
    }
 
    public function &setPlaceHolder($name, $value, $append = false) {
-      $count = 0;
-      foreach ($this->children as &$child) {
-         /* @var $child DomNode */
-         if ($child instanceof PlaceHolder
-               && $child->getAttribute('name') === $name
-         ) {
-            // false handled first, since most usages don't append --> slightly faster
-            if ($append === false) {
-               $child->setContent($value);
-            } else {
-               $child->setContent(
-                     $child->getContent() . $value
-               );
-            }
-            $count++;
-         }
+      // false handled first, since most usages don't append --> slightly faster
+      if ($append === false || !isset($this->placeHolders[$name])) {
+         $this->placeHolders[$name] = $value;
+      } else {
+         $this->placeHolders[$name] = $this->placeHolders[$name] . $value;
       }
 
       return $this;
    }
 
-   public function &getDocumentController() {
-      return $this->documentController;
-   }
-
-   public function addInstanceTagLib($class, $prefix, $name) {
-      $this->knownInstanceTags[$prefix . ':' . $name] = $class;
+   public function getPlaceHolder($name, $default = null) {
+      return isset($this->placeHolders[$name]) ? $this->placeHolders[$name] : $default;
    }
 
    public function getData($name, $default = null) {
@@ -327,6 +323,20 @@ class Document extends APFObject implements DomNode {
       $this->data[$name] = $data;
 
       return $this;
+   }
+
+   public function clearPlaceHolders() {
+      $this->placeHolders = [];
+
+      return $this;
+   }
+
+   public function &getDocumentController() {
+      return $this->documentController;
+   }
+
+   public function addInstanceTagLib($class, $prefix, $name) {
+      $this->knownInstanceTags[$prefix . ':' . $name] = $class;
    }
 
    /**
