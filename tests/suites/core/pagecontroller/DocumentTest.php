@@ -618,6 +618,26 @@ This is text after a place holder...
       $property->setValue(null, $original);
    }
 
+   public function testAddAttribute() {
+
+      $doc = new Document();
+
+      $name = 'foo';
+      $glue = '-';
+      $this->assertEquals(null, $doc->getAttribute($name));
+
+      $doc->addAttribute($name, '', $glue);
+      $this->assertEquals('', $doc->getAttribute($name));
+
+      $doc->addAttribute($name, 'foo', $glue);
+      $this->assertEquals('foo', $doc->getAttribute($name));
+
+      $result = $doc->addAttribute($name, 'foo', $glue);
+      $this->assertEquals('foo-foo', $doc->getAttribute($name));
+
+      $this->assertEquals($doc, $result);
+   }
+
    protected function setUp() {
       RootClassLoader::addLoader(new StandardClassLoader(self::VENDOR, self::SOURCE_PATH));
    }
