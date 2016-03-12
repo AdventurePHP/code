@@ -38,6 +38,7 @@ use APF\core\pagecontroller\PlaceHolder;
  * @author Christian Achatz
  * @version
  * Version 0.1, 20.02.2016 (ID#283: added first version of tag implementation)<br />
+ * Version 0.2, 12.03.2016 (ID#287: update to new place holder scheme)<br />
  */
 class ConditionalPlaceHolderTag extends Document implements PlaceHolder {
 
@@ -66,7 +67,6 @@ class ConditionalPlaceHolderTag extends Document implements PlaceHolder {
       }
 
       return $this->transformChildrenAndPreserveContent();
-
    }
 
 }

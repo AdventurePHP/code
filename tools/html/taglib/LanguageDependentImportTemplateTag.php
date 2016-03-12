@@ -58,16 +58,8 @@ class LanguageDependentImportTemplateTag extends Document {
     */
    public function onParseTime() {
 
-      // check attributes
-      $namespace = $this->getAttribute('namespace');
-      if ($namespace === null) {
-         throw new InvalidArgumentException('[LanguageDependentImportTemplateTag::onParseTime()] No attribute "namespace" given!', E_USER_ERROR);
-      }
-
-      $template = $this->getAttribute('template');
-      if ($template === null) {
-         throw new InvalidArgumentException('[LanguageDependentImportTemplateTag::onParseTime()] No attribute "template" given!', E_USER_ERROR);
-      }
+      $namespace = $this->getRequiredAttribute('namespace');
+      $template = $this->getRequiredAttribute('template');
 
       // load content
       $this->loadContentFromFile($namespace, $template);

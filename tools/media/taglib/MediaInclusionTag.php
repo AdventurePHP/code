@@ -23,7 +23,6 @@ namespace APF\tools\media\taglib;
 use APF\core\pagecontroller\Document;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
-use InvalidArgumentException;
 
 /**
  * Implements the base class for the <*:mediastream /> tag implementations. Generates a
@@ -37,16 +36,7 @@ class MediaInclusionTag extends Document {
 
    public function onParseTime() {
 
-      if ($this->getAttribute('namespace') === null) {
-         throw new InvalidArgumentException('[' . get_class($this)
-               . '::onParseTime()] The tag definition does not contain a "namespace" definition!');
-      }
-
-      $filename = $this->getAttribute('filename');
-      if ($filename === null) {
-         throw new InvalidArgumentException('[' . get_class($this)
-               . '::onParseTime()] The tag definition does not contain a "filename" definition!');
-      }
+      $filename = $this->getRequiredAttribute('filename');
 
       // split filename into extension and body, since they are transferred in separate parts
       $dot = strrpos($filename, '.');
@@ -71,7 +61,7 @@ class MediaInclusionTag extends Document {
    public function transform() {
       // generate action url using the APF's new link generation mechanism since 1.14
       return LinkGenerator::generateActionUrl(Url::fromCurrent(), 'APF\tools\media', 'streamMedia', [
-            'namespace' => str_replace('\\', '_', $this->getAttribute('namespace')),
+            'namespace' => str_replace('\\', '_', $this->getRequiredAttribute('namespace')),
             'extension' => $this->getAttribute('extension'),
             'filebody'  => $this->getAttribute('filebody')
       ]);

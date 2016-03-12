@@ -20,8 +20,6 @@
  */
 namespace APF\core\pagecontroller;
 
-use InvalidArgumentException;
-
 /**
  * Parses a template and appends the child nodes to the parent's child list. Hence, this taglib
  * can be used to swap shared templates / forms / ...
@@ -55,20 +53,8 @@ class AppendNodeTag extends Document {
     */
    public function onParseTime() {
 
-      // check attributes
-      $namespace = $this->getAttribute('namespace');
-      if ($namespace === null) {
-         throw new InvalidArgumentException('[AppendNodeTag::onParseTime()] Attribute '
-               . '"namespace" is not present or empty! Please provide the namespace of the '
-               . 'desired template.', E_USER_ERROR);
-      }
-
-      $template = $this->getAttribute('template');
-      if ($template === null) {
-         throw new InvalidArgumentException('[AppendNodeTag::onParseTime()] Attribute '
-               . '"template" is not present or empty! Please provide the name of the desired '
-               . 'template.', E_USER_ERROR);
-      }
+      $namespace = $this->getRequiredAttribute('namespace');
+      $template = $this->getRequiredAttribute('template');
 
       // load the content
       $this->loadContentFromFile($namespace, $template);

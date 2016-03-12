@@ -216,15 +216,9 @@ class HtmlIteratorTag extends Document implements Iterator {
       // the iterator item must not always be the first child
       // of the current node!
       $itemObjectId = $this->getIteratorItemObjectId();
-      $iteratorItem = &$this->children[$itemObjectId];
+
       /* @var $iteratorItem HtmlIteratorItemTag */
-
-      // define the dynamic getter.
-      $getter = $iteratorItem->getAttribute('getter');
-
-      // get the place holders
-      $placeHolders = $iteratorItem->getPlaceHolders();
-
+      $iteratorItem = &$this->children[$itemObjectId];
       $itemCount = count($this->dataContainer);
 
       // ID#105: display fallback content in case no items are available.
@@ -249,6 +243,12 @@ class HtmlIteratorTag extends Document implements Iterator {
 
       } else {
 
+         // define the dynamic getter.
+         $getter = $iteratorItem->getAttribute('getter');
+
+         // get the place holders
+         $placeHolders = $iteratorItem->getPlaceHolderNames();
+
          for ($i = 0; $i < $itemCount; $i++) {
 
             // ID#187: fill data container of the iterator item to allow object and array
@@ -271,38 +271,25 @@ class HtmlIteratorTag extends Document implements Iterator {
 
             $iteratorItem->setData('status', new IteratorStatus($isFirst, $isLast, $itemCount, $this->iterationNumber, $cssClass));
 
+            $iteratorItem->setPlaceHolder('IterationNumber', $this->iterationNumber);
+
             if (is_array($this->dataContainer[$i])) {
 
-               foreach ($placeHolders as &$placeHolder) {
-
-                  // if we find a place holder with IterationNumber as name-Attribute-Value set Iteration number
-                  if ($placeHolder->getAttribute('name') == 'IterationNumber') {
-                     $placeHolder->setContent($this->iterationNumber);
-                     continue;
-                  }
-
-                  $placeHolder->setContent($this->dataContainer[$i][$placeHolder->getAttribute('name')]);
-               }
-
+               // inject place holders into item and transform
+               $iteratorItem->setPlaceHolders($this->dataContainer[$i]);
                $buffer .= $iteratorItem->transform();
 
             } elseif (is_object($this->dataContainer[$i])) {
 
-               foreach ($placeHolders as &$placeHolder) {
+               foreach ($placeHolders as $name) {
 
-                  // if we find a place holder with IterationNumber as name-Attribute-Value set Iteration number
-                  if ($placeHolder->getAttribute('name') == 'IterationNumber') {
-                     $placeHolder->setContent($this->iterationNumber);
+                  // don't touch iterator numbers as we've already set it above
+                  if ($name === 'IterationNumber') {
                      continue;
                   }
 
                   // use getter defined with <iterator:item /> to retrieve appropriate value
-                  $placeHolder->setContent($this->dataContainer[$i]->{
-                  $getter
-                  }(
-                        $placeHolder->getAttribute('name'))
-                  );
-
+                  $iteratorItem->setPlaceHolder($name, $this->dataContainer[$i]->{$getter}($name));
                }
 
                $buffer .= $iteratorItem->transform();
@@ -326,11 +313,9 @@ class HtmlIteratorTag extends Document implements Iterator {
       // Transform all other child tags except the iterator item(s).
       // ID#105: this also includes the default content in case no items available (case: mode=normal)
       foreach ($this->children as &$child) {
-
          if (!($child instanceof HtmlIteratorItemTag)) {
             $html = str_replace('<' . $child->getObjectId() . ' />', $child->transform(), $html);
          }
-
       }
 
       return $html;

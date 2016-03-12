@@ -23,6 +23,7 @@ namespace APF\tests\suites\tools\html\taglib;
 use APF\core\pagecontroller\PlaceHolder;
 use APF\core\pagecontroller\Template;
 use APF\tools\html\taglib\HtmlIteratorItemTag;
+use APF\tools\html\taglib\HtmlIteratorTag;
 
 class HtmlIteratorItemTagTest extends \PHPUnit_Framework_TestCase {
 
@@ -48,21 +49,8 @@ class HtmlIteratorItemTagTest extends \PHPUnit_Framework_TestCase {
       $this->assertInstanceOf(PlaceHolder::class, $children[$keys[1]]);
       $this->assertInstanceOf(PlaceHolder::class, $children[$keys[2]]);
 
-      $placeHolders = $tag->getPlaceHolders();
-
-      $this->assertInstanceOf(PlaceHolder::class, $placeHolders[0]);
-      $this->assertInstanceOf(PlaceHolder::class, $placeHolders[1]);
-
-      // check whether references are returns instead of copies
-      $this->assertEquals(
-            spl_object_hash($children[$keys[1]]),
-            spl_object_hash($placeHolders[0])
-      );
-      $this->assertEquals(
-            spl_object_hash($children[$keys[2]]),
-            spl_object_hash($placeHolders[1])
-      );
-
+      $placeHolders = $tag->getPlaceHolderNames();
+      $this->assertCount(2, $placeHolders);
    }
 
    /**
@@ -72,7 +60,106 @@ class HtmlIteratorItemTagTest extends \PHPUnit_Framework_TestCase {
       $tag = new HtmlIteratorItemTag();
       $tag->onParseTime();
       $tag->onAfterAppend();
-      $this->assertEmpty($tag->getPlaceHolders());
+      $this->assertEmpty($tag->getPlaceHolderNames());
+   }
+
+   public function testListWithPlaceHolders() {
+
+      $tag = new HtmlIteratorTag();
+      $tag->setContent('<ul><iterator:item><li>${content}</li></iterator:item></ul>');
+      $tag->onParseTime();
+      $tag->onAfterAppend();
+
+      $tag->fillDataContainer([
+            ['content' => 'test'],
+            ['content' => 'test'],
+            ['content' => 'test']
+      ]);
+
+      // transformOnPlace=false
+      $this->assertEmpty($tag->transform());
+
+      $tag->transformOnPlace();
+      $actual = $tag->transform();
+
+      $this->assertContains('<ul>', $actual, 'List structure wrong!');
+      $this->assertContains('</ul>', $actual, 'List structure wrong!');
+      $this->assertEquals(
+            3,
+            substr_count($actual, '<li>test</li>'),
+            'Output "' . $actual . '" does not contain sufficient number of list items.'
+      );
+   }
+
+   /**
+    * Tests iterations with different content per iteration and including the iteration number place holder.
+    */
+   public function testIterationNumber() {
+
+      $tag = new HtmlIteratorTag();
+      $tag->setContent('<ul><iterator:item><li>${IterationNumber}|${content}</li></iterator:item></ul>');
+      $tag->onParseTime();
+      $tag->onAfterAppend();
+
+      $tag->fillDataContainer([
+            ['content' => 'test-1'],
+            ['content' => 'test-2'],
+            ['content' => 'test-3']
+      ]);
+
+      $tag->transformOnPlace();
+
+      $actual = $tag->transform();
+
+      $this->assertContains('<ul>', $actual, 'List structure wrong!');
+      $this->assertContains('</ul>', $actual, 'List structure wrong!');
+      $this->assertEquals(
+            3,
+            substr_count($actual, '<li>'),
+            'Output "' . $actual . '" does not contain sufficient number of list items.'
+      );
+      $this->assertEquals(
+            3,
+            substr_count($actual, '</li>'),
+            'Output "' . $actual . '" does not contain sufficient number of list items.'
+      );
+      $this->assertContains('1|test-1', $actual);
+      $this->assertContains('2|test-2', $actual);
+      $this->assertContains('3|test-3', $actual);
+   }
+
+   public function testGenericGettersForPlaceHolders() {
+
+      $tag = new HtmlIteratorTag();
+      $tag->setContent('<ul><iterator:item getter="get"><li>${IterationNumber}|${content}</li></iterator:item></ul>');
+      $tag->onParseTime();
+      $tag->onAfterAppend();
+
+      $tag->fillDataContainer([
+            new GenericGetterModel(['content' => 'test-1']),
+            new GenericGetterModel(['content' => 'test-2']),
+            new GenericGetterModel(['content' => 'test-3'])
+      ]);
+
+      $tag->transformOnPlace();
+
+      $actual = $tag->transform();
+
+      $this->assertContains('<ul>', $actual, 'List structure wrong!');
+      $this->assertContains('</ul>', $actual, 'List structure wrong!');
+      $this->assertEquals(
+            3,
+            substr_count($actual, '<li>'),
+            'Output "' . $actual . '" does not contain sufficient number of list items.'
+      );
+      $this->assertEquals(
+            3,
+            substr_count($actual, '</li>'),
+            'Output "' . $actual . '" does not contain sufficient number of list items.'
+      );
+      $this->assertContains('1|test-1', $actual);
+      $this->assertContains('2|test-2', $actual);
+      $this->assertContains('3|test-3', $actual);
    }
 
 }

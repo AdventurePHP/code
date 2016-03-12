@@ -33,6 +33,7 @@ namespace APF\core\pagecontroller;
  * @author Christian Achatz
  * @version
  * Version 0.1, 03.05.2013<br />
+ * Version 0.2, 12.03.2016 (ID#287: update to new place holder scheme)<br />
  */
 class DefaultTemplateTagClearApproach implements TemplateTagClearApproach {
 

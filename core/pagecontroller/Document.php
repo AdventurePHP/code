@@ -153,9 +153,11 @@ class Document extends APFObject implements DomNode {
    protected $knownInstanceTags = [];
 
    /**
-    * List of place holder set for the current document.
+    * ID#287: Stores the place holders set for the current document. As this property is a simple
+    * associative array, access is much faster than iterating over the document tree and finding
+    * place holders among the list of children.
     *
-    * @var array $placeHolders
+    * @var string[][] $placeHolders
     */
    protected $placeHolders = [];
 
@@ -325,7 +327,7 @@ class Document extends APFObject implements DomNode {
       return $this;
    }
 
-   public function clearPlaceHolders() {
+   public function &clearPlaceHolders() {
       $this->placeHolders = [];
 
       return $this;

@@ -64,38 +64,16 @@ class GenericImportTemplateTag extends ImportTemplateTag {
    public function onParseTime() {
 
       // model-class=""
-      $modelClass = $this->getAttribute('model-class');
-      if ($modelClass === null) {
-         throw new InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
-               . 'The attribute "modelclass" is empty or not present. Please provide the name '
-               . 'of the model class within this attribute!');
-      }
+      $modelClass = $this->getRequiredAttribute('model-class');
 
       // model-mode="NORMAL|SINGLETON|SESSIONSINGLETON"
-      $modelMode = $this->getAttribute('model-mode');
-      if ($modelMode === null) {
-         throw new InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
-               . 'The attribute "modelmode" is empty or not present. Please provide the '
-               . 'service type of the model within this attribute! Allowed values are '
-               . 'NORMAL, SINGLETON or SESSIONSINGLETON.');
-      }
+      $modelMode = $this->getRequiredAttribute('model-mode');
 
       // namespace-param=""
-      $namespaceParam = $this->getAttribute('namespace-param');
-      if ($namespaceParam === null) {
-         throw new InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
-               . 'The attribute "namespaceparam" is empty or not present. Please provide the '
-               . 'name of the model param for the namespace of the template file within this '
-               . 'attribute!');
-      }
+      $namespaceParam = $this->getRequiredAttribute('namespace-param');
 
       // template-param=""
-      $templateParam = $this->getAttribute('template-param');
-      if ($templateParam === null) {
-         throw new InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] The '
-               . 'attribute "templateparam" is empty or not present. Please provide the name '
-               . 'of the model param for the name of the template file within this attribute!');
-      }
+      $templateParam = $this->getRequiredAttribute('template-param');
 
       // get-method="" (e.g. "getAttribute" or "get")
       $getMethod = $this->getAttribute('get-method');

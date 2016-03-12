@@ -61,6 +61,7 @@ class LanguageLabelTag extends Document implements LanguageLabel {
     * @version
     * Version 0.1, 21.04.2006<br />
     * Version 0.2, 17.10.2008 (Enhanced error messages)<br />
+    * Version 0.3, 12.03.2016 (ID#287: refactoring and implementation update to new place holder scheme)<br />
     */
    public function transform() {
 
@@ -98,7 +99,7 @@ class LanguageLabelTag extends Document implements LanguageLabel {
     * Version 0.1, 11.01.2012<br />
     */
    protected function replace($label) {
-      foreach ($this->placeHolders as $key => $value) {
+      foreach ($this->getPlaceHolders() as $key => $value) {
          $label = str_replace('{' . $key . '}', $value, $label);
       }
 

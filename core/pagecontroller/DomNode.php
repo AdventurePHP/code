@@ -376,24 +376,42 @@ interface DomNode extends APFDIService {
    public function &setPlaceHolders(array $placeHolderValues, $append = false);
 
    /**
-    * @return array
+    * Returns the list of registered place holders for the current document.
+    *
+    * @return string[][]
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.03.2016 (ID#287)<br />
     */
    public function getPlaceHolders();
 
    /**
-    * @param string $name
-    * @param string $default
+    * Returns the value of a single place holder.
     *
-    * @return mixed
+    * @param string $name The name of the place holder to return it's value.
+    * @param string $default The value to return in case the place holder is not registered (default: null).
+    *
+    * @return string The value of the desired place holder.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.03.2016 (ID#287)<br />
     */
    public function getPlaceHolder($name, $default = null);
 
    /**
-    * Clear place holders.
+    * Clears the list of place holders for the current document. Can be used to reset place holders within templates.
+    * <p/>
+    * See DefaultTemplateTagClearApproach for details.
     *
     * @return $this This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.03.2016 (ID#287)<br />
     */
-   public function clearPlaceHolders();
+   public function &clearPlaceHolders();
 
    /**
     * Returns the name of the document controller in case the document should
