@@ -146,6 +146,11 @@ class Document extends APFObject implements DomNode {
    protected $data = [];
 
    /**
+    * @var DomNode[][]
+    */
+   protected $registeredPlaceHolders = [];
+
+   /**
     * List of known tags for a dedicated DOM node the APF parser uses to create tag instances during analysis phase.
     *
     * @var string[] $knownInstanceTags
@@ -290,23 +295,24 @@ class Document extends APFObject implements DomNode {
    }
 
    public function &setPlaceHolder($name, $value, $append = false) {
-      $count = 0;
-      foreach ($this->children as &$child) {
-         /* @var $child DomNode */
-         if ($child instanceof PlaceHolder
-               && $child->getAttribute('name') === $name
-         ) {
+      if (isset($this->registeredPlaceHolders[$name])) {
+         foreach ($this->registeredPlaceHolders[$name] as &$placeHolder) {
             // false handled first, since most usages don't append --> slightly faster
             if ($append === false) {
-               $child->setContent($value);
+               $placeHolder->setContent($value);
             } else {
-               $child->setContent(
-                     $child->getContent() . $value
+               $placeHolder->setContent(
+                     $placeHolder->getContent() . $value
                );
             }
-            $count++;
          }
       }
+
+      return $this;
+   }
+
+   public function registerPlaceHolder($name, DomNode &$placeHolder) {
+      $this->registeredPlaceHolders[$name][] = &$placeHolder;
 
       return $this;
    }

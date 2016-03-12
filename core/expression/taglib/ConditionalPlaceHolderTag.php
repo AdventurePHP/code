@@ -53,8 +53,9 @@ class ConditionalPlaceHolderTag extends Document implements PlaceHolder {
     */
    protected $parsingDone = false;
 
+   // register with parent to ease access
    public function onParseTime() {
-      parent::onParseTime();
+      $this->getParentObject()->registerPlaceHolder($this->getAttribute('name'), $this);
       $this->parsingDone = true;
    }
 

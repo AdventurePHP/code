@@ -347,6 +347,8 @@ interface DomNode extends APFDIService {
     */
    public function &setPlaceHolder($name, $value, $append = false);
 
+   public function registerPlaceHolder($name, DomNode &$placeHolder);
+   
    /**
     * This method is for conveniently setting of multiple place holders. The applied
     * array must contain a structure like this:

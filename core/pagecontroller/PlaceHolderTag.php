@@ -31,6 +31,11 @@ namespace APF\core\pagecontroller;
  */
 class PlaceHolderTag extends Document implements PlaceHolder {
 
+   // register with parent to ease access
+   public function onParseTime() {
+      $this->getParentObject()->registerPlaceHolder($this->getAttribute('name'), $this);
+   }
+
    /**
     * Implements the transform() method. Returns the content of the tag, that is set by a
     * document controller using the BaseDocumentController's setPlaceHolder() method.

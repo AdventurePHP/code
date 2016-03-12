@@ -25,6 +25,7 @@ use APF\core\configuration\provider\ini\IniConfigurationProvider;
 use APF\core\loader\RootClassLoader;
 use APF\core\loader\StandardClassLoader;
 use APF\core\pagecontroller\LanguageLabelTag;
+use APF\core\pagecontroller\TemplateTag;
 use InvalidArgumentException;
 
 /**
@@ -124,6 +125,22 @@ class LanguageLabelTagTest extends \PHPUnit_Framework_TestCase {
       ]);
       $node->transform();
 
+   }
+
+   // complex use case within a template
+   public function testLanguageLabel4() {
+
+      $node = new TemplateTag();
+      $node->setContent('<h2><html:getstring id="foo" '
+            . 'namespace="' . self::TEST_VENDOR . '" '
+            . 'config="' . self::CONFIG_FILE_NAME . '"'
+            . ' entry="complex" /></h2>');
+      $node->onParseTime();
+      $node->onAfterAppend();
+
+      $node->getChildNode('id', 'foo', LanguageLabelTag::class)->setPlaceHolder('place-holder', 'test');
+
+      $this->assertEquals('<h2>This is a test!</h2>', $node->transformTemplate());
    }
 
 }

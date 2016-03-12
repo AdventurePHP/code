@@ -21,6 +21,7 @@
 namespace APF\tests\suites\core\expression\taglib;
 
 use APF\core\expression\taglib\ConditionalPlaceHolderTag;
+use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\DomNode;
 use APF\core\pagecontroller\TemplateTag;
 use APF\tests\suites\core\expression\LinkModel;
@@ -42,6 +43,7 @@ class ConditionalPlaceHolderTagTest extends \PHPUnit_Framework_TestCase {
       $tag = new ConditionalPlaceHolderTag();
       $tag->setAttributes($attributes);
       $tag->setContent($content);
+      $tag->setParentObject(new Document());
       $tag->onParseTime();
       $tag->onAfterAppend();
 

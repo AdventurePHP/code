@@ -53,6 +53,10 @@ class LanguageLabelTag extends Document implements LanguageLabel {
     */
    private $placeHolders = [];
 
+   public function onParseTime() {
+      $this->getParentObject()->registerPlaceHolder($this->getAttribute('name'), $this);
+   }
+
    /**
     * Implements the functionality to retrieve a language dependent value form a
     * configuration file. Checks the attributes needed for displaying data.
