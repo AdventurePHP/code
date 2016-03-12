@@ -397,6 +397,7 @@ This is text after a place holder...
       $expected = 'foo';
 
       /* @var $placeHolder PlaceHolderTag */
+      $doc->setPlaceHolder('test', $expected);
       $placeHolder = $doc->getChildNode('name', 'test', 'APF\core\pagecontroller\PlaceHolderTag');
       $placeHolder->setContent($expected);
 
@@ -477,6 +478,8 @@ This is text after a place holder...
 
       // test mixture of existing vs. non-existing place holders
       $template->clear();
+      // TODO clear template will be tricky since within data attributes we cannot distinguish between place holder and other stuff
+      // Maybe remember place holder names in a second array???
       $template->setPlaceHolders(['foo' => '4', 'non-existing' => '5', 'baz' => '6']);
       $this->assertEquals('4||6', $template->transformTemplate());
    }

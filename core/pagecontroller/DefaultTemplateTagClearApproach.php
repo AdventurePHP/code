@@ -37,11 +37,11 @@ namespace APF\core\pagecontroller;
 class DefaultTemplateTagClearApproach implements TemplateTagClearApproach {
 
    public function clear(TemplateTag &$node) {
-      $children = $node->getChildren();
-      foreach ($children as &$child) {
-         if ($child instanceof PlaceHolder) {
-            $child->setContent('');
-         }
+      // clear place holder for current document
+      $node->clearPlaceHolders();
+
+      // clear language label place holders
+      foreach ($node->getChildren() as &$child) {
          if ($child instanceof LanguageLabelTag) {
             $child->clearPlaceHolders();
          }

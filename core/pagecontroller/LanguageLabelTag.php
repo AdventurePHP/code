@@ -37,6 +37,10 @@ use InvalidArgumentException;
  *
  * ...
  * </pre>
+ * <p/>
+ * Let's you add a place holder that is replaced into the current label. Each place holder
+ * must be defined with square brackets ("{" and "}") with the key between the opening and
+ * the closing bracket (e.g. "{foo}" in case the name of the place holder is "foo").
  *
  * @author Christian Achatz
  * @version
@@ -45,13 +49,6 @@ use InvalidArgumentException;
  * Version 0.3, 11.02.2012 (Added LanguageLabelTag to core (refactoring!))
  */
 class LanguageLabelTag extends Document implements LanguageLabel {
-
-   /**
-    * A list of place holder names and values.
-    *
-    * @var array $placeHolders
-    */
-   private $placeHolders = [];
 
    /**
     * Implements the functionality to retrieve a language dependent value form a
@@ -106,48 +103,6 @@ class LanguageLabelTag extends Document implements LanguageLabel {
       }
 
       return $label;
-   }
-
-   /**
-    * Let's you add a place holder that is replaced into the current label. Each place holder
-    * must be defined with square brackets ("{" and "}") with the key between the opening and
-    * the closing bracket (e.g. "{foo}" in case the name of the place holder is "foo").
-    *
-    * @param string $name The name of the place holder.
-    * @param string $value The value of the place holder.
-    * @param bool $append True in case the applied value should be appended, false otherwise.
-    *
-    * @return LanguageLabelTag This instance for further usage (e.g. adding further place holders).
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 11.01.2012<br />
-    * Version 0.2, 06.08.2013 (Added support for appending content to place holders)<br />
-    */
-   public function &setPlaceHolder($name, $value, $append = false) {
-      // false handled first, since most usages don't append --> slightly faster
-      if ($append === false) {
-         $this->placeHolders[$name] = $value;
-      } else {
-         $this->placeHolders[$name] = $this->placeHolders[$name] . $value;
-      }
-
-      return $this;
-   }
-
-   /**
-    * Resets the list of place holders that have been defined so far.
-    *
-    * @return LanguageLabelTag This instance for further usage.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 05.05.2013<br />
-    */
-   public function &clearPlaceHolders() {
-      $this->placeHolders = [];
-
-      return $this;
    }
 
 }

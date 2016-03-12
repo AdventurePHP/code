@@ -376,6 +376,26 @@ interface DomNode extends APFDIService {
    public function &setPlaceHolders(array $placeHolderValues, $append = false);
 
    /**
+    * @return array
+    */
+   public function getPlaceHolders();
+
+   /**
+    * @param string $name
+    * @param string $default
+    *
+    * @return mixed
+    */
+   public function getPlaceHolder($name, $default = null);
+
+   /**
+    * Clear place holders.
+    *
+    * @return $this This instance for further usage.
+    */
+   public function clearPlaceHolders();
+
+   /**
     * Returns the name of the document controller in case the document should
     * be transformed using an MVC controller. In case no controller is defined
     * <em>null</em> is returned instead.

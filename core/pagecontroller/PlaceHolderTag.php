@@ -44,7 +44,9 @@ class PlaceHolderTag extends Document implements PlaceHolder {
     * Version 0.3, 02.07.2014 (ID#213: removed string replacement functionality. Please use extended templating syntax instead)<br />
     */
    public function transform() {
-      return $this->content;
+      // pull mechanism for values set to data attribute rather than letting
+      // Document::setPlaceHolder() iterate over the document tree over and over again
+      return $this->getParentObject()->getPlaceHolder($this->getAttribute('name'));
    }
 
 }
