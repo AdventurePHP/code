@@ -31,7 +31,7 @@ class ConditionalPlaceHolderTagTest extends \PHPUnit_Framework_TestCase {
    public function testSimplePlaceHolder() {
 
       // inject place holder data
-      $tag = $this->getPlaceHolder('<h3>${content}</h3>', []);
+      $tag = $this->getPlaceHolder('<h3>${content}</h3>', ['name' => 'foo']);
 
       $text = 'test headline';
       $tag->setContent($text);
@@ -52,7 +52,7 @@ class ConditionalPlaceHolderTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testPlaceHolderWithLengthCondition() {
 
-      $tag = $this->getPlaceHolder('<h3>${content}</h3>', ['condition' => 'longerThan(10)']);
+      $tag = $this->getPlaceHolder('<h3>${content}</h3>', ['name' => 'foo', 'condition' => 'longerThan(10)']);
 
       // inject place holder data
       $text = 'test headline';
@@ -60,7 +60,7 @@ class ConditionalPlaceHolderTagTest extends \PHPUnit_Framework_TestCase {
 
       $this->assertEquals('<h3>' . $text . '</h3>', $tag->transform());
 
-      $tag = $this->getPlaceHolder('<h3>${content}</h3>', ['condition' => 'longerThan(10)']);
+      $tag = $this->getPlaceHolder('<h3>${content}</h3>', ['name' => 'foo', 'condition' => 'longerThan(10)']);
 
       // inject place holder data
       $text = 'headline';
@@ -70,13 +70,13 @@ class ConditionalPlaceHolderTagTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testEmptyOutputForMissingContent() {
-      $tag = $this->getPlaceHolder('<h3>${content}</h3>', []);
+      $tag = $this->getPlaceHolder('<h3>${content}</h3>', ['name' => 'foo']);
       $this->assertEmpty($tag->transform());
    }
 
    public function testArrayContent() {
 
-      $tag = $this->getPlaceHolder('<a href="${content[\'moreLink\']}">${content[\'moreLabel\']}</a>', []);
+      $tag = $this->getPlaceHolder('<a href="${content[\'moreLink\']}">${content[\'moreLabel\']}</a>', ['name' => 'foo']);
 
       $model = new LinkModel();
       $tag->setContent(['moreLabel' => $model->getLabel(), 'moreLink' => $model->getUrl()]);
@@ -89,7 +89,7 @@ class ConditionalPlaceHolderTagTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testViewModelContent() {
-      $tag = $this->getPlaceHolder('<a href="${content->getUrl()}">${content->getLabel()}</a>', []);
+      $tag = $this->getPlaceHolder('<a href="${content->getUrl()}">${content->getLabel()}</a>', ['name' => 'foo']);
 
       $model = new LinkModel();
       $tag->setContent($model);

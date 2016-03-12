@@ -54,7 +54,11 @@ class LanguageLabelTag extends Document implements LanguageLabel {
    private $placeHolders = [];
 
    public function onParseTime() {
-      $this->getParentObject()->registerPlaceHolder($this->getAttribute('name'), $this);
+      // only register in case marked with a name
+      $name = $this->getAttribute('name');
+      if ($name !== null) {
+         $this->getParentObject()->registerPlaceHolder($name, $this);
+      }
    }
 
    /**
