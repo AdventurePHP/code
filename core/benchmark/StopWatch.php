@@ -27,7 +27,7 @@ use InvalidArgumentException;
  * and your software. Must be used as a singleton to guarantee, that all benchmark tags
  * are included within the report. Usage (for each time!):
  * <pre>
- * $t = Singleton::getInstance(BenchmarkTimer::class);
+ * $t = Singleton::getInstance(StopWatch::class);
  * $t->start('my_tag');
  * ...
  * $t->stop('my_tag');
@@ -35,7 +35,7 @@ use InvalidArgumentException;
  * In order to create a benchmark report (typically at the end of your bootstrap file,
  * please note the following:
  * <pre>
- * $t = Singleton::getInstance(BenchmarkTimer::class);
+ * $t = Singleton::getInstance(StopWatch::class);
  * echo $t->createReport();
  * </pre>
  *
@@ -45,12 +45,22 @@ use InvalidArgumentException;
  * Version 0.2, 01.01.2007<br />
  * Version 0.3, 29.12.2009 (Refactoring due to new HTML markup for the process report.)<br />
  */
-final class BenchmarkTimer {
+final class StopWatch {
+
+   private $runningDepth = 0;
 
    /**
-    * @var StopWatch|OldStopWatch The stop watch instance.
+    * @var Process[]
     */
-   private $stopWatch;
+   private $processes = [];
+
+   /**
+    * Indicator, that defines, if the benchmarker is enabled or not (for performance reasons!)
+    * <em>true</em> in case, the benchmarker is enabled, <em>false</em> otherwise.
+    *
+    * @var boolean $enabled
+    */
+   private $enabled = true;
 
    /**
     * Constructor of the BenchmarkTimer. Initializes the root process.
@@ -60,7 +70,29 @@ final class BenchmarkTimer {
     * Version 0.1, 31.12.2006<br />
     */
    public function __construct() {
-      $this->stopWatch = new StopWatch();
+      $this->start('Root');
+   }
+
+   /**
+    * This method is used to starts a new benchmark timer.
+    *
+    * @param string $name The (unique!) name of the benchmark tag.
+    *
+    * @throws InvalidArgumentException In case the given name is null.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 31.12.2006<br />
+    */
+   public function start($name = null) {
+
+      // return, if benchmarker is disabled
+      if ($this->enabled === false) {
+         return;
+      }
+
+      $this->processes[$name] = new Process($name, $this->runningDepth++);
+      $this->processes[$name]->start();
    }
 
    /**
@@ -71,7 +103,7 @@ final class BenchmarkTimer {
     * Version 0.1, 10.01.2010<br />
     */
    public function enable() {
-      $this->stopWatch->enable();
+      $this->enabled = true;
    }
 
    /**
@@ -87,48 +119,7 @@ final class BenchmarkTimer {
     * Version 0.1, 10.01.2010<br />
     */
    public function disable() {
-      $this->stopWatch->disable();
-   }
-
-   /**
-    * Sets the critical time. If the critical time is reached, the time is printed in red digits.
-    *
-    * @param float $time the critical time in seconds.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 31.12.2006<br />
-    */
-   public function setCriticalTime($time) {
-      $this->stopWatch->setCriticalTime($time);
-   }
-
-   /**
-    * Returns the critical time.
-    *
-    * @return float The critical time.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 31.12.2006<br />
-    */
-   public function getCriticalTime() {
-      return $this->stopWatch->getCriticalTime();
-   }
-
-   /**
-    * This method is used to starts a new benchmark timer.
-    *
-    * @param string $name The (unique!) name of the benchmark tag.
-    *
-    * @throws InvalidArgumentException In case the given name is null.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 31.12.2006<br />
-    */
-   public function start($name = null) {
-      $this->stopWatch->start($name);
+      $this->enabled = false;
    }
 
    /**
@@ -143,11 +134,24 @@ final class BenchmarkTimer {
     * Version 0.1, 31.12.2006<br />
     */
    public function stop($name) {
-      $this->stopWatch->stop($name);
+
+      // return, if benchmarker is disabled
+      if ($this->enabled === false) {
+         return;
+      }
+
+      if (!isset($this->processes[$name])) {
+         throw new InvalidArgumentException('Process with name "' . $name . '" is not running!');
+      }
+
+      $this->processes[$name]->stop();
+      $this->runningDepth--;
    }
 
    /**
     * Generates the report of the recorded benchmark tags.
+    *
+    * @param Report $report Custom report format if desired (default: HtmlReport).
     *
     * @return string The HTML source code of the benchmark.
     *
@@ -155,8 +159,42 @@ final class BenchmarkTimer {
     * @version
     * Version 0.1, 31.12.2006<br />
     */
-   public function createReport() {
-      return $this->stopWatch->createReport();
+   public function createReport(Report $report = null) {
+
+      // return, if benchmarker is disabled
+      if ($this->enabled === false) {
+         return 'Benchmarker is currently disabled. To generate a detailed report, please '
+         . 'enable it calling <em>$t = Singleton::getInstance(BenchmarkTimer::class); '
+         . '$t->enable();</em>!';
+      }
+
+      // Stop root process to be able to measure overall time accurately.
+      // This needs to be done here as we don't have the chance to stop
+      // it before, since we don't know if a stop() is the "last" stop.
+      $this->getRootProcess()->stop();
+
+      if ($report === null) {
+         $report = new HtmlReport();
+      }
+
+      return $report->compile(array_values($this->processes));
+   }
+
+   /**
+    * Stops the root process and returns it.
+    *
+    * @return Process The stopped root process.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 31.12.2006<br />
+    */
+   private function &getRootProcess() {
+
+      $rootProcess = &$this->processes['Root'];
+      $rootProcess->stop();
+
+      return $rootProcess;
    }
 
    /**
@@ -172,7 +210,7 @@ final class BenchmarkTimer {
     * Version 0.1, 23.04.2012<br />
     */
    public function getTotalTime() {
-      return $this->stopWatch->getTotalTime();
+      return $this->getRootProcess()->getDuration();
    }
 
 }
