@@ -49,6 +49,13 @@ class HtmlIteratorTag extends Document implements Iterator {
    use GetIterator;
 
    /**
+    * Defines the name of the iteration number place holder.
+    *
+    * @var string ITERATION_NUMBER_PLACE_HOLDER
+    */
+   const ITERATION_NUMBER_PLACE_HOLDER = 'IterationNumber';
+
+   /**
     * Defines the "normal" fallback mode (fallback content is displayed additionally).
     *
     * @var string FALLBACK_MODE_NORMAL
@@ -224,20 +231,17 @@ class HtmlIteratorTag extends Document implements Iterator {
       // ID#105: display fallback content in case no items are available.
       if ($itemCount === 0) {
 
-         /* @var $fallback TemplateTag */
-         $fallbackObjectId = $this->getFallbackContentItemObjectId();
+         $fallback = $this->getFallbackContent();
 
-         if ($fallbackObjectId !== null) {
+         if ($fallback !== null) {
             $fallbackMode = $this->getAttribute('fallback-mode', self::FALLBACK_MODE_NORMAL);
 
             if ($fallbackMode === self::FALLBACK_MODE_NORMAL) {
                // activate auto-transformation to display fallback content.
-               /** @noinspection PhpUndefinedMethodInspection */
-               $this->children[$fallbackObjectId]->transformOnPlace();
+               $fallback->transformOnPlace();
             } else {
                // display fallback content exclusively
-               /** @noinspection PhpUndefinedMethodInspection */
-               return $this->children[$fallbackObjectId]->transformTemplate();
+               return $fallback->transformTemplate();
             }
          }
 
@@ -271,7 +275,7 @@ class HtmlIteratorTag extends Document implements Iterator {
 
             $iteratorItem->setData('status', new IteratorStatus($isFirst, $isLast, $itemCount, $this->iterationNumber, $cssClass));
 
-            $iteratorItem->setPlaceHolder('IterationNumber', $this->iterationNumber);
+            $iteratorItem->setPlaceHolder(self::ITERATION_NUMBER_PLACE_HOLDER, $this->iterationNumber);
 
             if (is_array($this->dataContainer[$i])) {
 
@@ -284,7 +288,7 @@ class HtmlIteratorTag extends Document implements Iterator {
                foreach ($placeHolders as $name) {
 
                   // don't touch iterator numbers as we've already set it above
-                  if ($name === 'IterationNumber') {
+                  if ($name === self::ITERATION_NUMBER_PLACE_HOLDER) {
                      continue;
                   }
 
@@ -293,12 +297,6 @@ class HtmlIteratorTag extends Document implements Iterator {
                }
 
                $buffer .= $iteratorItem->transform();
-
-            } else {
-               throw new InvalidArgumentException('[HtmlIteratorTag::transformIterator()] '
-                     . 'Given list entry is not an array or object (' . $this->dataContainer[$i]
-                     . ')! The data container must contain a list of associative arrays or objects!',
-                     E_USER_WARNING);
             }
 
             // increment counter that can be used to number lists or tables
@@ -350,28 +348,6 @@ class HtmlIteratorTag extends Document implements Iterator {
    }
 
    /**
-    * Returns the fallback content template object id if found in the children list.
-    * All other occurrences are ignored, due to the fact, that it is not
-    * allowed to define more that one fallback content.
-    *
-    * @return string|null The fallback content's object id or <em>null</em> in case no <iterator:fallback /> is specified.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 06.05.2014<br />
-    */
-   protected function getFallbackContentItemObjectId() {
-
-      foreach ($this->children as &$child) {
-         if ($child instanceof TemplateTag) {
-            return $child->getObjectId();
-         }
-      }
-
-      return null;
-   }
-
-   /**
     * Returns the fallback content template in case defined for the present iterator.
     *
     * @return TemplateTag|null Fallback template or <em>null</em> in case nothing is defined.
@@ -392,6 +368,28 @@ class HtmlIteratorTag extends Document implements Iterator {
       $null = null;
 
       return $null;
+   }
+
+   /**
+    * Returns the fallback content template object id if found in the children list.
+    * All other occurrences are ignored, due to the fact, that it is not
+    * allowed to define more that one fallback content.
+    *
+    * @return string|null The fallback content's object id or <em>null</em> in case no <iterator:fallback /> is specified.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 06.05.2014<br />
+    */
+   protected function getFallbackContentItemObjectId() {
+
+      foreach ($this->children as &$child) {
+         if ($child instanceof TemplateTag) {
+            return $child->getObjectId();
+         }
+      }
+
+      return null;
    }
 
 }
