@@ -20,12 +20,10 @@
  */
 namespace APF\core\benchmark;
 
-use InvalidArgumentException;
-
 /**
- * This class implements the benchmark timer used for measurement of the core components
- * and your software. Must be used as a singleton to guarantee, that all benchmark tags
- * are included within the report. Usage (for each time!):
+ * This class implements a benchmark tool to measure execution speed of core components
+ * of the framework as well as parts of your software. Must be used as a singleton to
+ * guarantee, that all events are captured within the report. Usage (for each time!):
  * <pre>
  * $t = Singleton::getInstance(BenchmarkTimer::class);
  * $t->start('my_tag');
@@ -44,27 +42,37 @@ use InvalidArgumentException;
  * Version 0.1, 31.12.2006<br />
  * Version 0.2, 01.01.2007<br />
  * Version 0.3, 29.12.2009 (Refactoring due to new HTML markup for the process report.)<br />
+ * Version 0.4, 14.03.2016 (ID#214: extracted stop watch functionality, report generation, and improved performance by ~50%)<br />
  */
 final class BenchmarkTimer {
 
    /**
-    * @var StopWatch|OldStopWatch The stop watch instance.
+    * In order to exchange APF's default stop watch implementation please set this property within
+    * your bootstrap file before starting the front controller.
+    *
+    * @var string Fully qualified name of the watch implementation.
+    */
+   public static $watchClass = DefaultStopWatch::class;
+
+   /**
+    * @var StopWatch The stop watch instance.
     */
    private $stopWatch;
 
    /**
-    * Constructor of the BenchmarkTimer. Initializes the root process.
+    * Initializes the underlying stop watch.
     *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 31.12.2006<br />
+    * Version 0.2, 14.03.2016 (ID#214: introduced stop watch implementation to allow exchange)<br />
     */
    public function __construct() {
-      $this->stopWatch = new StopWatch();
+      $this->stopWatch = new self::$watchClass();
    }
 
    /**
-    * Enables the benchmarker for measurement of the predefined points.
+    * Enables the stop watch for measurement of the predefined events.
     *
     * @author Christian Achatz
     * @version
@@ -75,12 +83,9 @@ final class BenchmarkTimer {
    }
 
    /**
-    * Disables the benchmarker for measurement of the predefined points. This is often
-    * important for performance reasons, because release 1.11 introduced onParseTime()
-    * measurement, that could probably decrease the APF's performance!
+    * Disables the stop watch for measurement of the predefined events.
     * <p />
-    * Experiential tests proofed, that disabling the benchmarker can increase performance
-    * from ~0.185s to ~0.138s, what is ~25%!
+    * Experiential tests proofed, that disabling the stop watch can increase performance!
     *
     * @author Christian Achatz
     * @version
@@ -91,37 +96,9 @@ final class BenchmarkTimer {
    }
 
    /**
-    * Sets the critical time. If the critical time is reached, the time is printed in red digits.
-    *
-    * @param float $time the critical time in seconds.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 31.12.2006<br />
-    */
-   public function setCriticalTime($time) {
-      $this->stopWatch->setCriticalTime($time);
-   }
-
-   /**
-    * Returns the critical time.
-    *
-    * @return float The critical time.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 31.12.2006<br />
-    */
-   public function getCriticalTime() {
-      return $this->stopWatch->getCriticalTime();
-   }
-
-   /**
-    * This method is used to starts a new benchmark timer.
+    * This method is used to start a new timer.
     *
     * @param string $name The (unique!) name of the benchmark tag.
-    *
-    * @throws InvalidArgumentException In case the given name is null.
     *
     * @author Christian Schäfer
     * @version
@@ -132,11 +109,9 @@ final class BenchmarkTimer {
    }
 
    /**
-    * Stops the benchmark timer, started with start().
+    * Stops the stop watch for a certain event started with start().
     *
     * @param string $name The (unique!) name of the benchmark tag.
-    *
-    * @throws InvalidArgumentException In case the named process is not running.
     *
     * @author Christian Schäfer
     * @version
@@ -147,16 +122,18 @@ final class BenchmarkTimer {
    }
 
    /**
-    * Generates the report of the recorded benchmark tags.
+    * Generates the report of the recorded events.
     *
-    * @return string The HTML source code of the benchmark.
+    * @param Report $report Custom report format if desired (default: HtmlReport).
+    *
+    * @return string The HTML source code of the benchmark report.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 31.12.2006<br />
     */
-   public function createReport() {
-      return $this->stopWatch->createReport();
+   public function createReport(Report $report = null) {
+      return $this->stopWatch->createReport($report);
    }
 
    /**
@@ -165,7 +142,7 @@ final class BenchmarkTimer {
     * You may use this method to add the total rendering time of an APF-based
     * application to your source code or any proprietary HTTP header.
     *
-    * @return string The total processing time.
+    * @return float The total processing time.
     *
     * @author Christian Achatz
     * @version

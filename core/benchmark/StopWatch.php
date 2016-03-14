@@ -20,182 +20,73 @@
  */
 namespace APF\core\benchmark;
 
-use InvalidArgumentException;
-
 /**
- * This class implements the benchmark timer used for measurement of the core components
- * and your software. Must be used as a singleton to guarantee, that all benchmark tags
- * are included within the report. Usage (for each time!):
- * <pre>
- * $t = Singleton::getInstance(StopWatch::class);
- * $t->start('my_tag');
- * ...
- * $t->stop('my_tag');
- * </pre>
- * In order to create a benchmark report (typically at the end of your bootstrap file,
- * please note the following:
- * <pre>
- * $t = Singleton::getInstance(StopWatch::class);
- * echo $t->createReport();
- * </pre>
+ * Defines the structure of APF's stop watch implementations.
+ * <p/>
+ * The stop watch is used with the benchmark timer to measure dedicated events during
+ * request processing.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 31.12.2006<br />
- * Version 0.2, 01.01.2007<br />
- * Version 0.3, 29.12.2009 (Refactoring due to new HTML markup for the process report.)<br />
+ * Version 0.1, 14.03.2016 (ID#214: introduced interface to be able to exchange/adapt APF's default stop watch)<br />
  */
-final class StopWatch {
-
-   private $runningDepth = 0;
+interface StopWatch {
 
    /**
-    * @var Process[]
-    */
-   private $processes = [];
-
-   /**
-    * Indicator, that defines, if the benchmarker is enabled or not (for performance reasons!)
-    * <em>true</em> in case, the benchmarker is enabled, <em>false</em> otherwise.
-    *
-    * @var boolean $enabled
-    */
-   private $enabled = true;
-
-   /**
-    * Constructor of the BenchmarkTimer. Initializes the root process.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 31.12.2006<br />
-    */
-   public function __construct() {
-      $this->start('Root');
-   }
-
-   /**
-    * This method is used to starts a new benchmark timer.
+    * This method is used to start a new timer.
     *
     * @param string $name The (unique!) name of the benchmark tag.
     *
-    * @throws InvalidArgumentException In case the given name is null.
-    *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 31.12.2006<br />
     */
-   public function start($name = null) {
-
-      // return, if benchmarker is disabled
-      if ($this->enabled === false) {
-         return;
-      }
-
-      $this->processes[$name] = new Process($name, $this->runningDepth++);
-      $this->processes[$name]->start();
-   }
+   public function start($name = null);
 
    /**
-    * Enables the benchmarker for measurement of the predefined points.
+    * Enables the stop watch for measurement of the predefined events.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 10.01.2010<br />
     */
-   public function enable() {
-      $this->enabled = true;
-   }
+   public function enable();
 
    /**
-    * Disables the benchmarker for measurement of the predefined points. This is often
-    * important for performance reasons, because release 1.11 introduced onParseTime()
-    * measurement, that could probably decrease the APF's performance!
+    * Disables the stop watch for measurement of the predefined events.
     * <p />
-    * Experiential tests proofed, that disabling the benchmarker can increase performance
-    * from ~0.185s to ~0.138s, what is ~25%!
+    * Experiential tests proofed, that disabling the stop watch can increase
+    * page processing performance.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 10.01.2010<br />
     */
-   public function disable() {
-      $this->enabled = false;
-   }
+   public function disable();
 
    /**
-    * Stops the benchmark timer, started with start().
+    * Stops the stop watch for a certain event started with start().
     *
     * @param string $name The (unique!) name of the benchmark tag.
-    *
-    * @throws InvalidArgumentException In case the named process is not running.
     *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 31.12.2006<br />
     */
-   public function stop($name) {
-
-      // return, if benchmarker is disabled
-      if ($this->enabled === false) {
-         return;
-      }
-
-      if (!isset($this->processes[$name])) {
-         throw new InvalidArgumentException('Process with name "' . $name . '" is not running!');
-      }
-
-      $this->processes[$name]->stop();
-      $this->runningDepth--;
-   }
+   public function stop($name);
 
    /**
-    * Generates the report of the recorded benchmark tags.
+    * Generates the report of the recorded events.
     *
     * @param Report $report Custom report format if desired (default: HtmlReport).
     *
-    * @return string The HTML source code of the benchmark.
+    * @return string The HTML source code of the benchmark report.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 31.12.2006<br />
     */
-   public function createReport(Report $report = null) {
-
-      // return, if benchmarker is disabled
-      if ($this->enabled === false) {
-         return 'Benchmarker is currently disabled. To generate a detailed report, please '
-         . 'enable it calling <em>$t = Singleton::getInstance(BenchmarkTimer::class); '
-         . '$t->enable();</em>!';
-      }
-
-      // Stop root process to be able to measure overall time accurately.
-      // This needs to be done here as we don't have the chance to stop
-      // it before, since we don't know if a stop() is the "last" stop.
-      $this->getRootProcess()->stop();
-
-      if ($report === null) {
-         $report = new HtmlReport();
-      }
-
-      return $report->compile(array_values($this->processes));
-   }
-
-   /**
-    * Stops the root process and returns it.
-    *
-    * @return Process The stopped root process.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 31.12.2006<br />
-    */
-   private function &getRootProcess() {
-
-      $rootProcess = &$this->processes['Root'];
-      $rootProcess->stop();
-
-      return $rootProcess;
-   }
+   public function createReport(Report $report = null);
 
    /**
     * Returns the total process time recorded until the call to this method.
@@ -203,14 +94,12 @@ final class StopWatch {
     * You may use this method to add the total rendering time of an APF-based
     * application to your source code or any proprietary HTTP header.
     *
-    * @return string The total processing time.
+    * @return float The total processing time.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 23.04.2012<br />
     */
-   public function getTotalTime() {
-      return $this->getRootProcess()->getDuration();
-   }
+   public function getTotalTime();
 
 }

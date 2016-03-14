@@ -22,6 +22,10 @@ namespace APF\core\benchmark;
 
 /**
  * Standard HTML report that can be used to be displayed on web pages (e.g. after page rendering).
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 14.03.2016 (ID#214: extracted report generation from old BenchmarkTimer implementation)<br />
  */
 class HtmlReport implements Report {
 

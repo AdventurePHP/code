@@ -22,13 +22,16 @@ namespace APF\core\benchmark;
 
 /**
  * Simple report creating just plain/text output.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 14.03.2016 (ID#214: added new plain/text report)<br />
  */
 class PlainTextReport implements Report {
 
    public function compile(array $processes) {
 
-      $buffer = '<pre style="background-color: white;">' . PHP_EOL;
-      $buffer .= $processes[0]->getName() . ' ' . $processes[0]->getDuration() . 's' . PHP_EOL;
+      $buffer = $processes[0]->getName() . ' ' . $processes[0]->getDuration() . 's' . PHP_EOL;
 
       foreach (array_slice($processes, 1) as $process) {
          /* @var $process Process */
@@ -38,7 +41,7 @@ class PlainTextReport implements Report {
                . PHP_EOL;
       }
 
-      return $buffer . '</pre>' . PHP_EOL;
+      return $buffer . PHP_EOL;
 
    }
 
