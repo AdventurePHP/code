@@ -456,7 +456,7 @@ class OldStopWatch implements StopWatch {
       $buffer .= PHP_EOL;
       $buffer .= '  <dl>';
       $buffer .= PHP_EOL;
-      $buffer .= '    <dt class="header">Processtree</dt>';
+      $buffer .= '    <dt class="header">Process tree</dt>';
       $buffer .= PHP_EOL;
       $buffer .= '    <dd class="header">Time</dd>';
 

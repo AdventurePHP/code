@@ -49,7 +49,7 @@ class HtmlReport implements Report {
       $buffer .= $this->createReport4Process($processes[0]);
 
       foreach (array_slice($processes, 1) as $process) {
-         /* @var $process BenchmarkProcess */
+         /* @var $process Process */
          $buffer .= $this->createReport4Process($process);
       }
 
@@ -154,7 +154,7 @@ class HtmlReport implements Report {
       $buffer .= PHP_EOL;
       $buffer .= '  <dl>';
       $buffer .= PHP_EOL;
-      $buffer .= '    <dt class="header">Processtree</dt>';
+      $buffer .= '    <dt class="header">Process tree</dt>';
       $buffer .= PHP_EOL;
       $buffer .= '    <dd class="header">Time</dd>';
       $buffer .= '  </dl>';
@@ -166,7 +166,7 @@ class HtmlReport implements Report {
    /**
     * Generates the report for one single process.
     *
-    * @param BenchmarkProcess $process the current process.
+    * @param Process $process the current process.
     *
     * @return string The report for the current process.
     *
