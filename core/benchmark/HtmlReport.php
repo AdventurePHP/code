@@ -74,10 +74,16 @@ class HtmlReport implements Report {
       $buffer = PHP_EOL;
       $buffer .= '<style type="text/css">
 #APF-Benchmark-Report {
-   font-size: 10px !important;
-   padding: 0.3em;
+   font-size: 12px !important;
+   padding: .5em;
    background-color: #fff;
    font-family: Arial, Helvetica, sans-serif;
+}
+#APF-Benchmark-Report h2 {
+   font-size: 2em !important;
+   margin: 0 0 .5em 0 !important;
+   background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAQhQTFRFX2+HPmuXbZGrSrPuPGqUXLTpOFWNSrf0TabbW4+zarzsh4KCW6PTPZTNhYWFVandXrjsQ3elSYOyQ2qUcYeZQXGeTo28WrLnRrLuV6nYSLb0RnGbU4awabjkZmZmSbPwU5fHfoyXO57bYpS2Q67xZ7zsbJeza5q5Up3KX6PNiX+JTLLqapm3RXmnh4eOVWaIVX+kXbvwb5iyaL/wX3uXiISEVq7jWI63WKbSiH9/Y6HGh39/iYKCiYSEiHd3mWZmi4ODf39/f39/kX9/AAAAf39/VVVVAAAAWrvzTYq5QqvpUKTaQKfkSIGvUpPCRrPxWaDPR7XyV5zMPaPgSJ3URK/tVLr0R7XzQYmK6gAAAEh0Uk5TINGD6GWXCe/WomAxzvsX783+ck9zxqKC/H0xvdIdBa32Wfy6Exs2ciKLGthdgCIPrv1yaVs4n9UXHpAgJzQPBR8IAg4BBgMAsMoTCgAAAIxJREFUGNNjcEcDDHgE2Fj00VQIMzKgCriJStuhmqEraOKEIiDka+CMIiDmKeOALKCh4GduAxRQNeaSdQHyLXgCgpStGdyl2MM8DAVYxc34vUN4RYBmyFsZaWqH+4d6+QQrcXI7MaioWTo6akkyhwdKcDDZugLd4QrSb6+no65oyueG5FI3VzkXrL4FAJOjPYIWj+deAAAAAElFTkSuQmCC") no-repeat left center;
+   padding-left: 1em !important;
 }
 #APF-Benchmark-Report .even {
    background: #fff !important;
@@ -93,70 +99,67 @@ class HtmlReport implements Report {
    color: #f00;
 }
 #APF-Benchmark-Report .header {
-   border-bottom: 1px solid #ccc;
-   border-top: 1px solid #ccc;
+   border: none;
    font-weight: bold;
+   background: none !important;
+   font-size: 1.2em !important;
 }
-#APF-Benchmark-Report .header:before {
-    content: \'\';
+#APF-Benchmark-Report .header dt:before {
+    content: "";
+    padding: 0 !important;
+}
+#APF-Benchmark-Report .header {
+   margin-bottom: .7em;   
+}
+#APF-Benchmark-Report .header dd {
+   padding-right: 4.6em !important;
+}
+#APF-Benchmark-Report .header dt {
+   padding-left: 0 !important;
 }
 #APF-Benchmark-Report dl {
    color: #000;
-   font-size: 1em;
    font-weight: normal;
-   line-height: 1em;
-   margin: 0 0 0 2em;
-   border: 1px solid #ccc;
-   height: 1.8em !important;
-}
-#APF-Benchmark-Report > dl {
    margin: 0;
+   border: 1px solid #ccc;
 }
-#APF-Benchmark-Report .odd  > dl {
+#APF-Benchmark-Report dt, #APF-Benchmark-Report dd {
+   padding: .2em 0 0 0 !important;
+   min-height: 1.4em !important;
+   height: 1.4em !important;
+   line-height: 1.4em !important;   
+   margin: 0 !important;
+   border: none !important;
 }
+
 #APF-Benchmark-Report dt {
    float: left;
-   border: none !important;
-   line-height: 1em;
-   margin-top: 0 !important;
-   margin-bottom: 0 !important;
-   height: 1.8em !important;
-   min-height: 1.8em !important;
-   padding-top: 0 !important;
-   padding-bottom: 0 !important;
 }
 #APF-Benchmark-Report dt:before {
    color: #666;
    content: \'» \';
-   padding: 0 0.3em;
+   padding: 0 .3em;
 }
 #APF-Benchmark-Report dd {
    text-align: right;
-   border: none !important;
-   margin-top: 0 !important;
-   margin-bottom: 0 !important;
-   height: 1.8em !important;
-   min-height: 1.8em !important;
-   padding-top: 0 !important;
-   padding-bottom: 0 !important;
 }
 #APF-Benchmark-Report:after {
    clear: both;
    content: " ";
    display: block;
    visibility: hidden;
-   }
+}
 </style>';
       $buffer .= PHP_EOL;
       $buffer .= '<div id="APF-Benchmark-Report">';
       $buffer .= PHP_EOL;
-      $buffer .= '  <h2>Benchmark report</h2>';
+      $buffer .= '  <h2>APF benchmark report</h2>';
       $buffer .= PHP_EOL;
-      $buffer .= '  <dl>';
+      $buffer .= '  <dl class="header">';
       $buffer .= PHP_EOL;
-      $buffer .= '    <dt class="header">Process tree</dt>';
+      $buffer .= '    <dt>Process</dt>';
       $buffer .= PHP_EOL;
-      $buffer .= '    <dd class="header">Time</dd>';
+      $buffer .= '    <dd>Time</dd>';
       $buffer .= '  </dl>';
       $buffer .= PHP_EOL;
 
