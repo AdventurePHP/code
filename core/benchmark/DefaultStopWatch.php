@@ -68,7 +68,7 @@ class DefaultStopWatch implements StopWatch {
          return;
       }
 
-      $this->processes[$name] = new Process($name, $this->hierarchyLevel++);
+      $this->processes[$name] = new DefaultProcess($name, $this->hierarchyLevel++);
       $this->processes[$name]->start();
    }
 

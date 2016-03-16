@@ -21,29 +21,9 @@
 namespace APF\core\benchmark;
 
 /**
- * Defines the stop watch's process DTO.
+ * Defines the stop watch's process DTO structure.
  */
-class Process {
-
-   /**
-    * @var string The name of the process.
-    */
-   private $name;
-
-   /**
-    * @var int The hierarchy level of the process.
-    */
-   private $level;
-
-   /**
-    * @var float Start time.
-    */
-   private $start;
-
-   /**
-    * @var float End time.
-    */
-   private $end;
+interface Process {
 
    /**
     * Creates a stop watch process.
@@ -51,71 +31,35 @@ class Process {
     * @param string $name The name of the process.
     * @param int $level The hierarchy level.
     */
-   public function __construct($name, $level) {
-      $this->name = $name;
-      $this->level = $level;
-   }
+   public function __construct($name, $level);
 
    /**
     * @return string The name of the process.
     */
-   public function getName() {
-      return $this->name;
-   }
+   public function getName();
 
    /**
     * @return int The hierarchy level.
     */
-   public function getLevel() {
-      return $this->level;
-   }
+   public function getLevel();
 
    /**
     * Starts the process.
     *
     * @return $this This instance for further usage.
     */
-   public function start() {
-      // avoid double start to ensure accuracy
-      if ($this->start === null) {
-         $this->start = $this->getTimeStamp();
-      }
-
-      return $this;
-   }
-
-   /**
-    * @return float The current timestamp.
-    */
-   private function getTimeStamp() {
-      return microtime(true);
-   }
+   public function start();
 
    /**
     * Stops the process.
     *
     * @return $this This instance for further usage.
     */
-   public function stop() {
-      // avoid double stop to ensure accuracy
-      if ($this->end === null) {
-         $this->end = $this->getTimeStamp();
-      }
-
-      return $this;
-   }
+   public function stop();
 
    /**
     * @return float Process execution duration.
     */
-   public function getDuration() {
-
-      // Return place holder in case process has not been started and/or stopped.
-      if ($this->start === null || $this->end === null) {
-         return '--------------------';
-      }
-
-      return number_format($this->end - $this->start, 10);
-   }
+   public function getDuration();
 
 }

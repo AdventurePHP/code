@@ -119,7 +119,7 @@ final class BenchmarkProcess {
    }
 
    public function setParentProcess(BenchmarkProcess &$process) {
-      $this->parentProcess = & $process;
+      $this->parentProcess = &$process;
    }
 
    public function &getParentProcess() {

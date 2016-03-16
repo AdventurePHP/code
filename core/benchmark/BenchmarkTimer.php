@@ -36,6 +36,20 @@ namespace APF\core\benchmark;
  * $t = Singleton::getInstance(BenchmarkTimer::class);
  * echo $t->createReport();
  * </pre>
+ * Based on interface Report you can generate custom reports (e.g. aggregate certain events).
+ * To run a custom report, please specify the desired report implementation when calling
+ * createReport():
+ * <pre>
+ * echo $t->createReport(\My\Custom\Report::class);
+ * </pre>
+ * For special cases, the stop watch implementation shipped with the APF can be adapted and/or
+ * exchanged on a configuration basis. For this reason, implement interface StopWatch and
+ * instruct the BenchmarkTimer to use it by:
+ * <pre>
+ * BenchmarkTimer::$watchClass = \My\Custom\StopWatch::class;
+ * </pre>
+ * Please ensure that configuration takes place in your bootstrap file before any other
+ * application component using the BenchmarkTimer is executed.
  *
  * @author Christian Achatz
  * @version
