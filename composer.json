@@ -1,8 +1,15 @@
 {
-  "name": "Adventure PHP Framework (APF)",
+  "name": "apf/apf",
+  "description": "Adventure PHP Framework (APF)",
   "homepage": "https://github.com/AdventurePHP/code",
-  "license": "LGPL",
-  "version": "3.2",
+  "license": "LGPL-3.0+",
+  "type": "library",
+  "support": {
+    "issues": "http://tracker.adventure-php-framework.org",
+    "forum": "http://forum.adventure-php-framework.org",
+    "wiki": "http://wiki.adventure-php-framework.org",
+    "docs": "http://adventure-php-framework.org/en"
+  },
   "require": {
     "php": ">=5.5.0"
   },
