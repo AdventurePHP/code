@@ -128,6 +128,10 @@ abstract class AbstractFrontcontrollerAction extends APFObject implements Action
       return true;
    }
 
+   public function allowExecution() {
+      return true;
+   }
+
    public function getPriority() {
       return 10;
    }

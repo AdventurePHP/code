@@ -283,6 +283,7 @@ class Frontcontroller extends APFObject {
     * Version 0.5, 08.11.2007<br />
     * Version 0.6, 28.03.2008 (Optimized benchmarker call)<br />
     * Version 0.7, 07.08.2010 (Added action activation indicator to disable actions on demand)<br />
+    * Version 0.8, 24.03.2016 (Added allow execution indicator)<br />
     */
    protected function runActions($type = Action::TYPE_PRE_PAGE_CREATE) {
 
@@ -294,6 +295,7 @@ class Frontcontroller extends APFObject {
          // only execute, when the current action has a suitable type
          if ($this->actionStack[$offset]->getType() == $type
                && $this->actionStack[$offset]->isActive()
+               && $this->actionStack[$offset]->allowExecution()
          ) {
 
             $id = get_class($this->actionStack[$offset]) . '::run()';
