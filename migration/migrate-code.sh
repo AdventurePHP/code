@@ -27,6 +27,10 @@ echo "Starting migration ..."
 echo "* Migrate place holder methods ..."
 $PHP_BINARY $PHP_SCRIPT_DIR/migrate_place_holder_methods.php
 
+# migrate registerAction() methods
+echo "* Rewrite deprecated registerAction() to addAction() ..."
+$PHP_BINARY $PHP_SCRIPT_DIR/migrate_register_action.php
+
 echo
 echo "#############################################"
 echo
