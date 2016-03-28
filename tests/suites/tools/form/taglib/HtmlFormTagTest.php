@@ -298,7 +298,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
     * Test interface complies for not-existing interface.
     */
    public function testFindById1() {
-      $this->setExpectedException(FormException::class);
+      $this->expectException(FormException::class);
       $form = new HtmlFormTag();
       $form->setParentObject(new Document());
       $form->getFormElementByID('not-existing');
@@ -353,7 +353,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
     * Test interface complies for not-existing interface.
     */
    public function testGetLabel1() {
-      $this->setExpectedException(FormException::class);
+      $this->expectException(FormException::class);
       $form = new HtmlFormTag();
       $form->setParentObject(new Document());
       $form->getLabel('not-existing');
@@ -418,7 +418,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
     * Tests API complies for non existing tags.
     */
    public function testGetFormElementsByTagName1() {
-      $this->setExpectedException(FormException::class);
+      $this->expectException(FormException::class);
       $form = new HtmlFormTag();
       $form->setParentObject(new Document());
       $form->getFormElementsByTagName('html:placeholder');

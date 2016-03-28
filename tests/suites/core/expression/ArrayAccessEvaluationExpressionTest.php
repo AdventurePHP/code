@@ -76,19 +76,19 @@ class ArrayAccessEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testInvalidOffset() {
-      $this->setExpectedException(ParserException::class);
+      $this->expectException(ParserException::class);
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME . '[\'baz\']', $this->getPreviousResult());
       $expression->getResult();
    }
 
    public function testInvalidExpression() {
-      $this->setExpectedException(ParserException::class);
+      $this->expectException(ParserException::class);
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME, []);
       $expression->getResult();
    }
 
    public function testInvalidPreviousResult() {
-      $this->setExpectedException(ParserException::class);
+      $this->expectException(ParserException::class);
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME, null);
       $expression->getResult();
    }

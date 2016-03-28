@@ -79,12 +79,12 @@ class ExpressionEvaluatorTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testIllegalCallChain() {
-      $this->setExpectedException(ParserException::class);
+      $this->expectException(ParserException::class);
       ExpressionEvaluator::evaluate(new Document(), '->foo->getMoreLinkModel()->->getLabel()');
    }
 
    public function testIllegalCall() {
-      $this->setExpectedException(ParserException::class);
+      $this->expectException(ParserException::class);
       ExpressionEvaluator::evaluate(new Document(), 'foo-> getCssClass()');
    }
 

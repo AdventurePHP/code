@@ -165,7 +165,7 @@ class HtmlIteratorTagTest extends \PHPUnit_Framework_TestCase {
     * Test missing <iterator:item /> definition.
     */
    public function testMissingIteratorItem() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
 
       $tag = new HtmlIteratorTag();
       $tag->onParseTime();

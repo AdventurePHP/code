@@ -23,6 +23,7 @@ namespace APF\tests\suites\core\service;
 use APF\core\service\APFService;
 use APF\core\service\ServiceManager;
 use APF\core\singleton\Singleton;
+use InvalidArgumentException;
 
 /**
  * Tests service object creation capabilities.
@@ -39,7 +40,7 @@ class ServiceManagerTest extends \PHPUnit_Framework_TestCase {
    const INSTANCE_ID = 'test-id';
 
    public function testServiceCreationFail() {
-      $this->setExpectedException('\InvalidArgumentException');
+      $this->expectException(InvalidArgumentException::class);
       ServiceManager::getServiceObject('\stdClass', self::CONTEXT, self::LANGUAGE);
    }
 

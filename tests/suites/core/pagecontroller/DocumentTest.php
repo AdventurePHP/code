@@ -94,7 +94,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testGetChildNodeWithException() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       $doc = new Document();
       $doc->onParseTime();
       $doc->getChildNode('foo', 'bar', Document::class);
@@ -144,7 +144,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testGetChildNodesWithException() {
-      $this->setExpectedException('\InvalidArgumentException');
+      $this->expectException(InvalidArgumentException::class);
       $doc = new Document();
       $doc->getChildNodes('foo', 'bar', Document::class);
    }
@@ -240,7 +240,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 
    public function testInvalidTemplateSyntaxWithTagClosingSignInAttribute1() {
 
-      $this->setExpectedException(ParserException::class);
+      $this->expectException(ParserException::class);
 
       $doc = new TemplateTag();
       $doc->setContent('<html:placeholder name="tes>t"/');
@@ -250,7 +250,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 
    public function testInvalidTemplateSyntaxWithTagClosingSignInAttribute2() {
 
-      $this->setExpectedException(ParserException::class);
+      $this->expectException(ParserException::class);
 
       $doc = new TemplateTag();
       $doc->setContent('<html:placeholder name="test" /');
@@ -517,7 +517,7 @@ This is text after a place holder...
    }
 
    public function testGetNodeByIdErrorCase() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       $doc = new TemplateTag();
       $doc->getNodeById('baz');
    }
@@ -589,7 +589,7 @@ This is text after a place holder...
    }
 
    public function testExtractExpressionTags3() {
-      $this->setExpectedException(ParserException::class);
+      $this->expectException(ParserException::class);
       $doc = new TemplateTag();
       $doc->setContent('${expression');
       $doc->onParseTime();

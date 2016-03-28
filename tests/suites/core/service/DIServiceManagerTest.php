@@ -144,19 +144,19 @@ class DIServiceManagerTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testSetterInjectionFailsWithMissingMethod() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       DIServiceManager::getServiceObject(self::TEST_VENDOR, 'DummyService-setter-method-fail-1', self::CONTEXT,
             self::LANGUAGE);
    }
 
    public function testSetterInjectionFailsWithUnknownMethod() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       DIServiceManager::getServiceObject(self::TEST_VENDOR, 'DummyService-setter-method-fail-2', self::CONTEXT,
             self::LANGUAGE);
    }
 
    public function testSetterInjectionFailsWithMissingValueSubSection() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       DIServiceManager::getServiceObject(self::TEST_VENDOR, 'DummyServiceThree-missing-value-section', self::CONTEXT,
             self::LANGUAGE);
    }

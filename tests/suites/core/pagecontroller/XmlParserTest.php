@@ -146,7 +146,7 @@ class XmlParserTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testMissingEndTag() {
-      $this->setExpectedException(ParserException::class);
+      $this->expectException(ParserException::class);
       XmlParser::getTagAttributes('foo', 'bar', '<foo:bar bar="baz"');
    }
 

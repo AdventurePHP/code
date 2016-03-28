@@ -88,7 +88,7 @@ class TimeControlTest extends \PHPUnit_Framework_TestCase {
       $tag->onParseTime();
       $tag->onAfterAppend();
 
-      $this->assertEquals(null, $tag->getTime(true));
+      $this->assertEquals(null, $tag->getTime());
       $this->assertEquals(null, $tag->getTime());
    }
 

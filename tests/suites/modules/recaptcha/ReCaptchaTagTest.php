@@ -12,7 +12,7 @@ use PHPUnit_Framework_MockObject_MockObject;
 class ReCaptchaTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testParameterCheck1() {
-      $this->setExpectedException(FormException::class);
+      $this->expectException(FormException::class);
       $this->getReCaptchaTag()->onParseTime();
    }
 
@@ -27,12 +27,12 @@ class ReCaptchaTagTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testParameterCheck2() {
-      $this->setExpectedException(FormException::class);
+      $this->expectException(FormException::class);
       $this->getReCaptchaTag(['name' => 'foo'])->onParseTime();
    }
 
    public function testParameterCheck3() {
-      $this->setExpectedException(FormException::class);
+      $this->expectException(FormException::class);
       $this->getReCaptchaTag(['name' => 'foo', 'public-key' => 'bar'])->onParseTime();
    }
 

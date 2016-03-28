@@ -60,13 +60,13 @@ class LanguageLabelTagTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testMissingAttribute1() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       $node = new LanguageLabelTag();
       $node->transform();
    }
 
    public function testMissingAttribute2() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       $node = new LanguageLabelTag();
       $node->setAttributes([
             'namespace' => 'dummy'
@@ -75,7 +75,7 @@ class LanguageLabelTagTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testMissingAttribute3() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       $node = new LanguageLabelTag();
       $node->setAttributes([
             'namespace' => 'dummy',
@@ -116,7 +116,7 @@ class LanguageLabelTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testLanguageLabel3() {
 
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       $node = new LanguageLabelTag();
       $node->setAttributes([
             'namespace' => self::TEST_VENDOR,

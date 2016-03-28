@@ -23,6 +23,7 @@ namespace APF\tests\suites\core\loader;
 use APF\core\loader\RootClassLoader;
 use APF\core\loader\StandardClassLoader;
 use Exception;
+use InvalidArgumentException;
 
 /**
  * Tests the capabilities of the RootClassLoader.
@@ -36,24 +37,20 @@ class RootClassLoaderTest extends \PHPUnit_Framework_TestCase {
    const VENDOR = 'VENDOR';
    const SOURCE_PATH = '/var/www/html/src';
 
-   protected function setUp() {
-      RootClassLoader::addLoader(new StandardClassLoader(self::VENDOR, self::SOURCE_PATH));
-   }
-
    public function testValidVendor() {
       $vendor = RootClassLoader::getLoaderByVendor(self::VENDOR);
       $this->assertEquals(
-         self::SOURCE_PATH,
-         $vendor->getRootPath()
+            self::SOURCE_PATH,
+            $vendor->getRootPath()
       );
       $this->assertEquals(
-         self::SOURCE_PATH,
-         $vendor->getConfigurationRootPath()
+            self::SOURCE_PATH,
+            $vendor->getConfigurationRootPath()
       );
    }
 
    public function testIllegalVendor() {
-      $this->setExpectedException('InvalidArgumentException');
+      $this->expectException(InvalidArgumentException::class);
       RootClassLoader::getLoaderByVendor('FOO');
    }
 
@@ -62,8 +59,8 @@ class RootClassLoaderTest extends \PHPUnit_Framework_TestCase {
       try {
          $loader = RootClassLoader::getLoaderByNamespace(self::VENDOR . '\foo\bar');
          $this->assertEquals(
-            self::SOURCE_PATH,
-            $loader->getRootPath()
+               self::SOURCE_PATH,
+               $loader->getRootPath()
          );
       } catch (Exception $e) {
          $this->fail($e->getMessage());
@@ -72,8 +69,8 @@ class RootClassLoaderTest extends \PHPUnit_Framework_TestCase {
       try {
          $loader = RootClassLoader::getLoaderByNamespace(self::VENDOR . '\foo');
          $this->assertEquals(
-            self::SOURCE_PATH,
-            $loader->getRootPath()
+               self::SOURCE_PATH,
+               $loader->getRootPath()
          );
       } catch (Exception $e) {
          $this->fail($e->getMessage());
@@ -85,14 +82,14 @@ class RootClassLoaderTest extends \PHPUnit_Framework_TestCase {
 
       $vendor = RootClassLoader::getLoaderByClass(self::VENDOR . '\foo\Bar');
       $this->assertEquals(
-         self::SOURCE_PATH,
-         $vendor->getRootPath()
+            self::SOURCE_PATH,
+            $vendor->getRootPath()
       );
 
       $vendor = RootClassLoader::getLoaderByClass(self::VENDOR . '\foo\bar\Baz');
       $this->assertEquals(
-         self::SOURCE_PATH,
-         $vendor->getRootPath()
+            self::SOURCE_PATH,
+            $vendor->getRootPath()
       );
 
    }
@@ -101,54 +98,58 @@ class RootClassLoaderTest extends \PHPUnit_Framework_TestCase {
 
       $vendor = RootClassLoader::getLoaderByClass(self::VENDOR . '\Bar');
       $this->assertEquals(
-         self::SOURCE_PATH,
-         $vendor->getRootPath()
+            self::SOURCE_PATH,
+            $vendor->getRootPath()
       );
 
    }
 
    public function testGetClassName() {
       $this->assertEquals(
-         'StandardClassLoader',
-         RootClassLoader::getClassName('APF\core\loader\StandardClassLoader')
+            'StandardClassLoader',
+            RootClassLoader::getClassName('APF\core\loader\StandardClassLoader')
       );
       $this->assertEquals(
-         'StandardClassLoader',
-         RootClassLoader::getClassName('APF\StandardClassLoader')
+            'StandardClassLoader',
+            RootClassLoader::getClassName('APF\StandardClassLoader')
       );
    }
 
    public function testGetNamespace() {
       $this->assertEquals(
-         'APF\core\loader',
-         RootClassLoader::getNamespace('APF\core\loader\StandardClassLoader')
+            'APF\core\loader',
+            RootClassLoader::getNamespace('APF\core\loader\StandardClassLoader')
       );
       $this->assertEquals(
-         'APF',
-         RootClassLoader::getNamespace('APF\StandardClassLoader')
+            'APF',
+            RootClassLoader::getNamespace('APF\StandardClassLoader')
       );
    }
 
    public function testGetNamespaceWithoutVendor() {
       $this->assertEquals(
-         'core\loader',
-         RootClassLoader::getNamespaceWithoutVendor('APF\core\loader\StandardClassLoader')
+            'core\loader',
+            RootClassLoader::getNamespaceWithoutVendor('APF\core\loader\StandardClassLoader')
       );
       $this->assertEquals(
-         'core',
-         RootClassLoader::getNamespaceWithoutVendor('APF\core\StandardClassLoader')
+            'core',
+            RootClassLoader::getNamespaceWithoutVendor('APF\core\StandardClassLoader')
       );
    }
 
    public function testGetVendor() {
       $this->assertEquals(
-         'APF',
-         RootClassLoader::getVendor('APF\StandardClassLoader')
+            'APF',
+            RootClassLoader::getVendor('APF\StandardClassLoader')
       );
       $this->assertEquals(
-         'APF',
-         RootClassLoader::getVendor('APF\core\loader\StandardClassLoader')
+            'APF',
+            RootClassLoader::getVendor('APF\core\loader\StandardClassLoader')
       );
+   }
+
+   protected function setUp() {
+      RootClassLoader::addLoader(new StandardClassLoader(self::VENDOR, self::SOURCE_PATH));
    }
 
 }

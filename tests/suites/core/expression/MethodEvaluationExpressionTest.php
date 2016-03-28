@@ -64,20 +64,20 @@ class MethodEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testInvalidPreviousResult() {
-      $this->setExpectedException(ParserException::class);
+      $this->expectException(ParserException::class);
       $expression = new MethodEvaluationExpression('getFoo()', 'bar');
       $expression->getResult();
    }
 
    public function testInvalidMethod() {
-      $this->setExpectedException(ParserException::class);
+      $this->expectException(ParserException::class);
       $model = new ContentModel();
       $expression = new MethodEvaluationExpression('getFoo()', $model);
       $expression->getResult();
    }
 
    public function testInvalidExpression() {
-      $this->setExpectedException(ParserException::class);
+      $this->expectException(ParserException::class);
       $model = new ContentModel();
       $expression = new MethodEvaluationExpression('getFoo', $model);
       $expression->getResult();

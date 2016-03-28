@@ -116,7 +116,7 @@ class FrontcontrollerTest extends \PHPUnit_Framework_TestCase {
     */
    public function testAddAction1() {
 
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
 
       /* @var $fC Frontcontroller|PHPUnit_Framework_MockObject_MockObject */
       $fC = $this->getMock(Frontcontroller::class, ['getConfiguration']);
@@ -133,7 +133,7 @@ class FrontcontrollerTest extends \PHPUnit_Framework_TestCase {
     */
    public function testAddAction2() {
 
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
 
       /* @var $fC Frontcontroller|PHPUnit_Framework_MockObject_MockObject */
       $fC = $this->getMock(Frontcontroller::class, ['getConfiguration']);
@@ -207,7 +207,7 @@ class FrontcontrollerTest extends \PHPUnit_Framework_TestCase {
     */
    public function testAddAction4() {
 
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
 
       /* @var $fC Frontcontroller|PHPUnit_Framework_MockObject_MockObject */
       $fC = $this->getMock(Frontcontroller::class, ['getConfiguration']);

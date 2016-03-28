@@ -70,7 +70,7 @@ class TemplateConditionTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testEvaluate3() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       TemplateCondition::applies('matches()', 'foo');
    }
 
@@ -82,7 +82,7 @@ class TemplateConditionTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testEvaluate5() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       TemplateCondition::applies('longerThan()', 'foo');
    }
 
@@ -95,7 +95,7 @@ class TemplateConditionTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testEvaluate7() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       TemplateCondition::applies('shorterThan()', '');
    }
 
@@ -107,7 +107,7 @@ class TemplateConditionTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testEvaluate9() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       TemplateCondition::applies('length()', '');
    }
 
@@ -119,12 +119,12 @@ class TemplateConditionTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testEvaluate11() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       TemplateCondition::applies('between()', '');
    }
 
    public function testEvaluate12() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       TemplateCondition::applies('between(1)', '');
    }
 
@@ -137,7 +137,7 @@ class TemplateConditionTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testEvaluate14() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       TemplateCondition::applies('contains()', '');
    }
 
