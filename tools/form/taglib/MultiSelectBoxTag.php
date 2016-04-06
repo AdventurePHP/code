@@ -23,7 +23,7 @@ namespace APF\tools\form\taglib;
 use APF\tools\form\FormException;
 
 /**
- * Represents the APF multiselect field.
+ * Represents the APF multi select field.
  *
  * @author Christian Achatz
  * @version
