@@ -27,7 +27,8 @@ use APF\tools\form\taglib\RadioButtonTag;
 use APF\tools\form\taglib\SelectBoxTag;
 
 /**
- * Evaluates real model values for all text field based form controls.
+ * Evaluates real model values for all text field based form controls and all controls that
+ * implement getValue() returning the desired value format (e.g. DateSelectorTag, TimeSelectorTag).
  *
  * @author Christian Achatz
  * @version

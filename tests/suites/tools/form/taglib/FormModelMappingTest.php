@@ -24,6 +24,7 @@ use APF\core\pagecontroller\Document;
 use APF\tests\suites\tools\form\model\FormValuesModel;
 use APF\tools\form\mapping\StandardValueMapper;
 use APF\tools\form\taglib\HtmlFormTag;
+use DateTime;
 use ReflectionProperty;
 
 /**
@@ -159,7 +160,7 @@ class FormModelMappingTest extends \PHPUnit_Framework_TestCase {
    /**
     * Tests model mapping for select fields and multi-select fields.
     */
-   public function testValueMappingFromSelectField() {
+   public function testValueMappingOfSelectField() {
 
       $_REQUEST = [];
 
@@ -209,7 +210,7 @@ class FormModelMappingTest extends \PHPUnit_Framework_TestCase {
     *
     * Question: how to find out which is the active one?
     */
-   public function testValueMappingFromRadioButtons() {
+   public function testValueMappingOfRadioButtons() {
 
       $_REQUEST = [];
 
@@ -230,6 +231,65 @@ class FormModelMappingTest extends \PHPUnit_Framework_TestCase {
       $this->assertEquals('value-2', $model->getFoo());
       $this->assertEmpty($model->getBar());
       $this->assertEmpty($model->getBaz());
+   }
+
+   /**
+    * Test mapping of dates.
+    */
+   public function testValueMappingOfDateControls() {
+
+      $year = '2016';
+      $month = '04';
+      $day = '07';
+
+      $_REQUEST = [];
+      $_REQUEST['foo']['Year'] = $year;
+      $_REQUEST['foo']['Month'] = $month;
+      $_REQUEST['foo']['Day'] = $day;
+
+      $form = new HtmlFormTag();
+      $form->setParentObject(new Document());
+      $form->setAttribute('name', 'test');
+      $form->setContent('<form:date name="foo" />');
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      $model = new FormValuesModel();
+      $form->fillModel($model);
+
+      /* @var $date DateTime */
+      $date = $model->getFoo();
+      $this->assertInstanceOf(DateTime::class, $date);
+      $this->assertEquals($year . '-' . $month . '-' . $day, $date->format('Y-m-d'));
+
+   }
+
+   /**
+    * Test mapping of time.
+    */
+   public function testValueMappingOfTimeControls() {
+
+      $hour = '04';
+      $minutes = '07';
+
+      $_REQUEST = [];
+      $_REQUEST['foo']['Hours'] = $hour;
+      $_REQUEST['foo']['Minutes'] = $minutes;
+
+      $form = new HtmlFormTag();
+      $form->setParentObject(new Document());
+      $form->setAttribute('name', 'test');
+      $form->setContent('<form:time name="foo" showseconds="false" />');
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      $model = new FormValuesModel();
+      $form->fillModel($model);
+
+      /* @var $time DateTime */
+      $time = $model->getFoo();
+      $this->assertInstanceOf(DateTime::class, $time);
+      $this->assertEquals($hour . ':' . $minutes . ':00', $time->format('H:i:s'));
    }
 
 }
