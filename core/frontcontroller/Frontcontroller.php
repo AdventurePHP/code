@@ -28,7 +28,6 @@ use APF\core\http\RequestImpl;
 use APF\core\http\Response;
 use APF\core\http\ResponseImpl;
 use APF\core\pagecontroller\APFObject;
-use APF\core\pagecontroller\Page;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 use Exception;
@@ -118,9 +117,6 @@ class Frontcontroller extends APFObject {
    /**
     * Executes the desired actions and creates the page output.
     *
-    * @param string $namespace Namespace of the templates.
-    * @param string $template Name of the templates.
-    *
     * @return Response The content of the transformed page.
     *
     * @author Christian Achatz
@@ -136,43 +132,23 @@ class Frontcontroller extends APFObject {
     * Version 0.9, 13.10.2008 (Removed $URLRewriting parameter, because URL rewriting must be configured in the registry)<br />
     * Version 1.0, 11.12.2008 (Switched to the new input filter concept)<br />
     */
-   public function start($namespace, $template) {
-
-      // check if the context is set. If not, use the current namespace
-      $context = $this->getContext();
-      if (empty($context)) {
-         $this->setContext($namespace);
-      }
+   public function start() {
 
       // Create request and response implementations for OO abstraction
       $request = $this->getRequest();
-
       $response = $this->getResponse();
-      $response->setContentType('text/html; charset=' . Registry::retrieve('APF\core', 'Charset'));
 
       // apply input filter to process request
-      $request = InputFilterChain::getInstance()->filter($request);
+      InputFilterChain::getInstance()->filter($request);
 
       // execute pre page create actions (see timing model)
       $this->runActions(Action::TYPE_PRE_PAGE_CREATE);
 
-      // create new page
-      $page = new Page();
+      // execute content creating actions (see timing model)
+      $this->runActions(Action::TYPE_CREATE_CONTENT);
 
-      // set context
-      $page->setContext($this->getContext());
-
-      // set language
-      $page->setLanguage($this->getLanguage());
-
-      // load desired design
-      $page->loadDesign($namespace, $template);
-
-      // execute actions before transformation (see timing model)
-      $this->runActions(Action::TYPE_PRE_TRANSFORM);
-
-      // transform page and apply to response
-      $response->setBody(OutputFilterChain::getInstance()->filter($page->transform()));
+      // apply output filter to response body
+      $response->setBody(OutputFilterChain::getInstance()->filter($response->getBody()));
 
       // execute actions after page transformation (see timing model)
       $this->runActions(Action::TYPE_POST_TRANSFORM);
@@ -184,7 +160,7 @@ class Frontcontroller extends APFObject {
     * Executes all actions with the given type. Possible types are
     * <ul>
     * <li>prepagecreate</li>
-    * <li>pretransform</li>
+    * <li>create-content</li>
     * <li>posttransform</li>
     * </ul>
     *

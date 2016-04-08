@@ -53,10 +53,11 @@ class FrontcontrollerTest extends \PHPUnit_Framework_TestCase {
             ->method('runActions')
             ->withConsecutive(
                   [Action::TYPE_PRE_PAGE_CREATE],
-                  [Action::TYPE_PRE_TRANSFORM],
+                  [Action::TYPE_CREATE_CONTENT],
                   [Action::TYPE_POST_TRANSFORM]
             );
 
+      // TODO change template definition
       $response = $fC->start(__NAMESPACE__ . '\templates', 'main');
 
       // check whether returned response contains correct content

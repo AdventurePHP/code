@@ -45,7 +45,7 @@ class FrontControllerActionPermissionTest extends \PHPUnit_Framework_TestCase {
             [
                   $this->getActionForTypeTest(Action::TYPE_POST_TRANSFORM, $typeToExecute),
                   $this->getActionForTypeTest(Action::TYPE_PRE_PAGE_CREATE, $typeToExecute),
-                  $this->getActionForTypeTest(Action::TYPE_PRE_TRANSFORM, $typeToExecute)
+                  $this->getActionForTypeTest(Action::TYPE_CREATE_CONTENT, $typeToExecute)
             ]
       );
 

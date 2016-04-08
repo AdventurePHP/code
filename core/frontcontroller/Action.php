@@ -36,7 +36,7 @@ use APF\core\service\APFDIService;
 interface Action extends APFDIService {
 
    const TYPE_PRE_PAGE_CREATE = 'prepagecreate';
-   const TYPE_PRE_TRANSFORM = 'pretransform';
+   const TYPE_CREATE_CONTENT = 'create-content';
    const TYPE_POST_TRANSFORM = 'posttransform';
 
    /**
