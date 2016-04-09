@@ -37,7 +37,7 @@ use ReflectionProperty;
 class FormModelMappingTest extends \PHPUnit_Framework_TestCase {
 
    /**
-    * Tests adding and clearing of form-to-model mapping configuratons.
+    * Tests adding and clearing of form-to-model mapping configurations.
     */
    public function testMappingConfiguration() {
 
@@ -45,7 +45,7 @@ class FormModelMappingTest extends \PHPUnit_Framework_TestCase {
       $property->setAccessible(true);
 
       $original = $property->getValue();
-      $this->assertCount(4, $original);
+      $this->assertCount(5, $original);
 
       HtmlFormTag::clearFormValueMappers();
       $actual = $property->getValue();
@@ -290,6 +290,45 @@ class FormModelMappingTest extends \PHPUnit_Framework_TestCase {
       $time = $model->getFoo();
       $this->assertInstanceOf(DateTime::class, $time);
       $this->assertEquals($hour . ':' . $minutes . ':00', $time->format('H:i:s'));
+   }
+
+   /**
+    * Tests mapping of check boxes.
+    */
+   public function testValueMappingOfCheckBox() {
+
+      // box is unchecked
+      $_REQUEST = [];
+
+      $form = $this->getFormForCheckBoxTest();
+
+      $model = new FormValuesModel();
+      $form->fillModel($model);
+      $this->assertEquals(false, $model->getFoo());
+
+      // box is checked
+      $_REQUEST['foo'] = 'bar';
+
+      $form = $this->getFormForCheckBoxTest();
+
+      $model = new FormValuesModel();
+      $form->fillModel($model);
+      $this->assertEquals(true, $model->getFoo());
+
+   }
+
+   /**
+    * @return HtmlFormTag
+    */
+   private function getFormForCheckBoxTest() {
+      $form = new HtmlFormTag();
+      $form->setParentObject(new Document());
+      $form->setAttribute('name', 'test');
+      $form->setContent('<form:checkbox name="foo" value="bar" />');
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      return $form;
    }
 
 }

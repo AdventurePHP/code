@@ -23,29 +23,22 @@ namespace APF\tools\form\mapping;
 use APF\tools\form\FormControl;
 use APF\tools\form\FormValueMapper;
 use APF\tools\form\taglib\CheckBoxTag;
-use APF\tools\form\taglib\MultiSelectBoxTag;
-use APF\tools\form\taglib\RadioButtonTag;
-use APF\tools\form\taglib\SelectBoxTag;
 
 /**
- * Evaluates real model values for all text field based form controls and all controls that
- * implement getValue() returning the desired value format (e.g. DateSelectorTag, TimeSelectorTag).
+ * Evaluates real model values for all check boxes.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 29.03.2016 (ID#275: introduced value data mappers to be able to customize form to model mappings)<br />
+ * Version 0.1, 09.04.2016 (ID#275: introduced value data mappers to be able to customize form to model mappings)<br />
  */
-class StandardValueMapper implements FormValueMapper {
+class CheckBoxValueMapper implements FormValueMapper {
 
    public static function applies(FormControl $control) {
-      return !($control instanceof SelectBoxTag
-            || $control instanceof MultiSelectBoxTag
-            || $control instanceof RadioButtonTag
-            || $control instanceof CheckBoxTag);
+      return $control instanceof CheckBoxTag;
    }
 
    public static function getValue(FormControl $control) {
-      return $control->getValue();
+      return $control->isChecked();
    }
 
 }

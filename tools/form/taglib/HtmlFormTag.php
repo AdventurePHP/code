@@ -30,6 +30,7 @@ use APF\tools\form\FormControl;
 use APF\tools\form\FormException;
 use APF\tools\form\FormValueMapper;
 use APF\tools\form\HtmlForm;
+use APF\tools\form\mapping\CheckBoxValueMapper;
 use APF\tools\form\mapping\MultiSelectBoxValueMapper;
 use APF\tools\form\mapping\RadioButtonValueMapper;
 use APF\tools\form\mapping\SelectBoxValueMapper;
@@ -72,7 +73,8 @@ class HtmlFormTag extends Document implements HtmlForm {
          StandardValueMapper::class,
          RadioButtonValueMapper::class,
          SelectBoxValueMapper::class,
-         MultiSelectBoxValueMapper::class
+         MultiSelectBoxValueMapper::class,
+         CheckBoxValueMapper::class
    ];
 
    /**
