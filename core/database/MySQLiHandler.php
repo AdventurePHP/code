@@ -44,6 +44,12 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    public function __construct() {
       $this->dbLogTarget = 'mysqli';
       $this->dbPort = '3306';
+
+      // Allow database connection verification with full exception handling support (see discussion under
+      // http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=614&p=20409#p20409)
+      if (!extension_loaded('mysqli')) {
+         throw new DatabaseHandlerException('PHP extension "mysqli" not loaded! Please verify your PHP configuration.');
+      }
    }
 
    /**
