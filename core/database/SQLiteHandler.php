@@ -47,37 +47,12 @@ class SQLiteHandler extends AbstractDatabaseHandler {
 
    public function __construct() {
       $this->dbLogTarget = 'sqlite';
-   }
 
-   /**
-    * Implements the connect method to create a connection to the desired sqlite database.
-    *
-    * @throws DatabaseHandlerException In case the database connection cannot be established.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 23.02.2008<br />
-    */
-   protected function connect() {
-
-      $this->dbConn = @sqlite_open($this->dbName, $this->dbMode, $this->dbError);
-
-      if (!is_resource($this->dbConn)) {
-         throw new DatabaseHandlerException('[SQLiteHandler->connect()] Database "'
-               . $this->dbName . '" cannot be opened! Message: ' . $this->dbError, E_USER_ERROR);
+      // Allow database connection verification with full exception handling support (see discussion under
+      // http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=614&p=20409#p20409)
+      if (!extension_loaded('sqlite3')) {
+         throw new DatabaseHandlerException('PHP extension "sqlite3" not loaded! Please verify your PHP configuration.');
       }
-   }
-
-   /**
-    * Implements the close method for the sqlite database.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 23.02.2008<br />
-    */
-   protected function close() {
-      @sqlite_close($this->dbConn);
-      $this->dbConn = null;
    }
 
    /**
@@ -219,6 +194,37 @@ class SQLiteHandler extends AbstractDatabaseHandler {
     */
    public function getNumRows($result) {
       return sqlite_num_rows($result);
+   }
+
+   /**
+    * Implements the connect method to create a connection to the desired sqlite database.
+    *
+    * @throws DatabaseHandlerException In case the database connection cannot be established.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 23.02.2008<br />
+    */
+   protected function connect() {
+
+      $this->dbConn = @sqlite_open($this->dbName, $this->dbMode, $this->dbError);
+
+      if (!is_resource($this->dbConn)) {
+         throw new DatabaseHandlerException('[SQLiteHandler->connect()] Database "'
+               . $this->dbName . '" cannot be opened! Message: ' . $this->dbError, E_USER_ERROR);
+      }
+   }
+
+   /**
+    * Implements the close method for the sqlite database.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 23.02.2008<br />
+    */
+   protected function close() {
+      @sqlite_close($this->dbConn);
+      $this->dbConn = null;
    }
 
 }
