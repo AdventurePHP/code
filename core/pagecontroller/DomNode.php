@@ -418,7 +418,7 @@ interface DomNode extends APFDIService {
     * be transformed using an MVC controller. In case no controller is defined
     * <em>null</em> is returned instead.
     *
-    * @return string|null The name of the document controller.
+    * @return DocumentController|null The document controller or null.
     *
     * @author Christian Achatz
     * @version
