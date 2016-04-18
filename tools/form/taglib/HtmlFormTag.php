@@ -30,11 +30,6 @@ use APF\tools\form\FormControl;
 use APF\tools\form\FormException;
 use APF\tools\form\FormValueMapper;
 use APF\tools\form\HtmlForm;
-use APF\tools\form\mapping\CheckBoxValueMapper;
-use APF\tools\form\mapping\MultiSelectBoxValueMapper;
-use APF\tools\form\mapping\RadioButtonValueMapper;
-use APF\tools\form\mapping\SelectBoxValueMapper;
-use APF\tools\form\mapping\StandardValueMapper;
 use APF\tools\form\mixin\FormControlFinder as FormControlFinderImpl;
 use APF\tools\form\ModelValueMapper;
 use APF\tools\link\Url;
@@ -69,13 +64,7 @@ class HtmlFormTag extends Document implements HtmlForm {
    /**
     * @var FormValueMapper[] List of form control to model mappers.
     */
-   protected static $formDataMappers = [
-         StandardValueMapper::class,
-         RadioButtonValueMapper::class,
-         SelectBoxValueMapper::class,
-         MultiSelectBoxValueMapper::class,
-         CheckBoxValueMapper::class
-   ];
+   protected static $formDataMappers = [];
 
    /**
     * Indicates, whether the form should be transformed at it'd place of definition or not.

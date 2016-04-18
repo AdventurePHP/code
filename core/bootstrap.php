@@ -46,6 +46,11 @@ use APF\extensions\htmllist\taglib\ListElementTag;
 use APF\modules\captcha\pres\taglib\SimpleCaptchaTag;
 use APF\modules\recaptcha\pres\taglib\ReCaptchaTag;
 use APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionLanguageLabelTag;
+use APF\tools\form\mapping\CheckBoxValueMapper;
+use APF\tools\form\mapping\MultiSelectBoxValueMapper;
+use APF\tools\form\mapping\RadioButtonValueMapper;
+use APF\tools\form\mapping\SelectBoxValueMapper;
+use APF\tools\form\mapping\StandardValueMapper;
 use APF\tools\form\multifileupload\pres\taglib\MultiFileUploadTag;
 use APF\tools\form\taglib\AddFormControlFilterTag;
 use APF\tools\form\taglib\AddFormControlValidatorTag;
@@ -260,3 +265,10 @@ Document::addTagLib(ListElementTag::class, 'list', 'elem_list');
 // shipped with the release to have them available for all templates.
 Document::addTemplateExpression(PlaceHolderTemplateExpression::class);
 Document::addTemplateExpression(DynamicTemplateExpression::class);
+
+// Register form value mappers used to translate/transcribe form values into a DTO/model.
+HtmlFormTag::addFormValueMapper(StandardValueMapper::class);
+HtmlFormTag::addFormValueMapper(RadioButtonValueMapper::class);
+HtmlFormTag::addFormValueMapper(SelectBoxValueMapper::class);
+HtmlFormTag::addFormValueMapper(MultiSelectBoxValueMapper::class);
+HtmlFormTag::addFormValueMapper(CheckBoxValueMapper::class);
