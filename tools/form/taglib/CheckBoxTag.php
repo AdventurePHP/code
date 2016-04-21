@@ -27,6 +27,7 @@ namespace APF\tools\form\taglib;
  * @version
  * Version 0.1, 13.01.2007<br />
  * Version 0.2, 12.02.2010 (Introduced attribute black and white listing)<br />
+ * Version 0.3, 21.04.2016 (ID#298: fixed defect with check state is reset for statically checked boxes on submit)<br />
  */
 class CheckBoxTag extends AbstractFormControl {
 
@@ -39,28 +40,25 @@ class CheckBoxTag extends AbstractFormControl {
       $this->attributeWhiteList[] = 'checked';
    }
 
-   /**
-    * Sets the checked attribute, if the checkbox name exists in the request.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 13.01.2007<br />
-    * Version 0.2, 28.08.2009 (Moved presetting to this method)<br />
-    */
-   public function onParseTime() {
+   public function onAfterAppend() {
 
-      $name = $this->getAttribute('name');
-      // ID#236: removed check on whether form is sent or not to avoid issues with the APF 3.0 parser.
-      if ($this->getRequest()->hasParameter($name)) {
-         $this->check();
+      $form = $this->getForm();
+      if ($form->isSent()) {
+         $name = $this->getAttribute('name');
+         if ($this->getRequest()->hasParameter($name)) {
+            $this->check();
+         } else {
+            // ID#236: removed check on whether form is sent or not to avoid issues with the APF 3.0 parser.
+            $this->uncheck();
+         }
       } else {
-         // Bug 626: in case the control has been checked by the so-called attribute,
-         // we must un-check the control to avoid permanent checked boxes
-         $this->uncheck();
+         if ($this->getAttribute('checked') === 'checked') {
+            $this->check();
+         } else {
+            $this->uncheck();
+         }
       }
 
-      // preset the content of the field
-      $this->presetValue();
    }
 
    /**

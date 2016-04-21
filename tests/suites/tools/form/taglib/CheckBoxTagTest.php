@@ -99,4 +99,75 @@ class CheckBoxTagTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @param string $name Name of the check box.
+    * @param string $value Value of the check box.
+    * @param bool $checked Whether to att checked="checked" attribute.
+    * @return HtmlFormTag The generated form tag.
+    */
+   protected function &getFormWithCheckBox($name, $value, $checked) {
+
+      $form = new HtmlFormTag();
+      $form->setAttribute('name', 'test-form');
+      $form->setAttribute(HtmlForm::METHOD_ATTRIBUTE_NAME, HtmlForm::METHOD_POST_VALUE_NAME);
+
+      $checkedAttribute = $checked ? ' checked="checked"' : '';
+      $form->setContent('<form:checkbox name="' . $name . '" value="' . $value . '"' . $checkedAttribute . ' />
+<form:button name="' . self::BUTTON_NAME . '" value="' . self::BUTTON_VALUE . '" />');
+
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      return $form;
+   }
+
+   /**
+    * Tests checking check boxes for all combinations and including form definition in template.
+    */
+   public function testStaticChecking() {
+
+      $checkBoxName = 'foo';
+      $checkBoxValue = 'bar';
+
+      // checked with form definition, form not sent
+      $_POST = [];
+      $_REQUEST = [];
+
+      $form = $this->getFormWithCheckBox($checkBoxName, $checkBoxValue, true);
+      $this->assertTrue($form->getFormElementByName($checkBoxName)->isChecked());
+
+      // not checked with form definition, form not sent
+      $_POST = [];
+      $_REQUEST = [];
+
+      $form = $this->getFormWithCheckBox($checkBoxName, $checkBoxValue, false);
+      $this->assertFalse($form->getFormElementByName($checkBoxName)->isChecked());
+
+      // not checked with form definition, form sent, checkbox present
+      $_POST = [];
+      $_POST[self::BUTTON_NAME] = self::BUTTON_VALUE;
+
+      $_REQUEST[$checkBoxName] = $checkBoxValue;
+
+      $form = $this->getFormWithCheckBox($checkBoxName, $checkBoxValue, false);
+      $this->assertTrue($form->getFormElementByName($checkBoxName)->isChecked());
+
+      // not checked with form definition, form sent, checkbox not present
+      $_REQUEST = [];
+
+      $form = $this->getFormWithCheckBox($checkBoxName, $checkBoxValue, false);
+      $this->assertFalse($form->getFormElementByName($checkBoxName)->isChecked());
+
+      // checked with form definition, form sent and checkbox not present
+      $form = $this->getFormWithCheckBox($checkBoxName, $checkBoxValue, true);
+      $this->assertFalse($form->getFormElementByName($checkBoxName)->isChecked());
+
+      // checked with form definition, form sent and checkbox present
+      $_REQUEST[$checkBoxName] = $checkBoxValue;
+
+      $form = $this->getFormWithCheckBox($checkBoxName, $checkBoxValue, true);
+      $this->assertTrue($form->getFormElementByName($checkBoxName)->isChecked());
+
+   }
+
 }

@@ -36,6 +36,9 @@ use ReflectionProperty;
  */
 class FormModelMappingTest extends \PHPUnit_Framework_TestCase {
 
+   const BUTTON_NAME = 'button';
+   const BUTTON_VALUE = 'Send';
+
    /**
     * Tests adding and clearing of form-to-model mapping configurations.
     */
@@ -297,9 +300,12 @@ class FormModelMappingTest extends \PHPUnit_Framework_TestCase {
     */
    public function testValueMappingOfCheckBox() {
 
-      // box is unchecked
+      $_POST = [];
+      $_POST = [self::BUTTON_NAME => self::BUTTON_VALUE];
+
       $_REQUEST = [];
 
+      // box is unchecked
       $form = $this->getFormForCheckBoxTest();
 
       $model = new FormValuesModel();
@@ -324,7 +330,8 @@ class FormModelMappingTest extends \PHPUnit_Framework_TestCase {
       $form = new HtmlFormTag();
       $form->setParentObject(new Document());
       $form->setAttribute('name', 'test');
-      $form->setContent('<form:checkbox name="foo" value="bar" />');
+      $form->setContent('<form:checkbox name="foo" value="bar" />
+<form:button name="' . self::BUTTON_NAME . '" value="' . self::BUTTON_VALUE . '" />');
       $form->onParseTime();
       $form->onAfterAppend();
 
