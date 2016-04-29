@@ -41,7 +41,7 @@ use APF\core\pagecontroller\TemplateTag;
  *    [name="expr-template"]
  *    expression="content->getFoo()"
  *    condition="notEmpty()"
- *    [content-mapping=""]>
+ *    content-mapping="">
  *       <p style="border: 1px solid red;">
  *          content->displayIt() == true
  *          <br />
