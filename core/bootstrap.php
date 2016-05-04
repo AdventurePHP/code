@@ -35,6 +35,7 @@ use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\DynamicTemplateExpression;
 use APF\core\pagecontroller\ImportTemplateTag;
 use APF\core\pagecontroller\LanguageLabelTag;
+use APF\core\pagecontroller\LoopTemplateTag;
 use APF\core\pagecontroller\PlaceHolderTag;
 use APF\core\pagecontroller\PlaceHolderTemplateExpression;
 use APF\core\pagecontroller\TemplateTag;
@@ -196,6 +197,7 @@ Document::addTagLib(LanguageLabelTag::class, 'html', 'getstring');
 Document::addTagLib(PlaceHolderTag::class, 'html', 'placeholder');
 
 Document::addTagLib(TemplateTag::class, 'html', 'template');
+Document::addTagLib(LoopTemplateTag::class, 'loop', 'template');
 
 Document::addTagLib(ConditionalPlaceHolderTag::class, 'cond', 'placeholder');
 Document::addTagLib(ConditionalTemplateTag::class, 'cond', 'template');
