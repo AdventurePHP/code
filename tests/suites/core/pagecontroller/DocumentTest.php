@@ -641,6 +641,31 @@ This is text after a place holder...
       $this->assertEquals($doc, $result);
    }
 
+   /**
+    * ID#300: Test whether parser detects line breaks in tag definitions after tag name as problem!
+    */
+   public function testLineBreakInTagDefinition() {
+
+      $this->expectException(ParserException::class);
+
+      Document::addTagLib(TemplateTag::class, 'a', 'foo');
+      Document::addTagLib(TemplateTag::class, 'b', 'foo');
+      Document::addTagLib(TemplateTag::class, 'c', 'foo');
+
+      $tag = new TemplateTag();
+      $tag->setContent('<a:foo>
+<b:foo
+attr1="1"
+attr2="2">
+<c:foo key="a">a</c:foo>
+<c:foo key="b">b</c:foo>
+<c:foo key="c">c</c:foo>
+</b:foo>
+</a:foo>');
+      $tag->onParseTime();
+
+   }
+
    protected function setUp() {
       RootClassLoader::addLoader(new StandardClassLoader(self::VENDOR, self::SOURCE_PATH));
    }

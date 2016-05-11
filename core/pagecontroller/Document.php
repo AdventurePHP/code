@@ -724,6 +724,13 @@ class Document extends APFObject implements DomNode {
             // n = tag name (e.g. "bar" with tag "<foo:bar />")
             $tags[$count]['n'] = trim(substr($this->content, $colon + 1, $space - $colon - 1)); // instead of trim, maybe search for a new line instead
 
+            // ID#300: detect new lines in tag definition and throw exception to
+            // avoid application crushing w/ max execution time exceeded!
+            if (strpos($tags[$count]['n'], "\n") !== false) {
+               throw new ParserException('Tag definition must not contain line breaks at "<' . $tags[$count]['p'] . ':' . $tags[$count]['n']
+                     . '"! Template code: ' . htmlentities($this->content));
+            }
+
             // assemble the token to allow easier closing tag search
             $token = $tags[$count]['p'] . ':' . $tags[$count]['n'];
 
