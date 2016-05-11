@@ -62,7 +62,7 @@ class HtmlFormTag extends Document implements HtmlForm {
    const SUBMIT_ACTION_URL_PARAMS_ATTRIBUTE_NAME = 'submit-action-url-params';
 
    /**
-    * @var FormValueMapper[] List of form control to model mappers.
+    * @var string[] List of form control to model mappers (fully qualified class name e.g. <em>APF\tools\form\mapping\StandardValueMapper</em>).
     */
    protected static $formDataMappers = [];
 
@@ -510,7 +510,7 @@ class HtmlFormTag extends Document implements HtmlForm {
       );
 
       // transform the form including all child tags
-      $htmlCode = (string) '<form ';
+      $htmlCode = (string)'<form ';
       $htmlCode .= $this->getAttributesAsString($this->attributes, $this->attributeWhiteList);
       $htmlCode .= '>';
 
@@ -580,6 +580,7 @@ class HtmlFormTag extends Document implements HtmlForm {
                // on the implementation pattern/idea see HtmlForm::addFormValueMapper().
                $value = null;
                foreach (self::$formDataMappers as $mapper) {
+                  /* @var $mapper FormValueMapper */
                   if ($mapper::applies($control)) {
                      $value = $mapper::getValue($control);
                   }
