@@ -27,7 +27,7 @@ use APF\extensions\apfelsms\biz\SMSWrongParameterException;
 
 /**
  * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
- * @version:   v0.1 (30.07.12)
+ * @version   v0.1 (30.07.12)
  *             v0.2 (18.08.12) Removed rootPageId (wasn't used)
  *             v0.3 (23.09.12) Removed obsolete pageStore (moved to SMSManager)
  */

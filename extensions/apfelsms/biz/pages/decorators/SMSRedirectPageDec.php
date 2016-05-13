@@ -26,7 +26,7 @@ use APF\tools\link\Url;
  * Same as alias pageDec, but also generates links to referenced page
  *
  * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
- * @version: v0.1 (02.10.12)
+ * @version v0.1 (02.10.12)
  */
 class SMSRedirectPageDec extends SMSAliasPageDec {
 

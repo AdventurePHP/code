@@ -25,7 +25,7 @@ use APF\extensions\apfelsms\biz\pages\SMSPage;
 
 /**
  * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
- * @version: v0.1 (04.08.12)
+ * @version v0.1 (04.08.12)
  *
  */
 class SMSStdPageStore extends APFObject implements SMSPageStore {

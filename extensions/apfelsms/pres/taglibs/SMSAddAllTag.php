@@ -24,7 +24,7 @@ use APF\core\pagecontroller\Document;
 
 /**
  * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
- * @version: v0.1 (11.08.12)
+ * @version v0.1 (11.08.12)
  */
 class SMSAddAllTag extends Document {
 
