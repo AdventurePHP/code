@@ -24,7 +24,7 @@ use APF\extensions\apfelsms\biz\SMSManager;
 use APF\tools\string\StringAssistant;
 
 /**
- * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
+ * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (23.09.12)
  */
 class SMSBreadcrumbNavTagController extends SMSBaseNavTagController {

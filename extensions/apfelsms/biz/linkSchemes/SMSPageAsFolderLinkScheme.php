@@ -24,7 +24,7 @@ use APF\tools\link\DefaultLinkScheme;
 use APF\tools\link\Url;
 
 /**
- * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
+ * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version:   v0.1 (11.08.12)
  *             v0.2 (18.08.12) Fully refactored the inclusion of the old path
  *             v0.3 (23.08.12) Bug removed: pageParam "folder" was included in path and therefore contained in returned url multiple times

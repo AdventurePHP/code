@@ -24,7 +24,7 @@ use APF\core\pagecontroller\APFObject;
 use APF\extensions\apfelsms\biz\pages\SMSPage;
 
 /**
- * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
+ * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (04.08.12)
  *
  */

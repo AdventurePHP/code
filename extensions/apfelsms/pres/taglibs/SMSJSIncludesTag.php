@@ -24,7 +24,7 @@ use APF\core\pagecontroller\Document;
 use APF\extensions\apfelsms\biz\SMSManager;
 
 /**
- * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
+ * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version:   v0.1 (08.08.12)
  *             v0.2 (30.09.12) Removed extension appending
  */

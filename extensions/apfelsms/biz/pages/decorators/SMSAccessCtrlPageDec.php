@@ -24,7 +24,7 @@ use APF\extensions\apfelsms\biz\pages\decorators\providers\SMSAccessCtrlProvider
 use APF\extensions\apfelsms\biz\SMSWrongDataException;
 
 /**
- * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
+ * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (30.09.12)
  *           v0.2 (19.01.13) Added permissionName parameter
  *           v0.3 (08.03.13) Added default for providerServiceNamespace
