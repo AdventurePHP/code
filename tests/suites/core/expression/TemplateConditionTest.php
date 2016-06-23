@@ -149,6 +149,26 @@ class TemplateConditionTest extends \PHPUnit_Framework_TestCase {
       $this->assertTrue(TemplateCondition::applies('contains(10)', '2345671089'));
    }
 
+   /**
+    * ID#301: test capability to work with regular expressions
+    */
+   public function testEvaluate16() {
+      $this->assertTrue(TemplateCondition::applies('regExp(\'#^foo#\')', 'foobar'));
+      $this->assertFalse(TemplateCondition::applies('regExp(\'#^foo#\')', 'barfoo'));
+      $this->assertTrue(TemplateCondition::applies('regExp(\'#^foo$#\')', 'foo'));
+      $this->assertFalse(TemplateCondition::applies('regExp(\'#^foo$#\')', 'foo '));
+      $this->assertFalse(TemplateCondition::applies('regExp(\'#^foo$#\')', 'foobar'));
+      $this->assertTrue(TemplateCondition::applies('regExp(\'#^f([o]{4})#\')', 'foooo'));
+   }
+
+   /**
+    * ID#301: test wrapping issues with regular expression compilation or execution into an exception
+    */
+   public function testEvaluate17() {
+      $this->expectException(InvalidArgumentException::class);
+      TemplateCondition::applies('regExp(\'^foo\')', 'foobar');
+   }
+
    public function testUnknownCondition() {
       $this->assertFalse(TemplateCondition::applies('foo()', null));
    }

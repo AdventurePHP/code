@@ -51,6 +51,9 @@ class TemplateCondition {
     * <strong>matches(&lt;string&gt;)</strong>: whether or not the data matches the given string or number.
     * </li>
     * <li>
+    * <strong>regExp(&lt;regular expression&gt;)</strong>: whether or not the data matches the given regular expression.
+    * </li>
+    * <li>
     * <strong>contains(&lt;string&gt;)</strong>: whether or not the data contains the given string.
     * </li>
     * <li>
@@ -98,6 +101,24 @@ class TemplateCondition {
             }
 
             return $data == $arguments[0];
+            break;
+         case strpos($condition, 'regExp') !== false:
+            $arguments = self::getArgument($condition);
+            if (count($arguments) === 0) {
+               throw new InvalidArgumentException(
+                     'Condition "' . $condition . '" is missing argument one for comparison! '
+                     . 'Expecting regExp(\'#reg-exp#\') for example!'
+               );
+            }
+
+            // wrap issues with regular expression compilation or execution in exception
+            $result = @preg_match($arguments[0], $data);
+            if ($result === false) {
+               $lastError = error_get_last();
+               throw new InvalidArgumentException($lastError['message'], $lastError['type']);
+            }
+
+            return 1 === $result;
             break;
          case strpos($condition, 'contains') !== false:
             $arguments = self::getArgument($condition);
@@ -152,7 +173,8 @@ class TemplateCondition {
                );
             }
 
-            return strlen($data) >= intval($arguments[0]) && strlen($data) <= intval($arguments[1]);
+            $length = strlen($data);
+            return $length >= intval($arguments[0]) && $length <= intval($arguments[1]);
             break;
          default:
             return false;
