@@ -23,6 +23,7 @@ namespace APF\core\expression\taglib;
 use APF\core\expression\TemplateCondition;
 use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\PlaceHolder;
+use APF\core\registry\Registry;
 
 /**
  * Implements a conditional place holder tag that only displays itself in case the
@@ -49,6 +50,9 @@ class ConditionalPlaceHolderTag extends Document implements PlaceHolder {
       // The condition defines whether or not the content is displayed. Can be overwritten
       // by the "condition" attribute according to the TemplateCondition capabilities.
       $condition = $this->getAttribute('condition', 'notEmpty()');
+
+      // ID#301: un-escape HTML entities such as double quotes to allow passing regular expressions with double quotes
+      $condition = html_entity_decode($condition, ENT_COMPAT | ENT_HTML5, Registry::retrieve('APF\core', 'Charset'));
 
       $content = $this->getParentObject()->getPlaceHolder($this->getAttribute('name'));
 

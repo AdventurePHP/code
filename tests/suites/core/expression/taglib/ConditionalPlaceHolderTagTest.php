@@ -155,4 +155,21 @@ class ConditionalPlaceHolderTagTest extends \PHPUnit_Framework_TestCase {
       return $doc;
    }
 
+   /**
+    * ID#301: allow passing regular expression conditions including double quotes
+    */
+   public function testRegExpCondition() {
+      $name = 'foo';
+      $text = '"foo"';
+
+      // inject place holder data
+      $tag = $this->getPlaceHolder('${content}', ['condition' => 'regExp(#^&quot;f([o]{2})&quot;$#)', 'name' => $name]);
+
+      $parent = new Document();
+      $parent->setPlaceHolder($name, $text);
+      $tag->setParentObject($parent);
+
+      $this->assertEquals($text, $tag->transform());
+   }
+
 }

@@ -94,4 +94,28 @@ class ConditionalTemplateTagTest extends \PHPUnit_Framework_TestCase {
       $this->assertContains('<a href="' . $model->getMoreLink()->getUrl() . '">' . $model->getMoreLink()->getLabel() . '</a>', $actual);
    }
 
+   /**
+    * ID#301: allow passing regular expression conditions including double quotes
+    */
+   public function testRegExpCondition() {
+
+      $expected = 'This will be displayed in case reg exp matches.';
+
+      $doc = new TemplateTag();
+      $doc->setContent('<cond:template content-mapping="data" expression="content[\'bar\']" condition="regExp(#^&quot;f([o]{2})&quot;$#)">'
+            . $expected
+            . '</cond:template>');
+      $doc->onParseTime();
+      $doc->onAfterAppend();
+
+      $doc->transformOnPlace();
+
+      $doc->setData('data', ['bar' => '"foo"']);
+
+      $actual = $doc->transform();
+
+      $this->assertEquals($expected, $actual);
+
+   }
+
 }
