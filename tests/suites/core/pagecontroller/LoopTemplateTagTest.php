@@ -90,15 +90,15 @@ class LoopTemplateTagTest extends \PHPUnit_Framework_TestCase {
             [
                   [
                         'number' => 1,
-                        'title' => 'One'
+                        'title'  => 'One'
                   ],
                   [
                         'number' => 2,
-                        'title' => 'Two'
+                        'title'  => 'Two'
                   ],
                   [
                         'number' => 3,
-                        'title' => 'Three'
+                        'title'  => 'Three'
                   ]
             ]
       );
@@ -180,6 +180,31 @@ class LoopTemplateTagTest extends \PHPUnit_Framework_TestCase {
             . '<p>foo|bar</p>',
             $template->transform()
       );
+   }
+
+   /**
+    * ID#302: test direct output using attribute <em>transform-on-place=true</em>.
+    */
+   public function testDirectOutputWithAccessToParentNode() {
+
+      $expected = 'content';
+
+      $template = new LoopTemplateTag();
+      $template->setAttribute(
+            LoopTemplateTag::CONTENT_MAPPING_ATTRIBUTE,
+            'this->getParentObject()->getData(\'foo\')'
+      );
+      $template->setAttribute('transform-on-place', 'true');
+      $template->setContent($expected);
+
+      $parent = new Document();
+      $parent->setData('foo', [['bar']]);
+      $template->setParentObject($parent);
+
+      $template->onParseTime();
+      $template->onAfterAppend();
+
+      $this->assertEquals($expected, $template->transform());
    }
 
 }

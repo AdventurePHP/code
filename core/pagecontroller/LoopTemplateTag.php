@@ -36,12 +36,13 @@ use APF\core\expression\ExpressionEvaluator;
  * template expressions to evaluate the list of entries (e.g. simple data attribute access or
  * calling APF API methods such as <em>getParentObject()</em>).
  * <p/>
- * Template content is displayed in case <em>transformOnPlace()</em> is called. See <em>TemplateTag</em>
- * for details on template behaviour.
+ * Template content is displayed in case <em>transformOnPlace()</em> is called or attribute
+ * <em>transform-on-place</em> is set to <em>true</em>. See <em>TemplateTag</em> for details
+ * on general template behaviour.
  * <p/>
  * Usage example:
  * <code>
- * <loop:template content-mapping="" [name="loop-template"]>
+ * <loop:template content-mapping="" [name="loop-template"][transform-on-place="true|false"]>
  *       <p>
  *          Method expressions: ${content->getFoo()}
  *          <br />
@@ -59,6 +60,16 @@ use APF\core\expression\ExpressionEvaluator;
 class LoopTemplateTag extends TemplateTag {
 
    const CONTENT_MAPPING_ATTRIBUTE = 'content-mapping';
+
+   public function onParseTime() {
+
+      // ID#transform-on-place: allow activation of direct output generation within templates directly.
+      if ($this->getAttribute('transform-on-place', 'false') === 'true') {
+         $this->transformOnPlace();
+      }
+
+      parent::onParseTime();
+   }
 
    public function transformTemplate() {
 
