@@ -40,6 +40,11 @@ class FormGroupTag extends AbstractFormControl implements FormElementGroup {
 
    public function onParseTime() {
       $this->extractTagLibTags();
+
+      // ID#303: allow to hide form group by default within a template
+      if ($this->getAttribute('hidden', 'false') === 'true') {
+         $this->hide();
+      }
    }
 
    public function isValid() {

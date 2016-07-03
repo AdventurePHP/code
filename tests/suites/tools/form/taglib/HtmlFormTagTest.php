@@ -269,8 +269,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
       $children->setValue(
             $form,
             [
-                  $user->getObjectId()   => $user,
-                  $group->getObjectId()  => $group,
+                  $user->getObjectId() => $user,
+                  $group->getObjectId() => $group,
                   $button->getObjectId() => $button
             ]
       );
@@ -669,6 +669,27 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
       $actual = $form->transformForm();
 
       $this->assertNotContains('<input type="hidden"', $actual);
+
+   }
+
+   /**
+    * ID#303: test capabilities to hide form group by default from within a template.
+    */
+   public function testHidingByAttribute() {
+
+      // tag is visible by default
+      $tag = new FormGroupTag();
+      $tag->setAttributes(['name' => 'foo']);
+      $tag->onParseTime();
+
+      $this->assertTrue($tag->isVisible());
+
+      // hide tag with attribute
+      $tag = new FormGroupTag();
+      $tag->setAttributes(['name' => 'foo', 'hidden' => 'true']);
+      $tag->onParseTime();
+
+      $this->assertFalse($tag->isVisible());
 
    }
 
