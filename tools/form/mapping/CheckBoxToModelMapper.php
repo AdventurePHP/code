@@ -18,8 +18,27 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-namespace APF\tools\form;
+namespace APF\tools\form\mapping;
 
-interface ModelValueMapper {
+use APF\tools\form\FormControl;
+use APF\tools\form\FormControlToModelMapper;
+use APF\tools\form\taglib\CheckBoxTag;
+
+/**
+ * Evaluates real model values for all check boxes.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 09.04.2016 (ID#275: introduced value data mappers to be able to customize form to model mappings)<br />
+ */
+class CheckBoxToModelMapper implements FormControlToModelMapper {
+
+   public static function applies(FormControl $control) {
+      return $control instanceof CheckBoxTag;
+   }
+
+   public static function getValue(FormControl $control) {
+      return $control->isChecked();
+   }
 
 }

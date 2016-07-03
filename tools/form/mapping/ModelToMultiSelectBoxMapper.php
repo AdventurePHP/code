@@ -21,42 +21,31 @@
 namespace APF\tools\form\mapping;
 
 use APF\tools\form\FormControl;
-use APF\tools\form\FormValueMapper;
-use APF\tools\form\taglib\RadioButtonTag;
+use APF\tools\form\ModelToFormControlMapper;
+use APF\tools\form\taglib\MultiSelectBoxTag;
 
 /**
- * Evaluates real model values for all radio button form controls.
+ * Fills a multi-select box with the real values of a model.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 29.03.2016 (ID#275: introduced value data mappers to be able to customize form to model mappings)<br />
+ * Version 0.1, 02.07.2016 (ID#297: introduced mapper for model values to multi-select boxes)<br />
  */
-class RadioButtonValueMapper implements FormValueMapper {
+class ModelToMultiSelectBoxMapper implements ModelToFormControlMapper {
 
    public static function applies(FormControl $control) {
-      return $control instanceof RadioButtonTag;
+      return $control instanceof MultiSelectBoxTag;
    }
 
-   public static function getValue(FormControl $control) {
-      // ... get all items
-      $buttons = $control->getForm()->getFormElementsByName($control->getAttribute('name'));
-
-      // ... check for selected
-      $checked = null;
-      foreach ($buttons as &$button) {
-         if ($button->isChecked()) {
-            $checked = &$button;
+   public static function setValue(FormControl &$control, $value) {
+      /* @var $control MultiSelectBoxTag */
+      if (is_array($value)) {
+         foreach ($value as $item) {
+            $control->setOption2Selected($item);
          }
-      }
-
-      // ... get value from selected
-      if ($checked === null) {
-         $value = null;
       } else {
-         $value = $checked->getValue();
+         $control->setOption2Selected($value);
       }
-
-      return $value;
    }
 
 }

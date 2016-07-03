@@ -27,13 +27,12 @@ use APF\core\pagecontroller\XmlParser;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 use APF\tools\form\FormControl;
+use APF\tools\form\FormControlToModelMapper;
 use APF\tools\form\FormException;
-use APF\tools\form\FormValueMapper;
 use APF\tools\form\HtmlForm;
 use APF\tools\form\mixin\FormControlFinder as FormControlFinderImpl;
-use APF\tools\form\ModelValueMapper;
+use APF\tools\form\ModelToFormControlMapper;
 use APF\tools\link\Url;
-use Exception;
 use ReflectionClass;
 
 /**
@@ -62,9 +61,14 @@ class HtmlFormTag extends Document implements HtmlForm {
    const SUBMIT_ACTION_URL_PARAMS_ATTRIBUTE_NAME = 'submit-action-url-params';
 
    /**
-    * @var string[] List of form control to model mappers (fully qualified class name e.g. <em>APF\tools\form\mapping\StandardValueMapper</em>).
+    * @var string[] List of form control to model mappers (fully qualified class name e.g. <em>APF\tools\form\mapping\StandardControlToModelMapper</em>).
     */
-   protected static $formDataMappers = [];
+   protected static $formToModelMappers = [];
+
+   /**
+    * @var string[] List of form control to model mappers (fully qualified class name e.g. <em>APF\tools\form\mapping\StandardModelToFormControlMapper</em>).
+    */
+   protected static $modelToFormMappers = [];
 
    /**
     * Indicates, whether the form should be transformed at it'd place of definition or not.
@@ -79,11 +83,6 @@ class HtmlFormTag extends Document implements HtmlForm {
     * @var string[] $attributeWhiteList
     */
    protected $attributeWhiteList = [];
-
-   /**
-    * @var ModelValueMapper[] List of model to form control mappers.
-    */
-   protected $modelDataMappers = [];
 
    /**
     * Initializes the form.
@@ -119,12 +118,20 @@ class HtmlFormTag extends Document implements HtmlForm {
       $this->attributeWhiteList[] = 'target';
    }
 
-   public static function addFormValueMapper($mapper) {
-      self::$formDataMappers[] = $mapper;
+   public static function addFormControlToModelMapper($mapper) {
+      self::$formToModelMappers[] = $mapper;
    }
 
-   public static function clearFormValueMappers() {
-      self::$formDataMappers = [];
+   public static function clearFormControlToModelMappers() {
+      self::$formToModelMappers = [];
+   }
+
+   public static function addModelToFormControlMapper($mapper) {
+      self::$modelToFormMappers[] = $mapper;
+   }
+
+   public static function clearModelToFormControlMapper() {
+      self::$modelToFormMappers = [];
    }
 
    public function onParseTime() {
@@ -510,7 +517,7 @@ class HtmlFormTag extends Document implements HtmlForm {
       );
 
       // transform the form including all child tags
-      $htmlCode = (string)'<form ';
+      $htmlCode = (string) '<form ';
       $htmlCode .= $this->getAttributesAsString($this->attributes, $this->attributeWhiteList);
       $htmlCode .= '>';
 
@@ -577,10 +584,10 @@ class HtmlFormTag extends Document implements HtmlForm {
                $control = $this->getFormElementByName($property->getName());
 
                // Map form value(s) to model using configurable/exchangeable mappers. For details
-               // on the implementation pattern/idea see HtmlForm::addFormValueMapper().
+               // on the implementation pattern/idea see HtmlForm::addFormControlToModelMapper().
                $value = null;
-               foreach (self::$formDataMappers as $mapper) {
-                  /* @var $mapper FormValueMapper */
+               foreach (self::$formToModelMappers as $mapper) {
+                  /* @var $mapper FormControlToModelMapper */
                   if ($mapper::applies($control)) {
                      $value = $mapper::getValue($control);
                   }
@@ -601,9 +608,53 @@ class HtmlFormTag extends Document implements HtmlForm {
       return $this;
    }
 
-   // TODO implement form field resolver the other way round as the value resolver for mapping model -> form controls
    public function fillForm($model, array $mapping = []) {
-      throw new Exception('Not yet implemented!');
+
+      $class = new ReflectionClass($model);
+      $properties = $class->getProperties();
+
+      // Gathering model properties to fill via reflection is very convenient. However, not all properties are
+      // potentially intended to be form properties!
+      // For this reason, parameter $mapping allows to restrict the list of model properties that will be
+      // treated as form control pendants (white list approach).
+      foreach ($properties as $property) {
+
+         // Only map properties that should be mapped to be able to re-use existing models!
+         if (empty($mapping) || in_array($property->getName(), $mapping)) {
+            try {
+
+               // get form controls by property name (multiple files for e.g. check boxes)
+               $controls = $this->getFormElementsByName($property->getName());
+
+               // otherwise getValue() will fail...
+               $property->setAccessible(true);
+
+               // Map form value(s) to model using configurable/exchangeable mappers. For details
+               // on the implementation pattern/idea see HtmlForm::addFormControlToModelMapper().
+               $value = $property->getValue($model);
+
+               // loop through list of e.g. check boxes
+               foreach ($controls as &$control) {
+                  foreach (self::$modelToFormMappers as $mapper) {
+                     /* @var $mapper ModelToFormControlMapper */
+                     if ($mapper::applies($control)) {
+                        $mapper::setValue($control, $value);
+                     }
+                  }
+               }
+
+               $property->setAccessible(false);
+            } catch (FormException $e) {
+               // In case a form control does not exist, ignore mapping attempt. This is because not all model
+               // properties might be represented by form controls, dynamic form fields have not been added
+               // in certain use cases and are not present ATM, or the model is used for a multi-step workflow
+               // with just certain fields present in each step.
+               continue;
+            }
+         }
+      }
+
+      return $this;
    }
 
 }

@@ -1,10 +1,10 @@
 #!/bin/bash
 ########################################################################################################################
-# APF 3.2 automatic code migration script                                                                              #
+# APF 3.3 automatic code migration script                                                                              #
 ########################################################################################################################
 
 echo "#############################################"
-echo "# APF 3.2 automatic code migration          #"
+echo "# APF 3.3 automatic code migration          #"
 echo "#############################################"
 echo
 
@@ -23,13 +23,9 @@ echo "#############################################"
 echo
 echo "Starting migration ..."
 
-# migrate place holder methods
-echo "* Migrate place holder methods ..."
-$PHP_BINARY $PHP_SCRIPT_DIR/migrate_place_holder_methods.php
-
-# migrate registerAction() methods
-echo "* Rewrite deprecated registerAction() to addAction() ..."
-$PHP_BINARY $PHP_SCRIPT_DIR/migrate_register_action.php
+# migrate API for form-to-model mapping
+echo "* Migrate form-to-model-mapping API..."
+$PHP_BINARY $PHP_SCRIPT_DIR/migrate_form_to_model_mapping.php
 
 echo
 echo "#############################################"

@@ -33,12 +33,24 @@ class FormValuesModel {
       return $this->foo;
    }
 
+   public function setFoo($foo) {
+      $this->foo = $foo;
+   }
+
    public function getBar() {
       return $this->bar;
    }
 
+   public function setBar($bar) {
+      $this->bar = $bar;
+   }
+
    public function getBaz() {
       return $this->baz;
+   }
+
+   public function setBaz($baz) {
+      $this->baz = $baz;
    }
 
 }

@@ -47,11 +47,16 @@ use APF\extensions\htmllist\taglib\ListElementTag;
 use APF\modules\captcha\pres\taglib\SimpleCaptchaTag;
 use APF\modules\recaptcha\pres\taglib\ReCaptchaTag;
 use APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionLanguageLabelTag;
-use APF\tools\form\mapping\CheckBoxValueMapper;
-use APF\tools\form\mapping\MultiSelectBoxValueMapper;
-use APF\tools\form\mapping\RadioButtonValueMapper;
-use APF\tools\form\mapping\SelectBoxValueMapper;
-use APF\tools\form\mapping\StandardValueMapper;
+use APF\tools\form\mapping\CheckBoxToFormMapper;
+use APF\tools\form\mapping\CheckBoxToModelMapper;
+use APF\tools\form\mapping\ModelToMultiSelectBoxMapper;
+use APF\tools\form\mapping\ModelToRadioButtonMapper;
+use APF\tools\form\mapping\ModelToSelectBoxMapper;
+use APF\tools\form\mapping\MultiSelectBoxToModelMapper;
+use APF\tools\form\mapping\RadioButtonToModelMapper;
+use APF\tools\form\mapping\SelectBoxToModelMapper;
+use APF\tools\form\mapping\StandardControlToModelMapper;
+use APF\tools\form\mapping\StandardModelToFormControlMapper;
 use APF\tools\form\multifileupload\pres\taglib\MultiFileUploadTag;
 use APF\tools\form\taglib\AddFormControlFilterTag;
 use APF\tools\form\taglib\AddFormControlValidatorTag;
@@ -268,9 +273,16 @@ Document::addTagLib(ListElementTag::class, 'list', 'elem_list');
 Document::addTemplateExpression(PlaceHolderTemplateExpression::class);
 Document::addTemplateExpression(DynamicTemplateExpression::class);
 
-// Register form value mappers used to translate/transcribe form values into a DTO/model.
-HtmlFormTag::addFormValueMapper(StandardValueMapper::class);
-HtmlFormTag::addFormValueMapper(RadioButtonValueMapper::class);
-HtmlFormTag::addFormValueMapper(SelectBoxValueMapper::class);
-HtmlFormTag::addFormValueMapper(MultiSelectBoxValueMapper::class);
-HtmlFormTag::addFormValueMapper(CheckBoxValueMapper::class);
+// Register form-to-model mappers used to translate/transcribe form values into a DTO/model.
+HtmlFormTag::addFormControlToModelMapper(StandardControlToModelMapper::class);
+HtmlFormTag::addFormControlToModelMapper(RadioButtonToModelMapper::class);
+HtmlFormTag::addFormControlToModelMapper(SelectBoxToModelMapper::class);
+HtmlFormTag::addFormControlToModelMapper(MultiSelectBoxToModelMapper::class);
+HtmlFormTag::addFormControlToModelMapper(CheckBoxToModelMapper::class);
+
+// Register model-to-form mappers used to translate/transcribe DTO/model values into form controls.
+HtmlFormTag::addModelToFormControlMapper(StandardModelToFormControlMapper::class);
+HtmlFormTag::addModelToFormControlMapper(ModelToSelectBoxMapper::class);
+HtmlFormTag::addModelToFormControlMapper(ModelToMultiSelectBoxMapper::class);
+HtmlFormTag::addModelToFormControlMapper(ModelToRadioButtonMapper::class);
+HtmlFormTag::addModelToFormControlMapper(CheckBoxToFormMapper::class);

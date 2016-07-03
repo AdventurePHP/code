@@ -21,31 +21,26 @@
 namespace APF\tools\form\mapping;
 
 use APF\tools\form\FormControl;
-use APF\tools\form\FormValueMapper;
+use APF\tools\form\ModelToFormControlMapper;
+use APF\tools\form\taglib\MultiSelectBoxTag;
 use APF\tools\form\taglib\SelectBoxTag;
 
 /**
- * Evaluates real model values for all select box based form controls.
+ * Fills a select box with the real values of a model.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 29.03.2016 (ID#275: introduced value data mappers to be able to customize form to model mappings)<br />
+ * Version 0.1, 02.07.2016 (ID#297: introduced mapper for model values to select boxes)<br />
  */
-class SelectBoxValueMapper implements FormValueMapper {
+class ModelToSelectBoxMapper implements ModelToFormControlMapper {
 
    public static function applies(FormControl $control) {
-      return $control instanceof SelectBoxTag;
+      return $control instanceof SelectBoxTag && !($control instanceof MultiSelectBoxTag);
    }
 
-   public static function getValue(FormControl $control) {
-      $value = $control->getValue();
-
-      // "extract" real value behind selected option
-      if ($value instanceof FormControl) {
-         $value = $value->getValue();
-      }
-
-      return $value;
+   public static function setValue(FormControl &$control, $value) {
+      /* @var $control SelectBoxTag */
+      $control->setOption2Selected($value);
    }
 
 }

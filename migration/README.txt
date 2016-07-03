@@ -5,6 +5,5 @@ MIGRATION can be done as follows using a LINUX-like shell (use cygwin for Window
 $ cd /path/to/your/project/APF
 $ ./migration/migrate-code.sh /path/to/php
 $ ./migration/migrate-config.sh /path/to/php
-$ ./migration/migrate-place-holders.sh /path/to/php
 
 AFTER automatic migration please refer to the manual migration steps described on the main page.

@@ -22,7 +22,7 @@ namespace APF\tests\suites\tools\form\taglib;
 
 use APF\core\pagecontroller\Document;
 use APF\tests\suites\tools\form\model\FormValuesModel;
-use APF\tools\form\mapping\StandardValueMapper;
+use APF\tools\form\FormControlToModelMapper;
 use APF\tools\form\taglib\HtmlFormTag;
 use DateTime;
 use ReflectionProperty;
@@ -34,7 +34,7 @@ use ReflectionProperty;
  * @version
  * Version 0.1, 06.04.2016 (ID#275: introduced form to model mappings)<br />
  */
-class FormModelMappingTest extends \PHPUnit_Framework_TestCase {
+class FormControlToModelMappingTest extends \PHPUnit_Framework_TestCase {
 
    const BUTTON_NAME = 'button';
    const BUTTON_VALUE = 'Send';
@@ -44,17 +44,17 @@ class FormModelMappingTest extends \PHPUnit_Framework_TestCase {
     */
    public function testMappingConfiguration() {
 
-      $property = new ReflectionProperty(HtmlFormTag::class, 'formDataMappers');
+      $property = new ReflectionProperty(HtmlFormTag::class, 'formToModelMappers');
       $property->setAccessible(true);
 
       $original = $property->getValue();
       $this->assertCount(5, $original);
 
-      HtmlFormTag::clearFormValueMappers();
+      HtmlFormTag::clearFormControlToModelMappers();
       $actual = $property->getValue();
       $this->assertCount(0, $actual);
 
-      HtmlFormTag::addFormValueMapper(StandardValueMapper::class);
+      HtmlFormTag::addFormControlToModelMapper(FormControlToModelMapper::class);
       $actual = $property->getValue();
       $this->assertCount(1, $actual);
 
@@ -210,8 +210,6 @@ class FormModelMappingTest extends \PHPUnit_Framework_TestCase {
    /**
     * Tests model mapping for radio buttons. Difficulty here is that radio buttons typically have
     * two or more options with the same name but with different ids.
-    *
-    * Question: how to find out which is the active one?
     */
    public function testValueMappingOfRadioButtons() {
 

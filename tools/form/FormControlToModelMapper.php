@@ -21,17 +21,17 @@
 namespace APF\tools\form;
 
 /**
- * A FormValueMapper serves as a translator between a form and it's controls and a model that
+ * A FormControlToModelMapper serves as a translator between a form and it's controls and a model that
  * should be filled with the corresponding form control values.
  * <p/>
  * To customize the mapping capabilities please add your custom implementation using
- * <em>HtmlForm::addFormValueMapper()</em> and/or <em>HtmlForm::clearFormValueMappers()</em>.
+ * <em>HtmlForm::addFormControlToModelMapper()</em> and/or <em>HtmlForm::clearFormControlToModelMappers()</em>.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 29.03.2016 (ID#275: introduced value data mappers to be able to customize form to model mappings)<br />
  */
-interface FormValueMapper {
+interface FormControlToModelMapper {
 
    /**
     * This method is used by <em>HtmlForm::fillModel()</em> to determine whether or not a specific

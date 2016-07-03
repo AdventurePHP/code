@@ -53,27 +53,58 @@ interface HtmlForm extends FormControlFinder, FormElement {
     * custom form controls can be handled exactly the same way: either implementing
     * <em>FormControl::getValue()</em> to return the "real" (string) value or establish a
     * combination of <em>getValue()</em> returning an object representation as appropriate and a
-    * FormValueMapper implementation transforming it into the "real" value to be mapped to the model.
+    * FormControlToModelMapper implementation transforming it into the "real" value to be mapped to the model.
     *
-    * @param string $mapper The fully qualified class name of the mapper (e.g. <em>APF\tools\form\mapping\StandardValueMapper</em>).
+    * @param string $mapper The fully qualified class name of the mapper (e.g. <em>APF\tools\form\mapping\StandardControlToModelMapper</em>).
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.03.2016 (ID#275: introduced value data mappers to be able to customize form to model mappings)<br />
     */
-   public static function addFormValueMapper($mapper);
+   public static function addFormControlToModelMapper($mapper);
 
    /**
-    * Use this method to clear the list of form value mapper.
+    * Use this method to clear the list of form-to-model mappers.
     * <p/>
-    * Please don't forget to build up a list of mappers using <em>addFormValueMapper()</em> again. Otherwise,
+    * Please don't forget to build up a list of mappers using <em>addFormControlToModelMapper()</em> again. Otherwise,
     * calls to <em>fillModel()</em> will most likely fail or produce inconsistent results.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 06.04.2016 (ID#275: introduced value data mappers to be able to customize form to model mappings)<br />
     */
-   public static function clearFormValueMappers();
+   public static function clearFormControlToModelMappers();
+
+   /**
+    * Add a model-to-form-control-mapping to the <em>global</em> list of known mapping expressions.
+    * <p />
+    * Global (and thus configurable) mappers ensures that future enhancements are made easy and
+    * custom form controls can be handled exactly the same way: either implementing
+    * <em>FormControl::setValue()</em> to inject the "real" (string) value or establish a
+    * combination of the model returning an object representation as appropriate and a
+    * ModelToFormControlMapper implementation transforming it into the "real" value to be injected
+    * into the form control.
+    *
+    * @param string $mapper The fully qualified class name of the mapper (e.g. <em>APF\tools\form\mapping\StandardModelToFormControlMapper</em>).
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 02.07.2016 (ID#297: introduced form control data mappers to be able to customize model to form mappings)<br />
+    */
+   public static function addModelToFormControlMapper($mapper);
+
+
+   /**
+    * Use this method to clear the list of model-to-form mappers.
+    * <p/>
+    * Please don't forget to build up a list of mappers using <em>addModelToFormControlMapper()</em> again. Otherwise,
+    * calls to <em>fillForm()</em> will most likely fail or produce inconsistent results.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 02.07.2016 (ID#297: introduced form control data mappers to be able to customize model to form mappings)<br />
+    */
+   public static function clearModelToFormControlMapper();
 
    /**
     * Sets the action url of the form.
@@ -108,7 +139,7 @@ interface HtmlForm extends FormControlFinder, FormElement {
     * <p/>
     * Retrieving values FormControl::getValue() will be invoked on each form control. In case the implementation
     * of your custom form control does not return the "real" value that should be written to the model please
-    * register a custom FormValueMapper using HtmlForm::addFormValueMapper() to transform the form control's
+    * register a custom FormControlToModelMapper using HtmlForm::addFormControlToModelMapper() to transform the form control's
     * return value into the value suitable for the model.
     * <p/>
     * The optional mapping list allows to specify a dedicated list of form fields to be filled. This allows
@@ -126,7 +157,7 @@ interface HtmlForm extends FormControlFinder, FormElement {
    public function fillModel(&$model, array $mapping = []);
 
    /**
-    * General description.
+    * This method allows you to fill a form with the current values of a model/DTO/etc.
     * <p/>
     * The optional mapping list allows to specify a dedicated list of form fields to be filled.
     * This allows re-use of existing models/DTOs/etc.
