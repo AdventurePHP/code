@@ -169,6 +169,34 @@ class TemplateConditionTest extends \PHPUnit_Framework_TestCase {
       TemplateCondition::applies('regExp(\'^foo\')', 'foobar');
    }
 
+   public function testEvaluate18() {
+      $this->assertFalse(TemplateCondition::applies('greaterThan(5)', '4'));
+      $this->assertTrue(TemplateCondition::applies('greaterThan(5)', '6'));
+      $this->assertFalse(TemplateCondition::applies('greaterThan(5)', null));
+      $this->assertFalse(TemplateCondition::applies('greaterThan(5)', '-1'));
+      $this->assertFalse(TemplateCondition::applies('greaterThan(5)', '4.5'));
+      $this->assertFalse(TemplateCondition::applies('greaterThan(5)', '5.0'));
+      $this->assertTrue(TemplateCondition::applies('greaterThan(5)', '5.5'));
+   }
+
+   public function testEvaluate19() {
+      $this->assertTrue(TemplateCondition::applies('lowerThan(5)', '4'));
+      $this->assertFalse(TemplateCondition::applies('lowerThan(5)', '6'));
+      $this->assertTrue(TemplateCondition::applies('lowerThan(5)', null));
+      $this->assertTrue(TemplateCondition::applies('lowerThan(5)', '-1'));
+      $this->assertTrue(TemplateCondition::applies('lowerThan(5)', '4.5'));
+      $this->assertFalse(TemplateCondition::applies('lowerThan(5)', '5.0'));
+      $this->assertFalse(TemplateCondition::applies('lowerThan(5)', '5.5'));
+   }
+
+   public function testEvaluate20() {
+      $this->assertFalse(TemplateCondition::applies('equalTo(5)', '4'));
+      $this->assertFalse(TemplateCondition::applies('equalTo(5)', null));
+      $this->assertFalse(TemplateCondition::applies('equalTo(5)', '-1'));
+      $this->assertFalse(TemplateCondition::applies('equalTo(5)', '4.5'));
+      $this->assertTrue(TemplateCondition::applies('equalTo(5)', '5.0'));
+   }
+
    public function testUnknownCondition() {
       $this->assertFalse(TemplateCondition::applies('foo()', null));
    }

@@ -57,16 +57,28 @@ class TemplateCondition {
     * <strong>contains(&lt;string&gt;)</strong>: whether or not the data contains the given string.
     * </li>
     * <li>
-    * <strong>longerThan(&lt;number&gt;)</strong>: whether or not the data (string) is longer than.
+    * <strong>longerThan(&lt;number&gt;)</strong>: whether or not the data (string) is longer than the given argument.
     * </li>
     * <li>
-    * <strong>shorterThan(&lt;number&gt;)</strong>: whether or not the data (string) is shorter than.
+    * <strong>shorterThan(&lt;number&gt;)</strong>: whether or not the data (string) is shorter than the given argument.
     * </li>
     * <li>
     * <strong>length(&lt;number&gt;)</strong>: whether of not the data (string) matches the length definition.
     * </li>
     * <li>
     * <strong>between(&lt;number&gt;,&lt;number&gt;)</strong>: whether or not the data (string) matches the given range.
+    * </li>
+    * <li>
+    * <strong>lowerThan(&lt;number&gt;)</strong>: whether or not the data (number) is lower than the given argument
+    * (numeric, float-based comparison).
+    * </li>
+    * <li>
+    * <strong>equalTo(&lt;number&gt;)</strong>: whether or not the data (number) is the same as the given argument
+    * (numeric, float-based comparison).
+    * </li>
+    * <li>
+    * <strong>greaterThan(&lt;number&gt;)</strong>: whether or not the data (number) is greater than the given argument
+    * (numeric, float-based comparison).
     * </li>
     * </ul>
     *
@@ -175,6 +187,39 @@ class TemplateCondition {
 
             $length = strlen($data);
             return $length >= intval($arguments[0]) && $length <= intval($arguments[1]);
+            break;
+         case strpos($condition, 'greaterThan') !== false:
+            $arguments = self::getArgument($condition);
+            if (count($arguments) === 0) {
+               throw new InvalidArgumentException(
+                     'Condition "' . $condition . '" is missing argument one for comparison! '
+                     . 'Expecting greaterThan(10) for example!'
+               );
+            }
+
+            return floatval($data) > floatval($arguments[0]);
+            break;
+         case strpos($condition, 'lowerThan') !== false:
+            $arguments = self::getArgument($condition);
+            if (count($arguments) === 0) {
+               throw new InvalidArgumentException(
+                     'Condition "' . $condition . '" is missing argument one for comparison! '
+                     . 'Expecting lowerThan(10) for example!'
+               );
+            }
+
+            return floatval($data) < floatval($arguments[0]);
+            break;
+         case strpos($condition, 'equalTo') !== false:
+            $arguments = self::getArgument($condition);
+            if (count($arguments) === 0) {
+               throw new InvalidArgumentException(
+                     'Condition "' . $condition . '" is missing argument one for comparison! '
+                     . 'Expecting greaterThan(10) for example!'
+               );
+            }
+
+            return floatval($data) == floatval($arguments[0]);
             break;
          default:
             return false;
