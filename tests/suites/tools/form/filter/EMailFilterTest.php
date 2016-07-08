@@ -46,7 +46,8 @@ class EMailFilterTest extends \PHPUnit_Framework_TestCase {
    protected function getForm() {
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
 
       $form->setAttributes(['name' => 'filter-test']);
       $form->setContent('<form:text name="email" />

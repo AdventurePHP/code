@@ -69,7 +69,8 @@ class FormControlToModelMappingTest extends \PHPUnit_Framework_TestCase {
       $_REQUEST = [];
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setAttribute('name', 'test');
 
       $model = new FormValuesModel();
@@ -100,7 +101,8 @@ class FormControlToModelMappingTest extends \PHPUnit_Framework_TestCase {
     */
    private function getSimpleForm() {
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setAttribute('name', 'test');
       $form->setContent('<form:text name="foo" /><form:text name="bar" /><form:text name="baz" />');
       $form->onParseTime();
@@ -169,7 +171,8 @@ class FormControlToModelMappingTest extends \PHPUnit_Framework_TestCase {
 
       // simple select field
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setAttribute('name', 'test');
       $form->setContent('<form:select name="foo">
    <select:option value="1">One</select:option>
@@ -188,7 +191,8 @@ class FormControlToModelMappingTest extends \PHPUnit_Framework_TestCase {
 
       // multi select field
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setAttribute('name', 'test');
       $form->setContent('<form:multiselect name="foo">
    <select:option value="1">One</select:option>
@@ -216,7 +220,8 @@ class FormControlToModelMappingTest extends \PHPUnit_Framework_TestCase {
       $_REQUEST = [];
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setAttribute('name', 'test');
       $form->setContent('<form:group>
 <form:radio name="foo" value="value-1" id="foo-1" />
@@ -249,7 +254,8 @@ class FormControlToModelMappingTest extends \PHPUnit_Framework_TestCase {
       $_REQUEST['foo']['Day'] = $day;
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setAttribute('name', 'test');
       $form->setContent('<form:date name="foo" />');
       $form->onParseTime();
@@ -278,7 +284,8 @@ class FormControlToModelMappingTest extends \PHPUnit_Framework_TestCase {
       $_REQUEST['foo']['Minutes'] = $minutes;
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setAttribute('name', 'test');
       $form->setContent('<form:time name="foo" showseconds="false" />');
       $form->onParseTime();
@@ -326,7 +333,8 @@ class FormControlToModelMappingTest extends \PHPUnit_Framework_TestCase {
     */
    private function getFormForCheckBoxTest() {
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setAttribute('name', 'test');
       $form->setContent('<form:checkbox name="foo" value="bar" />
 <form:button name="' . self::BUTTON_NAME . '" value="' . self::BUTTON_VALUE . '" />');

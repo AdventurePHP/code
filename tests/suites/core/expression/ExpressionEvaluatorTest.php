@@ -27,11 +27,13 @@ use APF\core\pagecontroller\ParserException;
 class ExpressionEvaluatorTest extends \PHPUnit_Framework_TestCase {
 
    public function testEmptyExpression() {
-      $this->assertNull(ExpressionEvaluator::evaluate(new Document(), ''));
+      $doc = new Document();
+      $this->assertNull(ExpressionEvaluator::evaluate($doc, ''));
    }
 
    public function testIllegalExpression() {
-      $this->assertNull(ExpressionEvaluator::evaluate(new Document(), '->'));
+      $doc = new Document();
+      $this->assertNull(ExpressionEvaluator::evaluate($doc, '->'));
    }
 
    public function testDataAccess() {
@@ -80,12 +82,14 @@ class ExpressionEvaluatorTest extends \PHPUnit_Framework_TestCase {
 
    public function testIllegalCallChain() {
       $this->expectException(ParserException::class);
-      ExpressionEvaluator::evaluate(new Document(), '->foo->getMoreLinkModel()->->getLabel()');
+      $doc = new Document();
+      ExpressionEvaluator::evaluate($doc, '->foo->getMoreLinkModel()->->getLabel()');
    }
 
    public function testIllegalCall() {
       $this->expectException(ParserException::class);
-      ExpressionEvaluator::evaluate(new Document(), 'foo-> getCssClass()');
+      $doc = new Document();
+      ExpressionEvaluator::evaluate($doc, 'foo-> getCssClass()');
    }
 
 }

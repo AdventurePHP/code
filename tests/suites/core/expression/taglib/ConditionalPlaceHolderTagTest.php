@@ -80,7 +80,8 @@ class ConditionalPlaceHolderTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testEmptyOutputForMissingContent() {
       $tag = $this->getPlaceHolder('<h3>${content}</h3>', []);
-      $tag->setParentObject(new Document());
+      $doc = new Document();
+      $tag->setParentObject($doc);
       $this->assertEmpty($tag->transform());
    }
 

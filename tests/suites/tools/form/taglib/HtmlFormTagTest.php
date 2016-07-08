@@ -151,7 +151,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
       $form = new HtmlFormTag();
 
       // inject parent object to make recursive selection work
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
 
       $form->setAttribute('name', 'foo');
       $form->setContent('<form:text name="user"/>
@@ -232,7 +233,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testTransform() {
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
 
       $form->setAction('/some-url');
 
@@ -269,8 +271,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
       $children->setValue(
             $form,
             [
-                  $user->getObjectId() => $user,
-                  $group->getObjectId() => $group,
+                  $user->getObjectId()   => $user,
+                  $group->getObjectId()  => $group,
                   $button->getObjectId() => $button
             ]
       );
@@ -300,7 +302,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testFindById1() {
       $this->expectException(FormException::class);
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->getFormElementByID('not-existing');
    }
 
@@ -310,7 +313,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testFindById2() {
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setContent('<form:text id="foo" name="bar" value="123"/>
 <form:text name="foo" />
 <form:button name="submit" value="submit" />');
@@ -330,7 +334,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testFindById3() {
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setContent('<form:text name="bar" />
 <form:group>
    <form:group>
@@ -355,7 +360,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testGetLabel1() {
       $this->expectException(FormException::class);
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->getLabel('not-existing');
    }
 
@@ -365,7 +371,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testGetLabel2() {
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setContent('<form:label name="foo">Label</form:label>
 <html:getstring
          name="foo"
@@ -390,7 +397,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testGetLabel3() {
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setContent('<form:text name="bar" />
 <form:group>
    <form:label name="bar">Other Label</form:label>
@@ -420,7 +428,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testGetFormElementsByTagName1() {
       $this->expectException(FormException::class);
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->getFormElementsByTagName('html:placeholder');
    }
 
@@ -430,7 +439,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testGetFormElementsByTagName2() {
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setContent('<form:text id="foo-1" name="bar-1" value="123"/>
 <form:text id="foo-2" name="bar-2" />
 <form:radio name="bar-3" value="1" />
@@ -462,7 +472,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testGetFormElementsByTagName3() {
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setContent('<form:text id="foo-1" name="bar-1" value="123"/>
 <form:group>
    <form:group>
@@ -500,7 +511,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testGetFormElementsByName1() {
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $this->assertEmpty($form->getFormElementsByName('foo:bar'));
 
    }
@@ -511,7 +523,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testGetFormElementsByName2() {
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setContent('<form:text id="foo-1" name="bar" value="123"/>
 <form:group>
    <form:group>
@@ -673,6 +686,23 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    }
 
    /**
+    * @return HtmlFormTag
+    */
+   private function getSimpleForm() {
+      $form = new HtmlFormTag();
+
+      $doc = new Document();
+      $form->setParentObject($doc);
+      $form->setContent('<form:text id="text" name="text" value="123"/>
+<form:button name="submit" value="submit" />');
+
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      return $form;
+   }
+
+   /**
     * ID#303: test capabilities to hide form group by default from within a template.
     */
    public function testHidingByAttribute() {
@@ -691,22 +721,6 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
       $this->assertFalse($tag->isVisible());
 
-   }
-
-   /**
-    * @return HtmlFormTag
-    */
-   private function getSimpleForm() {
-      $form = new HtmlFormTag();
-
-      $form->setParentObject(new Document());
-      $form->setContent('<form:text id="text" name="text" value="123"/>
-<form:button name="submit" value="submit" />');
-
-      $form->onParseTime();
-      $form->onAfterAppend();
-
-      return $form;
    }
 
 }
