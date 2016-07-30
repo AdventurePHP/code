@@ -64,130 +64,6 @@ class GenericORRelationMapper extends GenericORMapper {
    }
 
    /**
-    * Loads an Hierarchical Object List
-    *
-    * @param string $objectName The name of the desired object
-    * @param string $compositionName The name of the relation
-    * @param GenericCriterionObject $criterion The selection criterion
-    * @param int $rootObjectId The ID of the root item of the tree
-    * @param int $maxDepth The maximum depth of the tree
-    *
-    * @return TreeItem|TreeItem[]
-    *
-    * @author Nicolas Pecher
-    * @version
-    * Version 0.1. 23.04.2012
-    */
-   public function loadObjectTree($objectName, $compositionName, GenericCriterionObject $criterion = null, $rootObjectId = 0, $maxDepth = 0) {
-
-      // get the objects which should be used for the tree
-      $treeItems = $this->loadTreeItemList($objectName, $criterion);
-
-      // get compositions
-      $compositionTable = $this->relationTable[$compositionName]['Table'];
-      $sql = 'SELECT * FROM `' . $compositionTable . '`';
-      $resultCursor = $this->dbDriver->executeTextStatement($sql, $this->logStatements);
-      $compositions = [];
-      while ($row = $this->dbDriver->fetchData($resultCursor)) {
-         $compositions[] = $row;
-      }
-
-      // we have to find the root-object(s) of the tree
-      $objectTree = [];
-      foreach ($treeItems as $treeItem) {
-         $isRootObject = true;
-         if ($rootObjectId <= 0) {
-            foreach ($compositions as $composition) {
-               if ($treeItem->getObjectId() === $composition[$this->relationTable[$compositionName]['TargetID']]) {
-                  $isRootObject = false;
-                  break;
-               }
-            }
-         } elseif ($rootObjectId > 0 && $treeItem->getObjectId() !== $rootObjectId) {
-            $isRootObject = false;
-         }
-
-         if ($isRootObject === true) {
-
-            // now we load all children of the actual treeItem
-            $childObjects = $this->loadChildTreeItems(
-                  $treeItems,
-                  $compositions,
-                  $compositionName,
-                  $treeItem,
-                  $maxDepth
-            );
-            $treeItem->addChildren($childObjects);
-
-            if ($rootObjectId > 0) {
-               return $treeItem;
-            }
-
-            $objectTree[] = $treeItem;
-         }
-      }
-
-      return $objectTree;
-   }
-
-   /**
-    * Loads a list of TreeItems
-    *
-    * @param string $objectName The name of the objects which should be used to build up the tree.
-    * @param GenericCriterionObject $criterion An optional selection criterion to load the list of tree items.
-    *
-    * @return TreeItem[] A list of TreeItems.
-    * @throws GenericORMapperException In case of wrong object hierarchy of the tree item DTO.
-    *
-    * @author Nicolas Pecher
-    * @version
-    * Version 0.1. 23.04.2012
-    */
-   protected function loadTreeItemList($objectName, GenericCriterionObject $criterion = null) {
-
-      // check if the domain object is a subclass of TreeItem
-      $class = $this->domainObjectsTable[$objectName]['Class'];
-
-      $object = new $class($objectName);
-      if (!($object instanceof TreeItem)) {
-         throw new GenericORMapperException('[GenericORRelationMapper::loadTreeItemList()] The object named "'
-               . $objectName . '" must be a subclass of "TreeItem".', E_USER_ERROR);
-      }
-
-      if ($criterion === null) {
-         return $this->loadObjectList($objectName);
-      }
-
-      return $this->loadObjectListByCriterion($objectName, $criterion);
-   }
-
-   /**
-    * Load an object list by a given criterion object.
-    *
-    * @param string $objectName name of the desired objects.
-    * @param GenericCriterionObject $criterion criterion object.
-    *
-    * @return GenericORMapperDataObject[] List of domain objects.
-    * @throws GenericORMapperException In case no valid criterion is passed.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 17.05.2008<br />
-    * Version 0.2, 21.06.2008 (Sourced out statement creation into an extra method)<br />
-    * Version 0.3, 17.01.2009 (Added a check, if the criterion object is present. Otherwise return null.)<br />
-    */
-   public function loadObjectListByCriterion($objectName, GenericCriterionObject $criterion) {
-
-      if ($criterion === null) {
-         throw new GenericORMapperException('[GenericORRelationMapper::loadObjectListByCriterion()] '
-               . 'No criterion object given as second argument! Please consult the manual.',
-               E_USER_ERROR);
-      }
-
-      return $this->loadObjectListByTextStatement($objectName, $this->buildSelectStatementByCriterion($objectName, $criterion));
-   }
-
-   /**
     * Creates an SQL statement by a given object name and a criterion object.<br />
     *
     * @param string $objectName name of the desired objects
@@ -201,7 +77,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * Version 0.2, 21.06.2008 (Code completed)<br />
     * Version 0.3, 25.06.2008 (Added LIKE-Feature. If the property indicator contains a '%' or '_', the resulting statement contains a LIKE clause instead of a = clause)<br />
     * Version 0.4, 24.03.2011 (Added support for relations between the same table)<br />
-    * Verison 0.5, 27.04.2011 (Sourced out criterion statement creation into an extra method)<br />
+    * Version 0.5, 27.04.2011 (Sourced out criterion statement creation into an extra method)<br />
     */
    protected function buildSelectStatementByCriterion($objectName, GenericCriterionObject $criterion) {
 
@@ -288,7 +164,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * @param string $objectName Name of the current object
     * @param string $relationName Name of the desired relation
     *
-    * @return string Name of the releated object or null, in case the object definition was not found.
+    * @return string Name of the related object or null, in case the object definition was not found.
     *
     * @author Christian Achatz
     * @version
@@ -376,8 +252,11 @@ class GenericORRelationMapper extends GenericORMapper {
          $toTable = $this->mappingTable[$targetObjectName]['Table'];
          $targetObjectId = $this->mappingTable[$targetObjectName]['ID'];
 
+         // ID#306: escape ID to avoid SQL injection
+         $id = $this->dbDriver->escapeValue($relatedObject->getObjectId());
+
          // add statement to where list
-         $whereList[] = '`' . $uniqueRelationTargetId . '_' . $toTable . '`.`' . $targetObjectId . '` = ' . $relatedObject->getObjectId();
+         $whereList[] = '`' . $uniqueRelationTargetId . '_' . $toTable . '`.`' . $targetObjectId . '` = ' . $id;
       }
 
       return $whereList;
@@ -505,6 +384,130 @@ class GenericORRelationMapper extends GenericORMapper {
    }
 
    /**
+    * Loads an Hierarchical Object List
+    *
+    * @param string $objectName The name of the desired object
+    * @param string $compositionName The name of the relation
+    * @param GenericCriterionObject $criterion The selection criterion
+    * @param int $rootObjectId The ID of the root item of the tree
+    * @param int $maxDepth The maximum depth of the tree
+    *
+    * @return TreeItem|TreeItem[]
+    *
+    * @author Nicolas Pecher
+    * @version
+    * Version 0.1. 23.04.2012
+    */
+   public function loadObjectTree($objectName, $compositionName, GenericCriterionObject $criterion = null, $rootObjectId = 0, $maxDepth = 0) {
+
+      // get the objects which should be used for the tree
+      $treeItems = $this->loadTreeItemList($objectName, $criterion);
+
+      // get compositions
+      $compositionTable = $this->relationTable[$compositionName]['Table'];
+      $sql = 'SELECT * FROM `' . $compositionTable . '`';
+      $resultCursor = $this->dbDriver->executeTextStatement($sql, $this->logStatements);
+      $compositions = [];
+      while ($row = $this->dbDriver->fetchData($resultCursor)) {
+         $compositions[] = $row;
+      }
+
+      // we have to find the root-object(s) of the tree
+      $objectTree = [];
+      foreach ($treeItems as $treeItem) {
+         $isRootObject = true;
+         if ($rootObjectId <= 0) {
+            foreach ($compositions as $composition) {
+               if ($treeItem->getObjectId() === $composition[$this->relationTable[$compositionName]['TargetID']]) {
+                  $isRootObject = false;
+                  break;
+               }
+            }
+         } elseif ($rootObjectId > 0 && $treeItem->getObjectId() !== $rootObjectId) {
+            $isRootObject = false;
+         }
+
+         if ($isRootObject === true) {
+
+            // now we load all children of the actual treeItem
+            $childObjects = $this->loadChildTreeItems(
+                  $treeItems,
+                  $compositions,
+                  $compositionName,
+                  $treeItem,
+                  $maxDepth
+            );
+            $treeItem->addChildren($childObjects);
+
+            if ($rootObjectId > 0) {
+               return $treeItem;
+            }
+
+            $objectTree[] = $treeItem;
+         }
+      }
+
+      return $objectTree;
+   }
+
+   /**
+    * Loads a list of TreeItems
+    *
+    * @param string $objectName The name of the objects which should be used to build up the tree.
+    * @param GenericCriterionObject $criterion An optional selection criterion to load the list of tree items.
+    *
+    * @return TreeItem[] A list of TreeItems.
+    * @throws GenericORMapperException In case of wrong object hierarchy of the tree item DTO.
+    *
+    * @author Nicolas Pecher
+    * @version
+    * Version 0.1. 23.04.2012
+    */
+   protected function loadTreeItemList($objectName, GenericCriterionObject $criterion = null) {
+
+      // check if the domain object is a subclass of TreeItem
+      $class = $this->domainObjectsTable[$objectName]['Class'];
+
+      $object = new $class($objectName);
+      if (!($object instanceof TreeItem)) {
+         throw new GenericORMapperException('[GenericORRelationMapper::loadTreeItemList()] The object named "'
+               . $objectName . '" must be a subclass of "TreeItem".', E_USER_ERROR);
+      }
+
+      if ($criterion === null) {
+         return $this->loadObjectList($objectName);
+      }
+
+      return $this->loadObjectListByCriterion($objectName, $criterion);
+   }
+
+   /**
+    * Load an object list by a given criterion object.
+    *
+    * @param string $objectName name of the desired objects.
+    * @param GenericCriterionObject $criterion criterion object.
+    *
+    * @return GenericORMapperDataObject[] List of domain objects.
+    * @throws GenericORMapperException In case no valid criterion is passed.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 17.05.2008<br />
+    * Version 0.2, 21.06.2008 (Sourced out statement creation into an extra method)<br />
+    * Version 0.3, 17.01.2009 (Added a check, if the criterion object is present. Otherwise return null.)<br />
+    */
+   public function loadObjectListByCriterion($objectName, GenericCriterionObject $criterion) {
+
+      if ($criterion === null) {
+         throw new GenericORMapperException('[GenericORRelationMapper::loadObjectListByCriterion()] '
+               . 'No criterion object given as second argument! Please consult the manual.',
+               E_USER_ERROR);
+      }
+
+      return $this->loadObjectListByTextStatement($objectName, $this->buildSelectStatementByCriterion($objectName, $criterion));
+   }
+
+   /**
     * Loads all children of the given tree item list recursively.
     *
     * @param TreeItem[] $treeItems A list of tree items to load it's children.
@@ -591,7 +594,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * @version
     * Version 0.1, 14.05.2008<br />
     * Version 0.2, 18.05.2008<br />
-    * Version 0.3, 08.06.2008 (Bugfix to the statement)<br />
+    * Version 0.3, 08.06.2008 (Bug fix to the statement)<br />
     * Version 0.4, 25.06.2008 (Added a third parameter to have influence on the loaded list)<br />
     * Version 0.4, 26.06.2008 (Some changes to the statement creation)<br />
     * Version 0.5, 25.10.2008 (Added the additional relation option via the criterion object)<br />
@@ -672,9 +675,12 @@ class GenericORRelationMapper extends GenericORMapper {
          $select .= implode(' ', $joinList);
       }
 
+      // ID#306: escape ID to avoid SQL injection
+      $id = $this->dbDriver->escapeValue($object->getObjectId());
+
       // add where statement
       $where = array_merge($whereList, $this->buildWhere($targetObjectName, $criterion));
-      $where[] = '`' . $uniqueRelationTargetId . '_' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '` = \'' . $object->getObjectId() . '\'';
+      $where[] = '`' . $uniqueRelationTargetId . '_' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '` = \'' . $id . '\'';
       $select .= ' WHERE ' . implode(' AND ', $where);
 
       // add order clause
@@ -794,10 +800,13 @@ class GenericORRelationMapper extends GenericORMapper {
       $relationTable = $this->relationTable[$relationName]['Table'];
 
       $select .= ' INNER JOIN `' . $relationTable . '` AS `' . $uniqueRelationSourceId . '_' . $relationTable . '` ON `' . $targetObject['Table'] . '`.`' . $targetObject['ID'] . '` = `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`' . $relationTargetObjectId . '`
-                      INNER JOIN `' . $sourceObject['Table'] . '` AS `' . $uniqueRelationTargetId . '_' . $sourceObject['Table'] . '` ON `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`' . $relationSourceObjectId . '` = `' . $uniqueRelationTargetId . '_' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '`';
+                   INNER JOIN `' . $sourceObject['Table'] . '` AS `' . $uniqueRelationTargetId . '_' . $sourceObject['Table'] . '` ON `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`' . $relationSourceObjectId . '` = `' . $uniqueRelationTargetId . '_' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '`';
+
+      // ID#306: escape ID to avoid SQL injection
+      $id = $this->dbDriver->escapeValue($object->getObjectId());
 
       // add inner where
-      $select .= ' WHERE `' . $uniqueRelationTargetId . '_' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '` = \'' . $object->getObjectId() . '\'';
+      $select .= ' WHERE `' . $uniqueRelationTargetId . '_' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '` = \'' . $id . '\'';
 
       // indicate end of inner statement
       $select .= ' )';
@@ -846,14 +855,17 @@ class GenericORRelationMapper extends GenericORMapper {
       $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName, $relationName);
       $targetObject = $this->mappingTable[$targetObjectName];
 
+      // ID#306: escape ID to avoid SQL injection
+      $id = $this->dbDriver->escapeValue($object->getObjectId());
+
       // load multiplicity
       $relationTable = $this->relationTable[$relationName];
       if ($relationTable['SourceObject'] === $objectName) {
          $select = 'SELECT COUNT(`Target_' . $targetObject['ID'] . '`) AS multiplicity FROM `' . $relationTable['Table'] . '`
-                        WHERE `Source_' . $sourceObject['ID'] . '` = \'' . $object->getObjectId() . '\';';
+                        WHERE `Source_' . $sourceObject['ID'] . '` = \'' . $id . '\';';
       } else {
          $select = 'SELECT COUNT(`Source_' . $targetObject['ID'] . '`) AS multiplicity FROM `' . $relationTable['Table'] . '`
-                        WHERE `Target_' . $sourceObject['ID'] . '` = \'' . $object->getObjectId() . '\';';
+                        WHERE `Target_' . $sourceObject['ID'] . '` = \'' . $id . '\';';
       }
       $result = $this->dbDriver->executeTextStatement($select, $this->logStatements);
       $data = $this->dbDriver->fetchData($result);
@@ -985,6 +997,9 @@ class GenericORRelationMapper extends GenericORMapper {
       $objectID = $this->mappingTable[$objectName]['ID'];
       $targetCompositions = $this->getCompositionsByObjectName($objectName, 'source');
 
+      // ID#306: escape ID to avoid SQL injection
+      $id = $this->dbDriver->escapeValue($object->getObjectId());
+
       // 2. test, if the current object has child objects and though can't be deleted
       $targetcmpcount = count($targetCompositions);
       if ($targetcmpcount != 0) {
@@ -992,12 +1007,12 @@ class GenericORRelationMapper extends GenericORMapper {
          for ($i = 0; $i < $targetcmpcount; $i++) {
 
             $select = 'SELECT * FROM `' . $targetCompositions[$i]['Table'] . '`
-                          WHERE `Source_' . $objectID . '` = \'' . $object->getObjectId() . '\';';
+                          WHERE `Source_' . $objectID . '` = \'' . $id . '\';';
             $result = $this->dbDriver->executeTextStatement($select, $this->logStatements);
 
             if ($this->dbDriver->getNumRows($result) > 0) {
                throw new GenericORMapperException('[GenericORRelationMapper::deleteObject()] '
-                     . 'Domain object "' . $objectName . '" with id "' . $object->getObjectId()
+                     . 'Domain object "' . $objectName . '" with id "' . $id
                      . '" cannot be deleted, because it still has composed child objects!',
                      E_USER_WARNING);
             }
@@ -1015,12 +1030,12 @@ class GenericORRelationMapper extends GenericORMapper {
          }
 
          $delete = 'DELETE FROM `' . $associations[$i]['Table'] . '`
-                       WHERE `' . $SourceOrTarget . '_' . $objectID . '` = \'' . $object->getObjectId() . '\';';
+                       WHERE `' . $SourceOrTarget . '_' . $objectID . '` = \'' . $id . '\';';
          $this->dbDriver->executeTextStatement($delete, $this->logStatements);
       }
 
       // 4. delete object itself
-      $ID = parent::deleteObject($object);
+      parent::deleteObject($object);
 
       // 5. delete composition towards other object
       $sourceCompositions = $this->getCompositionsByObjectName($objectName, 'target');
@@ -1029,11 +1044,11 @@ class GenericORRelationMapper extends GenericORMapper {
       for ($i = 0; $i < $sourcecmpcount; $i++) {
 
          $delete = 'DELETE FROM `' . $sourceCompositions[$i]['Table'] . '`
-                       WHERE `Target_' . $objectID . '` = \'' . $object->getObjectId() . '\';';
+                       WHERE `Target_' . $objectID . '` = \'' . $id . '\';';
          $this->dbDriver->executeTextStatement($delete, $this->logStatements);
       }
 
-      return $ID;
+      return $id;
    }
 
    /**
@@ -1155,10 +1170,14 @@ class GenericORRelationMapper extends GenericORMapper {
       $targetObjectName = $targetObject->getObjectName();
       $targetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
 
+      // ID#306: escape ID to avoid SQL injection
+      $sourceId = $this->dbDriver->escapeValue($sourceObject->getObjectId());
+      $targetId = $this->dbDriver->escapeValue($targetObject->getObjectId());
+
       $insert = 'INSERT INTO `' . $this->relationTable[$relationName]['Table'] . '`
                     (`' . $sourceObjectId . '`,`' . $targetObjectId . '`)
                     VALUES
-                    (\'' . $sourceObject->getObjectId() . '\',\'' . $targetObject->getObjectId() . '\');';
+                    (\'' . $sourceId . '\',\'' . $targetId . '\');';
       $this->dbDriver->executeTextStatement($insert, $this->logStatements);
 
       return true;
@@ -1204,11 +1223,15 @@ class GenericORRelationMapper extends GenericORMapper {
       $targetObjectName = $targetObject->getObjectName();
       $targetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
 
+      // ID#306: escape ID to avoid SQL injection
+      $sourceId = $this->dbDriver->escapeValue($sourceObject->getObjectId());
+      $targetId = $this->dbDriver->escapeValue($targetObject->getObjectId());
+
       $delete = 'DELETE FROM `' . $this->relationTable[$relationName]['Table'] . '`
                     WHERE
-                       `' . $sourceObjectId . '` = \'' . $sourceObject->getObjectId() . '\'
+                       `' . $sourceObjectId . '` = \'' . $sourceId . '\'
                        AND
-                       `' . $targetObjectId . '` = \'' . $targetObject->getObjectId() . '\';';
+                       `' . $targetObjectId . '` = \'' . $targetId . '\';';
       $this->dbDriver->executeTextStatement($delete, $this->logStatements);
 
       return true;
@@ -1250,9 +1273,12 @@ class GenericORRelationMapper extends GenericORMapper {
       $sourceObjectName = $sourceObject->getObjectName();
       $sourceObjectId = $this->getRelationIdColumn($sourceObjectName, $relationName, self::RELATION_SOURCE);
 
+      // ID#306: escape ID to avoid SQL injection
+      $id = $this->dbDriver->escapeValue($sourceObject->getObjectId());
+
       $delete = 'DELETE FROM `' . $this->relationTable[$relationName]['Table'] . '`
                     WHERE
-                       `' . $sourceObjectId . '` = \'' . $sourceObject->getObjectId() . '\';';
+                       `' . $sourceObjectId . '` = \'' . $id . '\';';
       $this->dbDriver->executeTextStatement($delete, $this->logStatements);
    }
 
@@ -1294,11 +1320,15 @@ class GenericORRelationMapper extends GenericORMapper {
       $targetObjectName = $targetObject->getObjectName();
       $targetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
 
+      // ID#306: escape ID to avoid SQL injection
+      $sourceId = $this->dbDriver->escapeValue($sourceObject->getObjectId());
+      $targetId = $this->dbDriver->escapeValue($targetObject->getObjectId());
+
       $select = 'SELECT * FROM `' . $this->relationTable[$relationName]['Table'] . '`
                     WHERE
-                       `' . $sourceObjectId . '` = \'' . $sourceObject->getObjectId() . '\'
+                       `' . $sourceObjectId . '` = \'' . $sourceId . '\'
                        AND
-                       `' . $targetObjectId . '` = \'' . $targetObject->getObjectId() . '\';';
+                       `' . $targetObjectId . '` = \'' . $targetId . '\';';
       $result = $this->dbDriver->executeTextStatement($select, $this->logStatements);
 
       // return if objects are associated
@@ -1356,11 +1386,15 @@ class GenericORRelationMapper extends GenericORMapper {
       $fatherObjectId = $this->getRelationIdColumn($fatherObjectName, $relationName, self::RELATION_SOURCE);
       $childObjectId = $this->getRelationIdColumn($childObjectName, $relationName, self::RELATION_TARGET);
 
+      // ID#306: escape ID to avoid SQL injection
+      $fatherId = $this->dbDriver->escapeValue($father->getObjectId());
+      $childId = $this->dbDriver->escapeValue($child->getObjectId());
+
       $select = 'SELECT * FROM `' . $this->relationTable[$relationName]['Table'] . '`
                     WHERE
-                       `' . $fatherObjectId . '` = \'' . $father->getObjectId() . '\'
+                       `' . $fatherObjectId . '` = \'' . $fatherId . '\'
                        AND
-                       `' . $childObjectId . '` = \'' . $child->getObjectId() . '\';';
+                       `' . $childObjectId . '` = \'' . $childId . '\';';
       $result = $this->dbDriver->executeTextStatement($select, $this->logStatements);
 
       // return if objects are composed

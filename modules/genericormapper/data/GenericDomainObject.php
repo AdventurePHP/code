@@ -40,18 +40,21 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * @var string $objectName
     */
    protected $objectName = null;
+
    /**
     * Properties of a domain object.
     *
     * @var string[] $properties
     */
    protected $properties = [];
+
    /**
     * Objects related to the current object. Sorted by composition or association key.
     *
     * @var GenericORMapperDataObject[] $relatedObjects
     */
    protected $relatedObjects = [];
+
    /**
     * Data component, that can be used to lazy load attributes.
     * To set the member, use setDataComponent().
@@ -59,6 +62,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * @var GenericORRelationMapper $dataComponent
     */
    private $dataComponent = null;
+
    /**
     * Timestamp value of relation-creation.
     *
@@ -548,6 +552,8 @@ class GenericDomainObject implements GenericORMapperDataObject {
 
    /**
     * Extract relation-timestamps
+    *
+    * @param string $prefix Creation timestamp prefix.
     *
     * @author Lutz Mahlstedt
     * @version

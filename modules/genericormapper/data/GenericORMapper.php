@@ -45,7 +45,7 @@ class GenericORMapper extends BaseMapper {
    /**
     * Identifies fields, that can contain null values.
     *
-    * Bug 289: This identifier is used to distinguish between fiels, that can
+    * Bug 289: This identifier is used to distinguish between fields, that can
     * contain null values. This is necessary, because the MySQL client libs
     * map MySQL NULL values to empty PHP strings.
     *
@@ -69,6 +69,84 @@ class GenericORMapper extends BaseMapper {
       $result = $this->dbDriver->executeTextStatement($statement, $this->logStatements);
 
       return $this->loadObjectListByStatementResult($objectName, $result);
+   }
+
+   /**
+    * Loads an object list by a statement resource.
+    *
+    * @param string $objectName name of the object in mapping table
+    * @param resource $stmtResult sql statement result
+    *
+    * @return GenericORMapperDataObject[] The desired object list.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.05.2008<br />
+    */
+   protected function loadObjectListByStatementResult($objectName, $stmtResult) {
+
+      $objectList = [];
+      while ($data = $this->dbDriver->fetchData($stmtResult)) {
+         $objectList[] = $this->mapResult2DomainObject($objectName, $data);
+      }
+
+      return $objectList;
+
+   }
+
+   /**
+    * Creates an domain object by name and properties.
+    *
+    * @param string $objectName Name of the object in mapping table.
+    * @param array $properties Properties of the object.
+    *
+    * @return GenericORMapperDataObject The desired object or null.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.05.2008<br />
+    * Version 0.2, 30.05.2008 (Now returns null, if no properties are available)<br />
+    * Version 0.3, 15.06.2008 (Now uses the constructor of GenericDomainObject to set the object name)<br />
+    * Version 0.4, 15.01.2011 (Added support for own domain objects and event handler)<br />
+    */
+   protected function mapResult2DomainObject($objectName, $properties) {
+
+      if ($properties !== false) {
+
+         // create service object if needed
+         if (isset($this->domainObjectsTable[$objectName])) {
+            $class = $this->domainObjectsTable[$objectName]['Class'];
+            $object = new $class($objectName);
+         } else {
+            $object = new GenericDomainObject($objectName);
+         }
+
+         // set data component and object name
+         $object->setDataComponent($this);
+
+         // map properties into object
+         foreach ($properties as $propertyName => $propertyValue) {
+
+            // re-map empty values for null fields to PHP null values
+            if (isset($this->mappingTable[$objectName][$propertyName])
+                  && stripos($this->mappingTable[$objectName][$propertyName], self::$NULL_FIELD_IDENTIFIER) !== false
+                  && empty($propertyValue)
+            ) {
+               $propertyValue = null;
+            }
+
+            $object->setProperty($propertyName, $propertyValue);
+
+         }
+
+         // call event handler
+         $object->afterLoad();
+
+      } else {
+         $object = null;
+      }
+
+      return $object;
    }
 
    /**
@@ -119,6 +197,36 @@ class GenericORMapper extends BaseMapper {
 
       return $objects;
 
+   }
+
+   /**
+    * Returns an object by name and id.
+    *
+    * @param string $objectName The name of the object in mapping table.
+    * @param int $objectId The database id of the desired object.
+    *
+    * @return GenericORMapperDataObject The desired object.
+    * @throws InvalidArgumentException In case the applied object id is not numeric.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.05.2008<br />
+    * Version 0.2, 13.09.2010 (Added security check for the given object id)<br />
+    */
+   public function loadObjectByID($objectName, $objectId) {
+
+      // check for invalid ids to avoid SQL injection
+      if (!is_numeric($objectId)) {
+         throw new InvalidArgumentException('[GenericORMapper::loadObjectByID()] Given object '
+               . 'id "' . $objectId . '" is not an integer. Thus object with name "' . $objectName . '" '
+               . 'cannot be loaded!', E_USER_ERROR);
+      }
+
+      $query = 'SELECT * FROM `' . $this->mappingTable[$objectName]['Table'] . '`
+                   WHERE `' . $this->mappingTable[$objectName]['ID'] . '` = \'' . $objectId . '\';';
+      $result = $this->dbDriver->executeTextStatement($query, $this->logStatements);
+
+      return $this->mapResult2DomainObject($objectName, $this->dbDriver->fetchData($result));
    }
 
    /**
@@ -200,16 +308,17 @@ class GenericORMapper extends BaseMapper {
       // Get information about object to load
       $objectName = $object->getObjectName();
       $objectID = $this->mappingTable[$objectName]['ID'];
-      $ID = $object->getProperty($objectID);
+
+      // ID#306: escape ID to avoid SQL injection
+      $id = $this->dbDriver->escapeValue($object->getProperty($objectID));
 
       // Build query
       $delete = 'DELETE FROM `' . $this->mappingTable[$objectName]['Table'] . '`';
-      $delete .= ' WHERE `' . $objectID . '` = \'' . $ID . '\';';
+      $delete .= ' WHERE `' . $objectID . '` = \'' . $id . '\';';
 
       $this->dbDriver->executeTextStatement($delete, $this->logStatements);
 
-      return $ID;
-
+      return $id;
    }
 
    /**
@@ -228,7 +337,7 @@ class GenericORMapper extends BaseMapper {
     * Version 0.4, 02.01.2010 (Added ticks for property names to avoid key word issues)<br />
     * Version 0.5, 08.01.2010 (Added property value escaping in order to avoid sql injections)<br />
     * Version 0.6, 15.01.2011 (Added event handler calls)<br />
-    * Version 0.7, 15.02.2011 (Moved eventhandler calls to GORM-function, because afterSave() was called before whole tree was saved)<br />
+    * Version 0.7, 15.02.2011 (Moved event handler calls to GORM function, because afterSave() was called before whole tree was saved)<br />
     */
    public function saveObject(GenericORMapperDataObject &$object) {
 
@@ -337,8 +446,11 @@ class GenericORMapper extends BaseMapper {
 
          }
 
+         // ID#306: escape ID to avoid SQL injection
+         $id = $this->dbDriver->escapeValue($id);
+
          $update .= ' SET ' . implode(', ', $queryParams) . ', ModificationTimestamp = NOW()';
-         $update .= ' WHERE ' . $pkName . '= \'' . $id . '\';';
+         $update .= ' WHERE ' . $pkName . ' = \'' . $id . '\';';
 
          // execute update, only if the update is necessary
          if (count($queryParams) > 0) {
@@ -357,117 +469,6 @@ class GenericORMapper extends BaseMapper {
 
       // return the database ID of the object for further usage
       return $id;
-
-   }
-
-   /**
-    * Returns an object by name and id.
-    *
-    * @param string $objectName The name of the object in mapping table.
-    * @param int $objectId The database id of the desired object.
-    *
-    * @return GenericORMapperDataObject The desired object.
-    * @throws InvalidArgumentException In case the applied object id is not numeric.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 11.05.2008<br />
-    * Version 0.2, 13.09.2010 (Added security check for the given object id)<br />
-    */
-   public function loadObjectByID($objectName, $objectId) {
-
-      // check for invalid ids to avoid SQL injection
-      if (!is_numeric($objectId)) {
-         throw new InvalidArgumentException('[GenericORMapper::loadObjectByID()] Given object '
-               . 'id "' . $objectId . '" is not an integer. Thus object with name "' . $objectName . '" '
-               . 'cannot be loaded!', E_USER_ERROR);
-      }
-
-      $query = 'SELECT * FROM `' . $this->mappingTable[$objectName]['Table'] . '`
-                   WHERE `' . $this->mappingTable[$objectName]['ID'] . '` = \'' . $objectId . '\';';
-      $result = $this->dbDriver->executeTextStatement($query, $this->logStatements);
-
-      return $this->mapResult2DomainObject($objectName, $this->dbDriver->fetchData($result));
-
-   }
-
-   /**
-    * Loads an object list by a statement resource.
-    *
-    * @param string $objectName name of the object in mapping table
-    * @param resource $stmtResult sql statement result
-    *
-    * @return GenericORMapperDataObject[] The desired object list.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 11.05.2008<br />
-    */
-   protected function loadObjectListByStatementResult($objectName, $stmtResult) {
-
-      $objectList = [];
-      while ($data = $this->dbDriver->fetchData($stmtResult)) {
-         $objectList[] = $this->mapResult2DomainObject($objectName, $data);
-      }
-
-      return $objectList;
-
-   }
-
-   /**
-    * Creates an domain object by name and properties.
-    *
-    * @param string $objectName Name of the object in mapping table.
-    * @param array $properties Properties of the object.
-    *
-    * @return GenericORMapperDataObject The desired object or null.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 11.05.2008<br />
-    * Version 0.2, 30.05.2008 (Now returns null, if no properties are available)<br />
-    * Version 0.3, 15.06.2008 (Now uses the constructor of GenericDomainObject to set the object name)<br />
-    * Version 0.4, 15.01.2011 (Added support for own domain objects and event handler)<br />
-    */
-   protected function mapResult2DomainObject($objectName, $properties) {
-
-      if ($properties !== false) {
-
-         // create service object if needed
-         if (isset($this->domainObjectsTable[$objectName])) {
-            $class = $this->domainObjectsTable[$objectName]['Class'];
-            $object = new $class($objectName);
-         } else {
-            $object = new GenericDomainObject($objectName);
-         }
-
-         // set data component and object name
-         $object->setDataComponent($this);
-
-         // map properties into object
-         foreach ($properties as $propertyName => $propertyValue) {
-
-            // re-map empty values for null fields to PHP null values
-            if (isset($this->mappingTable[$objectName][$propertyName])
-                  && stripos($this->mappingTable[$objectName][$propertyName], self::$NULL_FIELD_IDENTIFIER) !== false
-                  && empty($propertyValue)
-            ) {
-               $propertyValue = null;
-            }
-
-            $object->setProperty($propertyName, $propertyValue);
-
-         }
-
-         // call event handler
-         $object->afterLoad();
-
-      } else {
-         $object = null;
-      }
-
-      return $object;
-
    }
 
 }
