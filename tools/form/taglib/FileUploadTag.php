@@ -63,6 +63,7 @@ class FileUploadTag extends TextFieldTag {
     * @author Ralf Schubert
     * @version
     * Version 0.1, 24.01.2014<br />
+    * Version 0.2, 03.08.2016 (ID#303: allow hiding via template definition)<br />
     */
    public function onParseTime() {
       $name = $this->getAttribute('name');
@@ -262,8 +263,8 @@ class FileUploadTag extends TextFieldTag {
     * Version 0.1, 30.01.2011<br />
     * Version 0.2, 12.03.2011 (Bug 632: non-optional form fields were not validated correctly)<br />
     */
-   protected function isMandatory($value) {
-      if ($this->getAttribute('optional', 'false') === 'true') {
+   protected function isMandatoryForValidation($value) {
+      if ($this->isOptional()) {
          return $this->hasUploadedFile();
       }
 

@@ -103,6 +103,11 @@ class ReCaptchaTag extends AbstractFormControl {
                . '" has no "private-key" attribute specified! Please re-check your form definition.'
          );
       }
+
+      // ID#303: allow to hide form element by default within a template
+      if ($this->getAttribute('hidden', 'false') === 'true') {
+         $this->hide();
+      }
    }
 
    /**

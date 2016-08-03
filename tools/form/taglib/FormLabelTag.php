@@ -42,6 +42,11 @@ class FormLabelTag extends AbstractFormControl {
 
    public function onParseTime() {
       $this->extractTagLibTags();
+
+      // ID#303: allow to hide form element by default within a template
+      if ($this->getAttribute('hidden', 'false') === 'true') {
+         $this->hide();
+      }
    }
 
    public function transform() {

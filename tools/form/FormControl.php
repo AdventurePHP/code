@@ -392,4 +392,56 @@ interface FormControl extends FormElement {
     */
    public function &addAttributesToWhiteList(array $names);
 
+   /**
+    * Define this field as optional. This allows to exclude it from validation e.g. from within a controller.
+    *
+    * @return $this This instance for further usage.
+    *
+    * @since 3.2
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 03.08.2016<br />
+    */
+   public function &setOptional();
+
+   /**
+    * Let's you determine whether or not a field is optional (regarding validation).
+    *
+    * @return bool True in case the field is mandatory, false otherwise.
+    *
+    * @since 3.2
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 03.08.2016<br />
+    */
+   public function isOptional();
+
+   /**
+    * Define this field as mandatory. This allows to include it from validation e.g. from within a controller.
+    *
+    * @return $this This instance for further usage.
+    *
+    * @since 3.2
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 03.08.2016<br />
+    */
+   public function &setMandatory();
+
+   /**
+    * Let's you determine whether or not a field is mandatory (regarding validation).
+    *
+    * @return bool True in case the field is mandatory, false otherwise.
+    *
+    * @since 3.2
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 03.08.2016<br />
+    */
+   public function isMandatory();
+
 }

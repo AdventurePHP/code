@@ -58,6 +58,7 @@ class MultiSelectBoxTag extends SelectBoxTag {
     * Version 0.1, 15.01.2007<br />
     * Version 0.2, 07.06.2008 (Extended error message)<br />
     * Version 0.3, 15.08.2008 (Extended error message with the name of the control)<br />
+    * Version 0.4, 03.08.2016 (ID#303: allow hiding via template definition)<br />
     */
    public function onParseTime() {
 
@@ -80,6 +81,11 @@ class MultiSelectBoxTag extends SelectBoxTag {
       }
 
       $this->presetValue();
+
+      // ID#303: allow to hide form element by default within a template
+      if ($this->getAttribute('hidden', 'false') === 'true') {
+         $this->hide();
+      }
    }
 
    /**

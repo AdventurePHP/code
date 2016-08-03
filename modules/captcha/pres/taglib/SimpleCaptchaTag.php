@@ -118,6 +118,7 @@ class SimpleCaptchaTag extends AbstractFormControl {
     * Version 0.2, 10.11.2008 (Added the "clearonerror" attribute. If set to "true", the field is cleared on error.)<br />
     * Version 0.3, 04.01.2010 (Added the text_id attribute)<br />
     * Version 0.4, 29.10.2012 (Bug-fix: attribute valmarkerclass is now applied to the inner form field to allow css field validation on error)<br />
+    * Version 0.5, 03.08.2016 (ID#303: allow hiding via template definition)<br />
     */
    public function onParseTime() {
 
@@ -163,6 +164,10 @@ class SimpleCaptchaTag extends AbstractFormControl {
       $this->captchaString = $session->load($this->textFieldName);
       $session->save($this->textFieldName, StringAssistant::generateCaptchaString(5));
 
+      // ID#303: allow to hide form element by default within a template
+      if ($this->getAttribute('hidden', 'false') === 'true') {
+         $this->hide();
+      }
    }
 
    /**
@@ -205,6 +210,11 @@ class SimpleCaptchaTag extends AbstractFormControl {
     * Version 0.6, 04.01.2010 (Added the image_id attribute)<br />
     */
    public function transform() {
+
+      // In case the control has been deactivated, don't generate output.
+      if (!$this->isVisible) {
+         return '';
+      }
 
       // check, if the inline style should be disabled
       $disableInlineStyle = $this->getAttribute('disable_inline');

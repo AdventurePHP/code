@@ -72,10 +72,11 @@ class DateSelectorTag extends AbstractFormControl {
    /**
     * Creates the children select fields for the date control.
     *
-    * @author Christian Schäfer
+    * @author Christian Schäfer, Christian Achatz
     * @version
     * Version 0.1, 10.01.2007<br />
     * Version 0.2, 26.08.2007 (The "class" And "style" attributes are now optional)<br />
+    * Version 0.3, 03.08.2016 (ID#303: allow hiding via template definition)<br />
     */
    public function onParseTime() {
 
@@ -193,6 +194,11 @@ class DateSelectorTag extends AbstractFormControl {
       $this->children['d']->onAfterAppend();
       $this->children['m']->onAfterAppend();
       $this->children['y']->onAfterAppend();
+
+      // ID#303: allow to hide form element by default within a template
+      if ($this->getAttribute('hidden', 'false') === 'true') {
+         $this->hide();
+      }
    }
 
    /**
@@ -297,31 +303,30 @@ class DateSelectorTag extends AbstractFormControl {
     */
    public function transform() {
 
-      if ($this->isVisible) {
-
-         // as of 1.12, the date control should be rendered using a
-         // surrounding span do enable the client validator extension
-         // to address the control more easily.
-         $buffer = '<span id="' . $this->getId() . '"';
-
-         $style = $this->getAttribute('style');
-         if ($style != null) {
-            $buffer .= ' style="' . $style . '"';
-         }
-
-         $class = $this->getAttribute('class');
-         if ($class != null) {
-            $buffer .= ' class="' . $class . '"';
-         }
-         $buffer .= '>';
-         foreach ($this->children as $section => $DUMMY) {
-            $buffer .= $this->children[$section]->transform();
-         }
-
-         return $buffer . '</span>';
+      if (!$this->isVisible) {
+         return '';
       }
 
-      return '';
+      // as of 1.12, the date control should be rendered using a
+      // surrounding span do enable the client validator extension
+      // to address the control more easily.
+      $buffer = '<span id="' . $this->getId() . '"';
+
+      $style = $this->getAttribute('style');
+      if ($style != null) {
+         $buffer .= ' style="' . $style . '"';
+      }
+
+      $class = $this->getAttribute('class');
+      if ($class != null) {
+         $buffer .= ' class="' . $class . '"';
+      }
+      $buffer .= '>';
+      foreach ($this->children as $section => $DUMMY) {
+         $buffer .= $this->children[$section]->transform();
+      }
+
+      return $buffer . '</span>';
    }
 
    /**

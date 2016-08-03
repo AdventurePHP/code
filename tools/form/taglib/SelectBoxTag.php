@@ -65,12 +65,18 @@ class SelectBoxTag extends AbstractFormControl {
     * @author Christian Schäfer
     * @version
     * Version 0.1, 07.01.2007<br />
+    * Version 0.2, 03.08.2016 (ID#303: allow hiding via template definition)<br />
     */
    public function onParseTime() {
       $this->extractTagLibTags();
       $value = $this->getRequestValue();
       if ($value !== null) {
          $this->setOption2Selected($value);
+      }
+
+      // ID#303: allow to hide form element by default within a template
+      if ($this->getAttribute('hidden', 'false') === 'true') {
+         $this->hide();
       }
    }
 
@@ -379,7 +385,7 @@ class SelectBoxTag extends AbstractFormControl {
       // validation (means: field has a registered validator but is sent with empty value).
       // ID#233: add/execute validators only in case the control is visible. Otherwise, this
       // may break the user flow with hidden mandatory fields and users end up in an endless loop.
-      if ($validator->isActive() && $this->isMandatory($value) && $this->isVisible()) {
+      if ($validator->isActive() && $this->isMandatoryForValidation($value) && $this->isVisible()) {
          $option = $this->getSelectedOption();
          if ($option === null) {
             $value = null;

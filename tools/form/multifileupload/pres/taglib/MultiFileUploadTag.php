@@ -78,6 +78,11 @@ class MultiFileUploadTag extends AbstractFormControl {
             ['formname' => $this->formName, 'name' => $this->uploadFieldName]
       );
       $this->manager->setSettings($maxFileSize, explode(',', $mimeTypes));
+
+      // ID#303: allow to hide form element by default within a template
+      if ($this->getAttribute('hidden', 'false') === 'true') {
+         $this->hide();
+      }
    }
 
    /**
@@ -105,6 +110,11 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.2, 16.09.2012 (added full functionality to delete fildes, which are older than 1 day)<br>
     */
    public function transform() {
+
+      // In case the control has been deactivated, don't generate output.
+      if (!$this->isVisible) {
+         return '';
+      }
 
       // Dateien im temporären Verzischnis löschen, die älter als 86400 Sekunden (1 Tag) sind
       $this->manager->deleteOldFiles();

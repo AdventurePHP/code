@@ -79,6 +79,11 @@ class ButtonTag extends AbstractFormControl {
 
       // parse button:getstring tags
       $this->extractTagLibTags();
+
+      // ID#303: allow to hide form element by default within a template
+      if ($this->getAttribute('hidden', 'false') === 'true') {
+         $this->hide();
+      }
    }
 
    /**

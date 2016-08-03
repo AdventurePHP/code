@@ -27,16 +27,6 @@ class TextFieldTagTest extends \PHPUnit_Framework_TestCase {
    const FIELD_NAME = 'foo';
    const FIELD_VALUE = 'bar';
 
-   /**
-    * @return TextFieldTag
-    */
-   protected function getTextField() {
-      $field = new TextFieldTag();
-      $field->setAttribute('name', self::FIELD_NAME);
-
-      return $field;
-   }
-
    public function testControllerPresetting() {
 
       $_REQUEST = [];
@@ -51,6 +41,16 @@ class TextFieldTagTest extends \PHPUnit_Framework_TestCase {
       $this->assertEquals($field->getValue(), self::FIELD_VALUE);
       $this->assertTrue($field->isFilled());
 
+   }
+
+   /**
+    * @return TextFieldTag
+    */
+   protected function getTextField() {
+      $field = new TextFieldTag();
+      $field->setAttribute('name', self::FIELD_NAME);
+
+      return $field;
    }
 
    public function testSubmitPresetting() {
@@ -79,6 +79,37 @@ class TextFieldTagTest extends \PHPUnit_Framework_TestCase {
       $this->assertEquals($field->getValue(), $userInput);
       $this->assertTrue($field->isFilled());
 
+   }
+
+   /**
+    * Test whether field can be hidden by template definition and via controller
+    */
+   public function testHiding() {
+
+      // hide via template definition
+      $field = new TextFieldTag();
+      $field->setAttributes([
+            'name'   => self::FIELD_NAME,
+            'value'  => self::FIELD_VALUE,
+            'hidden' => 'true'
+      ]);
+      $field->onParseTime();
+      $field->onAfterAppend();
+
+      $this->assertEmpty($field->transform());
+
+      // hide via controller
+      $field = new TextFieldTag();
+      $field->setAttributes([
+            'name'  => self::FIELD_NAME,
+            'value' => self::FIELD_VALUE
+      ]);
+      $field->onParseTime();
+      $field->onAfterAppend();
+
+      $field->hide();
+
+      $this->assertEmpty($field->transform());
    }
 
 }

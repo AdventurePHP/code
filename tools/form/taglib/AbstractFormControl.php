@@ -125,9 +125,15 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * @author Christian Achatz
     * @version
     * Version 0.1, 25.08.2009<br />
+    * Version 0.2, 03.08.2016 (ID#303: allow hiding via template definition)<br />
     */
    public function onParseTime() {
       $this->presetValue();
+
+      // ID#303: allow to hide form element by default within a template
+      if ($this->getAttribute('hidden', 'false') === 'true') {
+         $this->hide();
+      }
    }
 
    /**
@@ -179,6 +185,49 @@ abstract class AbstractFormControl extends Document implements FormControl {
       }
 
       return $form;
+   }
+
+   public function &hide() {
+      $this->isVisible = false;
+
+      // hide all dependent fields
+      $fields = $this->getDependentFields();
+      foreach ($fields as $field) {
+         $field->hide();
+      }
+
+      return $this;
+   }
+
+   /**
+    * Evaluates the list of controls that should be hidden/displayed in case this control is
+    * hidden/displayed again.
+    * <p/>
+    * The dependent control feature can be used to hide/show controls together with their labels etc.
+    *
+    * @return FormControl[] The list of controls referred to by the <em>dependent-controls</em> tag attribute.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 16.12.2012<br />
+    */
+   protected function &getDependentFields() {
+      $dependentFields = $this->getAttribute('dependent-controls');
+      if ($dependentFields === null) {
+         $fields = [];
+
+         return $fields;
+      }
+
+      $form = $this->getForm();
+
+      $fields = [];
+
+      foreach (explode('|', $dependentFields) as $fieldName) {
+         $fields[] = $form->getFormElementByName(trim($fieldName));
+      }
+
+      return $fields;
    }
 
    public function isValid() {
@@ -297,7 +346,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
       // validation (means: field has a registered validator but is sent with empty value).
       // ID#233: add/execute validators only in case the control is visible. Otherwise, this
       // may break the user flow with hidden mandatory fields and users end up in an endless loop.
-      if ($validator->isActive() && $this->isMandatory($value) && $this->isVisible()) {
+      if ($validator->isActive() && $this->isMandatoryForValidation($value) && $this->isVisible()) {
          if (!$validator->validate($value)) {
             // Execute validator callback to allow notification and validation event propagation.
             $validator->notify();
@@ -317,12 +366,16 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * @version
     * Version 0.1, 01.11.2010<br />
     */
-   protected function isMandatory($value) {
-      if ($this->getAttribute('optional', 'false') === 'true') {
+   protected function isMandatoryForValidation($value) {
+      if ($this->isOptional()) {
          return !empty($value);
       }
 
       return true;
+   }
+
+   public function isOptional() {
+      return $this->getAttribute('optional', 'false') === 'true';
    }
 
    public function isVisible() {
@@ -353,49 +406,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return false;
    }
 
-   public function &hide() {
-      $this->isVisible = false;
-
-      // hide all dependent fields
-      $fields = $this->getDependentFields();
-      foreach ($fields as $field) {
-         $field->hide();
-      }
-
-      return $this;
-   }
-
-   /**
-    * Evaluates the list of controls that should be hidden/displayed in case this control is
-    * hidden/displayed again.
-    * <p/>
-    * The dependent control feature can be used to hide/show controls together with their labels etc.
-    *
-    * @return FormControl[] The list of controls referred to by the <em>dependent-controls</em> tag attribute.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 16.12.2012<br />
-    */
-   protected function &getDependentFields() {
-      $dependentFields = $this->getAttribute('dependent-controls');
-      if ($dependentFields === null) {
-         $fields = [];
-
-         return $fields;
-      }
-
-      $form = $this->getForm();
-
-      $fields = [];
-
-      foreach (explode('|', $dependentFields) as $fieldName) {
-         $fields[] = $form->getFormElementByName(trim($fieldName));
-      }
-
-      return $fields;
-   }
-
    public function &show() {
       $this->isVisible = true;
 
@@ -414,6 +424,22 @@ abstract class AbstractFormControl extends Document implements FormControl {
 
    public function getFilters() {
       return $this->filters;
+   }
+
+   public function &setOptional() {
+      $this->setAttribute('optional', 'true');
+
+      return $this;
+   }
+
+   public function &setMandatory() {
+      $this->deleteAttribute('optional');
+
+      return $this;
+   }
+
+   public function isMandatory() {
+      return !$this->isOptional();
    }
 
    /**

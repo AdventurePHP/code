@@ -168,7 +168,6 @@ class HtmlFormTag extends Document implements HtmlForm {
       return false;
    }
 
-   // TODO give it another try to refactor validation to isValid() rather than direct validation per addValidator() to streamline API
    public function isValid() {
 
       foreach ($this->children as &$child) {
