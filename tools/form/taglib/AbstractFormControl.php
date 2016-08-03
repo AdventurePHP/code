@@ -231,7 +231,60 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    public function isValid() {
+
+      // ID#307:
+      // Execute validator on being asked by the form to allow adding validators within
+      // tags and document controllers for both static and dynamic form controls.
+      // Further, this allows manipulating visibility and mandatory states within tags
+      // and controllers prior to validation of the form validity state (e.g. for dynamic forms).
+      $value = $this->getValue();
+
+      // Check both for validator being active and for mandatory fields to allow optional
+      // validation (means: field has a registered validator but is sent with empty value).
+      // ID#233: add/execute validators only in case the control is visible. Otherwise, this
+      // may break the user flow with hidden mandatory fields and users end up in an endless loop.
+      foreach ($this->validators as &$validator) {
+         if ($validator->isActive() && $this->isMandatoryForValidation($value) && $this->isVisible()) {
+            if (!$validator->validate($value)) {
+               // Execute validator callback to allow notification and validation event propagation.
+               $validator->notify();
+            }
+         }
+      }
+
       return $this->controlIsValid;
+   }
+
+   public function getValue() {
+      return $this->getAttribute('value', '');
+   }
+
+   /**
+    * Indicates, whether validation is mandatory or not. This enables to introduce
+    * optional validators that are only active in case a field is filled.
+    *
+    * @param mixed $value The current form control value.
+    *
+    * @return bool True in case the field is mandatory, false otherwise.
+    *
+    * @author Christian Achatz, Ralf Schubert
+    * @version
+    * Version 0.1, 01.11.2010<br />
+    */
+   protected function isMandatoryForValidation($value) {
+      if ($this->isOptional()) {
+         return !empty($value);
+      }
+
+      return true;
+   }
+
+   public function isOptional() {
+      return $this->getAttribute('optional', 'false') === 'true';
+   }
+
+   public function isVisible() {
+      return $this->isVisible;
    }
 
    public function &markAsInvalid() {
@@ -323,10 +376,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
       }
    }
 
-   public function getValue() {
-      return $this->getAttribute('value', '');
-   }
-
    public function &setValue($value) {
       $this->setAttribute('value', $value);
 
@@ -334,52 +383,8 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    public function addValidator(FormValidator &$validator) {
-
       // ID#166: register validator for further usage.
       $this->validators[] = $validator;
-
-      // Directly execute validator to allow adding validators within tags and
-      // document controllers for both static and dynamic form controls.
-      $value = $this->getValue();
-
-      // Check both for validator being active and for mandatory fields to allow optional
-      // validation (means: field has a registered validator but is sent with empty value).
-      // ID#233: add/execute validators only in case the control is visible. Otherwise, this
-      // may break the user flow with hidden mandatory fields and users end up in an endless loop.
-      if ($validator->isActive() && $this->isMandatoryForValidation($value) && $this->isVisible()) {
-         if (!$validator->validate($value)) {
-            // Execute validator callback to allow notification and validation event propagation.
-            $validator->notify();
-         }
-      }
-   }
-
-   /**
-    * Indicates, whether validation is mandatory or not. This enables to introduce
-    * optional validators that are only active in case a field is filled.
-    *
-    * @param mixed $value The current form control value.
-    *
-    * @return bool True in case the field is mandatory, false otherwise.
-    *
-    * @author Christian Achatz, Ralf Schubert
-    * @version
-    * Version 0.1, 01.11.2010<br />
-    */
-   protected function isMandatoryForValidation($value) {
-      if ($this->isOptional()) {
-         return !empty($value);
-      }
-
-      return true;
-   }
-
-   public function isOptional() {
-      return $this->getAttribute('optional', 'false') === 'true';
-   }
-
-   public function isVisible() {
-      return $this->isVisible;
    }
 
    public function &addAttributeToWhiteList($name) {

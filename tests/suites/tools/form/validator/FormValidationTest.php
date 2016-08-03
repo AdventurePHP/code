@@ -304,8 +304,6 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
     */
    public function testDynamicFormFieldTwoHiddenByController() {
 
-      $this->markTestSkipped('Won\'t work with APF 3.2 implementation.');
-
       $_GET = [];
       $_POST = ['submit' => 'submit'];
       $_REQUEST = ['field-1' => 'foobar'];
@@ -494,8 +492,6 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
     */
    public function testSemiDynamicFormFieldTwoHiddenByController() {
 
-      $this->markTestSkipped('Won\'t work with APF 3.2 implementation.');
-
       $_GET = [];
       $_POST = ['submit' => 'submit'];
       $_REQUEST = ['field-1' => 'foobar'];
@@ -595,8 +591,6 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
     * Tests whether field set in controller gets not validated after hiding in controller.
     */
    public function testValidationWithFormGroupHiddenInController() {
-
-      $this->markTestSkipped('Won\'t work with APF 3.2 implementation.');
 
       $_GET = [];
       $_POST = ['submit' => 'submit'];
