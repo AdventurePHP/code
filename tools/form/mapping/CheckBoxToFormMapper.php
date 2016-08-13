@@ -38,7 +38,7 @@ class CheckBoxToFormMapper implements ModelToFormControlMapper {
    }
 
    public static function setValue(FormControl &$control, $value) {
-      if ($value === true) {
+      if ((bool) $value === true) {
          $control->check();
       } else {
          $control->uncheck();

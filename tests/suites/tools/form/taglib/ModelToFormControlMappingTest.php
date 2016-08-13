@@ -279,6 +279,14 @@ class ModelToFormControlMappingTest extends \PHPUnit_Framework_TestCase {
       $form->fillForm($model);
       $this->assertTrue($form->getFormElementByName('foo')->isChecked());
 
+      // allow string "1" to check box
+      $form = $this->getFormForCheckBoxTest();
+
+      $model = new FormValuesModel();
+      $model->setFoo('1');
+      $form->fillForm($model);
+      $this->assertTrue($form->getFormElementByName('foo')->isChecked());
+
       // box is checked
       $form = $this->getFormForCheckBoxTest();
       $form->getFormElementByName('foo')->check();
