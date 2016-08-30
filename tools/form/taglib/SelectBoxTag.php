@@ -21,7 +21,6 @@
 namespace APF\tools\form\taglib;
 
 use APF\tools\form\mixin\AddSelectBoxEntry;
-use APF\tools\form\validator\FormValidator;
 
 /**
  * Represents an APF select field.
@@ -292,6 +291,7 @@ class SelectBoxTag extends AbstractFormControl {
     */
    public function &getGroup($label) {
 
+      /* @var $group SelectBoxGroupTag */
       $group = null;
 
       foreach ($this->children as &$child) {
@@ -361,9 +361,7 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * Re-implements the addValidator() method for select fields.
-    *
-    * @param FormValidator $validator The desired validator.
+    * Re-implements the isValid() method for select fields.
     *
     * @since 1.11
     *
@@ -372,31 +370,35 @@ class SelectBoxTag extends AbstractFormControl {
     * Version 0.1, 29.08.2009<br />
     * Version 0.2, 05.09.2014 (ID#233: Added support to omit validators for hidden fields)<br />
     */
-   public function addValidator(FormValidator &$validator) {
+   public function isValid() {
 
-      // ID#166: register validator for further usage.
-      $this->validators[] = $validator;
-
-      // Directly execute validator to allow adding validators within tags and
-      // document controllers for both static and dynamic form controls.
+      // ID#307:
+      // Execute validator on being asked by the form to allow adding validators within
+      // tags and document controllers for both static and dynamic form controls.
+      // Further, this allows manipulating visibility and mandatory states within tags
+      // and controllers prior to validation of the form validity state (e.g. for dynamic forms).
       $value = $this->getValue();
 
       // Check both for validator being active and for mandatory fields to allow optional
       // validation (means: field has a registered validator but is sent with empty value).
       // ID#233: add/execute validators only in case the control is visible. Otherwise, this
       // may break the user flow with hidden mandatory fields and users end up in an endless loop.
-      if ($validator->isActive() && $this->isMandatoryForValidation($value) && $this->isVisible()) {
-         $option = $this->getSelectedOption();
-         if ($option === null) {
-            $value = null;
-         } else {
-            $value = $option->getAttribute('value');
-         }
+      foreach ($this->validators as &$validator) {
+         if ($validator->isActive() && $this->isMandatoryForValidation($value) && $this->isVisible()) {
+            $option = $this->getSelectedOption();
+            if ($option === null) {
+               $value = null;
+            } else {
+               $value = $option->getAttribute('value');
+            }
 
-         if (!$validator->validate($value)) {
-            $validator->notify();
+            if (!$validator->validate($value)) {
+               $validator->notify();
+            }
          }
       }
+
+      return $this->controlIsValid;
    }
 
    /**

@@ -28,7 +28,7 @@ namespace APF\tools\form\validator;
  * @version
  * Version 0.1, 03.09.2009<br />
  */
-class MultiSelectFieldValidator extends SelectFieldValidator {
+class MultiSelectFieldValidator extends TextFieldValidator {
 
    /**
     * Implements the validation method for multi select fields.

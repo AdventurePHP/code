@@ -27,7 +27,7 @@ namespace APF\tools\form\validator;
  * @version
  * Version 0.1, 29.08.2009<br />
  */
-class SimpleSelectControlValidator extends SelectFieldValidator {
+class SimpleSelectControlValidator extends TextFieldValidator {
 
    /**
     * Validates the select field content.
