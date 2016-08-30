@@ -29,7 +29,7 @@ use APF\core\expression\ExpressionEvaluator;
  * Use <em>setPlaceHolder()</em> to inject static content (same content for every loop) or
  * <em>setData()</em> to define the list of entries (array!) to display within your controller. Example:
  * <code>
- * $this->getTemplate()->setData('foo', [new Model(), new Model()]);
+ * $this->setData('foo', [new Model(), new Model()]);
  * </code>
  * <p/>
  * Attribute <em>content-mapping</em> allows to define the content to display. You can define arbitrary
@@ -77,7 +77,7 @@ class LoopTemplateTag extends TemplateTag {
       // Most likely, the "model" will be a parent document's data attribute.
       /* @var $list array|null */
       $list = ExpressionEvaluator::evaluate(
-            $this,
+            $this->getParentObject(),
             $this->getRequiredAttribute(self::CONTENT_MAPPING_ATTRIBUTE)
       );
 

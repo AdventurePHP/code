@@ -29,27 +29,46 @@ use APF\core\pagecontroller\LoopTemplateTag;
 class LoopTemplateTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
-    * Tests whether <loop:template /> has the same behaviour as a "normal" template.
+    * @param string $contentMapping
+    * @param string $content
+    * @return LoopTemplateTag
+    */
+   protected function getLoopTemplate($contentMapping, $content) {
+
+      $template = new LoopTemplateTag();
+      $template->setAttribute(LoopTemplateTag::CONTENT_MAPPING_ATTRIBUTE, $contentMapping);
+      $template->setContent($content);
+
+      $doc = new Document();
+      $template->setParentObject($doc);
+
+      $template->onParseTime();
+      $template->onAfterAppend();
+
+      return $template;
+   }
+
+   /**
+    * Tests whether &lt;loop:template /&gt; has the same behaviour as a "normal" template.
     */
    public function testEmptyOutput() {
 
       $content = 'This is dummy content';
 
-      $template = new LoopTemplateTag();
-      $template->setAttribute(LoopTemplateTag::CONTENT_MAPPING_ATTRIBUTE, 'foo');
-      $template->setContent($content);
-      $template->onParseTime();
-      $template->onAfterAppend();
-
+      $template = $this->getLoopTemplate('foo', $content);
       $this->assertEmpty($template->transform());
 
       // wrong type of content mapping
-      $template->setData('foo', new TestDataModel());
+      $template = $this->getLoopTemplate('foo', $content);
+
+      $template->getParentObject()->setData('foo', new TestDataModel());
       $template->transformOnPlace();
       $this->assertEmpty($template->transform());
 
       // calling transformOnPlace() initiates display
-      $template->setData('foo', [1, 2, 3]);
+      $template = $this->getLoopTemplate('foo', $content);
+      $template->getParentObject()->setData('foo', [1, 2, 3]);
+
       $template->transformOnPlace();
       $this->assertEquals($content . $content . $content, $template->transform());
    }
@@ -59,17 +78,14 @@ class LoopTemplateTagTest extends \PHPUnit_Framework_TestCase {
     */
    public function testEmptyContentMapping() {
 
-      $template = new LoopTemplateTag();
-      $template->setAttribute(LoopTemplateTag::CONTENT_MAPPING_ATTRIBUTE, 'foo');
-      $template->onParseTime();
-      $template->onAfterAppend();
+      $template = $this->getLoopTemplate('foo', '');
 
       // empty content and content mapping
       $template->transformOnPlace();
       $this->assertEmpty($template->transform());
 
       // empty content but w/ content mapping
-      $template->setData('foo', [1, 2, 3]);
+      $template->getParentObject()->setData('foo', [1, 2, 3]);
       $template->transformOnPlace();
       $this->assertEmpty($template->transform());
    }
@@ -79,26 +95,21 @@ class LoopTemplateTagTest extends \PHPUnit_Framework_TestCase {
     */
    public function testLoopWithSimpleDataAttribute() {
 
-      $template = new LoopTemplateTag();
-      $template->setAttribute(LoopTemplateTag::CONTENT_MAPPING_ATTRIBUTE, 'foo');
-      $template->setContent('<p>${staticPlaceHolder}|${content[\'number\']}|${content[\'title\']}</p>');
-      $template->onParseTime();
-      $template->onAfterAppend();
-
-      $template->setData(
+      $template = $this->getLoopTemplate('foo', '<p>${staticPlaceHolder}|${content[\'number\']}|${content[\'title\']}</p>');
+      $template->getParentObject()->setData(
             'foo',
             [
                   [
                         'number' => 1,
-                        'title'  => 'One'
+                        'title' => 'One'
                   ],
                   [
                         'number' => 2,
-                        'title'  => 'Two'
+                        'title' => 'Two'
                   ],
                   [
                         'number' => 3,
-                        'title'  => 'Three'
+                        'title' => 'Three'
                   ]
             ]
       );
@@ -120,13 +131,8 @@ class LoopTemplateTagTest extends \PHPUnit_Framework_TestCase {
     */
    public function testLoopWithComplexDataAttribute() {
 
-      $template = new LoopTemplateTag();
-      $template->setAttribute(LoopTemplateTag::CONTENT_MAPPING_ATTRIBUTE, 'foo');
-      $template->setContent('<p>${content->getFoo()}|${content->getBar()}</p>');
-      $template->onParseTime();
-      $template->onAfterAppend();
-
-      $template->setData(
+      $template = $this->getLoopTemplate('foo', '<p>${content->getFoo()}|${content->getBar()}</p>');
+      $template->getParentObject()->setData(
             'foo',
             [
                   new TestDataModel(),
@@ -147,7 +153,7 @@ class LoopTemplateTagTest extends \PHPUnit_Framework_TestCase {
    }
 
    /**
-    * Tests complex content mapping with access to data attribute of parent object.
+    * Tests complex content mapping with access to data attribute of grandparent object.
     */
    public function testLoopWithAccessToParentNode() {
 
@@ -158,8 +164,8 @@ class LoopTemplateTagTest extends \PHPUnit_Framework_TestCase {
       );
       $template->setContent('<p>${content->getFoo()}|${content->getBar()}</p>');
 
-      $parent = new Document();
-      $parent->setData(
+      $grandParent = new Document();
+      $grandParent->setData(
             'foo',
             [
                   new TestDataModel(),
@@ -167,6 +173,10 @@ class LoopTemplateTagTest extends \PHPUnit_Framework_TestCase {
                   new TestDataModel()
             ]
       );
+
+      $parent = new Document();
+      $parent->setParentObject($grandParent);
+
       $template->setParentObject($parent);
 
       $template->onParseTime();
@@ -195,16 +205,20 @@ class LoopTemplateTagTest extends \PHPUnit_Framework_TestCase {
             'this->getParentObject()->getData(\'foo\')'
       );
       $template->setAttribute('transform-on-place', 'true');
-      $template->setContent($expected);
+      $template->setContent($expected . '|${content[0]}');
+
+      $grandParent = new Document();
+      $grandParent->setData('foo', [['bar']]);
 
       $parent = new Document();
-      $parent->setData('foo', [['bar']]);
+      $parent->setParentObject($grandParent);
+
       $template->setParentObject($parent);
 
       $template->onParseTime();
       $template->onAfterAppend();
 
-      $this->assertEquals($expected, $template->transform());
+      $this->assertEquals($expected . '|bar', $template->transform());
    }
 
 }
