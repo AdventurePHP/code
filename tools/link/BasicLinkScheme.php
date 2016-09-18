@@ -21,6 +21,7 @@
 namespace APF\tools\link;
 
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\Action;
 use APF\core\frontcontroller\ActionUrlMapping;
 use APF\core\frontcontroller\Frontcontroller;
 use APF\core\registry\Registry;
@@ -192,7 +193,7 @@ abstract class BasicLinkScheme {
    /**
     * Retrieves the current action stack from the front controller.
     *
-    * @return AbstractFrontcontrollerAction[] The list of registered actions.
+    * @return Action[] The list of registered actions.
     *
     * @author Christian Achatz
     * @version
