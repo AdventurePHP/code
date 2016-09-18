@@ -86,28 +86,12 @@ abstract class APFObject implements APFDIService {
       return $this->isInitialized;
    }
 
-   public function setContext($context) {
-      $this->context = $context;
-   }
-
-   public function getContext() {
-      return $this->context;
-   }
-
-   public function setLanguage($lang) {
-      $this->language = $lang;
-   }
-
-   public function getLanguage() {
-      return $this->language;
+   public function getServiceType() {
+      return $this->serviceType;
    }
 
    public function setServiceType($serviceType) {
       $this->serviceType = $serviceType;
-   }
-
-   public function getServiceType() {
-      return $this->serviceType;
    }
 
    /**
@@ -133,7 +117,7 @@ abstract class APFObject implements APFDIService {
     * @param string $namespace The namespace of the service object definition.
     * @param string $name The name of the service object.
     *
-    * @return APFObject The pre-configured service object.
+    * @return APFDIService The pre-configured service object.
     *
     * @author Christian Achatz
     * @version
@@ -144,6 +128,22 @@ abstract class APFObject implements APFDIService {
             $namespace, $name, $this->getContext(), $this->getLanguage());
    }
 
+   public function getContext() {
+      return $this->context;
+   }
+
+   public function setContext($context) {
+      $this->context = $context;
+   }
+
+   public function getLanguage() {
+      return $this->language;
+   }
+
+   public function setLanguage($lang) {
+      $this->language = $lang;
+   }
+
    /**
     * Returns a service object according to the current application context.
     *
@@ -152,7 +152,7 @@ abstract class APFObject implements APFDIService {
     * @param string $type The initializing type (see service manager for details).
     * @param string $instanceId The id of the instance to return.
     *
-    * @return APFObject The desired service object.
+    * @return APFService The desired service object.
     *
     * @author Christian Schäfer
     * @version
