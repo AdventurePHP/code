@@ -47,7 +47,7 @@ class HtmlHeaderGetBodyJsTag extends Document {
 
       // register filter that replaces the token with real live data if filter isn't already registered
       // (uses the same filter as htmlheader:gethead-Taglib)
-      if (!$filterChain->isFilterRegistered('HtmlHeaderOutputFilter')) {
+      if (!$filterChain->isFilterRegistered(HtmlHeaderOutputFilter::class)) {
          $filter = new HtmlHeaderOutputFilter();
          $filter->setContext($this->getContext());
          $filter->setLanguage($this->getLanguage());
