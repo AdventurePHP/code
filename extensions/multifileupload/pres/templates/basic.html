@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>jQuery File Upload Demo - Basic version</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddCssTag" prefix="htmlheader" name="addcss" />
+    <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddJsTags" prefix="htmlheader" name="addjs" />
+    <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddStaticCssTag" prefix="htmlheader" name="addstaticcss" />
+
+    <!-- The jQuery an jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+    <htmlheader:addjs namespace="WEB\pres\java" filename="jquery-1.11.2.min" priority="100" />
+    <htmlheader:addjs namespace="WEB\pres\java" filename="jquery-ui-1.11.4.min"  priority="99" />
+
+    <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+    <htmlheader:addjs namespace="APF\extensions\multifileupload\pres\js" filename="jquery.iframe-transport" priority="90" />
+    <!-- The basic File Upload plugin -->
+    <htmlheader:addjs namespace="APF\extensions\multifileupload\pres\js" filename="jquery.fileupload" priority="85" />
+
+    <!-- Bootstrap styles - specially used to style the buttons -->
+    <htmlheader:addstaticcss file="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+    <htmlheader:addcss namespace="APF\extensions\multifileupload\pres\css" filename="jquery.fileupload" />
+
+    <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderGetHeadTag" prefix="htmlheader" name="gethead" />
+    <htmlheader:gethead />
+
+    <script>
+        $(function () {
+            'use strict';
+            $('#fileupload').fileupload({
+                dataType: 'json',
+                done: function (e, data) {
+                    $.each(data.result.files, function (index, file) {
+                        $('<p/>').text(file.name).appendTo('#files');
+                    });
+                },
+                progressall: function (e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    $('#progress .progress-bar').css(
+                            'width',
+                            progress + '%'
+                    );
+                }
+            }).prop('disabled', !$.support.fileInput)
+                    .parent().addClass($.support.fileInput ? undefined : 'disabled');
+        });
+    </script>
+
+</head>
+<body>
+
+<div class="container">
+    <h1>jQuery File Upload Demo</h1>
+
+    <br>
+    <!-- The fileinput-button span is used to style the file input field as button -->
+    <span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Select files...</span>
+        <!-- The file input field used as target for the file upload widget -->
+        <core:addtaglib class="APF\extensions\multifileupload\pres\taglib\MultiFileUploadTag" prefix="form" name="upload" />
+        <form:upload name="files[]" id="fileupload" />
+
+    </span>
+    <br>
+    <br>
+    <!-- The global progress bar -->
+    <div id="progress" class="progress">
+        <div class="progress-bar progress-bar-success"></div>
+    </div>
+    <!-- The container for the uploaded files -->
+    <div id="files" class="files"></div>
+</div>
+
+</body>
+</html>
