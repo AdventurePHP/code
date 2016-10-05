@@ -52,28 +52,8 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
          $resultUrl .= $path;
       }
 
-      // get URL mappings and try to resolve mapped actions
-      $mappings = $this->getActionUrMappingTokens();
-
       $query = $url->getQuery();
-      $queryString = '';
-
-      foreach ($query as $name => $value) {
-         if ($this->isValueEmpty($value)) {
-            // include actions that may have empty values
-            if (strpos($name, '-action') !== false || in_array($name, $mappings)) {
-               if (!empty($queryString)) {
-                  $queryString .= '&';
-               }
-               $queryString .= $name;
-            }
-         } else {
-            if (!empty($queryString)) {
-               $queryString .= '&';
-            }
-            $queryString .= http_build_query([$name => $value], null, '&', PHP_QUERY_RFC3986);
-         }
-      }
+      $queryString = $this->buildQueryString($query);
 
       // decode query string in case human readable formatting is desired
       if ($this->getEncodeRfc3986() === false) {
@@ -109,14 +89,46 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
       return $resultUrl;
    }
 
+   /**
+    * @param array $query The query parameters of the url.
+    *
+    * @return string Query-string
+    */
+   protected function buildQueryString(array $query)
+   {
+      // get URL mappings and try to resolve mapped actions
+      $mappings = $this->getActionUrMappingTokens();
+
+      $queryString = '';
+
+      foreach ($query as $name => $value) {
+         if ($this->isValueEmpty($value)) {
+            // include actions that may have empty values
+            if (strpos($name, '-action') !== false || in_array($name, $mappings)) {
+               if (!empty($queryString)) {
+                  $queryString .= '&';
+               }
+               $queryString .= $name;
+            }
+         } else {
+            if (!empty($queryString)) {
+               $queryString .= '&';
+            }
+            $queryString .= http_build_query([$name => $value], null, '&', PHP_QUERY_RFC3986);
+         }
+      }
+
+      return $queryString;
+   }
+
    public function formatActionLink(Url $url, $namespace, $name, array $params = []) {
       $url = $this->removeActionInstructions($url);
 
       return $this->formatLinkInternal(
-            $url->setQueryParameter(
-                  $this->formatActionIdentifier($namespace, $name, false),
-                  $this->formatActionParameters($params, false)
-            ));
+          $url->setQueryParameter(
+              $this->formatActionIdentifier($namespace, $name, false),
+              $this->formatActionParameters($params, false)
+          ));
    }
 
 }
