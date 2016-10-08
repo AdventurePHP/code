@@ -20,7 +20,6 @@
  */
 namespace APF\core\pagecontroller;
 
-use APF\core\service\APFDIService;
 use InvalidArgumentException;
 
 /**
@@ -31,7 +30,7 @@ use InvalidArgumentException;
  * @version
  * Version 0.1, 14.10.2015 (ID#265: introduced interface to clearly define the API of an APF DOM node)<br />
  */
-interface DomNode extends APFDIService {
+interface DomNode extends ApplicationContext {
 
    /**
     * This method adds a given tag to the <em>global</em> list of known tags for the APF parser.

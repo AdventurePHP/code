@@ -20,6 +20,8 @@
  */
 namespace APF\core\service;
 
+use APF\core\pagecontroller\ApplicationContext;
+
 /**
  * Defines the structure of an APF service that is initialized with the <em>ServiceManager</em>.
  *
@@ -30,7 +32,7 @@ namespace APF\core\service;
  * Version 0.3, 23.07.2013 (Added "APPLICATIONSINGLETON" creation type)<br />
  * Version 0.4, 10.04.2015 (ID#249: introduced constructor injection for object creation)<br />
  */
-interface APFService {
+interface APFService extends ApplicationContext {
 
    // these constants define the service type of the APF objects
    const SERVICE_TYPE_NORMAL = 'NORMAL';
@@ -38,50 +40,6 @@ interface APFService {
    const SERVICE_TYPE_SINGLETON = 'SINGLETON';
    const SERVICE_TYPE_SESSION_SINGLETON = 'SESSIONSINGLETON';
    const SERVICE_TYPE_APPLICATION_SINGLETON = 'APPLICATIONSINGLETON';
-
-   /**
-    * Sets the context of the current APF object.
-    *
-    * @param string $context The context.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
-   public function setContext($context);
-
-   /**
-    * Returns the context of the current APF object.
-    *
-    * @return string The context.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
-   public function getContext();
-
-   /**
-    * Sets the language of the current APF object.
-    *
-    * @param string $lang The language.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
-   public function setLanguage($lang);
-
-   /**
-    * Returns the language of the current APF object.
-    *
-    * @return string The language.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
-   public function getLanguage();
 
    /**
     * Sets the service type of the current APF object.

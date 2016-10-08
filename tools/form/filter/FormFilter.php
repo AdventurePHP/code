@@ -21,7 +21,7 @@
 namespace APF\tools\form\filter;
 
 use APF\core\filter\Filter;
-use APF\core\service\APFService;
+use APF\core\pagecontroller\ApplicationContext;
 use APF\tools\form\FormControl;
 
 /**
@@ -34,7 +34,7 @@ use APF\tools\form\FormControl;
  * @version
  * Version 0.1, 06.11.2015 (ID#273: introduced interface)<br />
  */
-interface FormFilter extends Filter, APFService {
+interface FormFilter extends Filter, ApplicationContext {
 
    /**
     * Injects the control to validate and the trigger button into the filter.
