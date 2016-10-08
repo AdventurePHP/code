@@ -22,6 +22,7 @@ namespace APF\tests\suites\modules\genericormapper;
 
 use APF\core\configuration\provider\ini\IniConfiguration;
 use APF\core\database\MySQLiHandler;
+use APF\modules\genericormapper\data\GenericCriterionObject;
 use APF\modules\genericormapper\data\GenericDomainObject;
 use APF\modules\genericormapper\data\GenericORMapper;
 use APF\modules\genericormapper\data\GenericORMapperDataObject;
@@ -294,6 +295,75 @@ class GenericORMapperTest extends \PHPUnit_Framework_TestCase {
       $target->setObjectId($targetId);
 
       $mapper->deleteAssociation('Foo2Bar', $source, $target);
+   }
+
+   /**
+    * ID#310: loadObjectList() return value should be null/[] instead of [[0] => null].
+    */
+   public function testLoadObjectList() {
+
+      $objectName = 'User';
+      $attributeName = 'DisplayName';
+
+      /* @var $mapper GenericORRelationMapper|PHPUnit_Framework_MockObject_MockObject */
+      $mapper = $this->getMock(GenericORRelationMapper::class, ['getConfiguration']);
+
+      // mock configuration
+      $config = new IniConfiguration();
+      $config->setValue($objectName . '.' . $attributeName, 'VARCHAR(100)');
+
+      $mapper->method('getConfiguration')
+            ->willReturn($config);
+
+      // setup mapping table
+      $mapper->addMappingConfiguration('namespace', 'affix');
+
+      // inject pre-configured DB handler
+      /* @var $driver MySQLiHandler|PHPUnit_Framework_MockObject_MockObject */
+      $driver = $this->getMock(MySQLiHandler::class, ['executeTextStatement', 'fetchData']);
+      $driver->method('fetchData')
+            ->willReturn(false);
+
+      $mapper->setDbDriver($driver);
+
+      $result = $mapper->loadObjectList($objectName);
+
+      $this->assertInternalType('array', $result);
+      $this->assertEmpty($result);
+   }
+
+   /**
+    * ID#310: loadObjectListByCriterion() return value should be null/[] instead of [[0] => null].
+    */
+   public function testLoadObjectListByCriterion() {
+
+      $objectName = 'User';
+      $attributeName = 'DisplayName';
+
+      /* @var $mapper GenericORRelationMapper|PHPUnit_Framework_MockObject_MockObject */
+      $mapper = $this->getMock(GenericORRelationMapper::class, ['getConfiguration']);
+
+      // mock configuration
+      $config = new IniConfiguration();
+      $config->setValue($objectName . '.' . $attributeName, 'VARCHAR(100)');
+
+      $mapper->method('getConfiguration')
+            ->willReturn($config);
+
+      // setup mapping table
+      $mapper->addMappingConfiguration('namespace', 'affix');
+
+      /* @var $driver MySQLiHandler|PHPUnit_Framework_MockObject_MockObject */
+      $driver = $this->getMock(MySQLiHandler::class, ['executeTextStatement', 'fetchData']);
+      $driver->method('fetchData')
+            ->willReturn(false);
+
+      $mapper->setDbDriver($driver);
+
+      $result = $mapper->loadObjectListByCriterion($objectName, new GenericCriterionObject());
+
+      $this->assertInternalType('array', $result);
+      $this->assertEmpty($result);
    }
 
 }

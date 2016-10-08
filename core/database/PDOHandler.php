@@ -219,7 +219,7 @@ class PDOHandler extends AbstractDatabaseHandler {
     * @param \PDOStatement $pdoStatement The PDOStatement returned by executeStatement() or executeTextStatement().
     * @param int $type The type the returned data should have. Use the static *_FETCH_MODE constants.
     *
-    * @return string[] The associative result array. Returns false if no row was found.
+    * @return string[]|false The associative result array. Returns false if no row was found.
     *
     * @author Tobias Lückel (megger)
     * @version

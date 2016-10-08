@@ -109,42 +109,40 @@ class GenericORMapper extends BaseMapper {
     * Version 0.3, 15.06.2008 (Now uses the constructor of GenericDomainObject to set the object name)<br />
     * Version 0.4, 15.01.2011 (Added support for own domain objects and event handler)<br />
     */
-   protected function mapResult2DomainObject($objectName, $properties) {
+   protected function mapResult2DomainObject($objectName, array $properties) {
 
-      if ($properties !== false) {
-
-         // create service object if needed
-         if (isset($this->domainObjectsTable[$objectName])) {
-            $class = $this->domainObjectsTable[$objectName]['Class'];
-            $object = new $class($objectName);
-         } else {
-            $object = new GenericDomainObject($objectName);
-         }
-
-         // set data component and object name
-         $object->setDataComponent($this);
-
-         // map properties into object
-         foreach ($properties as $propertyName => $propertyValue) {
-
-            // re-map empty values for null fields to PHP null values
-            if (isset($this->mappingTable[$objectName][$propertyName])
-                  && stripos($this->mappingTable[$objectName][$propertyName], self::$NULL_FIELD_IDENTIFIER) !== false
-                  && empty($propertyValue)
-            ) {
-               $propertyValue = null;
-            }
-
-            $object->setProperty($propertyName, $propertyValue);
-
-         }
-
-         // call event handler
-         $object->afterLoad();
-
-      } else {
-         $object = null;
+      if (empty($properties)) {
+         return null;
       }
+
+      // create service object if needed
+      if (isset($this->domainObjectsTable[$objectName])) {
+         $class = $this->domainObjectsTable[$objectName]['Class'];
+         $object = new $class($objectName);
+      } else {
+         $object = new GenericDomainObject($objectName);
+      }
+
+      // set data component and object name
+      $object->setDataComponent($this);
+
+      // map properties into object
+      foreach ($properties as $propertyName => $propertyValue) {
+
+         // re-map empty values for null fields to PHP null values
+         if (isset($this->mappingTable[$objectName][$propertyName])
+               && stripos($this->mappingTable[$objectName][$propertyName], self::$NULL_FIELD_IDENTIFIER) !== false
+               && empty($propertyValue)
+         ) {
+            $propertyValue = null;
+         }
+
+         $object->setProperty($propertyName, $propertyValue);
+
+      }
+
+      // call event handler
+      $object->afterLoad();
 
       return $object;
    }

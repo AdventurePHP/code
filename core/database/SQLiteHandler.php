@@ -134,7 +134,7 @@ class SQLiteHandler extends AbstractDatabaseHandler {
     * @param resource $resultCursor The result resource returned by executeStatement() or executeTextStatement().
     * @param int $type The type the returned data should have. Use the static *_FETCH_MODE constants.
     *
-    * @return string[] The associative result array.
+    * @return string[]|false The associative result array.
     *
     * @author Christian Achatz
     * @version
