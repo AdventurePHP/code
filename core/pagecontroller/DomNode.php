@@ -20,7 +20,6 @@
  */
 namespace APF\core\pagecontroller;
 
-use APF\core\service\APFDIService;
 use InvalidArgumentException;
 
 /**
@@ -31,7 +30,7 @@ use InvalidArgumentException;
  * @version
  * Version 0.1, 14.10.2015 (ID#265: introduced interface to clearly define the API of an APF DOM node)<br />
  */
-interface DomNode extends APFDIService {
+interface DomNode extends ApplicationContext {
 
    /**
     * This method adds a given tag to the <em>global</em> list of known tags for the APF parser.
@@ -82,7 +81,7 @@ interface DomNode extends APFDIService {
     * @version
     * Version 0.1, 20.02.2010<br />
     */
-   public function getParentObject();
+   public function &getParentObject();
 
    /**
     * Sets the object id of the current APF object.
@@ -294,6 +293,23 @@ interface DomNode extends APFDIService {
    public function &getChildNode($attributeName, $value, $tagLibClass);
 
    /**
+    * Same functionality as <em>getChildNode()</em> except returning null in case no matching node
+    * has been found instead of throwing an exception.
+    *
+    * @param string $attributeName The name of the attribute to match against the given value.
+    * @param string $value The value of the attribute to select the desired node.
+    * @param string $tagLibClass The expected class name of the node.
+    *
+    * @return DomNode|null The desired child node or null.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.12.2011<br />
+    * Version 0.2, 09.02.2013 (Now public access since DocumentController is now derived from APFObject instead of Document)<br />
+    */
+   public function &getChildNodeIfExists($attributeName, $value, $tagLibClass);
+
+   /**
     * Let's you retrieve a list of child nodes of the current document by specifying a selector
     * (attribute name and attribute value) and the expected node type (name of the taglib
     * class).
@@ -320,7 +336,6 @@ interface DomNode extends APFDIService {
     * @param bool $append True in case the applied value should be appended, false otherwise.
     *
     * @return $this This instance for further usage.
-    * @throws InvalidArgumentException In case the place holder cannot be found.
     *
     * @author Christian Achatz, Jan Wiese
     * @version
@@ -360,45 +375,49 @@ interface DomNode extends APFDIService {
    public function &setPlaceHolders(array $placeHolderValues, $append = false);
 
    /**
-    * Set's a place holder in case it exists. Otherwise it is ignored.
+    * Returns the list of registered place holders for the current document.
     *
-    * @param string $name The name of the place holder.
-    * @param string $value The place holder's value.
-    * @param bool $append True in case the applied values should be appended, false otherwise.
+    * @return string[][]
     *
-    * @return $this This instance for further usage.
-    *
-    * @author Christian Achatz, Werner Liemberger
+    * @author Christian Achatz
     * @version
-    * Version 0.1, 02.07.2011<br />
-    * Version 0.2, 06.08.2013 (Added support for appending content to place holders)<br />
-    * Version 0.3, 25.09.2104 (ID#235: moved to Document to be able to reuse in TemplateTag)<br />
+    * Version 0.1, 12.03.2016 (ID#287)<br />
     */
-   public function setPlaceHolderIfExist($name, $value, $append = false);
+   public function getPlaceHolders();
 
    /**
-    * This method is for convenient setting of multiple place holders in case they exist within
-    * the current document. See <em>BaseDocumentController::setPlaceHolderIfExist()</em> for details.
+    * Returns the value of a single place holder.
     *
-    * @param array $placeHolderValues Key-value-couples to fill place holders.
-    * @param bool $append True in case the applied values should be appended, false otherwise.
+    * @param string $name The name of the place holder to return it's value.
+    * @param string $default The value to return in case the place holder is not registered (default: null).
+    *
+    * @return string The value of the desired place holder.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.03.2016 (ID#287)<br />
+    */
+   public function getPlaceHolder($name, $default = null);
+
+   /**
+    * Clears the list of place holders for the current document. Can be used to reset place holders within templates.
+    * <p/>
+    * See DefaultTemplateTagClearApproach for details.
     *
     * @return $this This instance for further usage.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 02.07.2011<br />
-    * Version 0.2, 06.08.2013 (Added support for appending content to place holders)<br />
-    * Version 0.3, 25.09.2104 (ID#235: moved to Document to be able to reuse in TemplateTag)<br />
+    * Version 0.1, 12.03.2016 (ID#287)<br />
     */
-   public function setPlaceHoldersIfExist(array $placeHolderValues, $append = false);
+   public function &clearPlaceHolders();
 
    /**
     * Returns the name of the document controller in case the document should
     * be transformed using an MVC controller. In case no controller is defined
     * <em>null</em> is returned instead.
     *
-    * @return string|null The name of the document controller.
+    * @return DocumentController|null The document controller or null.
     *
     * @author Christian Achatz
     * @version
@@ -505,5 +524,19 @@ interface DomNode extends APFDIService {
     * Version 0.1, 13.08.2014<br />
     */
    public function &getNodeById($id);
+
+   /**
+    * Same functionality as <em>getNodeById()</em> except returning null in case no matching node
+    * has been found instead of throwing an exception.
+    *
+    * @param string $id The id of the DOM node to return.
+    *
+    * @return DomNode|null The desired DOM node within the tree or null in case it does not exist.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 13.08.2014<br />
+    */
+   public function &getNodeByIdIfExists($id);
 
 }

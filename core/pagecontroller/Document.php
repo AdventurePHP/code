@@ -23,9 +23,6 @@ namespace APF\core\pagecontroller;
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\http\mixins\GetRequestResponse;
 use APF\core\loader\RootClassLoader;
-use APF\core\logging\entry\SimpleLogEntry;
-use APF\core\logging\LogEntry;
-use APF\core\logging\Logger;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 use Exception;
@@ -156,6 +153,15 @@ class Document extends APFObject implements DomNode {
    protected $knownInstanceTags = [];
 
    /**
+    * ID#287: Stores the place holders set for the current document. As this property is a simple
+    * associative array, access is much faster than iterating over the document tree and finding
+    * place holders among the list of children.
+    *
+    * @var string[][] $placeHolders
+    */
+   protected $placeHolders = [];
+
+   /**
     * Default constructor of an APF document. The APF DOM tree is constructed by objects derived from this class.
     *
     * @author Christian Schäfer
@@ -236,6 +242,16 @@ class Document extends APFObject implements DomNode {
       return $this;
    }
 
+   public function &getChildNodeIfExists($attributeName, $value, $tagLibClass) {
+      try {
+         return $this->getChildNode($attributeName, $value, $tagLibClass);
+      } catch (InvalidArgumentException $e) {
+         $null = null;
+
+         return $null;
+      }
+   }
+
    public function &getChildNode($attributeName, $value, $tagLibClass) {
       foreach ($this->children as &$child) {
          /* @var $child DomNode */
@@ -274,6 +290,10 @@ class Document extends APFObject implements DomNode {
       }
    }
 
+   public function getPlaceHolders() {
+      return $this->placeHolders;
+   }
+
    public function &setPlaceHolders(array $placeHolderValues, $append = false) {
       foreach ($placeHolderValues as $key => $value) {
          $this->setPlaceHolder($key, $value, $append);
@@ -283,90 +303,18 @@ class Document extends APFObject implements DomNode {
    }
 
    public function &setPlaceHolder($name, $value, $append = false) {
-      $count = 0;
-      foreach ($this->children as &$child) {
-         /* @var $child DomNode */
-         if ($child instanceof PlaceHolder
-               && $child->getAttribute('name') === $name
-         ) {
-            // false handled first, since most usages don't append --> slightly faster
-            if ($append === false) {
-               $child->setContent($value);
-            } else {
-               $child->setContent(
-                     $child->getContent() . $value
-               );
-            }
-            $count++;
-         }
-      }
-
-      if ($count == 0) {
-
-         // Since this method is used within all derived classes the exception message is
-         // rather generic unfortunately. In order to be more precise, the convenience methods
-         // within BaseDocumentController catch and rethrow the exception enriched with further
-         // information.
-         $message = '[' . get_class($this) . '::setPlaceHolder()] No place holder with name "' . $name
-               . '" found within document with ';
-
-         $nodeName = $this->getAttribute('name');
-         if (!empty($nodeName)) {
-            $message .= 'name "' . $nodeName . '" and ';
-         }
-         $message .= 'node type "' . get_class($this) . '"! Please check your template code: ' . $this->getContent() . '.';
-
-         throw new InvalidArgumentException($message, E_USER_ERROR);
+      // false handled first, since most usages don't append --> slightly faster
+      if ($append === false || !isset($this->placeHolders[$name])) {
+         $this->placeHolders[$name] = $value;
+      } else {
+         $this->placeHolders[$name] = $this->placeHolders[$name] . $value;
       }
 
       return $this;
    }
 
-   public function getContent() {
-      return $this->content;
-   }
-
-   public function setContent($content) {
-      $this->content = $content;
-
-      return $this;
-   }
-
-   public function setPlaceHoldersIfExist(array $placeHolderValues, $append = false) {
-      foreach ($placeHolderValues as $key => $value) {
-         $this->setPlaceHolderIfExist($key, $value, $append);
-      }
-
-      return $this;
-   }
-
-   public function setPlaceHolderIfExist($name, $value, $append = false) {
-      try {
-         $this->setPlaceHolder($name, $value, $append);
-      } catch (Exception $e) {
-         $log = &Singleton::getInstance(Logger::class);
-         /* @var $log Logger */
-         $log->addEntry(
-               new SimpleLogEntry(
-               // use the configured log target to allow custom configuration of APF-internal log statements
-               // to be written to a custom file/location
-                     Registry::retrieve('APF\core', 'InternalLogTarget'),
-                     'Place holder with name "' . $name . '" does not exist within the current document. '
-                     . 'Please check your setup. Details: ' . $e,
-                     LogEntry::SEVERITY_WARNING
-               )
-         );
-      }
-
-      return $this;
-   }
-
-   public function &getDocumentController() {
-      return $this->documentController;
-   }
-
-   public function addInstanceTagLib($class, $prefix, $name) {
-      $this->knownInstanceTags[$prefix . ':' . $name] = $class;
+   public function getPlaceHolder($name, $default = null) {
+      return isset($this->placeHolders[$name]) ? $this->placeHolders[$name] : $default;
    }
 
    public function getData($name, $default = null) {
@@ -377,6 +325,20 @@ class Document extends APFObject implements DomNode {
       $this->data[$name] = $data;
 
       return $this;
+   }
+
+   public function &clearPlaceHolders() {
+      $this->placeHolders = [];
+
+      return $this;
+   }
+
+   public function &getDocumentController() {
+      return $this->documentController;
+   }
+
+   public function addInstanceTagLib($class, $prefix, $name) {
+      $this->knownInstanceTags[$prefix . ':' . $name] = $class;
    }
 
    /**
@@ -569,6 +531,16 @@ class Document extends APFObject implements DomNode {
       $this->content = substr_replace($this->content, '', $tagStartPos, ($tagEndPos - $tagStartPos) + 2); // for @>
    }
 
+   public function getContent() {
+      return $this->content;
+   }
+
+   public function setContent($content) {
+      $this->content = $content;
+
+      return $this;
+   }
+
    /**
     * Parses the content of the current APF DOM node. Extracts all tags contained in the current
     * document content. Each tag is converted into a child Document of the current tree element.
@@ -631,7 +603,7 @@ class Document extends APFObject implements DomNode {
       $count = 0;
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
 
       $benchId = '(' . get_class($this) . ') ' . $this->getObjectId() . '::onParseTime()';
       $t->start($benchId);
@@ -751,6 +723,13 @@ class Document extends APFObject implements DomNode {
 
             // n = tag name (e.g. "bar" with tag "<foo:bar />")
             $tags[$count]['n'] = trim(substr($this->content, $colon + 1, $space - $colon - 1)); // instead of trim, maybe search for a new line instead
+
+            // ID#300: detect new lines in tag definition and throw exception to
+            // avoid application crushing w/ max execution time exceeded!
+            if (strpos($tags[$count]['n'], "\n") !== false) {
+               throw new ParserException('Tag definition must not contain line breaks at "<' . $tags[$count]['p'] . ':' . $tags[$count]['n']
+                     . '"! Template code: ' . htmlentities($this->content));
+            }
 
             // assemble the token to allow easier closing tag search
             $token = $tags[$count]['p'] . ':' . $tags[$count]['n'];
@@ -1013,6 +992,7 @@ class Document extends APFObject implements DomNode {
          foreach (self::$knownExpressions as $expression) {
             if ($expression::applies($token)) {
                $object = $expression::getDocument($token);
+               break;
             }
          }
 
@@ -1043,6 +1023,16 @@ class Document extends APFObject implements DomNode {
 
    }
 
+   public function &getNodeByIdIfExists($id) {
+      try {
+         return $this->getNodeById($id);
+      } catch (InvalidArgumentException $e) {
+         $null = null;
+
+         return $null;
+      }
+   }
+
    public function &getNodeById($id) {
       if (isset(self::$documentIndex[$id])) {
          return self::$documentIndex[$id];
@@ -1053,7 +1043,7 @@ class Document extends APFObject implements DomNode {
 
    public function transform() {
 
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
       /* @var $t BenchmarkTimer */
       $t->start('(' . get_class($this) . ') ' . $this->getObjectId() . '::transform()');
 

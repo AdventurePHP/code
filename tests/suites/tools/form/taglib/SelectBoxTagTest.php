@@ -22,9 +22,13 @@ namespace APF\tests\suites\tools\form\taglib;
 
 use APF\core\pagecontroller\DomNode;
 use APF\core\pagecontroller\XmlParser;
+use APF\tools\form\HtmlForm;
+use APF\tools\form\taglib\ButtonTag;
+use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\form\taglib\SelectBoxGroupTag;
 use APF\tools\form\taglib\SelectBoxOptionTag;
 use APF\tools\form\taglib\SelectBoxTag;
+use APF\tools\form\validator\SimpleSelectControlValidator;
 use ReflectionMethod;
 use ReflectionProperty;
 
@@ -271,6 +275,65 @@ class SelectBoxTagTest extends \PHPUnit_Framework_TestCase {
             $this->assertNull($child->getAttribute('selected'));
          }
       }
+
+   }
+
+   /**
+    * Tests whether validation is omitted with optional="true" and empty selection
+    */
+   public function testOptionalValidation() {
+
+      $_REQUEST = [];
+
+      $tag = new SelectBoxTag();
+      $tag->setAttribute('optional', 'true');
+
+      $tag->setContent('<select:option value="1">One</select:option>
+<select:option value="2">Two</select:option>
+<select:option value="3">Three</select:option>');
+
+      $tag->onParseTime();
+      $tag->onAfterAppend();
+
+      $button = new ButtonTag();
+      $button->markAsSent();
+
+      $tag->addValidator(new SimpleSelectControlValidator($tag, $button));
+
+      $this->assertTrue($tag->isValid());
+
+   }
+
+   /**
+    * Tests whether validation for mandatory field works.
+    */
+   public function testMandatoryValidation() {
+
+      $_REQUEST = [];
+      $_POST = ['submit' => 'submit'];
+
+      $form = new HtmlFormTag();
+      $form->setAttributes([
+            HtmlForm::METHOD_ATTRIBUTE_NAME => HtmlForm::METHOD_POST_VALUE_NAME,
+            'name'                          => 'foo'
+      ]);
+      $form->setContent('<form:select name="foo">
+<select:option value="1">One</select:option>
+<select:option value="2">Two</select:option>
+<select:option value="3">Three</select:option>
+</form:select>
+<form:button name="submit" value="submit" />
+<form:addvalidator
+   class="APF\tools\form\validator\SimpleSelectControlValidator"
+   button="submit"
+   control="foo"
+/>');
+
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      $this->assertFalse($form->isValid());
+      $this->assertFalse($form->getFormElementByName('foo')->isValid());
 
    }
 

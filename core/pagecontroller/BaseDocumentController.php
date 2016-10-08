@@ -49,22 +49,12 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     */
    protected $document;
 
-   public function setDocument(DomNode &$document) {
-      $this->document = &$document;
-   }
-
-   public function &getDocument() {
-      return $this->document;
-   }
-
    /**
     * Sets the given value as the content of the specified place holder.
     *
     * @param string $name The name of the place holder to fill.
     * @param string $value The value to insert into the place holder.
     * @param bool $append True in case the applied values should be appended, false otherwise.
-    *
-    * @throws InvalidArgumentException In case the place holder cannot be found.
     *
     * @author Christian Schäfer, Jan Wiese
     * @version
@@ -74,12 +64,15 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * Version 0.4, 06.08.2013 (Added support for appending content to place holders)<br />
     */
    protected function setPlaceHolder($name, $value, $append = false) {
-      try {
-         $this->getDocument()->setPlaceHolder($name, $value, $append);
-      } catch (InvalidArgumentException $e) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] No place holders '
-               . 'found for name "' . $name . '" in document controller "' . get_class($this) . '"!', E_USER_ERROR, $e);
-      }
+      $this->getDocument()->setPlaceHolder($name, $value, $append);
+   }
+
+   public function &getDocument() {
+      return $this->document;
+   }
+
+   public function setDocument(DomNode &$document) {
+      $this->document = &$document;
    }
 
    /**
@@ -100,8 +93,6 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * @param string[] $placeHolderValues Key-value-couples to fill place holders.
     * @param bool $append True in case the applied values should be appended, false otherwise.
     *
-    * @throws InvalidArgumentException In case one of the place holders cannot be found.
-    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 20.11.2010<br />
@@ -109,40 +100,6 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     */
    protected function setPlaceHolders(array $placeHolderValues, $append = false) {
       $this->getDocument()->setPlaceHolders($placeHolderValues, $append);
-   }
-
-   /**
-    * Set's a place holder in case it exists. Otherwise it is ignored.
-    *
-    * @param string $name The name of the place holder.
-    * @param string $value The place holder's value.
-    * @param bool $append True in case the applied values should be appended, false otherwise.
-    *
-    * @author Christian Achatz, Werner Liemberger
-    * @version
-    * Version 0.1, 02.07.2011<br />
-    * Version 0.2, 06.08.2013 (Added support for appending content to place holders)<br />
-    * Version 0.3, 25.09.2104 (ID#235: moved logic to to Document to be able to reuse in TemplateTag)<br />
-    */
-   protected function setPlaceHolderIfExist($name, $value, $append = false) {
-      $this->getDocument()->setPlaceHolderIfExist($name, $value, $append);
-   }
-
-   /**
-    * This method is for convenient setting of multiple place holders in case they exist within
-    * the current document. See <em>BaseDocumentController::setPlaceHolderIfExist()</em> for details.
-    *
-    * @param array $placeHolderValues Key-value-couples to fill place holders.
-    * @param bool $append True in case the applied values should be appended, false otherwise.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 02.07.2011<br />
-    * Version 0.2, 06.08.2013 (Added support for appending content to place holders)<br />
-    * Version 0.3, 25.09.2104 (ID#235: moved logic to to Document to be able to reuse in TemplateTag)<br />
-    */
-   protected function setPlaceHoldersIfExist(array $placeHolderValues, $append = false) {
-      $this->getDocument()->setPlaceHoldersIfExist($placeHolderValues, $append);
    }
 
    /**
@@ -260,7 +217,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * Version 0.3, 02.07.2011 (Renaming to fit the APF naming convention)<br />
     * Version 0.4, 13.08.2014 (ID#231: Allow custom form tag while still using this method to obtain an instance)<br />
     */
-   protected function templatePlaceHolderExists(Template &$template, $name) {
+   protected function templatePlaceHolderExists(TemplateTag &$template, $name) {
       try {
          $template->getChildNode('name', $name, PlaceHolder::class);
 

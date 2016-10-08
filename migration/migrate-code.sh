@@ -1,10 +1,10 @@
 #!/bin/bash
 ########################################################################################################################
-# APF 3.1 automatic code migration script                                                                              #
+# APF 3.3 automatic code migration script                                                                              #
 ########################################################################################################################
 
 echo "#############################################"
-echo "# APF 3.1 automatic code migration          #"
+echo "# APF 3.3 automatic code migration          #"
 echo "#############################################"
 echo
 
@@ -23,13 +23,9 @@ echo "#############################################"
 echo
 echo "Starting migration ..."
 
-# migrate tag lib declaration
-echo "* Migrate request and response obtaining ..."
-$PHP_BINARY $PHP_SCRIPT_DIR/migrate_request_response_access.php
-
-# migrate method signature
-echo "* Migrate method signature ..."
-$PHP_BINARY $PHP_SCRIPT_DIR/migrate_method_signature.php
+# migrate API for form-to-model mapping
+echo "* Migrate form-to-model-mapping API..."
+$PHP_BINARY $PHP_SCRIPT_DIR/migrate_form_to_model_mapping.php
 
 echo
 echo "#############################################"

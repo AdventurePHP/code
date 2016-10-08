@@ -35,12 +35,12 @@ class PermissionDeleteController extends UmgtBaseController {
    public function transformContent() {
 
       $permissionId = $this->getRequest()->getParameter('permissionid');
-      $uM = & $this->getManager();
+      $uM = $this->getManager();
       $permission = $uM->loadPermissionByID($permissionId);
       $this->getLabel('display-name')->setPlaceHolder('display-name', $permission->getDisplayName());
 
-      $formNo = & $this->getForm('PermissionDelNo');
-      $formYes = & $this->getForm('PermissionDelYes');
+      $formNo = $this->getForm('PermissionDelNo');
+      $formYes = $this->getForm('PermissionDelYes');
 
       $response = $this->getResponse();
 

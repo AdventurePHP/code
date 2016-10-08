@@ -21,6 +21,7 @@
 namespace APF\modules\usermanagement\biz\model;
 
 use APF\modules\usermanagement\biz\provider\UserFieldEncryptionProvider;
+use DateTime;
 
 /**
  * This class represents the "APF\modules\usermanagement\biz\model\UmgtUser" domain object.
@@ -70,6 +71,22 @@ class UmgtUser extends UmgtUserBase {
     */
    public function addRole(UmgtRole $role) {
       $this->addRelatedObject('Role2User', $role);
+   }
+
+   /**
+    * @param DateTime $date The user's birth date.
+    *
+    * @return UmgtUser The domain object for further usage.
+    */
+   public function setBirthday(DateTime $date) {
+      return parent::setDateOfBirth($date->format('Y-m-d'));
+   }
+
+   /**
+    * @return DateTime $date The user's birth date.
+    */
+   public function getBirthday() {
+      return DateTime::createFromFormat('Y-m-d', parent::getDateOfBirth());
    }
 
    public function beforeSave() {

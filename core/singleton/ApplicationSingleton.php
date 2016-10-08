@@ -38,7 +38,7 @@ register_shutdown_function(function () {
  * their validity when the web server is restarted.
  * <p/>
  * Usage:
- * <pre>$instance = &ApplicationSingleton::getInstance('VENDOR\..\Class');</pre>
+ * <pre>$instance = ApplicationSingleton::getInstance('VENDOR\..\Class');</pre>
  *
  * @author Christian Achatz
  * @version
@@ -46,6 +46,13 @@ register_shutdown_function(function () {
  * Version 0.2, 10.04.2015 (ID#249: introduced constructor injection for object creation)<br />
  */
 class ApplicationSingleton extends Singleton {
+
+   /**
+    * Stores the objects, that are requested as singletons.
+    *
+    * @var string[] $CACHE
+    */
+   private static $CACHE = [];
 
    private function __construct() {
    }
@@ -94,6 +101,13 @@ class ApplicationSingleton extends Singleton {
       return self::$CACHE[$cacheKey];
    }
 
+   protected static function getCacheKey($class, $instanceId) {
+      $cacheKey = parent::getCacheKey($class, $instanceId);
+
+      // prepend class including namespace to cache key to avoid collisions within the APC store
+      return __CLASS__ . '#' . $cacheKey;
+   }
+
    public static function deleteInstance($class, $instanceId = null) {
       parent::deleteInstance($class, $instanceId);
 
@@ -115,13 +129,6 @@ class ApplicationSingleton extends Singleton {
             apc_store($key, serialize(self::$CACHE[$key]));
          }
       }
-   }
-
-   protected static function getCacheKey($class, $instanceId) {
-      $cacheKey = parent::getCacheKey($class, $instanceId);
-
-      // prepend class including namespace to cache key to avoid collisions within the APC store
-      return __CLASS__ . '#' . $cacheKey;
    }
 
 }

@@ -30,7 +30,7 @@ use APF\core\logging\LogWriter;
  * Use the following code to register this log writer:
  * <code>
  * use APF\core\logging\Logger;
- * $logger = & Singleton::getInstance(Logger::class);
+ * $logger = Singleton::getInstance(Logger::class);
  *
  * use APF\core\logging\writer\GraphiteLogWriter;
  * $logger->addLogWriter('graphite', new GraphiteLogWriter('localhost', '8125'));

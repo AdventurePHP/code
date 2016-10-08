@@ -80,13 +80,13 @@ final class ServiceManager {
       $service = null;
       switch ($type) {
          case APFService::SERVICE_TYPE_SINGLETON:
-            $service = &Singleton::getInstance($class, $arguments, $instanceId);
+            $service = Singleton::getInstance($class, $arguments, $instanceId);
             break;
          case APFService::SERVICE_TYPE_SESSION_SINGLETON:
-            $service = &SessionSingleton::getInstance($class, $arguments, $instanceId);
+            $service = SessionSingleton::getInstance($class, $arguments, $instanceId);
             break;
          case APFService::SERVICE_TYPE_APPLICATION_SINGLETON:
-            $service = &ApplicationSingleton::getInstance($class, $arguments, $instanceId);
+            $service = ApplicationSingleton::getInstance($class, $arguments, $instanceId);
             break;
          case APFService::SERVICE_TYPE_NORMAL:
             if (count($arguments) > 0) {

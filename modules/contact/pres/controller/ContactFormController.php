@@ -51,14 +51,14 @@ class ContactFormController extends BaseDocumentController {
     */
    public function transformContent() {
 
-      $form = &$this->getForm('contact');
+      $form = $this->getForm('contact');
 
       // fill recipient list
       /* @var $recipients SelectBoxTag */
-      $recipients = &$form->getFormElementByName('recipient');
+      $recipients = $form->getFormElementByName('recipient');
 
       /* @var $cM ContactManager */
-      $cM = &$this->getServiceObject(ContactManager::class);
+      $cM = $this->getServiceObject(ContactManager::class);
       $recipientList = $cM->loadRecipients();
 
       for ($i = 0; $i < count($recipientList); $i++) {
@@ -69,20 +69,20 @@ class ContactFormController extends BaseDocumentController {
 
          $formData = new ContactFormData();
 
-         $option = &$recipients->getSelectedOption();
+         $option = $recipients->getSelectedOption();
          $recipientId = $option->getValue();
          $formData->setRecipientId($recipientId);
 
-         $name = &$form->getFormElementByName('sender-name');
+         $name = $form->getFormElementByName('sender-name');
          $formData->setSenderName($name->getAttribute('value'));
 
-         $email = &$form->getFormElementByName('sender-address');
+         $email = $form->getFormElementByName('sender-address');
          $formData->setSenderEmail($email->getAttribute('value'));
 
-         $subject = &$form->getFormElementByName('subject');
+         $subject = $form->getFormElementByName('subject');
          $formData->setSubject($subject->getAttribute('value'));
 
-         $text = &$form->getFormElementByName('content');
+         $text = $form->getFormElementByName('content');
          $formData->setMessage($text->getContent());
 
          $cM->sendContactForm($formData);

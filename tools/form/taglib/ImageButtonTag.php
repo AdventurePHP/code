@@ -49,11 +49,12 @@ class ImageButtonTag extends ButtonTag {
     * @author Christian Achatz
     * @version
     * Version 0.1, 12.01.2013 (Bug 1261: re-implementation due to different browser behaviour for image buttons)<br />
+    * Version 0.2, 03.08.2016 (ID#303: allow hiding via template definition)<br />
     */
    public function onParseTime() {
 
       $buttonName = $this->getAttribute('name');
-      $form = &$this->getForm();
+      $form = $this->getForm();
       if ($buttonName === null) {
          $formName = $form->getAttribute('name');
          throw new FormException('[ImageButtonTag::onAfterAppend()] Missing required attribute '
@@ -74,6 +75,11 @@ class ImageButtonTag extends ButtonTag {
          if ($request->getGetParameter($buttonName . '_x') !== null && $request->getGetParameter($buttonName . '_y') !== null) {
             $this->controlIsSent = true;
          }
+      }
+
+      // ID#303: allow to hide form element by default within a template
+      if ($this->getAttribute('hidden', 'false') === 'true') {
+         $this->hide();
       }
    }
 

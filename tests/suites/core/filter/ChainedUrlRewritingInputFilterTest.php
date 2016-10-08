@@ -59,7 +59,8 @@ class ChainedUrlRewritingInputFilterTest extends \PHPUnit_Framework_TestCase {
       $filter = new TestableChainedUrlRewritingInputFilter();
       $fC = new Frontcontroller();
       $filter->setFrontcontroller($fC);
-      $filter->filter(new TestableFilterChain(), null);
+      $chain = new TestableFilterChain();
+      $filter->filter($chain, null);
 
       $actions = $fC->getActions();
       $this->assertEquals($actionNamespace, $actions[0]->getActionNamespace());
@@ -73,7 +74,8 @@ class ChainedUrlRewritingInputFilterTest extends \PHPUnit_Framework_TestCase {
       $filter = new TestableChainedUrlRewritingInputFilter();
       $fC = new Frontcontroller();
       $filter->setFrontcontroller($fC);
-      $filter->filter(new TestableFilterChain(), null);
+      $chain = new TestableFilterChain();
+      $filter->filter($chain, null);
 
       $actions = $fC->getActions();
       $this->assertEquals($actionNamespace, $actions[0]->getActionNamespace());
@@ -91,7 +93,8 @@ class ChainedUrlRewritingInputFilterTest extends \PHPUnit_Framework_TestCase {
       $filter = new TestableChainedUrlRewritingInputFilter();
       $fC = new Frontcontroller();
       $filter->setFrontcontroller($fC);
-      $filter->filter(new TestableFilterChain(), null);
+      $chain = new TestableFilterChain();
+      $filter->filter($chain, null);
 
       $actions = $fC->getActions();
 
@@ -110,7 +113,8 @@ class ChainedUrlRewritingInputFilterTest extends \PHPUnit_Framework_TestCase {
       $filter = new TestableChainedUrlRewritingInputFilter();
       $fC = new Frontcontroller();
       $filter->setFrontcontroller($fC);
-      $filter->filter(new TestableFilterChain(), null);
+      $chain = new TestableFilterChain();
+      $filter->filter($chain, null);
 
       $actions = $fC->getActions();
 
@@ -132,7 +136,8 @@ class ChainedUrlRewritingInputFilterTest extends \PHPUnit_Framework_TestCase {
       $filter = new TestableChainedUrlRewritingInputFilter();
       $fC = new Frontcontroller();
       $filter->setFrontcontroller($fC);
-      $filter->filter(new TestableFilterChain(), null);
+      $chain = new TestableFilterChain();
+      $filter->filter($chain, null);
 
       $actions = $fC->getActions();
 
@@ -161,7 +166,8 @@ class ChainedUrlRewritingInputFilterTest extends \PHPUnit_Framework_TestCase {
       $fC->registerActionUrlMapping(new ActionUrlMapping($urlToken, $actionNamespace, $actionName));
 
       $filter->setFrontcontroller($fC);
-      $filter->filter(new TestableFilterChain(), null);
+      $chain = new TestableFilterChain();
+      $filter->filter($chain, null);
 
       $actions = $fC->getActions();
       $this->assertEquals($actionNamespace, $actions[0]->getActionNamespace());
@@ -177,7 +183,8 @@ class ChainedUrlRewritingInputFilterTest extends \PHPUnit_Framework_TestCase {
       $fC->registerActionUrlMapping(new ActionUrlMapping($urlToken, $actionNamespace, $actionName));
 
       $filter->setFrontcontroller($fC);
-      $filter->filter(new TestableFilterChain(), null);
+      $chain = new TestableFilterChain();
+      $filter->filter($chain, null);
 
       $actions = $fC->getActions();
       $this->assertEquals($actionNamespace, $actions[0]->getActionNamespace());
@@ -193,7 +200,8 @@ class ChainedUrlRewritingInputFilterTest extends \PHPUnit_Framework_TestCase {
       $fC->registerActionUrlMapping(new ActionUrlMapping($urlToken, $actionNamespace, $actionName));
 
       $filter->setFrontcontroller($fC);
-      $filter->filter(new TestableFilterChain(), null);
+      $chain = new TestableFilterChain();
+      $filter->filter($chain, null);
 
       $actions = $fC->getActions();
       $this->assertEquals($actionNamespace, $actions[0]->getActionNamespace());
@@ -209,7 +217,8 @@ class ChainedUrlRewritingInputFilterTest extends \PHPUnit_Framework_TestCase {
       $fC->registerActionUrlMapping(new ActionUrlMapping($urlToken, $actionNamespace, $actionName));
 
       $filter->setFrontcontroller($fC);
-      $filter->filter(new TestableFilterChain(), null);
+      $chain = new TestableFilterChain();
+      $filter->filter($chain, null);
 
       $actions = $fC->getActions();
       $this->assertEquals($actionNamespace, $actions[0]->getActionNamespace());
@@ -238,7 +247,8 @@ class ChainedUrlRewritingInputFilterTest extends \PHPUnit_Framework_TestCase {
       $fC->registerActionUrlMapping(new ActionUrlMapping($barUrlToken, $barActionNamespace, $barActionName));
 
       $filter->setFrontcontroller($fC);
-      $filter->filter(new TestableFilterChain(), null);
+      $chain = new TestableFilterChain();
+      $filter->filter($chain, null);
 
       $actions = $fC->getActions();
 
@@ -260,7 +270,8 @@ class ChainedUrlRewritingInputFilterTest extends \PHPUnit_Framework_TestCase {
       $fC->registerActionUrlMapping(new ActionUrlMapping($barUrlToken, $barActionNamespace, $barActionName));
 
       $filter->setFrontcontroller($fC);
-      $filter->filter(new TestableFilterChain(), null);
+      $chain = new TestableFilterChain();
+      $filter->filter($chain, null);
 
       $actions = $fC->getActions();
 
@@ -294,7 +305,8 @@ class ChainedUrlRewritingInputFilterTest extends \PHPUnit_Framework_TestCase {
       $fC->registerActionUrlMapping(new ActionUrlMapping($barUrlToken, $barActionNamespace, $barActionName));
 
       $filter->setFrontcontroller($fC);
-      $filter->filter(new TestableFilterChain(), null);
+      $chain = new TestableFilterChain();
+      $filter->filter($chain, null);
 
       $actions = $fC->getActions();
 
@@ -320,7 +332,8 @@ class ChainedUrlRewritingInputFilterTest extends \PHPUnit_Framework_TestCase {
       $fC->registerActionUrlMapping(new ActionUrlMapping($barUrlToken, $barActionNamespace, $barActionName));
 
       $filter->setFrontcontroller($fC);
-      $filter->filter(new TestableFilterChain(), null);
+      $chain = new TestableFilterChain();
+      $filter->filter($chain, null);
 
       $actions = $fC->getActions();
 
@@ -346,7 +359,8 @@ class ChainedUrlRewritingInputFilterTest extends \PHPUnit_Framework_TestCase {
       $filter = new TestableChainedUrlRewritingInputFilter();
       $fC = new Frontcontroller();
       $filter->setFrontcontroller($fC);
-      $filter->filter(new TestableFilterChain(), null);
+      $chain = new TestableFilterChain();
+      $filter->filter($chain, null);
 
       $this->assertEquals([], $fC->getActions());
 
@@ -357,7 +371,8 @@ class ChainedUrlRewritingInputFilterTest extends \PHPUnit_Framework_TestCase {
       $filter = new TestableChainedUrlRewritingInputFilter();
       $fC = new Frontcontroller();
       $filter->setFrontcontroller($fC);
-      $filter->filter(new TestableFilterChain(), null);
+      $chain = new TestableFilterChain();
+      $filter->filter($chain, null);
 
       $this->assertEquals([], $fC->getActions());
    }

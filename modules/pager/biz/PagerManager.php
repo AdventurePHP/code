@@ -308,7 +308,7 @@ final class PagerManager extends APFObject {
     * Version 0.4, 24.01.2009 (Changed the API of the method. Moved the additional param handling to this method)<br />
     */
    public function loadEntries($addStmtParams = []) {
-      $m = &$this->getMapper();
+      $m = $this->getMapper();
 
       return $m->loadEntries(
             $this->statementNamespace,
@@ -447,7 +447,7 @@ final class PagerManager extends APFObject {
       $pager->loadDesign($this->pagerUiNamespace, $this->pagerUiTemplate);
 
       // add the necessary config params and pages
-      $document = &$pager->getRootDocument();
+      $document = $pager->getRootDocument();
       $document->setAttribute('Pages', $this->createPages4PagerDisplay($addStmtParams));
       $document->setAttribute('PageUrlParameterName', $this->pageUrlParameterName);
       $document->setAttribute('CountUrlParameterName', $this->countUrlParameterName);
@@ -482,7 +482,7 @@ final class PagerManager extends APFObject {
    private function createPages4PagerDisplay($addStmtParams = []) {
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
       $t->start('PagerManager::createPages4PagerDisplay()');
 
       // initialize start params
@@ -492,7 +492,7 @@ final class PagerManager extends APFObject {
       $currentStart = (int) $this->getRequest()->getParameter($this->pageUrlParameterName, 1) * $countPerPage;
 
       // initialize page delimiter params
-      $m = &$this->getMapper();
+      $m = $this->getMapper();
       $entriesCount = $m->getEntriesCount(
             $this->statementNamespace,
             $this->countStatementFile,
@@ -598,7 +598,7 @@ final class PagerManager extends APFObject {
       $countPerPage = $this->getCountPerPage();
 
       // initialize page delimiter params
-      $m = &$this->getMapper();
+      $m = $this->getMapper();
       $entriesCount = $m->getEntriesCount(
             $this->statementNamespace,
             $this->countStatementFile,

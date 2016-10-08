@@ -23,7 +23,6 @@ namespace APF\extensions\forwardmessage\pres\taglib;
 use APF\core\pagecontroller\Document;
 use APF\core\service\APFService;
 use APF\extensions\forwardmessage\biz\ForwardMessageManager;
-use InvalidArgumentException;
 
 /**
  * Adds a status message for the next page.
@@ -37,11 +36,7 @@ class AddForwardMessageTag extends Document {
 
    public function onParseTime() {
 
-      if (!$name = $this->getAttribute('name')) {
-         throw new InvalidArgumentException('[AddForwardMessageTag::onParseTime()] '
-               . 'The attribute "name" is empty or not present. Thus message cannot be added!');
-      }
-
+      $name = $this->getRequiredAttribute('name');
       $group = $this->getAttribute('group');
 
       if ($group === null || $group == '') {
@@ -59,7 +54,7 @@ class AddForwardMessageTag extends Document {
       // add message that is the essence of the tag's transformed content
 
       /* @var $forwardMessageMgr ForwardMessageManager */
-      $forwardMessageMgr = &$this->getServiceObject(
+      $forwardMessageMgr = $this->getServiceObject(
             ForwardMessageManager::class, [], APFService::SERVICE_TYPE_SESSION_SINGLETON
       );
       $forwardMessageMgr->addMessage($name, parent::transform(), $show, $group);

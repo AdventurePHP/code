@@ -194,7 +194,9 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
    public function testAddEntry2() {
 
       /* @var $logger Logger|PHPUnit_Framework_MockObject_MockObject */
-      $logger = $this->getMock(Logger::class, ['flushLogBuffer']);
+      $logger = $this->getMockBuilder(Logger::class)
+            ->setMethods(['flushLogBuffer'])
+            ->getMock();
 
       $logger->expects($this->exactly(2))
             ->method('flushLogBuffer')
@@ -228,7 +230,9 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
       $counterOne = 0;
 
       /* @var $writerOne StdOutLogWriter|PHPUnit_Framework_MockObject_MockObject */
-      $writerOne = $this->getMock(StdOutLogWriter::class, ['writeLogEntries']);
+      $writerOne = $this->getMockBuilder(StdOutLogWriter::class)
+            ->setMethods(['writeLogEntries'])
+            ->getMock();
       $writerOne->expects($this->once())
             ->method('writeLogEntries')
             ->will($this->returnCallback(
@@ -248,7 +252,9 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
       $counterTwo = 0;
 
       /* @var $writerTwo StdOutLogWriter|PHPUnit_Framework_MockObject_MockObject */
-      $writerTwo = $this->getMock(StdOutLogWriter::class, ['writeLogEntries']);
+      $writerTwo = $this->getMockBuilder(StdOutLogWriter::class)
+            ->setMethods(['writeLogEntries'])
+            ->getMock();
       $writerTwo->expects($this->once())
             ->method('writeLogEntries')
             ->will($this->returnCallback(

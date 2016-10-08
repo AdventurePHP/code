@@ -23,7 +23,6 @@ namespace APF\tools\html\taglib;
 use APF\core\loader\RootClassLoader;
 use APF\core\pagecontroller\ImportTemplateTag;
 use Exception;
-use InvalidArgumentException;
 
 /**
  * This is an extension of the core:importdesign taglib. With this taglib you are
@@ -70,56 +69,10 @@ use InvalidArgumentException;
  */
 class LanguageDependentIncParamImportTemplateTag extends ImportTemplateTag {
 
-   /**
-    * Function builds up full name of the template. If some information are missing
-    * they will be replaced by "*". This is necessary to find the files with the glob method.
-    * <p/>
-    * Scheme:
-    * <p/>
-    * If prefix!=''
-    * {prefix}_{lang}_{Identification}_{Name}.html
-    * otherwise:
-    * {lang}_{Identification}_{Name}.html
-    *
-    * @author Werner Liemberger wpublicmail [AT] gmail DOT com
-    * @version
-    * Version 0.1, 28.7.2011<br />
-    *
-    * @param string $prefix
-    * @param string $identification Language-independent template ID (needed to find related templates in different languages.)
-    * @param string $name Language-dependent name
-    * @param string $lang Language which should be used.
-    *
-    * @return string Template file name.
-    */
-   private function getFileName($prefix = '', $identification = '', $name = '', $lang = null) {
-      if ($lang === null) {
-         $lang = $this->getLanguage();
-      }
-      if ($identification == '') {
-         $identification = '*';
-      }
-      if ($name == '') {
-         $name = '*';
-      }
-      if ($prefix != '') {
-         $prefix .= '_';
-      }
-
-      return $prefix . $lang . '_' . $identification . '_' . $name . '.html';
-   }
-
    public function onParseTime() {
 
-      $templateID = $this->getAttribute('template');
-      if ($templateID === null) {
-         throw new InvalidArgumentException('[LanguageDependentIncParamImportTemplateTag::onParseTime()] Attribute "template" is not given!');
-      }
-
-      $namespace = $this->getAttribute('namespace');
-      if ($namespace === null) {
-         throw new InvalidArgumentException('[LanguageDependentIncParamImportTemplateTag::onParseTime()] Attribute "namespace" is not given!');
-      }
+      $templateID = $this->getRequiredAttribute('template');
+      $namespace = $this->getRequiredAttribute('namespace');
 
       $incParam = $this->getAttribute('incparam', 'incparam');
       $prefix = $this->getAttribute('prefix', '');
@@ -186,6 +139,45 @@ class LanguageDependentIncParamImportTemplateTag extends ImportTemplateTag {
 
    private function getRootPath() {
       return RootClassLoader::getLoaderByVendor('APF')->getRootPath();
+   }
+
+   /**
+    * Function builds up full name of the template. If some information are missing
+    * they will be replaced by "*". This is necessary to find the files with the glob method.
+    * <p/>
+    * Scheme:
+    * <p/>
+    * If prefix!=''
+    * {prefix}_{lang}_{Identification}_{Name}.html
+    * otherwise:
+    * {lang}_{Identification}_{Name}.html
+    *
+    * @author Werner Liemberger wpublicmail [AT] gmail DOT com
+    * @version
+    * Version 0.1, 28.7.2011<br />
+    *
+    * @param string $prefix
+    * @param string $identification Language-independent template ID (needed to find related templates in different languages.)
+    * @param string $name Language-dependent name
+    * @param string $lang Language which should be used.
+    *
+    * @return string Template file name.
+    */
+   private function getFileName($prefix = '', $identification = '', $name = '', $lang = null) {
+      if ($lang === null) {
+         $lang = $this->getLanguage();
+      }
+      if ($identification == '') {
+         $identification = '*';
+      }
+      if ($name == '') {
+         $name = '*';
+      }
+      if ($prefix != '') {
+         $prefix .= '_';
+      }
+
+      return $prefix . $lang . '_' . $identification . '_' . $name . '.html';
    }
 
 }

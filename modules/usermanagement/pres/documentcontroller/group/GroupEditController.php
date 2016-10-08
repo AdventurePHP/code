@@ -36,18 +36,18 @@ class GroupEditController extends UmgtBaseController {
 
       $groupId = $this->getRequest()->getParameter('groupid');
 
-      $form = & $this->getForm('GroupEdit');
-      $groupIdField = & $form->getFormElementByName('groupid');
+      $form = $this->getForm('GroupEdit');
+      $groupIdField = $form->getFormElementByName('groupid');
       $groupIdField->setAttribute('value', $groupId);
 
-      $displayName = & $form->getFormElementByName('DisplayName');
-      $description = & $form->getFormElementByName('Description');
+      $displayName = $form->getFormElementByName('DisplayName');
+      $description = $form->getFormElementByName('Description');
 
-      $uM = & $this->getManager();
+      $uM = $this->getManager();
 
-      if ($form->isSent() == true) {
+      if ($form->isSent()) {
 
-         if ($form->isValid() == true) {
+         if ($form->isValid()) {
 
             $group = new UmgtGroup();
             $group->setObjectId($groupId);

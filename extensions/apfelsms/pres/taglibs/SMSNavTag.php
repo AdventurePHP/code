@@ -24,8 +24,8 @@ use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\Page;
 
 /**
- * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
- * @version: v0.1 (08.08.12)
+ * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
+ * @version v0.1 (08.08.12)
  *
  */
 class SMSNavTag extends Document {

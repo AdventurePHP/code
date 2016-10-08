@@ -26,8 +26,8 @@ use APF\extensions\apfelsms\biz\SMSWrongParameterException;
 use APF\tools\link\Url;
 
 /**
- * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
- * @version: v0.1 (03.10.12)
+ * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
+ * @version v0.1 (03.10.12)
  *
  */
 class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {

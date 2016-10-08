@@ -84,7 +84,7 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
 
       $table = 'config_' . $this->getTableNameSuffix($namespace);
 
-      $conn = &$this->getConnection($context, $language);
+      $conn = $this->getConnection($context, $language);
       $select = 'SELECT `section`, `key`, `value` FROM `' . $table . '`
                            WHERE
                               `context` = \'' . $context . '\' AND
@@ -179,7 +179,7 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
       $table = 'config_' . $this->getTableNameSuffix($namespace);
 
       // resolve entries by section since we have a flat structure only
-      $conn = &$this->getConnection($context, $language);
+      $conn = $this->getConnection($context, $language);
       $configName = $this->getConfigName($name);
 
       foreach ($config->getSectionNames() as $sectionName) {
@@ -222,13 +222,13 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
    public function deleteConfiguration($namespace, $context, $language, $environment, $name) {
       $table = 'config_' . $this->getTableNameSuffix($namespace);
 
-      $conn = &$this->getConnection($context, $language);
-      $textStatement = "DELETE FROM `" . $table . "`
+      $conn = $this->getConnection($context, $language);
+      $textStatement = 'DELETE FROM `" . $table . "`
                           WHERE
-                            `context` = '" . $context . "',
-                            `language` = '" . $language . "',
-                            `environment` = '" . $environment . "',
-                            `name` = '" . $this->getConfigName($name) . "'";
+                            `context` = \'' . $context . '\' AND
+                            `language` = \'' . $language . '\' AND
+                            `environment` = \'' . $environment . '\' AND
+                            `name` = \'' . $this->getConfigName($name) . '\'';
       $result = $conn->executeTextStatement($textStatement);
 
       $affectedRows = $conn->getAffectedRows($result);
@@ -236,12 +236,12 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
       if ($affectedRows == 0 && $this->activateEnvironmentFallback === true && $environment !== 'DEFAULT') {
          $environment = 'DEFAULT';
 
-         $textStatement = "DELETE FROM `" . $table . "`
+         $textStatement = 'DELETE FROM `' . $table . '`
                           WHERE
-                            `context` = '" . $context . "',
-                            `language` = '" . $language . "',
-                            `environment` = '" . $environment . "',
-                            `name` = '" . $this->getConfigName($name) . "'";
+                            `context` = \'' . $context . '\' AND,
+                            `language` = \'' . $language . '\' AND,
+                            `environment` = \'' . $environment . '\' AND,
+                            `name` = \'' . $this->getConfigName($name) . '\'';
          $result = $conn->executeTextStatement($textStatement);
 
          $affectedRows = $conn->getAffectedRows($result);

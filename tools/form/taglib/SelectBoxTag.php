@@ -21,7 +21,6 @@
 namespace APF\tools\form\taglib;
 
 use APF\tools\form\mixin\AddSelectBoxEntry;
-use APF\tools\form\validator\FormValidator;
 
 /**
  * Represents an APF select field.
@@ -65,12 +64,18 @@ class SelectBoxTag extends AbstractFormControl {
     * @author Christian Schäfer
     * @version
     * Version 0.1, 07.01.2007<br />
+    * Version 0.2, 03.08.2016 (ID#303: allow hiding via template definition)<br />
     */
    public function onParseTime() {
       $this->extractTagLibTags();
       $value = $this->getRequestValue();
       if ($value !== null) {
          $this->setOption2Selected($value);
+      }
+
+      // ID#303: allow to hide form element by default within a template
+      if ($this->getAttribute('hidden', 'false') === 'true') {
+         $this->hide();
       }
    }
 
@@ -243,7 +248,7 @@ class SelectBoxTag extends AbstractFormControl {
       $this->isDynamicField = true;
 
       // retrieve or lazily create group
-      $group = &$this->getOrCreateGroup($groupLabel);
+      $group = $this->getOrCreateGroup($groupLabel);
 
       // add option to group
       $group->addOption($displayName, $value, $preSelected);
@@ -261,13 +266,13 @@ class SelectBoxTag extends AbstractFormControl {
     * Version 0.1, 07.01.2014<br />
     */
    protected function &getOrCreateGroup($groupLabel) {
-      $group = &$this->getGroup($groupLabel);
+      $group = $this->getGroup($groupLabel);
 
       // lazily create group for convenience reason
       if ($group === null) {
          $tag = new SelectBoxGroupTag();
          $tag->setAttribute('label', $groupLabel);
-         $group = &$this->addEntry($tag);
+         $group = $this->addEntry($tag);
       }
 
       return $group;
@@ -286,6 +291,7 @@ class SelectBoxTag extends AbstractFormControl {
     */
    public function &getGroup($label) {
 
+      /* @var $group SelectBoxGroupTag */
       $group = null;
 
       foreach ($this->children as &$child) {
@@ -313,7 +319,7 @@ class SelectBoxTag extends AbstractFormControl {
       $this->isDynamicField = true;
 
       // retrieve or lazily create group
-      $group = &$this->getOrCreateGroup($groupLabel);
+      $group = $this->getOrCreateGroup($groupLabel);
 
       $group->addOptionTag($option);
    }
@@ -355,9 +361,7 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * Re-implements the addValidator() method for select fields.
-    *
-    * @param FormValidator $validator The desired validator.
+    * Re-implements the isValid() method for select fields.
     *
     * @since 1.11
     *
@@ -366,31 +370,35 @@ class SelectBoxTag extends AbstractFormControl {
     * Version 0.1, 29.08.2009<br />
     * Version 0.2, 05.09.2014 (ID#233: Added support to omit validators for hidden fields)<br />
     */
-   public function addValidator(FormValidator &$validator) {
+   public function isValid() {
 
-      // ID#166: register validator for further usage.
-      $this->validators[] = $validator;
-
-      // Directly execute validator to allow adding validators within tags and
-      // document controllers for both static and dynamic form controls.
+      // ID#307:
+      // Execute validator on being asked by the form to allow adding validators within
+      // tags and document controllers for both static and dynamic form controls.
+      // Further, this allows manipulating visibility and mandatory states within tags
+      // and controllers prior to validation of the form validity state (e.g. for dynamic forms).
       $value = $this->getValue();
 
       // Check both for validator being active and for mandatory fields to allow optional
       // validation (means: field has a registered validator but is sent with empty value).
       // ID#233: add/execute validators only in case the control is visible. Otherwise, this
       // may break the user flow with hidden mandatory fields and users end up in an endless loop.
-      if ($validator->isActive() && $this->isMandatory($value) && $this->isVisible()) {
-         $option = &$this->getSelectedOption();
-         if ($option === null) {
-            $value = null;
-         } else {
-            $value = $option->getAttribute('value');
-         }
+      foreach ($this->validators as &$validator) {
+         if ($validator->isActive() && $this->isMandatoryForValidation($value) && $this->isVisible()) {
+            $option = $this->getSelectedOption();
+            if ($option === null) {
+               $value = null;
+            } else {
+               $value = $option->getAttribute('value');
+            }
 
-         if (!$validator->validate($value)) {
-            $validator->notify();
+            if (!$validator->validate($value)) {
+               $validator->notify();
+            }
          }
       }
+
+      return $this->controlIsValid;
    }
 
    /**
@@ -431,7 +439,7 @@ class SelectBoxTag extends AbstractFormControl {
       foreach ($this->children as &$child) {
 
          if ($child instanceof SelectBoxGroupTag) {
-            $selectedOption = &$child->getSelectedOption();
+            $selectedOption = $child->getSelectedOption();
 
             // Bug-436: exit at the first hit to not overwrite this hit with another miss!
             if ($selectedOption !== null) {

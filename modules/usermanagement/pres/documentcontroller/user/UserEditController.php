@@ -22,7 +22,8 @@ namespace APF\modules\usermanagement\pres\documentcontroller\user;
 
 use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
-use APF\tools\form\taglib\AbstractFormControl;
+use APF\tools\form\FormControl;
+use APF\tools\form\taglib\DateSelectorTag;
 use APF\tools\form\validator\AbstractFormValidator;
 
 /**
@@ -48,26 +49,28 @@ class UserEditController extends UmgtBaseController {
       $userId = $this->getRequest()->getParameter('userid');
 
       // setup the form
-      $form = & $this->getForm('UserForm');
-      $fieldUserId = & $form->getFormElementByName('userid');
+      $form = $this->getForm('UserForm');
+      $fieldUserId = $form->getFormElementByName('userid');
       $fieldUserId->setAttribute('value', $userId);
 
-      $firstName = & $form->getFormElementByName('FirstName');
-      $lastName = & $form->getFormElementByName('LastName');
-      $streetName = & $form->getFormElementByName('StreetName');
-      $streetNumber = & $form->getFormElementByName('StreetNumber');
-      $zipCode = & $form->getFormElementByName('ZIPCode');
-      $city = & $form->getFormElementByName('City');
-      $email = & $form->getFormElementByName('EMail');
-      $mobile = & $form->getFormElementByName('Mobile');
-      $username = & $form->getFormElementByName('Username');
+      $firstName = $form->getFormElementByName('FirstName');
+      $lastName = $form->getFormElementByName('LastName');
+      /* @var $birthday DateSelectorTag */
+      $birthday = $form->getFormElementByName('Birthday');
+      $streetName = $form->getFormElementByName('StreetName');
+      $streetNumber = $form->getFormElementByName('StreetNumber');
+      $zipCode = $form->getFormElementByName('ZIPCode');
+      $city = $form->getFormElementByName('City');
+      $email = $form->getFormElementByName('EMail');
+      $mobile = $form->getFormElementByName('Mobile');
+      $username = $form->getFormElementByName('Username');
 
       // get the manager
-      $uM = & $this->getManager();
+      $uM = $this->getManager();
 
-      if ($form->isSent() == true) {
+      if ($form->isSent()) {
 
-         if ($form->isValid() == true) {
+         if ($form->isValid()) {
 
             // setup the domain object
             $user = new UmgtUser();
@@ -76,6 +79,7 @@ class UserEditController extends UmgtBaseController {
             // read the "normal" fields
             $user->setFirstName($firstName->getValue());
             $user->setLastName($lastName->getValue());
+            $user->setBirthday($birthday->getValue());
             $user->setStreetName($streetName->getValue());
             $user->setStreetNumber($streetNumber->getValue());
             $user->setZIPCode($zipCode->getValue());
@@ -85,8 +89,8 @@ class UserEditController extends UmgtBaseController {
             $user->setUsername($username->getValue());
 
             // read the password field
-            $passField1 = & $form->getFormElementByName('Password');
-            $passField2 = & $form->getFormElementByName('Password2');
+            $passField1 = $form->getFormElementByName('Password');
+            $passField2 = $form->getFormElementByName('Password2');
             $pass1 = $passField1->getAttribute('value');
             $pass2 = $passField2->getAttribute('value');
 
@@ -125,15 +129,16 @@ class UserEditController extends UmgtBaseController {
          $user = $uM->loadUserByID($userId);
 
          // pre-fill form
-         $firstName->setAttribute('value', $user->getFirstName());
-         $lastName->setAttribute('value', $user->getLastName());
-         $streetName->setAttribute('value', $user->getStreetName());
-         $streetNumber->setAttribute('value', $user->getStreetNumber());
-         $zipCode->setAttribute('value', $user->getZIPCode());
-         $city->setAttribute('value', $user->getCity());
-         $email->setAttribute('value', $user->getEMail());
-         $mobile->setAttribute('value', $user->getMobile());
-         $username->setAttribute('value', $user->getUsername());
+         $firstName->setValue($user->getFirstName());
+         $lastName->setValue($user->getLastName());
+         $birthday->setValue($user->getBirthday());
+         $streetName->setValue($user->getStreetName());
+         $streetNumber->setValue($user->getStreetNumber());
+         $zipCode->setValue($user->getZIPCode());
+         $city->setValue($user->getCity());
+         $email->setValue($user->getEMail());
+         $mobile->setValue($user->getMobile());
+         $username->setValue($user->getUsername());
 
          $form->transformOnPlace();
 
@@ -141,11 +146,12 @@ class UserEditController extends UmgtBaseController {
 
    }
 
-   private function getMarkerClass(AbstractFormControl &$control) {
+   private function getMarkerClass(FormControl &$control) {
       $marker = $control->getAttribute(AbstractFormValidator::$CUSTOM_MARKER_CLASS_ATTRIBUTE);
       if (empty($marker)) {
          $marker = AbstractFormValidator::$DEFAULT_MARKER_CLASS;
       }
+
       return $marker;
    }
 

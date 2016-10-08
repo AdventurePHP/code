@@ -53,12 +53,12 @@ class ModelEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testWrongPreviousResult() {
-      $this->setExpectedException(ParserException::class);
+      $this->expectException(ParserException::class);
       new ModelEvaluationExpression('', new DateTime());
    }
 
    public function testMissingPreviousResult() {
-      $this->setExpectedException(ParserException::class);
+      $this->expectException(ParserException::class);
       new ModelEvaluationExpression('', null);
    }
 

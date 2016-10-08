@@ -193,6 +193,18 @@ interface Action extends APFDIService {
    public function isActive();
 
    /**
+    * Indicates if the permission to run the action is granted. Can be overwritten
+    * to include custom permission checks.
+    *
+    * @return boolean True, in case the permission to run the action is granted
+    *
+    * @author dave
+    * @version
+    * Version 0.1, 24.03.2016<br />
+    */
+   public function allowExecution();
+
+   /**
     * Returns the namespace of the action, that is used to refer it within the
     * front controller's action stack.
     *

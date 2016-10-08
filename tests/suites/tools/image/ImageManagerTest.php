@@ -26,17 +26,17 @@ use InvalidArgumentException;
 class ImageManagerTest extends \PHPUnit_Framework_TestCase {
 
    public function testEmptySource() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       ImageManager::resizeImage(null, 10, 10);
    }
 
    public function testEmptyTarget1() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       ImageManager::resizeImage('./test-image.png', 10, 10, null);
    }
 
    public function testEmptyTarget2() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       ImageManager::resizeImage('./test-image.png', 10, 10, '');
    }
 

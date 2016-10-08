@@ -25,8 +25,8 @@ use APF\extensions\apfelsms\biz\sites\SMSSite;
 use APF\tools\string\StringAssistant;
 
 /**
- * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
- * @version: v0.1 (10.08.12)
+ * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
+ * @version v0.1 (10.08.12)
  *
  */
 class SMSSiteTitleTag extends Document {

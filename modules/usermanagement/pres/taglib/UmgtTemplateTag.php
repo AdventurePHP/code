@@ -51,7 +51,7 @@ class UmgtTemplateTag extends TemplateTag {
 
    public function transform() {
       /* @var $condSet UserDependentContentConditionSet */
-      $condSet = &$this->getServiceObject(UserDependentContentConditionSet::class);
+      $condSet = $this->getServiceObject(UserDependentContentConditionSet::class);
 
       if ($condSet->conditionMatches($this->getContext(), $this->getAttribute('condition'), $this->getAttribute('options'))) {
          return parent::transform();

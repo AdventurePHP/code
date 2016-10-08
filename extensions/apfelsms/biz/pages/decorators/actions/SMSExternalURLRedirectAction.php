@@ -27,8 +27,8 @@ use APF\extensions\apfelsms\biz\SMSManager;
 use APF\tools\link\Url;
 
 /**
- * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
- * @version: v0.1 (02.10.12)
+ * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
+ * @version v0.1 (02.10.12)
  *
  */
 class SMSExternalURLRedirectAction extends AbstractFrontcontrollerAction {

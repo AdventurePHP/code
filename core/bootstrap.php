@@ -24,6 +24,8 @@ use APF\core\errorhandler\DefaultErrorHandler;
 use APF\core\errorhandler\GlobalErrorHandler;
 use APF\core\exceptionhandler\DefaultExceptionHandler;
 use APF\core\exceptionhandler\GlobalExceptionHandler;
+use APF\core\expression\taglib\ConditionalPlaceHolderTag;
+use APF\core\expression\taglib\ConditionalTemplateTag;
 use APF\core\filter\ChainedStandardInputFilter;
 use APF\core\filter\InputFilterChain;
 use APF\core\logging\Logger;
@@ -33,6 +35,7 @@ use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\DynamicTemplateExpression;
 use APF\core\pagecontroller\ImportTemplateTag;
 use APF\core\pagecontroller\LanguageLabelTag;
+use APF\core\pagecontroller\LoopTemplateTag;
 use APF\core\pagecontroller\PlaceHolderTag;
 use APF\core\pagecontroller\PlaceHolderTemplateExpression;
 use APF\core\pagecontroller\TemplateTag;
@@ -44,6 +47,16 @@ use APF\extensions\htmllist\taglib\ListElementTag;
 use APF\modules\captcha\pres\taglib\SimpleCaptchaTag;
 use APF\modules\recaptcha\pres\taglib\ReCaptchaTag;
 use APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionLanguageLabelTag;
+use APF\tools\form\mapping\CheckBoxToFormMapper;
+use APF\tools\form\mapping\CheckBoxToModelMapper;
+use APF\tools\form\mapping\ModelToMultiSelectBoxMapper;
+use APF\tools\form\mapping\ModelToRadioButtonMapper;
+use APF\tools\form\mapping\ModelToSelectBoxMapper;
+use APF\tools\form\mapping\MultiSelectBoxToModelMapper;
+use APF\tools\form\mapping\RadioButtonToModelMapper;
+use APF\tools\form\mapping\SelectBoxToModelMapper;
+use APF\tools\form\mapping\StandardControlToModelMapper;
+use APF\tools\form\mapping\StandardModelToFormControlMapper;
 use APF\tools\form\multifileupload\pres\taglib\MultiFileUploadTag;
 use APF\tools\form\taglib\AddFormControlFilterTag;
 use APF\tools\form\taglib\AddFormControlValidatorTag;
@@ -157,7 +170,7 @@ ConfigurationManager::registerProvider('ini', new IniConfigurationProvider());
 // configure logger (outside namespace'd file! otherwise initialization will not work)
 register_shutdown_function(function () {
    /* @var $logger Logger */
-   $logger = &Singleton::getInstance(Logger::class);
+   $logger = Singleton::getInstance(Logger::class);
    $logger->flushLogBuffer();
 });
 
@@ -189,6 +202,10 @@ Document::addTagLib(LanguageLabelTag::class, 'html', 'getstring');
 Document::addTagLib(PlaceHolderTag::class, 'html', 'placeholder');
 
 Document::addTagLib(TemplateTag::class, 'html', 'template');
+Document::addTagLib(LoopTemplateTag::class, 'loop', 'template');
+
+Document::addTagLib(ConditionalPlaceHolderTag::class, 'cond', 'placeholder');
+Document::addTagLib(ConditionalTemplateTag::class, 'cond', 'template');
 
 // APF\tools
 Document::addTagLib(HtmlFormTag::class, 'html', 'form');
@@ -255,3 +272,17 @@ Document::addTagLib(ListElementTag::class, 'list', 'elem_list');
 // shipped with the release to have them available for all templates.
 Document::addTemplateExpression(PlaceHolderTemplateExpression::class);
 Document::addTemplateExpression(DynamicTemplateExpression::class);
+
+// Register form-to-model mappers used to translate/transcribe form values into a DTO/model.
+HtmlFormTag::addFormControlToModelMapper(StandardControlToModelMapper::class);
+HtmlFormTag::addFormControlToModelMapper(RadioButtonToModelMapper::class);
+HtmlFormTag::addFormControlToModelMapper(SelectBoxToModelMapper::class);
+HtmlFormTag::addFormControlToModelMapper(MultiSelectBoxToModelMapper::class);
+HtmlFormTag::addFormControlToModelMapper(CheckBoxToModelMapper::class);
+
+// Register model-to-form mappers used to translate/transcribe DTO/model values into form controls.
+HtmlFormTag::addModelToFormControlMapper(StandardModelToFormControlMapper::class);
+HtmlFormTag::addModelToFormControlMapper(ModelToSelectBoxMapper::class);
+HtmlFormTag::addModelToFormControlMapper(ModelToMultiSelectBoxMapper::class);
+HtmlFormTag::addModelToFormControlMapper(ModelToRadioButtonMapper::class);
+HtmlFormTag::addModelToFormControlMapper(CheckBoxToFormMapper::class);

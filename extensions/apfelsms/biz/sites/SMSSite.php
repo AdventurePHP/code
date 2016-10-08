@@ -23,8 +23,8 @@ namespace APF\extensions\apfelsms\biz\sites;
 use APF\extensions\apfelsms\biz\pages\SMSPage;
 
 /**
- * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
- * @version: v0.1 (30.07.12)
+ * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
+ * @version v0.1 (30.07.12)
  *
  */
 interface SMSSite {

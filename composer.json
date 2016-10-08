@@ -1,14 +1,22 @@
 {
-  "name": "Adventure PHP Framework (APF)",
+  "name": "apf/apf",
+  "description": "Adventure PHP Framework (APF)",
   "homepage": "https://github.com/AdventurePHP/code",
-  "license": "LGPL",
-  "version": "3.1-GIT",
+  "license": "LGPL-3.0+",
+  "version": "3.3",
+  "type": "library",
+  "support": {
+    "issues": "http://tracker.adventure-php-framework.org",
+    "forum": "http://forum.adventure-php-framework.org",
+    "wiki": "http://wiki.adventure-php-framework.org",
+    "docs": "http://adventure-php-framework.org/en"
+  },
   "require": {
-    "php": ">=5.5.0"
+    "php": ">=5.6.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "5.0.*",
-    "phpunit/phpunit-mock-objects": "3.0.*",
-    "phpunit/php-code-coverage": "dev-master#b8436b000263f6d72fbad1d36890e247ce84857e"
+    "phpunit/phpunit": "5.6.*",
+    "phpunit/phpunit-mock-objects": "3.3.*",
+    "phpunit/php-code-coverage": "4.0.*"
   }
 }

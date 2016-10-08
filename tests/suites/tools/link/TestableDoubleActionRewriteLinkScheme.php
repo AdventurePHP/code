@@ -39,6 +39,7 @@ class TestableDoubleActionRewriteLinkScheme extends RewriteLinkScheme {
    public function __construct($actionNamespace, $actionName) {
       $this->actionNamespace = $actionNamespace;
       $this->actionName = $actionName;
+      parent::__construct();
    }
 
    protected function &getFrontcontrollerActions() {

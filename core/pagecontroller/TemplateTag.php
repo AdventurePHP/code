@@ -105,7 +105,7 @@ class TemplateTag extends Document implements Template {
     * Returns the content of the template. Can be used to generate the template output
     * within a document controller. Usage:
     * <pre>
-    * $template = &$this->getTemplate('MyTemplate');
+    * $template = $this->getTemplate('MyTemplate');
     * $template->setPlaceHolder('URL', 'http://adventure-php-framework.org');
     * echo $template->transformTemplate(); // or echo $template; using the __toString() implementation
     * </pre>

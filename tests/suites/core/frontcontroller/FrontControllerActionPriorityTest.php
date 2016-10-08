@@ -88,7 +88,7 @@ class FrontControllerActionPriorityTest extends \PHPUnit_Framework_TestCase {
       PriorityAwareTestAction::$INITIAL_PRIORITY = 15;
       $fC->addAction(self::TEST_ACTION_NAMESPACE, self::TEST_ACTION_NAME);
 
-      $actions = &$fC->getActions();
+      $actions = $fC->getActions();
       $keys = array_keys($actions);
 
       $this->assertEquals(20, $actions[$keys[0]]->getPriority());
@@ -128,7 +128,7 @@ class FrontControllerActionPriorityTest extends \PHPUnit_Framework_TestCase {
       $fC->addAction(self::TEST_ACTION_NAMESPACE, self::TEST_ACTION_NAME, ['id' => '20-2']);
 
 
-      $actions = &$fC->getActions();
+      $actions = $fC->getActions();
       $keys = array_keys($actions);
 
       $this->assertEquals(20, $actions[$keys[0]]->getPriority());

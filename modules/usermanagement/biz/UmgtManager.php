@@ -230,7 +230,7 @@ class UmgtManager extends APFObject {
     * @author Christian Achatz
     * @version
     * Version 0.1, 23.06.2008<br />
-    * Version 0.2, 16.03.2010 (Bugfix 299: moved the service type to the GORM factory call)<br />
+    * Version 0.2, 16.03.2010 (Bug fix 299: moved the service type to the GORM factory call)<br />
     * Version 0.1, 25.08.2011 (Switched to DI configuration)<br />
     */
    public function &getORMapper() {
@@ -454,18 +454,18 @@ class UmgtManager extends APFObject {
     */
    public function loadUserByUserName($username) {
 
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
 
       if (UserFieldEncryptionProvider::propertyHasEncryptionEnabled('Username')) {
          $username = UserFieldEncryptionProvider::encrypt($username);
       }
 
       // escape the input values
-      $dbDriver = &$orm->getDbDriver();
+      $dbDriver = $orm->getDbDriver();
       $username = $dbDriver->escapeValue($username);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user`
+      $select = 'SELECT ent_user.* FROM `ent_user`
                  INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
                  INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
                  WHERE
@@ -580,12 +580,12 @@ class UmgtManager extends APFObject {
     * @version
     * Version 0.1, 15.06.2008<br />
     * Version 0.2, 23.06.2009 (Introduced a generic possibility to create the display name.)<br />
-    * Version 0.3, 20.09.2009 (Bugfix for bug 202. Password was hased twice on update.)<br />
-    * Version 0.4, 27.09.2009 (Bugfix for bug related to 202. Password for new user was not hashed.)<br />
+    * Version 0.3, 20.09.2009 (Bug fix for bug 202. Password was hased twice on update.)<br />
+    * Version 0.4, 27.09.2009 (Bug fix for bug related to 202. Password for new user was not hashed.)<br />
     */
    public function saveUser(UmgtUser &$user) {
 
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
 
       // check, whether user is an existing user, and yes, resolve the
       // password conflict, described under http://forum.adventure-php-framework.org/viewtopic.php?f=8&t=202
@@ -679,23 +679,23 @@ class UmgtManager extends APFObject {
     */
    public function loadUserByDisplayName($displayName) {
 
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
 
       if (UserFieldEncryptionProvider::propertyHasEncryptionEnabled('DisplayName')) {
          $displayName = UserFieldEncryptionProvider::encrypt($displayName);
       }
 
       // escape the input values
-      $dbDriver = &$orm->getDbDriver();
+      $dbDriver = $orm->getDbDriver();
       $displayName = $dbDriver->escapeValue($displayName);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user`
+      $select = 'SELECT ent_user.* FROM `ent_user`
                  INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
                  INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
                  WHERE
                      ent_application.ApplicationID = \'' . $this->applicationId . '\'
-                     AND `DisplayName` = \'' . $displayName . '\';';
+                     AND ent_user.DisplayName = \'' . $displayName . '\';';
 
       return $orm->loadObjectByTextStatement('User', $select);
    }
@@ -713,18 +713,18 @@ class UmgtManager extends APFObject {
     */
    public function loadUserByFirstName($firstName) {
 
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
 
       if (UserFieldEncryptionProvider::propertyHasEncryptionEnabled('FirstName')) {
          $firstName = UserFieldEncryptionProvider::encrypt($firstName);
       }
 
       // escape the input values
-      $dbDriver = &$orm->getDbDriver();
+      $dbDriver = $orm->getDbDriver();
       $firstName = $dbDriver->escapeValue($firstName);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user`
+      $select = 'SELECT ent_user.* FROM `ent_user`
                  INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
                  INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
                  WHERE
@@ -748,18 +748,18 @@ class UmgtManager extends APFObject {
     */
    public function loadUserByLastName($lastName) {
 
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
 
       if (UserFieldEncryptionProvider::propertyHasEncryptionEnabled('LastName')) {
          $lastName = UserFieldEncryptionProvider::encrypt($lastName);
       }
 
       // escape the input values
-      $dbDriver = &$orm->getDbDriver();
+      $dbDriver = $orm->getDbDriver();
       $lastName = $dbDriver->escapeValue($lastName);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user`
+      $select = 'SELECT ent_user.* FROM `ent_user`
                  INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
                  INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
                  WHERE
@@ -784,7 +784,7 @@ class UmgtManager extends APFObject {
     */
    public function loadUserByFirstNameAndLastName($firstName, $lastName) {
 
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
 
       if (UserFieldEncryptionProvider::propertyHasEncryptionEnabled('FirstName')) {
          $firstName = UserFieldEncryptionProvider::encrypt($firstName);
@@ -794,12 +794,12 @@ class UmgtManager extends APFObject {
       }
 
       // escape the input values
-      $dbDriver = &$orm->getDbDriver();
+      $dbDriver = $orm->getDbDriver();
       $firstName = $dbDriver->escapeValue($firstName);
       $lastName = $dbDriver->escapeValue($lastName);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user`
+      $select = 'SELECT ent_user.* FROM `ent_user`
                  INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
                  INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
                  WHERE
@@ -848,18 +848,18 @@ class UmgtManager extends APFObject {
     */
    public function loadUserByEMail($email) {
 
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
 
       if (UserFieldEncryptionProvider::propertyHasEncryptionEnabled('EMail')) {
          $email = UserFieldEncryptionProvider::encrypt($email);
       }
 
       // escape the input values
-      $dbDriver = &$orm->getDbDriver();
+      $dbDriver = $orm->getDbDriver();
       $email = $dbDriver->escapeValue($email);
 
       // create the statement and select user
-      $select = 'SELECT * FROM `ent_user`
+      $select = 'SELECT ent_user.* FROM `ent_user`
                  INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
                  INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
                  WHERE
@@ -884,7 +884,7 @@ class UmgtManager extends APFObject {
     */
    public function loadUserPermissions(UmgtUser $user) {
 
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
 
       // load all roles by the user itself and it's groups
       $select = 'SELECT DISTINCT `ent_role`.`RoleID`
@@ -1100,7 +1100,7 @@ class UmgtManager extends APFObject {
     */
    public function attachUser2Groups(UmgtUser $user, array $groups) {
 
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
 
       // create associations
       for ($i = 0; $i < count($groups); $i++) {
@@ -1136,7 +1136,7 @@ class UmgtManager extends APFObject {
     * Version 0.1, 29.12.2008<br />
     */
    public function attachUsersToRole(array $users, UmgtRole $role) {
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
       foreach ($users as $user) {
          $orm->createAssociation('Role2User', $role, $user);
       }
@@ -1185,7 +1185,7 @@ class UmgtManager extends APFObject {
     * @param UmgtGroup[] $groups
     */
    public function attachRoleToGroups(UmgtRole $role, array $groups) {
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
       foreach ($groups as $group) {
          $orm->createAssociation('Role2Group', $role, $group);
       }
@@ -1196,7 +1196,7 @@ class UmgtManager extends APFObject {
     * @param UmgtGroup[] $groups
     */
    public function detachRoleToGroups(UmgtRole $role, array $groups) {
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
       foreach ($groups as $group) {
          $orm->deleteAssociation('Role2Group', $role, $group);
       }
@@ -1556,7 +1556,7 @@ class UmgtManager extends APFObject {
     */
    public function attachPermission2Roles(UmgtPermission $permission, array $roles) {
 
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
 
       foreach ($roles as $role) {
          $orm->createAssociation('Role2Permission', $role, $permission);
@@ -1570,7 +1570,7 @@ class UmgtManager extends APFObject {
     */
    public function detachPermissionFromRoles(UmgtPermission $permission, array $roles) {
 
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
 
       foreach ($roles as $role) {
          $orm->deleteAssociation('Role2Permission', $role, $permission);
@@ -1582,7 +1582,7 @@ class UmgtManager extends APFObject {
     * @param UmgtRole $role The role to add the permissions to.
     */
    public function attachPermissions2Role(array $permissions, UmgtRole $role) {
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
       foreach ($permissions as $permission) {
          $orm->createAssociation('Role2Permission', $role, $permission);
       }
@@ -1593,7 +1593,7 @@ class UmgtManager extends APFObject {
     * @param UmgtRole $role The role to remove the permissions from.
     */
    public function detachPermissionsFromRole(array $permissions, UmgtRole $role) {
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
       foreach ($permissions as $permission) {
          $orm->deleteAssociation('Role2Permission', $role, $permission);
       }
@@ -1610,7 +1610,7 @@ class UmgtManager extends APFObject {
     * Version 0.1, 07.09.2011<br />
     */
    public function attachGroupToRoles(UmgtGroup $group, array $roles) {
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
       foreach ($roles as $role) {
          $orm->createAssociation('Role2Group', $role, $group);
       }
@@ -1627,7 +1627,7 @@ class UmgtManager extends APFObject {
     * Version 0.1, 07.09.2011<br />
     */
    public function detachGroupFromRoles(UmgtGroup $group, array $roles) {
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
       foreach ($roles as $role) {
          $orm->deleteAssociation('Role2Group', $role, $group);
       }
@@ -1650,7 +1650,7 @@ class UmgtManager extends APFObject {
     */
    public function createVisibilityDefinition(UmgtVisibilityDefinitionType $type, UmgtVisibilityDefinition $definition, array $users = [], array $groups = []) {
 
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
 
       // try to reuse existing visibility definitions having the same
       // combination of proxy + type!
@@ -1713,7 +1713,7 @@ class UmgtManager extends APFObject {
     * Version 0.1, 05.06.2010<br />
     */
    public function detachUsersFromVisibilityDefinition(UmgtVisibilityDefinition $definition, array $users) {
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
       foreach ($users as $user) {
          $orm->deleteAssociation('AppProxy2User', $definition, $user);
       }
@@ -1730,7 +1730,7 @@ class UmgtManager extends APFObject {
     * Version 0.1, 05.06.2010<br />
     */
    public function detachGroupsFromVisibilityDefinition(UmgtVisibilityDefinition $definition, array $groups) {
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
       foreach ($groups as $group) {
          $orm->deleteAssociation('AppProxy2Group', $definition, $group);
       }
@@ -1747,7 +1747,7 @@ class UmgtManager extends APFObject {
     * Version 0.1, 05.06.2010<br />
     */
    public function attachUsers2VisibilityDefinition(UmgtVisibilityDefinition $definition, array $users) {
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
       foreach ($users as $user) {
          $orm->createAssociation('AppProxy2User', $definition, $user);
       }
@@ -1764,7 +1764,7 @@ class UmgtManager extends APFObject {
     * Version 0.1, 05.06.2010<br />
     */
    public function attachGroups2VisibilityDefinition(UmgtVisibilityDefinition $definition, array $groups) {
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
       foreach ($groups as $group) {
          $orm->createAssociation('AppProxy2Group', $definition, $group);
       }
@@ -2023,7 +2023,7 @@ class UmgtManager extends APFObject {
     */
    public function deleteVisibilityDefinitionType(UmgtVisibilityDefinitionType &$proxyType) {
       $proxies = $this->loadVisibilityDefinitionsByType($proxyType);
-      $orm = &$this->getORMapper();
+      $orm = $this->getORMapper();
       foreach ($proxies as $proxy) {
          $orm->deleteObject($proxy);
       }
@@ -2195,6 +2195,24 @@ class UmgtManager extends APFObject {
             UserFieldEncryptionProvider::$encryptionConfigKey = $section->getValue('Key', '');
          }
       }
+   }
+
+   /**
+    * Loads the user by the generated ForgotPasswordHash
+    *
+    * @param string $hash The hash to reset the password
+    *
+    * @return UmgtUser|null The corresponding user or null if the user cannot be found.
+    *
+    * @author dave
+    * @version
+    * Version 0.1, 29.10.15<br />
+    */
+   public function loadUserByForgotPasswordHash($hash) {
+      $crit = new GenericCriterionObject();
+      $crit->addPropertyIndicator('ForgotPasswordHash', $hash);
+
+      return $this->getORMapper()->loadObjectByCriterion('User', $crit);
    }
 
 }

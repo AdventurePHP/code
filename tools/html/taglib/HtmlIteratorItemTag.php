@@ -45,26 +45,27 @@ class HtmlIteratorItemTag extends Document {
    }
 
    /**
-    * Returns the place holders defined within the item, to be filled
-    * te desired values.
+    * Returns the list of place holder names defined within the item, to be filled
+    * with the desired values.
     *
-    * @return PlaceHolderTag[] The list of place holders.
+    * @return string[] The list of place holder names.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 19.10.2009<br />
+    * Version 0.2, 12.03.2016 (ID#287: switched to different place holder concept)<br />
     */
-   public function &getPlaceHolders() {
-      $placeHolders = [];
+   public function &getPlaceHolderNames() {
+      $placeHolderNames = [];
       if (count($this->children) > 0) {
          foreach ($this->children as &$child) {
             if ($child instanceof PlaceHolderTag) {
-               $placeHolders[] = &$child;
+               $placeHolderNames[] = $child->getAttribute('name');
             }
          }
       }
 
-      return $placeHolders;
+      return $placeHolderNames;
    }
 
 }

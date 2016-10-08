@@ -1,0 +1,68 @@
+<@controller
+class="APF\modules\usermanagement\pres\documentcontroller\login\ResetPasswordController"
+@>
+<html:form class="umgt-fe-resetpw" autocomplete="off" name="resetpw" method="post">
+    <div>
+        ${resetpw-error}
+        <label for="umgt-fe-resetpw-password">
+            <html:getstring
+                    namespace="APF\modules\usermanagement\pres"
+                    config="labels.ini"
+                    entry="resetpw.form.password.label"/>
+        </label>
+        <form:password id="umgt-fe-resetpw-password" name="password" maxlength="100" ref="password-repeat"/>
+
+        <label for="umgt-fe-resetpw-password-repeat">
+            <html:getstring
+                    namespace="APF\modules\usermanagement\pres"
+                    config="labels.ini"
+                    entry="resetpw.form.password.repeat.label"/>
+        </label>
+        <form:password id="umgt-fe-resetpw-password-repeat" maxlength="100" name="password-repeat"/>
+
+        <form:button id="umgt-fe-forgotpw-send" name="sendFormResetPw">
+            <button:getstring
+                    namespace="APF\modules\usermanagement\pres"
+                    config="labels.ini"
+                    entry="forgotpw.form.button.label"/>
+        </form:button>
+
+        <form:addvalidator
+                class="APF\tools\form\validator\FieldCompareValidator"
+                button="sendFormResetPw"
+                control="password"
+                />
+        <form:addvalidator
+                class="APF\tools\form\validator\TextLengthValidator"
+                button="sendFormResetPw"
+                control="password|password-repeat"
+                />
+    </div>
+</html:form>
+
+<html:template name="resetpw-error">
+    <div class="credentials-error">
+        <html:getstring
+                namespace="APF\modules\usermanagement\pres"
+                config="labels.ini"
+                entry="resetpw.credentials.error"/>
+    </div>
+</html:template>
+
+<html:template name="system-error">
+    <div class="system-error">
+        <html:getstring
+                namespace="APF\modules\usermanagement\pres"
+                config="labels.ini"
+                entry="resetpw.system.error"/>
+    </div>
+</html:template>
+
+<html:template name="resetpw-success">
+    <div class="credentials-ok">
+        <html:getstring
+                namespace="APF\modules\usermanagement\pres"
+                config="labels.ini"
+                entry="resetpw.success"/>
+    </div>
+</html:template>

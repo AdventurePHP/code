@@ -38,8 +38,8 @@ class GuestbookDeleteEntryController extends GuestbookBackendBaseController {
          $this->displayEntrySelection('delete');
       } else {
 
-         $form_yes = & $this->getForm('delete_yes');
-         $form_no = & $this->getForm('delete_no');
+         $form_yes = $this->getForm('delete_yes');
+         $form_no = $this->getForm('delete_no');
 
          if ($form_no->isSent() || $form_yes->isSent()) {
 
@@ -52,11 +52,11 @@ class GuestbookDeleteEntryController extends GuestbookBackendBaseController {
             $this->getGuestbookService()->deleteEntry($entry);
          } else {
 
-            $hidden_yes_entryid = & $form_yes->getFormElementByName('entryid');
+            $hidden_yes_entryid = $form_yes->getFormElementByName('entryid');
             $hidden_yes_entryid->setAttribute('value', $entryId);
             $form_yes->transformOnPlace();
 
-            $hidden_no_entryid = & $form_no->getFormElementByName('entryid');
+            $hidden_no_entryid = $form_no->getFormElementByName('entryid');
             $hidden_no_entryid->setAttribute('value', $entryId);
             $form_no->transformOnPlace();
 

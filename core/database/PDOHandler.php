@@ -46,6 +46,12 @@ class PDOHandler extends AbstractDatabaseHandler {
     */
    public function __construct() {
       $this->dbLogTarget = 'pdo';
+
+      // Allow database connection verification with full exception handling support (see discussion under
+      // http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=614&p=20409#p20409)
+      if (!extension_loaded('PDO')) {
+         throw new DatabaseHandlerException('PHP extension "PDO" not loaded! Please verify your PHP configuration.');
+      }
    }
 
    public function init($initParam) {
@@ -56,44 +62,6 @@ class PDOHandler extends AbstractDatabaseHandler {
       }
 
       parent::init($initParam);
-   }
-
-   /**
-    * Provides internal service to open a database connection.
-    *
-    * @author Tobias Lückel (megger)
-    * @version
-    * Version 0.1, 11.04.2012<br />
-    */
-   protected function connect() {
-
-      // get dsn based on the configuration
-      $dsn = $this->getDSN();
-
-      // log dsn if debugging is active
-      if ($this->dbDebug === true) {
-         $this->dbLog->logEntry($this->dbLogTarget, '[PDOHandler::connect()] Current DSN: ' . $dsn, LogEntry::SEVERITY_DEBUG);
-      }
-
-      // connect to database
-      $this->dbConn = new \PDO($dsn, $this->dbUser, $this->dbPass);
-
-      // switch errormode of PDO to exceptions
-      $this->dbConn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
-      // configure client connection
-      $this->initCharsetAndCollation();
-   }
-
-   /**
-    * Provides internal service to close a database connection.
-    *
-    * @author Tobias Lückel (megger)
-    * @version
-    * Version 0.1, 11.04.2012<br />
-    */
-   protected function close() {
-      $this->dbConn = null;
    }
 
    /**
@@ -251,7 +219,7 @@ class PDOHandler extends AbstractDatabaseHandler {
     * @param \PDOStatement $pdoStatement The PDOStatement returned by executeStatement() or executeTextStatement().
     * @param int $type The type the returned data should have. Use the static *_FETCH_MODE constants.
     *
-    * @return string[] The associative result array. Returns false if no row was found.
+    * @return string[]|false The associative result array. Returns false if no row was found.
     *
     * @author Tobias Lückel (megger)
     * @version
@@ -328,6 +296,33 @@ class PDOHandler extends AbstractDatabaseHandler {
    }
 
    /**
+    * Provides internal service to open a database connection.
+    *
+    * @author Tobias Lückel (megger)
+    * @version
+    * Version 0.1, 11.04.2012<br />
+    */
+   protected function connect() {
+
+      // get dsn based on the configuration
+      $dsn = $this->getDSN();
+
+      // log dsn if debugging is active
+      if ($this->dbDebug === true) {
+         $this->dbLog->logEntry($this->dbLogTarget, '[PDOHandler::connect()] Current DSN: ' . $dsn, LogEntry::SEVERITY_DEBUG);
+      }
+
+      // connect to database
+      $this->dbConn = new \PDO($dsn, $this->dbUser, $this->dbPass);
+
+      // switch errormode of PDO to exceptions
+      $this->dbConn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+      // configure client connection
+      $this->initCharsetAndCollation();
+   }
+
+   /**
     * Returns the data source name (DSN) for the database connection.
     * The string is build bases on the configuration parameter 'PDO'
     * Actual following db drivers are supported:
@@ -364,5 +359,16 @@ class PDOHandler extends AbstractDatabaseHandler {
       }
 
       return $dsn;
+   }
+
+   /**
+    * Provides internal service to close a database connection.
+    *
+    * @author Tobias Lückel (megger)
+    * @version
+    * Version 0.1, 11.04.2012<br />
+    */
+   protected function close() {
+      $this->dbConn = null;
    }
 }

@@ -53,7 +53,7 @@ class Weather2Controller extends BaseDocumentController {
       } else {
 
          // Display error message
-         $templateNoEntries = & $this->getTemplate('NoEntries_' . $this->language);
+         $templateNoEntries = $this->getTemplate('NoEntries_' . $this->language);
          $templateNoEntries->setPlaceHolder('Source', $this->getXMLSource());
          $templateNoEntries->transformOnPlace();
       }
@@ -73,7 +73,7 @@ class Weather2Controller extends BaseDocumentController {
    protected function transformXml($XML) {
 
       // Get references on the templates used
-      $Template__Information = & $this->getTemplate('Information');
+      $Template__Information = $this->getTemplate('Information');
 
       // Create DOM document and get an reference on the channel node
       $DomDoc = simplexml_load_string($XML);

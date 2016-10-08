@@ -91,7 +91,7 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
       $packager = $this->getServiceObject(JsCssPackager::class);
       $output = $packager->getPackage($packName, $this->gzipIsSupported());
 
-      $response = &$this->getResponse();
+      $response = $this->getResponse();
 
       // Get ClientCachePeriod (in days), and convert to seconds
       $clientCachePeriod = $packager->getClientCachePeriod($packName) * 86400;
@@ -165,7 +165,7 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
       // get MIME type and verify correct extension
       $mimeType = $this->getMimeType($type);
 
-      $response = &$this->getResponse();
+      $response = $this->getResponse();
 
       $this->addHeaders($response, $this->ttl, $mimeType);
 

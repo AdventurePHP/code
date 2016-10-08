@@ -96,39 +96,35 @@ use InvalidArgumentException;
 final class DIServiceManager {
 
    /**
+    * Defines the configuration extension and thus the file type to be used for DI service configurations.
+    *
+    * @var string $configurationExtension
+    */
+   public static $configurationExtension = 'ini';
+   /**
     * Injection call cache to avoid circular injections.
     *
     * @var array $INJECTION_CALL_CACHE
     */
    private static $INJECTION_CALL_CACHE = [];
-
    /**
     * Contains the service objects, that were already configured.
     *
     * @var array $SERVICE_OBJECT_CACHE
     */
    private static $SERVICE_OBJECT_CACHE = [];
-
    /**
     * Contains the configuration of already delivered services
     *
     * @var array $SERVICE_CONFIG_CACHE
     */
    private static $SERVICE_CONFIG_CACHE = [];
-
    /**
     * Contains the cached service types
     *
     * @var array $SERVICE_TYPE_CACHE
     */
    private static $SERVICE_TYPE_CACHE = [];
-
-   /**
-    * Defines the configuration extension and thus the file type to be used for DI service configurations.
-    *
-    * @var string $configurationExtension
-    */
-   public static $configurationExtension = 'ini';
 
    /**
     * Returns the initialized service object.
@@ -166,7 +162,7 @@ final class DIServiceManager {
 
       // Invoke benchmarker. Suppress warning for already started timers with circular calls!
       // Suppressing is here done by a dirty '@', because we will run into an error anyway.
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
       /* @var $t BenchmarkTimer */
       $benchId = 'DIServiceManager::getServiceObject(' . $configNamespace . ',' . $sectionName . ',' . $context . ',' . $language . ')';
       @$t->start($benchId);
@@ -259,8 +255,7 @@ final class DIServiceManager {
 
             // be aware of the params needed for injection
             $method = $directive->getValue('method');
-            $value = $directive->getValue('value');
-            if ($method === null || $value === null) {
+            if ($method === null) {
                throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Initialization of the'
                      . ' service object "' . $sectionName . '" cannot be accomplished, due to'
                      . ' incorrect configuration! Please revise the "' . $initKey . '" sub section and'
@@ -268,13 +263,30 @@ final class DIServiceManager {
             }
 
             // check, if method exists to avoid fatal errors
-            if (method_exists($serviceObject, $method)) {
-               $serviceObject->$method($value);
-            } else {
+            if (!method_exists($serviceObject, $method)) {
                throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Injection of'
                      . ' configuration value "' . $directive->getValue('value') . '" cannot be accomplished'
                      . ' to service object "' . $class . '"! Method ' . $method . '() is not implemented!',
                      E_USER_ERROR);
+            }
+
+            if (($value = $directive->getValue('value')) !== null) {
+               $serviceObject->$method($value);
+            } else {
+               if (!$directive->hasSection('value')) {
+                  throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Initialization of the'
+                        . ' service object "' . $sectionName . '" cannot be accomplished, due to'
+                        . ' missing value(s) for method ' . $method . '()! Please revise the "' . $initKey . '" sub section and'
+                        . ' consult the manual!', E_USER_ERROR);
+               }
+
+               $cfSubSection = $directive->getSection('value');
+
+               $values = [];
+               foreach ($cfSubSection->getValueNames() as $valueName) {
+                  $values[] = $cfSubSection->getValue($valueName);
+               }
+               call_user_func_array([$serviceObject, $method], $values);
             }
          }
       }
@@ -307,7 +319,7 @@ final class DIServiceManager {
             if (isset(self::$INJECTION_CALL_CACHE[$injectionKey]) && $serviceType != APFService::SERVICE_TYPE_NORMAL) {
 
                // append error to log to provide debugging information
-               $log = &Singleton::getInstance(Logger::class);
+               $log = Singleton::getInstance(Logger::class);
                /* @var $log Logger */
                $instructions = '';
                foreach (self::$INJECTION_CALL_CACHE as $injectionInstruction => $DUMMY) {

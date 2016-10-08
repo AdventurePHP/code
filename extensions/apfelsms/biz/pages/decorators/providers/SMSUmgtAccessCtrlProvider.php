@@ -69,7 +69,7 @@ class SMSUmgtAccessCtrlProvider extends APFObject implements SMSAccessCtrlProvid
       }
 
       /** @var $umgtUS UmgtUserSessionStore */
-      $umgtUS = &$this->getServiceObject(UmgtUserSessionStore::class, [], APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      $umgtUS = $this->getServiceObject(UmgtUserSessionStore::class, [], APFService::SERVICE_TYPE_SESSION_SINGLETON);
 
       // load current user
       $user = $umgtUS->getUser($this->getContext());
@@ -80,7 +80,7 @@ class SMSUmgtAccessCtrlProvider extends APFObject implements SMSAccessCtrlProvid
       }
 
       /** @var $umgtM UmgtManager */
-      $umgtM = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
+      $umgtM = $this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
 
       $permissions = $umgtM->loadUserPermissions($user);
 

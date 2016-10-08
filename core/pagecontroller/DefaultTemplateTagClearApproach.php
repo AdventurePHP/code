@@ -33,15 +33,16 @@ namespace APF\core\pagecontroller;
  * @author Christian Achatz
  * @version
  * Version 0.1, 03.05.2013<br />
+ * Version 0.2, 12.03.2016 (ID#287: update to new place holder scheme)<br />
  */
 class DefaultTemplateTagClearApproach implements TemplateTagClearApproach {
 
    public function clear(TemplateTag &$node) {
-      $children = &$node->getChildren();
-      foreach ($children as &$child) {
-         if ($child instanceof PlaceHolderTag) {
-            $child->setContent('');
-         }
+      // clear place holder for current document
+      $node->clearPlaceHolders();
+
+      // clear language label place holders
+      foreach ($node->getChildren() as &$child) {
          if ($child instanceof LanguageLabelTag) {
             $child->clearPlaceHolders();
          }

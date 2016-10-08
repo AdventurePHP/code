@@ -23,7 +23,7 @@ namespace APF\tools\form\taglib;
 use APF\tools\form\FormException;
 
 /**
- * Represents the APF multiselect field.
+ * Represents the APF multi select field.
  *
  * @author Christian Achatz
  * @version
@@ -58,6 +58,7 @@ class MultiSelectBoxTag extends SelectBoxTag {
     * Version 0.1, 15.01.2007<br />
     * Version 0.2, 07.06.2008 (Extended error message)<br />
     * Version 0.3, 15.08.2008 (Extended error message with the name of the control)<br />
+    * Version 0.4, 03.08.2016 (ID#303: allow hiding via template definition)<br />
     */
    public function onParseTime() {
 
@@ -68,8 +69,8 @@ class MultiSelectBoxTag extends SelectBoxTag {
       // that we can address the element with it's plain name in the template.
       $name = $this->getAttribute('name');
       if (substr_count($name, '[') > 0 || substr_count($name, ']') > 0) {
-         $form = &$this->getForm();
-         $doc = &$form->getParentObject();
+         $form = $this->getForm();
+         $doc = $form->getParentObject();
          $docCon = get_class($doc->getDocumentController());
          throw new FormException('[MultiSelectBoxTag::onParseTime()] The attribute "name" of the '
                . '&lt;form:multiselect /&gt; tag with name "' . $this->attributes['name']
@@ -80,6 +81,11 @@ class MultiSelectBoxTag extends SelectBoxTag {
       }
 
       $this->presetValue();
+
+      // ID#303: allow to hide form element by default within a template
+      if ($this->getAttribute('hidden', 'false') === 'true') {
+         $this->hide();
+      }
    }
 
    /**

@@ -45,7 +45,7 @@ class MultiFileGetFileAction extends AbstractFrontcontrollerAction {
       if ($fieldName !== null && $formName !== null && $uploadName !== null) {
 
          /* @var $manager MultiFileUploadManager */
-         $manager = &$this->getServiceObject(
+         $manager = $this->getServiceObject(
                MultiFileUploadManager::class,
                ['formname' => $formName, 'name' => $fieldName]
          );

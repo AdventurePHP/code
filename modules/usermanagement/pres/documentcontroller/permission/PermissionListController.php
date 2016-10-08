@@ -34,12 +34,12 @@ class PermissionListController extends UmgtBaseController {
    public function transformContent() {
 
       // load the permission list
-      $uM = & $this->getManager();
+      $uM = $this->getManager();
       $permissionList = $uM->getPagedPermissionList();
 
       // display list
       $buffer = (string) '';
-      $template = & $this->getTemplate('Permission');
+      $template = $this->getTemplate('Permission');
       foreach ($permissionList as $permission) {
          $template->setPlaceHolder('DisplayName', $permission->getDisplayName());
          $template->setPlaceHolder('Name', $permission->getName());

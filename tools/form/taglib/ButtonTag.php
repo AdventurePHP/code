@@ -54,7 +54,7 @@ class ButtonTag extends AbstractFormControl {
    public function onParseTime() {
 
       $buttonName = $this->getAttribute('name');
-      $form = &$this->getForm();
+      $form = $this->getForm();
       if ($buttonName === null) {
          $formName = $form->getAttribute('name');
          throw new FormException('[ButtonTag::onAfterAppend()] Missing required attribute '
@@ -79,6 +79,11 @@ class ButtonTag extends AbstractFormControl {
 
       // parse button:getstring tags
       $this->extractTagLibTags();
+
+      // ID#303: allow to hide form element by default within a template
+      if ($this->getAttribute('hidden', 'false') === 'true') {
+         $this->hide();
+      }
    }
 
    /**

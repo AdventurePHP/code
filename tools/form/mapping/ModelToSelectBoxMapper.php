@@ -18,18 +18,29 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-namespace APF\tools\form\validator;
+namespace APF\tools\form\mapping;
+
+use APF\tools\form\FormControl;
+use APF\tools\form\ModelToFormControlMapper;
+use APF\tools\form\taglib\MultiSelectBoxTag;
+use APF\tools\form\taglib\SelectBoxTag;
 
 /**
- * Implements a base class for all select field validators.
- * <p/>
- * As of release 1.12, this class is empty but present, because form validation
- * marking is done by css classes now.
+ * Fills a select box with the real values of a model.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 29.08.2009<br />
+ * Version 0.1, 02.07.2016 (ID#297: introduced mapper for model values to select boxes)<br />
  */
-abstract class SelectFieldValidator extends TextFieldValidator {
+class ModelToSelectBoxMapper implements ModelToFormControlMapper {
+
+   public static function applies(FormControl $control) {
+      return $control instanceof SelectBoxTag && !($control instanceof MultiSelectBoxTag);
+   }
+
+   public static function setValue(FormControl &$control, $value) {
+      /* @var $control SelectBoxTag */
+      $control->setOption2Selected($value);
+   }
 
 }

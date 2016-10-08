@@ -86,7 +86,7 @@ class PhpConfigurationProviderTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testFailToLoadConfigurationFile() {
-      $this->setExpectedException(ConfigurationException::class);
+      $this->expectException(ConfigurationException::class);
       ConfigurationManager::loadConfiguration(self::TEST_VENDOR, null, null, self::TEST_ENVIRONMENT, 'non-existing.php');
    }
 

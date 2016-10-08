@@ -249,9 +249,9 @@ class BaseMapper extends APFObject {
     * Version 0.1, 16.03.2010 (Introduced due to bug 299)<br />
     */
    protected function createDatabaseConnection() {
-      $cM = &$this->getServiceObject(ConnectionManager::class);
       /* @var $cM ConnectionManager */
-      $this->dbDriver = &$cM->getConnection($this->connectionName);
+      $cM = $this->getServiceObject(ConnectionManager::class);
+      $this->dbDriver = $cM->getConnection($this->connectionName);
    }
 
    /**
@@ -266,7 +266,7 @@ class BaseMapper extends APFObject {
     */
    public function addMappingConfiguration($configNamespace, $configNameAffix) {
 
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
       /* @var $t BenchmarkTimer */
       $t->start('BaseMapper::addMappingConfiguration()');
 
@@ -375,7 +375,7 @@ class BaseMapper extends APFObject {
     */
    public function addRelationConfiguration($configNamespace, $configNameAffix) {
 
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
       /* @var $t BenchmarkTimer */
       $t->start('BaseMapper::addRelationConfiguration()');
 
@@ -463,7 +463,7 @@ class BaseMapper extends APFObject {
     */
    public function addDomainObjectsConfiguration($configNamespace, $configNameAffix) {
 
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
       /* @var $t BenchmarkTimer */
       $t->start('BaseMapper::addDomainObjectsConfiguration()');
 

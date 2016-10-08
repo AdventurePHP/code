@@ -26,10 +26,10 @@ class ProxyTypeDeleteController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $formNo = &$this->getForm('ProxyTypeDelNo');
-      $formYes = &$this->getForm('ProxyTypeDelYes');
+      $formNo = $this->getForm('ProxyTypeDelNo');
+      $formYes = $this->getForm('ProxyTypeDelYes');
 
-      $uM = &$this->getManager();
+      $uM = $this->getManager();
       $proxyTypeId = $this->getRequest()->getParameter('proxytypeid');
       $proxyType = $uM->loadVisibilityDefinitionTypeById($proxyTypeId);
 

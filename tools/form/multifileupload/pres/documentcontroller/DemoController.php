@@ -34,7 +34,7 @@ class DemoController extends BaseDocumentController {
 
    public function transformContent() {
 
-      $form = & $this->getForm('file_upload');
+      $form = $this->getForm('file_upload');
 
       /* @var $uploadTest MultiFileUploadTag */
       $uploadTest = $form->getFormElementByName('testfield');

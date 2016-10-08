@@ -92,7 +92,7 @@ abstract class BBCodeParserProvider extends APFObject {
 /**
  * Implements the advanced bbcode parser for the adventure php framework.
  * Usage:
- * <pre>$bP = &$this->getServiceObject(AdvancedBBCodeParser::class);
+ * <pre>$bP = $this->getServiceObject(AdvancedBBCodeParser::class);
  * [$bP->addProvider(...,...);]
  * [$bP->removeProvider(...);]
  * $string = '...';
@@ -165,7 +165,7 @@ class AdvancedBBCodeParser extends APFObject {
     */
    public function parseCode($string) {
 
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
       /* @var $t BenchmarkTimer */
       $t->start('AdvancedBBCodeParser::parseCode()');
 
@@ -193,7 +193,7 @@ class AdvancedBBCodeParser extends APFObject {
     */
    private function setUpProvider() {
 
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
       /* @var $t BenchmarkTimer */
       $t->start('AdvancedBBCodeParser::setUpProvider()');
 

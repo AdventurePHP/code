@@ -71,9 +71,9 @@ trait FormControlFinder {
       if ($this instanceof HtmlForm) {
          $form = &$this;
       } else {
-         $form = &$this->getForm();
+         $form = $this->getForm();
       }
-      $parent = &$form->getParentObject();
+      $parent = $form->getParentObject();
       $docCon = get_class($parent->getDocumentController());
       throw new FormException('[' . get_class($this) . '::getFormElementByID()] No form element with id "'
             . $id . '" composed in current form "' . $form->getAttribute('name')
@@ -124,9 +124,9 @@ trait FormControlFinder {
       if ($this instanceof HtmlForm) {
          $form = &$this;
       } else {
-         $form = &$this->getForm();
+         $form = $this->getForm();
       }
-      $parent = &$form->getParentObject();
+      $parent = $form->getParentObject();
       $docCon = get_class($parent->getDocumentController());
       throw new FormException('[' . get_class($this) . '::getFormElementByName()] No form element with name "'
             . $name . '" composed in current form "' . $form->getAttribute('name')
@@ -168,9 +168,9 @@ trait FormControlFinder {
       if ($this instanceof HtmlForm) {
          $form = &$this;
       } else {
-         $form = &$this->getForm();
+         $form = $this->getForm();
       }
-      $parent = &$form->getParentObject();
+      $parent = $form->getParentObject();
       $docCon = get_class($parent->getDocumentController());
       throw new FormException('[' . get_class($this) . '::getLabel()] No label found with name "' . $name
             . '" composed in form with name "' . $form->getAttribute('name') . '" for document controller "'
@@ -214,7 +214,7 @@ trait FormControlFinder {
       if ($this instanceof HtmlForm) {
          $form = &$this;
       } else {
-         $form = &$this->getForm();
+         $form = $this->getForm();
       }
 
       $tagClassName = $form->getTagClass($tagName);
@@ -239,7 +239,7 @@ trait FormControlFinder {
       }
 
       // display extended debug message in case no form elements were found
-      $parent = &$form->getParentObject();
+      $parent = $form->getParentObject();
       $docCon = get_class($parent->getDocumentController());
       throw new FormException('[' . get_class($this) . '::getFormElementsByType()] No form elements of type "&lt;'
             . $tagName . ' /&gt;" composed in ' . 'current form "' . $form->getAttribute('name') . '" in document controller "'

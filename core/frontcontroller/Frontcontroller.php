@@ -25,11 +25,11 @@ use APF\core\filter\InputFilterChain;
 use APF\core\filter\OutputFilterChain;
 use APF\core\http\mixins\GetRequestResponse;
 use APF\core\http\RequestImpl;
+use APF\core\http\Response;
 use APF\core\http\ResponseImpl;
 use APF\core\pagecontroller\APFObject;
 use APF\core\pagecontroller\Page;
 use APF\core\registry\Registry;
-use APF\core\service\DIServiceManager;
 use APF\core\singleton\Singleton;
 use Exception;
 use InvalidArgumentException;
@@ -84,74 +84,26 @@ class Frontcontroller extends APFObject {
    public static $responseImplClass = ResponseImpl::class;
 
    /**
+    * Allows you to change the extension of action configuration the
+    * Frontcontroller takes to load with the ConfigurationManager and
+    * it's registered ConfigurationProvider.
+    * <p/>
+    * To change the extension, simple add the following lines into your
+    * bootstrap file (e.g. index.php):
+    * <code>
+    * Frontcontroller::$configExtension = 'php';
+    * </code>
+    *
+    * @var string Name of the config extension to use for action configurations.
+    */
+   public static $configExtension = 'ini';
+
+   /**
     * The front controller's action stack.
     *
     * @var Action[] $actionStack
     */
    protected $actionStack = [];
-
-   /**
-    * The keyword used in the url to indicate an action.
-    *
-    * @var string $actionKeyword
-    */
-   private $actionKeyword = 'action';
-
-   /**
-    * Namespace delimiter within the action definition in url.
-    *
-    * @var string $namespaceURLDelimiter
-    */
-   private $namespaceURLDelimiter = '_';
-
-   /**
-    * Namespace to action keyword delimiter within the action definition in url.
-    *
-    * @var string $namespaceKeywordDelimiter
-    */
-   private $namespaceKeywordDelimiter = '-';
-
-   /**
-    * Delimiter between action keyword and action class within the action definition in url.
-    *
-    * @var string $keywordClassDelimiter
-    */
-   private $keywordClassDelimiter = ':';
-
-   /**
-    * Delimiter between action keyword and action class within the action definition in url (url rewriting case!)
-    *
-    * @var string $urlRewritingKeywordClassDelimiter
-    */
-   private $urlRewritingKeywordClassDelimiter = '/';
-
-   /**
-    * Delimiter between input value couples.
-    *
-    * @var string $inputDelimiter
-    */
-   private $inputDelimiter = '|';
-
-   /**
-    * Delimiter between input value couples (url rewriting case!).
-    *
-    * @var string $urlRewritingInputDelimiter
-    */
-   private $urlRewritingInputDelimiter = '/';
-
-   /**
-    * Delimiter between input param name and value.
-    *
-    * @var string $keyValueDelimiter
-    */
-   private $keyValueDelimiter = ':';
-
-   /**
-    * Delimiter between input param name and value (url rewrite case!).
-    *
-    * @var string $urlRewritingKeyValueDelimiter
-    */
-   private $urlRewritingKeyValueDelimiter = '/';
 
    /**
     * @var string[][] $urlMappingsByToken The registered URL mappings for actions accessible via token.
@@ -163,49 +115,13 @@ class Frontcontroller extends APFObject {
     */
    private $urlMappingsByNamespaceAndName = [];
 
-   public function getActionKeyword() {
-      return $this->actionKeyword;
-   }
-
-   public function getNamespaceURLDelimiter() {
-      return $this->namespaceURLDelimiter;
-   }
-
-   public function getNamespaceKeywordDelimiter() {
-      return $this->namespaceKeywordDelimiter;
-   }
-
-   public function getKeywordClassDelimiter() {
-      return $this->keywordClassDelimiter;
-   }
-
-   public function getURLRewritingKeywordClassDelimiter() {
-      return $this->urlRewritingKeywordClassDelimiter;
-   }
-
-   public function getInputDelimiter() {
-      return $this->inputDelimiter;
-   }
-
-   public function getURLRewritingInputDelimiter() {
-      return $this->urlRewritingInputDelimiter;
-   }
-
-   public function getKeyValueDelimiter() {
-      return $this->keyValueDelimiter;
-   }
-
-   public function getURLRewritingKeyValueDelimiter() {
-      return $this->urlRewritingKeyValueDelimiter;
-   }
-
    /**
     * Executes the desired actions and creates the page output.
     *
     * @param string $namespace Namespace of the templates.
     * @param string $template Name of the templates.
     *
-    * @return string The content of the transformed page.
+    * @return Response The content of the transformed page.
     *
     * @author Christian Achatz
     * @version
@@ -229,9 +145,9 @@ class Frontcontroller extends APFObject {
       }
 
       // Create request and response implementations for OO abstraction
-      $request = &$this->getRequest();
+      $request = $this->getRequest();
 
-      $response = &$this->getResponse();
+      $response = $this->getResponse();
       $response->setContentType('text/html; charset=' . Registry::retrieve('APF\core', 'Charset'));
 
       // apply input filter to process request
@@ -283,23 +199,22 @@ class Frontcontroller extends APFObject {
     * Version 0.5, 08.11.2007<br />
     * Version 0.6, 28.03.2008 (Optimized benchmarker call)<br />
     * Version 0.7, 07.08.2010 (Added action activation indicator to disable actions on demand)<br />
+    * Version 0.8, 24.03.2016 (Added allow execution indicator)<br />
     */
    protected function runActions($type = Action::TYPE_PRE_PAGE_CREATE) {
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
 
-      foreach ($this->actionStack as $offset => $DUMMY) {
+      foreach ($this->actionStack as &$action) {
 
-         // only execute, when the current action has a suitable type
-         if ($this->actionStack[$offset]->getType() == $type
-               && $this->actionStack[$offset]->isActive()
-         ) {
+         // only execute, when the current action has a suitable type, is active, and is not "protected"
+         if ($action->getType() == $type && $action->isActive() && $action->allowExecution()) {
 
-            $id = get_class($this->actionStack[$offset]) . '::run()';
+            $id = get_class($action) . '::run()';
             $t->start($id);
 
-            $this->actionStack[$offset]->run();
+            $action->run();
 
             $t->stop($id);
          }
@@ -326,9 +241,9 @@ class Frontcontroller extends APFObject {
     */
    public function &getActionByName($actionName) {
 
-      foreach ($this->actionStack as $offset => $DUMMY) {
-         if ($this->actionStack[$offset]->getActionName() == $actionName) {
-            return $this->actionStack[$offset];
+      foreach ($this->actionStack as &$action) {
+         if ($action->getActionName() == $actionName) {
+            return $action;
          }
       }
 
@@ -354,7 +269,7 @@ class Frontcontroller extends APFObject {
    /**
     * Registers an action with the front controller. This includes action configuration using
     * the action params defined within the action mapping. Each action definition is expected
-    * to be stored in the <em>{ENVIRONMENT}_actionconfig.ini</em> file under the namespace
+    * to be stored in the <em>{ENVIRONMENT}_actionconfig.*</em> file under the namespace
     * <em>{$namespace}\{$this->context}.</em>
     * <p/>
     * Using the forth parameter, you can directly register an action URL mapping. URL mappings
@@ -366,6 +281,8 @@ class Frontcontroller extends APFObject {
     * @param array $params (Input-) params of the action.
     * @param string $urlToken Name of the action URL mapping token to register along with the action.
     *
+    * @deprecated Please use addAction() instead!
+    *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 08.06.2007<br />
@@ -373,33 +290,9 @@ class Frontcontroller extends APFObject {
     * Version 0.3, 01.07.2007 (Config params are now parsed correctly)<br />
     * Version 0.4, 27.09.2010 (Removed synthetic "actions" sub-namespace)<br />
     * Version 0.5, 19.03.2014 (Added implicit registration of action mapping)<br />
+    * Version 0.6, 27.03.2016 (Removed erroneous parameter mapping and set method to deprecated)<br />
     */
    public function registerAction($namespace, $name, array $params = [], $urlToken = null) {
-
-      $config = $this->getConfiguration($namespace, 'actionconfig.ini');
-
-      if ($config != null) {
-
-         // separate param strings
-         if (strlen(trim($config->getValue($name, 'InputParams'))) > 0) {
-
-            // separate params
-            $staticParams = explode($this->inputDelimiter, $config->getValue($name, 'InputParams'));
-
-            for ($i = 0; $i < count($staticParams); $i++) {
-
-               if (substr_count($staticParams[$i], $this->keyValueDelimiter) > 0) {
-
-                  $pairs = explode($this->keyValueDelimiter, $staticParams[$i]);
-
-                  // re-order and add to param list
-                  if (isset($pairs[0]) && isset($pairs[1])) {
-                     $params = array_merge($params, [$pairs[0] => $pairs[1]]);
-                  }
-               }
-            }
-         }
-      }
 
       $this->addAction($namespace, $name, $params);
 
@@ -413,11 +306,16 @@ class Frontcontroller extends APFObject {
     * Adds an action to the front controller action stack. Please note, that the namespace of
     * the namespace of the action config is added the current context. The name of the
     * config file is concatenated by the current environment and the string
-    * <em>*_actionconfig.ini</em>.
+    * <em>*_actionconfig.*</em>.
+    * <p/>
+    * Using the forth parameter, you can directly register an action URL mapping. URL mappings
+    * allow you to shorten action URLs from e.g. <em>VENDOR_foo-action:bar=a:b|c:d</em> to
+    * <em>bar=a:b|c:d</em>. For details, please refer to <em>Frontcontroller::registerActionUrlMapping()</em>.
     *
     * @param string $namespace Namespace of the action.
     * @param string $name Name of the action (section key of the config file).
     * @param array $params (Input-)params of the action.
+    * @param string $urlToken Name of the action URL mapping token to register along with the action.
     *
     * @throws InvalidArgumentException In case the action cannot be found within the appropriate
     * configuration or the action implementation classes are not available.
@@ -433,21 +331,22 @@ class Frontcontroller extends APFObject {
     * Version 0.7, 27.09.2010 (Removed synthetic "actions" sub-namespace)<br />
     * Version 0.8, 09.04.2011 (Made input implementation optional, removed separate action and input class file definition)<br />
     * Version 0.9. 20.08.2013 Jan Wiese (Added support for actions generated by thw DIServiceManager)<br />
+    * Version 1.0, 19.03.2014 (Added implicit registration of action mapping)<br />
     */
-   public function addAction($namespace, $name, array $params = []) {
+   public function addAction($namespace, $name, array $params = [], $urlToken = null) {
 
       // re-map namespace
       $namespace = $this->getActionNamespaceByURLString($namespace);
 
       // load the action configuration
-      $config = $this->getConfiguration($namespace, 'actionconfig.ini');
+      $config = $this->getConfiguration($namespace, 'actionconfig.' . self::$configExtension);
 
       // throw exception, in case the action config is not present
       if (!$config->hasSection($name)) {
          $env = Registry::retrieve('APF\core', 'Environment');
          throw new InvalidArgumentException('[Frontcontroller::addAction()] No config '
                . 'section for action key "' . $name . '" available in configuration file "' . $env
-               . '_actionconfig.ini" in namespace "' . $namespace . '" and context "'
+               . '_actionconfig.' . self::$configExtension . '" in namespace "' . $namespace . '" and context "'
                . $this->getContext() . '"!', E_USER_ERROR);
       }
 
@@ -460,12 +359,7 @@ class Frontcontroller extends APFObject {
       if (!(empty($actionServiceName) || empty($actionServiceNamespace))) {
          // use di service
          try {
-            $action = DIServiceManager::getServiceObject(
-                  $actionServiceNamespace,
-                  $actionServiceName,
-                  $this->getContext(),
-                  $this->getLanguage()
-            );
+            $action = $this->getDIServiceObject($actionServiceNamespace, $actionServiceName);
          } catch (Exception $e) {
             throw new InvalidArgumentException('[Frontcontroller::addAction()] Action could not
             be created using DIServiceManager with service name "' . $actionServiceName . '" and service
@@ -537,6 +431,11 @@ class Frontcontroller extends APFObject {
       // uksort() in order to both respect Action::getPriority()
       // and the order of registration for equivalence groups.
       uksort($this->actionStack, [$this, 'sortActions']);
+
+      // register action URL mapping if desired
+      if ($urlToken !== null) {
+         $this->registerActionUrlMapping(new ActionUrlMapping($urlToken, $namespace, $name));
+      }
    }
 
    /**
@@ -551,13 +450,13 @@ class Frontcontroller extends APFObject {
     * Version 0.1, 03.06.2007<br />
     */
    protected function getActionNamespaceByURLString($namespaceUrlRepresentation) {
-      return str_replace($this->namespaceURLDelimiter, '\\', $namespaceUrlRepresentation);
+      return str_replace('_', '\\', $namespaceUrlRepresentation);
    }
 
    /**
     * Create an array from a input param string (scheme: <code>a:b|c:d</code>).
     *
-    * @param string $inputConfig The config string contained in the action config.
+    * @param string $config The config string contained in the action config.
     *
     * @return string[] The resulting param-value array.
     *
@@ -565,24 +464,24 @@ class Frontcontroller extends APFObject {
     * @version
     * Version 0.1, 08.09.2007<br />
     */
-   protected function generateParamsFromInputConfig($inputConfig = '') {
+   protected function generateParamsFromInputConfig($config) {
 
       $inputParams = [];
 
-      $inputConfig = trim($inputConfig);
-
-      if (strlen($inputConfig) > 0) {
+      $config = trim($config);
+      if (strlen($config) > 0) {
 
          // first: explode couples by "|"
-         $paramsArray = explode($this->inputDelimiter, $inputConfig);
+         $params = explode('|', $config);
+         $count = count($params);
 
-         for ($i = 0; $i < count($paramsArray); $i++) {
+         for ($i = 0; $i < $count; $i++) {
 
             // second: explode key and value by ":"
-            $tmpAry = explode($this->keyValueDelimiter, $paramsArray[$i]);
+            $pairs = explode(':', $params[$i]);
 
-            if (isset($tmpAry[0]) && isset($tmpAry[1]) && !empty($tmpAry[0]) && !empty($tmpAry[1])) {
-               $inputParams[$tmpAry[0]] = $tmpAry[1];
+            if (isset($pairs[0]) && isset($pairs[1]) && !empty($pairs[0]) && !empty($pairs[1])) {
+               $inputParams = array_merge($inputParams, [$pairs[0] => $pairs[1]]);
             }
          }
       }

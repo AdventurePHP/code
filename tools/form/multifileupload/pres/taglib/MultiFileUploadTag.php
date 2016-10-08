@@ -73,11 +73,16 @@ class MultiFileUploadTag extends AbstractFormControl {
       $maxFileSize = $this->getAttribute('max-file-size');
       $mimeTypes = $this->getAttribute('allowed-mime-types');
 
-      $this->manager = &$this->getServiceObject(
+      $this->manager = $this->getServiceObject(
             MultiFileUploadManager::class,
             ['formname' => $this->formName, 'name' => $this->uploadFieldName]
       );
       $this->manager->setSettings($maxFileSize, explode(',', $mimeTypes));
+
+      // ID#303: allow to hide form element by default within a template
+      if ($this->getAttribute('hidden', 'false') === 'true') {
+         $this->hide();
+      }
    }
 
    /**
@@ -87,7 +92,7 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 14.3.2011<br>
     */
    public function onAfterAppend() {
-      $form = &$this->getForm();
+      $form = $this->getForm();
       $form->setAttribute('enctype', 'multipart/form-data');
 
       // ensure form has an id (required for the java script stuff)
@@ -105,6 +110,11 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.2, 16.09.2012 (added full functionality to delete fildes, which are older than 1 day)<br>
     */
    public function transform() {
+
+      // In case the control has been deactivated, don't generate output.
+      if (!$this->isVisible) {
+         return '';
+      }
 
       // Dateien im temporären Verzischnis löschen, die älter als 86400 Sekunden (1 Tag) sind
       $this->manager->deleteOldFiles();
@@ -497,7 +507,7 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 14.3.2011<br>
     */
    public function uploadFiles() {
-      $name = &$this->uploadFieldName;
+      $name = $this->uploadFieldName;
       if (isset($_FILES[$name]) && $_FILES[$name]['name'] != '') {
          $addfile = $this->manager->addFile($_FILES[$name], false);
          unset($_FILES[$name]);

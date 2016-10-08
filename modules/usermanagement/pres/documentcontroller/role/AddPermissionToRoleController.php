@@ -36,8 +36,8 @@ class AddPermissionToRoleController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $form = & $this->getForm('Permissions');
-      $uM = & $this->getManager();
+      $form = $this->getForm('Permissions');
+      $uM = $this->getManager();
 
       $role = $uM->loadRoleByID($this->getRequest()->getParameter('roleid'));
       $form->getLabel('display-name')->setPlaceHolder('display-name', $role->getDisplayName());
@@ -45,7 +45,7 @@ class AddPermissionToRoleController extends UmgtBaseController {
       $permissions = $uM->loadPermissionsNotWithRole($role);
 
       if (count($permissions) === 0) {
-         $template = & $this->getTemplate('NoMorePermissions');
+         $template = $this->getTemplate('NoMorePermissions');
          $template->getLabel('message-1')->setPlaceHolder('display-name', $role->getDisplayName());
          $template->getLabel('message-2')->setPlaceHolder('role-view-link', $this->generateLink(['mainview' => 'role', 'roleview' => null, 'roleid' => null]));
          $template->transformOnPlace();
@@ -53,7 +53,7 @@ class AddPermissionToRoleController extends UmgtBaseController {
          return;
       }
 
-      $permissionControl = & $form->getFormElementByName('Permissions');
+      $permissionControl = $form->getFormElementByName('Permissions');
       /* @var $permissionControl MultiSelectBoxTag */
 
       foreach ($permissions as $permission) {

@@ -36,15 +36,15 @@ class GroupRemoveUserFromGroupsController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $form = & $this->getForm('Groups');
+      $form = $this->getForm('Groups');
 
-      $uM = & $this->getManager();
+      $uM = $this->getManager();
 
       $user = $uM->loadUserByID($this->getRequest()->getParameter('userid'));
       $groups = $uM->loadGroupsWithUser($user);
 
       if (count($groups) === 0) {
-         $tmpl = & $this->getTemplate('NoGroups');
+         $tmpl = $this->getTemplate('NoGroups');
          $tmpl->getLabel('message-1')->setPlaceHolder('display-name', $user->getDisplayName());
          $tmpl->getLabel('message-2')->setPlaceHolder('user-view-link', $this->generateLink(['mainview' => 'user', 'groupview' => null, 'userid' => null]));
          $tmpl->transformOnPlace();
@@ -52,7 +52,7 @@ class GroupRemoveUserFromGroupsController extends UmgtBaseController {
          return;
       }
 
-      $groupsControl = & $form->getFormElementByName('Groups');
+      $groupsControl = $form->getFormElementByName('Groups');
       /* @var $groupsControl MultiSelectBoxTag */
       foreach ($groups as $group) {
          $groupsControl->addOption($group->getDisplayName(), $group->getObjectId());
@@ -60,7 +60,7 @@ class GroupRemoveUserFromGroupsController extends UmgtBaseController {
 
       if ($form->isSent() && $form->isValid()) {
 
-         $options = & $groupsControl->getSelectedOptions();
+         $options = $groupsControl->getSelectedOptions();
          $groupsToRemove = [];
          foreach ($options as $option) {
             /* @var $option SelectBoxOptionTag */

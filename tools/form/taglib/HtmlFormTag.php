@@ -27,9 +27,13 @@ use APF\core\pagecontroller\XmlParser;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 use APF\tools\form\FormControl;
+use APF\tools\form\FormControlToModelMapper;
 use APF\tools\form\FormException;
 use APF\tools\form\HtmlForm;
 use APF\tools\form\mixin\FormControlFinder as FormControlFinderImpl;
+use APF\tools\form\ModelToFormControlMapper;
+use APF\tools\link\Url;
+use ReflectionClass;
 
 /**
  * Represents a APF form element (DOM node).
@@ -54,6 +58,17 @@ class HtmlFormTag extends Document implements HtmlForm {
    use FormControlFinderImpl;
 
    const ACTION_ATTRIBUTE_NAME = 'action';
+   const SUBMIT_ACTION_URL_PARAMS_ATTRIBUTE_NAME = 'submit-action-url-params';
+
+   /**
+    * @var string[] List of form control to model mappers (fully qualified class name e.g. <em>APF\tools\form\mapping\StandardControlToModelMapper</em>).
+    */
+   protected static $formToModelMappers = [];
+
+   /**
+    * @var string[] List of form control to model mappers (fully qualified class name e.g. <em>APF\tools\form\mapping\StandardModelToFormControlMapper</em>).
+    */
+   protected static $modelToFormMappers = [];
 
    /**
     * Indicates, whether the form should be transformed at it'd place of definition or not.
@@ -61,6 +76,13 @@ class HtmlFormTag extends Document implements HtmlForm {
     * @var boolean $transformOnPlace
     */
    protected $transformOnPlace = false;
+
+   /**
+    * The attributes, that are allowed to render into the XHTML/1.1 strict document.
+    *
+    * @var string[] $attributeWhiteList
+    */
+   protected $attributeWhiteList = [];
 
    /**
     * Initializes the form.
@@ -94,6 +116,22 @@ class HtmlFormTag extends Document implements HtmlForm {
       $this->attributeWhiteList[] = 'accept-charset'; // to explicitly specify an encoding
       $this->attributeWhiteList[] = 'autocomplete'; // to disable form auto-completion for browsers supporting this security feature
       $this->attributeWhiteList[] = 'target';
+   }
+
+   public static function addFormControlToModelMapper($mapper) {
+      self::$formToModelMappers[] = $mapper;
+   }
+
+   public static function clearFormControlToModelMappers() {
+      self::$formToModelMappers = [];
+   }
+
+   public static function addModelToFormControlMapper($mapper) {
+      self::$modelToFormMappers[] = $mapper;
+   }
+
+   public static function clearModelToFormControlMapper() {
+      self::$modelToFormMappers = [];
    }
 
    public function onParseTime() {
@@ -130,7 +168,6 @@ class HtmlFormTag extends Document implements HtmlForm {
       return false;
    }
 
-   // TODO give it another try to refactor validation to isValid() rather than direct validation per addValidator() to streamline API
    public function isValid() {
 
       foreach ($this->children as &$child) {
@@ -182,7 +219,7 @@ class HtmlFormTag extends Document implements HtmlForm {
    public function &addFormElement($elementType, array $elementAttributes = []) {
 
       // create form element
-      $control = &$this->createFormElement($this, $elementType, $elementAttributes);
+      $control = $this->createFormElement($this, $elementType, $elementAttributes);
 
       if ($control === null) {
          // notify developer that object creation failed
@@ -206,12 +243,13 @@ class HtmlFormTag extends Document implements HtmlForm {
     * @return FormControl The created form element.
     * @throws FormException In case form element cannot be found.
     *
-    * @author Christian Achatz
+    * @author Christian Achatz, Danil Mihajluk
     * @version
     * Version 0.1, 06.09.2008<br />
     * Version 0.2, 10.09.2008 (Added the $elementAttributes param)<br />
     * Version 0.3, 12.11.2008 (Bug-fix: language and context initialisation were wrong)<br />
     * Version 0.4, 23.08.2014 (ID#198: added unlimited form control nesting capability)<br />
+    * Version 0.5, 03.12.2015 (ID#279: changed code to rely on interface type rather than internal structure by Danil Mihajluk)<br />
     */
    protected function &createFormElement(DomNode &$parent, $elementType, array $elementAttributes = []) {
 
@@ -224,23 +262,26 @@ class HtmlFormTag extends Document implements HtmlForm {
       $objectId = XmlParser::generateUniqID();
 
       // create new form element
-      $parent->children[$objectId] = new $class();
-      /* @var $formControl AbstractFormControl */
+      /* @var FormControl $child */
+      $child = new $class();
 
       // add standard and user defined attributes
-      $parent->children[$objectId]->setObjectId($objectId);
-      $parent->children[$objectId]->setLanguage($this->getLanguage());
-      $parent->children[$objectId]->setContext($this->getContext());
-      $parent->children[$objectId]->setAttributes($elementAttributes);
+      $child->setObjectId($objectId);
+      $child->setLanguage($this->getLanguage());
+      $child->setContext($this->getContext());
+      $child->setAttributes($elementAttributes);
 
       // add form element to DOM tree and call the onParseTime() method
-      $parent->children[$objectId]->setParentObject($parent);
-      $parent->children[$objectId]->onParseTime();
+      $child->setParentObject($parent);
+      $child->onParseTime();
 
       // call the onAfterAppend() method
-      $parent->children[$objectId]->onAfterAppend();
+      $child->onAfterAppend();
 
-      return $parent->children[$objectId];
+      // add child to list
+      $parent->getChildren()[$objectId] = $child;
+
+      return $child;
    }
 
    /**
@@ -265,7 +306,7 @@ class HtmlFormTag extends Document implements HtmlForm {
 
       $class = $this->getTagLibClass($prefix, $name);
       if ($class === null) {
-         $parent = &$this->getParentObject();
+         $parent = $this->getParentObject();
          $documentController = get_class($parent->getDocumentController());
          throw new FormException('[HtmlFormTag::getTagClass()] No tag with name "' . $tagName
                . '" registered in form with name "' . $this->getAttribute('name') . '" in document controller '
@@ -337,8 +378,8 @@ class HtmlFormTag extends Document implements HtmlForm {
     */
    public function &addFormElementBeforeMarker($markerName, $elementType, array $elementAttributes = []) {
 
-      $marker = &$this->getMarker($markerName);
-      $control = &$this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);
+      $marker = $this->getMarker($markerName);
+      $control = $this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);
 
       if ($control === null) {
          // notify developer that object creation failed
@@ -348,7 +389,7 @@ class HtmlFormTag extends Document implements HtmlForm {
 
       // add the position place holder to the content
       $markerId = $marker->getObjectId();
-      $parent = &$marker->getParentObject();
+      $parent = $marker->getParentObject();
 
       $parent->setContent(str_replace(
             '<' . $markerId . ' />',
@@ -377,8 +418,8 @@ class HtmlFormTag extends Document implements HtmlForm {
     */
    public function &addFormElementAfterMarker($markerName, $elementType, array $elementAttributes = []) {
 
-      $marker = &$this->getMarker($markerName);
-      $control = &$this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);
+      $marker = $this->getMarker($markerName);
+      $control = $this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);
 
       if ($control === null) {
          // notify developer that object creation failed
@@ -388,7 +429,7 @@ class HtmlFormTag extends Document implements HtmlForm {
 
       // add the position place holder to the content
       $markerId = $marker->getObjectId();
-      $parent = &$marker->getParentObject();
+      $parent = $marker->getParentObject();
 
       $parent->setContent(str_replace(
             '<' . $markerId . ' />',
@@ -452,7 +493,7 @@ class HtmlFormTag extends Document implements HtmlForm {
 
    public function transformForm() {
 
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
       /* @var $t BenchmarkTimer */
       $id = '(HtmlFormTag) ' . $this->getObjectId() . '::transformForm()';
       $t->start($id);
@@ -479,6 +520,28 @@ class HtmlFormTag extends Document implements HtmlForm {
       $htmlCode .= $this->getAttributesAsString($this->attributes, $this->attributeWhiteList);
       $htmlCode .= '>';
 
+      // ID#281: add hidden form fields with URL get parameters for GET forms for convenience reasons
+      if ($this->getAttribute(self::METHOD_ATTRIBUTE_NAME) === self::METHOD_GET_VALUE_NAME
+            && $this->getAttribute(self::SUBMIT_ACTION_URL_PARAMS_ATTRIBUTE_NAME) === 'true'
+      ) {
+
+         $url = Url::fromString($this->getAttribute(self::ACTION_ATTRIBUTE_NAME));
+         $queryParams = $url->getQuery();
+
+         if (count($queryParams) > 0) {
+            $hiddenFieldMarker = '';
+
+            foreach ($queryParams as $name => $value) {
+               $control = $this->createFormElement($this, 'form:hidden', ['name' => $name, 'value' => $value]);
+               $hiddenFieldMarker .= '<' . $control->getObjectId() . ' />';
+            }
+
+            // prepend fields to preserve parameter order
+            $this->content = $hiddenFieldMarker . $this->content;
+         }
+
+      }
+
       if (count($this->children) > 0) {
 
          foreach ($this->children as &$child) {
@@ -498,6 +561,99 @@ class HtmlFormTag extends Document implements HtmlForm {
       $t->stop($id);
 
       return $htmlCode;
+   }
+
+   public function fillModel(&$model, array $mapping = []) {
+
+      $class = new ReflectionClass($model);
+      $properties = $class->getProperties();
+
+      // Gathering model properties to fill via reflection is very convenient. However, not all properties are
+      // potentially intended to be form properties!
+      // For this reason, parameter $mapping allows to restrict the list of model properties that will be
+      // treated as form control pendants (white list approach).
+      foreach ($properties as $property) {
+
+         // Only map properties that should be mapped to be able to re-use existing models!
+         if (empty($mapping) || in_array($property->getName(), $mapping)) {
+            try {
+               // otherwise setValue() will fail...
+               $property->setAccessible(true);
+
+               $control = $this->getFormElementByName($property->getName());
+
+               // Map form value(s) to model using configurable/exchangeable mappers. For details
+               // on the implementation pattern/idea see HtmlForm::addFormControlToModelMapper().
+               $value = null;
+               foreach (self::$formToModelMappers as $mapper) {
+                  /* @var $mapper FormControlToModelMapper */
+                  if ($mapper::applies($control)) {
+                     $value = $mapper::getValue($control);
+                  }
+               }
+
+               $property->setValue($model, $value);
+               $property->setAccessible(false);
+            } catch (FormException $e) {
+               // In case a form control does not exist, ignore mapping attempt. This is because not all model
+               // properties might be represented by form controls, dynamic form fields have not been added
+               // in certain use cases and are not present ATM, or the model is used for a multi-step workflow
+               // with just certain fields present in each step.
+               continue;
+            }
+         }
+      }
+
+      return $this;
+   }
+
+   public function fillForm($model, array $mapping = []) {
+
+      $class = new ReflectionClass($model);
+      $properties = $class->getProperties();
+
+      // Gathering model properties to fill via reflection is very convenient. However, not all properties are
+      // potentially intended to be form properties!
+      // For this reason, parameter $mapping allows to restrict the list of model properties that will be
+      // treated as form control pendants (white list approach).
+      foreach ($properties as $property) {
+
+         // Only map properties that should be mapped to be able to re-use existing models!
+         if (empty($mapping) || in_array($property->getName(), $mapping)) {
+            try {
+
+               // get form controls by property name (multiple files for e.g. check boxes)
+               $controls = $this->getFormElementsByName($property->getName());
+
+               // otherwise getValue() will fail...
+               $property->setAccessible(true);
+
+               // Map form value(s) to model using configurable/exchangeable mappers. For details
+               // on the implementation pattern/idea see HtmlForm::addFormControlToModelMapper().
+               $value = $property->getValue($model);
+
+               // loop through list of e.g. check boxes
+               foreach ($controls as &$control) {
+                  foreach (self::$modelToFormMappers as $mapper) {
+                     /* @var $mapper ModelToFormControlMapper */
+                     if ($mapper::applies($control)) {
+                        $mapper::setValue($control, $value);
+                     }
+                  }
+               }
+
+               $property->setAccessible(false);
+            } catch (FormException $e) {
+               // In case a form control does not exist, ignore mapping attempt. This is because not all model
+               // properties might be represented by form controls, dynamic form fields have not been added
+               // in certain use cases and are not present ATM, or the model is used for a multi-step workflow
+               // with just certain fields present in each step.
+               continue;
+            }
+         }
+      }
+
+      return $this;
    }
 
 }

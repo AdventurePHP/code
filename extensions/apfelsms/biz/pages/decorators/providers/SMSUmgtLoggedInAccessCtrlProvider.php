@@ -49,9 +49,8 @@ class SMSUmgtLoggedInAccessCtrlProvider extends APFObject implements SMSAccessCt
     */
    public function isAccessProtected(SMSPage $page, $permissionName) {
 
-
       /** @var $umgtUS UmgtUserSessionStore */
-      $umgtUS = &$this->getServiceObject(UmgtUserSessionStore::class, [], APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      $umgtUS = $this->getServiceObject(UmgtUserSessionStore::class, [], APFService::SERVICE_TYPE_SESSION_SINGLETON);
 
       // load current user
       $user = $umgtUS->getUser($this->getContext());

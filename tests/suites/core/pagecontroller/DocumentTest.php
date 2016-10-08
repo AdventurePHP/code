@@ -27,11 +27,15 @@ use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\DomNode;
 use APF\core\pagecontroller\ParserException;
 use APF\core\pagecontroller\PlaceHolderTag;
+use APF\core\pagecontroller\Template;
 use APF\core\pagecontroller\TemplateTag;
 use APF\modules\usermanagement\pres\documentcontroller\registration\RegistrationController;
+use APF\tests\suites\core\pagecontroller\expression\TestTemplateExpressionOne;
+use APF\tests\suites\core\pagecontroller\expression\TestTemplateExpressionTwo;
 use Exception;
 use InvalidArgumentException;
 use ReflectionMethod;
+use ReflectionProperty;
 
 /**
  * Tests the <em>Document::getTemplateFilePath()</em> regarding class loader usage.
@@ -90,10 +94,32 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testGetChildNodeWithException() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       $doc = new Document();
       $doc->onParseTime();
       $doc->getChildNode('foo', 'bar', Document::class);
+   }
+
+   public function testGetChildNodeIfExists() {
+      $doc = new TemplateTag();
+      $doc->setContent('<html:template name="foo">bar</html:template>');
+      $doc->onParseTime();
+      $template = $doc->getChildNodeIfExists('name', 'foo', TemplateTag::class);
+      $this->assertNotNull($template);
+      $this->assertEquals('bar', $template->getContent());
+
+      // ensure that a reference is returned instead of a clone or copy
+      $children = $doc->getChildren();
+      $this->assertEquals(
+            spl_object_hash($template),
+            spl_object_hash($children[array_keys($children)[0]])
+      );
+   }
+
+   public function testGetChildNodeIfExistsErrorCase() {
+      $doc = new Document();
+      $doc->onParseTime();
+      $this->assertNull($doc->getChildNodeIfExists('foo', 'bar', Document::class));
    }
 
    public function testGetChildNodes() {
@@ -118,7 +144,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testGetChildNodesWithException() {
-      $this->setExpectedException('\InvalidArgumentException');
+      $this->expectException(InvalidArgumentException::class);
       $doc = new Document();
       $doc->getChildNodes('foo', 'bar', Document::class);
    }
@@ -214,7 +240,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 
    public function testInvalidTemplateSyntaxWithTagClosingSignInAttribute1() {
 
-      $this->setExpectedException(ParserException::class);
+      $this->expectException(ParserException::class);
 
       $doc = new TemplateTag();
       $doc->setContent('<html:placeholder name="tes>t"/');
@@ -224,7 +250,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 
    public function testInvalidTemplateSyntaxWithTagClosingSignInAttribute2() {
 
-      $this->setExpectedException(ParserException::class);
+      $this->expectException(ParserException::class);
 
       $doc = new TemplateTag();
       $doc->setContent('<html:placeholder name="test" /');
@@ -371,6 +397,7 @@ This is text after a place holder...
       $expected = 'foo';
 
       /* @var $placeHolder PlaceHolderTag */
+      $doc->setPlaceHolder('test', $expected);
       $placeHolder = $doc->getChildNode('name', 'test', 'APF\core\pagecontroller\PlaceHolderTag');
       $placeHolder->setContent($expected);
 
@@ -379,17 +406,21 @@ This is text after a place holder...
    }
 
    /**
-    * Test exception raised with not-existing place holder specified.
+    * Test no exception raised with not-existing place holder specified.
     */
    public function testSetPlaceHolder1() {
-      $this->setExpectedException(InvalidArgumentException::class);
-      $this->getTemplateWithPlaceHolder()->setPlaceHolder('foo', 'bar');
+      try {
+         $this->getTemplateWithPlaceHolder()->setPlaceHolder('foo', 'bar');
+      } catch (Exception $e) {
+         $this->fail($e);
+      }
    }
 
    protected function getTemplateWithPlaceHolder($content = '<html:placeholder name="test"/>') {
       $doc = new TemplateTag();
       $doc->setContent($content);
       $doc->onParseTime();
+      $doc->onAfterAppend();
 
       return $doc;
    }
@@ -426,6 +457,213 @@ This is text after a place holder...
       $template->setPlaceHolder('test', $expected, true);
       $template->transformOnPlace();
       $this->assertEquals($expected . $expected, $template->transform());
+   }
+
+   /**
+    * Test setPlaceHolders() with multiple place holders.
+    */
+   public function testSetPlaceHolder5() {
+
+      // no place holders set
+      $template = $this->getTemplateWithPlaceHolder('${foo}|${bar}|${baz}');
+      $this->assertEquals('||', $template->transformTemplate());
+
+      // one place holder set
+      $template->setPlaceHolders(['bar' => '2']);
+      $this->assertEquals('|2|', $template->transformTemplate());
+
+      // all place holders set
+      $template->setPlaceHolders(['foo' => '4', 'bar' => '5', 'baz' => '6']);
+      $this->assertEquals('4|5|6', $template->transformTemplate());
+
+      // test mixture of existing vs. non-existing place holders
+      $template->clear();
+      // TODO clear template will be tricky since within data attributes we cannot distinguish between place holder and other stuff
+      // Maybe remember place holder names in a second array???
+      $template->setPlaceHolders(['foo' => '4', 'non-existing' => '5', 'baz' => '6']);
+      $this->assertEquals('4||6', $template->transformTemplate());
+   }
+
+   public function testGetNodeById() {
+      $doc = $this->prepareDocumentForGetNodByIdTest();
+      $placeHolder = $doc->getNodeById('baz');
+      $this->assertNotNull($placeHolder);
+      $this->assertEquals('baz', $placeHolder->getAttribute('name'));
+
+      // ensure that a reference is returned instead of a clone or copy
+      $children = $doc->getChildNode('name', 'foo', Template::class)
+            ->getChildNode('name', 'bar', Template::class)
+            ->getChildren();
+      $this->assertEquals(
+            spl_object_hash($placeHolder),
+            spl_object_hash($children[array_keys($children)[0]])
+      );
+   }
+
+   /**
+    * @return TemplateTag Template with appropriate structure for testing method Document::getNodById().
+    */
+   protected function prepareDocumentForGetNodByIdTest() {
+      $doc = new TemplateTag();
+      $doc->setContent('
+<html:template name="foo">
+   <html:template name="bar">
+      <html:placeholder name="baz" dom-id="baz" />
+   </html:template>
+</html:template>');
+      $doc->onParseTime();
+
+      return $doc;
+   }
+
+   public function testGetNodeByIdErrorCase() {
+      $this->expectException(InvalidArgumentException::class);
+      $doc = new TemplateTag();
+      $doc->getNodeById('baz');
+   }
+
+   public function testGetNodeByIdIfExists() {
+      $doc = $this->prepareDocumentForGetNodByIdTest();
+      $placeHolder = $doc->getNodeByIdIfExists('baz');
+      $this->assertNotNull($placeHolder);
+      $this->assertEquals('baz', $placeHolder->getAttribute('name'));
+
+      // ensure that a reference is returned instead of a clone or copy
+      $children = $doc->getChildNode('name', 'foo', Template::class)
+            ->getChildNode('name', 'bar', Template::class)
+            ->getChildren();
+      $this->assertEquals(
+            spl_object_hash($placeHolder),
+            spl_object_hash($children[array_keys($children)[0]])
+      );
+   }
+
+   public function testGetNodeByIdIfExistsErrorCase() {
+      $doc = new TemplateTag();
+      $this->assertNull($doc->getNodeByIdIfExists('baz'));
+   }
+
+   /**
+    * Happy case for template expressions.
+    */
+   public function testExtractExpressionTags1() {
+
+      $doc = new TemplateTag();
+      $doc->setContent('${placeHolder}|${dataAttribute[0]}');
+      $doc->onParseTime();
+      $doc->onAfterAppend();
+
+      $doc->setPlaceHolder('placeHolder', 'foo');
+      $doc->setData('dataAttribute', ['bar']);
+
+      $this->assertEquals('foo|bar', $doc->transformTemplate());
+
+   }
+
+   /**
+    * Test whether 1st expressions matches and document is *not* overwritten by second.
+    */
+   public function testExtractExpressionTags2() {
+
+      $property = new ReflectionProperty(Document::class, 'knownExpressions');
+      $property->setAccessible(true);
+
+      // inject special conditions that apply for this
+      $original = $property->getValue(null);
+      $property->setValue(null, [TestTemplateExpressionOne::class, TestTemplateExpressionTwo::class]);
+
+      // setup template
+      $doc = new TemplateTag();
+      $doc->setContent('${specialExpression1}|${specialExpression2}');
+      $doc->onParseTime();
+      $doc->onAfterAppend();
+
+      $children = $doc->getChildren();
+
+      $this->assertCount(2, $children);
+      $this->assertEquals(TestTemplateExpressionOne::class, $children[array_keys($children)[0]]->getAttribute('expression'));
+
+      // reset to original setup
+      $property->setValue(null, $original);
+
+   }
+
+   public function testExtractExpressionTags3() {
+      $this->expectException(ParserException::class);
+      $doc = new TemplateTag();
+      $doc->setContent('${expression');
+      $doc->onParseTime();
+      $doc->onAfterAppend();
+   }
+
+   public function testExtractExpressionTags4() {
+
+      $property = new ReflectionProperty(Document::class, 'knownExpressions');
+      $property->setAccessible(true);
+
+      // inject special conditions that apply for this
+      $original = $property->getValue(null);
+      $property->setValue(null, []);
+
+      // setup template
+      $doc = new TemplateTag();
+      $doc->setContent('${expression}');
+      $doc->onParseTime();
+
+      try {
+         $doc->onAfterAppend();
+         $this->fail('knownExpressions() should throw a ParserException in case no expression applies!');
+      } catch (ParserException $e) {
+         // this is expected behavior
+      }
+
+      // reset to original setup
+      $property->setValue(null, $original);
+   }
+
+   public function testAddAttribute() {
+
+      $doc = new Document();
+
+      $name = 'foo';
+      $glue = '-';
+      $this->assertEquals(null, $doc->getAttribute($name));
+
+      $doc->addAttribute($name, '', $glue);
+      $this->assertEquals('', $doc->getAttribute($name));
+
+      $doc->addAttribute($name, 'foo', $glue);
+      $this->assertEquals('foo', $doc->getAttribute($name));
+
+      $result = $doc->addAttribute($name, 'foo', $glue);
+      $this->assertEquals('foo-foo', $doc->getAttribute($name));
+
+      $this->assertEquals($doc, $result);
+   }
+
+   /**
+    * ID#300: Test whether parser detects line breaks in tag definitions after tag name as problem!
+    */
+   public function testLineBreakInTagDefinition() {
+
+      $this->expectException(ParserException::class);
+
+      Document::addTagLib(TemplateTag::class, 'a', 'foo');
+      Document::addTagLib(TemplateTag::class, 'b', 'foo');
+      Document::addTagLib(TemplateTag::class, 'c', 'foo');
+
+      $tag = new TemplateTag();
+      $tag->setContent('<a:foo>
+<b:foo
+attr1="1"
+attr2="2">
+<c:foo key="a">a</c:foo>
+<c:foo key="b">b</c:foo>
+<c:foo key="c">c</c:foo>
+</b:foo>
+</a:foo>');
+      $tag->onParseTime();
+
    }
 
    protected function setUp() {

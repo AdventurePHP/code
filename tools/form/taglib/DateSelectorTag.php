@@ -72,10 +72,11 @@ class DateSelectorTag extends AbstractFormControl {
    /**
     * Creates the children select fields for the date control.
     *
-    * @author Christian Schäfer
+    * @author Christian Schäfer, Christian Achatz
     * @version
     * Version 0.1, 10.01.2007<br />
     * Version 0.2, 26.08.2007 (The "class" And "style" attributes are now optional)<br />
+    * Version 0.3, 03.08.2016 (ID#303: allow hiding via template definition)<br />
     */
    public function onParseTime() {
 
@@ -193,6 +194,11 @@ class DateSelectorTag extends AbstractFormControl {
       $this->children['d']->onAfterAppend();
       $this->children['m']->onAfterAppend();
       $this->children['y']->onAfterAppend();
+
+      // ID#303: allow to hide form element by default within a template
+      if ($this->getAttribute('hidden', 'false') === 'true') {
+         $this->hide();
+      }
    }
 
    /**
@@ -202,17 +208,23 @@ class DateSelectorTag extends AbstractFormControl {
     * @version
     * Version 0.1, 29.08.2009<br />
     * Version 0.2, 30.12.2009 (Replaced split() with explode() because it is marked deprecated in PHP5.3.0)<br />
+    * Version 0.3, 19.01.2016 (ID#255: added "now" keyword for current year)<br />
     */
    protected function initYearRange() {
 
       // read the range for the year select box
-      if (isset($this->attributes['yearrange'])) {
+      if ($this->hasAttribute('yearrange')) {
 
-         $yearRange = explode('-', $this->attributes['yearrange']);
+         $yearRange = explode('-', $this->getAttribute('yearrange'));
 
          if (count($yearRange) == 2) {
             $this->yearRange['Start'] = trim($yearRange[0]);
             $this->yearRange['End'] = trim($yearRange[1]);
+
+            // re-map special key "now" to current year
+            if ($this->yearRange['End'] === 'now') {
+               $this->yearRange['End'] = (new DateTime('now'))->format('Y');
+            }
          }
       }
    }
@@ -227,9 +239,9 @@ class DateSelectorTag extends AbstractFormControl {
     */
    protected function initOffsetNames() {
 
-      if (isset($this->attributes['offsetnames'])) {
+      if ($this->hasAttribute('offsetnames')) {
 
-         $offsetNames = explode(';', $this->attributes['offsetnames']);
+         $offsetNames = explode(';', $this->getAttribute('offsetnames'));
 
          if (count($offsetNames) == 3) {
             $this->offsetNames = [
@@ -291,31 +303,30 @@ class DateSelectorTag extends AbstractFormControl {
     */
    public function transform() {
 
-      if ($this->isVisible) {
-
-         // as of 1.12, the date control should be rendered using a
-         // surrounding span do enable the client validator extension
-         // to address the control more easily.
-         $buffer = '<span id="' . $this->getId() . '"';
-
-         $style = $this->getAttribute('style');
-         if ($style != null) {
-            $buffer .= ' style="' . $style . '"';
-         }
-
-         $class = $this->getAttribute('class');
-         if ($class != null) {
-            $buffer .= ' class="' . $class . '"';
-         }
-         $buffer .= '>';
-         foreach ($this->children as $section => $DUMMY) {
-            $buffer .= $this->children[$section]->transform();
-         }
-
-         return $buffer . '</span>';
+      if (!$this->isVisible) {
+         return '';
       }
 
-      return '';
+      // as of 1.12, the date control should be rendered using a
+      // surrounding span do enable the client validator extension
+      // to address the control more easily.
+      $buffer = '<span id="' . $this->getId() . '"';
+
+      $style = $this->getAttribute('style');
+      if ($style != null) {
+         $buffer .= ' style="' . $style . '"';
+      }
+
+      $class = $this->getAttribute('class');
+      if ($class != null) {
+         $buffer .= ' class="' . $class . '"';
+      }
+      $buffer .= '>';
+      foreach ($this->children as $section => $DUMMY) {
+         $buffer .= $this->children[$section]->transform();
+      }
+
+      return $buffer . '</span>';
    }
 
    /**

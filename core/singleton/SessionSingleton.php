@@ -40,7 +40,7 @@ register_shutdown_function(function () {
  * sessions. They loose their validity when the session ends.
  * <p/>
  * Usage:
- * <pre>$myObject = &SessionSingleton::getInstance('VENDOR\..\Class');</pre>
+ * <pre>$myObject = SessionSingleton::getInstance('VENDOR\..\Class');</pre>
  *
  * @author Christian Schäfer
  * @version
@@ -58,6 +58,13 @@ class SessionSingleton extends Singleton {
     * @var Session
     */
    private static $SESSION;
+
+   /**
+    * Stores the objects, that are requested as singletons.
+    *
+    * @var string[] $CACHE
+    */
+   private static $CACHE = [];
 
    private function __construct() {
    }
@@ -106,13 +113,6 @@ class SessionSingleton extends Singleton {
       return self::$CACHE[$cacheKey];
    }
 
-   public static function deleteInstance($class, $instanceId = null) {
-      parent::deleteInstance($class, $instanceId);
-
-      // remove from session to not restore instance after in subsequent request by accident
-      self::getSession()->delete(self::getCacheKey($class, $instanceId));
-   }
-
    /**
     * @return Session
     */
@@ -122,6 +122,13 @@ class SessionSingleton extends Singleton {
       }
 
       return self::$SESSION;
+   }
+
+   public static function deleteInstance($class, $instanceId = null) {
+      parent::deleteInstance($class, $instanceId);
+
+      // remove from session to not restore instance after in subsequent request by accident
+      self::getSession()->delete(self::getCacheKey($class, $instanceId));
    }
 
    /**

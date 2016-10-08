@@ -34,11 +34,11 @@ class PermissionAddController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $uM = & $this->getManager();
+      $uM = $this->getManager();
 
-      $form = & $this->getForm('PermissionAdd');
+      $form = $this->getForm('PermissionAdd');
 
-      if ($form->isSent() == true && $form->isValid() == true) {
+      if ($form->isSent() && $form->isValid()) {
 
          $displayName = $form->getFormElementByName('DisplayName');
          $name = $form->getFormElementByName('Name');

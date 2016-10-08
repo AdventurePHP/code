@@ -27,11 +27,13 @@ use APF\core\pagecontroller\ParserException;
 class ExpressionEvaluatorTest extends \PHPUnit_Framework_TestCase {
 
    public function testEmptyExpression() {
-      $this->assertNull(ExpressionEvaluator::evaluate(new Document(), ''));
+      $doc = new Document();
+      $this->assertNull(ExpressionEvaluator::evaluate($doc, ''));
    }
 
    public function testIllegalExpression() {
-      $this->assertNull(ExpressionEvaluator::evaluate(new Document(), '->'));
+      $doc = new Document();
+      $this->assertNull(ExpressionEvaluator::evaluate($doc, '->'));
    }
 
    public function testDataAccess() {
@@ -53,7 +55,7 @@ class ExpressionEvaluatorTest extends \PHPUnit_Framework_TestCase {
             ]
       );
       $this->assertEquals($model->getCssClass(), ExpressionEvaluator::evaluate($node, 'foo[0]->getCssClass()'));
-      $this->assertEquals($model->getMoreLinkModel()->getMoreLabel(), ExpressionEvaluator::evaluate($node, 'foo[\'foo\']->getMoreLinkModel()->getMoreLabel()'));
+      $this->assertEquals($model->getMoreLinkModel()->getLabel(), ExpressionEvaluator::evaluate($node, 'foo[\'foo\']->getMoreLinkModel()->getLabel()'));
    }
 
    public function testMethodChain() {
@@ -61,7 +63,7 @@ class ExpressionEvaluatorTest extends \PHPUnit_Framework_TestCase {
       $model = new ContentModel();
       $node->setData('foo', $model);
       $this->assertEquals($model, ExpressionEvaluator::evaluate($node, 'foo'));
-      $this->assertEquals($model->getMoreLinkModel()->getMoreLabel(), ExpressionEvaluator::evaluate($node, 'foo->getMoreLinkModel()->getMoreLabel()'));
+      $this->assertEquals($model->getMoreLinkModel()->getLabel(), ExpressionEvaluator::evaluate($node, 'foo->getMoreLinkModel()->getLabel()'));
    }
 
    public function testMultiArrayAccessMethodChain() {
@@ -79,13 +81,15 @@ class ExpressionEvaluatorTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testIllegalCallChain() {
-      $this->setExpectedException(ParserException::class);
-      ExpressionEvaluator::evaluate(new Document(), '->foo->getMoreLinkModel()->->getMoreLabel()');
+      $this->expectException(ParserException::class);
+      $doc = new Document();
+      ExpressionEvaluator::evaluate($doc, '->foo->getMoreLinkModel()->->getLabel()');
    }
 
    public function testIllegalCall() {
-      $this->setExpectedException(ParserException::class);
-      ExpressionEvaluator::evaluate(new Document(), 'foo-> getCssClass()');
+      $this->expectException(ParserException::class);
+      $doc = new Document();
+      ExpressionEvaluator::evaluate($doc, 'foo-> getCssClass()');
    }
 
 }

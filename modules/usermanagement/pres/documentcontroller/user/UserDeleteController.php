@@ -35,13 +35,13 @@ class UserDeleteController extends UmgtBaseController {
    public function transformContent() {
 
       $userId = $this->getRequest()->getParameter('userid');
-      $uM = & $this->getManager();
-      $user = $uM->loadUserById($userId);
+      $uM = $this->getManager();
+      $user = $uM->loadUserByID($userId);
 
       $this->getLabel('DisplayName')->setPlaceHolder('display-name', $user->getDisplayName());
 
-      $formNo = & $this->getForm('UserDelNo');
-      $formYes = & $this->getForm('UserDelYes');
+      $formNo = $this->getForm('UserDelNo');
+      $formYes = $this->getForm('UserDelYes');
 
       $response = $this->getResponse();
 

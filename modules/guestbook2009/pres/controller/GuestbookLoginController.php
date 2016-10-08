@@ -33,18 +33,18 @@ class GuestbookLoginController extends GuestbookBaseController {
 
    public function transformContent() {
 
-      $form = & $this->getForm('login');
+      $form = $this->getForm('login');
 
       if ($form->isSent() && $form->isValid()) {
 
-         $fieldUser = & $form->getFormElementByName('username');
-         $fieldPass = & $form->getFormElementByName('password');
+         $fieldUser = $form->getFormElementByName('username');
+         $fieldPass = $form->getFormElementByName('password');
          $user = new User();
          $user->setUsername($fieldUser->getAttribute('value'));
          $user->setPassword($fieldPass->getAttribute('value'));
 
          if (!$this->getGuestbookService()->validateCredentials($user)) {
-            $error = & $this->getTemplate('error');
+            $error = $this->getTemplate('error');
             $form->setPlaceHolder('error', $error->transformTemplate());
          }
       }

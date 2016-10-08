@@ -35,12 +35,12 @@ class ProxyRemoveGroupsController extends UmgtPermissionBaseController {
    public function transformContent() {
 
       $proxyId = $this->getRequest()->getParameter('proxyid');
-      $form = & $this->getForm(self::$FORM_NAME);
+      $form = $this->getForm(self::$FORM_NAME);
 
       $proxyIdControl = $form->getFormElementByName('proxyid');
       $proxyIdControl->setAttribute('value', $proxyId);
 
-      $uM = & $this->getManager();
+      $uM = $this->getManager();
       $proxy = $uM->loadVisibilityDefinitionById($proxyId);
       $proxyType = $uM->loadVisibilityDefinitionType($proxy);
 
@@ -51,7 +51,7 @@ class ProxyRemoveGroupsController extends UmgtPermissionBaseController {
       $groups = $uM->loadGroupsWithVisibilityDefinition($proxy);
 
       if (count($groups) === 0) {
-         $tmpl = & $this->getTemplate('NoMoreGroups');
+         $tmpl = $this->getTemplate('NoMoreGroups');
          $tmpl->getLabel('message-1')
                ->setPlaceHolder('app-object-id', $proxy->getAppObjectId())
                ->setPlaceHolder('object-type', $proxyType->getObjectName());
@@ -62,9 +62,8 @@ class ProxyRemoveGroupsController extends UmgtPermissionBaseController {
          return;
       }
 
-      $groupsControl = & $form->getFormElementByName('groups');
-
       /* @var $groupsControl MultiSelectBoxTag */
+      $groupsControl = $form->getFormElementByName('groups');
       foreach ($groups as $id => $DUMMY) {
          $groupsControl->addOption($groups[$id]->getDisplayName(), $groups[$id]->getObjectId());
       }
@@ -79,7 +78,7 @@ class ProxyRemoveGroupsController extends UmgtPermissionBaseController {
                      [
                            'mainview'  => 'proxy',
                            'proxyview' => null,
-                           'proxyid' => null
+                           'proxyid'   => null
                      ]
                )
          );

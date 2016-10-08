@@ -34,10 +34,10 @@ class ProxyTypeListController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $uM = & $this->getManager();
+      $uM = $this->getManager();
 
       $buffer = (string) '';
-      $template = & $this->getTemplate('Type');
+      $template = $this->getTemplate('Type');
 
       $list = $uM->loadVisibilityDefinitionTypes();
       foreach ($list as $id => $DUMMY) {

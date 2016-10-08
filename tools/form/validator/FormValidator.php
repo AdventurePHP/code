@@ -20,7 +20,7 @@
  */
 namespace APF\tools\form\validator;
 
-use APF\core\service\APFService;
+use APF\core\pagecontroller\ApplicationContext;
 use APF\tools\form\FormControl;
 
 /**
@@ -33,7 +33,7 @@ use APF\tools\form\FormControl;
  * @version
  * Version 0.1, 06.11.2015 (ID#273: introduced interface)<br />
  */
-interface FormValidator extends APFService {
+interface FormValidator extends ApplicationContext {
 
    /**
     * Injects the control to validate and the button, that triggers the validation.

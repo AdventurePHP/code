@@ -46,7 +46,7 @@ class ErrorPageController extends BaseDocumentController {
       $errors = array_reverse(debug_backtrace());
       $buffer = (string) '';
 
-      $errorEntry = & $this->getTemplate('ErrorEntry');
+      $errorEntry = $this->getTemplate('ErrorEntry');
 
       // generate stack trace
       for ($i = 0; $i < count($errors); $i++) {

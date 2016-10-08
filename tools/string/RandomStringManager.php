@@ -142,8 +142,8 @@ class RandomStringManager extends APFObject {
       }
 
       /* @var $cM ConnectionManager */
-      $cM = &$this->getServiceObject(ConnectionManager::class);
-      $conn = &$cM->getConnection($connectionKey);
+      $cM = $this->getServiceObject(ConnectionManager::class);
+      $conn = $cM->getConnection($connectionKey);
 
       $hash = $this->createHash();
       $hash = $conn->escapeValue($hash);

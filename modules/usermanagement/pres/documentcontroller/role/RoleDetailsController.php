@@ -34,7 +34,7 @@ class RoleDetailsController extends UmgtBaseController {
    public function transformContent() {
 
       // load data
-      $uM = & $this->getManager();
+      $uM = $this->getManager();
       $roleId = $this->getRequest()->getParameter('roleid');
       $role = $uM->loadRoleByID($roleId);
 
@@ -44,19 +44,19 @@ class RoleDetailsController extends UmgtBaseController {
 
       // display users
       $users = $uM->loadUsersWithRole($role);
-      $iterator = & $this->getIterator('Users');
+      $iterator = $this->getIterator('Users');
       $iterator->fillDataContainer($users);
       $iterator->transformOnPlace();
 
       // display groups
       $groups = $uM->loadGroupsWithRole($role);
-      $iterator = & $this->getIterator('Groups');
+      $iterator = $this->getIterator('Groups');
       $iterator->fillDataContainer($groups);
       $iterator->transformOnPlace();
 
       // display permissions
       $permissions = $uM->loadPermissionsWithRole($role);
-      $iterator = & $this->getIterator('Permissions');
+      $iterator = $this->getIterator('Permissions');
       $iterator->fillDataContainer($permissions);
       $iterator->transformOnPlace();
 

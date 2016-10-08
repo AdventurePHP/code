@@ -38,24 +38,24 @@ class RoleEditController extends UmgtBaseController {
       $roleId = $this->getRequest()->getParameter('roleid');
 
       // initialize the form
-      $form = & $this->getForm('RoleEdit');
+      $form = $this->getForm('RoleEdit');
 
-      $hidden = & $form->getFormElementByName('roleid');
+      $hidden = $form->getFormElementByName('roleid');
       $hidden->setAttribute('value', $roleId);
 
-      $displayName = & $form->getFormElementByName('DisplayName');
-      $description = & $form->getFormElementByName('Description');
+      $displayName = $form->getFormElementByName('DisplayName');
+      $description = $form->getFormElementByName('Description');
 
-      $uM = & $this->getManager();
+      $uM = $this->getManager();
 
       // load selected roles to be able to highlight them within the select field
       $role = $uM->loadRoleByID($roleId);
 
-      if ($form->isSent() == true) {
+      if ($form->isSent()) {
 
-         if ($form->isValid() == true) {
+         if ($form->isValid()) {
 
-            $displayName = & $form->getFormElementByName('DisplayName');
+            $displayName = $form->getFormElementByName('DisplayName');
 
             $role = new UmgtRole();
             $role->setObjectId($roleId);

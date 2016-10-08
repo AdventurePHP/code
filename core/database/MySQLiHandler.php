@@ -44,6 +44,12 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    public function __construct() {
       $this->dbLogTarget = 'mysqli';
       $this->dbPort = '3306';
+
+      // Allow database connection verification with full exception handling support (see discussion under
+      // http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=614&p=20409#p20409)
+      if (!extension_loaded('mysqli')) {
+         throw new DatabaseHandlerException('PHP extension "mysqli" not loaded! Please verify your PHP configuration.');
+      }
    }
 
    /**
@@ -119,7 +125,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       // must be present in the order defined in the statement. Thus we must
       // re-order the $params array.
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
       $statementId = md5($statement);
       $id = $statementId . ' re-order bind params';
       $t->start($id);
@@ -313,7 +319,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    public function executeTextBindStatement($statement, array $params = [], $logStatement = false) {
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance(BenchmarkTimer::class);
+      $t = Singleton::getInstance(BenchmarkTimer::class);
       $statementId = md5($statement);
 
       // prepare statement
@@ -397,7 +403,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * @param resource $resultCursor The result resource returned by executeStatement() or executeTextStatement().
     * @param int $type The type the returned data should have. Use the static *_FETCH_MODE constants.
     *
-    * @return string[] The associative result array. Returns false if no row was found.
+    * @return string[]|false The associative result array. Returns false if no row was found.
     *
     * @author Christian Achatz
     * @version

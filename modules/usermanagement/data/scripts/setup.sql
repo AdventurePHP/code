@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS `ent_user` (
   `Username` VARCHAR(100) character set utf8 NOT NULL default '',
   `Password` VARCHAR(100) character set utf8 NOT NULL default '',
   `DynamicSalt` VARCHAR(50) character set utf8 NOT NULL default '',
+  `DateOfBirth` DATE NOT NULL default '0000-00-00',
   `CreationTimestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
   `ModificationTimestamp` timestamp NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY (`UserID`)

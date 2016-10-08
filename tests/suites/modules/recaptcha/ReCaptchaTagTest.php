@@ -1,4 +1,23 @@
 <?php
+/**
+ * <!--
+ * This file is part of the adventure php framework (APF) published under
+ * http://adventure-php-framework.org.
+ *
+ * The APF is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * The APF is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+ * -->
+ */
 namespace APF\tests\suites\modules\recaptcha;
 
 use APF\modules\recaptcha\pres\taglib\ReCaptchaTag;
@@ -12,7 +31,7 @@ use PHPUnit_Framework_MockObject_MockObject;
 class ReCaptchaTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testParameterCheck1() {
-      $this->setExpectedException(FormException::class);
+      $this->expectException(FormException::class);
       $this->getReCaptchaTag()->onParseTime();
    }
 
@@ -27,12 +46,12 @@ class ReCaptchaTagTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testParameterCheck2() {
-      $this->setExpectedException(FormException::class);
+      $this->expectException(FormException::class);
       $this->getReCaptchaTag(['name' => 'foo'])->onParseTime();
    }
 
    public function testParameterCheck3() {
-      $this->setExpectedException(FormException::class);
+      $this->expectException(FormException::class);
       $this->getReCaptchaTag(['name' => 'foo', 'public-key' => 'bar'])->onParseTime();
    }
 
@@ -54,7 +73,9 @@ class ReCaptchaTagTest extends \PHPUnit_Framework_TestCase {
    public function testTransform() {
 
       /* @var $tag ReCaptchaTag|PHPUnit_Framework_MockObject_MockObject */
-      $tag = $this->getMock(ReCaptchaTag::class, ['getCaptchaId', 'getPublicKey']);
+      $tag = $this->getMockBuilder(ReCaptchaTag::class)
+            ->setMethods(['getCaptchaId', 'getPublicKey'])
+            ->getMock();
 
       $captchaId = '12345678901234567890';
 

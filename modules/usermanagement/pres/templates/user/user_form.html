@@ -20,6 +20,14 @@
          <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
+               entry="frontend.user.edit.form.birthday.label"/>
+      </label>
+      <form:date name="Birthday" id="date-of-birth" yearrange="1920-now"/>
+
+      <label>
+         <html:getstring
+               namespace="APF\modules\usermanagement\pres"
+               config="labels.ini"
                entry="frontend.user.edit.form.street-name.label"/>
       </label>
       <form:text name="StreetName" maxlength="100"/>

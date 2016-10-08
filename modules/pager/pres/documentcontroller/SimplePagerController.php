@@ -44,9 +44,9 @@ class SimplePagerController extends BaseDocumentController {
       for ($i = 0; $i < $count; $i++) {
 
          if ($pages[$i]->isSelected() == true) {
-            $tmplPage = & $this->getTemplate('Page_Selected_' . $this->getLanguage());
+            $tmplPage = $this->getTemplate('Page_Selected_' . $this->getLanguage());
          } else {
-            $tmplPage = & $this->getTemplate('Page_Normal_' . $this->getLanguage());
+            $tmplPage = $this->getTemplate('Page_Normal_' . $this->getLanguage());
          }
 
          $anchorName = $document->getAttribute('AnchorName');
@@ -62,7 +62,7 @@ class SimplePagerController extends BaseDocumentController {
 
       }
 
-      $tmplPage = & $this->getTemplate('Page_' . $this->getLanguage());
+      $tmplPage = $this->getTemplate('Page_' . $this->getLanguage());
       $this->setPlaceHolder('Page', $tmplPage->transformTemplate());
       $this->setPlaceHolder('Content', $buffer);
    }

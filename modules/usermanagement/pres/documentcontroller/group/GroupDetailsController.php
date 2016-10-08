@@ -34,7 +34,7 @@ class GroupDetailsController extends UmgtBaseController {
    public function transformContent() {
 
       // load data
-      $uM = & $this->getManager();
+      $uM = $this->getManager();
       $groupId = $this->getRequest()->getParameter('groupid');
       $group = $uM->loadGroupByID($groupId);
 
@@ -43,13 +43,13 @@ class GroupDetailsController extends UmgtBaseController {
 
       // display users
       $users = $uM->loadUsersWithGroup($group);
-      $usersIterator = & $this->getIterator('Users');
+      $usersIterator = $this->getIterator('Users');
       $usersIterator->fillDataContainer($users);
       $usersIterator->transformOnPlace();
 
       // display roles
       $roles = $uM->loadRolesWithGroup($group);
-      $iteratorRoles = & $this->getIterator('Roles');
+      $iteratorRoles = $this->getIterator('Roles');
       $iteratorRoles->fillDataContainer($roles);
       $iteratorRoles->transformOnPlace();
 

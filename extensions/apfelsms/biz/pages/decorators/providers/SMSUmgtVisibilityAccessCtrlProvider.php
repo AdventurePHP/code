@@ -72,7 +72,7 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
       }
 
       /** @var $umgtUS UmgtUserSessionStore */
-      $umgtUS = &$this->getServiceObject(UmgtUserSessionStore::class, [], APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      $umgtUS = $this->getServiceObject(UmgtUserSessionStore::class, [], APFService::SERVICE_TYPE_SESSION_SINGLETON);
 
       // load current user
       $user = $umgtUS->getUser($this->getContext());
@@ -83,7 +83,7 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
       }
 
       /** @var $umgtM UmgtManager */
-      $umgtM = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
+      $umgtM = $this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
 
       // load visibilities from users and groups
       $groups = $umgtM->loadGroupsWithUser($user);

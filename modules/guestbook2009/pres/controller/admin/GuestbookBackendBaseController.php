@@ -49,10 +49,10 @@ abstract class GuestbookBackendBaseController extends GuestbookBaseController {
    protected function displayEntrySelection($adminView) {
 
       // fill the select list
-      $form = & $this->getForm('selectentry');
+      $form = $this->getForm('selectentry');
 
       /* @var $select SelectBoxTag */
-      $select = & $form->getFormElementByName('entryid');
+      $select = $form->getFormElementByName('entryid');
 
       $entriesList = $this->getGuestbookService()->loadEntryListForSelection();
 

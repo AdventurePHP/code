@@ -20,7 +20,7 @@
  */
 namespace APF\extensions\postbox\biz;
 
-use APF\core\database\MySQLxHandler;
+use APF\core\database\AbstractDatabaseHandler;
 use APF\modules\genericormapper\data\GenericCriterionObject;
 use APF\modules\genericormapper\data\GenericDomainObject;
 use Exception;
@@ -40,7 +40,7 @@ class AbstractPostboxFolder extends GenericDomainObject {
     * @return bool Returns true if the folder contains at least 1 new message.
     */
    public function hasUnreadMessages() {
-      /* @var $DBDriver MySQLxHandler */
+      /* @var $DBDriver AbstractDatabaseHandler */
       $DBDriver = $this->getDataComponent()->getDbDriver();
       $result = $DBDriver->executeStatement(
             'postbox',

@@ -34,11 +34,11 @@ use Exception;
  * as follows:
  * <pre>
  * // add condition
- * $condSet = &$this->getServiceObject(UserDependentContentConditionSet::class);
+ * $condSet = $this->getServiceObject(UserDependentContentConditionSet::class);
  * $condSet->addCondition(new FooCondition());
  *
  * // initialize with custom condition
- * $condSet = &$this->getServiceObject(UserDependentContentConditionSet::class);
+ * $condSet = $this->getServiceObject(UserDependentContentConditionSet::class);
  * $condSet
  *         ->resetConditionList()
  *         ->addCondition(new BarCondition());

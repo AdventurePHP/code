@@ -23,7 +23,9 @@ namespace APF\tests\suites\tools\form\taglib;
 use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\LanguageLabel;
 use APF\core\pagecontroller\XmlParser;
+use APF\tests\suites\tools\form\mock\TextFieldTagMock;
 use APF\tools\form\FormException;
+use APF\tools\form\HtmlForm;
 use APF\tools\form\taglib\ButtonTag;
 use APF\tools\form\taglib\FormGroupTag;
 use APF\tools\form\taglib\HtmlFormTag;
@@ -31,6 +33,7 @@ use APF\tools\form\taglib\RadioButtonTag;
 use APF\tools\form\taglib\SelectBoxTag;
 use APF\tools\form\taglib\TextFieldTag;
 use PHPUnit_Framework_MockObject_MockObject;
+use ReflectionMethod;
 use ReflectionProperty;
 
 class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
@@ -148,7 +151,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
       $form = new HtmlFormTag();
 
       // inject parent object to make recursive selection work
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
 
       $form->setAttribute('name', 'foo');
       $form->setContent('<form:text name="user"/>
@@ -229,7 +233,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testTransform() {
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
 
       $form->setAction('/some-url');
 
@@ -295,9 +300,10 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
     * Test interface complies for not-existing interface.
     */
    public function testFindById1() {
-      $this->setExpectedException(FormException::class);
+      $this->expectException(FormException::class);
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->getFormElementByID('not-existing');
    }
 
@@ -307,7 +313,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testFindById2() {
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setContent('<form:text id="foo" name="bar" value="123"/>
 <form:text name="foo" />
 <form:button name="submit" value="submit" />');
@@ -327,7 +334,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testFindById3() {
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setContent('<form:text name="bar" />
 <form:group>
    <form:group>
@@ -350,9 +358,10 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
     * Test interface complies for not-existing interface.
     */
    public function testGetLabel1() {
-      $this->setExpectedException(FormException::class);
+      $this->expectException(FormException::class);
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->getLabel('not-existing');
    }
 
@@ -362,7 +371,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testGetLabel2() {
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setContent('<form:label name="foo">Label</form:label>
 <html:getstring
          name="foo"
@@ -387,7 +397,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testGetLabel3() {
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setContent('<form:text name="bar" />
 <form:group>
    <form:label name="bar">Other Label</form:label>
@@ -415,9 +426,10 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
     * Tests API complies for non existing tags.
     */
    public function testGetFormElementsByTagName1() {
-      $this->setExpectedException(FormException::class);
+      $this->expectException(FormException::class);
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->getFormElementsByTagName('html:placeholder');
    }
 
@@ -427,7 +439,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testGetFormElementsByTagName2() {
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setContent('<form:text id="foo-1" name="bar-1" value="123"/>
 <form:text id="foo-2" name="bar-2" />
 <form:radio name="bar-3" value="1" />
@@ -459,7 +472,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testGetFormElementsByTagName3() {
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setContent('<form:text id="foo-1" name="bar-1" value="123"/>
 <form:group>
    <form:group>
@@ -497,7 +511,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testGetFormElementsByName1() {
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $this->assertEmpty($form->getFormElementsByName('foo:bar'));
 
    }
@@ -508,7 +523,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testGetFormElementsByName2() {
 
       $form = new HtmlFormTag();
-      $form->setParentObject(new Document());
+      $doc = new Document();
+      $form->setParentObject($doc);
       $form->setContent('<form:text id="foo-1" name="bar" value="123"/>
 <form:group>
    <form:group>
@@ -557,13 +573,155 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testGetMarker() {
 
       /* @var $form HtmlFormTag|PHPUnit_Framework_MockObject_MockObject */
-      $form = $this->getMock(HtmlFormTag::class, ['getFormElementByName']);
+      $form = $this->getMockBuilder(HtmlFormTag::class)
+            ->setMethods(['getFormElementByName'])
+            ->getMock();
 
       $form->expects($this->once())
             ->method('getFormElementByName')
             ->with('foo');
 
       $form->getMarker('foo');
+
+   }
+
+   /**
+    * Checks whether form control creation complies with APF DomNode creation.
+    */
+   public function testCreateFormElement() {
+
+      $name = 'foo';
+      $context = 'bar';
+      $language = 'en';
+
+      $form = new HtmlFormTag();
+      $form->setContext($context);
+      $form->setLanguage($language);
+
+      // register mock implementation to allow check of method execution
+      Document::addTagLib(TextFieldTagMock::class, 'test', 'text');
+
+      $method = new ReflectionMethod(HtmlFormTag::class, 'createFormElement');
+      $method->setAccessible(true);
+
+      // note: arguments to be passed ad reference MUST be explicitly referenced with &
+      $actual = $method->invokeArgs($form, [&$form, 'test:text', ['name' => $name, 'class' => 'text-field']]);
+
+      /* @var $field TextFieldTagMock */
+      $field = $form->getFormElementByName($name);
+      $objectId = $field->getObjectId();
+
+      // check identity to ensure references are returned
+      $this->assertEquals(spl_object_hash($actual), spl_object_hash($field));
+
+      // test element creation as part of the applied DomNode instance
+      $this->assertInstanceOf(TextFieldTag::class, $field);
+
+      // test object id, attributes, context language,
+      $this->assertNotNull($objectId);
+      $this->assertEquals($name, $field->getAttribute('name'));
+      $this->assertEquals($context, $field->getContext());
+      $this->assertEquals($language, $field->getLanguage());
+
+      // check whether parent object is initialized (form)
+      $this->assertEquals($form, $field->getParentObject());
+
+      // check whether onParseTime() and onAfterAppend() are called
+      $this->assertTrue($field->onParseTimeExecuted);
+      $this->assertTrue($field->onAfterAppendExecuted);
+
+      // check if internal array structure is valid
+      $children = $form->getChildren();
+      $this->assertNotEmpty($children);
+      $this->assertContains($objectId, array_keys($children));
+
+   }
+
+   /**
+    * Tests whether the form implementation automatically renders hidden fields to
+    * preserve GET parameters in action urls for convenience reasons.
+    */
+   public function testSubmitGetParametersInGetMode() {
+
+      // "old" behaviour before change ID#281:
+      $form = $this->getSimpleForm();
+      $form->setAction('/');
+      $form->setAttribute(HtmlForm::METHOD_ATTRIBUTE_NAME, HtmlForm::METHOD_GET_VALUE_NAME);
+      $actual = $form->transformForm();
+
+      $this->assertNotContains('<input type="hidden"', $actual);
+
+      // test behaviour that no additional hidden fields are rendered in case action URL does not contain query params
+      $form = $this->getSimpleForm();
+      $form->setAction('/');
+      $form->setAttribute(HtmlForm::METHOD_ATTRIBUTE_NAME, HtmlForm::METHOD_GET_VALUE_NAME);
+      $form->setAttribute(HtmlFormTag::SUBMIT_ACTION_URL_PARAMS_ATTRIBUTE_NAME, 'true');
+      $actual = $form->transformForm();
+
+      $this->assertNotContains('<input type="hidden"', $actual);
+
+      // test "new" behaviour with hidden fields having an action URL with query params and having the new
+      // behaviour activated by form attribute
+      $form = $this->getSimpleForm();
+      $form->setAction('/?foo=bar&bar=baz');
+      $form->setAttribute(HtmlForm::METHOD_ATTRIBUTE_NAME, HtmlForm::METHOD_GET_VALUE_NAME);
+      $form->setAttribute(HtmlFormTag::SUBMIT_ACTION_URL_PARAMS_ATTRIBUTE_NAME, 'true');
+      $actual = $form->transformForm();
+
+      $this->assertContains('<input type="hidden" name="foo" value="bar" />', $actual);
+      $this->assertContains('<input type="hidden" name="bar" value="baz" />', $actual);
+
+      // test parameter order is preserved
+      $fooPos = strpos($actual, 'name="foo"');
+      $barPos = strpos($actual, 'name="bar"');
+      $this->assertGreaterThan($fooPos, $barPos);
+
+      // test behaviour is only working with GET requests
+      $form = $this->getSimpleForm();
+      $form->setAction('/?foo=bar&bar=baz');
+      $form->setAttribute(HtmlForm::METHOD_ATTRIBUTE_NAME, HtmlForm::METHOD_POST_VALUE_NAME);
+      $form->setAttribute(HtmlFormTag::SUBMIT_ACTION_URL_PARAMS_ATTRIBUTE_NAME, 'true');
+      $actual = $form->transformForm();
+
+      $this->assertNotContains('<input type="hidden"', $actual);
+
+   }
+
+   /**
+    * @return HtmlFormTag
+    */
+   private function getSimpleForm() {
+      $form = new HtmlFormTag();
+
+      $doc = new Document();
+      $form->setParentObject($doc);
+      $form->setContent('<form:text id="text" name="text" value="123"/>
+<form:button name="submit" value="submit" />');
+
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      return $form;
+   }
+
+   /**
+    * ID#303: test capabilities to hide form group by default from within a template.
+    */
+   public function testHidingByAttribute() {
+
+      // tag is visible by default
+      $tag = new FormGroupTag();
+      $tag->setAttributes(['name' => 'foo']);
+      $tag->onParseTime();
+
+      $this->assertTrue($tag->isVisible());
+
+      // hide tag with attribute
+      $tag = new FormGroupTag();
+      $tag->setAttributes(['name' => 'foo', 'hidden' => 'true']);
+      $tag->onParseTime();
+
+      $this->assertFalse($tag->isVisible());
 
    }
 

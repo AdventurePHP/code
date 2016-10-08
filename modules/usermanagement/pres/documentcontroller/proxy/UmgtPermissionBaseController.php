@@ -38,7 +38,7 @@ abstract class UmgtPermissionBaseController extends UmgtBaseController {
 
    protected function mapSelectedOptions2DomainObjects($elementName, $objectName) {
 
-      $form = & $this->getForm(self::$FORM_NAME);
+      $form = $this->getForm(self::$FORM_NAME);
 
       /* @var $control MultiSelectBoxTag */
       $control = $form->getFormElementByName($elementName);
