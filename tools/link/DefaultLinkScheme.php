@@ -94,8 +94,7 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
     *
     * @return string Query-string
     */
-   protected function buildQueryString(array $query)
-   {
+   protected function buildQueryString(array $query) {
       // get URL mappings and try to resolve mapped actions
       $mappings = $this->getActionUrMappingTokens();
 
@@ -125,10 +124,10 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
       $url = $this->removeActionInstructions($url);
 
       return $this->formatLinkInternal(
-          $url->setQueryParameter(
-              $this->formatActionIdentifier($namespace, $name, false),
-              $this->formatActionParameters($params, false)
-          ));
+            $url->setQueryParameter(
+                  $this->formatActionIdentifier($namespace, $name, false),
+                  $this->formatActionParameters($params, false)
+            ));
    }
 
 }
