@@ -73,7 +73,9 @@ class ReCaptchaTagTest extends \PHPUnit_Framework_TestCase {
    public function testTransform() {
 
       /* @var $tag ReCaptchaTag|PHPUnit_Framework_MockObject_MockObject */
-      $tag = $this->getMock(ReCaptchaTag::class, ['getCaptchaId', 'getPublicKey']);
+      $tag = $this->getMockBuilder(ReCaptchaTag::class)
+            ->setMethods(['getCaptchaId', 'getPublicKey'])
+            ->getMock();
 
       $captchaId = '12345678901234567890';
 

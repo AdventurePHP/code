@@ -39,7 +39,9 @@ class FrontcontrollerTest extends \PHPUnit_Framework_TestCase {
    public function testStart() {
 
       /* @var $fC Frontcontroller|PHPUnit_Framework_MockObject_MockObject */
-      $fC = $this->getMock(Frontcontroller::class, ['getRequest', 'getResponse', 'runActions']);
+      $fC = $this->getMockBuilder(Frontcontroller::class)
+            ->setMethods(['getRequest', 'getResponse', 'runActions'])
+            ->getMock();
 
       $fC->expects($this->once())
             ->method('getRequest')
@@ -70,7 +72,9 @@ class FrontcontrollerTest extends \PHPUnit_Framework_TestCase {
    public function testRegisterActionUrlMappings() {
 
       /* @var $fC Frontcontroller|PHPUnit_Framework_MockObject_MockObject */
-      $fC = $this->getMock(Frontcontroller::class, ['getConfiguration', 'registerActionUrlMapping']);
+      $fC = $this->getMockBuilder(Frontcontroller::class)
+            ->setMethods(['getConfiguration', 'registerActionUrlMapping'])
+            ->getMock();
 
       $namespace = 'VENDOR\actions';
 
@@ -98,7 +102,9 @@ class FrontcontrollerTest extends \PHPUnit_Framework_TestCase {
    public function testRegisterAction() {
 
       /* @var $fC Frontcontroller|PHPUnit_Framework_MockObject_MockObject */
-      $fC = $this->getMock(Frontcontroller::class, ['addAction']);
+      $fC = $this->getMockBuilder(Frontcontroller::class)
+            ->setMethods(['addAction'])
+            ->getMock();
 
       $namespace = 'VENDOR\actions';
       $name = 'Foo';
@@ -119,7 +125,9 @@ class FrontcontrollerTest extends \PHPUnit_Framework_TestCase {
       $this->expectException(InvalidArgumentException::class);
 
       /* @var $fC Frontcontroller|PHPUnit_Framework_MockObject_MockObject */
-      $fC = $this->getMock(Frontcontroller::class, ['getConfiguration']);
+      $fC = $this->getMockBuilder(Frontcontroller::class)
+            ->setMethods(['getConfiguration'])
+            ->getMock();
 
       $fC->expects($this->once())
             ->method('getConfiguration')
@@ -136,7 +144,9 @@ class FrontcontrollerTest extends \PHPUnit_Framework_TestCase {
       $this->expectException(InvalidArgumentException::class);
 
       /* @var $fC Frontcontroller|PHPUnit_Framework_MockObject_MockObject */
-      $fC = $this->getMock(Frontcontroller::class, ['getConfiguration']);
+      $fC = $this->getMockBuilder(Frontcontroller::class)
+            ->setMethods(['getConfiguration'])
+            ->getMock();
 
       $namespace = 'VENDOR\actions';
       $name = 'Foo';
@@ -161,7 +171,9 @@ class FrontcontrollerTest extends \PHPUnit_Framework_TestCase {
       $lang = 'es';
 
       /* @var $fC Frontcontroller|PHPUnit_Framework_MockObject_MockObject */
-      $fC = $this->getMock(Frontcontroller::class, ['getConfiguration']);
+      $fC = $this->getMockBuilder(Frontcontroller::class)
+            ->setMethods(['getConfiguration'])
+            ->getMock();
       $fC->setContext($context);
       $fC->setLanguage($lang);
 
@@ -210,7 +222,9 @@ class FrontcontrollerTest extends \PHPUnit_Framework_TestCase {
       $this->expectException(InvalidArgumentException::class);
 
       /* @var $fC Frontcontroller|PHPUnit_Framework_MockObject_MockObject */
-      $fC = $this->getMock(Frontcontroller::class, ['getConfiguration']);
+      $fC = $this->getMockBuilder(Frontcontroller::class)
+            ->setMethods(['getConfiguration'])
+            ->getMock();
 
       $namespace = 'VENDOR\actions';
       $name = 'Foo';
@@ -232,7 +246,9 @@ class FrontcontrollerTest extends \PHPUnit_Framework_TestCase {
    public function testAddAction5() {
 
       /* @var $fC Frontcontroller|PHPUnit_Framework_MockObject_MockObject */
-      $fC = $this->getMock(Frontcontroller::class, ['getConfiguration']);
+      $fC = $this->getMockBuilder(Frontcontroller::class)
+            ->setMethods(['getConfiguration'])
+            ->getMock();
 
       $namespace = 'VENDOR\actions';
       $name = 'Foo';
@@ -262,7 +278,9 @@ class FrontcontrollerTest extends \PHPUnit_Framework_TestCase {
    public function testAddAction6() {
 
       /* @var $fC Frontcontroller|PHPUnit_Framework_MockObject_MockObject */
-      $fC = $this->getMock(Frontcontroller::class, ['getConfiguration', 'registerActionUrlMapping']);
+      $fC = $this->getMockBuilder(Frontcontroller::class)
+            ->setMethods(['getConfiguration', 'registerActionUrlMapping'])
+            ->getMock();
 
       $namespace = 'VENDOR\actions';
       $name = 'Foo';
@@ -288,7 +306,9 @@ class FrontcontrollerTest extends \PHPUnit_Framework_TestCase {
    public function testAddAction7() {
 
       /* @var $fC Frontcontroller|PHPUnit_Framework_MockObject_MockObject */
-      $fC = $this->getMock(Frontcontroller::class, ['getConfiguration', 'getDIServiceObject']);
+      $fC = $this->getMockBuilder(Frontcontroller::class)
+            ->setMethods(['getConfiguration', 'getDIServiceObject'])
+            ->getMock();
 
       $namespace = 'VENDOR\actions';
       $name = 'Foo';

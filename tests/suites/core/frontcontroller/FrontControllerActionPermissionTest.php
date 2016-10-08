@@ -70,7 +70,9 @@ class FrontControllerActionPermissionTest extends \PHPUnit_Framework_TestCase {
     * @return SimpleTestAction|PHPUnit_Framework_MockObject_MockObject
     */
    private function getActionForTypeTest($type, $typeToRun) {
-      $mock = $this->getMock(SimpleTestAction::class, ['getType', 'run']);
+      $mock = $this->getMockBuilder(SimpleTestAction::class)
+            ->setMethods(['getType', 'run'])
+            ->getMock();
       $mock->method('getType')
             ->willReturn($type);
       $mock->expects($type === $typeToRun ? $this->once() : $this->never())
@@ -117,7 +119,9 @@ class FrontControllerActionPermissionTest extends \PHPUnit_Framework_TestCase {
     * @return SimpleTestAction|PHPUnit_Framework_MockObject_MockObject
     */
    private function getActionForActiveTest($active) {
-      $mock = $this->getMock(SimpleTestAction::class, ['isActive', 'run']);
+      $mock = $this->getMockBuilder(SimpleTestAction::class)
+            ->setMethods(['isActive', 'run'])
+            ->getMock();
       $mock->method('isActive')
             ->willReturn($active);
       $mock->expects($active ? $this->once() : $this->never())
@@ -154,7 +158,9 @@ class FrontControllerActionPermissionTest extends \PHPUnit_Framework_TestCase {
     * @return SimpleTestAction|PHPUnit_Framework_MockObject_MockObject
     */
    private function getActionForProtectionTest($allowExecution) {
-      $mock = $this->getMock(SimpleTestAction::class, ['allowExecution', 'run']);
+      $mock = $this->getMockBuilder(SimpleTestAction::class)
+            ->setMethods(['allowExecution', 'run'])
+            ->getMock();
       $mock->method('allowExecution')
             ->willReturn($allowExecution);
       $mock->expects($allowExecution ? $this->once() : $this->never())

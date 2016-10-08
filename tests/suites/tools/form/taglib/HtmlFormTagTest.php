@@ -573,7 +573,9 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    public function testGetMarker() {
 
       /* @var $form HtmlFormTag|PHPUnit_Framework_MockObject_MockObject */
-      $form = $this->getMock(HtmlFormTag::class, ['getFormElementByName']);
+      $form = $this->getMockBuilder(HtmlFormTag::class)
+            ->setMethods(['getFormElementByName'])
+            ->getMock();
 
       $form->expects($this->once())
             ->method('getFormElementByName')

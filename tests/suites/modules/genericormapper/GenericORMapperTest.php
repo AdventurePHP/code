@@ -51,7 +51,9 @@ class GenericORMapperTest extends \PHPUnit_Framework_TestCase {
       $expectedValue = 'Foo';
 
       /* @var $mapper GenericORRelationMapper|PHPUnit_Framework_MockObject_MockObject */
-      $mapper = $this->getMock(GenericORRelationMapper::class, ['getConfiguration']);
+      $mapper = $this->getMockBuilder(GenericORRelationMapper::class)
+            ->setMethods(['getConfiguration'])
+            ->getMock();
 
       // mock configuration
       $config = new IniConfiguration();
@@ -65,7 +67,9 @@ class GenericORMapperTest extends \PHPUnit_Framework_TestCase {
 
       // inject pre-configured DB handler
       /* @var $driver MySQLiHandler|PHPUnit_Framework_MockObject_MockObject */
-      $driver = $this->getMock(MySQLiHandler::class, ['executeTextStatement', 'fetchData']);
+      $driver = $this->getMockBuilder(MySQLiHandler::class)
+            ->setMethods(['executeTextStatement', 'fetchData'])
+            ->getMock();
 
       $driver->method('fetchData')
             ->willReturn([$attributeName => $expectedValue, $objectName . 'ID' => 2]);
@@ -85,7 +89,9 @@ class GenericORMapperTest extends \PHPUnit_Framework_TestCase {
       $attributeName = 'DisplayName';
 
       /* @var $mapper GenericORMapper|PHPUnit_Framework_MockObject_MockObject */
-      $mapper = $this->getMock(GenericORMapper::class, ['getConfiguration']);
+      $mapper = $this->getMockBuilder(GenericORMapper::class)
+            ->setMethods(['getConfiguration'])
+            ->getMock();
 
       // mock configuration
       $config = new IniConfiguration();
@@ -99,7 +105,9 @@ class GenericORMapperTest extends \PHPUnit_Framework_TestCase {
 
       // inject pre-configured DB handler
       /* @var $driver MySQLiHandler|PHPUnit_Framework_MockObject_MockObject */
-      $driver = $this->getMock(MySQLiHandler::class, ['executeTextStatement', 'escapeValue']);
+      $driver = $this->getMockBuilder(MySQLiHandler::class)
+            ->setMethods(['executeTextStatement', 'escapeValue'])
+            ->getMock();
 
       $driver->expects($this->exactly(2))
             ->method('escapeValue')
@@ -127,7 +135,9 @@ class GenericORMapperTest extends \PHPUnit_Framework_TestCase {
       $id = 42;
 
       /* @var $mapper GenericORRelationMapper|PHPUnit_Framework_MockObject_MockObject */
-      $mapper = $this->getMock(GenericORRelationMapper::class, ['getConfiguration']);
+      $mapper = $this->getMockBuilder(GenericORRelationMapper::class)
+            ->setMethods(['getConfiguration'])
+            ->getMock();
 
       // mock configuration
       $config = new IniConfiguration();
@@ -141,7 +151,9 @@ class GenericORMapperTest extends \PHPUnit_Framework_TestCase {
 
       // inject pre-configured DB handler
       /* @var $driver MySQLiHandler|PHPUnit_Framework_MockObject_MockObject */
-      $driver = $this->getMock(MySQLiHandler::class, ['executeTextStatement', 'escapeValue']);
+      $driver = $this->getMockBuilder(MySQLiHandler::class)
+            ->setMethods(['executeTextStatement', 'escapeValue'])
+            ->getMock();
 
       $driver->expects($this->exactly(2))
             ->method('escapeValue')
@@ -157,7 +169,10 @@ class GenericORMapperTest extends \PHPUnit_Framework_TestCase {
       $mapper->setDbDriver($driver);
 
       /* @var $object GenericDomainObject|PHPUnit_Framework_MockObject_MockObject */
-      $object = $this->getMock(GenericDomainObject::class, ['setDataComponent', 'beforeSave', 'afterSave'], [$objectName]);
+      $object = $this->getMockBuilder(GenericDomainObject::class)
+            ->setMethods(['setDataComponent', 'beforeSave', 'afterSave'])
+            ->setConstructorArgs([$objectName])
+            ->getMock();
 
       // expect the mapper to inject the data component instance
       $object->method('setDataComponent')
@@ -183,7 +198,9 @@ class GenericORMapperTest extends \PHPUnit_Framework_TestCase {
       $targetId = 2;
 
       /* @var $mapper GenericORRelationMapper|PHPUnit_Framework_MockObject_MockObject */
-      $mapper = $this->getMock(GenericORRelationMapper::class, ['getConfiguration']);
+      $mapper = $this->getMockBuilder(GenericORRelationMapper::class)
+            ->setMethods(['getConfiguration'])
+            ->getMock();
 
       // mock configuration
       $mappingConfig = new IniConfiguration();
@@ -207,7 +224,9 @@ class GenericORMapperTest extends \PHPUnit_Framework_TestCase {
 
       // inject pre-configured DB handler
       /* @var $driver MySQLiHandler|PHPUnit_Framework_MockObject_MockObject */
-      $driver = $this->getMock(MySQLiHandler::class, ['executeTextStatement', 'escapeValue']);
+      $driver = $this->getMockBuilder(MySQLiHandler::class)
+            ->setMethods(['executeTextStatement', 'escapeValue'])
+            ->getMock();
 
       $driver->expects($this->exactly(2))
             ->method('escapeValue')
@@ -243,7 +262,9 @@ class GenericORMapperTest extends \PHPUnit_Framework_TestCase {
       $targetId = 2;
 
       /* @var $mapper GenericORRelationMapper|PHPUnit_Framework_MockObject_MockObject */
-      $mapper = $this->getMock(GenericORRelationMapper::class, ['getConfiguration']);
+      $mapper = $this->getMockBuilder(GenericORRelationMapper::class)
+            ->setMethods(['getConfiguration'])
+            ->getMock();
 
       // mock configuration
       $mappingConfig = new IniConfiguration();
@@ -267,7 +288,9 @@ class GenericORMapperTest extends \PHPUnit_Framework_TestCase {
 
       // inject pre-configured DB handler
       /* @var $driver MySQLiHandler|PHPUnit_Framework_MockObject_MockObject */
-      $driver = $this->getMock(MySQLiHandler::class, ['executeTextStatement', 'escapeValue']);
+      $driver = $this->getMockBuilder(MySQLiHandler::class)
+            ->setMethods(['executeTextStatement', 'escapeValue'])
+            ->getMock();
 
       $driver->expects($this->exactly(2))
             ->method('escapeValue')
@@ -306,7 +329,9 @@ class GenericORMapperTest extends \PHPUnit_Framework_TestCase {
       $attributeName = 'DisplayName';
 
       /* @var $mapper GenericORRelationMapper|PHPUnit_Framework_MockObject_MockObject */
-      $mapper = $this->getMock(GenericORRelationMapper::class, ['getConfiguration']);
+      $mapper = $this->getMockBuilder(GenericORRelationMapper::class)
+            ->setMethods(['getConfiguration'])
+            ->getMock();
 
       // mock configuration
       $config = new IniConfiguration();
@@ -320,7 +345,9 @@ class GenericORMapperTest extends \PHPUnit_Framework_TestCase {
 
       // inject pre-configured DB handler
       /* @var $driver MySQLiHandler|PHPUnit_Framework_MockObject_MockObject */
-      $driver = $this->getMock(MySQLiHandler::class, ['executeTextStatement', 'fetchData']);
+      $driver = $this->getMockBuilder(MySQLiHandler::class)
+            ->setMethods(['executeTextStatement', 'fetchData'])
+            ->getMock();
       $driver->method('fetchData')
             ->willReturn(false);
 
@@ -341,7 +368,9 @@ class GenericORMapperTest extends \PHPUnit_Framework_TestCase {
       $attributeName = 'DisplayName';
 
       /* @var $mapper GenericORRelationMapper|PHPUnit_Framework_MockObject_MockObject */
-      $mapper = $this->getMock(GenericORRelationMapper::class, ['getConfiguration']);
+      $mapper = $this->getMockBuilder(GenericORRelationMapper::class)
+            ->setMethods(['getConfiguration'])
+            ->getMock();
 
       // mock configuration
       $config = new IniConfiguration();
@@ -354,7 +383,9 @@ class GenericORMapperTest extends \PHPUnit_Framework_TestCase {
       $mapper->addMappingConfiguration('namespace', 'affix');
 
       /* @var $driver MySQLiHandler|PHPUnit_Framework_MockObject_MockObject */
-      $driver = $this->getMock(MySQLiHandler::class, ['executeTextStatement', 'fetchData']);
+      $driver = $this->getMockBuilder(MySQLiHandler::class)
+            ->setMethods(['executeTextStatement', 'fetchData'])
+            ->getMock();
       $driver->method('fetchData')
             ->willReturn(false);
 
