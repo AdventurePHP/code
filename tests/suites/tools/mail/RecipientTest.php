@@ -4,15 +4,18 @@ namespace APF\tests\suites\tools\mail;
 use APF\tools\mail\Recipient;
 use InvalidArgumentException;
 
+/**
+ * Tests the capabilities of an e-mail recipient (sender, recipient, CC recipient, or BCC recipient).
+ */
 class RecipientTest extends \PHPUnit_Framework_TestCase {
 
    public function testConstructor1() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       new Recipient(null, null);
    }
 
    public function testConstructor2() {
-      $this->setExpectedException(InvalidArgumentException::class);
+      $this->expectException(InvalidArgumentException::class);
       new Recipient(null, 'foo');
    }
 
