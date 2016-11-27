@@ -54,7 +54,7 @@ abstract class APFObject implements APFDIService {
     *
     * @var string $language
     */
-   protected $language = 'de';
+   protected $language = null;
 
    /**
     * Contains the service type, if the object was created with the ServiceManager.
