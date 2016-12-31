@@ -38,6 +38,11 @@ class LanguageLabelTagTest extends \PHPUnit_Framework_TestCase {
 
    private static $originalProvider;
 
+   /**
+    * @const string Language of the application (important for language-dependent readout of language files!)
+    */
+   const LANGUAGE = 'de';
+
    public static function setUpBeforeClass() {
       // setup static configuration resource path for test purposes
       RootClassLoader::addLoader(new StandardClassLoader(self::TEST_VENDOR, __DIR__ . '/test-config'));
@@ -61,13 +66,13 @@ class LanguageLabelTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testMissingAttribute1() {
       $this->expectException(InvalidArgumentException::class);
-      $node = new LanguageLabelTag();
+      $node = $this->getTag();
       $node->transform();
    }
 
    public function testMissingAttribute2() {
       $this->expectException(InvalidArgumentException::class);
-      $node = new LanguageLabelTag();
+      $node = $this->getTag();
       $node->setAttributes([
             'namespace' => 'dummy'
       ]);
@@ -76,21 +81,21 @@ class LanguageLabelTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testMissingAttribute3() {
       $this->expectException(InvalidArgumentException::class);
-      $node = new LanguageLabelTag();
+      $node = $this->getTag();
       $node->setAttributes([
             'namespace' => 'dummy',
-            'config'    => 'dummy'
+            'config' => 'dummy'
       ]);
       $node->transform();
    }
 
    public function testLanguageLabel1() {
 
-      $node = new LanguageLabelTag();
+      $node = $this->getTag();
       $node->setAttributes([
             'namespace' => self::TEST_VENDOR,
-            'config'    => self::CONFIG_FILE_NAME,
-            'entry'     => 'simple'
+            'config' => self::CONFIG_FILE_NAME,
+            'entry' => 'simple'
       ]);
 
       // Exclusion test that setting a place holder does not influence static text
@@ -102,11 +107,11 @@ class LanguageLabelTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testLanguageLabel2() {
 
-      $node = new LanguageLabelTag();
+      $node = $this->getTag();
       $node->setAttributes([
             'namespace' => self::TEST_VENDOR,
-            'config'    => self::CONFIG_FILE_NAME,
-            'entry'     => 'complex'
+            'config' => self::CONFIG_FILE_NAME,
+            'entry' => 'complex'
       ]);
       $node->setPlaceHolder('place-holder', 'test');
 
@@ -117,11 +122,11 @@ class LanguageLabelTagTest extends \PHPUnit_Framework_TestCase {
    public function testLanguageLabel3() {
 
       $this->expectException(InvalidArgumentException::class);
-      $node = new LanguageLabelTag();
+      $node = $this->getTag();
       $node->setAttributes([
             'namespace' => self::TEST_VENDOR,
-            'config'    => self::CONFIG_FILE_NAME,
-            'entry'     => 'not-existing'
+            'config' => self::CONFIG_FILE_NAME,
+            'entry' => 'not-existing'
       ]);
       $node->transform();
 
@@ -133,6 +138,7 @@ class LanguageLabelTagTest extends \PHPUnit_Framework_TestCase {
    public function testLanguageLabel4() {
 
       $node = new TemplateTag();
+      $node->setLanguage(self::LANGUAGE);
       $node->setContent('<h2><html:getstring id="foo" '
             . 'namespace="' . self::TEST_VENDOR . '" '
             . 'config="' . self::CONFIG_FILE_NAME . '"'
@@ -143,6 +149,15 @@ class LanguageLabelTagTest extends \PHPUnit_Framework_TestCase {
       $node->getChildNode('id', 'foo', LanguageLabelTag::class)->setPlaceHolder('place-holder', 'test');
 
       $this->assertEquals('<h2>This is a test!</h2>', $node->transformTemplate());
+   }
+
+   /**
+    * @return LanguageLabelTag
+    */
+   private function getTag() {
+      $tag = new LanguageLabelTag();
+      $tag->setLanguage(self::LANGUAGE);
+      return $tag;
    }
 
 }
