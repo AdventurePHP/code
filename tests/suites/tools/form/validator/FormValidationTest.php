@@ -226,9 +226,12 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
 
       $button = $form->addFormElementAfterMarker('fields', 'form:button', ['name' => 'submit', 'value' => 'submit']);
 
-      $fieldOne->addValidator(new TextLengthValidator($fieldOne, $button));
-      $fieldTwo->addValidator(new TextLengthValidator($fieldTwo, $button));
-      $fieldThree->addValidator(new TextLengthValidator($fieldThree, $button));
+      $validatorOne = new TextLengthValidator($fieldOne, $button);
+      $fieldOne->addValidator($validatorOne);
+      $validatorTwo = new TextLengthValidator($fieldTwo, $button);
+      $fieldTwo->addValidator($validatorTwo);
+      $validatorThree = new TextLengthValidator($fieldThree, $button);
+      $fieldThree->addValidator($validatorThree);
 
       return $form;
    }
@@ -391,8 +394,10 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
 
       $button = $form->getFormElementByName('submit');
 
-      $fieldTwo->addValidator(new TextLengthValidator($fieldTwo, $button));
-      $fieldThree->addValidator(new TextLengthValidator($fieldThree, $button));
+      $validatorOne = new TextLengthValidator($fieldTwo, $button);
+      $fieldTwo->addValidator($validatorOne);
+      $validatorTwo = new TextLengthValidator($fieldThree, $button);
+      $fieldThree->addValidator($validatorTwo);
 
       $this->assertFalse($form->isSent());
       $this->assertTrue($form->isValid());
@@ -445,8 +450,10 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
 
       $button = $form->getFormElementByName('submit');
 
-      $fieldTwo->addValidator(new TextLengthValidator($fieldTwo, $button));
-      $fieldThree->addValidator(new TextLengthValidator($fieldThree, $button));
+      $validatorOne = new TextLengthValidator($fieldTwo, $button);
+      $fieldTwo->addValidator($validatorOne);
+      $validatorTwo = new TextLengthValidator($fieldThree, $button);
+      $fieldThree->addValidator($validatorTwo);
 
       $this->assertTrue($form->isSent());
       $this->assertFalse($form->isValid());
@@ -472,8 +479,10 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
 
       $button = $form->getFormElementByName('submit');
 
-      $fieldTwo->addValidator(new TextLengthValidator($fieldTwo, $button));
-      $fieldThree->addValidator(new TextLengthValidator($fieldThree, $button));
+      $validatorOne = new TextLengthValidator($fieldTwo, $button);
+      $fieldTwo->addValidator($validatorOne);
+      $validatorTwo = new TextLengthValidator($fieldThree, $button);
+      $fieldThree->addValidator($validatorTwo);
 
       $this->assertTrue($form->isSent());
       $this->assertTrue($form->isValid());
@@ -503,8 +512,10 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
 
       $button = $form->getFormElementByName('submit');
 
-      $fieldTwo->addValidator(new TextLengthValidator($fieldTwo, $button));
-      $fieldThree->addValidator(new TextLengthValidator($fieldThree, $button));
+      $validatorOne = new TextLengthValidator($fieldTwo, $button);
+      $fieldTwo->addValidator($validatorOne);
+      $validatorTwo = new TextLengthValidator($fieldThree, $button);
+      $fieldThree->addValidator($validatorTwo);
 
       $fieldTwo->hide(); // non-optional field gets hidden
 
@@ -540,8 +551,10 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
 
       $button = $form->getFormElementByName('submit');
 
-      $fieldTwo->addValidator(new TextLengthValidator($fieldTwo, $button));
-      $fieldThree->addValidator(new TextLengthValidator($fieldThree, $button));
+      $validatorOne = new TextLengthValidator($fieldTwo, $button);
+      $fieldTwo->addValidator($validatorOne);
+      $validatorTwo = new TextLengthValidator($fieldThree, $button);
+      $fieldThree->addValidator($validatorTwo);
 
       $this->assertTrue($form->isSent());
       $this->assertTrue($form->isValid());
@@ -575,8 +588,10 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
 
       $button = $form->getFormElementByName('submit');
 
-      $fieldTwo->addValidator(new TextLengthValidator($fieldTwo, $button));
-      $fieldThree->addValidator(new TextLengthValidator($fieldThree, $button));
+      $validatorOne = new TextLengthValidator($fieldTwo, $button);
+      $fieldTwo->addValidator($validatorOne);
+      $validatorTwo = new TextLengthValidator($fieldThree, $button);
+      $fieldThree->addValidator($validatorTwo);
 
       $this->assertTrue($form->isSent());
       $this->assertFalse($form->isValid());

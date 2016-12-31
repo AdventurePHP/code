@@ -220,9 +220,9 @@ class SelectBoxTagTest extends \PHPUnit_Framework_TestCase {
       $property = new ReflectionProperty(SelectBoxTag::class, 'children');
       $property->setAccessible(true);
       $property->setValue($tag, [
-            $firstId  => clone $selectedOption->setObjectId($firstId),
+            $firstId => clone $selectedOption->setObjectId($firstId),
             $secondId => clone $unselectedOption->setObjectId($secondId),
-            $thirdId  => clone $selectedOption->setObjectId($thirdId)
+            $thirdId => clone $selectedOption->setObjectId($thirdId)
       ]);
 
       $method = new ReflectionMethod(SelectBoxTag::class, 'removeSelectedOptions');
@@ -298,7 +298,8 @@ class SelectBoxTagTest extends \PHPUnit_Framework_TestCase {
       $button = new ButtonTag();
       $button->markAsSent();
 
-      $tag->addValidator(new SimpleSelectControlValidator($tag, $button));
+      $validator = new SimpleSelectControlValidator($tag, $button);
+      $tag->addValidator($validator);
 
       $this->assertTrue($tag->isValid());
 
@@ -315,7 +316,7 @@ class SelectBoxTagTest extends \PHPUnit_Framework_TestCase {
       $form = new HtmlFormTag();
       $form->setAttributes([
             HtmlForm::METHOD_ATTRIBUTE_NAME => HtmlForm::METHOD_POST_VALUE_NAME,
-            'name'                          => 'foo'
+            'name' => 'foo'
       ]);
       $form->setContent('<form:select name="foo">
 <select:option value="1">One</select:option>
