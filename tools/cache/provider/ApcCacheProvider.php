@@ -45,7 +45,7 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
 
    public function read(CacheKey $cacheKey) {
 
-      $cacheContent = apc_fetch($this->getCacheIdentifier($cacheKey));
+      $cacheContent = apcu_fetch($this->getCacheIdentifier($cacheKey));
 
       if ($cacheContent === false) {
          return null;
@@ -95,8 +95,8 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
          return false;
       }
 
-      // try to replace (apc_store does this in contrast to apc_set)
-      return apc_store($identifier, $serialized, $this->getExpireTime($cacheKey));
+      // try to replace...
+      return apcu_store($identifier, $serialized, $this->getExpireTime($cacheKey));
    }
 
    public function clear(CacheKey $cacheKey = null) {
@@ -107,7 +107,7 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
 
          // clear entire namespace
          foreach ($this->getCacheEntriesByNamespace($namespace) as $key) {
-            apc_delete($key);
+            apcu_delete($key);
          }
 
          return true;
@@ -117,13 +117,13 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
          if ($cacheKey instanceof AdvancedCacheKey) {
             // clear al keys matching to the current main key
             foreach ($this->getCacheEntriesByNamespaceAndKey($namespace, $cacheKey->getKey()) as $key) {
-               apc_delete($key);
+               apcu_delete($key);
             }
 
             return true;
          } else {
             // delete dedicated entry
-            return apc_delete($namespace . self::CACHE_KEY_DELIMITER . $cacheKey->getKey());
+            return apcu_delete($namespace . self::CACHE_KEY_DELIMITER . $cacheKey->getKey());
          }
       }
 
@@ -162,7 +162,11 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
     * Version 0.2, 16.07.2015 (Added support for WIN implementation/variant of APC cache statistics)<br />
     */
    protected function getCacheEntries() {
-      $cacheInfo = apc_cache_info('user');
+
+      // ignore IDE warning, method exists as documented under http://php.net/manual/de/function.apcu-cache-info.php
+      /** @noinspection PhpUndefinedFunctionInspection */
+      $cacheInfo = apcu_cache_info();
+
       $entries = [];
       foreach ($cacheInfo['cache_list'] as $cacheEntryInfo) {
          // distinguish between WIN vs. LINUX implementation of APC API.

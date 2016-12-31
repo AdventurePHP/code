@@ -39,11 +39,14 @@ abstract class CacheBase extends APFObject {
     * Cache configuration options.
     *
     * @var Configuration $configuration
+    * @return $this This instance for further usage.
     */
    private $configuration;
 
    public function setConfiguration(Configuration $configuration) {
       $this->configuration = $configuration;
+
+      return $this;
    }
 
    /**
