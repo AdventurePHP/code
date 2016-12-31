@@ -125,7 +125,10 @@ class SessionSingleton extends Singleton {
    }
 
    public static function deleteInstance($class, $instanceId = null) {
-      parent::deleteInstance($class, $instanceId);
+
+      // remove from local cache
+      $cacheKey = self::getCacheKey($class, $instanceId);
+      unset(self::$CACHE[$cacheKey]);
 
       // remove from session to not restore instance after in subsequent request by accident
       self::getSession()->delete(self::getCacheKey($class, $instanceId));

@@ -84,7 +84,7 @@ class ApplicationSingleton extends Singleton {
 
       if (!isset(self::$CACHE[$cacheKey])) {
 
-         $cachedObject = apc_fetch($cacheKey);
+         $cachedObject = apcu_fetch($cacheKey);
 
          if ($cachedObject === false) {
             // no class check needed due to auto loading!
@@ -109,10 +109,13 @@ class ApplicationSingleton extends Singleton {
    }
 
    public static function deleteInstance($class, $instanceId = null) {
-      parent::deleteInstance($class, $instanceId);
+
+      // remove from local cache
+      $cacheKey = self::getCacheKey($class, $instanceId);
+      unset(self::$CACHE[$cacheKey]);
 
       // remove from APC store to not restore instance after in subsequent request by accident
-      apc_delete(self::getCacheKey($class, $instanceId));
+      apcu_delete(self::getCacheKey($class, $instanceId));
    }
 
    /**
@@ -126,7 +129,7 @@ class ApplicationSingleton extends Singleton {
       if (count(self::$CACHE) > 0) {
          foreach (self::$CACHE as $key => $DUMMY) {
             // storage includes serialization to hide object storage mechanisms for users
-            apc_store($key, serialize(self::$CACHE[$key]));
+            apcu_store($key, serialize(self::$CACHE[$key]));
          }
       }
    }
