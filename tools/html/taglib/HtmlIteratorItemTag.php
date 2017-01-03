@@ -40,10 +40,6 @@ class HtmlIteratorItemTag extends Document {
       $this->extractTagLibTags();
    }
 
-   public function onAfterAppend() {
-      $this->extractExpressionTags();
-   }
-
    /**
     * Returns the list of place holder names defined within the item, to be filled
     * with the desired values.
