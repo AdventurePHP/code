@@ -145,7 +145,7 @@ class Message {
    /**
     * Returns the string representation of recipients.
     *
-    * @return string The list of recipients.
+    * @return Recipient[] The list of recipients.
     */
    public function getRecipients() {
       return $this->recipients;

@@ -76,7 +76,7 @@ class Recipient {
     */
    public function __toString() {
 
-      // in case we only ...
+      // in case we only have an e-mail...
       if ($this->name === null) {
          return $this->email;
       }
