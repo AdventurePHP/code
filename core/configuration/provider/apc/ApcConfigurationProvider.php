@@ -96,11 +96,11 @@ class ApcConfigurationProvider implements ConfigurationProvider {
     * @version
     * Version 0.1, 30.10.2010<br />
     */
-   private function remapConfigurationName($name) {
+   protected function remapConfigurationName($name) {
       return str_replace('.' . $this->extension, '.' . $this->persistenceProviderExtension, $name);
    }
 
-   private function getStoreIdentifier($namespace, $context, $language, $environment, $name) {
+   protected function getStoreIdentifier($namespace, $context, $language, $environment, $name) {
       return md5($namespace . $context . $language . $environment . $name);
    }
 
@@ -112,11 +112,11 @@ class ApcConfigurationProvider implements ConfigurationProvider {
       // persistent configuration and store it.
       $key = $this->getStoreIdentifier($namespace, $context, $language, $environment, $name);
 
-      $config = apc_fetch($key);
+      $config = $this->fetch($key);
 
       if ($config === false) {
          $config = ConfigurationManager::loadConfiguration($namespace, $context, $language, $environment, $name);
-         apc_store($key, $config, $this->expireTime);
+         $this->store($key, $config);
       }
 
       return $config;
@@ -129,7 +129,7 @@ class ApcConfigurationProvider implements ConfigurationProvider {
       // saving the configuration always includes saving in both the
       // persistent file and the APC store!
       $key = $this->getStoreIdentifier($namespace, $context, $language, $environment, $name);
-      apc_store($key, $config, $this->expireTime);
+      $this->store($key, $config);
       ConfigurationManager::saveConfiguration($namespace, $context, $language, $environment, $name, $config);
    }
 
@@ -142,7 +142,7 @@ class ApcConfigurationProvider implements ConfigurationProvider {
       $name = $this->remapConfigurationName($name);
 
       $key = $this->getStoreIdentifier($namespace, $context, $language, $environment, $name);
-      $result = apc_delete($key);
+      $result = apcu_delete($key);
 
       if ($result === false) {
          throw new ConfigurationException('[ApcConfigurationProvider::deleteConfiguration()] '
@@ -151,6 +151,23 @@ class ApcConfigurationProvider implements ConfigurationProvider {
       }
 
       ConfigurationManager::deleteConfiguration($namespace, $context, $language, $environment, $name);
+   }
+
+   /**
+    * @param string $key Cache key.
+    * @return mixed Cache content.
+    */
+   protected function fetch($key) {
+      return apcu_fetch($key);
+   }
+
+   /**
+    * @param string $key Cache key.
+    * @param mixed $config Cache content.
+    * @return array|bool
+    */
+   protected function store($key, $config) {
+      return apcu_store($key, $config, $this->expireTime);
    }
 
 }

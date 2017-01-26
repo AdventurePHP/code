@@ -28,6 +28,10 @@ use ReflectionProperty;
 
 class SessionSingletonTest extends \PHPUnit_Framework_TestCase {
 
+   const TEST_TAG = 'test';
+   const MODEL_CLASS = TagModel::class;
+   const INSTANCE_ID = 'test-id';
+
    /**
     * Test whether singleton, session singleton, and application singleton caches
     * are not interfering. See issue ID#286 for details.
@@ -70,6 +74,88 @@ class SessionSingletonTest extends \PHPUnit_Framework_TestCase {
       $this->assertCount(2, $singletonCache->getValue(null));
       $this->assertCount(1, $sessionSingletonCache->getValue(null));
       $this->assertCount(1, $applicationSingletonCache->getValue(null));
+
+   }
+
+   public function testSimpleCreation() {
+
+      SessionSingleton::deleteInstance(self::MODEL_CLASS);
+
+      /* @var $model TagModel */
+      $model = SessionSingleton::getInstance(self::MODEL_CLASS);
+      $model->setTag(self::TEST_TAG);
+
+      $model = SessionSingleton::getInstance(self::MODEL_CLASS);
+      $this->assertEquals(self::TEST_TAG, $model->getTag());
+
+   }
+
+   public function testConstructorCreation() {
+
+      SessionSingleton::deleteInstance(self::MODEL_CLASS);
+
+      /* @var $model TagModel */
+      $model = SessionSingleton::getInstance(self::MODEL_CLASS, [self::TEST_TAG]);
+      $this->assertEquals(self::TEST_TAG, $model->getTag());
+
+   }
+
+   public function testSimpleInstanceIdCreation() {
+
+      SessionSingleton::deleteInstance(self::MODEL_CLASS);
+      SessionSingleton::deleteInstance(self::MODEL_CLASS, self::INSTANCE_ID);
+
+      /* @var $model TagModel */
+      $model = SessionSingleton::getInstance(self::MODEL_CLASS, [], self::INSTANCE_ID);
+      $model->setTag(self::TEST_TAG);
+
+      $model = SessionSingleton::getInstance(self::MODEL_CLASS);
+      $this->assertNotEquals(self::TEST_TAG, $model->getTag());
+
+      $model = SessionSingleton::getInstance(self::MODEL_CLASS, [], self::INSTANCE_ID);
+      $this->assertEquals(self::TEST_TAG, $model->getTag());
+
+   }
+
+   public function testConstructorInstanceIdCreation() {
+
+      SessionSingleton::deleteInstance(self::MODEL_CLASS, self::INSTANCE_ID);
+
+      /* @var $model TagModel */
+      $model = SessionSingleton::getInstance(self::MODEL_CLASS, [self::TEST_TAG], self::INSTANCE_ID);
+      $this->assertEquals(self::TEST_TAG, $model->getTag());
+
+   }
+
+   public function testInstanceDeletion() {
+
+      SessionSingleton::deleteInstance(self::MODEL_CLASS);
+
+      /* @var $model TagModel */
+      SessionSingleton::getInstance(self::MODEL_CLASS, [self::TEST_TAG]);
+
+      $model = SessionSingleton::getInstance(self::MODEL_CLASS);
+      $this->assertNotNull($model->getTag());
+
+      SessionSingleton::deleteInstance(self::MODEL_CLASS);
+
+      $model = SessionSingleton::getInstance(self::MODEL_CLASS);
+      $this->assertNull($model->getTag());
+
+   }
+
+   public function testInstanceWithIdDeletion() {
+
+      /* @var $model TagModel */
+      SessionSingleton::getInstance(self::MODEL_CLASS, [self::TEST_TAG], self::INSTANCE_ID);
+
+      $model = SessionSingleton::getInstance(self::MODEL_CLASS, [], self::INSTANCE_ID);
+      $this->assertNotNull($model->getTag());
+
+      SessionSingleton::deleteInstance(self::MODEL_CLASS, self::INSTANCE_ID);
+
+      $model = SessionSingleton::getInstance(self::MODEL_CLASS, [], self::INSTANCE_ID);
+      $this->assertNull($model->getTag());
 
    }
 
