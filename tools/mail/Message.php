@@ -122,7 +122,15 @@ class Message {
       }
 
       if (!$this->mail(implode(', ', $this->getRecipients()), $this->getSubject(), $this->getContent(), $this->getAdditionalHeaders())) {
-         throw new MessageException('Sending e-mail failed!');
+         $message = 'Sending e-mail failed!';
+
+         $lastError = error_get_last();
+         print_r($lastError);
+         if (is_array($lastError) && isset($lastError['message'])) {
+            throw new MessageException($message . ' Reason: ' . $lastError['message']);
+         } else {
+            throw new MessageException($message);
+         }
       }
 
       return $this;

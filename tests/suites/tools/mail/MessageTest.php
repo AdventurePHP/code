@@ -230,7 +230,6 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
       $message->send();
    }
 
-
    /**
     * Test happy case sending simple message.
     */
