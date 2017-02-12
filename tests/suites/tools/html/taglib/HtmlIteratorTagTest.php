@@ -255,9 +255,9 @@ class HtmlIteratorTagTest extends \PHPUnit_Framework_TestCase {
       $tag = new HtmlIteratorTag();
       $tag->setContent('<iterator:item>${status->getCssClass()}</iterator:item>');
       $tag->setAttributes([
-            'first-element-css-class'  => 'foo',
+            'first-element-css-class' => 'foo',
             'middle-element-css-class' => 'bar',
-            'last-element-css-class'   => 'baz'
+            'last-element-css-class' => 'baz'
       ]);
       $tag->onParseTime();
       $tag->onAfterAppend();
@@ -305,6 +305,39 @@ class HtmlIteratorTagTest extends \PHPUnit_Framework_TestCase {
 
       // use transform() as iterator should be displayed directly with transform-on-place=true
       $this->assertEquals($expected, $tag->transform());
+   }
+
+   /**
+    * Tests whether conditional template can be used within iterator item.
+    */
+   public function testConditionalTemplateInIteratorItem() {
+
+      $tag = new HtmlIteratorTag();
+      $tag->setAttribute('name', 'test');
+      $tag->setContent('<iterator:item>'
+            . '<cond:template content-mapping="item" expression="content->get(\'test\')" condition="notEmpty()">'
+            . '${content->get(\'test\')}'
+            . '</cond:template>'
+            . '</iterator:item>');
+
+      $tag->onParseTime();
+      $tag->onAfterAppend();
+
+      $valueOne = 'test-1';
+      $valueTwo = 'test-2';
+      $tag->fillDataContainer([
+            new GenericGetterModel(['test' => $valueOne]),
+            new GenericGetterModel(['test' => $valueTwo]),
+            new GenericGetterModel(['test' => null]) // only two items should be displayed
+      ]);
+
+      $tag->transformOnPlace();
+
+      $actual = $tag->transform();
+
+      // expect 3 iterations are conducted but with only 2 output generations due to conditional
+      $this->assertEquals($valueOne . $valueTwo, $actual);
+
    }
 
 }
