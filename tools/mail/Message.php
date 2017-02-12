@@ -28,8 +28,9 @@ use Exception;
  */
 class Message {
 
-   const PRIORITY_NORMAL = 1;
-   const PRIORITY_HIGH = 3;
+   const PRIORITY_HIGH = 1;
+   const PRIORITY_NORMAL = 3;
+   const PRIORITY_LOW = 5;
 
    /**
     * @var Recipient Sender of the message.
@@ -211,7 +212,7 @@ class Message {
       $headers[] = 'MIME-Version: 1.0';
 
       $headers[] = 'X-Sender: APF-E-Mail-Client';
-      $headers[] = 'X-Mailer: PHP/' . phpversion() . '';
+      $headers[] = 'X-Mailer: PHP/' . phpversion();
 
       return implode(PHP_EOL, $headers);
    }
