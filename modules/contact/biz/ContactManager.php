@@ -28,7 +28,8 @@ use APF\core\pagecontroller\IncludeException;
 use APF\modules\contact\data\ContactMapper;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
-use APF\tools\mail\mailSender;
+use APF\tools\mail\MessageBuilder;
+use APF\tools\mail\Recipient;
 
 /**
  * Implements the business component for the contact form.
@@ -57,56 +58,47 @@ class ContactManager extends APFObject {
     */
    public function sendContactForm(ContactFormData $formData) {
 
-      // set up the mail sender
-      /* @var $mail mailSender */
-      $mail = $this->getServiceObject(mailSender::class);
-      $mail->init('ContactForm');
-
-      /* @var $recipient ContactFormRecipient */
       $recipient = $this->getMapper()->loadRecipientById($formData->getRecipientId());
 
-      $mail->setRecipient($recipient->getEmailAddress(), $recipient->getName());
-      $mail->setContent(
-            $this->getNotificationText(
-                  [
-                        'sender-name'     => $formData->getSenderName(),
-                        'sender-email'    => $formData->getSenderEmail(),
-                        'sender-subject'  => $formData->getSubject(),
-                        'sender-message'  => $formData->getMessage(),
-                        'recipient-name'  => $recipient->getName(),
-                        'recipient-email' => $recipient->getEmailAddress()
-                  ]
-            )
-      );
-
-      $mail->setSubject($formData->getSubject());
-
       // send mail to notify the recipient
-      $mail->sendMail();
-
-      $mail->clearRecipients();
-      $mail->clearCCRecipients();
-      $mail->clearContent();
-
-      $mail->setRecipient($formData->getSenderEmail(), $formData->getSenderName());
-
-      $mail->setContent(
-            $this->getConfirmationText(
-                  [
-                        'sender-name'     => $formData->getSenderName(),
-                        'sender-email'    => $formData->getSenderEmail(),
-                        'sender-subject'  => $formData->getSubject(),
-                        'sender-message'  => $formData->getMessage(),
-                        'recipient-name'  => $recipient->getName(),
-                        'recipient-email' => $recipient->getEmailAddress()
-                  ]
-            )
+      $content = $this->getNotificationText(
+            [
+                  'sender-name' => $formData->getSenderName(),
+                  'sender-email' => $formData->getSenderEmail(),
+                  'sender-subject' => $formData->getSubject(),
+                  'sender-message' => $formData->getMessage(),
+                  'recipient-name' => $recipient->getName(),
+                  'recipient-email' => $recipient->getEmailAddress()
+            ]
       );
 
-      $mail->setSubject($formData->getSubject());
+      /* @var $builder MessageBuilder */
+      $builder = $this->getServiceObject(MessageBuilder::class);
+      $message = $builder->createMessage('ContactForm', $formData->getSubject(), $content);
+
+      $message->addRecipient(new Recipient($recipient->getName(), $recipient->getEmailAddress()));
+
+      $message->send();
+
+      // ---------------------------------------------------------------------------------------------------------------
 
       // send mail to notify the sender
-      $mail->sendMail();
+      $content = $this->getConfirmationText(
+            [
+                  'sender-name' => $formData->getSenderName(),
+                  'sender-email' => $formData->getSenderEmail(),
+                  'sender-subject' => $formData->getSubject(),
+                  'sender-message' => $formData->getMessage(),
+                  'recipient-name' => $recipient->getName(),
+                  'recipient-email' => $recipient->getEmailAddress()
+            ]
+      );
+
+      $message = $builder->createMessage('ContactForm', $formData->getSubject(), $content);
+
+      $message->addRecipient(new Recipient($formData->getSenderName(), $formData->getSenderEmail()));
+
+      $message->send();
 
       // redirect to the thanks page to avoid F5 bugs!
       $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(['contactview' => 'thanks']));
@@ -117,6 +109,8 @@ class ContactManager extends APFObject {
     * @return ContactMapper
     */
    private function &getMapper() {
+      /** @noinspection PhpIncompatibleReturnTypeInspection */
+      // PHP does not allow generic interface definition, so returning APFService would result in an IDE warning.
       return $this->getServiceObject(ContactMapper::class);
    }
 
