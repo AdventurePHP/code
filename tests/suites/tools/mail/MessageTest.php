@@ -185,7 +185,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
             . 'BCC: ' . $sender . PHP_EOL
             . 'Content-Type: plain/text; charset=UTF-8' . PHP_EOL
             . 'Return-Path: ' . $sender->getEmail() . PHP_EOL
-            . 'X-Priority: 1' . PHP_EOL
+            . 'X-Priority: 3' . PHP_EOL
             . 'MIME-Version: 1.0' . PHP_EOL
             . 'X-Sender: APF-E-Mail-Client' . PHP_EOL
             . 'X-Mailer: PHP/' . phpversion(),
