@@ -23,7 +23,8 @@ namespace APF\modules\usermanagement\pres\documentcontroller\login;
 use APF\core\configuration\ConfigurationException;
 use APF\core\pagecontroller\BaseDocumentController;
 use APF\modules\usermanagement\biz\UmgtManager;
-use APF\tools\mail\mailSender;
+use APF\tools\mail\MessageBuilder;
+use APF\tools\mail\Recipient;
 use DateInterval;
 use DateTime;
 
@@ -86,23 +87,21 @@ class ResetPasswordController extends BaseDocumentController {
                   throw new ConfigurationException('Section "' . $sectionName . '" is not defined within mailsender.ini. Please refer
                      the manual for more details.');
                }
-               /* @var $sender mailSender */
-               $sender = $this->getServiceObject('APF\tools\mail\mailSender');
-               $sender->init('UmgtForgotPassword');
 
                $labelConfig = $this->getConfiguration('APF\modules\usermanagement\pres', 'labels.ini');
-               $mailSubject = $labelConfig->getSection($this->getLanguage())->getValue('resetpw.mail.subject');
-               $mailContent = $labelConfig->getSection($this->getLanguage())->getValue('resetpw.mail.content');
+               $subject = $labelConfig->getSection($this->getLanguage())->getValue('resetpw.mail.subject');
+               $content = $labelConfig->getSection($this->getLanguage())->getValue('resetpw.mail.content');
 
                // replace the placeholders in message
-               $mailContent = str_replace('{username}', $user->getUsername(), $mailContent);
+               $content = str_replace('{username}', $user->getUsername(), $content);
 
-               $sender->setSubject($mailSubject);
-               $sender->setContent($mailContent);
-               $sender->setRecipient($user->getEMail(), $user->getUsername());
-               $sender->setReturnPath($config->getSection($sectionName)->getValue('Mail.ReturnPath'));
+               /* @var $builder MessageBuilder */
+               $builder = $this->getServiceObject(MessageBuilder::class);
+               $message = $builder->createMessage($sectionName, $subject, $content);
 
-               $sender->sendMail();
+               $message->addRecipient(new Recipient($user->getUsername(), $user->getEMail()));
+
+               $message->send();
 
                // success message
                $form->setPlaceHolder('resetpw-error', $this->getTemplate('resetpw-success')->transformTemplate());

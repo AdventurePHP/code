@@ -26,7 +26,8 @@ use APF\modules\usermanagement\biz\UmgtManager;
 use APF\tools\form\validator\AbstractFormValidator;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
-use APF\tools\mail\mailSender;
+use APF\tools\mail\MessageBuilder;
+use APF\tools\mail\Recipient;
 use Exception;
 
 /**
@@ -64,7 +65,7 @@ class ForgotPasswordController extends BaseDocumentController {
 
                $umgt->saveUser($user);
 
-               // send mail via mailsender
+               // send mail via Message
                // Configuration Section "UmgtForgotPassword" needed!
                $config = $this->getConfiguration('APF\tools\mail', 'mailsender.ini');
 
@@ -73,37 +74,35 @@ class ForgotPasswordController extends BaseDocumentController {
                   throw new ConfigurationException('Section "' . $sectionName . '" is not defined within mailsender.ini. Please refer
                      the manual for more details.');
                }
-               /* @var $sender mailSender */
-               $sender = $this->getServiceObject('APF\tools\mail\mailSender');
-               $sender->init('UmgtForgotPassword');
 
                $labelConfig = $this->getConfiguration('APF\modules\usermanagement\pres', 'labels.ini');
-               $mailSubject = $labelConfig->getSection($this->getLanguage())->getValue('forgotpw.mail.subject');
-               $mailContent = $labelConfig->getSection($this->getLanguage())->getValue('forgotpw.mail.content');
+               $subject = $labelConfig->getSection($this->getLanguage())->getValue('forgotpw.mail.subject');
+               $content = $labelConfig->getSection($this->getLanguage())->getValue('forgotpw.mail.content');
 
                // replace placeholders in text with username and link
-               $mailContent = str_replace('{username}', $user->getUsername(), $mailContent);
+               $content = str_replace('{username}', $user->getUsername(), $content);
                // try to get configuration file for hash-lifetime setting
                try {
                   $forgetpwconfig = $this->getConfiguration('APF\modules\usermanagement\pres', 'forgotpw.ini');
                   $lifetime = $forgetpwconfig->getSection('Default')->getValue('hash.lifetime');
                } catch (ConfigurationException $e) {
-                  $lifetime = '86400';                // default lifetime 24 hours
+                  $lifetime = '86400'; // default lifetime 24 hours
                }
-               $mailContent = str_replace('{lifetime}', $lifetime / 60 / 60, $mailContent);
+               $content = str_replace('{lifetime}', $lifetime / 60 / 60, $content);
                $link = LinkGenerator::generateUrl(Url::fromCurrent(true)
                      ->setQueryParameter('user', 'reset_pw')
                      ->setQueryParameter('h', $passwordHash));
-               $mailContent = str_replace('{link}', $link, $mailContent);
+               $content = str_replace('{link}', $link, $content);
 
-               $sender->setSubject($mailSubject);
-               $sender->setContent($mailContent);
-               $sender->setRecipient($user->getEMail(), $user->getUsername());
-               $sender->setReturnPath($config->getSection($sectionName)->getValue('Mail.ReturnPath'));
+               /* @var $builder MessageBuilder */
+               $builder = $this->getServiceObject(MessageBuilder::class);
+               $message = $builder->createMessage($sectionName, $subject, $content);
 
-               $sender->sendMail();
+               $message->addRecipient(new Recipient($user->getUsername(), $user->getEMail()));
 
-               // succcess message
+               $message->send();
+
+               // display success message
                $form->setPlaceHolder('forgotpw-error', $this->getTemplate('forgotpw-success')->transformTemplate());
             }
          } catch (Exception $e) {
