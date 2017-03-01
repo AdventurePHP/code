@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>jQuery File Upload Demo - Basic version for Adventure PHP Framework</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddCssTag" prefix="htmlheader" name="addcss" />
+    <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddJsTags" prefix="htmlheader" name="addjs" />
+    <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddStaticCssTag" prefix="htmlheader" name="addstaticcss" />
+    <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddStaticJsTag" prefix="htmlheader" name="addstaticjs" />
+
+    <!-- The jQuery an jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+    <htmlheader:addstaticjs file="https://code.jquery.com/jquery-1.12.4.min.js" priority="100"></htmlheader:addstaticjs>
+    <htmlheader:addstaticjs file="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" priority="99"></htmlheader:addstaticjs>
+
+    <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+    <htmlheader:addjs namespace="APF\extensions\fileupload\pres\js" filename="jquery.iframe-transport" priority="90" />
+    <!-- The basic File Upload plugin -->
+    <htmlheader:addjs namespace="APF\extensions\fileupload\pres\js" filename="jquery.fileupload" priority="85" />
+
+    <!-- Bootstrap styles - specially used to style the buttons -->
+    <htmlheader:addstaticcss file="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+    <htmlheader:addcss namespace="APF\extensions\fileupload\pres\css" filename="jquery.fileupload" />
+
+    <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderGetHeadTag" prefix="htmlheader" name="gethead" />
+    <htmlheader:gethead />
+
+</head>
+<body>
+
+    <div class="container">
+        <h1>jQuery File Upload Demo</h1>
+        <h2 class="lead">Basic version for Adventure PHP Framework</h2>
+        <blockquote>
+            <p>File Upload widget with multiple file selection, drag&amp;drop support, progress bar, validation and preview images, audio and video for jQuery.<br>
+                Supports cross-domain, chunked and resumable file uploads and client-side image resizing.<br>
+                Complete working with APF - Adventure PHP Framework.</p>
+        </blockquote>
+        <br>
+        <!-- The fileinput-button span is used to style the file input field as button -->
+        <span class="btn btn-success fileinput-button">
+            <i class="glyphicon glyphicon-plus"></i>
+            <span>Select files...</span>
+            <!-- The file input field used as target for the file upload widget -->
+            <core:addtaglib class="APF\extensions\fileupload\pres\taglib\FileUploadTag" prefix="form" name="fileupload" />
+            <form:fileupload name="pictures[]" id="fileupload" />
+        </span>
+        <br>
+        <br>
+        <!-- The global progress bar -->
+        <div id="progress" class="progress">
+            <div class="progress-bar progress-bar-success"></div>
+        </div>
+        <!-- The container for the uploaded files -->
+        <div id="files" class="files"></div>
+        <br>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Default config settings are</h3>
+            </div>
+            <div class="panel-body">
+                <ul>
+                    <li>The maximum file size for uploads in this demo is <strong>9.999 KB</strong>.</li>
+                    <li>Allowed only image and MP3 files (<strong>JPG, GIF, PNG, MP3</strong>).</li>
+                    <li>You can <strong>drag &amp; drop</strong> files from your desktop on this webpage (see <a href="https://github.com/blueimp/jQuery-File-Upload/wiki/Browser-support">Browser support</a>).</li>
+                    <li>Please refer to the <a href="https://github.com/blueimp/jQuery-File-Upload">jQuery Upload project website</a> and <a href="https://github.com/blueimp/jQuery-File-Upload/wiki">documentation</a> for more information.</li>
+                    <li>Built with the <a href="http://getbootstrap.com/">Bootstrap</a> CSS framework and Icons from <a href="http://glyphicons.com/">Glyphicons</a>.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderGetBodyJsTag" prefix="htmlheader" name="getbodyjs" />
+    <htmlheader:getbodyjs />
+
+    <script>
+        $(function () {
+            'use strict';
+            $('#fileupload').fileupload({
+                done: function (e, data) {
+                    alert('done');
+                    $.each(data.result.pictures, function (index, file) {
+                        $('<p/>').text(file.name).appendTo('#files');
+                    });
+                },
+                progressall: function (e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    $('#progress .progress-bar').css(
+                            'width',
+                            progress + '%'
+                    );
+                }
+            }).prop('disabled', !$.support.fileInput)
+                    .parent().addClass($.support.fileInput ? undefined : 'disabled');
+        });
+    </script>
+
+</body>
+</html>
