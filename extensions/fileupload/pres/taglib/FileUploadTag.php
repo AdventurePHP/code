@@ -21,11 +21,11 @@
 
 namespace APF\extensions\fileupload\pres\taglib;
 
+use APF\extensions\htmlheader\biz\HtmlHeaderManager;
+use APF\extensions\htmlheader\biz\JsContentNode;
 use APF\tools\form\taglib\AbstractFormControl;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
-use APF\extensions\htmlheader\biz\HtmlHeaderManager;
-use APF\extensions\htmlheader\biz\JsContentNode;
 use Exception;
 
 
@@ -44,7 +44,7 @@ class FileUploadTag extends AbstractFormControl {
 
       // check for config
       $config = $this->getConfiguration('APF\extensions\fileupload', 'config.php');
-      if(!$config->hasSection($this->normalizeName($this->getAttribute('name')))) {
+      if (!$config->hasSection($this->normalizeName($this->getAttribute('name')))) {
          throw new Exception('[' . get_class($this) . '::onParseTime()] FileUpload configuration file is not correct.
             The section "' . $this->normalizeName($this->getAttribute('name')) . '" could not be found. Please check your configuration file.', E_USER_ERROR);
       }
@@ -77,7 +77,7 @@ class FileUploadTag extends AbstractFormControl {
     */
    protected function normalizeName($name) {
       // remove [] of name-attribute if necessary
-      if(substr($name, -2) === '[]') {
+      if (substr($name, -2) === '[]') {
          return substr($name, 0, -2);
       } else {
          return $name;
@@ -105,7 +105,7 @@ class FileUploadTag extends AbstractFormControl {
             url: \'' . $actionLink . '\',
             paramName: \'' . $name . '\',
             dataType: \'json\',
-            maxFileSize: '. $section->getValue('max_file_size') .',
+            maxFileSize: ' . $section->getValue('max_file_size') . ',
             acceptFileTypes: ' . $section->getValue('accept_file_types') . '
          });
          ';

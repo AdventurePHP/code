@@ -21,10 +21,10 @@
 
 namespace APF\extensions\fileupload\actions;
 
-use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\core\configuration\Configuration;
-use APF\extensions\fileupload\biz\UploadHandler;
+use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\extensions\fileupload\biz\FileUploadHandler;
+use APF\extensions\fileupload\biz\UploadHandler;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
@@ -34,7 +34,7 @@ class UploadAction extends AbstractFrontcontrollerAction {
 
    public function run() {
 
-      // get fileupload name out of url
+      // get file upload name out of url
       $name = $this->getInput()->getParameter('name');
 
       // load config
@@ -45,21 +45,23 @@ class UploadAction extends AbstractFrontcontrollerAction {
       // create dynamic part of config
       $dynConfig = array(
          //'script_url' => $this->get_full_url().'/'.$this->basename($this->get_server_var('SCRIPT_NAME')),
-         'upload_dir' => dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $fileConfig['UploadPath'] . '/',
-         'upload_url' => LinkGenerator::generateUrl(Url::fromCurrent(true)->setPath('/' . $fileConfig['UploadPath'] . '/')),
-         'param_name' => $name,
+            'upload_dir' => dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $fileConfig['UploadPath'] . '/',
+            'upload_url' => LinkGenerator::generateUrl(Url::fromCurrent(true)->setPath('/' . $fileConfig['UploadPath'] . '/')),
+            'param_name' => $name,
       );
 
       // merge options
       $this->options = array_merge($fileConfig, $dynConfig);
 
-      if($fileConfig['randomize']) {
+      if ($fileConfig['randomize']) {
          new FileUploadHandler($this->options, true);  // initialize the handler
       } else {
+         // wrapper statt Datei manipulieren!!!
          new UploadHandler($this->options, true);
       }
 
-      exit();
+      $response = $this->getResponse();
+      $response->send();
    }
 
    /**
@@ -68,6 +70,8 @@ class UploadAction extends AbstractFrontcontrollerAction {
     *
     * @param $config Configuration config.php of FileUpload extension
     * @return array Config section of desired upload-form
+    *
+    * TODO Check whether we can implement this in a more effective way.
     *
     * @author dave
     * @version
@@ -85,6 +89,8 @@ class UploadAction extends AbstractFrontcontrollerAction {
    /**
     * Parse the config file to use it as array
     * Source: http://adventure-php-framework.org/Seite/134-Konfiguration#Chapter-7-2-Implementierung-Provider
+    *
+    * TODO Check whether we can implement this in a more effective way.
     *
     * @param $config Configuration config.php of FileUpload extension
     * @return array Config section of desired upload-form

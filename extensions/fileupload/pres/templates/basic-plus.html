@@ -70,19 +70,23 @@
     <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderGetBodyJsTag" prefix="htmlheader" name="getbodyjs" />
     <htmlheader:getbodyjs />
 
-    <htmlheader:addstaticjs file="https://code.jquery.com/jquery-1.12.4.min.js" priority="100" appendtobody="true"></htmlheader:addstaticjs>
+    <htmlheader:addstaticjs file="https://code.jquery.com/jquery-1.12.4.min.js" priority="100" appendtobody="true"/>
 
     <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
-    <htmlheader:addstaticjs file="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" priority="99" appendtobody="true"></htmlheader:addstaticjs>
+    <htmlheader:addstaticjs file="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" priority="99"
+                            appendtobody="true"/>
 
     <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
-    <htmlheader:addstaticjs file="//blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js" priority="89" appendtobody="true"></htmlheader:addstaticjs>
+    <htmlheader:addstaticjs file="//blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js" priority="89"
+                            appendtobody="true"/>
 
     <!-- The Canvas to Blob plugin is included for image resizing functionality -->
-    <htmlheader:addstaticjs file="//blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js" priority="88" appendtobody="true"></htmlheader:addstaticjs>
+    <htmlheader:addstaticjs file="//blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js" priority="88"
+                            appendtobody="true"/>
 
     <!-- Bootstrap JS is not required, but included for the responsive demo navigation -->
-    <htmlheader:addstaticjs file="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js" priority="87" appendtobody="true"></htmlheader:addstaticjs>
+    <htmlheader:addstaticjs file="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js" priority="87"
+                            appendtobody="true"/>
 
     <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
     <htmlheader:addjs namespace="APF\extensions\fileupload\pres\js" filename="jquery.iframe-transport" priority="79" appendtobody="true" />

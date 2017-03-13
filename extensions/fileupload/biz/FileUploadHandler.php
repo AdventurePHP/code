@@ -38,7 +38,7 @@ class FileUploadHandler extends UploadHandler {
    }
 
    /**
-    * Deletes the selected files from server uncluding previews or user-dirs.
+    * Deletes the selected files from server including previews or user-dirs.
     *
     * @param string $fileName The file to delete
     * @param bool $print_response True to print the response on screen

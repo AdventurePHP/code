@@ -21,8 +21,8 @@
 
 namespace APF\extensions\fileupload\actions;
 
-use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\core\configuration\Configuration;
+use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\extensions\fileupload\biz\FileUploadHandler;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
@@ -33,7 +33,7 @@ class DeleteAction extends AbstractFrontcontrollerAction {
 
    public function run() {
 
-      // get fileupload name out of url
+      // get file upload name out of url
       $name = $this->getInput()->getParameter('name');
 
       // load config
@@ -44,10 +44,10 @@ class DeleteAction extends AbstractFrontcontrollerAction {
       // create dynamic part of config
       $dynConfig = array(
          //'script_url' => $this->get_full_url().'/'.$this->basename($this->get_server_var('SCRIPT_NAME')),
-         'upload_dir' => dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $fileConfig['UploadPath'] . '/',
-         'upload_url' => LinkGenerator::generateUrl(Url::fromCurrent(true)->setPath('/' . $fileConfig['UploadPath'] . '/')),
-         'param_name' => $name,
-         'delete_type' => 'POST'
+            'upload_dir' => dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $fileConfig['UploadPath'] . '/',
+            'upload_url' => LinkGenerator::generateUrl(Url::fromCurrent(true)->setPath('/' . $fileConfig['UploadPath'] . '/')),
+            'param_name' => $name,
+            'delete_type' => 'POST'
       );
 
       // merge options
@@ -59,7 +59,8 @@ class DeleteAction extends AbstractFrontcontrollerAction {
       $fileName = $this->getSanitizedFileName($this->getInput()->getParameter('file'));
       $handler->deleteFile($fileName, true);
 
-      exit();
+      $response = $this->getResponse();
+      $response->send();
    }
 
    /**
@@ -68,6 +69,8 @@ class DeleteAction extends AbstractFrontcontrollerAction {
     *
     * @param $config Configuration config.php of FileUpload extension
     * @return array Config section of desired upload-form
+    *
+    * TODO Check whether we can implement this in a more effective way.
     *
     * @author dave
     * @version
@@ -85,6 +88,8 @@ class DeleteAction extends AbstractFrontcontrollerAction {
    /**
     * Parse the config file to use it as array
     * Source: http://adventure-php-framework.org/Seite/134-Konfiguration#Chapter-7-2-Implementierung-Provider
+    *
+    * TODO Check whether we can implement this in a more effective way.
     *
     * @param $config Configuration config.php of FileUpload extension
     * @return array Config section of desired upload-form
@@ -106,8 +111,9 @@ class DeleteAction extends AbstractFrontcontrollerAction {
    }
 
    /**
-    * Cleans up the file name
+    * Cleans up the file name.
     *
+    * @param string $fileName The name of the file.
     * @return string The clean file name of the resource to delete.
     *
     * @author dave
@@ -115,10 +121,11 @@ class DeleteAction extends AbstractFrontcontrollerAction {
     * Version 0.1, 11.01.2017<br />
     */
    private function getSanitizedFileName($fileName) {
+
       // save ending of file
       $ending = substr(strrchr($fileName, '.'), 1);
 
-      // save lenght of ending
+      // save length of ending
       $endingLength = strlen($ending);
 
       // clean up file name
