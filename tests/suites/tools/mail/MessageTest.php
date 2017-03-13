@@ -23,7 +23,7 @@ namespace APF\tests\suites\tools\mail;
 use APF\core\registry\Registry;
 use APF\tools\mail\Message;
 use APF\tools\mail\MessageException;
-use APF\tools\mail\Recipient;
+use APF\tools\mail\MailAddress;
 use PHPUnit_Framework_MockObject_MockObject;
 use ReflectionMethod;
 
@@ -60,10 +60,10 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
    }
 
    /**
-    * @return Recipient
+    * @return MailAddress
     */
    private function getRecipient() {
-      return new Recipient('adventure-php-framework.org', 'info@adventure-php-framework.org');
+      return new MailAddress('adventure-php-framework.org', 'info@adventure-php-framework.org');
    }
 
    public function testContentType() {
@@ -89,7 +89,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
       $this->assertEmpty($message->getBlindCopyRecipients());
 
       // Add recipients
-      $secondRecipient = new Recipient('Foo', 'foo@example.com');
+      $secondRecipient = new MailAddress('Foo', 'foo@example.com');
       $message->setRecipients([$sender]);
       $message->addRecipient($secondRecipient);
       $recipients = $message->getRecipients();

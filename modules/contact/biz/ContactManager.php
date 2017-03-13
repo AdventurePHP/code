@@ -29,7 +29,7 @@ use APF\modules\contact\data\ContactMapper;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 use APF\tools\mail\MessageBuilder;
-use APF\tools\mail\Recipient;
+use APF\tools\mail\MailAddress;
 
 /**
  * Implements the business component for the contact form.
@@ -76,7 +76,7 @@ class ContactManager extends APFObject {
       $builder = $this->getServiceObject(MessageBuilder::class);
       $message = $builder->createMessage('ContactForm', $formData->getSubject(), $content);
 
-      $message->addRecipient(new Recipient($recipient->getName(), $recipient->getEmailAddress()));
+      $message->addRecipient(new MailAddress($recipient->getName(), $recipient->getEmailAddress()));
 
       $message->send();
 
@@ -96,7 +96,7 @@ class ContactManager extends APFObject {
 
       $message = $builder->createMessage('ContactForm', $formData->getSubject(), $content);
 
-      $message->addRecipient(new Recipient($formData->getSenderName(), $formData->getSenderEmail()));
+      $message->addRecipient(new MailAddress($formData->getSenderName(), $formData->getSenderEmail()));
 
       $message->send();
 

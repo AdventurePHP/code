@@ -24,7 +24,7 @@ use APF\core\configuration\ConfigurationException;
 use APF\core\pagecontroller\BaseDocumentController;
 use APF\modules\usermanagement\biz\UmgtManager;
 use APF\tools\mail\MessageBuilder;
-use APF\tools\mail\Recipient;
+use APF\tools\mail\MailAddress;
 use DateInterval;
 use DateTime;
 
@@ -99,7 +99,7 @@ class ResetPasswordController extends BaseDocumentController {
                $builder = $this->getServiceObject(MessageBuilder::class);
                $message = $builder->createMessage($sectionName, $subject, $content);
 
-               $message->addRecipient(new Recipient($user->getUsername(), $user->getEMail()));
+               $message->addRecipient(new MailAddress($user->getUsername(), $user->getEMail()));
 
                $message->send();
 

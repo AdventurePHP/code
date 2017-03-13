@@ -27,7 +27,7 @@ use APF\tools\form\validator\AbstractFormValidator;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 use APF\tools\mail\MessageBuilder;
-use APF\tools\mail\Recipient;
+use APF\tools\mail\MailAddress;
 use Exception;
 
 /**
@@ -98,7 +98,7 @@ class ForgotPasswordController extends BaseDocumentController {
                $builder = $this->getServiceObject(MessageBuilder::class);
                $message = $builder->createMessage($sectionName, $subject, $content);
 
-               $message->addRecipient(new Recipient($user->getUsername(), $user->getEMail()));
+               $message->addRecipient(new MailAddress($user->getUsername(), $user->getEMail()));
 
                $message->send();
 

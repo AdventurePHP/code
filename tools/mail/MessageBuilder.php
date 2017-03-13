@@ -58,12 +58,12 @@ class MessageBuilder extends APFObject {
 
       $section = $config->getSection($section . '.Mail');
 
-      $sender = new Recipient($section->getValue('SenderName'), $section->getValue('SenderEMail'));
+      $sender = new MailAddress($section->getValue('SenderName'), $section->getValue('SenderEMail'));
 
       $message = new Message($sender, $subject, $content);
 
       $message->setContentType($section->getValue('ContentType'));
-      $message->setReturnPath(new Recipient(null, $section->getValue('ReturnPath')));
+      $message->setReturnPath(new MailAddress(null, $section->getValue('ReturnPath')));
 
       return $message;
    }

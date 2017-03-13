@@ -33,7 +33,7 @@ class Message {
    const PRIORITY_LOW = 5;
 
    /**
-    * @var Recipient Sender of the message.
+    * @var MailAddress Sender of the message.
     */
    protected $sender;
 
@@ -43,22 +43,22 @@ class Message {
    protected $subject;
 
    /**
-    * @var Recipient[] List of direct recipients.
+    * @var MailAddress[] List of direct recipients.
     */
    protected $recipients = [];
 
    /**
-    * @var Recipient[] List of copy.
+    * @var MailAddress[] List of copy.
     */
    protected $carbonCopy = [];
 
    /**
-    * @var Recipient[] List of blind copy recipients.
+    * @var MailAddress[] List of blind copy recipients.
     */
    protected $blindCarbonCopy = [];
 
    /**
-    * @var Recipient Return path for this e-mail.
+    * @var MailAddress Return path for this e-mail.
     */
    protected $returnPath;
 
@@ -78,11 +78,11 @@ class Message {
    protected $contentType;
 
    /**
-    * @param Recipient $sender The sender of this message.
+    * @param MailAddress $sender The sender of this message.
     * @param string $subject The message's subject.
     * @param string $content The message content.
     */
-   public function __construct(Recipient $sender, $subject, $content) {
+   public function __construct(MailAddress $sender, $subject, $content) {
 
       $this->sender = $sender;
       $this->subject = $subject;
@@ -154,14 +154,14 @@ class Message {
    /**
     * Returns the string representation of recipients.
     *
-    * @return Recipient[] The list of recipients.
+    * @return MailAddress[] The list of recipients.
     */
    public function getRecipients() {
       return $this->recipients;
    }
 
    /**
-    * @param Recipient[] $recipients List of recipients to send the e-mail to.
+    * @param MailAddress[] $recipients List of recipients to send the e-mail to.
     *
     * @return $this This instance for further usage.
     */
@@ -218,36 +218,36 @@ class Message {
    }
 
    /**
-    * @return Recipient The sender of this e-mail.
+    * @return MailAddress The sender of this e-mail.
     */
    public function getSender() {
       return $this->sender;
    }
 
    /**
-    * @return Recipient|null The return e-mail of the message.
+    * @return MailAddress|null The return e-mail of the message.
     */
    public function getReturnPath() {
       return $this->returnPath;
    }
 
    /**
-    * @param Recipient $returnPath The return path/e-mail this message.
+    * @param MailAddress $returnPath The return path/e-mail this message.
     *
     * @return $this This instance for further usage.
     */
-   public function setReturnPath(Recipient $returnPath) {
+   public function setReturnPath(MailAddress $returnPath) {
       $this->returnPath = $returnPath;
 
       return $this;
    }
 
    /**
-    * @param Recipient $recipient A recipient to add to this e-mail.
+    * @param MailAddress $recipient A recipient to add to this e-mail.
     *
     * @return $this This instance for further usage.
     */
-   public function addRecipient(Recipient $recipient) {
+   public function addRecipient(MailAddress $recipient) {
       $this->recipients[] = $recipient;
 
       return $this;
@@ -263,14 +263,14 @@ class Message {
    }
 
    /**
-    * @return Recipient[] The list of copy recipients.
+    * @return MailAddress[] The list of copy recipients.
     */
    public function getCopyRecipients() {
       return $this->carbonCopy;
    }
 
    /**
-    * @param Recipient[] $recipients The list of copy recipients.
+    * @param MailAddress[] $recipients The list of copy recipients.
     *
     * @return $this This instance for further usage.
     */
@@ -281,11 +281,11 @@ class Message {
    }
 
    /**
-    * @param Recipient $recipient The copy recipient to add.
+    * @param MailAddress $recipient The copy recipient to add.
     *
     * @return $this This instance for further usage.
     */
-   public function addCopyRecipient(Recipient $recipient) {
+   public function addCopyRecipient(MailAddress $recipient) {
       $this->carbonCopy[] = $recipient;
 
       return $this;
@@ -301,14 +301,14 @@ class Message {
    }
 
    /**
-    * @return Recipient[] The list of blind copy recipients.
+    * @return MailAddress[] The list of blind copy recipients.
     */
    public function getBlindCopyRecipients() {
       return $this->blindCarbonCopy;
    }
 
    /**
-    * @param Recipient[] $recipients The list of blind copy recipients.
+    * @param MailAddress[] $recipients The list of blind copy recipients.
     *
     * @return $this This instance for further usage.
     */
@@ -319,11 +319,11 @@ class Message {
    }
 
    /**
-    * @param Recipient $recipient The blind copy recipient to add.
+    * @param MailAddress $recipient The blind copy recipient to add.
     *
     * @return $this This instance for further usage.
     */
-   public function addBlindCopyRecipient(Recipient $recipient) {
+   public function addBlindCopyRecipient(MailAddress $recipient) {
       $this->blindCarbonCopy[] = $recipient;
 
       return $this;
