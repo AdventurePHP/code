@@ -34,6 +34,7 @@ use APF\tests\suites\core\pagecontroller\expression\TestTemplateExpressionOne;
 use APF\tests\suites\core\pagecontroller\expression\TestTemplateExpressionTwo;
 use Exception;
 use InvalidArgumentException;
+use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
@@ -663,6 +664,32 @@ attr2="2">
 </b:foo>
 </a:foo>');
       $tag->onParseTime();
+
+   }
+
+   /**
+    * ID#147: Tests template expression configuration.
+    */
+   public function testTemplateExpressionConfiguration() {
+
+      $doc = new ReflectionClass(Document::class);
+      $property = $doc->getProperty('knownExpressions');
+      $property->setAccessible(true);
+
+      // Initial bootstrap process registers two standard expressions.
+      $expressions = $property->getValue();
+      $this->assertCount(2, $expressions);
+
+      // Clearing the list should result in zero entries.
+      Document::clearTemplateExpressions();
+      $this->assertCount(0, $property->getValue());
+
+      // Adding previously registered expressions to not influence other tests.
+      foreach ($expressions as $expression) {
+         Document::addTemplateExpression($expression);
+      }
+
+      $this->assertCount(2, $property->getValue());
 
    }
 

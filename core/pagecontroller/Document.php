@@ -182,6 +182,10 @@ class Document extends APFObject implements DomNode {
       self::$knownExpressions[] = $expression;
    }
 
+   public static function clearTemplateExpressions() {
+      self::$knownExpressions = [];
+   }
+
    public function hasAttribute($name) {
       return isset($this->attributes[$name]);
    }

@@ -60,6 +60,16 @@ interface DomNode extends ApplicationContext {
    public static function addTemplateExpression($expression);
 
    /**
+    * Clears the list of registered template expressions to allow building custom lists of template expression per
+    * project w/o having to introduce custom bootstrapping process (e.g. copy APF's <em>bootstrap.php</em>).
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 15.03.2017 (ID#147: added clear method to customize expression list w/o having to introduce custom bootstrapping)<br />
+    */
+   public static function clearTemplateExpressions();
+
+   /**
     * Injects the parent node of the current APF object.
     *
     * @param DomNode $parentObject The parent node.
