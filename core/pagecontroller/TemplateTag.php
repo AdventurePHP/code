@@ -20,6 +20,7 @@
  */
 namespace APF\core\pagecontroller;
 
+use APF\tools\form\HtmlForm;
 use InvalidArgumentException;
 
 /**
@@ -42,31 +43,10 @@ class TemplateTag extends Document implements Template {
     */
    protected $transformOnPlace = false;
 
-   /**
-    * Implements the onParseTime() method from the APFObject class. Uses the extractTagLibTags()
-    * function to parse the known tags.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.12.2006<br />
-    * Version 0.2, 31.12.2006<br />
-    */
    public function onParseTime() {
       $this->extractTagLibTags();
    }
 
-   /**
-    * Let's you retrieve an &lt;template:getstring /&gt; tag instance with the specified name.
-    *
-    * @param string $name The name of the template label to return.
-    *
-    * @return LanguageLabelTag The instance of the desired label.
-    * @throws InvalidArgumentException In case no label can be found.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 15.01.2012<br />
-    */
    public function &getLabel($name) {
       try {
          return $this->getChildNode('name', $name, LanguageLabel::class);
@@ -77,67 +57,34 @@ class TemplateTag extends Document implements Template {
       }
    }
 
-   /**
-    * Returns the transformed state of the current template instance. Can be used to retrieve the
-    * content of the current template more convenient.
-    * <p/>
-    * You may want to use this method e.g. for transforming templates within a loop saving an
-    * explicit call to <em>transformTemplate()</em>. E.g.:
-    * <code>
-    * $tmpl = $this->getTemplate(...);
-    * $buffer = '';
-    * foreach($items as $item) {
-    *    $buffer .= $tmpl; // short version of $tmpl->transformTemplate()
-    * }
-    * </code>
-    *
-    * @return string The content of the transformed template.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 05.08.2013<br />
-    */
+   public function &getForm($name) {
+      try {
+         return $this->getChildNode('name', $name, HtmlForm::class);
+      } catch (InvalidArgumentException $e) {
+         throw new InvalidArgumentException('[TemplateTag::getForm()] No form found with name "' . $name
+               . '" composed in template with name "' . $this->getAttribute('name') . '" for document controller "'
+               . get_class($this->getParentObject()->getDocumentController()) . '"!', E_USER_ERROR, $e);
+      }
+   }
+
+   public function &getTemplate($name) {
+      try {
+         return $this->getChildNode('name', $name, Template::class);
+      } catch (InvalidArgumentException $e) {
+         throw new InvalidArgumentException('[TemplateTag::getTemplate()] No nested template found with name "' . $name
+               . '" composed in template with name "' . $this->getAttribute('name') . '" for document controller "'
+               . get_class($this->getParentObject()->getDocumentController()) . '"!', E_USER_ERROR, $e);
+      }
+   }
+
    public function __toString() {
       return $this->transformTemplate();
    }
 
-   /**
-    * Returns the content of the template. Can be used to generate the template output
-    * within a document controller. Usage:
-    * <pre>
-    * $template = $this->getTemplate('MyTemplate');
-    * $template->setPlaceHolder('URL', 'http://adventure-php-framework.org');
-    * echo $template->transformTemplate(); // or echo $template; using the __toString() implementation
-    * </pre>
-    *
-    * @return string The content of the transformed template.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.12.2006<br />
-    * Version 0.2, 31.12.2006 (Removed parameter $this->isVisible, because the parent object automatically removes the XML positioning tag on transformation now)<br />
-    * Version 0.3, 02.02.2007 (Renamed method to transformTemplate(). Removed visible marking finally from the class.)<br />
-    * Version 0.4, 05.01.2007 (Added the template:addtaglib tag)<br />
-    */
    public function transformTemplate() {
       return $this->transformChildrenAndPreserveContent();
    }
 
-   /**
-    * Allows you to clear a TemplateTag instance according to the applied clear approach.
-    * <p/>
-    * By default, the <em>DefaultTemplateTagClearApproach</em> is used reset the template's
-    * place holder tags by removing their content.
-    * <p/>
-    * In case you intend to add your own implementation of place holders or elements that need
-    * to be cleared, please implement your custom clear strategy and apply to this method.
-    *
-    * @param TemplateTagClearApproach $approach The clear approach to use.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 03.05.2013<br />
-    */
    public function clear(TemplateTagClearApproach $approach = null) {
       if ($approach === null) {
          $approach = new DefaultTemplateTagClearApproach();
@@ -145,13 +92,6 @@ class TemplateTag extends Document implements Template {
       $approach->clear($this);
    }
 
-   /**
-    * Indicates, that the template should be displayed on the place of definition.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 19.05.2008<br />
-    */
    public function transformOnPlace() {
       $this->transformOnPlace = true;
    }
