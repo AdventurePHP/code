@@ -46,7 +46,7 @@ interface FormFilter extends Filter, ApplicationContext {
     * @version
     * Version 0.1, 28.08.2009<br />
     */
-   public function __construct(FormControl &$control, FormControl &$button);
+   public function __construct(FormControl $control, FormControl $button);
 
    /**
     * Indicates, whether the control should be filtered or not.

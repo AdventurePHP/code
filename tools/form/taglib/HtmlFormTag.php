@@ -170,6 +170,8 @@ class HtmlFormTag extends Document implements HtmlForm {
 
    public function isValid() {
 
+      $result = true;
+
       foreach ($this->children as &$child) {
          // Only include real form elements to avoid unnecessary
          // implementation overhead for elements that just want to
@@ -177,13 +179,13 @@ class HtmlFormTag extends Document implements HtmlForm {
          // See http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=1387
          // for details.
          if ($child instanceof FormControl) {
-            if ($child->isValid() === false) {
-               return false;
-            }
+            // ID#318: validate all(!) form controls to avoid omitting all subsequent fields in case of an invalid one.
+            // This would cause form controls not to be marked properly and validation listeners not to be informed.
+            $result = $child->isValid() && $result;
          }
       }
 
-      return true;
+      return $result;
    }
 
    public function reset() {
@@ -516,7 +518,7 @@ class HtmlFormTag extends Document implements HtmlForm {
       );
 
       // transform the form including all child tags
-      $htmlCode = (string) '<form ';
+      $htmlCode = (string)'<form ';
       $htmlCode .= $this->getAttributesAsString($this->attributes, $this->attributeWhiteList);
       $htmlCode .= '>';
 

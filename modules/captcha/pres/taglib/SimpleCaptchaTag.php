@@ -75,7 +75,7 @@ class SimpleCaptchaTag extends AbstractFormControl {
     * @version
     * Version 0.1, 30.08.2009<br />
     */
-   public function addValidator(FormValidator &$validator) {
+   public function addValidator(FormValidator $validator) {
       $this->textField->addValidator($validator);
    }
 
@@ -92,7 +92,7 @@ class SimpleCaptchaTag extends AbstractFormControl {
     * @version
     * Version 0.1, 30.08.2009<br />
     */
-   public function addFilter(FormFilter &$filter) {
+   public function addFilter(FormFilter $filter) {
       $this->textField->addFilter($filter);
    }
 
@@ -258,10 +258,10 @@ class SimpleCaptchaTag extends AbstractFormControl {
       // concatenate the html code and return it
       if ($disableInlineStyle === true) {
          return $captchaCode . '/><div>'
-         . $this->textField->transform() . '</div></div>';
+               . $this->textField->transform() . '</div></div>';
       } else {
          return $captchaCode . '/><div style="line-height: 40px; float: left; margin-left: 20px;">'
-         . $this->textField->transform() . '</div><div style="clear: left;"></div></div>';
+               . $this->textField->transform() . '</div><div style="clear: left;"></div></div>';
       }
 
    }

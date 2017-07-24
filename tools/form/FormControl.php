@@ -91,7 +91,7 @@ interface FormControl extends FormElement {
     * Version 0.1, 24.08.2009<br />
     * Version 0.2, 27.03.2014 (Filters are now collected internally to allow retrieval for e.g. client validation rule generation. See ID#166.)<br />
     */
-   public function addFilter(FormFilter &$filter);
+   public function addFilter(FormFilter $filter);
 
    /**
     * Executes the given form validator in context of the current form element.
@@ -106,7 +106,7 @@ interface FormControl extends FormElement {
     * Version 0.3, 27.03.2014 (Filters are now collected internally to allow retrieval for e.g. client validation rule generation. See ID#166.)<br />
     * Version 0.4, 05.09.2014 (ID#233: Added support to omit validators for hidden fields)<br />
     */
-   public function addValidator(FormValidator &$validator);
+   public function addValidator(FormValidator $validator);
 
    /**
     * Allows you to retrieve all registered validators for this form control added within this form

@@ -56,7 +56,7 @@ class FieldCompareValidator extends TextFieldValidator {
     */
    protected $refControl = null;
 
-   public function __construct(FormControl &$control, FormControl &$button, $type = null) {
+   public function __construct(FormControl $control, FormControl $button, $type = null) {
       parent::__construct($control, $button, $type);
       $this->initializeReferenceControl();
    }

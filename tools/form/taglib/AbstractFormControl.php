@@ -362,7 +362,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return $this->getAttribute('readonly') == 'readonly';
    }
 
-   public function addFilter(FormFilter &$filter) {
+   public function addFilter(FormFilter $filter) {
 
       // ID#166: register filter for further usage.
       $this->filters[] = $filter;
@@ -382,7 +382,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return $this;
    }
 
-   public function addValidator(FormValidator &$validator) {
+   public function addValidator(FormValidator $validator) {
       // ID#166: register validator for further usage.
       $this->validators[] = $validator;
    }

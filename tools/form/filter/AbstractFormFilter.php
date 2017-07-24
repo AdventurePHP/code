@@ -50,9 +50,9 @@ abstract class AbstractFormFilter extends APFObject implements FormFilter {
     */
    protected $button;
 
-   public function __construct(FormControl &$control, FormControl &$button) {
-      $this->control = &$control;
-      $this->button = &$button;
+   public function __construct(FormControl $control, FormControl $button) {
+      $this->control = $control;
+      $this->button = $button;
    }
 
    public function isActive() {

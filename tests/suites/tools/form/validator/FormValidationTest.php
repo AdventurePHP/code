@@ -23,6 +23,7 @@ namespace APF\tests\suites\tools\form\validator;
 use APF\core\pagecontroller\Document;
 use APF\tools\form\HtmlForm;
 use APF\tools\form\taglib\HtmlFormTag;
+use APF\tools\form\validator\TextFieldValidator;
 use APF\tools\form\validator\TextLengthValidator;
 
 /**
@@ -646,6 +647,106 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
 
       $this->assertTrue($form->getFormElementByName('field-1')->isValid());
       $this->assertTrue($form->getFormElementByName('field-2')->isValid()); // hidden field must be valid
+
+   }
+
+   /**
+    * ID#318: Expect all validation listeners to be notified in case of invalid form control content.
+    */
+   public function testListenerNotification() {
+
+      $expectedCssClass = TextFieldValidator::$DEFAULT_MARKER_CLASS;
+
+      // assume form sent with empty values
+      $_GET = [];
+      $_POST = ['send' => 'GO'];
+
+      $expectedOne = 'Test1';
+      $expectedTwo = 'Test2';
+
+      // *** Test form w/ one add validator tag and two form controls ***
+      $form = new HtmlFormTag();
+
+      // inject parent object to make recursive selection work
+      $doc = new Document();
+      $form->setParentObject($doc);
+
+      $form->setAttributes(['method' => HtmlForm::METHOD_POST_VALUE_NAME]);
+
+      $form->setContent('<form:text name="test1"/>
+<form:listener control="test1" id="listener1">' . $expectedOne . '</form:listener>
+<form:text name="test2"/>
+<form:listener control="test2" id="listener2">' . $expectedTwo . '</form:listener>
+<form:button name="send" value="GO"/>
+<form:addvalidator 
+   class="APF\tools\form\validator\TextLengthValidator" 
+   button="send" 
+   control="test1|test2"
+/>');
+
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      $this->assertTrue($form->isSent());
+      $this->assertFalse($form->isValid());
+
+      $listenerOne = $form->getFormElementByID('listener1');
+      $listenerTwo = $form->getFormElementByID('listener2');
+
+      // Ensure both validation listeners are displaying
+      $this->assertEquals($expectedOne, $listenerOne->transform(), 'Validation listener one not displayed!');
+      $this->assertEquals($expectedTwo, $listenerTwo->transform(), 'Validation listener two not displayed!');
+
+      // Ensure both fields are marked w/ error CSS class
+      $fieldOne = $form->getFormElementByName('test1')->getAttribute('class');
+      $this->assertEquals($expectedCssClass, $fieldOne, 'No error marker CSS class for field one!');
+      $fieldTwo = $form->getFormElementByName('test2')->getAttribute('class');
+      $this->assertEquals($expectedCssClass, $fieldTwo, 'No error marker CSS class for field two!');
+
+
+      // *** Test form w/ two add validator tags and one form control each ***
+      $form = new HtmlFormTag();
+
+      // inject parent object to make recursive selection work
+      $doc = new Document();
+      $form->setParentObject($doc);
+
+      $form->setAttributes(['method' => HtmlForm::METHOD_POST_VALUE_NAME]);
+
+      $form->setContent('<form:text name="test1"/>
+<form:listener control="test1" id="listener1">' . $expectedOne . '</form:listener>
+<form:text name="test2"/>
+<form:listener control="test2" id="listener2">' . $expectedTwo . '</form:listener>
+<form:button name="send" value="GO"/>
+<form:addvalidator 
+   class="APF\tools\form\validator\TextLengthValidator" 
+   button="send" 
+   control="test1"
+/>
+<form:addvalidator 
+   class="APF\tools\form\validator\TextLengthValidator" 
+   button="send" 
+   control="test2"
+/>');
+
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      $this->assertTrue($form->isSent());
+      $this->assertFalse($form->isValid());
+
+      $listenerOne = $form->getFormElementByID('listener1');
+      $listenerTwo = $form->getFormElementByID('listener2');
+
+      // Ensure both validation listeners are displaying
+      $this->assertEquals($expectedOne, $listenerOne->transform(), 'Validation listener one not displayed!');
+      $this->assertEquals($expectedTwo, $listenerTwo->transform(), 'Validation listener two not displayed!');
+
+      // Ensure both fields are marked w/ error CSS class
+      $fieldOne = $form->getFormElementByName('test1')->getAttribute('class');
+      $this->assertEquals($expectedCssClass, $fieldOne, 'No error marker CSS class for field one!');
+      $fieldTwo = $form->getFormElementByName('test2')->getAttribute('class');
+      $this->assertEquals($expectedCssClass, $fieldTwo, 'No error marker CSS class for field two!');
 
    }
 

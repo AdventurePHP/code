@@ -46,7 +46,7 @@ interface FormValidator extends ApplicationContext {
     * @version
     * Version 0.1, 24.08.2009<br />
     */
-   public function __construct(FormControl &$control, FormControl &$button, $type = null);
+   public function __construct(FormControl $control, FormControl $button, $type = null);
 
    /**
     * Method, that is called to validate the element.
