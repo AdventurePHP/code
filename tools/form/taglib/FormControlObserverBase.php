@@ -71,8 +71,7 @@ abstract class FormControlObserverBase extends AbstractFormControl {
    /**
     * Constructs the desired form control observer using tag attributes.
     *
-    * @@param string $injectionMethod The name of the method to inject the observer with.
-    * @return FormValidator The form control observer.
+    * @param string $injectionMethod The name of the method to inject the observer with.
     * @throws FormException In case mandatory attributes are missing.
     *
     * @author Christian Achatz
