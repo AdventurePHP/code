@@ -108,8 +108,9 @@ class GenericORMapper extends BaseMapper {
     * Version 0.2, 30.05.2008 (Now returns null, if no properties are available)<br />
     * Version 0.3, 15.06.2008 (Now uses the constructor of GenericDomainObject to set the object name)<br />
     * Version 0.4, 15.01.2011 (Added support for own domain objects and event handler)<br />
+    * Version 0.5, 09.08.2017 Remove Datatype from $propertyies.
     */
-   protected function mapResult2DomainObject($objectName, array $properties) {
+   protected function mapResult2DomainObject($objectName, $properties) {
 
       if (empty($properties)) {
          return null;
