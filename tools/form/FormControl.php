@@ -85,6 +85,8 @@ interface FormControl extends FormElement {
     *
     * @param FormFilter $filter The desired filter.
     *
+    * @return $this This instance for further usage.
+    *
     * @since 1.11
     * @author Christian Achatz
     * @version
@@ -97,6 +99,8 @@ interface FormControl extends FormElement {
     * Executes the given form validator in context of the current form element.
     *
     * @param FormValidator $validator The desired validator.
+    *
+    * @return $this This instance for further usage.
     *
     * @since 1.11
     * @author Christian Achatz

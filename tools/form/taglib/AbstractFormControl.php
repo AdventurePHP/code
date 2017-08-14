@@ -374,6 +374,8 @@ abstract class AbstractFormControl extends Document implements FormControl {
          $filteredValue = $filter->filter($value);
          $this->setValue($filteredValue);
       }
+
+      return $this;
    }
 
    public function &setValue($value) {
@@ -385,10 +387,14 @@ abstract class AbstractFormControl extends Document implements FormControl {
    public function addValidator(FormValidator $validator) {
       // ID#166: register validator for further usage.
       $this->validators[] = $validator;
+
+      return $this;
    }
 
    public function &addAttributeToWhiteList($name) {
       $this->attributeWhiteList[] = $name;
+
+      return $this;
    }
 
    public function &addAttributesToWhiteList(array $names) {
