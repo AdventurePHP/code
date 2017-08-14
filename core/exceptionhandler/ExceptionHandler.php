@@ -20,7 +20,7 @@
  */
 namespace APF\core\exceptionhandler;
 
-use Exception;
+use Throwable;
 
 /**
  * Describes the signature of any APF exception handler.
@@ -34,12 +34,13 @@ interface ExceptionHandler {
    /**
     * This method is intended to take the exception's information and processes it.
     *
-    * @param Exception $exception The current exception.
+    * @param Throwable $exception The current exception.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 21.02.2009<br />
+    * Version 0.2, 14.08.2017 (ID#316: improved PHP7 compatibility)<br />
     */
-   public function handleException(Exception $exception);
+   public function handleException(Throwable $exception);
 
 }

@@ -20,8 +20,9 @@
  */
 namespace APF\core\exceptionhandler;
 
+use APF\core\http\mixins\GetRequestResponse;
 use APF\core\registry\Registry;
-use Exception;
+use Throwable;
 
 /**
  * Implements a live exception handler, that logs the occurred exception and redirects
@@ -34,7 +35,9 @@ use Exception;
  */
 class ProductionExceptionHandler extends DefaultExceptionHandler {
 
-   public function handleException(Exception $exception) {
+   use GetRequestResponse;
+
+   public function handleException(Throwable $exception) {
 
       // fill attributes
       $this->exceptionNumber = $exception->getCode();
@@ -48,10 +51,16 @@ class ProductionExceptionHandler extends DefaultExceptionHandler {
       $this->logException();
 
       // redirect to configured page
-      $url = Registry::retrieve('APF\core\exceptionhandler', 'ProductionExceptionRedirectUrl', '/');
-      header('Location: ' . $url, null, 302);
-      exit(0);
+      $response = $this->getResponse();
+      $response->forward($this->getRedirectPage());
 
+   }
+
+   /**
+    * @return string The redirect page serving as an error page (to hide internal information of the application for security reasons).
+    */
+   protected function getRedirectPage() {
+      return Registry::retrieve('APF\core\exceptionhandler', 'ProductionExceptionRedirectUrl', '/');
    }
 
 }

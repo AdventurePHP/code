@@ -26,7 +26,7 @@ use APF\core\logging\Logger;
 use APF\core\pagecontroller\Page;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
-use Exception;
+use Throwable;
 
 /**
  * Implements the default APF exception handler for uncaught exceptions.
@@ -79,7 +79,7 @@ class DefaultExceptionHandler implements ExceptionHandler {
     */
    protected $exceptionTrace = [];
 
-   public function handleException(Exception $exception) {
+   public function handleException(Throwable $exception) {
 
       // fill attributes
       $this->exceptionNumber = $exception->getCode();
@@ -129,12 +129,6 @@ class DefaultExceptionHandler implements ExceptionHandler {
     * Version 0.1, 21.02.2009<br />
     */
    protected function buildExceptionPage() {
-
-      // at this point we have to re-include the benchmark timer, because PHP
-      // sometimes forgets about this import and throws a
-      // Fatal error: Exception thrown without a stack frame in Unknown on line 0
-      // exception.
-
 
       // create page
       $stackTrace = new Page();

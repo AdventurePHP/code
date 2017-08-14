@@ -20,7 +20,7 @@
  */
 namespace APF\core\exceptionhandler;
 
-use Exception;
+use Throwable;
 
 /**
  * This is the APF exception handler automatically registered to handle exceptions.
@@ -49,7 +49,7 @@ abstract class GlobalExceptionHandler {
     *
     * @var ExceptionHandler|null $HANDLER
     */
-   private static $HANDLER;
+   protected static $HANDLER;
 
    /**
     * Let's you register an exception handler.
@@ -69,15 +69,15 @@ abstract class GlobalExceptionHandler {
     * exception handling to the registered handler. In case no handler is registered or the mechanism is
     * disables, nothing will happen.
     *
-    * @param Exception $exception The current exception.
+    * @param Throwable $exception The current exception.
     *
-    * @throws Exception In case the APF exception handler is disabled, the original exception is thrown.
+    * @throws Throwable In case the APF exception handler is disabled, the original exception is thrown.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 03.03.2012<br />
     */
-   public static function handleException(Exception $exception) {
+   public static function handleException(Throwable $exception) {
       if (self::$HANDLER === null) {
          // restore the PHP default exception handler to avoid loops or other issues
          restore_exception_handler();
@@ -85,7 +85,7 @@ abstract class GlobalExceptionHandler {
       } else {
          try {
             self::$HANDLER->handleException($exception);
-         } catch (Exception $exception) {
+         } catch (Throwable $exception) {
             // catch exceptions thrown within the exception handler to avoid
             // Fatal error: Exception thrown without a stack frame in Unknown on line 0
             // errors.
