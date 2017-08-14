@@ -54,7 +54,11 @@ class DateControlTest extends \PHPUnit_Framework_TestCase {
       $tag->onAfterAppend();
 
       $today = new DateTime();
-      $this->assertEquals($today, $tag->getDate());
+      $current = $tag->getDate();
+
+      $this->assertInstanceOf(DateTime::class, $current);
+      $pattern = 'Y-m-d\TH:i:s';
+      $this->assertEquals($today->format($pattern), $current->format($pattern));
    }
 
    public function testPresettingWithPrependEmptyOptions() {

@@ -40,7 +40,11 @@ class TimeControlTest extends \PHPUnit_Framework_TestCase {
       $tag->onAfterAppend();
 
       $today = new DateTime();
-      $this->assertEquals($today, $tag->getTime());
+      $current = $tag->getTime();
+
+      $this->assertInstanceOf(DateTime::class, $current);
+      $pattern = 'Y-m-d\TH:i:s';
+      $this->assertEquals($today->format($pattern), $current->format($pattern));
    }
 
    public function testGetTimeWithCorrectTime() {
