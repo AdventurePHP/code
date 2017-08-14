@@ -74,12 +74,7 @@ class Page extends APFObject {
       $this->document = new Document();
 
       // set the current context
-      $context = $this->getContext();
-      if (empty($context)) {
-         $this->document->setContext($namespace);
-      } else {
-         $this->document->setContext($context);
-      }
+      $this->document->setContext($this->getContext());
 
       // set the current language
       $this->document->setLanguage($this->getLanguage());

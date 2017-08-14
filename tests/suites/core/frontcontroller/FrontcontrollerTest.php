@@ -59,11 +59,25 @@ class FrontcontrollerTest extends \PHPUnit_Framework_TestCase {
                   [Action::TYPE_POST_TRANSFORM]
             );
 
+      // ID#317: define context to guarantee correct application behavior
+      $fC->setContext('dummy');
+
       $response = $fC->start(__NAMESPACE__ . '\templates', 'main');
 
       // check whether returned response contains correct content
       $this->assertInstanceOf(ResponseImpl::class, $response);
       $this->assertEquals('This is my page content.', $response->getBody());
+   }
+
+   /**
+    * ID#317: Tests whether front controller throws exception when not properly initialized to avoid context clashes.
+    */
+   public function testWrongInitialization() {
+      $this->expectException(\Exception::class);
+      $this->expectExceptionMessage('Front controller requires context initialization to guarantee accurate '
+            . 'application execution! Please inject desired context via $fC->setContext(\'...\').');
+      $fC = new Frontcontroller();
+      $fC->start('foo', 'bar');
    }
 
    /**

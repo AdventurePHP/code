@@ -170,4 +170,20 @@ class DIServiceManagerTest extends \PHPUnit_Framework_TestCase {
       $this->assertEquals('baz', $service->getParamThree());
    }
 
+   /**
+    * ID#317: avoid context clashes by not permitting empty context information (null values).
+    */
+   public function testEmptyContextCausesException1() {
+      $this->expectException(InvalidArgumentException::class);
+      DIServiceManager::getServiceObject(self::TEST_VENDOR, 'Dummy-Service', null, null);
+   }
+
+   /**
+    * ID#317: avoid context clashes by not permitting empty context information (empty strings).
+    */
+   public function testEmptyContextCausesException2() {
+      $this->expectException(InvalidArgumentException::class);
+      DIServiceManager::getServiceObject(self::TEST_VENDOR, 'Dummy-Service', '', null);
+   }
+
 }

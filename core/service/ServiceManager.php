@@ -65,8 +65,20 @@ final class ServiceManager {
     * Version 0.7, 04.03.2011 (Refactored to static method; enhanced code)<br />
     * Version 0.8, 07.07.2012 Jan Wiese <jw-lighting@ewetel.net> (Corrected service retrieval to respect context and language each time.)<br />
     * Version 0.9, 23.07.2013 (Added "APPLICATIONSINGLETON" object creation mechanism.)<br />
+    * Version 1.0, 14.08.2017 (ID#317: prevent empty context to avoid scoping issues for instances of the same type but different configuration/application contexts)<br />
     */
    public static function &getServiceObject($class, $context, $language, array $arguments = [], $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
+
+      // ID#317:
+      // (Re-)using objects/services with multiple configurations (defined by multiple contexts) within one application
+      // will fail when not passing context information. This is because the resulting object/service instances will be
+      // identical instead of associated to the relevant use-case.
+      // To avoid such context clashes, objects/services must be created with proper context information!
+      if (empty($context)) {
+         throw new InvalidArgumentException('[ServiceManager::getServiceObject()] Instance/service creation of type "'
+               . $class . '" failed due to missing/empty context information (' . $context
+               . ')! Please provide appropriate context definition to avoid context clashes.');
+      }
 
       // Introduce generated instance key to create services with respect to the context.
       // In 1.15, creating instances of the same service implementation within different contexts

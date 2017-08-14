@@ -960,9 +960,6 @@ class Document extends APFObject implements DomNode {
       $startToken = '${';
       $endToken = '}';
 
-      $context = $this->getContext();
-      $language = $this->getLanguage();
-
       $loops = 0;
       $offset = 0;
 
@@ -1007,8 +1004,8 @@ class Document extends APFObject implements DomNode {
 
          $this->children[$objectId] = $object;
          $this->children[$objectId]->setObjectId($objectId);
-         $this->children[$objectId]->setContext($context);
-         $this->children[$objectId]->setLanguage($language);
+         $this->children[$objectId]->setContext($this->getContext());
+         $this->children[$objectId]->setLanguage($this->getLanguage());
 
          $this->children[$objectId]->setParentObject($this);
 

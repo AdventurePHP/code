@@ -123,6 +123,8 @@ class Frontcontroller extends APFObject {
     *
     * @return Response The content of the transformed page.
     *
+    * @throws Exception In case front controller has not been initialized with correct context information.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 20.01.2007<br />
@@ -141,7 +143,10 @@ class Frontcontroller extends APFObject {
       // check if the context is set. If not, use the current namespace
       $context = $this->getContext();
       if (empty($context)) {
-         $this->setContext($namespace);
+         // ID#317: throw exception to not risk improper application initialization and further downstream issues
+         // (e.g. model initialization issues using the ServiceManager).
+         throw new Exception('Front controller requires context initialization to guarantee accurate '
+               . 'application execution! Please inject desired context via $fC->setContext(\'...\').');
       }
 
       // Create request and response implementations for OO abstraction

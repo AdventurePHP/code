@@ -149,6 +149,17 @@ final class DIServiceManager {
     */
    public static function &getServiceObject($configNamespace, $sectionName, $context, $language) {
 
+      // ID#317:
+      // (Re-)using objects/services with multiple configurations (defined by multiple contexts) within one application
+      // will fail when not passing context information. This is because the resulting object/service instances will be
+      // identical instead of associated to the relevant use-case.
+      // To avoid such context clashes, objects/services must be created with proper context information!
+      if (empty($context)) {
+         throw new InvalidArgumentException('[ServiceManager::getServiceObject()] Instance/service creation for namespace "'
+               . $sectionName . '" and name "' . $sectionName . '" failed due to missing/empty context information (' . $context
+               . ')! Please provide appropriate context definition to avoid context clashes.');
+      }
+
       // build cache key. because configuration-file path includes context, include context (and language) in cache key
       // In 2.0 language has been removed from the instance id since within multi-language applications
       // you want to re-use the instance throughout different languages!
