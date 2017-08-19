@@ -20,8 +20,6 @@
  */
 namespace APF\core\exceptionhandler;
 
-use Throwable;
-
 /**
  * This is the APF exception handler automatically registered to handle exceptions.
  * <p/>
@@ -69,15 +67,17 @@ abstract class GlobalExceptionHandler {
     * exception handling to the registered handler. In case no handler is registered or the mechanism is
     * disables, nothing will happen.
     *
-    * @param Throwable $exception The current exception.
+    * @param \Throwable|\Exception $exception The current exception.
     *
-    * @throws Throwable In case the APF exception handler is disabled, the original exception is thrown.
+    * @throws \Throwable|\Exception In case the APF exception handler is disabled, the original exception is thrown.
+    *
+    * TODO Introduce strict type declaration to method w/ PHP7+-only APF version.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 03.03.2012<br />
     */
-   public static function handleException(Throwable $exception) {
+   public static function handleException($exception) {
       if (self::$HANDLER === null) {
          // restore the PHP default exception handler to avoid loops or other issues
          restore_exception_handler();
@@ -85,15 +85,25 @@ abstract class GlobalExceptionHandler {
       } else {
          try {
             self::$HANDLER->handleException($exception);
-         } catch (Throwable $exception) {
+
             // catch exceptions thrown within the exception handler to avoid
             // Fatal error: Exception thrown without a stack frame in Unknown on line 0
             // errors.
-            echo 'APF catchable exception: ' . $exception->getMessage() . ' (code: '
-                  . $exception->getCode() . ') in ' . $exception->getFile() . ' on line '
-                  . $exception->getLine() . '!';
+         } catch (\Exception $exception) {
+            self::displayExceptionText($exception);
+         } catch (\Throwable $exception) {
+            self::displayExceptionText($exception);
          }
       }
+   }
+
+   /**
+    * @param \Throwable|\Exception $exception
+    */
+   protected static function displayExceptionText($exception) {
+      echo 'APF catchable exception: ' . $exception->getMessage() . ' (code: '
+            . $exception->getCode() . ') in ' . $exception->getFile() . ' on line '
+            . $exception->getLine() . '!';
    }
 
    /**

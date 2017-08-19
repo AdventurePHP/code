@@ -22,7 +22,6 @@ namespace APF\core\exceptionhandler;
 
 use APF\core\http\mixins\GetRequestResponse;
 use APF\core\registry\Registry;
-use Throwable;
 
 /**
  * Implements a live exception handler, that logs the occurred exception and redirects
@@ -37,7 +36,7 @@ class ProductionExceptionHandler extends DefaultExceptionHandler {
 
    use GetRequestResponse;
 
-   public function handleException(Throwable $exception) {
+   public function handleException($exception) {
 
       // fill attributes
       $this->exceptionNumber = $exception->getCode();

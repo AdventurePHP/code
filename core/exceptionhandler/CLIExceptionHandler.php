@@ -20,8 +20,6 @@
  */
 namespace APF\core\exceptionhandler;
 
-use Throwable;
-
 /**
  * Implements a cli exception handler for uncaught exceptions.
  *
@@ -33,7 +31,7 @@ class CLIExceptionHandler extends DefaultExceptionHandler {
 
    const TAB = "\t";
 
-   public function handleException(Throwable $exception) {
+   public function handleException($exception) {
 
       // fill attributes
       $this->exceptionNumber = $exception->getCode();
