@@ -338,4 +338,49 @@ class SelectBoxTagTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * ID#319: test whether method complies w/ interface definition in case no option is present and/or selected.
+    */
+   public function testIsSelected() {
+
+      $_REQUEST = [];
+      $_POST = [];
+
+      // use case 1: no values
+      $select = new SelectBoxTag();
+      $select->onParseTime();
+      $select->onAfterAppend();
+
+      $this->assertFalse($select->isSelected());
+      $this->assertNull($select->getSelectedOption());
+
+      // use case 2: values but no pre-selection
+      $select = new SelectBoxTag();
+      $select->setAttribute('name', 'foo');
+      $select->setContent('<select:option value="One">One</select:option>
+<select:option value="Two">Two</select:option>
+<select:option value="Three">Three</select:option>');
+      $select->onParseTime();
+      $select->onAfterAppend();
+
+      $this->assertFalse($select->isSelected());
+      $this->assertNull($select->getSelectedOption());
+
+      // use case 3: values and pre-selection
+      $_REQUEST = ['foo' => 'Two'];
+      $_POST = [];
+
+      $select = new SelectBoxTag();
+      $select->setAttribute('name', 'foo');
+      $select->setContent('<select:option value="One">One</select:option>
+<select:option value="Two">Two</select:option>
+<select:option value="Three">Three</select:option>');
+      $select->onParseTime();
+      $select->onAfterAppend();
+
+      $this->assertTrue($select->isSelected());
+      $this->assertInstanceOf(SelectBoxOptionTag::class, $select->getSelectedOption());
+
+   }
+
 }

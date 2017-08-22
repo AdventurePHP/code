@@ -142,8 +142,8 @@ class SelectBoxTag extends AbstractFormControl {
             $child->setOption2Selected($displayNameOrValue);
          } else {
             // bug 981: introduced string-based comparison to avoid pre-select issues with "0".
-            if ($child->getAttribute('value') == (string) $displayNameOrValue
-                  || $child->getContent() == (string) $displayNameOrValue
+            if ($child->getAttribute('value') == (string)$displayNameOrValue
+                  || $child->getContent() == (string)$displayNameOrValue
             ) {
                $child->setAttribute('selected', 'selected');
                $selectedObjectId = $child->getObjectId();
@@ -349,7 +349,7 @@ class SelectBoxTag extends AbstractFormControl {
 
       // create html code
       if ($this->isVisible) {
-         $select = (string) '';
+         $select = (string)'';
          $select .= '<select ' . $this->getSanitizedAttributesAsString($this->attributes) . '>';
 
          $this->transformChildren();
@@ -485,9 +485,11 @@ class SelectBoxTag extends AbstractFormControl {
     * @version
     * Version 0.1, 22.09.2011<br />
     * Version 0.2, 29.05.2012 (Bug-fix: isSelected was always true)<br />
+    * Version 0.3, 22.08.2017 (ID#319: fixed issue w/ NPE when no option is present and/or selected)<br />
     */
    public function isSelected() {
-      if ($this->getSelectedOption()->getValue() == null) {
+      $option = $this->getSelectedOption();
+      if ($option === null || $option->getValue() == null) {
          return false;
       } else {
          return true;
