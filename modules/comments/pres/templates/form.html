@@ -54,6 +54,11 @@ class="APF\modules\comments\pres\controller\CommentCreateEntryController"
                button="Save"
                control="EMail"
                />
+         <form:addfilter
+               class="APF\tools\form\filter\StripTagsFilter"
+               button="Save"
+               control="Comment|Name"
+         />
          <form:addvalidator
                class="APF\tools\form\validator\TextLengthValidator"
                button="Save"

@@ -22,7 +22,9 @@ namespace APF\tests\suites\tools\form\filter;
 
 use APF\core\pagecontroller\Document;
 use APF\tools\form\filter\EMailFilter;
+use APF\tools\form\taglib\ButtonTag;
 use APF\tools\form\taglib\HtmlFormTag;
+use APF\tools\form\taglib\TextFieldTag;
 use APF\tools\form\validator\EMailValidator;
 
 class EMailFilterTest extends \PHPUnit_Framework_TestCase {
@@ -41,6 +43,20 @@ class EMailFilterTest extends \PHPUnit_Framework_TestCase {
       $form->onAfterAppend();
 
       $this->assertEquals($expected, $form->getFormElementByName('email')->getValue());
+   }
+
+   /**
+    * Test whether e-mail filter prevents XSS attacks.
+    */
+   public function testXssInjection() {
+
+      $filter = new EMailFilter(new TextFieldTag(), new ButtonTag());
+
+      $this->assertEquals(
+            'scriptalertThiscouldbeanXSSattackscript',
+            $filter->filter('<script>alert("This could be an XSS attack!");</script>')
+      );
+
    }
 
    protected function getForm() {
