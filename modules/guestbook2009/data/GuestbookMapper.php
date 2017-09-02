@@ -137,7 +137,7 @@ class GuestbookMapper extends APFObject {
 
             // load the entry itself
             $entry = new Entry();
-            $entry->setCreationTimestamp($current->getProperty('CreationTimestamp'));
+            $entry->setCreationTimestamp($current->getCreationTimestamp());
 
             foreach ($attributes as $attribute) {
 
