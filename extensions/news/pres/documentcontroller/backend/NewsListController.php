@@ -41,12 +41,11 @@ class NewsListController extends NewsBaseController {
 
       $newsManager = $this->getNewsManager();
 
-      $Count = $newsManager->getNewsCount($appKey);
-      $NewsList = $newsManager->getNews(0, $Count, 'DESC', $appKey);
+      $count = $newsManager->getNewsCount($appKey);
+      $newsList = $newsManager->getNews(0, $count, 'DESC', $appKey);
 
-      if (count($NewsList) === 0) {
+      if (count($newsList) === 0) {
          $this->getTemplate('noentry')->transformOnPlace();
-
          return;
       }
 
@@ -55,30 +54,30 @@ class NewsListController extends NewsBaseController {
       // retrieve the charset from the registry to guarantee interoperability!
       $charset = Registry::retrieve('APF\core', 'Charset');
 
-      foreach ($NewsList as &$News) {
+      foreach ($newsList as &$news) {
          $dataArray[] = [
-               'Title'      => htmlentities($News->getTitle(), ENT_QUOTES, $charset, false),
-               'Date'       => $News->getProperty('CreationTimestamp'),
-               'LinkEdit'   => LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
+               'Title' => htmlentities($news->getTitle(), ENT_QUOTES, $charset, false),
+               'Date' => $news->getCreationTimestamp(),
+               'LinkEdit' => LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
                      [
                            'backendview' => 'edit',
-                           'editnewsid'  => (int) $News->getObjectId()
+                           'editnewsid' => (int)$news->getObjectId()
                      ]
                )
                ),
                'LinkDelete' => LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
                      [
-                           'backendview'  => 'delete',
-                           'deletenewsid' => (int) $News->getObjectId()
+                           'backendview' => 'delete',
+                           'deletenewsid' => (int)$news->getObjectId()
                      ]
                )
                )
          ];
       }
 
-      $I = $this->getIterator('newslist');
-      $I->fillDataContainer($dataArray);
-      $I->transformOnPlace();
+      $iterator = $this->getIterator('newslist');
+      $iterator->fillDataContainer($dataArray);
+      $iterator->transformOnPlace();
    }
 
    /**

@@ -23,6 +23,7 @@ namespace APF\extensions\news\pres\documentcontroller;
 use APF\core\registry\Registry;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
+use DateTime;
 
 /**
  * Document controller for the frontend of the news.
@@ -45,39 +46,39 @@ class NewsFrontendController extends NewsBaseController {
          return;
       }
 
-      $Cfg = $this->getConfiguration('APF\extensions\news', 'news.ini');
-      $allowHtml = ($Cfg->getSection('General')->getValue('AllowHtml') == 'TRUE') ? true : false;
+      $config = $this->getConfiguration('APF\extensions\news', 'news.ini');
+      $allowHtml = ($config->getSection('General')->getValue('AllowHtml') == 'TRUE') ? true : false;
 
-      $List = $this->getIterator('list');
+      $list = $this->getIterator('list');
 
-      $Data = [];
+      $data = [];
 
       // retrieve the charset from the registry to guarantee interoperability!
       $charset = Registry::retrieve('APF\core', 'Charset');
 
       foreach ($newsList as &$news) {
-         $Date = new \DateTime($news->getProperty('CreationTimestamp'));
-         $Author = '';
+         $date = new DateTime($news->getCreationTimestamp());
+         $author = '';
 
          if ($news->getAuthor() !== '') {
             $authorTpl = $this->getTemplate('author');
             $authorTpl->setPlaceHolder('authorname', $news->getAuthor());
-            $Author = $authorTpl->transformTemplate();
+            $author = $authorTpl->transformTemplate();
          }
 
-         $Text = $allowHtml ? $news->getText() : htmlentities($news->getText(), ENT_QUOTES, $charset, false);
-         $Data[] = [
-               'title'  => htmlentities($news->getTitle(), ENT_QUOTES, $charset, false),
-               'text'   => $Text,
-               'date'   => $Date->format('d.m.Y H:i:s'),
-               'author' => $Author
+         $text = $allowHtml ? $news->getText() : htmlentities($news->getText(), ENT_QUOTES, $charset, false);
+         $data[] = [
+               'title' => htmlentities($news->getTitle(), ENT_QUOTES, $charset, false),
+               'text' => $text,
+               'date' => $date->format('d.m.Y H:i:s'),
+               'author' => $author
          ];
       }
 
-      $List->fillDataContainer($Data);
-      $List->setPlaceHolder('pager', $this->buildPager($appKey));
+      $list->fillDataContainer($data);
+      $list->setPlaceHolder('pager', $this->buildPager($appKey));
 
-      $List->transformOnPlace();
+      $list->transformOnPlace();
    }
 
    /**

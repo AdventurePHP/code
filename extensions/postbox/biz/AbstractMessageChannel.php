@@ -42,9 +42,10 @@ abstract class AbstractMessageChannel extends GenericDomainObject {
    public function getLastMessageTime() {
       $crit = new GenericCriterionObject();
       $crit->addOrderIndicator('MessageID', 'DESC');
-      $LastMessage = $this->loadRelatedObject('MessageChannel2Message', $crit);
+      /* @var $message GenericDomainObject */
+      $message = $this->loadRelatedObject('MessageChannel2Message', $crit);
 
-      return $LastMessage->getProperty('CreationTimestamp');
+      return $message->getCreationTimestamp();
    }
 
    /**
@@ -283,8 +284,8 @@ abstract class AbstractMessageChannel extends GenericDomainObject {
             'APF\extensions\postbox',
             'MessageChannel_setReadForUser.sql',
             [
-                  'MessageChannelID' => (int) $this->getObjectId(),
-                  'UserID'           => (int) $User->getObjectId()
+                  'MessageChannelID' => (int)$this->getObjectId(),
+                  'UserID' => (int)$User->getObjectId()
             ]
       );
       $this->deleteAssociation('User2UnreadMessageChannel', $User);
