@@ -21,6 +21,7 @@
 namespace APF\tools\filesystem;
 
 use APF\core\pagecontroller\APFObject;
+use DateTime;
 
 /**
  * Defines the base class for File and Folder
@@ -296,12 +297,12 @@ abstract class FilesystemItem extends APFObject {
 
       clearstatcache();
 
-      $time = new \DateTime();
+      $time = new DateTime();
 
       if (!method_exists($time, 'setTimestamp')) {
          $Timestamp = filectime($this->getPath());
 
-         return new \DateTime("@$Timestamp");
+         return new DateTime("@$Timestamp");
       } else {
          return $time->setTimestamp(filectime($this->getPath()));
       }
@@ -325,12 +326,12 @@ abstract class FilesystemItem extends APFObject {
 
       clearstatcache();
 
-      $time = new \DateTime();
+      $time = new DateTime();
 
       if (!method_exists($time, 'setTimestamp')) {
          $Timestamp = filemtime($this->getPath());
 
-         return new \DateTime("@$Timestamp");
+         return new DateTime("@$Timestamp");
       } else {
          return $time->setTimestamp(filemtime($this->getPath()));
       }
