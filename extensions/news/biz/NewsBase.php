@@ -33,8 +33,113 @@ use APF\modules\genericormapper\data\GenericDomainObject;
  */
 abstract class NewsBase extends GenericDomainObject {
 
+   /**
+    * @var string The value for property "AppKey".
+    */
+   protected $AppKey;
+
+   /**
+    * @var string The value for property "Author".
+    */
+   protected $Author;
+
+   /**
+    * @var string The value for property "Title".
+    */
+   protected $Title;
+
+   /**
+    * @var string The value for property "Text".
+    */
+   protected $Text;
+
+   /**
+    * @var int The value for the object's ID.
+    */
+   protected $NewsID;
+
+   /**
+    * @var string The creation timestamp.
+    */
+   protected $CreationTimestamp;
+
+   /**
+    * @var string The modification timestamp.
+    */
+   protected $ModificationTimestamp;
+
+   protected $propertyNames = [
+         'NewsID',
+         'CreationTimestamp',
+         'ModificationTimestamp',
+         'AppKey',
+         'Author',
+         'Title',
+         'Text'
+   ];
+
    public function __construct($objectName = null) {
       parent::__construct('News');
+   }
+
+   public function getProperty($name) {
+      if (in_array($name, $this->propertyNames)) {
+         return $this->$name;
+      }
+
+      return null;
+   }
+
+   public function setProperty($name, $value) {
+      if (in_array($name, $this->propertyNames)) {
+         $this->$name = $value;
+      }
+   }
+
+   public function getProperties() {
+      $properties = [];
+      foreach ($this->propertyNames as $name) {
+         if ($this->$name !== null) {
+            $properties[$name] = $this->$name;
+         }
+      }
+      return $properties;
+   }
+
+   public function setProperties($properties = []) {
+      foreach ($properties as $key => $value) {
+         if (in_array($key, $this->propertyNames)) {
+            $this->$key = $value;
+         }
+      }
+   }
+
+   public function deleteProperty($name) {
+      if (in_array($name, $this->propertyNames)) {
+         $this->$name = null;
+      }
+   }
+
+   public function setObjectId($id) {
+      $this->NewsID = $id;
+   }
+
+   public function getObjectId() {
+      return $this->NewsID;
+   }
+
+   public function __sleep() {
+      return [
+            'objectName',
+            'NewsID',
+            'CreationTimestamp',
+            'ModificationTimestamp',
+            'AppKey',
+            'Author',
+            'Title',
+            'Text',
+            'relatedObjects'
+      ];
    }
 
    /**
