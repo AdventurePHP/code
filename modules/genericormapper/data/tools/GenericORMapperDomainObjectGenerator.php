@@ -35,6 +35,8 @@ use APF\tools\filesystem\Folder;
  */
 class GenericORMapperDomainObjectGenerator extends BaseMapper {
 
+   const EOL = "\n";
+
    protected static $DEFAULT_BASE_CLASS = GenericDomainObject::class;
 
    /**
@@ -176,12 +178,12 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
       $class = $this->domainObjectsTable[$name]['Class'];
       $className = RootClassLoader::getClassName($class);
 
-      $code = '//<*' . $className . 'Base:start*> DO NOT CHANGE THIS COMMENT!' . PHP_EOL .
-            '/**' . PHP_EOL .
-            ' * Automatically generated BaseObject for ' . $className . '. !!DO NOT CHANGE THIS BASE-CLASS!!' . PHP_EOL .
-            ' * CHANGES WILL BE OVERWRITTEN WHEN UPDATING!!' . PHP_EOL .
-            ' * You can change class "' . $className . '" which extends this base-class.' . PHP_EOL .
-            ' */' . PHP_EOL;
+      $code = '//<*' . $className . 'Base:start*> DO NOT CHANGE THIS COMMENT!' . self::EOL .
+            '/**' . self::EOL .
+            ' * Automatically generated BaseObject for ' . $className . '. !!DO NOT CHANGE THIS BASE-CLASS!!' . self::EOL .
+            ' * CHANGES WILL BE OVERWRITTEN WHEN UPDATING!!' . self::EOL .
+            ' * You can change class "' . $className . '" which extends this base-class.' . self::EOL .
+            ' */' . self::EOL;
 
       if (isset($this->domainObjectsTable[$name]['Base'])) {
          $baseClass = $this->domainObjectsTable[$name]['Base']['Class'];
@@ -190,16 +192,127 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
       }
       $baseClassName = RootClassLoader::getClassName($baseClass);
 
-      $code .= 'use ' . $baseClass . ';' . PHP_EOL . PHP_EOL .
-            '/**' . PHP_EOL .
-            ' * This class provides the descriptive getter and setter methods for the "' . $class . '" domain object.' . PHP_EOL .
-            ' */' . PHP_EOL .
-            'abstract class ' . $className . 'Base extends ' . $baseClassName . ' {' . PHP_EOL . PHP_EOL .
-            '   public function __construct($objectName = null) {' . PHP_EOL .
-            '      parent::__construct(\'' . $name . '\');' . PHP_EOL .
-            '   }' . PHP_EOL .
-            PHP_EOL;
+      $code .= 'use ' . $baseClass . ';' . self::EOL . self::EOL .
+            '/**' . self::EOL .
+            ' * This class provides the descriptive getter and setter methods for the "' . $class . '" domain object.' . self::EOL .
+            ' */' . self::EOL .
+            'abstract class ' . $className . 'Base extends ' . $baseClassName . ' {' . self::EOL . self::EOL;
 
+      // generate properties code
+      foreach ($this->mappingTable[$name] as $key => $DUMMY) {
+         if ($key === 'ID' || $key === 'Table') {
+            continue;
+         }
+         $code .= $this->generatePropertiesCode($key);
+      }
+
+      // add special property ID
+      $code .= '   /**' . self::EOL .
+            '    * @var int The value for the object\'s ID.' . self::EOL .
+            '    */' . self::EOL .
+            '   protected $' . $name . 'ID;' . self::EOL . self::EOL;
+
+      // add special timestamp properties
+      $code .= '   /**' . self::EOL .
+            '    * @var string The creation timestamp.' . self::EOL .
+            '    */' . self::EOL .
+            '   protected $CreationTimestamp;' . self::EOL . self::EOL;
+      $code .= '   /**' . self::EOL .
+            '    * @var string The modification timestamp.' . self::EOL .
+            '    */' . self::EOL .
+            '   protected $ModificationTimestamp;' . self::EOL . self::EOL;
+
+      // add names of properties for further usage
+      $properties = [
+            '       \'' . $name . 'ID\'',
+            '       \'CreationTimestamp\'',
+            '       \'ModificationTimestamp\''
+      ];
+      foreach ($this->mappingTable[$name] as $key => $value) {
+         if ($key === 'ID' || $key === 'Table') {
+            continue;
+         }
+         $properties[] = '       \'' . $key . '\'';
+      }
+
+      $code .= '   protected $propertyNames = [' . self::EOL .
+            implode(',' . self::EOL, $properties) . self::EOL .
+            '    ];' . self::EOL . self::EOL;
+
+      // add constructor
+      $code .= '   public function __construct($objectName = null) {' . self::EOL .
+            '      parent::__construct(\'' . $name . '\');' . self::EOL .
+            '   }' . self::EOL . self::EOL;
+
+
+      // overwrite generic methods to comply w/ generic GORM concept
+      $code .= '   public function getProperty($name) {' . self::EOL .
+            '      if (in_array($name, $this->propertyNames)) {' . self::EOL .
+            '         return $this->$name;' . self::EOL .
+            '      }' . self::EOL . self::EOL .
+            '      return null;' . self::EOL .
+            '   }' . self::EOL . self::EOL .
+
+            '   public function setProperty($name, $value) {' . self::EOL .
+            '      if (in_array($name, $this->propertyNames)) {' . self::EOL .
+            '         $this->$name = $value;' . self::EOL .
+            '      }' . self::EOL .
+            '   }' . self::EOL . self::EOL .
+
+            '   public function getProperties() {' . self::EOL .
+            '      $properties = []; ' . self::EOL .
+            '      foreach ($this->propertyNames as $name) {' . self::EOL .
+            '         if ($this->$name !== null) {' . self::EOL .
+            '            $properties[$name] = $this->$name;' . self::EOL .
+            '         }' . self::EOL .
+            '      }' . self::EOL .
+            '      return $properties;' . self::EOL .
+            '   }' . self::EOL . self::EOL .
+
+            '   public function setProperties($properties = []) {' . self::EOL .
+            '      foreach ($properties as $key => $value) {' . self::EOL .
+            '         if (in_array($key, $this->propertyNames)) {' . self::EOL .
+            '            $this->$key = $value;' . self::EOL .
+            '         }' . self::EOL .
+            '      }' . self::EOL .
+            '   }' . self::EOL . self::EOL .
+
+            '   public function deleteProperty($name) {' . self::EOL .
+            '      if (in_array($name, $this->propertyNames)) {' . self::EOL .
+            '         $this->$name = null;' . self::EOL .
+            '      }' . self::EOL .
+            '   }' . self::EOL . self::EOL .
+
+            '   public function setObjectId($id) {' . self::EOL .
+            '      $this->' . $name . 'ID = $id;' . self::EOL .
+            '   }' . self::EOL . self::EOL .
+
+            '   public function getObjectId() {' . self::EOL .
+            '      return $this->' . $name . 'ID;' . self::EOL .
+            '   }' . self::EOL . self::EOL;
+
+      // overwrite sleep method to ensure proper serialization
+      $properties = [
+            '            \'objectName\'',
+            '            \'' . $name . 'ID\'',
+            '            \'CreationTimestamp\'',
+            '            \'ModificationTimestamp\''
+      ];
+      foreach ($this->mappingTable[$name] as $key => $DUMMY) {
+         if ($key === 'ID' || $key === 'Table') {
+            continue;
+         }
+         $properties[] = '            \'' . $key . '\'';
+      }
+      $properties[] = '            \'relatedObjects\'';
+
+      $code .= '   public function __sleep() {' . self::EOL .
+            '      return [' . self::EOL .
+            implode(',' . self::EOL, $properties) . self::EOL .
+            '      ];' . self::EOL .
+            '   }' . self::EOL . self::EOL;
+
+      // create getter/setter/delete for all properties
       foreach ($this->mappingTable[$name] as $key => $DUMMY) {
          if ($key === 'ID' || $key === 'Table') {
             continue;
@@ -209,11 +322,24 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
          $code .= $this->generateDeleteCode($key, $class);
       }
 
-      $code .= '}' . PHP_EOL .
-            PHP_EOL .
+      $code .= '}' . self::EOL . self::EOL .
             '// DO NOT CHANGE THIS COMMENT! <*' . $className . 'Base:end*>';
 
       return $code;
+   }
+
+   /**
+    * Generates the PHP code for a property with the given name.
+    *
+    * @param string $name The property's name.
+    *
+    * @return string The PHP code.
+    */
+   protected function generatePropertiesCode($name) {
+      return '   /**' . self::EOL .
+            '    * @var string The value for property "' . $name . '".' . self::EOL .
+            '    */' . self::EOL .
+            '   protected $' . $name . ';' . self::EOL . self::EOL;
    }
 
    /**
@@ -227,12 +353,12 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
     * @version 0.1,  15.01.2011<br />
     */
    protected function generateGetterCode($name) {
-      return '   /**' . PHP_EOL .
-      '    * @return string The value for property "' . $name . '".' . PHP_EOL .
-      '    */' . PHP_EOL .
-      '   public function get' . $name . '() {' . PHP_EOL .
-      '      return $this->getProperty(\'' . $name . '\');' . PHP_EOL .
-      '   }' . PHP_EOL . PHP_EOL;
+      return '   /**' . self::EOL .
+            '    * @return string The value for property "' . $name . '".' . self::EOL .
+            '    */' . self::EOL .
+            '   public function get' . $name . '() {' . self::EOL .
+            '      return $this->getProperty(\'' . $name . '\');' . self::EOL .
+            '   }' . self::EOL . self::EOL;
    }
 
    /**
@@ -247,15 +373,15 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
     * @version 0.1,  15.01.2011<br />
     */
    protected function generateSetterCode($name, $class) {
-      return '   /**' . PHP_EOL .
-      '    * @param string $value The value to set for property "' . $name . '".' . PHP_EOL .
-      '    *' . PHP_EOL .
-      '    * @return ' . RootClassLoader::getClassName($class) . ' The domain object for further usage.' . PHP_EOL .
-      '    */' . PHP_EOL .
-      '   public function set' . $name . '($value) {' . PHP_EOL .
-      '      $this->setProperty(\'' . $name . '\', $value);' . PHP_EOL . PHP_EOL .
-      '      return $this;' . PHP_EOL .
-      '   }' . PHP_EOL . PHP_EOL;
+      return '   /**' . self::EOL .
+            '    * @param string $value The value to set for property "' . $name . '".' . self::EOL .
+            '    *' . self::EOL .
+            '    * @return ' . RootClassLoader::getClassName($class) . ' The domain object for further usage.' . self::EOL .
+            '    */' . self::EOL .
+            '   public function set' . $name . '($value) {' . self::EOL .
+            '      $this->setProperty(\'' . $name . '\', $value);' . self::EOL . self::EOL .
+            '      return $this;' . self::EOL .
+            '   }' . self::EOL . self::EOL;
    }
 
    /**
@@ -271,13 +397,13 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
     * Version 0.1, 10.09.2011<br />
     */
    protected function generateDeleteCode($name, $class) {
-      return '   /**' . PHP_EOL .
-      '    * @return ' . RootClassLoader::getClassName($class) . ' The domain object for further usage.' . PHP_EOL .
-      '    */' . PHP_EOL .
-      '   public function delete' . $name . '() {' . PHP_EOL .
-      '      $this->deleteProperty(\'' . $name . '\');' . PHP_EOL . PHP_EOL .
-      '      return $this;' . PHP_EOL .
-      '   }' . PHP_EOL . PHP_EOL;
+      return '   /**' . self::EOL .
+            '    * @return ' . RootClassLoader::getClassName($class) . ' The domain object for further usage.' . self::EOL .
+            '    */' . self::EOL .
+            '   public function delete' . $name . '() {' . self::EOL .
+            '      $this->deleteProperty(\'' . $name . '\');' . self::EOL . self::EOL .
+            '      return $this;' . self::EOL .
+            '   }' . self::EOL . self::EOL;
    }
 
    /**
@@ -312,14 +438,14 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
       }
 
       // create base class file
-      $content = '<?php' . PHP_EOL . 'namespace ' . $namespace . ';'
-            . PHP_EOL . PHP_EOL . $this->generateBaseObjectCode($name) . PHP_EOL;
+      $content = '<?php' . self::EOL . 'namespace ' . $namespace . ';'
+            . self::EOL . self::EOL . $this->generateBaseObjectCode($name) . self::EOL;
       $baseFile = new File();
       $baseFile->create($baseFileName)->writeContent($content);
 
       // create class file
-      $content = '<?php' . PHP_EOL . 'namespace ' . $namespace . ';'
-            . PHP_EOL . PHP_EOL . $this->generateObjectCode($name) . PHP_EOL;
+      $content = '<?php' . self::EOL . 'namespace ' . $namespace . ';'
+            . self::EOL . self::EOL . $this->generateObjectCode($name) . self::EOL;
       $file = new File();
       $file->create($fileName)->writeContent($content);
 
@@ -340,28 +466,28 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
       $className = RootClassLoader::getClassName($class);
 
       return
-            '/**' . PHP_EOL .
-            ' * This class represents the "' . $class . '" domain object.' . PHP_EOL .
-            ' * <p/>' . PHP_EOL .
-            ' * Please use this class to add your own functionality.' . PHP_EOL .
-            ' */' . PHP_EOL .
-            'class ' . $className . ' extends ' . $className . 'Base {' . PHP_EOL .
-            PHP_EOL .
-            '   /**' . PHP_EOL .
-            '    * Call the parent\'s constructor because the object name needs to be set.' . PHP_EOL .
-            '    * <p/>' . PHP_EOL .
-            '    * To create an instance of this object, just call' . PHP_EOL .
-            '    * <code>' . PHP_EOL .
-            '    * use ' . $class . ';' . PHP_EOL .
-            '    * $object = new ' . $className . '();' . PHP_EOL .
-            '    * </code>' . PHP_EOL .
-            '    *' . PHP_EOL .
-            '    * @param string $objectName The internal object name of the domain object.' . PHP_EOL .
-            '    */' . PHP_EOL .
-            '   public function __construct($objectName = null) {' . PHP_EOL .
-            '      parent::__construct();' . PHP_EOL .
-            '   }' . PHP_EOL .
-            PHP_EOL .
+            '/**' . self::EOL .
+            ' * This class represents the "' . $class . '" domain object.' . self::EOL .
+            ' * <p/>' . self::EOL .
+            ' * Please use this class to add your own functionality.' . self::EOL .
+            ' */' . self::EOL .
+            'class ' . $className . ' extends ' . $className . 'Base {' . self::EOL .
+            self::EOL .
+            '   /**' . self::EOL .
+            '    * Call the parent\'s constructor because the object name needs to be set.' . self::EOL .
+            '    * <p/>' . self::EOL .
+            '    * To create an instance of this object, just call' . self::EOL .
+            '    * <code>' . self::EOL .
+            '    * use ' . $class . ';' . self::EOL .
+            '    * $object = new ' . $className . '();' . self::EOL .
+            '    * </code>' . self::EOL .
+            '    *' . self::EOL .
+            '    * @param string $objectName The internal object name of the domain object.' . self::EOL .
+            '    */' . self::EOL .
+            '   public function __construct($objectName = null) {' . self::EOL .
+            '      parent::__construct();' . self::EOL .
+            '   }' . self::EOL .
+            self::EOL .
             '}';
    }
 

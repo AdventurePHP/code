@@ -464,12 +464,12 @@ class GenericDomainObject implements GenericORMapperDataObject {
     */
    public function toString() {
 
-      $stringRep = (string) '[' . get_class($this) . ' ';
+      $stringRep = (string)'[' . get_class($this) . ' ';
 
-      $properties = array_merge(['ObjectName' => $this->getObjectName()], $this->properties);
+      $properties = array_merge(['ObjectName' => $this->getObjectName()], $this->getProperties());
 
       $propCount = count($properties);
-      $current = (int) 1;
+      $current = (int)1;
 
       foreach ($properties as $name => $value) {
 
