@@ -26,14 +26,99 @@ namespace APF\extensions\postbox\biz;
  * CHANGES WILL BE OVERWRITTEN WHEN UPDATING!!
  * You can change class "RecipientList" which extends this base-class.
  */
+use APF\extensions\postbox\biz\AbstractRecipientList;
 
 /**
  * This class provides the descriptive getter and setter methods for the "APF\extensions\postbox\biz\RecipientList" domain object.
  */
 abstract class RecipientListBase extends AbstractRecipientList {
 
+   /**
+    * @var string The value for property "Name".
+    */
+   protected $Name;
+
+   /**
+    * @var int The value for the object's ID.
+    */
+   protected $RecipientListID;
+
+   /**
+    * @var string The creation timestamp.
+    */
+   protected $CreationTimestamp;
+
+   /**
+    * @var string The modification timestamp.
+    */
+   protected $ModificationTimestamp;
+
+   protected $propertyNames = [
+         'RecipientListID',
+         'CreationTimestamp',
+         'ModificationTimestamp',
+         'Name'
+   ];
+
    public function __construct($objectName = null) {
       parent::__construct('RecipientList');
+   }
+
+   public function getProperty($name) {
+      if (in_array($name, $this->propertyNames)) {
+         return $this->$name;
+      }
+
+      return null;
+   }
+
+   public function setProperty($name, $value) {
+      if (in_array($name, $this->propertyNames)) {
+         $this->$name = $value;
+      }
+   }
+
+   public function getProperties() {
+      $properties = [];
+      foreach ($this->propertyNames as $name) {
+         if ($this->$name !== null) {
+            $properties[$name] = $this->$name;
+         }
+      }
+      return $properties;
+   }
+
+   public function setProperties($properties = []) {
+      foreach ($properties as $key => $value) {
+         if (in_array($key, $this->propertyNames)) {
+            $this->$key = $value;
+         }
+      }
+   }
+
+   public function deleteProperty($name) {
+      if (in_array($name, $this->propertyNames)) {
+         $this->$name = null;
+      }
+   }
+
+   public function setObjectId($id) {
+      $this->RecipientListID = $id;
+   }
+
+   public function getObjectId() {
+      return $this->RecipientListID;
+   }
+
+   public function __sleep() {
+      return [
+            'objectName',
+            'RecipientListID',
+            'CreationTimestamp',
+            'ModificationTimestamp',
+            'Name',
+            'relatedObjects'
+      ];
    }
 
    /**

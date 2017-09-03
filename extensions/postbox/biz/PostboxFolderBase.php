@@ -26,14 +26,99 @@ namespace APF\extensions\postbox\biz;
  * CHANGES WILL BE OVERWRITTEN WHEN UPDATING!!
  * You can change class "PostboxFolder" which extends this base-class.
  */
+use APF\extensions\postbox\biz\AbstractPostboxFolder;
 
 /**
  * This class provides the descriptive getter and setter methods for the "APF\extensions\postbox\biz\PostboxFolder" domain object.
  */
 abstract class PostboxFolderBase extends AbstractPostboxFolder {
 
+   /**
+    * @var string The value for property "Name".
+    */
+   protected $Name;
+
+   /**
+    * @var int The value for the object's ID.
+    */
+   protected $PostboxFolderID;
+
+   /**
+    * @var string The creation timestamp.
+    */
+   protected $CreationTimestamp;
+
+   /**
+    * @var string The modification timestamp.
+    */
+   protected $ModificationTimestamp;
+
+   protected $propertyNames = [
+         'PostboxFolderID',
+         'CreationTimestamp',
+         'ModificationTimestamp',
+         'Name'
+   ];
+
    public function __construct($objectName = null) {
       parent::__construct('PostboxFolder');
+   }
+
+   public function getProperty($name) {
+      if (in_array($name, $this->propertyNames)) {
+         return $this->$name;
+      }
+
+      return null;
+   }
+
+   public function setProperty($name, $value) {
+      if (in_array($name, $this->propertyNames)) {
+         $this->$name = $value;
+      }
+   }
+
+   public function getProperties() {
+      $properties = [];
+      foreach ($this->propertyNames as $name) {
+         if ($this->$name !== null) {
+            $properties[$name] = $this->$name;
+         }
+      }
+      return $properties;
+   }
+
+   public function setProperties($properties = []) {
+      foreach ($properties as $key => $value) {
+         if (in_array($key, $this->propertyNames)) {
+            $this->$key = $value;
+         }
+      }
+   }
+
+   public function deleteProperty($name) {
+      if (in_array($name, $this->propertyNames)) {
+         $this->$name = null;
+      }
+   }
+
+   public function setObjectId($id) {
+      $this->PostboxFolderID = $id;
+   }
+
+   public function getObjectId() {
+      return $this->PostboxFolderID;
+   }
+
+   public function __sleep() {
+      return [
+            'objectName',
+            'PostboxFolderID',
+            'CreationTimestamp',
+            'ModificationTimestamp',
+            'Name',
+            'relatedObjects'
+      ];
    }
 
    /**

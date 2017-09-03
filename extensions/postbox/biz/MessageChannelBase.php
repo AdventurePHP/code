@@ -26,14 +26,99 @@ namespace APF\extensions\postbox\biz;
  * CHANGES WILL BE OVERWRITTEN WHEN UPDATING!!
  * You can change class "MessageChannel" which extends this base-class.
  */
+use APF\extensions\postbox\biz\AbstractMessageChannel;
 
 /**
  * This class provides the descriptive getter and setter methods for the "APF\extensions\postbox\biz\MessageChannel" domain object.
  */
 abstract class MessageChannelBase extends AbstractMessageChannel {
 
+   /**
+    * @var string The value for property "Title".
+    */
+   protected $Title;
+
+   /**
+    * @var int The value for the object's ID.
+    */
+   protected $MessageChannelID;
+
+   /**
+    * @var string The creation timestamp.
+    */
+   protected $CreationTimestamp;
+
+   /**
+    * @var string The modification timestamp.
+    */
+   protected $ModificationTimestamp;
+
+   protected $propertyNames = [
+         'MessageChannelID',
+         'CreationTimestamp',
+         'ModificationTimestamp',
+         'Title'
+   ];
+
    public function __construct($objectName = null) {
       parent::__construct('MessageChannel');
+   }
+
+   public function getProperty($name) {
+      if (in_array($name, $this->propertyNames)) {
+         return $this->$name;
+      }
+
+      return null;
+   }
+
+   public function setProperty($name, $value) {
+      if (in_array($name, $this->propertyNames)) {
+         $this->$name = $value;
+      }
+   }
+
+   public function getProperties() {
+      $properties = [];
+      foreach ($this->propertyNames as $name) {
+         if ($this->$name !== null) {
+            $properties[$name] = $this->$name;
+         }
+      }
+      return $properties;
+   }
+
+   public function setProperties($properties = []) {
+      foreach ($properties as $key => $value) {
+         if (in_array($key, $this->propertyNames)) {
+            $this->$key = $value;
+         }
+      }
+   }
+
+   public function deleteProperty($name) {
+      if (in_array($name, $this->propertyNames)) {
+         $this->$name = null;
+      }
+   }
+
+   public function setObjectId($id) {
+      $this->MessageChannelID = $id;
+   }
+
+   public function getObjectId() {
+      return $this->MessageChannelID;
+   }
+
+   public function __sleep() {
+      return [
+            'objectName',
+            'MessageChannelID',
+            'CreationTimestamp',
+            'ModificationTimestamp',
+            'Title',
+            'relatedObjects'
+      ];
    }
 
    /**
