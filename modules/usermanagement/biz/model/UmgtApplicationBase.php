@@ -33,8 +33,92 @@ use APF\modules\genericormapper\data\GenericDomainObject;
  */
 abstract class UmgtApplicationBase extends GenericDomainObject {
 
+   /**
+    * @var string The value for property "DisplayName".
+    */
+   protected $DisplayName;
+
+   /**
+    * @var int The value for the object's ID.
+    */
+   protected $ApplicationID;
+
+   /**
+    * @var string The creation timestamp.
+    */
+   protected $CreationTimestamp;
+
+   /**
+    * @var string The modification timestamp.
+    */
+   protected $ModificationTimestamp;
+
+   protected $propertyNames = [
+         'ApplicationID',
+         'CreationTimestamp',
+         'ModificationTimestamp',
+         'DisplayName'
+   ];
+
    public function __construct($objectName = null) {
       parent::__construct('Application');
+   }
+
+   public function getProperty($name) {
+      if (in_array($name, $this->propertyNames)) {
+         return $this->$name;
+      }
+
+      return null;
+   }
+
+   public function setProperty($name, $value) {
+      if (in_array($name, $this->propertyNames)) {
+         $this->$name = $value;
+      }
+   }
+
+   public function getProperties() {
+      $properties = [];
+      foreach ($this->propertyNames as $name) {
+         if ($this->$name !== null) {
+            $properties[$name] = $this->$name;
+         }
+      }
+      return $properties;
+   }
+
+   public function setProperties($properties = []) {
+      foreach ($properties as $key => $value) {
+         if (in_array($key, $this->propertyNames)) {
+            $this->$key = $value;
+         }
+      }
+   }
+
+   public function deleteProperty($name) {
+      if (in_array($name, $this->propertyNames)) {
+         $this->$name = null;
+      }
+   }
+
+   public function setObjectId($id) {
+      $this->ApplicationID = $id;
+   }
+
+   public function getObjectId() {
+      return $this->ApplicationID;
+   }
+
+   public function __sleep() {
+      return [
+            'objectName',
+            'ApplicationID',
+            'CreationTimestamp',
+            'ModificationTimestamp',
+            'DisplayName',
+            'relatedObjects'
+      ];
    }
 
    /**

@@ -33,8 +33,120 @@ use APF\modules\genericormapper\data\GenericDomainObject;
  */
 abstract class UmgtVisibilityDefinitionBase extends GenericDomainObject {
 
+   /**
+    * @var string The value for property "AppObjectId".
+    */
+   protected $AppObjectId;
+
+   /**
+    * @var string The value for property "ReadPermission".
+    */
+   protected $ReadPermission;
+
+   /**
+    * @var string The value for property "WritePermission".
+    */
+   protected $WritePermission;
+
+   /**
+    * @var string The value for property "LinkPermission".
+    */
+   protected $LinkPermission;
+
+   /**
+    * @var string The value for property "DeletePermission".
+    */
+   protected $DeletePermission;
+
+   /**
+    * @var int The value for the object's ID.
+    */
+   protected $AppProxyID;
+
+   /**
+    * @var string The creation timestamp.
+    */
+   protected $CreationTimestamp;
+
+   /**
+    * @var string The modification timestamp.
+    */
+   protected $ModificationTimestamp;
+
+   protected $propertyNames = [
+         'AppProxyID',
+         'CreationTimestamp',
+         'ModificationTimestamp',
+         'AppObjectId',
+         'ReadPermission',
+         'WritePermission',
+         'LinkPermission',
+         'DeletePermission'
+   ];
+
    public function __construct($objectName = null) {
       parent::__construct('AppProxy');
+   }
+
+   public function getProperty($name) {
+      if (in_array($name, $this->propertyNames)) {
+         return $this->$name;
+      }
+
+      return null;
+   }
+
+   public function setProperty($name, $value) {
+      if (in_array($name, $this->propertyNames)) {
+         $this->$name = $value;
+      }
+   }
+
+   public function getProperties() {
+      $properties = [];
+      foreach ($this->propertyNames as $name) {
+         if ($this->$name !== null) {
+            $properties[$name] = $this->$name;
+         }
+      }
+      return $properties;
+   }
+
+   public function setProperties($properties = []) {
+      foreach ($properties as $key => $value) {
+         if (in_array($key, $this->propertyNames)) {
+            $this->$key = $value;
+         }
+      }
+   }
+
+   public function deleteProperty($name) {
+      if (in_array($name, $this->propertyNames)) {
+         $this->$name = null;
+      }
+   }
+
+   public function setObjectId($id) {
+      $this->AppProxyID = $id;
+   }
+
+   public function getObjectId() {
+      return $this->AppProxyID;
+   }
+
+   public function __sleep() {
+      return [
+            'objectName',
+            'AppProxyID',
+            'CreationTimestamp',
+            'ModificationTimestamp',
+            'AppObjectId',
+            'ReadPermission',
+            'WritePermission',
+            'LinkPermission',
+            'DeletePermission',
+            'relatedObjects'
+      ];
    }
 
    /**

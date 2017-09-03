@@ -33,8 +33,92 @@ use APF\modules\genericormapper\data\GenericDomainObject;
  */
 abstract class UmgtVisibilityDefinitionTypeBase extends GenericDomainObject {
 
+   /**
+    * @var string The value for property "AppObjectName".
+    */
+   protected $AppObjectName;
+
+   /**
+    * @var int The value for the object's ID.
+    */
+   protected $AppProxyTypeID;
+
+   /**
+    * @var string The creation timestamp.
+    */
+   protected $CreationTimestamp;
+
+   /**
+    * @var string The modification timestamp.
+    */
+   protected $ModificationTimestamp;
+
+   protected $propertyNames = [
+         'AppProxyTypeID',
+         'CreationTimestamp',
+         'ModificationTimestamp',
+         'AppObjectName'
+   ];
+
    public function __construct($objectName = null) {
       parent::__construct('AppProxyType');
+   }
+
+   public function getProperty($name) {
+      if (in_array($name, $this->propertyNames)) {
+         return $this->$name;
+      }
+
+      return null;
+   }
+
+   public function setProperty($name, $value) {
+      if (in_array($name, $this->propertyNames)) {
+         $this->$name = $value;
+      }
+   }
+
+   public function getProperties() {
+      $properties = [];
+      foreach ($this->propertyNames as $name) {
+         if ($this->$name !== null) {
+            $properties[$name] = $this->$name;
+         }
+      }
+      return $properties;
+   }
+
+   public function setProperties($properties = []) {
+      foreach ($properties as $key => $value) {
+         if (in_array($key, $this->propertyNames)) {
+            $this->$key = $value;
+         }
+      }
+   }
+
+   public function deleteProperty($name) {
+      if (in_array($name, $this->propertyNames)) {
+         $this->$name = null;
+      }
+   }
+
+   public function setObjectId($id) {
+      $this->AppProxyTypeID = $id;
+   }
+
+   public function getObjectId() {
+      return $this->AppProxyTypeID;
+   }
+
+   public function __sleep() {
+      return [
+            'objectName',
+            'AppProxyTypeID',
+            'CreationTimestamp',
+            'ModificationTimestamp',
+            'AppObjectName',
+            'relatedObjects'
+      ];
    }
 
    /**

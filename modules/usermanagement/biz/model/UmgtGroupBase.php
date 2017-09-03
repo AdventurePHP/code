@@ -33,8 +33,99 @@ use APF\modules\genericormapper\data\GenericDomainObject;
  */
 abstract class UmgtGroupBase extends GenericDomainObject {
 
+   /**
+    * @var string The value for property "DisplayName".
+    */
+   protected $DisplayName;
+
+   /**
+    * @var string The value for property "Description".
+    */
+   protected $Description;
+
+   /**
+    * @var int The value for the object's ID.
+    */
+   protected $GroupID;
+
+   /**
+    * @var string The creation timestamp.
+    */
+   protected $CreationTimestamp;
+
+   /**
+    * @var string The modification timestamp.
+    */
+   protected $ModificationTimestamp;
+
+   protected $propertyNames = [
+         'GroupID',
+         'CreationTimestamp',
+         'ModificationTimestamp',
+         'DisplayName',
+         'Description'
+   ];
+
    public function __construct($objectName = null) {
       parent::__construct('Group');
+   }
+
+   public function getProperty($name) {
+      if (in_array($name, $this->propertyNames)) {
+         return $this->$name;
+      }
+
+      return null;
+   }
+
+   public function setProperty($name, $value) {
+      if (in_array($name, $this->propertyNames)) {
+         $this->$name = $value;
+      }
+   }
+
+   public function getProperties() {
+      $properties = [];
+      foreach ($this->propertyNames as $name) {
+         if ($this->$name !== null) {
+            $properties[$name] = $this->$name;
+         }
+      }
+      return $properties;
+   }
+
+   public function setProperties($properties = []) {
+      foreach ($properties as $key => $value) {
+         if (in_array($key, $this->propertyNames)) {
+            $this->$key = $value;
+         }
+      }
+   }
+
+   public function deleteProperty($name) {
+      if (in_array($name, $this->propertyNames)) {
+         $this->$name = null;
+      }
+   }
+
+   public function setObjectId($id) {
+      $this->GroupID = $id;
+   }
+
+   public function getObjectId() {
+      return $this->GroupID;
+   }
+
+   public function __sleep() {
+      return [
+            'objectName',
+            'GroupID',
+            'CreationTimestamp',
+            'ModificationTimestamp',
+            'DisplayName',
+            'Description',
+            'relatedObjects'
+      ];
    }
 
    /**

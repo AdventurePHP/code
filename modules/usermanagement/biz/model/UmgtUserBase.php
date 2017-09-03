@@ -33,8 +33,190 @@ use APF\modules\genericormapper\data\GenericDomainObject;
  */
 abstract class UmgtUserBase extends GenericDomainObject {
 
+   /**
+    * @var string The value for property "DisplayName".
+    */
+   protected $DisplayName;
+
+   /**
+    * @var string The value for property "FirstName".
+    */
+   protected $FirstName;
+
+   /**
+    * @var string The value for property "LastName".
+    */
+   protected $LastName;
+
+   /**
+    * @var string The value for property "StreetName".
+    */
+   protected $StreetName;
+
+   /**
+    * @var string The value for property "StreetNumber".
+    */
+   protected $StreetNumber;
+
+   /**
+    * @var string The value for property "ZIPCode".
+    */
+   protected $ZIPCode;
+
+   /**
+    * @var string The value for property "City".
+    */
+   protected $City;
+
+   /**
+    * @var string The value for property "EMail".
+    */
+   protected $EMail;
+
+   /**
+    * @var string The value for property "Phone".
+    */
+   protected $Phone;
+
+   /**
+    * @var string The value for property "Mobile".
+    */
+   protected $Mobile;
+
+   /**
+    * @var string The value for property "Username".
+    */
+   protected $Username;
+
+   /**
+    * @var string The value for property "Password".
+    */
+   protected $Password;
+
+   /**
+    * @var string The value for property "DynamicSalt".
+    */
+   protected $DynamicSalt;
+
+   /**
+    * @var string The value for property "DateOfBirth".
+    */
+   protected $DateOfBirth;
+
+   /**
+    * @var string The value for property "ForgotPasswordHash".
+    */
+   protected $ForgotPasswordHash;
+
+   /**
+    * @var int The value for the object's ID.
+    */
+   protected $UserID;
+
+   /**
+    * @var string The creation timestamp.
+    */
+   protected $CreationTimestamp;
+
+   /**
+    * @var string The modification timestamp.
+    */
+   protected $ModificationTimestamp;
+
+   protected $propertyNames = [
+         'UserID',
+         'CreationTimestamp',
+         'ModificationTimestamp',
+         'DisplayName',
+         'FirstName',
+         'LastName',
+         'StreetName',
+         'StreetNumber',
+         'ZIPCode',
+         'City',
+         'EMail',
+         'Phone',
+         'Mobile',
+         'Username',
+         'Password',
+         'DynamicSalt',
+         'DateOfBirth',
+         'ForgotPasswordHash'
+   ];
+
    public function __construct($objectName = null) {
       parent::__construct('User');
+   }
+
+   public function getProperty($name) {
+      if (in_array($name, $this->propertyNames)) {
+         return $this->$name;
+      }
+
+      return null;
+   }
+
+   public function setProperty($name, $value) {
+      if (in_array($name, $this->propertyNames)) {
+         $this->$name = $value;
+      }
+   }
+
+   public function getProperties() {
+      $properties = [];
+      foreach ($this->propertyNames as $name) {
+         if ($this->$name !== null) {
+            $properties[$name] = $this->$name;
+         }
+      }
+      return $properties;
+   }
+
+   public function setProperties($properties = []) {
+      foreach ($properties as $key => $value) {
+         if (in_array($key, $this->propertyNames)) {
+            $this->$key = $value;
+         }
+      }
+   }
+
+   public function deleteProperty($name) {
+      if (in_array($name, $this->propertyNames)) {
+         $this->$name = null;
+      }
+   }
+
+   public function setObjectId($id) {
+      $this->UserID = $id;
+   }
+
+   public function getObjectId() {
+      return $this->UserID;
+   }
+
+   public function __sleep() {
+      return [
+            'objectName',
+            'UserID',
+            'CreationTimestamp',
+            'ModificationTimestamp',
+            'DisplayName',
+            'FirstName',
+            'LastName',
+            'StreetName',
+            'StreetNumber',
+            'ZIPCode',
+            'City',
+            'EMail',
+            'Phone',
+            'Mobile',
+            'Username',
+            'Password',
+            'DynamicSalt',
+            'DateOfBirth',
+            'ForgotPasswordHash',
+            'relatedObjects'
+      ];
    }
 
    /**

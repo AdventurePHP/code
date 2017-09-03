@@ -33,8 +33,106 @@ use APF\modules\genericormapper\data\GenericDomainObject;
  */
 abstract class UmgtPermissionBase extends GenericDomainObject {
 
+   /**
+    * @var string The value for property "DisplayName".
+    */
+   protected $DisplayName;
+
+   /**
+    * @var string The value for property "Name".
+    */
+   protected $Name;
+
+   /**
+    * @var string The value for property "Value".
+    */
+   protected $Value;
+
+   /**
+    * @var int The value for the object's ID.
+    */
+   protected $PermissionID;
+
+   /**
+    * @var string The creation timestamp.
+    */
+   protected $CreationTimestamp;
+
+   /**
+    * @var string The modification timestamp.
+    */
+   protected $ModificationTimestamp;
+
+   protected $propertyNames = [
+         'PermissionID',
+         'CreationTimestamp',
+         'ModificationTimestamp',
+         'DisplayName',
+         'Name',
+         'Value'
+   ];
+
    public function __construct($objectName = null) {
       parent::__construct('Permission');
+   }
+
+   public function getProperty($name) {
+      if (in_array($name, $this->propertyNames)) {
+         return $this->$name;
+      }
+
+      return null;
+   }
+
+   public function setProperty($name, $value) {
+      if (in_array($name, $this->propertyNames)) {
+         $this->$name = $value;
+      }
+   }
+
+   public function getProperties() {
+      $properties = [];
+      foreach ($this->propertyNames as $name) {
+         if ($this->$name !== null) {
+            $properties[$name] = $this->$name;
+         }
+      }
+      return $properties;
+   }
+
+   public function setProperties($properties = []) {
+      foreach ($properties as $key => $value) {
+         if (in_array($key, $this->propertyNames)) {
+            $this->$key = $value;
+         }
+      }
+   }
+
+   public function deleteProperty($name) {
+      if (in_array($name, $this->propertyNames)) {
+         $this->$name = null;
+      }
+   }
+
+   public function setObjectId($id) {
+      $this->PermissionID = $id;
+   }
+
+   public function getObjectId() {
+      return $this->PermissionID;
+   }
+
+   public function __sleep() {
+      return [
+            'objectName',
+            'PermissionID',
+            'CreationTimestamp',
+            'ModificationTimestamp',
+            'DisplayName',
+            'Name',
+            'Value',
+            'relatedObjects'
+      ];
    }
 
    /**
