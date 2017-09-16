@@ -156,7 +156,7 @@ class HtmlFormTag extends Document implements HtmlForm {
          // Only include real form elements to avoid unnecessary
          // implementation overhead for elements that just want to
          // be used within forms but do not act as form elements!
-         // See http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=1387
+         // See https://adventure-php-framework.org/forum/viewtopic.php?f=6&t=1387
          // for details.
          if ($child instanceof FormControl) {
             if ($child->isSent() === true) {
@@ -176,7 +176,7 @@ class HtmlFormTag extends Document implements HtmlForm {
          // Only include real form elements to avoid unnecessary
          // implementation overhead for elements that just want to
          // be used within forms but do not act as form elements!
-         // See http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=1387
+         // See https://adventure-php-framework.org/forum/viewtopic.php?f=6&t=1387
          // for details.
          if ($child instanceof FormControl) {
             // ID#318: validate all(!) form controls to avoid omitting all subsequent fields in case of an invalid one.
@@ -193,7 +193,7 @@ class HtmlFormTag extends Document implements HtmlForm {
          // Only include real form elements to avoid unnecessary
          // implementation overhead for elements that just want to
          // be used within forms but do not act as form elements!
-         // See http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=1387
+         // See https://adventure-php-framework.org/forum/viewtopic.php?f=6&t=1387
          // for details.
          if ($child instanceof FormControl) {
             $child->reset();

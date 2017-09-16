@@ -1,3 +1,3 @@
 The documentation of this extension can be found on the 
-http://wiki.adventure-php-framework.org/ForwardMessage-Erweiterung
+https://adventure-php-framework.org/wiki/ForwardMessage-Erweiterung
 wiki page.

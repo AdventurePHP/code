@@ -588,7 +588,7 @@ class UmgtManager extends APFObject {
       $orm = $this->getORMapper();
 
       // check, whether user is an existing user, and yes, resolve the
-      // password conflict, described under http://forum.adventure-php-framework.org/viewtopic.php?f=8&t=202
+      // password conflict, described under https://adventure-php-framework.org/forum/viewtopic.php?f=8&t=202
       $userId = $user->getObjectId();
       $password = $user->getPassword();
       if ($userId !== null && $password !== null) {
@@ -1660,7 +1660,7 @@ class UmgtManager extends APFObject {
       $criterion->addRelationIndicator('AppProxy2AppProxyType', $type);
 
       // Allow best balance between creating new visibility definitions for proxy id, proxy type, and permission setup.
-      // For details on the discussion, please refer to http://forum.adventure-php-framework.org/viewtopic.php?f=1&t=5387.
+      // For details on the discussion, please refer to https://adventure-php-framework.org/forum/viewtopic.php?f=1&t=5387.
       $criterion->addPropertyIndicator('ReadPermission', $definition->getReadPermission());
       $criterion->addPropertyIndicator('WritePermission', $definition->getWritePermission());
       $criterion->addPropertyIndicator('LinkPermission', $definition->getLinkPermission());

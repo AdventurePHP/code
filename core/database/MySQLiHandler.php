@@ -46,7 +46,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       $this->dbPort = '3306';
 
       // Allow database connection verification with full exception handling support (see discussion under
-      // http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=614&p=20409#p20409)
+      // https://adventure-php-framework.org/forum/viewtopic.php?f=6&t=614&p=20409#p20409)
       if (!extension_loaded('mysqli')) {
          throw new DatabaseHandlerException('PHP extension "mysqli" not loaded! Please verify your PHP configuration.');
       }
@@ -553,7 +553,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       // initiate connection
       $this->dbConn = mysqli_init();
 
-      // as discussed under http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=614
+      // as discussed under https://adventure-php-framework.org/forum/viewtopic.php?f=6&t=614
       // the mysqli extension triggers an error instead of throwing an exception. thus we have
       // to add an ugly "@" sign to convert this error into an exception. :(
       @$this->dbConn->real_connect(

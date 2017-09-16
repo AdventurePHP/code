@@ -73,7 +73,7 @@
     <page id="apf-community">
         <pageDec type="hidden"/>
         <pageDec type="externalURL">
-            <externalURL>http://forum.adventure-php-framework.org</externalURL>
+            <externalURL>https://adventure-php-framework.org/forum</externalURL>
         </pageDec>
     </page>
 

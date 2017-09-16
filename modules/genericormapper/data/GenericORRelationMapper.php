@@ -23,7 +23,7 @@ namespace APF\modules\genericormapper\data;
 /**
  * Implements the or data mapper, that handles objects and their relations. Please create
  * this component using the <em>GenericORRelationMapperFactory</em> or the DIServiceManager
- * as described under <a href="http://wiki.adventure-php-framework.org/Erzeugen_des_GORM_mit_dem_DIServiceManager">wiki.adventure-php-framework.org</a>.
+ * as described under <a href="https://adventure-php-framework.org/wiki/Erzeugen_des_GORM_mit_dem_DIServiceManager">wiki.adventure-php-framework.org</a>.
  *
  * @author Christian Achatz
  * @version

@@ -6,9 +6,9 @@
   "version": "3.4",
   "type": "library",
   "support": {
-    "issues": "http://tracker.adventure-php-framework.org",
-    "forum": "http://forum.adventure-php-framework.org",
-    "wiki": "http://wiki.adventure-php-framework.org",
+    "issues": "https://adventure-php-framework.org/tracker",
+    "forum": "https://adventure-php-framework.org/forum",
+    "wiki": "https://adventure-php-framework.org/wiki",
     "docs": "http://adventure-php-framework.org/en"
   },
   "require": {

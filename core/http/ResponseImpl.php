@@ -41,8 +41,8 @@ use Exception;
  * false                     | false             | -
  * </pre>
  *
- * @see http://forum.adventure-php-framework.org/viewtopic.php?p=243#p243
- * @see http://tracker.adventure-php-framework.org/view.php?id=72
+ * @see https://adventure-php-framework.org/forum/viewtopic.php?p=243#p243
+ * @see https://adventure-php-framework.org/tracker/view.php?id=72
  *
  * @author Christian Achatz
  * @version

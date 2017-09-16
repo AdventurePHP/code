@@ -288,7 +288,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
     * Tests whether the parser ignores an HTML comment such as <em>&lt;!-- foo:bar --&gt;</em> going
     * through the document.
     * <p/>
-    * See http://tracker.adventure-php-framework.org/view.php?id=238 for details.
+    * See https://adventure-php-framework.org/tracker/view.php?id=238 for details.
     */
    public function testHtmlCommentWithTagNotation() {
 
@@ -361,7 +361,7 @@ This is text after a place holder...
    /**
     * Tests whether the parser ignores "normal" HTML code with colons (":") in tag attributes.
     * <p/>
-    * See http://tracker.adventure-php-framework.org/view.php?id=266 for details.
+    * See https://adventure-php-framework.org/tracker/view.php?id=266 for details.
     */
    public function testColonsInTagAttributes() {
 

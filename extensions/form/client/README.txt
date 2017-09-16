@@ -1,4 +1,4 @@
-Die formatierte Version kann unter http://wiki.adventure-php-framework.org/Clientvalidatoren betrachtet werden.
+Die formatierte Version kann unter https://adventure-php-framework.org/wiki/Clientvalidatoren betrachtet werden.
 
 = Clientvalidatoren =
 

@@ -1,2 +1,2 @@
 The documentation of the ArrayPager extension can be 
-found on http://wiki.adventure-php-framework.org/ArrayPager-Erweiterung.
+found on https://adventure-php-framework.org/wiki/ArrayPager-Erweiterung.

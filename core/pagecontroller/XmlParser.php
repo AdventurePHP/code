@@ -147,7 +147,7 @@ final class XmlParser {
     * Version 0.1, 22.12.2006<br />
     * Version 0.2, 30.12.2006 (Enhanced the documentation)<br />
     * Version 0.3, 14.01.2007 (Improved the error message)<br />
-    * Version 0.4, 14.11.2007 (Removed $hasFound; see http://forum.adventure-php-framework.org/viewtopic.php?t=7)<br />
+    * Version 0.4, 14.11.2007 (Removed $hasFound; see https://adventure-php-framework.org/forum/viewtopic.php?t=7)<br />
     */
    public static function getAttributesFromString($attributesString) {
 

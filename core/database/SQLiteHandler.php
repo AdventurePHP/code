@@ -49,7 +49,7 @@ class SQLiteHandler extends AbstractDatabaseHandler {
       $this->dbLogTarget = 'sqlite';
 
       // Allow database connection verification with full exception handling support (see discussion under
-      // http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=614&p=20409#p20409)
+      // https://adventure-php-framework.org/forum/viewtopic.php?f=6&t=614&p=20409#p20409)
       if (!extension_loaded('sqlite3')) {
          throw new DatabaseHandlerException('PHP extension "sqlite3" not loaded! Please verify your PHP configuration.');
       }

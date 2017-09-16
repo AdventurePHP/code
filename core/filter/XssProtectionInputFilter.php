@@ -24,7 +24,7 @@ use APF\core\registry\Registry;
 
 /**
  * Filters the request to avoid XSS vulnerability. Implementation based on the original
- * wiki entry http://wiki.adventure-php-framework.org/XSS_Schutz_via_InputFilter.
+ * wiki entry https://adventure-php-framework.org/wiki/XSS_Schutz_via_InputFilter.
  * <p/>
  * ATTENTION:
  * Please ensure that your application is not compromised from a functional

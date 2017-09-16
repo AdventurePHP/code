@@ -377,7 +377,7 @@ class GenericORMapper extends BaseMapper {
 
                // Check, whether the desired property is a BIT field. If yes, prepend with
                // the binary marker! Details can be read about under
-               // http://forum.adventure-php-framework.org/viewtopic.php?f=8&t=234.
+               // https://adventure-php-framework.org/forum/viewtopic.php?f=8&t=234.
                if (stripos($this->mappingTable[$objectName][$propertyName], self::$BIT_FIELD_IDENTIFIER) === false) {
 
                   // check, whether the field is a null value and translate PHP null values into
@@ -421,7 +421,7 @@ class GenericORMapper extends BaseMapper {
 
                // Check, whether the desired property is a BIT field. If yes, prepend with
                // the binary marker! Details can be read about under
-               // http://forum.adventure-php-framework.org/viewtopic.php?f=8&t=234.
+               // https://adventure-php-framework.org/forum/viewtopic.php?f=8&t=234.
                if (stripos($this->mappingTable[$objectName][$propertyName], self::$BIT_FIELD_IDENTIFIER) === false) {
 
                   // check, whether the field is a null value and translate PHP null values into

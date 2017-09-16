@@ -43,7 +43,7 @@ class FallbackImportTemplateTag extends ImportTemplateTag {
     *
     * @author jw-lighting, Christian Achatz
     * @version
-    * Version 0.1, 16.07.2010, Christian Achatz (See more here: http://forum.adventure-php-framework.org/viewtopic.php?f=3&t=359#p3075)<br />
+    * Version 0.1, 16.07.2010, Christian Achatz (See more here: https://adventure-php-framework.org/forum/viewtopic.php?f=3&t=359#p3075)<br />
     * Version 0.2, 28.08.2010, jw-lighting (Added functionality and improved the code of v0.1 to this class)<br />
     * Version 0.3, 02.09.2010, jw-lighting (Added short-scripting support with the fallback attribute)<br />
     * Version 0.4, 03.09.2010, jw-lighting (Removed Bug: empty() can not use function return values, used temporary variables instead) <br />

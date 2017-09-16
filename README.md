@@ -42,7 +42,7 @@ The following list of tutorials is recommended to try out first:
 Forum
 =====
 
-The mixed-language support forum can be found under <a href="http://forum.adventure-php-framework.org" target="_blank">forum.adventure-php-framework.org</a>.
+The mixed-language support forum can be found under <a href="https://adventure-php-framework.org/forum" target="_blank">forum.adventure-php-framework.org</a>.
 You can both create threads in English as well as in German language.
 
 
@@ -50,14 +50,14 @@ Wiki
 ====
 
 Further documentation, several HOWTOs and FAQs can be found on the
-<a href="http://wiki.adventure-php-framework.org/de/" title="APF wiki (German)">wiki pages</a> (English and German).
+<a href="https://adventure-php-framework.org/wiki/" title="APF wiki">wiki pages</a> (English and German).
 
 
 Issue Management Tool
 =====================
 
 For questions on the roadmap or to file a feature request or defect, please use the
-<a href="http://tracker.adventure-php-framework.org" target="_blank">Issue Management Tool</a> (English and German).
+<a href="https://adventure-php-framework.org/tracker" target="_blank">Issue Management Tool</a> (English and German).
 
 
 Source Code Management
@@ -71,4 +71,4 @@ Get in touch!
 =============
 
 To get the latest news follow us on <a href="http://twitter.com/AdventurePHP" target="_blank">Twitter</a> or join
-the <a href="http://forum.adventure-php-framework.org/viewtopic.php?f=7&t=1324" target="_blank">APF Developer Chat</a>.
+the <a href="https://adventure-php-framework.org/forum/viewtopic.php?f=7&t=1324" target="_blank">APF Developer Chat</a>.
