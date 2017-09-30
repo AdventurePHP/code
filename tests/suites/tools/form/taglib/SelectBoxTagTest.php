@@ -432,38 +432,6 @@ class SelectBoxTagTest extends \PHPUnit_Framework_TestCase {
    }
 
    /**
-    * ID#324: test all option removal
-    */
-   public function testRemoveAllOptions() {
-
-      // test removal of all static (single) options
-      $select = $this->getSelectBoxTagForRemovalTest();
-
-      $select->removeAllOptions();
-
-      $html = $select->transform();
-      $this->assertEquals('<select name="foo"></select>', str_replace("\n", '', $html));
-      $this->assertNotContains('value="1"', $html);
-      $this->assertNotContains('value="2"', $html);
-      $this->assertNotContains('value="3"', $html);
-      $this->assertNotContains('value="4"', $html);
-
-      // test removal of all dynamic (single) options
-      $select = $this->getDynamicSelectBoxForRemovalTest();
-
-      $select->removeAllOptions();
-
-      $html = $select->transform();
-
-      $this->assertEquals('<select name="foo"></select>', str_replace("\n", '', $html));
-      $this->assertNotContains('value="1"', $html);
-      $this->assertNotContains('value="3"', $html);
-      $this->assertNotContains('value="2"', $html);
-      $this->assertNotContains('value="4"', $html);
-
-   }
-
-   /**
     * ID#324: test group option removal
     */
    public function testRemoveGroupOptions() {
@@ -508,6 +476,55 @@ class SelectBoxTagTest extends \PHPUnit_Framework_TestCase {
       $this->assertContains('value="4"', $html);
       $this->assertNotContains('value="5"', $html);
       $this->assertContains('value="6"', $html);
+
+   }
+
+   /**
+    * ID#324: test all option removal
+    */
+   public function testRemoveAllOptions() {
+
+      // test removal of all static (single) options
+      $select = $this->getSelectBoxTagForRemovalTest();
+
+      $select->removeAllOptions();
+
+      $html = $select->transform();
+      $this->assertEquals('<select name="foo"></select>', str_replace("\n", '', $html));
+      $this->assertNotContains('value="1"', $html);
+      $this->assertNotContains('value="2"', $html);
+      $this->assertNotContains('value="3"', $html);
+      $this->assertNotContains('value="4"', $html);
+
+      // test removal of all dynamic (single) options
+      $select = $this->getDynamicSelectBoxForRemovalTest();
+
+      $select->removeAllOptions();
+
+      $html = $select->transform();
+
+      $this->assertEquals('<select name="foo"></select>', str_replace("\n", '', $html));
+      $this->assertNotContains('value="1"', $html);
+      $this->assertNotContains('value="3"', $html);
+      $this->assertNotContains('value="2"', $html);
+      $this->assertNotContains('value="4"', $html);
+
+      // test remove of all mixed group options
+      $select = $this->getSelectBoxTagWithGroupForRemovalTest();
+
+      $select->addOption('Five', '5');
+      $select->addGroupOption('Further', 'Six', '6');
+
+      $select->removeAllOptions();
+
+      $html = $select->transform();
+      $this->assertEquals('<select name="foo"></select>', str_replace("\n", '', $html));
+      $this->assertNotContains('value="1"', $html);
+      $this->assertNotContains('value="3"', $html);
+      $this->assertNotContains('value="2"', $html);
+      $this->assertNotContains('value="4"', $html);
+      $this->assertNotContains('value="5"', $html);
+      $this->assertNotContains('value="6"', $html);
 
    }
 

@@ -533,14 +533,14 @@ class SelectBoxTag extends AbstractFormControl {
    }
 
    /**
-    * Removes all options and group options from the current select box instance.
+    * Removes all options and group options from the current select box instance (including option group(s)).
     *
     * @return $this This instance for further usage.
     */
    public function removeAllOptions() {
 
       foreach ($this->children as $child) {
-         if ($child instanceof SelectBoxOptionTag) {
+         if ($child instanceof SelectBoxOptionTag || $child instanceof SelectBoxGroupTag) {
             $id = $child->getObjectId();
             unset($this->children[$id]);
             $this->content = str_replace('<' . $id . ' />', '', $this->content);
