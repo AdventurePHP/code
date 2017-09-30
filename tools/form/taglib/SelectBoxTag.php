@@ -507,4 +507,47 @@ class SelectBoxTag extends AbstractFormControl {
       }
    }
 
+   /**
+    * Removes a single option or group option by a given display name or value.
+    *
+    * @param string $displayNameOrValue The display name or the value of the option to pre-select.
+    * @return $this This instance for further usage.
+    */
+   public function removeOption($displayNameOrValue) {
+
+      foreach ($this->children as $child) {
+         if ($child instanceof SelectBoxOptionTag) {
+            if ($child->getAttribute('value') == $displayNameOrValue
+                  || $child->getContent() == $displayNameOrValue
+            ) {
+               $id = $child->getObjectId();
+               unset($this->children[$id]);
+               $this->content = str_replace('<' . $id . ' />', '', $this->content);
+            }
+         } elseif ($child instanceof SelectBoxGroupTag) {
+            $child->removeOption($displayNameOrValue);
+         }
+      }
+
+      return $this;
+   }
+
+   /**
+    * Removes all options and group options from the current select box instance.
+    *
+    * @return $this This instance for further usage.
+    */
+   public function removeAllOptions() {
+
+      foreach ($this->children as $child) {
+         if ($child instanceof SelectBoxOptionTag) {
+            $id = $child->getObjectId();
+            unset($this->children[$id]);
+            $this->content = str_replace('<' . $id . ' />', '', $this->content);
+         }
+      }
+
+      return $this;
+   }
+
 }

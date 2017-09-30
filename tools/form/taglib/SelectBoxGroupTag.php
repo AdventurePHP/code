@@ -117,6 +117,7 @@ class SelectBoxGroupTag extends AbstractFormControl {
     */
    public function &getSelectedOption() {
 
+      /* @var $selectedOption SelectBoxOptionTag */
       $selectedOption = null;
 
       foreach ($this->children as &$child) {
@@ -173,6 +174,29 @@ class SelectBoxGroupTag extends AbstractFormControl {
       foreach ($this->children as &$child) {
          $child->deleteAttribute('selected');
       }
+   }
+
+   /**
+    * Removes a single option or group option by a given display name or value.
+    *
+    * @param string $displayNameOrValue The display name or the value of the option to pre-select.
+    * @return $this This instance for further usage
+    */
+   public function removeOption($displayNameOrValue) {
+
+      foreach ($this->children as $child) {
+         if ($child instanceof SelectBoxOptionTag) {
+            if ($child->getAttribute('value') == $displayNameOrValue
+                  || $child->getContent() == $displayNameOrValue
+            ) {
+               $id = $child->getObjectId();
+               unset($this->children[$id]);
+               $this->content = str_replace('<' . $id . ' />', '', $this->content);
+            }
+         }
+      }
+
+      return $this;
    }
 
 }

@@ -383,4 +383,196 @@ class SelectBoxTagTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * ID#324: test single option removal
+    */
+   public function testRemoveOption() {
+
+      // test removal of static (single) options
+      $select = $this->getSelectBoxTagForRemovalTest();
+
+      $select->removeOption('2'); // selection by value
+      $select->removeOption('Four'); // selection by display name
+
+      $html = $select->transform();
+      $this->assertContains('value="1"', $html);
+      $this->assertNotContains('value="2"', $html);
+      $this->assertContains('value="3"', $html);
+      $this->assertNotContains('value="4"', $html);
+
+      // test removal of dynamic (single) options
+      $select = $this->getDynamicSelectBoxForRemovalTest();
+
+      $select->removeOption('2'); // selection by value
+      $select->removeOption('Four'); // selection by display name
+
+      $html = $select->transform();
+      $this->assertContains('value="1"', $html);
+      $this->assertNotContains('value="2"', $html);
+      $this->assertContains('value="3"', $html);
+      $this->assertNotContains('value="4"', $html);
+
+      // test removal of mixed (single) options
+      $select = $this->getSelectBoxTagForRemovalTest();
+
+      $select->addOption('Five', '5');
+      $select->addOption('Six', '6');
+
+      $select->removeOption('2'); // selection by value
+      $select->removeOption('Five'); // selection by display name
+
+      $html = $select->transform();
+      $this->assertContains('value="1"', $html);
+      $this->assertNotContains('value="2"', $html);
+      $this->assertContains('value="3"', $html);
+      $this->assertContains('value="4"', $html);
+      $this->assertNotContains('value="5"', $html);
+      $this->assertContains('value="6"', $html);
+
+   }
+
+   /**
+    * ID#324: test all option removal
+    */
+   public function testRemoveAllOptions() {
+
+      // test removal of all static (single) options
+      $select = $this->getSelectBoxTagForRemovalTest();
+
+      $select->removeAllOptions();
+
+      $html = $select->transform();
+      $this->assertEquals('<select name="foo"></select>', str_replace("\n", '', $html));
+      $this->assertNotContains('value="1"', $html);
+      $this->assertNotContains('value="2"', $html);
+      $this->assertNotContains('value="3"', $html);
+      $this->assertNotContains('value="4"', $html);
+
+      // test removal of all dynamic (single) options
+      $select = $this->getDynamicSelectBoxForRemovalTest();
+
+      $select->removeAllOptions();
+
+      $html = $select->transform();
+
+      $this->assertEquals('<select name="foo"></select>', str_replace("\n", '', $html));
+      $this->assertNotContains('value="1"', $html);
+      $this->assertNotContains('value="3"', $html);
+      $this->assertNotContains('value="2"', $html);
+      $this->assertNotContains('value="4"', $html);
+
+   }
+
+   /**
+    * ID#324: test group option removal
+    */
+   public function testRemoveGroupOptions() {
+
+      // test removal of static (single) options
+      $select = $this->getSelectBoxTagWithGroupForRemovalTest();
+
+      $select->removeOption('2'); // selection by value
+      $select->removeOption('Four'); // selection by display name
+
+      $html = $select->transform();
+      $this->assertContains('value="1"', $html);
+      $this->assertNotContains('value="2"', $html);
+      $this->assertContains('value="3"', $html);
+      $this->assertNotContains('value="4"', $html);
+
+      // test removal of dynamic (single) options
+      $select = $this->getDynamicSelectBoxWithGroupForRemovalTest();
+
+      $select->removeOption('2'); // selection by value
+      $select->removeOption('Four'); // selection by display name
+
+      $html = $select->transform();
+      $this->assertContains('value="1"', $html);
+      $this->assertNotContains('value="2"', $html);
+      $this->assertContains('value="3"', $html);
+      $this->assertNotContains('value="4"', $html);
+
+      // test removal of mixed (single) options
+      $select = $this->getSelectBoxTagWithGroupForRemovalTest();
+
+      $select->addOption('Five', '5');
+      $select->addGroupOption('Further', 'Six', '6');
+
+      $select->removeOption('2'); // selection by value
+      $select->removeOption('Five'); // selection by display name
+
+      $html = $select->transform();
+      $this->assertContains('value="1"', $html);
+      $this->assertNotContains('value="2"', $html);
+      $this->assertContains('value="3"', $html);
+      $this->assertContains('value="4"', $html);
+      $this->assertNotContains('value="5"', $html);
+      $this->assertContains('value="6"', $html);
+
+   }
+
+   /**
+    * @return SelectBoxTag
+    */
+   protected function getSelectBoxTagForRemovalTest() {
+      $select = new SelectBoxTag();
+      $select->setAttribute('name', 'foo');
+      $select->setContent('<select:option value="1">One</select:option>
+<select:option value="2">Two</select:option>
+<select:option value="3">Three</select:option>
+<select:option value="4">Four</select:option>');
+      $select->onParseTime();
+      $select->onAfterAppend();
+      return $select;
+   }
+
+   /**
+    * @return SelectBoxTag
+    */
+   protected function getSelectBoxTagWithGroupForRemovalTest() {
+      $select = new SelectBoxTag();
+      $select->setAttribute('name', 'foo');
+      $select->setContent('<select:option value="1">One</select:option>
+<select:option value="2">Two</select:option>
+<select:group label="Further">
+   <select:option value="3">Three</select:option>
+   <select:option value="4">Four</select:option>
+</select:group>');
+      $select->onParseTime();
+      $select->onAfterAppend();
+      return $select;
+   }
+
+   /**
+    * @return SelectBoxTag
+    */
+   protected function getDynamicSelectBoxForRemovalTest() {
+      $select = new SelectBoxTag();
+      $select->setAttribute('name', 'foo');
+      $select->onParseTime();
+      $select->onAfterAppend();
+
+      $select->addOption('One', '1');
+      $select->addOption('Two', '2');
+      $select->addOption('Three', '3');
+      $select->addOption('Four', '4');
+      return $select;
+   }
+
+   /**
+    * @return SelectBoxTag
+    */
+   protected function getDynamicSelectBoxWithGroupForRemovalTest() {
+      $select = new SelectBoxTag();
+      $select->setAttribute('name', 'foo');
+      $select->onParseTime();
+      $select->onAfterAppend();
+
+      $select->addOption('One', '1');
+      $select->addOption('Two', '2');
+      $select->addGroupOption('Further', 'Three', '3');
+      $select->addGroupOption('Further', 'Four', '4');
+      return $select;
+   }
+
 }
