@@ -36,11 +36,13 @@ class Html5ColorFieldTag extends TextFieldTag {
 
    public function __construct() {
       parent::__construct();
-      $this->attributeWhiteList += [
-            'automcomplete',
-            'list',
-            'required'
-      ];
+      $this->attributeWhiteList = array_merge(
+            $this->attributeWhiteList, [
+                  'automcomplete',
+                  'list',
+                  'required'
+            ]
+      );
    }
 
    public function transform() {

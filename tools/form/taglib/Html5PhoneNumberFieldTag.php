@@ -20,48 +20,40 @@
  */
 namespace APF\tools\form\taglib;
 
-use InvalidArgumentException;
-
 /**
- * Represents a HTML5 range field.
+ * Represents a HTML5 phone number field.
  *
  * Usage:
  * <code>
- * <form:html5-range name="..." min="..." max="..." [step=""] />
+ * <form:html5-tel name="..." [value=""] />
  * </code>
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 01.10.2017<br />
  */
-class Html5RangeFieldTag extends TextFieldTag {
+class Html5PhoneNumberFieldTag extends TextFieldTag {
 
    public function __construct() {
       parent::__construct();
       $this->attributeWhiteList = array_merge(
             $this->attributeWhiteList,
             [
-                  'min',
-                  'max',
-                  'required',
-                  'size',
-                  'step'
+                  'autocomplete',
+                  'list',
+                  'minlength',
+                  'maxlength',
+                  'pattern',
+                  'placeholder',
+                  'readonly',
+                  'size'
             ]
       );
    }
 
    public function transform() {
-
-      // check range definition
-      $min = $this->getRequiredAttribute('min');
-      $max = $this->getRequiredAttribute('max');
-
-      if (intval($min) >= intval($max)) {
-         throw new InvalidArgumentException('Value for attribute "min" (' . $min . ') must not be higher than or equal to "max" value (' . $max . ') !');
-      }
-
       if ($this->isVisible) {
-         return '<input type="range" ' . $this->getSanitizedAttributesAsString($this->attributes) . ' />';
+         return '<input type="tel" ' . $this->getSanitizedAttributesAsString($this->attributes) . ' />';
       }
 
       return '';

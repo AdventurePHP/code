@@ -40,15 +40,18 @@ class Html5DateFieldTag extends TextFieldTag {
 
    public function __construct() {
       parent::__construct();
-      $this->attributeWhiteList += [
-            'autocomplete',
-            'list',
-            'readonly',
-            'step',
-            'min',
-            'max',
-            'required'
-      ];
+      $this->attributeWhiteList = array_merge(
+            $this->attributeWhiteList,
+            [
+                  'autocomplete',
+                  'list',
+                  'readonly',
+                  'step',
+                  'min',
+                  'max',
+                  'required'
+            ]
+      );
    }
 
    /**

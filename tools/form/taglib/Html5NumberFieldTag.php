@@ -36,16 +36,19 @@ class Html5NumberFieldTag extends TextFieldTag {
 
    public function __construct() {
       parent::__construct();
-      $this->attributeWhiteList += [
-            'automcomplete',
-            'list',
-            'placeholder',
-            'readonly',
-            'step',
-            'min',
-            'max',
-            'required'
-      ];
+      $this->attributeWhiteList = array_merge(
+            $this->attributeWhiteList,
+            [
+                  'automcomplete',
+                  'list',
+                  'placeholder',
+                  'readonly',
+                  'step',
+                  'min',
+                  'max',
+                  'required'
+            ]
+      );
    }
 
    public function transform() {

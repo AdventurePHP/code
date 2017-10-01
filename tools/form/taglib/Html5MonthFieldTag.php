@@ -40,15 +40,18 @@ class Html5MonthFieldTag extends TextFieldTag {
 
    public function __construct() {
       parent::__construct();
-      $this->attributeWhiteList += [
-            'autocomplete',
-            'list',
-            'readonly',
-            'min',
-            'max',
-            'step',
-            'required'
-      ];
+      $this->attributeWhiteList = array_merge(
+            $this->attributeWhiteList,
+            [
+                  'autocomplete',
+                  'list',
+                  'readonly',
+                  'min',
+                  'max',
+                  'step',
+                  'required'
+            ]
+      );
    }
 
    /**
