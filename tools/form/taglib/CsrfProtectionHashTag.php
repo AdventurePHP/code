@@ -82,7 +82,10 @@ class CsrfProtectionHashTag extends AbstractFormControl {
       $form = $this->getForm();
       $buttons = $form->getFormElementsByTagName('form:button');
       foreach ($buttons as $offset => $DUMMY) {
-         $this->addValidator(new CSRFHashValidator($this, $buttons[$offset]));
+         $validator = new CSRFHashValidator($this, $buttons[$offset]);
+         $validator->setContext($this->getContext());
+         $validator->setLanguage($this->getLanguage());
+         $this->addValidator($validator);
       }
 
    }
