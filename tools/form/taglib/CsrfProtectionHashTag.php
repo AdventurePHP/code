@@ -81,8 +81,8 @@ class CsrfProtectionHashTag extends AbstractFormControl {
       // add the csrfhash validator for every button
       $form = $this->getForm();
       $buttons = $form->getFormElementsByTagName('form:button');
-      foreach ($buttons as $offset => $DUMMY) {
-         $validator = new CSRFHashValidator($this, $buttons[$offset]);
+      foreach ($buttons as &$button) {
+         $validator = new CSRFHashValidator($this, $button);
          $validator->setContext($this->getContext());
          $validator->setLanguage($this->getLanguage());
          $this->addValidator($validator);
