@@ -80,7 +80,7 @@ class HtmlLinkTag extends LinkGenerationTag {
       // If no Content is set, this taglib tries to set the title as content.
       // If this is also missing it throws an Exception. This exception is needed,
       // because otherwise you will get an invalid html.
-      $content = $this->getContent();
+      $content = $this->transformChildrenAndPreserveContent();
       if (empty($content)) {
          $content = $this->getAttribute(self::TITLE_ATTRIBUTE_NAME);
       }
