@@ -42,7 +42,7 @@ The following list of tutorials is recommended to try out first:
 Forum
 =====
 
-The mixed-language support forum can be found under <a href="https://adventure-php-framework.org/forum" target="_blank">forum.adventure-php-framework.org</a>.
+The mixed-language support forum can be found under <a href="https://adventure-php-framework.org/forum" target="_blank">adventure-php-framework.org/forum</a>.
 You can both create threads in English as well as in German language.
 
 
