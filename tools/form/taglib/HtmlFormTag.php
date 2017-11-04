@@ -565,6 +565,26 @@ class HtmlFormTag extends Document implements HtmlForm {
       return $htmlCode;
    }
 
+   /**
+    * Concerts an LCC PHP property name into a form field name containing dashes.
+    *
+    * @param string $name The form field name.
+    * @return string The model property name.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0,1, 04.11.2017
+    */
+   protected function mapModelPropertyNameToFormControlName($name) {
+      return preg_replace_callback(
+            '/([a-z])([A-Z])/',
+            function ($matches) {
+               return $matches[1] . '-' . lcfirst($matches[2]);
+            },
+            $name
+      );
+   }
+
    public function fillModel(&$model, array $mapping = []) {
 
       $class = new ReflectionClass($model);
@@ -576,13 +596,16 @@ class HtmlFormTag extends Document implements HtmlForm {
       // treated as form control pendants (white list approach).
       foreach ($properties as $property) {
 
+         // ID#326: map model property to form control name to allow dashes in form control names
+         $propertyName = $this->mapModelPropertyNameToFormControlName($property->getName());
+
          // Only map properties that should be mapped to be able to re-use existing models!
-         if (empty($mapping) || in_array($property->getName(), $mapping)) {
+         if (empty($mapping) || in_array($propertyName, $mapping)) {
             try {
                // otherwise setValue() will fail...
                $property->setAccessible(true);
 
-               $control = $this->getFormElementByName($property->getName());
+               $control = $this->getFormElementByName($propertyName);
 
                // Map form value(s) to model using configurable/exchangeable mappers. For details
                // on the implementation pattern/idea see HtmlForm::addFormControlToModelMapper().
@@ -620,12 +643,15 @@ class HtmlFormTag extends Document implements HtmlForm {
       // treated as form control pendants (white list approach).
       foreach ($properties as $property) {
 
+         // ID#326: map model property to form control name to allow dashes in form control names
+         $propertyName = $this->mapModelPropertyNameToFormControlName($property->getName());
+
          // Only map properties that should be mapped to be able to re-use existing models!
-         if (empty($mapping) || in_array($property->getName(), $mapping)) {
+         if (empty($mapping) || in_array($propertyName, $mapping)) {
             try {
 
                // get form controls by property name (multiple files for e.g. check boxes)
-               $controls = $this->getFormElementsByName($property->getName());
+               $controls = $this->getFormElementsByName($propertyName);
 
                // otherwise getValue() will fail...
                $property->setAccessible(true);

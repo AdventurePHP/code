@@ -29,6 +29,8 @@ class FormValuesModel {
    protected $foo;
    private $bar;
 
+   protected $fooBar;
+
    public function getFoo() {
       return $this->foo;
    }
@@ -51,6 +53,14 @@ class FormValuesModel {
 
    public function setBaz($baz) {
       $this->baz = $baz;
+   }
+
+   public function getFooBar() {
+      return $this->fooBar;
+   }
+
+   public function setFooBar($fooBar) {
+      $this->fooBar = $fooBar;
    }
 
 }

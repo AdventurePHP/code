@@ -112,6 +112,21 @@ class FormControlToModelMappingTest extends \PHPUnit_Framework_TestCase {
    }
 
    /**
+    * @return HtmlFormTag
+    */
+   private function getFormWithDashFieldNames() {
+      $form = new HtmlFormTag();
+      $doc = new Document();
+      $form->setParentObject($doc);
+      $form->setAttribute('name', 'test');
+      $form->setContent('<form:text name="foo-bar" />');
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      return $form;
+   }
+
+   /**
     * Test existing fields with filled data.
     */
    public function testExistingFields2() {
@@ -342,6 +357,22 @@ class FormControlToModelMappingTest extends \PHPUnit_Framework_TestCase {
       $form->onAfterAppend();
 
       return $form;
+   }
+
+   /**
+    * ID#326: test mapping with form control names containing dashes.
+    */
+   public function testMappingWithDashFormControlNames() {
+
+      $_REQUEST = [];
+      $_REQUEST['foo-bar'] = 'foo';
+
+      $form = $this->getFormWithDashFieldNames();
+
+      $model = new FormValuesModel();
+      $form->fillModel($model);
+      $this->assertEquals('foo', $model->getFooBar());
+
    }
 
 }

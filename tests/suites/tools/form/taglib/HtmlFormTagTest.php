@@ -271,8 +271,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
       $children->setValue(
             $form,
             [
-                  $user->getObjectId()   => $user,
-                  $group->getObjectId()  => $group,
+                  $user->getObjectId() => $user,
+                  $group->getObjectId() => $group,
                   $button->getObjectId() => $button
             ]
       );
@@ -722,6 +722,25 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
       $tag->onParseTime();
 
       $this->assertFalse($tag->isVisible());
+
+   }
+
+   /**
+    * ID#326: test mapping a (valid) PHP property name to form control name.
+    */
+   public function testMapModelPropertyNameToFormControlName() {
+
+      $method = new ReflectionMethod(HtmlFormTag::class, 'mapModelPropertyNameToFormControlName');
+      $method->setAccessible(true);
+
+      $tag = new HtmlFormTag();
+      $this->assertEquals('foo-bar', $method->invokeArgs($tag, ['fooBar']));
+      $this->assertEquals('f-oO', $method->invokeArgs($tag, ['fOO']));
+      $this->assertEquals('foo_bar', $method->invokeArgs($tag, ['foo_bar']));
+      $this->assertEquals('foo', $method->invokeArgs($tag, ['foo']));
+      $this->assertEquals('Foo', $method->invokeArgs($tag, ['Foo']));
+      $this->assertEquals('foo-bar-baz', $method->invokeArgs($tag, ['fooBarBaz']));
+      $this->assertEquals('foo-bAr', $method->invokeArgs($tag, ['fooBAr']));
 
    }
 
