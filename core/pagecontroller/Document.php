@@ -931,6 +931,9 @@ class Document extends APFObject implements DomNode {
    public function onParseTime() {
    }
 
+   /**
+    * @throws ParserException
+    */
    public function onAfterAppend() {
       // ID#191: extract "static" expressions (e.g. place holders)
       $this->extractExpressionTags();

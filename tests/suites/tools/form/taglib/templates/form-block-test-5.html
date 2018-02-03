@@ -1,0 +1,28 @@
+<html:form name="form">
+
+   <form:block
+         namespace="APF\tests\suites\tools\form\taglib\templates"
+         template="form-block-test-4"
+         block-name="foo-1"
+         block-label="Example 1"
+         block-listener="Example Validator 3"
+   />
+
+   <form:block
+         namespace="APF\tests\suites\tools\form\taglib\templates"
+         template="form-block-test-4"
+         block-name="foo-2"
+         block-label="Example 2"
+         block-listener="Example Validator 2"
+   />
+
+   <form:text name="foo-3"/>
+
+   <form:button name="send" value="Save"/>
+
+   <form:addvalidator
+         class="APF\tools\form\validator\TextLengthValidator"
+         control="foo-1|foo-2|foo-3"
+         button="send"
+   />
+</html:form>

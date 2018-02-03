@@ -18,6 +18,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+
 use APF\core\configuration\ConfigurationManager;
 use APF\core\configuration\provider\ini\IniConfigurationProvider;
 use APF\core\errorhandler\DefaultErrorHandler;
@@ -91,6 +92,7 @@ use APF\tools\form\taglib\MultiSelectBoxTag;
 use APF\tools\form\taglib\PasswordFieldTag;
 use APF\tools\form\taglib\RadioButtonTag;
 use APF\tools\form\taglib\ResetButtonTag;
+use APF\tools\form\taglib\ReusableFormBlockTag;
 use APF\tools\form\taglib\SelectBoxGroupTag;
 use APF\tools\form\taglib\SelectBoxOptionTag;
 use APF\tools\form\taglib\SelectBoxTag;
@@ -247,6 +249,7 @@ Document::addTagLib(TimeCaptchaTag::class, 'form', 'timecaptcha');
 Document::addTagLib(TimeSelectorTag::class, 'form', 'time');
 Document::addTagLib(ValidationListenerTag::class, 'form', 'listener');
 Document::addTagLib(FormGroupTag::class, 'form', 'group');
+Document::addTagLib(ReusableFormBlockTag::class, 'form', 'block');
 
 Document::addTagLib(Html5SearchFieldTag::class, 'form', 'html5-search');
 Document::addTagLib(Html5RangeFieldTag::class, 'form', 'html5-range');

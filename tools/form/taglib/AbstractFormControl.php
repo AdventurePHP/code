@@ -122,6 +122,8 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * value presetting, overwrite the protected method
     * <code>presetValue()</code>.
     *
+    * @throws FormException
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 25.08.2009<br />
@@ -167,6 +169,9 @@ abstract class AbstractFormControl extends Document implements FormControl {
       }
    }
 
+   /**
+    * @throws FormException
+    */
    public function &getForm() {
 
       $form = $this->getParentObject();
@@ -187,6 +192,9 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return $form;
    }
 
+   /**
+    * @throws FormException
+    */
    public function &hide() {
       $this->isVisible = false;
 
@@ -206,6 +214,8 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * The dependent control feature can be used to hide/show controls together with their labels etc.
     *
     * @return FormControl[] The list of controls referred to by the <em>dependent-controls</em> tag attribute.
+    *
+    * @throws FormException
     *
     * @author Christian Achatz
     * @version
@@ -417,6 +427,9 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return false;
    }
 
+   /**
+    * @throws FormException
+    */
    public function &show() {
       $this->isVisible = true;
 

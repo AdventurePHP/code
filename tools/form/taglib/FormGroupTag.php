@@ -20,6 +20,7 @@
  */
 namespace APF\tools\form\taglib;
 
+use APF\core\pagecontroller\ParserException;
 use APF\tools\form\FormControl;
 use APF\tools\form\FormElementGroup;
 use APF\tools\form\mixin\FormControlFinder as FormControlFinderImpl;
@@ -38,6 +39,9 @@ class FormGroupTag extends AbstractFormControl implements FormElementGroup {
 
    use FormControlFinderImpl;
 
+   /**
+    * @throws ParserException
+    */
    public function onParseTime() {
       $this->extractTagLibTags();
 

@@ -1,0 +1,9 @@
+<div class="form-group">
+   <form:label name="${name}-label" for="${name}" class="col-md-6 control-label">${label}</form:label>
+   <div class="col-md-6">
+      <form:text name="${name}" id="${name}" class="form-control"/>
+      <form:listener name="${name}-listener" control="${name}">
+         <span class="help-block">${listener}</span>
+      </form:listener>
+   </div>
+</div>
