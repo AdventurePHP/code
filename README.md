@@ -8,7 +8,7 @@ What is the APF?
 ===============
 
 The Adventure PHP Framework
-(<a href="http://adventure-php-framework.org/en" title="adventure-php-framework.org" target="_blank">adventure-php-framework.org</a>)
+(<a href="https://adventure-php-framework.org/en" title="adventure-php-framework.org" target="_blank">adventure-php-framework.org</a>)
 understands itself as a utility to implement object oriented and generic PHP web applications. It supports the
 developer to create programs in compliance with approved software design pattern and the code base already has answers
 to many day-2-day problems. The framework cannot be described as an application, that only has to be configured, but
@@ -19,13 +19,13 @@ Documentation
 
 The following chapters are a selection of documentation parts that help you to get familiar with the framework:
   
-* <a href="http://adventure-php-framework.org/Page/013-Basics" target="_blank">Basics</a>
-* <a href="http://adventure-php-framework.org/Page/014-Hello-world" target="_blank">Hello world! example</a>
-* <a href="http://adventure-php-framework.org/Page/154-Class-loading" target="_blank">Class loading</a>
-* <a href="http://adventure-php-framework.org/Page/006-Controller" target="_blank">(Document-)Controller</a>
-* <a href="http://adventure-php-framework.org/Page/047-Templates" target="_blank">Templates</a>
-* <a href="http://adventure-php-framework.org/Page/046-Standard-taglibs" target="_blank">Standard tags</a>
-* <a href="http://adventure-php-framework.org/Page/119-Components-documentation" target="_blank">Complete component documentation</a>
+* <a href="https://adventure-php-framework.org/Page/013-Basics" target="_blank">Basics</a>
+* <a href="https://adventure-php-framework.org/Page/014-Hello-world" target="_blank">Hello world! example</a>
+* <a href="https://adventure-php-framework.org/Page/154-Class-loading" target="_blank">Class loading</a>
+* <a href="https://adventure-php-framework.org/Page/006-Controller" target="_blank">(Document-)Controller</a>
+* <a href="https://adventure-php-framework.org/Page/047-Templates" target="_blank">Templates</a>
+* <a href="https://adventure-php-framework.org/Page/046-Standard-taglibs" target="_blank">Standard tags</a>
+* <a href="https://adventure-php-framework.org/Page/119-Components-documentation" target="_blank">Complete component documentation</a>
 
 
 Tutorials
@@ -33,10 +33,10 @@ Tutorials
 
 The following list of tutorials is recommended to try out first:
 
-* <a href="http://adventure-php-framework.org/Page/111-Download-installation-and-first-steps" target="_blank">Download, installation und first steps</a>
-* <a href="http://adventure-php-framework.org/Page/048-My-first-website" target="_blank">My first website</a>
-* <a href="http://adventure-php-framework.org/Page/045-User-specific-taglibs" target="_blank">User specific tags</a>
-* <a href="http://adventure-php-framework.org/Page/032-Comment-function-tutorial" target="_blank" title="Comment function tutorial">Comment function tutorial</a>
+* <a href="https://adventure-php-framework.org/Page/111-Download-installation-and-first-steps" target="_blank">Download, installation und first steps</a>
+* <a href="https://adventure-php-framework.org/Page/048-My-first-website" target="_blank">My first website</a>
+* <a href="https://adventure-php-framework.org/Page/045-User-specific-taglibs" target="_blank">User specific tags</a>
+* <a href="https://adventure-php-framework.org/Page/032-Comment-function-tutorial" target="_blank" title="Comment function tutorial">Comment function tutorial</a>
 
 
 Forum

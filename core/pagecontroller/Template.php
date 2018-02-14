@@ -2,7 +2,7 @@
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
+ * https://adventure-php-framework.org.
  *
  * The APF is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published
@@ -37,7 +37,7 @@ interface Template {
     * within a document controller. Usage:
     * <pre>
     * $template = $this->getTemplate('MyTemplate');
-    * $template->setPlaceHolder('URL', 'http://adventure-php-framework.org');
+    * $template->setPlaceHolder('URL', 'https://adventure-php-framework.org');
     * echo $template->transformTemplate(); // or echo $template; using the __toString() implementation
     * </pre>
     *

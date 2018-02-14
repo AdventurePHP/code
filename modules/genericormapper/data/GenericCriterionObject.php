@@ -2,7 +2,7 @@
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
+ * https://adventure-php-framework.org.
  *
  * The APF is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published
@@ -23,7 +23,7 @@ namespace APF\modules\genericormapper\data;
    /**
     * <!--
     * This file is part of the adventure php framework (APF) published under
-    * http://adventure-php-framework.org.
+    * https://adventure-php-framework.org.
     *
     * The APF is free software: you can redistribute it and/or modify
     * it under the terms of the GNU Lesser General Public License as published

@@ -9,7 +9,7 @@
     "issues": "https://adventure-php-framework.org/tracker",
     "forum": "https://adventure-php-framework.org/forum",
     "wiki": "https://adventure-php-framework.org/wiki",
-    "docs": "http://adventure-php-framework.org/en"
+    "docs": "https://adventure-php-framework.org/en"
   },
   "require": {
     "php": ">=5.6.0"
