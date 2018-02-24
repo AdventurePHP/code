@@ -35,6 +35,7 @@ use APF\tests\suites\core\pagecontroller\expression\TestTemplateExpressionTwo;
 use Exception;
 use InvalidArgumentException;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionMethod;
 use ReflectionProperty;
 
@@ -669,6 +670,7 @@ attr2="2">
 
    /**
     * ID#147: Tests template expression configuration.
+    * @throws ReflectionException
     */
    public function testTemplateExpressionConfiguration() {
 
@@ -678,7 +680,7 @@ attr2="2">
 
       // Initial bootstrap process registers two standard expressions.
       $expressions = $property->getValue();
-      $this->assertCount(2, $expressions);
+      $this->assertCount(3, $expressions);
 
       // Clearing the list should result in zero entries.
       Document::clearTemplateExpressions();
@@ -689,7 +691,7 @@ attr2="2">
          Document::addTemplateExpression($expression);
       }
 
-      $this->assertCount(2, $property->getValue());
+      $this->assertCount(3, $property->getValue());
 
    }
 

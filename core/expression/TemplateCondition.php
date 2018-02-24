@@ -236,13 +236,7 @@ class TemplateCondition {
       $open = strpos($condition, '(');
       $close = strrpos($condition, ')', $open);
 
-      $expression = trim(substr($condition, $open + 1, $close - $open - 1));
-
-      if (empty($expression) && strval($expression) !== '0') {
-         return [];
-      }
-
-      return explode(',', str_replace('\'', '', str_replace(' ', '', $expression)));
+      return ArgumentParser::getArguments(substr($condition, $open + 1, $close - $open - 1));
    }
 
 }
