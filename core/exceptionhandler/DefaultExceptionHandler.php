@@ -26,6 +26,7 @@ use APF\core\logging\Logger;
 use APF\core\pagecontroller\Page;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
+use Throwable;
 
 /**
  * Implements the default APF exception handler for uncaught exceptions.
@@ -78,7 +79,7 @@ class DefaultExceptionHandler implements ExceptionHandler {
     */
    protected $exceptionTrace = [];
 
-   public function handleException($exception) {
+   public function handleException(Throwable $exception) {
 
       // fill attributes
       $this->exceptionNumber = $exception->getCode();

@@ -22,15 +22,20 @@ namespace APF\tests\suites\core\exceptionhandler;
 
 use APF\core\exceptionhandler\DefaultExceptionHandler;
 use APF\core\exceptionhandler\GlobalExceptionHandler;
+use Error;
 use Exception;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use ReflectionException;
 use ReflectionProperty;
+use Throwable;
 
 class GlobalExceptionHandlerTest extends TestCase {
 
    /**
     * Tests whether registration and execution of a custom exception handler works.
+    *
+    * @throws Throwable|Exception|Error
     */
    public function testHandlerRegistration() {
 
@@ -49,6 +54,9 @@ class GlobalExceptionHandlerTest extends TestCase {
 
    /**
     * Test whether fallback to PHP's internal exception handling works.
+    *
+    * @throws ReflectionException
+    * @throws Throwable|Exception|Error
     */
    public function testPHPExceptionHandling() {
       $message = 'GlobalExceptionHandlerTest';
@@ -66,6 +74,8 @@ class GlobalExceptionHandlerTest extends TestCase {
 
    /**
     * Tests whether the exception is printed in case the exception handler execution fails.
+    *
+    * @throws Throwable|Exception|Error
     */
    public function testFallbackExceptionHandling() {
 
