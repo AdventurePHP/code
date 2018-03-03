@@ -107,7 +107,7 @@ abstract class APFObject implements APFDIService {
     * Version 0.1, 26.02.2011<br />
     */
    public function getVersion() {
-      return '3.3-GIT';
+      return '4.0';
    }
 
    /**

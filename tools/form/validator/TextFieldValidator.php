@@ -21,7 +21,9 @@
 namespace APF\tools\form\validator;
 
 use APF\tools\form\FormControl;
+use APF\tools\form\FormException;
 use APF\tools\form\taglib\ValidationListenerTag;
+use APF\tools\form\ValidationListener;
 
 /**
  * Implements a base class for all text field validators.
@@ -34,6 +36,8 @@ abstract class TextFieldValidator extends AbstractFormValidator {
 
    /**
     * Notifies the form control to be invalid.
+    *
+    * @throws FormException
     *
     * @author Christian Achatz
     * @version
@@ -99,6 +103,8 @@ abstract class TextFieldValidator extends AbstractFormValidator {
     *
     * @param FormControl $control The control who's listeners should be notified.
     *
+    * @throws FormException
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 30.08.2009<br />
@@ -109,7 +115,7 @@ abstract class TextFieldValidator extends AbstractFormValidator {
       $form = $control->getForm();
 
       /* @var $listeners ValidationListenerTag[] */
-      $listeners = $form->getFormElementsByTagName('form:listener');
+      $listeners = $form->getFormElementsByType(ValidationListener::class);
       $count = count($listeners);
       $controlName = $control->getAttribute('name');
       $validatorName = $this->getValidatorName();

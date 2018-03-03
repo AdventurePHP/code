@@ -75,6 +75,20 @@ interface FormControlFinder {
    public function &getFormElementsByTagName($tagName);
 
    /**
+    * Returns a list of form elements addressed by their implementation class name.
+    *
+    * @param string $class Name of the implementation class of the form elements to return.
+    *
+    * @return FormControl[] A list of references on the form elements.
+    * @throws FormException In case the form element cannot be found or desired tag is not registered.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 03.03.2018<br />
+    */
+   public function getFormElementsByType(string $class): array;
+
+   /**
     * Returns a reference on the desired marker or null.
     *
     * @param string $markerName The desired marker's name.

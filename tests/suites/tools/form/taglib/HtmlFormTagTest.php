@@ -33,6 +33,7 @@ use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\form\taglib\RadioButtonTag;
 use APF\tools\form\taglib\SelectBoxTag;
 use APF\tools\form\taglib\TextFieldTag;
+use APF\tools\form\ValidationListener;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionException;
@@ -594,6 +595,68 @@ class HtmlFormTagTest extends TestCase {
 
       $this->assertInstanceOf(TextFieldTag::class, $actual[4]);
       $this->assertEquals('foo-4', $actual[4]->getAttribute('id'));
+
+   }
+
+   /**
+    * Tests API complies for no elements found.
+    * @throws FormException
+    */
+   public function testGetFormElementsByType1() {
+      $this->expectException(FormException::class);
+      $form = new HtmlFormTag();
+      $doc = new Document();
+      $form->setParentObject($doc);
+      $this->assertEmpty($form->getFormElementsByType(ValidationListener::class));
+   }
+
+   /**
+    * Test more complex use case.
+    * @throws ParserException
+    * @throws FormException
+    */
+   public function testGetFormElementsByType2() {
+
+      $form = new HtmlFormTag();
+      $doc = new Document();
+      $form->setParentObject($doc);
+      $form->setContent('<form:text id="text-1" name="text-1" value="123"/>
+<form:listener control="text-1" />
+<form:group>
+   <form:group>
+      <form:text name="text-2" value="123"/>
+      <form:radio id="radio-1" name="radio-1" value="1" />
+      <form:listener control="text-2" />
+   </form:group>
+   <form:radio id="radio-2" name="radio-2" value="2" />
+   <form:listener control="radio-2" />
+</form:group>
+<form:select name="select-1" id="select-1">
+   <select:option value="1">One</select:option>
+   <select:option value="2">Two</select:option>
+</form:select>
+<form:listener control="select-1" />
+<form:group>
+   <form:text id="text-3" name="text-3" />
+   <form:listener control="text-3" />
+</form:group>
+<form:button name="submit" value="submit" />');
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      $this->assertCount(7, $form->getChildren());
+
+      $actual = $form->getFormElementsByType(ValidationListener::class);
+
+      $this->assertCount(5, $actual);
+
+      $this->assertContainsOnlyInstancesOf(ValidationListener::class, $actual);
+
+      $this->assertEquals('text-1', $actual[0]->getAttribute('control'));
+      $this->assertEquals('text-2', $actual[1]->getAttribute('control'));
+      $this->assertEquals('radio-2', $actual[2]->getAttribute('control'));
+      $this->assertEquals('select-1', $actual[3]->getAttribute('control'));
+      $this->assertEquals('text-3', $actual[4]->getAttribute('control'));
 
    }
 

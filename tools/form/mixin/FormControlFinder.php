@@ -246,4 +246,46 @@ trait FormControlFinder {
             . $docCon . '"!', E_USER_ERROR);
    }
 
+   /**
+    * @param string $class Name of the implementation class of the form elements to return.
+    *
+    * @return FormControl[] A list of references on the form elements.
+    * @throws FormException In case the form element cannot be found or desired tag is not registered.
+    */
+   public function getFormElementsByType(string $class): array {
+
+      /* @var $form HtmlFormTag */
+      if ($this instanceof HtmlForm) {
+         $form = &$this;
+      } else {
+         $form = $this->getForm();
+      }
+
+      if (count($this->children) > 0) {
+
+         $formElements = [];
+         foreach ($this->children as &$child) {
+
+            // when we directly find something - get it!
+            if ($child instanceof $class) {
+               $formElements[] = &$child;
+            }
+
+            // facing a group, let's recurs into it!
+            if ($child instanceof FormElementGroup) {
+               $formElements = array_merge($formElements, $child->getFormElementsByType($class));
+            }
+         }
+
+         return $formElements;
+      }
+
+      // display extended debug message in case no form elements were found
+      $parent = $form->getParentObject();
+      $docCon = get_class($parent->getDocumentController());
+      throw new FormException('[' . get_class($this) . '::getFormElementsByType()] No form elements of type "'
+            . $class . '" composed in ' . 'current form "' . $form->getAttribute('name') . '" in document controller "'
+            . $docCon . '"!', E_USER_ERROR);
+   }
+
 }

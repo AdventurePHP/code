@@ -20,6 +20,9 @@
  */
 namespace APF\tools\form\taglib;
 
+use APF\core\pagecontroller\ParserException;
+use APF\tools\form\ValidationListener;
+
 /**
  * Implements a taglib, that outputs it's content, in case you notify
  * the taglib to do so. This mechanism can be used within validator
@@ -44,7 +47,7 @@ namespace APF\tools\form\taglib;
  * @version
  * Version 0.1, 30.08.2009<br />
  */
-class ValidationListenerTag extends AbstractFormControl {
+class ValidationListenerTag extends AbstractFormControl implements ValidationListener {
 
    /**
     * Indicates, whether the listener is notified or not.
@@ -53,19 +56,18 @@ class ValidationListenerTag extends AbstractFormControl {
     */
    protected $isNotified = false;
 
-   /**
-    * Notifies the listener to output the content of the taglib on transform time.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 30.08.2009<br />
-    */
-   public function notify() {
+   public function notify(): void {
       $this->isNotified = true;
+   }
+
+   public function isNotified(): bool {
+      return $this->isNotified;
    }
 
    /**
     * Overwrites the parent's method, because there is nothing to do here.
+    *
+    * @throws ParserException
     *
     * @author Christian Achatz
     * @version
