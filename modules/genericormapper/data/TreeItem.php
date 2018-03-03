@@ -37,7 +37,7 @@ class TreeItem extends GenericDomainObject {
    /**
     * The children of this navigation node
     *
-    * @var GenericDomainObject $children
+    * @var GenericDomainObject[] $children
     */
    protected $children = [];
 
@@ -57,7 +57,7 @@ class TreeItem extends GenericDomainObject {
    /**
     * Returns the parent object
     *
-    * @return TreeItem The parent object
+    * @return GenericDomainObject|TreeItem
     *
     * @author Nicolas Pecher
     * @version
@@ -98,7 +98,7 @@ class TreeItem extends GenericDomainObject {
    /**
     * Returns all child objects
     *
-    * @return TreeItem[] A list of the child objects
+    * @return GenericDomainObject[]|TreeItem[]
     *
     * @author Nicolas Pecher
     * @version
