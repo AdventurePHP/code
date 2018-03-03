@@ -208,6 +208,8 @@ interface Response {
     * </code>
     * where <em>$response</em> is an instance of <em>APF\core\http\Response</em>.
     *
+    * @throws HttpResponseException In case the response has already been sent.
+    *
     * @return string The content of the current response.
     */
    public function __toString();

@@ -333,6 +333,9 @@ class ResponseImpl implements Response {
       self::send($this->exitAfterForward === true && $exitAfterForward === true);
    }
 
+   /**
+    * @throws HttpResponseException
+    */
    public function __toString() {
 
       if ($this->isSent) {
@@ -354,7 +357,9 @@ class ResponseImpl implements Response {
       // cookies
       foreach ($this->cookies as $cookie) {
          if ($cookie->isDeleted()) {
-            setcookie($cookie->getName(), false, time() - Cookie::DEFAULT_EXPIRATION_TIME);
+            // ID#331: deletion of cookie requires the same attributes as when setting the cookie for the first time.
+            setcookie($cookie->getName(), '', time() - Cookie::DEFAULT_EXPIRATION_TIME, $cookie->getPath(),
+                  $cookie->getDomain(), $cookie->isSecure(), $cookie->isHttpOnly());
          } else {
             setcookie($cookie->getName(), $cookie->getValue(), $cookie->getExpireTime(), $cookie->getPath(),
                   $cookie->getDomain(), $cookie->isSecure(), $cookie->isHttpOnly());
