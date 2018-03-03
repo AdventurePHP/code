@@ -20,8 +20,10 @@
  */
 namespace APF\tools\link\taglib;
 
+use APF\core\pagecontroller\ParserException;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
+use APF\tools\link\UrlFormatException;
 use InvalidArgumentException;
 
 /**
@@ -64,9 +66,13 @@ class HtmlLinkTag extends LinkGenerationTag {
          'rel',
          'rev',
          'shape',
+         'role',
          'target'
    ];
 
+   /**
+    * @throws ParserException
+    */
    public function onParseTime() {
 
       // generate URL using our parent implementation
@@ -76,6 +82,9 @@ class HtmlLinkTag extends LinkGenerationTag {
       $this->extractTagLibTags();
    }
 
+   /**
+    * @throws UrlFormatException
+    */
    public function transform() {
       // If no Content is set, this taglib tries to set the title as content.
       // If this is also missing it throws an Exception. This exception is needed,
@@ -106,6 +115,8 @@ class HtmlLinkTag extends LinkGenerationTag {
     * Checks if link is active (=we are already on the target page) or not.
     *
     * @return boolean
+    *
+    * @throws UrlFormatException
     *
     * @author Werner Liemberger wpublicmail [at] gmail DOT com
     * @version
