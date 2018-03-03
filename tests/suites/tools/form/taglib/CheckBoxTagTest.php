@@ -20,17 +20,21 @@
  */
 namespace APF\tests\suites\tools\form\taglib;
 
+use APF\core\pagecontroller\ParserException;
+use APF\tools\form\FormException;
 use APF\tools\form\HtmlForm;
 use APF\tools\form\taglib\CheckBoxTag;
 use APF\tools\form\taglib\HtmlFormTag;
+use PHPUnit\Framework\TestCase;
 
-class CheckBoxTagTest extends \PHPUnit_Framework_TestCase {
+class CheckBoxTagTest extends TestCase {
 
    const BUTTON_NAME = 'send';
    const BUTTON_VALUE = 'Send';
 
    /**
     * @return HtmlFormTag
+    * @throws FormException
     */
    protected function &getForm() {
 
@@ -43,6 +47,9 @@ class CheckBoxTagTest extends \PHPUnit_Framework_TestCase {
       return $form;
    }
 
+   /**
+    * @throws FormException
+    */
    public function testInitialFormLoad() {
 
       $checkBox = new CheckBoxTag();
@@ -58,6 +65,9 @@ class CheckBoxTagTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws FormException
+    */
    public function testFormSubmitUnChecked() {
 
       $_POST = [];
@@ -76,6 +86,9 @@ class CheckBoxTagTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws FormException
+    */
    public function testFormSubmitChecked() {
 
       $_POST = [];
@@ -104,6 +117,7 @@ class CheckBoxTagTest extends \PHPUnit_Framework_TestCase {
     * @param string $value Value of the check box.
     * @param bool $checked Whether to att checked="checked" attribute.
     * @return HtmlFormTag The generated form tag.
+    * @throws ParserException
     */
    protected function &getFormWithCheckBox($name, $value, $checked) {
 
@@ -123,6 +137,8 @@ class CheckBoxTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests checking check boxes for all combinations and including form definition in template.
+    * @throws ParserException
+    * @throws FormException
     */
    public function testStaticChecking() {
 

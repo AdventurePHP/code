@@ -20,18 +20,21 @@
  */
 namespace APF\tests\suites\core\pagecontroller;
 
+use APF\core\configuration\ConfigurationException;
 use APF\core\configuration\ConfigurationManager;
 use APF\core\configuration\provider\ini\IniConfigurationProvider;
 use APF\core\loader\RootClassLoader;
 use APF\core\loader\StandardClassLoader;
 use APF\core\pagecontroller\LanguageLabelTag;
+use APF\core\pagecontroller\ParserException;
 use APF\core\pagecontroller\TemplateTag;
 use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests all capabilities of the language label tag.
  */
-class LanguageLabelTagTest extends \PHPUnit_Framework_TestCase {
+class LanguageLabelTagTest extends TestCase {
 
    const TEST_VENDOR = 'CORE';
    const CONFIG_FILE_NAME = 'labels.ini';
@@ -43,6 +46,9 @@ class LanguageLabelTagTest extends \PHPUnit_Framework_TestCase {
     */
    const LANGUAGE = 'de';
 
+   /**
+    * @throws ConfigurationException
+    */
    public static function setUpBeforeClass() {
       // setup static configuration resource path for test purposes
       RootClassLoader::addLoader(new StandardClassLoader(self::TEST_VENDOR, __DIR__ . '/test-config'));
@@ -134,6 +140,7 @@ class LanguageLabelTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Complex use case within a template. Checks whether place holder in place holder works.
+    * @throws ParserException
     */
    public function testLanguageLabel4() {
 

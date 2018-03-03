@@ -157,18 +157,6 @@ final class Url {
    }
 
    /**
-    * @deprecated Compatibility method. Please use fromReferrer() instead.
-    *
-    * @param boolean $absolute True, in case the url should be absolute, false otherwise.
-    *
-    * @return Url The current url representation.
-    * @throws UrlFormatException In case the given referrer is not a valid url.
-    */
-   public static function fromReferer($absolute = false) {
-      return self::fromReferrer($absolute);
-   }
-
-   /**
     * Creates a url representation from the referring url.
     *
     * @param boolean $absolute True, in case the url should be absolute, false otherwise.

@@ -22,6 +22,8 @@ namespace APF\tests\suites\core\pagecontroller;
 
 use APF\core\pagecontroller\ParserException;
 use APF\core\pagecontroller\XmlParser;
+use PHPUnit\Framework\TestCase;
+use ReflectionException;
 use ReflectionProperty;
 
 /**
@@ -31,8 +33,11 @@ use ReflectionProperty;
  * @version
  * Version 0.1, 23.12.2013<br />
  */
-class XmlParserTest extends \PHPUnit_Framework_TestCase {
+class XmlParserTest extends TestCase {
 
+   /**
+    * @throws ParserException
+    */
    public function testSelfClosingTagString() {
 
       // basic tag attributes
@@ -47,7 +52,7 @@ class XmlParserTest extends \PHPUnit_Framework_TestCase {
       // assemble expected result
       $expectedAttributes = [
             $namespaceAttribute => $namespaceValue,
-            $templateAttribute  => $templateValue
+            $templateAttribute => $templateValue
 
       ];
       $expectedContent = '';
@@ -66,6 +71,9 @@ class XmlParserTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws ParserException
+    */
    public function testExplicitClosingTagString() {
 
       // basic tag attributes
@@ -106,6 +114,9 @@ class XmlParserTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws ParserException
+    */
    public function testExplicitClosingTagStringWithNestedTags() {
 
       // basic tag attributes
@@ -145,6 +156,9 @@ class XmlParserTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws ParserException
+    */
    public function testMissingEndTag() {
       $this->expectException(ParserException::class);
       XmlParser::getTagAttributes('foo', 'bar', '<foo:bar bar="baz"');
@@ -191,6 +205,9 @@ class XmlParserTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws ParserException
+    */
    public function testTagClosingSignInAttribute() {
 
       $expressionAttributeName = 'expression';
@@ -222,6 +239,9 @@ class XmlParserTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws ReflectionException
+    */
    public function testGenerateUniqueId() {
 
       // reset counter to avoid influence from other unit tests using this static counter

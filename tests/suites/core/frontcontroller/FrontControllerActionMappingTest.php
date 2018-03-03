@@ -22,6 +22,7 @@ namespace APF\tests\suites\core\frontcontroller;
 
 use APF\core\frontcontroller\ActionUrlMapping;
 use APF\core\frontcontroller\Frontcontroller;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests action mapping registration with the front controller.
@@ -30,7 +31,7 @@ use APF\core\frontcontroller\Frontcontroller;
  * @version
  * Version 0.1, 18.03.2014<br />
  */
-class FrontControllerActionMappingTest extends \PHPUnit_Framework_TestCase {
+class FrontControllerActionMappingTest extends TestCase {
 
    public function testMappingRegistration() {
 

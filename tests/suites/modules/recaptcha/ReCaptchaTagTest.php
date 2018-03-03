@@ -23,13 +23,17 @@ namespace APF\tests\suites\modules\recaptcha;
 use APF\modules\recaptcha\pres\taglib\ReCaptchaTag;
 use APF\tools\form\FormException;
 use APF\tools\form\taglib\HtmlFormTag;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the ReCaptchaTag.
  */
-class ReCaptchaTagTest extends \PHPUnit_Framework_TestCase {
+class ReCaptchaTagTest extends TestCase {
 
+   /**
+    * @throws FormException
+    */
    public function testParameterCheck1() {
       $this->expectException(FormException::class);
       $this->getReCaptchaTag()->onParseTime();
@@ -45,11 +49,17 @@ class ReCaptchaTagTest extends \PHPUnit_Framework_TestCase {
       return $tag->setAttributes($params);
    }
 
+   /**
+    * @throws FormException
+    */
    public function testParameterCheck2() {
       $this->expectException(FormException::class);
       $this->getReCaptchaTag(['name' => 'foo'])->onParseTime();
    }
 
+   /**
+    * @throws FormException
+    */
    public function testParameterCheck3() {
       $this->expectException(FormException::class);
       $this->getReCaptchaTag(['name' => 'foo', 'public-key' => 'bar'])->onParseTime();
@@ -72,7 +82,7 @@ class ReCaptchaTagTest extends \PHPUnit_Framework_TestCase {
 
    public function testTransform() {
 
-      /* @var $tag ReCaptchaTag|PHPUnit_Framework_MockObject_MockObject */
+      /* @var $tag ReCaptchaTag|MockObject */
       $tag = $this->getMockBuilder(ReCaptchaTag::class)
             ->setMethods(['getCaptchaId', 'getPublicKey'])
             ->getMock();

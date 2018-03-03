@@ -20,6 +20,7 @@
  */
 namespace APF\tests\suites\core\service;
 
+use APF\core\configuration\ConfigurationException;
 use APF\core\configuration\ConfigurationManager;
 use APF\core\configuration\provider\ini\IniConfigurationProvider;
 use APF\core\configuration\provider\php\PhpConfigurationProvider;
@@ -28,6 +29,7 @@ use APF\core\loader\StandardClassLoader;
 use APF\core\service\APFService;
 use APF\core\service\DIServiceManager;
 use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests service object creation capabilities via DI container.
@@ -36,7 +38,7 @@ use InvalidArgumentException;
  * @version
  * Version 0.1, 10.04.2015<br />
  */
-class DIServiceManagerTest extends \PHPUnit_Framework_TestCase {
+class DIServiceManagerTest extends TestCase {
 
    const TEST_VENDOR = 'TEST';
    const CONFIG_ROOT_FOLDER = 'test-config';
@@ -45,6 +47,9 @@ class DIServiceManagerTest extends \PHPUnit_Framework_TestCase {
 
    private static $originalIniProvider;
 
+   /**
+    * @throws ConfigurationException
+    */
    public static function setUpBeforeClass() {
 
       // setup static configuration resource path for test purposes
@@ -82,6 +87,9 @@ class DIServiceManagerTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws ConfigurationException
+    */
    public function testSetterInjection() {
 
       /* @var $service DummyService */
@@ -97,6 +105,9 @@ class DIServiceManagerTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws ConfigurationException
+    */
    public function testConstructorInjection() {
 
       /* @var $service DummyService */
@@ -112,6 +123,9 @@ class DIServiceManagerTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws ConfigurationException
+    */
    public function testConstructorInjectionFails() {
       $serviceName = 'DummyService-constructor-fail';
       try {
@@ -124,6 +138,9 @@ class DIServiceManagerTest extends \PHPUnit_Framework_TestCase {
       }
    }
 
+   /**
+    * @throws ConfigurationException
+    */
    public function testConstructorInjectionWithPHPFormat() {
 
       DIServiceManager::$configurationExtension = 'php';
@@ -143,24 +160,36 @@ class DIServiceManagerTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws ConfigurationException
+    */
    public function testSetterInjectionFailsWithMissingMethod() {
       $this->expectException(InvalidArgumentException::class);
       DIServiceManager::getServiceObject(self::TEST_VENDOR, 'DummyService-setter-method-fail-1', self::CONTEXT,
             self::LANGUAGE);
    }
 
+   /**
+    * @throws ConfigurationException
+    */
    public function testSetterInjectionFailsWithUnknownMethod() {
       $this->expectException(InvalidArgumentException::class);
       DIServiceManager::getServiceObject(self::TEST_VENDOR, 'DummyService-setter-method-fail-2', self::CONTEXT,
             self::LANGUAGE);
    }
 
+   /**
+    * @throws ConfigurationException
+    */
    public function testSetterInjectionFailsWithMissingValueSubSection() {
       $this->expectException(InvalidArgumentException::class);
       DIServiceManager::getServiceObject(self::TEST_VENDOR, 'DummyServiceThree-missing-value-section', self::CONTEXT,
             self::LANGUAGE);
    }
 
+   /**
+    * @throws ConfigurationException
+    */
    public function testSetterInjectionMultipleParameters() {
       /* @var $service DummyServiceThree */
       $service = DIServiceManager::getServiceObject(self::TEST_VENDOR, 'DummyServiceThree', self::CONTEXT,
@@ -172,6 +201,7 @@ class DIServiceManagerTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * ID#317: avoid context clashes by not permitting empty context information (null values).
+    * @throws ConfigurationException
     */
    public function testEmptyContextCausesException1() {
       $this->expectException(InvalidArgumentException::class);
@@ -180,6 +210,7 @@ class DIServiceManagerTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * ID#317: avoid context clashes by not permitting empty context information (empty strings).
+    * @throws ConfigurationException
     */
    public function testEmptyContextCausesException2() {
       $this->expectException(InvalidArgumentException::class);

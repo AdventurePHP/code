@@ -23,6 +23,8 @@ namespace APF\tests\suites\core\configuration;
 use APF\core\configuration\provider\ini\IniConfigurationProvider;
 use APF\core\loader\RootClassLoader;
 use APF\core\loader\StandardClassLoader;
+use PHPUnit\Framework\TestCase;
+use ReflectionException;
 use ReflectionMethod;
 
 /**
@@ -32,7 +34,7 @@ use ReflectionMethod;
  * @version
  * Version 0.1, 04.03.2014<br />
  */
-class FilePathGenerationTest extends \PHPUnit_Framework_TestCase {
+class FilePathGenerationTest extends TestCase {
 
    /**
     * @const The standard vendor registered for testing purposes.
@@ -50,6 +52,9 @@ class FilePathGenerationTest extends \PHPUnit_Framework_TestCase {
       RootClassLoader::addLoader(new StandardClassLoader(self::VENDOR_NAME, null, $this->configRootPath));
    }
 
+   /**
+    * @throws ReflectionException
+    */
    public function testVendorOnlyFilePath() {
 
       $provider = $this->getProvider();
@@ -84,6 +89,7 @@ class FilePathGenerationTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * @return ReflectionMethod The <em>BaseConfigurationProvider::getFilePath()</em> method instance.
+    * @throws ReflectionException
     */
    private function getFilePathMethod() {
       $method = new ReflectionMethod(IniConfigurationProvider::class, 'getFilePath');
@@ -94,6 +100,7 @@ class FilePathGenerationTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Test happy case with all parameters.
+    * @throws ReflectionException
     */
    public function testFullyQualifiedFilePath() {
 
@@ -111,6 +118,7 @@ class FilePathGenerationTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Test context omitted.
+    * @throws ReflectionException
     */
    public function testContextOmitted() {
 
@@ -129,6 +137,7 @@ class FilePathGenerationTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Test context omitted.
+    * @throws ReflectionException
     */
    public function testEnvironmentOmitted() {
 
@@ -147,6 +156,7 @@ class FilePathGenerationTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Test base path omitted.
+    * @throws ReflectionException
     */
    public function testConfigSubFilterOmitted() {
 
@@ -165,6 +175,7 @@ class FilePathGenerationTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Test context omitted.
+    * @throws ReflectionException
     */
    public function testOmitAll() {
 

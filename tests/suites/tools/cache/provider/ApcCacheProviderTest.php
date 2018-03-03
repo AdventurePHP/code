@@ -25,11 +25,12 @@ use APF\tools\cache\CacheKey;
 use APF\tools\cache\key\AdvancedCacheKey;
 use APF\tools\cache\key\SimpleCacheKey;
 use APF\tools\cache\provider\ApcCacheProvider;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests all capabilities of the ApcCacheProvider.
  */
-class ApcCacheProviderTest extends \PHPUnit_Framework_TestCase {
+class ApcCacheProviderTest extends TestCase {
 
    const CACHE_NAMESPACE = 'EXAMPLE\namespace';
 

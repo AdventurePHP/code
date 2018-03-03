@@ -20,12 +20,14 @@
  */
 namespace APF\tests\suites\core\pagecontroller;
 
+use APF\core\pagecontroller\ParserException;
 use APF\core\pagecontroller\TemplateTag;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the template clear mechanism available within the TemplateTag.
  */
-class DefaultTemplateTagClearApproachTest extends \PHPUnit_Framework_TestCase {
+class DefaultTemplateTagClearApproachTest extends TestCase {
 
    /**
     * Test w/o place holder should not fail.
@@ -35,6 +37,9 @@ class DefaultTemplateTagClearApproachTest extends \PHPUnit_Framework_TestCase {
       $template->clear();
    }
 
+   /**
+    * @throws ParserException
+    */
    public function testPlaceHolders() {
       $template = new TemplateTag();
       $template->setContent('${foo}|${bar}');
@@ -50,6 +55,9 @@ class DefaultTemplateTagClearApproachTest extends \PHPUnit_Framework_TestCase {
       $this->assertEquals('|', $template->transformTemplate());
    }
 
+   /**
+    * @throws ParserException
+    */
    public function testConditionalPlaceHolders() {
       $template = new TemplateTag();
       $template->setContent('<cond:placeholder name="foo">${content}</cond:placeholder>|'

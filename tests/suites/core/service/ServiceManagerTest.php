@@ -24,6 +24,7 @@ use APF\core\service\APFService;
 use APF\core\service\ServiceManager;
 use APF\core\singleton\Singleton;
 use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests service object creation capabilities.
@@ -32,7 +33,7 @@ use InvalidArgumentException;
  * @version
  * Version 0.1, 10.04.2015<br />
  */
-class ServiceManagerTest extends \PHPUnit_Framework_TestCase {
+class ServiceManagerTest extends TestCase {
 
    const SERVICE_CLASS = DummyService::class;
    const CONTEXT = 'foo';

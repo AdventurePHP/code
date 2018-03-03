@@ -22,11 +22,15 @@ namespace APF\tests\suites\core\expression;
 
 use APF\core\expression\ArrayAccessEvaluationExpression;
 use APF\core\pagecontroller\ParserException;
+use PHPUnit\Framework\TestCase;
 
-class ArrayAccessEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
+class ArrayAccessEvaluationExpressionTest extends TestCase {
 
    const DATA_ATTRIBUTE_NAME = 'foo';
 
+   /**
+    * @throws ParserException
+    */
    public function testNumericAccess() {
       $previousResult = $this->getPreviousResult();
 
@@ -41,52 +45,73 @@ class ArrayAccessEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
       $model = new ContentModel();
 
       return [
-            0     => $model,
-            4711  => $model,
+            0 => $model,
+            4711 => $model,
             'foo' => $model,
             'bar' => [
-                  42    => $model,
+                  42 => $model,
                   'baz' => $model
             ],
-            42    => [
+            42 => [
                   0 => $model,
                   1 => $model
             ]
       ];
    }
 
+   /**
+    * @throws ParserException
+    */
    public function testAssociativeAccess() {
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME . '[\'foo\']', $this->getPreviousResult());
       $this->assertTrue($expression->getResult() instanceof ContentModel);
    }
 
+   /**
+    * @throws ParserException
+    */
    public function testMultiArrayNumericAccess() {
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME . '[42][1]', $this->getPreviousResult());
       $this->assertTrue($expression->getResult() instanceof ContentModel);
    }
 
+   /**
+    * @throws ParserException
+    */
    public function testMultiArrayAssociativeAccess() {
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME . '[42][1]', $this->getPreviousResult());
       $this->assertTrue($expression->getResult() instanceof ContentModel);
    }
 
+   /**
+    * @throws ParserException
+    */
    public function testMultiArrayMixedAccess() {
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME . '[\'bar\'][42]', $this->getPreviousResult());
       $this->assertTrue($expression->getResult() instanceof ContentModel);
    }
 
+   /**
+    * @throws ParserException
+    */
    public function testInvalidOffset() {
       $this->expectException(ParserException::class);
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME . '[\'baz\']', $this->getPreviousResult());
       $expression->getResult();
    }
 
+   /**
+    * @throws ParserException
+    */
    public function testInvalidExpression() {
       $this->expectException(ParserException::class);
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME, []);
       $expression->getResult();
    }
 
+   /**
+    * @throws ParserException
+    */
    public function testInvalidPreviousResult() {
       $this->expectException(ParserException::class);
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME, null);

@@ -34,6 +34,7 @@ use APF\tests\suites\core\pagecontroller\expression\TestTemplateExpressionOne;
 use APF\tests\suites\core\pagecontroller\expression\TestTemplateExpressionTwo;
 use Exception;
 use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -46,11 +47,14 @@ use ReflectionProperty;
  * @version
  * Version 0.1, 27.02.2014<br />
  */
-class DocumentTest extends \PHPUnit_Framework_TestCase {
+class DocumentTest extends TestCase {
 
    const VENDOR = 'VENDOR';
    const SOURCE_PATH = '/var/www/html/src';
 
+   /**
+    * @throws ReflectionException
+    */
    public function testWithNormalNamespace() {
 
       $method = $this->getFilePathMethod();
@@ -66,6 +70,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * @return ReflectionMethod The <em>APF\core\pagecontroller\Document::getTemplateFilePath()</em> method.
+    * @throws ReflectionException
     */
    private function getFilePathMethod() {
       $method = new ReflectionMethod(Document::class, 'getTemplateFilePath');
@@ -74,6 +79,9 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
       return $method;
    }
 
+   /**
+    * @throws ReflectionException
+    */
    public function testWithVendorOnly() {
       $filePath = $this->getFilePathMethod()->invokeArgs(new Document(), [self::VENDOR, 'foo']);
       $this->assertEquals(self::SOURCE_PATH . '/foo.html', $filePath);
@@ -151,6 +159,9 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
       $doc->getChildNodes('foo', 'bar', Document::class);
    }
 
+   /**
+    * @throws ReflectionException
+    */
    public function testDocumentControllerParsingTest() {
 
       $controllerClass = RegistrationController::class;
@@ -179,6 +190,11 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @param $content
+    * @param $controllerClass
+    * @throws ReflectionException
+    */
    protected function executeControllerTest($content, $controllerClass) {
 
       $method = new ReflectionMethod(Document::class, 'extractDocumentController');
@@ -260,6 +276,9 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws ReflectionException
+    */
    public function testControllerAccessFromDocument() {
 
       $doc = new Document();
@@ -318,6 +337,7 @@ This is text after a place holder...
 
    /**
     * @return ReflectionMethod
+    * @throws ReflectionException
     */
    protected function getParserMethod() {
       $method = new ReflectionMethod(Document::class, 'extractTagLibTags');
@@ -387,6 +407,9 @@ This is text after a place holder...
       }
    }
 
+   /**
+    * @throws ReflectionException
+    */
    public function testTransformation() {
 
       $doc = new Document();
@@ -418,6 +441,11 @@ This is text after a place holder...
       }
    }
 
+   /**
+    * @param string $content
+    * @return TemplateTag
+    * @throws ParserException
+    */
    protected function getTemplateWithPlaceHolder($content = '<html:placeholder name="test"/>') {
       $doc = new TemplateTag();
       $doc->setContent($content);
@@ -429,6 +457,7 @@ This is text after a place holder...
 
    /**
     * Test simple existing place holder setting.
+    * @throws ParserException
     */
    public function testSetPlaceHolder2() {
       $template = $this->getTemplateWithPlaceHolder();
@@ -440,6 +469,7 @@ This is text after a place holder...
 
    /**
     * Test multiple place holders within one document.
+    * @throws ParserException
     */
    public function testSetPlaceHolder3() {
       $template = $this->getTemplateWithPlaceHolder('<html:placeholder name="test"/><html:placeholder name="test"/>');
@@ -451,6 +481,7 @@ This is text after a place holder...
 
    /**
     * Test place holder appending.
+    * @throws ParserException
     */
    public function testSetPlaceHolder4() {
       $template = $this->getTemplateWithPlaceHolder();
@@ -463,6 +494,7 @@ This is text after a place holder...
 
    /**
     * Test setPlaceHolders() with multiple place holders.
+    * @throws ParserException
     */
    public function testSetPlaceHolder5() {
 
@@ -547,6 +579,7 @@ This is text after a place holder...
 
    /**
     * Happy case for template expressions.
+    * @throws ParserException
     */
    public function testExtractExpressionTags1() {
 
@@ -564,6 +597,8 @@ This is text after a place holder...
 
    /**
     * Test whether 1st expressions matches and document is *not* overwritten by second.
+    * @throws ReflectionException
+    * @throws ParserException
     */
    public function testExtractExpressionTags2() {
 
@@ -590,6 +625,9 @@ This is text after a place holder...
 
    }
 
+   /**
+    * @throws ParserException
+    */
    public function testExtractExpressionTags3() {
       $this->expectException(ParserException::class);
       $doc = new TemplateTag();
@@ -598,6 +636,9 @@ This is text after a place holder...
       $doc->onAfterAppend();
    }
 
+   /**
+    * @throws ReflectionException
+    */
    public function testExtractExpressionTags4() {
 
       $property = new ReflectionProperty(Document::class, 'knownExpressions');

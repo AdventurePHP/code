@@ -20,9 +20,12 @@
  */
 namespace APF\tests\suites\tools\form\taglib;
 
+use APF\core\pagecontroller\ParserException;
+use APF\tools\form\FormException;
 use APF\tools\form\taglib\TextAreaTag;
+use PHPUnit\Framework\TestCase;
 
-class TextAreaTagTest extends \PHPUnit_Framework_TestCase {
+class TextAreaTagTest extends TestCase {
 
    const FIELD_NAME = 'foo';
    const FIELD_VALUE = 'bar';
@@ -37,6 +40,10 @@ class TextAreaTagTest extends \PHPUnit_Framework_TestCase {
       return $area;
    }
 
+   /**
+    * @throws ParserException
+    * @throws FormException
+    */
    public function testControllerPresetting() {
 
       $_REQUEST = [];
@@ -53,6 +60,10 @@ class TextAreaTagTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws FormException
+    * @throws ParserException
+    */
    public function testSubmitPresetting() {
 
       $_REQUEST = [];

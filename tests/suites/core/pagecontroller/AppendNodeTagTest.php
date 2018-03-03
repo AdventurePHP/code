@@ -20,14 +20,17 @@
  */
 namespace APF\tests\suites\core\pagecontroller;
 
+use APF\core\pagecontroller\ParserException;
 use APF\core\pagecontroller\PlaceHolder;
 use APF\core\pagecontroller\Template;
 use APF\core\pagecontroller\TemplateTag;
+use PHPUnit\Framework\TestCase;
 
-class AppendNodeTagTest extends \PHPUnit_Framework_TestCase {
+class AppendNodeTagTest extends TestCase {
 
    /**
     * Test relocation of DOM nodes from included template into current node.
+    * @throws ParserException
     */
    public function testDomRelocation() {
 
@@ -65,6 +68,7 @@ class AppendNodeTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Test static include w/o other DOM nodes.
+    * @throws ParserException
     */
    public function testStaticInclude() {
 
@@ -92,6 +96,7 @@ class AppendNodeTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Test DOM node relocation including static content and transformation.
+    * @throws ParserException
     */
    public function testComplexUseCse() {
 

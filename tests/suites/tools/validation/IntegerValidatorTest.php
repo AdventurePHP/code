@@ -21,8 +21,9 @@
 namespace APF\tests\suites\tools\validation;
 
 use APF\tools\validation\IntegerValidator;
+use PHPUnit\Framework\TestCase;
 
-class IntegerValidatorTest extends \PHPUnit_Framework_TestCase {
+class IntegerValidatorTest extends TestCase {
 
    /**
     * @var IntegerValidator

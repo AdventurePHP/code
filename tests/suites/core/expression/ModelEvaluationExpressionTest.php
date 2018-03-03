@@ -25,8 +25,9 @@ use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\DomNode;
 use APF\core\pagecontroller\ParserException;
 use DateTime;
+use PHPUnit\Framework\TestCase;
 
-class ModelEvaluationExpressionTest extends \PHPUnit_Framework_TestCase {
+class ModelEvaluationExpressionTest extends TestCase {
 
    const DATA_ATTRIBUTE_NAME = 'foo';
 

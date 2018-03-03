@@ -21,8 +21,9 @@
 namespace APF\tests\suites\tools\validation;
 
 use APF\tools\validation\TextLengthValidator;
+use PHPUnit\Framework\TestCase;
 
-class TextLengthValidatorTest extends \PHPUnit_Framework_TestCase {
+class TextLengthValidatorTest extends TestCase {
 
    public function testMinLength() {
       $validator = new TextLengthValidator(3, 0);

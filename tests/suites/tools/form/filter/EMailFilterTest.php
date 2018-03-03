@@ -21,14 +21,21 @@
 namespace APF\tests\suites\tools\form\filter;
 
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\ParserException;
 use APF\tools\form\filter\EMailFilter;
+use APF\tools\form\FormException;
 use APF\tools\form\taglib\ButtonTag;
 use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\form\taglib\TextFieldTag;
 use APF\tools\form\validator\EMailValidator;
+use PHPUnit\Framework\TestCase;
 
-class EMailFilterTest extends \PHPUnit_Framework_TestCase {
+class EMailFilterTest extends TestCase {
 
+   /**
+    * @throws ParserException
+    * @throws FormException
+    */
    public function testEMailFilter() {
 
       $email = '"§$te%&/st)(@example,"§$.com';
@@ -52,6 +59,7 @@ class EMailFilterTest extends \PHPUnit_Framework_TestCase {
 
       $filter = new EMailFilter(new TextFieldTag(), new ButtonTag());
 
+      /** @noinspection Annotator */
       $this->assertEquals(
             'scriptalertThiscouldbeanXSSattackscript',
             $filter->filter('<script>alert("This could be an XSS attack!");</script>')

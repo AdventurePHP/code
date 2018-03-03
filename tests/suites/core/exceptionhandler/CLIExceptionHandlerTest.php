@@ -22,9 +22,10 @@ namespace APF\tests\suites\core\exceptionhandler;
 
 use APF\core\exceptionhandler\CLIExceptionHandler;
 use Exception;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
-class CLIExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
+class CLIExceptionHandlerTest extends TestCase {
 
    /**
     * Test internal exception handling (logging and exception page creation).
@@ -35,7 +36,7 @@ class CLIExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
       $code = 404;
       $exception = new Exception($message, $code);
 
-      /* @var $handler CLIExceptionHandler|PHPUnit_Framework_MockObject_MockObject */
+      /* @var $handler CLIExceptionHandler|MockObject */
       $handler = $this->getMockBuilder(CLIExceptionHandler::class)
             ->setMethods(['logException', 'buildExceptionOutput'])
             ->getMock();
@@ -66,7 +67,7 @@ class CLIExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
       $code = 404;
       $exception = new Exception($message, $code);
 
-      /* @var $handler CLIExceptionHandler|PHPUnit_Framework_MockObject_MockObject */
+      /* @var $handler CLIExceptionHandler|MockObject */
       $handler = $this->getMockBuilder(CLIExceptionHandler::class)
             ->setMethods(['logException'])
             ->getMock();

@@ -21,8 +21,9 @@
 namespace APF\tests\suites\tools\validation;
 
 use APF\tools\validation\NumberScopeValidator;
+use PHPUnit\Framework\TestCase;
 
-class NumberScopeValidatorTest extends \PHPUnit_Framework_TestCase {
+class NumberScopeValidatorTest extends TestCase {
 
    public function testHappyCase() {
       $validator = new NumberScopeValidator();

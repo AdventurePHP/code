@@ -21,6 +21,7 @@
 namespace APF\tests\suites\core\http;
 
 use APF\core\http\RequestImpl;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the Request implementation. Written due to bug with "0" values.
@@ -30,7 +31,7 @@ use APF\core\http\RequestImpl;
  * Version 0.1<br />
  * Version 0.2, 26.08.2013 (Refactoring or RequestHandler to include functionality of PostHandler)<br />
  */
-class RequestImplTest extends \PHPUnit_Framework_TestCase {
+class RequestImplTest extends TestCase {
 
    const PARAMETER_FOO = 'foo';
    const PARAMETER_BAR = 'bar';

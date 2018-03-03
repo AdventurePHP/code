@@ -21,6 +21,7 @@
 namespace APF\tests\suites\core\configuration;
 
 use APF\core\configuration\provider\ini\IniConfiguration;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the BaseConfiguration class' functionality.
@@ -29,7 +30,7 @@ use APF\core\configuration\provider\ini\IniConfiguration;
  * @version
  * Version 0.1, 11.03.2015 (see ID#224 for requirement details)<br />
  */
-class BaseConfigurationTest extends \PHPUnit_Framework_TestCase {
+class BaseConfigurationTest extends TestCase {
 
    public function testSetSection() {
 

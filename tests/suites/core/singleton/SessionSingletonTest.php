@@ -24,9 +24,12 @@ use APF\core\http\RequestImpl;
 use APF\core\singleton\ApplicationSingleton;
 use APF\core\singleton\SessionSingleton;
 use APF\core\singleton\Singleton;
+use Exception;
+use PHPUnit\Framework\TestCase;
+use ReflectionException;
 use ReflectionProperty;
 
-class SessionSingletonTest extends \PHPUnit_Framework_TestCase {
+class SessionSingletonTest extends TestCase {
 
    const TEST_TAG = 'test';
    const MODEL_CLASS = TagModel::class;
@@ -35,6 +38,8 @@ class SessionSingletonTest extends \PHPUnit_Framework_TestCase {
    /**
     * Test whether singleton, session singleton, and application singleton caches
     * are not interfering. See issue ID#286 for details.
+    * @throws ReflectionException
+    * @throws Exception
     */
    public function testCacheBoundaries() {
 
@@ -77,6 +82,9 @@ class SessionSingletonTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws Exception
+    */
    public function testSimpleCreation() {
 
       SessionSingleton::deleteInstance(self::MODEL_CLASS);
@@ -90,6 +98,9 @@ class SessionSingletonTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws Exception
+    */
    public function testConstructorCreation() {
 
       SessionSingleton::deleteInstance(self::MODEL_CLASS);
@@ -100,6 +111,9 @@ class SessionSingletonTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws Exception
+    */
    public function testSimpleInstanceIdCreation() {
 
       SessionSingleton::deleteInstance(self::MODEL_CLASS);
@@ -117,6 +131,9 @@ class SessionSingletonTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws Exception
+    */
    public function testConstructorInstanceIdCreation() {
 
       SessionSingleton::deleteInstance(self::MODEL_CLASS, self::INSTANCE_ID);
@@ -127,6 +144,9 @@ class SessionSingletonTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws Exception
+    */
    public function testInstanceDeletion() {
 
       SessionSingleton::deleteInstance(self::MODEL_CLASS);
@@ -144,6 +164,9 @@ class SessionSingletonTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws Exception
+    */
    public function testInstanceWithIdDeletion() {
 
       /* @var $model TagModel */

@@ -24,11 +24,12 @@ use APF\tools\form\expression\ValidationMarkerTemplateExpression;
 use APF\tools\form\taglib\ValidationListenerTag;
 use APF\tools\form\validator\AbstractFormValidator;
 use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the capabilities of the validation listener expression.
  */
-class ValidationListenerTemplateExpressionTest extends \PHPUnit_Framework_TestCase {
+class ValidationListenerTemplateExpressionTest extends TestCase {
 
    /**
     * Tests whether the validation expression correctly detects responsibility.

@@ -20,22 +20,29 @@
  */
 namespace APF\tests\suites\tools\form\taglib;
 
+use APF\core\pagecontroller\ParserException;
+use APF\tools\form\FormException;
 use APF\tools\form\taglib\AddFormControlValidatorTag;
 use APF\tools\form\taglib\ButtonTag;
 use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\form\taglib\TextFieldTag;
 use APF\tools\form\validator\TextLengthValidator;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use ReflectionException;
 use ReflectionProperty;
 
 /**
  * Test validator construction and attachment to form controls.
  */
-class AddFormControlValidatorTagTest extends \PHPUnit_Framework_TestCase {
+class AddFormControlValidatorTagTest extends TestCase {
 
    /**
     * Ensure form validator is constructed correctly (applying context and language) as well as
     * injected form control to validate and the button to trigger the validation.
+    * @throws FormException
+    * @throws ParserException
+    * @throws ReflectionException
     */
    public function testFormValidatorSetup() {
 
@@ -45,7 +52,7 @@ class AddFormControlValidatorTagTest extends \PHPUnit_Framework_TestCase {
       $context = 'context';
       $language = 'test-lang';
 
-      /* @var $form HtmlFormTag|PHPUnit_Framework_MockObject_MockObject */
+      /* @var $form HtmlFormTag|MockObject */
       $form = $this->getMockBuilder(HtmlFormTag::class)
             ->setMethods(['getFormElementByName'])
             ->getMock();
@@ -72,7 +79,7 @@ class AddFormControlValidatorTagTest extends \PHPUnit_Framework_TestCase {
                   [$buttonName, $button]
             ]));
 
-      /* @var $addValidatorTag AddFormControlValidatorTag|PHPUnit_Framework_MockObject_MockObject */
+      /* @var $addValidatorTag AddFormControlValidatorTag|MockObject */
       $addValidatorTag = $this->getMockBuilder(AddFormControlValidatorTag::class)
             ->setMethods(['getForm'])
             ->getMock();

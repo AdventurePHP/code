@@ -1,4 +1,5 @@
 <?php
+
 use APF\tests\suites\core\service\DummyService;
 use APF\tests\suites\core\service\DummyServiceTwo;
 

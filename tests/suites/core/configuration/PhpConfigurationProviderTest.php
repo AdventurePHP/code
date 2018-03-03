@@ -26,6 +26,7 @@ use APF\core\configuration\ConfigurationManager;
 use APF\core\configuration\provider\php\PhpConfigurationProvider;
 use APF\core\loader\RootClassLoader;
 use APF\core\loader\StandardClassLoader;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the PHP file based configuration provider.
@@ -34,7 +35,7 @@ use APF\core\loader\StandardClassLoader;
  * @version
  * Version 0.1, 07.03.2015 (see ID#243 for requirement details)<br />
  */
-class PhpConfigurationProviderTest extends \PHPUnit_Framework_TestCase {
+class PhpConfigurationProviderTest extends TestCase {
 
    const TEST_VENDOR = 'TEST';
    const TEST_NAMESPACE = '';

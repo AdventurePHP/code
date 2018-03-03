@@ -21,8 +21,9 @@
 namespace APF\tests\suites\tools\validation;
 
 use APF\tools\validation\PhoneNumberValidator;
+use PHPUnit\Framework\TestCase;
 
-class PhoneNumberValidationTest extends \PHPUnit_Framework_TestCase {
+class PhoneNumberValidationTest extends TestCase {
 
    public function testStandard() {
       $numbers = [

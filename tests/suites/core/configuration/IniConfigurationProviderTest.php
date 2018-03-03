@@ -20,11 +20,13 @@
  */
 namespace APF\tests\suites\core\configuration;
 
+use APF\core\configuration\ConfigurationException;
 use APF\core\configuration\ConfigurationManager;
 use APF\core\configuration\provider\ini\IniConfiguration;
 use APF\core\configuration\provider\ini\IniConfigurationProvider;
 use APF\core\loader\RootClassLoader;
 use APF\core\loader\StandardClassLoader;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the INI file based configuration provider.
@@ -33,7 +35,7 @@ use APF\core\loader\StandardClassLoader;
  * @version
  * Version 0.1, 11.03.2015 (see ID#243 for requirement details)<br />
  */
-class IniConfigurationProviderTest extends \PHPUnit_Framework_TestCase {
+class IniConfigurationProviderTest extends TestCase {
 
    const TEST_VENDOR = 'TEST';
    const TEST_NAMESPACE = '';
@@ -45,6 +47,9 @@ class IniConfigurationProviderTest extends \PHPUnit_Framework_TestCase {
 
    private static $originalIniProvider;
 
+   /**
+    * @throws ConfigurationException
+    */
    public static function setUpBeforeClass() {
 
       // setup static configuration resource path for test purposes

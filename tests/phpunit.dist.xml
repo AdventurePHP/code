@@ -49,19 +49,20 @@
         timeoutForSmallTests="1"
         timeoutForMediumTests="10"
         timeoutForLargeTests="60"
-        verbose="false">
+        verbose="true"
+        beStrictAboutTestsThatDoNotTestAnything="false">
     <testsuites>
 
         <testsuite name="AdventurePHPFramework - Core">
-            <directory phpVersion="5.5.0" phpVersionOperator=">=">suites/core</directory>
+            <directory phpVersion="7.0.0" phpVersionOperator=">=">suites/core</directory>
         </testsuite>
 
         <testsuite name="AdventurePHPFramework - Modules">
-            <directory phpVersion="5.5.0" phpVersionOperator=">=">suites/modules</directory>
+            <directory phpVersion="7.0.0" phpVersionOperator=">=">suites/modules</directory>
         </testsuite>
 
         <testsuite name="AdventurePHPFramework - Tools">
-            <directory phpVersion="5.5.0" phpVersionOperator=">=">suites/tools</directory>
+            <directory phpVersion="7.0.0" phpVersionOperator=">=">suites/tools</directory>
         </testsuite>
 
     </testsuites>

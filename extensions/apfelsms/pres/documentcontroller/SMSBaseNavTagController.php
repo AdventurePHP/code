@@ -23,23 +23,12 @@ namespace APF\extensions\apfelsms\pres\documentcontroller;
 use APF\core\pagecontroller\BaseDocumentController;
 use APF\tools\link\Url;
 
-
 /**
  * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version v0.1 (15.05.13) Introducted class to add support to keep certain request parameters in url
  *
  */
 abstract class SMSBaseNavTagController extends BaseDocumentController {
-
-
-   /**
-    * Key for "keepRequestParams"-Parameter, which keeps all parameters
-    *
-    * @var string KEEPALLPARAMSKEY
-    *
-    * @deprecated use KEEP_ALL_PARAMS_KEY instead
-    */
-   const KEEPALLPARAMSKEY = '__SMS-ALL__';
 
    /**
     * Key for "keepRequestParams"-Parameter, which keeps all parameters
@@ -51,6 +40,7 @@ abstract class SMSBaseNavTagController extends BaseDocumentController {
 
    /**
     * @return Url A prepared url as prototype for page links (clone it!)
+    * @throws \APF\tools\link\UrlFormatException
     */
    protected function getUrlPrototype() {
 
@@ -60,7 +50,7 @@ abstract class SMSBaseNavTagController extends BaseDocumentController {
 
 
       // keep all parameters (leave url unchanged)
-      if ($keepRequestParams == self::KEEPALLPARAMSKEY) {
+      if ($keepRequestParams == self::KEEP_ALL_PARAMS_KEY) {
          return $url;
       }
 

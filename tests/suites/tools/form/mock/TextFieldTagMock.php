@@ -20,6 +20,8 @@
  */
 namespace APF\tests\suites\tools\form\mock;
 
+use APF\core\pagecontroller\ParserException;
+use APF\tools\form\FormException;
 use APF\tools\form\taglib\TextFieldTag;
 
 /**
@@ -30,11 +32,17 @@ class TextFieldTagMock extends TextFieldTag {
    public $onParseTimeExecuted = false;
    public $onAfterAppendExecuted = false;
 
+   /**
+    * @throws FormException
+    */
    public function onParseTime() {
       parent::onParseTime();
       $this->onParseTimeExecuted = true;
    }
 
+   /**
+    * @throws ParserException
+    */
    public function onAfterAppend() {
       parent::onAfterAppend();
       $this->onAfterAppendExecuted = true;

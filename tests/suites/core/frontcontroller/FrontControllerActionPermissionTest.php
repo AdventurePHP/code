@@ -22,17 +22,20 @@ namespace APF\tests\suites\core\frontcontroller;
 
 use APF\core\frontcontroller\Action;
 use APF\core\frontcontroller\Frontcontroller;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use ReflectionException;
 use ReflectionMethod;
 use ReflectionProperty;
 
 /**
  * Tests the Frontcontroller's action execution capabilities.
  */
-class FrontControllerActionPermissionTest extends \PHPUnit_Framework_TestCase {
+class FrontControllerActionPermissionTest extends TestCase {
 
    /**
     * Tests whether action is only executed in case of matching types.
+    * @throws ReflectionException
     */
    public function testType() {
 
@@ -55,6 +58,7 @@ class FrontControllerActionPermissionTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * @return ReflectionProperty
+    * @throws ReflectionException
     */
    private function getActionStackProperty() {
       $actionStack = new ReflectionProperty(Frontcontroller::class, 'actionStack');
@@ -67,7 +71,7 @@ class FrontControllerActionPermissionTest extends \PHPUnit_Framework_TestCase {
     * @param string $type Action type.
     * @param string $typeToRun Action type that will be executed for test.
     *
-    * @return SimpleTestAction|PHPUnit_Framework_MockObject_MockObject
+    * @return SimpleTestAction|MockObject
     */
    private function getActionForTypeTest($type, $typeToRun) {
       $mock = $this->getMockBuilder(SimpleTestAction::class)
@@ -83,6 +87,7 @@ class FrontControllerActionPermissionTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * @return ReflectionMethod
+    * @throws ReflectionException
     */
    private function getRunActionsMethod() {
       $runActions = new ReflectionMethod(Frontcontroller::class, 'runActions');
@@ -93,6 +98,7 @@ class FrontControllerActionPermissionTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests whether action is only executed in case of being active.
+    * @throws ReflectionException
     */
    public function testActive() {
 
@@ -116,7 +122,7 @@ class FrontControllerActionPermissionTest extends \PHPUnit_Framework_TestCase {
    /**
     * @param bool $active True in case action is active, false otherwise.
     *
-    * @return SimpleTestAction|PHPUnit_Framework_MockObject_MockObject
+    * @return SimpleTestAction|MockObject
     */
    private function getActionForActiveTest($active) {
       $mock = $this->getMockBuilder(SimpleTestAction::class)
@@ -132,6 +138,7 @@ class FrontControllerActionPermissionTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests whether action is only executed in case they are allowed to be executed (a.k.a. not being protected).
+    * @throws ReflectionException
     */
    public function testAllowExecution() {
 
@@ -155,7 +162,7 @@ class FrontControllerActionPermissionTest extends \PHPUnit_Framework_TestCase {
    /**
     * @param bool $allowExecution True in case action may be executed, false otherwise.
     *
-    * @return SimpleTestAction|PHPUnit_Framework_MockObject_MockObject
+    * @return SimpleTestAction|MockObject
     */
    private function getActionForProtectionTest($allowExecution) {
       $mock = $this->getMockBuilder(SimpleTestAction::class)

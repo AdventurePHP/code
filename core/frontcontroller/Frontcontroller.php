@@ -272,42 +272,6 @@ class Frontcontroller extends APFObject {
    }
 
    /**
-    * Registers an action with the front controller. This includes action configuration using
-    * the action params defined within the action mapping. Each action definition is expected
-    * to be stored in the <em>{ENVIRONMENT}_actionconfig.*</em> file under the namespace
-    * <em>{$namespace}\{$this->context}.</em>
-    * <p/>
-    * Using the forth parameter, you can directly register an action URL mapping. URL mappings
-    * allow you to shorten action URLs from e.g. <em>VENDOR_foo-action:bar=a:b|c:d</em> to
-    * <em>bar=a:b|c:d</em>. For details, please refer to <em>Frontcontroller::registerActionUrlMapping()</em>.
-    *
-    * @param string $namespace Namespace of the action to register.
-    * @param string $name Name of the action to register.
-    * @param array $params (Input-) params of the action.
-    * @param string $urlToken Name of the action URL mapping token to register along with the action.
-    *
-    * @deprecated Please use addAction() instead!
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 08.06.2007<br />
-    * Version 0.2, 01.07.2007 (Action namespace is now translated at the addAction() method)<br />
-    * Version 0.3, 01.07.2007 (Config params are now parsed correctly)<br />
-    * Version 0.4, 27.09.2010 (Removed synthetic "actions" sub-namespace)<br />
-    * Version 0.5, 19.03.2014 (Added implicit registration of action mapping)<br />
-    * Version 0.6, 27.03.2016 (Removed erroneous parameter mapping and set method to deprecated)<br />
-    */
-   public function registerAction($namespace, $name, array $params = [], $urlToken = null) {
-
-      $this->addAction($namespace, $name, $params);
-
-      // register action URL mapping if desired
-      if ($urlToken !== null) {
-         $this->registerActionUrlMapping(new ActionUrlMapping($urlToken, $namespace, $name));
-      }
-   }
-
-   /**
     * Adds an action to the front controller action stack. Please note, that the namespace of
     * the namespace of the action config is added the current context. The name of the
     * config file is concatenated by the current environment and the string

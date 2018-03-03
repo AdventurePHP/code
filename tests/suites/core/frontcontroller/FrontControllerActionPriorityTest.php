@@ -20,10 +20,12 @@
  */
 namespace APF\tests\suites\core\frontcontroller;
 
+use APF\core\configuration\ConfigurationException;
 use APF\core\configuration\ConfigurationManager;
 use APF\core\configuration\provider\ini\IniConfiguration;
 use APF\core\configuration\provider\ini\IniConfigurationProvider;
 use APF\core\frontcontroller\Frontcontroller;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests prioritization of front controller actions.
@@ -32,7 +34,7 @@ use APF\core\frontcontroller\Frontcontroller;
  * @version
  * Version 0.1, 11.03.2014<br />
  */
-class FrontControllerActionPriorityTest extends \PHPUnit_Framework_TestCase {
+class FrontControllerActionPriorityTest extends TestCase {
 
    const TEST_ACTION_NAME = 'TestAction';
    const TEST_ACTION_NAMESPACE = 'APF\tests\core\frontcontroller';
@@ -43,6 +45,9 @@ class FrontControllerActionPriorityTest extends \PHPUnit_Framework_TestCase {
     */
    private $initialIniProvider;
 
+   /**
+    * @throws ConfigurationException
+    */
    public function setUp() {
 
       // setup config provider to fake tests

@@ -23,12 +23,15 @@ namespace APF\modules\guestbook2009\biz;
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\http\mixins\GetRequestResponse;
 use APF\core\pagecontroller\APFObject;
+use APF\core\service\APFDIService;
+use APF\core\service\APFService;
 use APF\core\singleton\Singleton;
 use APF\modules\guestbook2009\data\GuestbookMapper;
 use APF\modules\pager\biz\PagerManager;
-use APF\modules\pager\biz\PagerManagerFabric;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
+use APF\tools\link\UrlFormatException;
+use Exception;
 
 /**
  * Implements the central business component of the guestbook. Must be initialized with
@@ -75,6 +78,8 @@ final class GuestbookService extends APFObject {
     *
     * @return Entry[] The paged entry list.
     *
+    * @throws Exception
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 21.05.2009<br />
@@ -114,16 +119,15 @@ final class GuestbookService extends APFObject {
    private function &getPager() {
 
       if ($this->pager === null) {
-         /* @var $pMF PagerManagerFabric */
-         $pMF = $this->getServiceObject(PagerManagerFabric::class);
-         $this->pager = $pMF->getPagerManager($this->pagerConfigSection);
+         $this->pager = $this->getServiceObject(PagerManager::class, [], APFService::SERVICE_TYPE_NORMAL);
+         $this->pager->init($this->pagerConfigSection);
       }
 
       return $this->pager;
    }
 
    /**
-    * @return GuestbookModel
+    * @return APFService|GuestbookModel
     */
    protected function &getModel() {
       return $this->getServiceObject(GuestbookModel::class);
@@ -132,7 +136,7 @@ final class GuestbookService extends APFObject {
    /**
     * Returns the configured instance of the guestbook's data component.
     *
-    * @return GuestbookMapper The mapper instance.
+    * @return APFDIService|GuestbookMapper
     *
     * @author Christian Achatz
     * @version
@@ -214,6 +218,8 @@ final class GuestbookService extends APFObject {
     *
     * @param Entry $entry The entry domain object.
     *
+    * @throws UrlFormatException
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 21.05.2009<br />
@@ -226,7 +232,7 @@ final class GuestbookService extends APFObject {
 
       // display the admin start page
       $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery([
-            'gbview'    => 'admin',
+            'gbview' => 'admin',
             'adminview' => null
       ]));
       $this->getResponse()->forward($link);
@@ -234,6 +240,8 @@ final class GuestbookService extends APFObject {
 
    /**
     * Logs the user out and displays the list view.
+    *
+    * @throws UrlFormatException
     *
     * @author Christian Achatz
     * @version
@@ -247,7 +255,7 @@ final class GuestbookService extends APFObject {
 
       // display the list view
       $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery([
-            'gbview'    => 'list',
+            'gbview' => 'list',
             'adminview' => null
       ]));
       $this->getResponse()->forward($link);
@@ -261,6 +269,8 @@ final class GuestbookService extends APFObject {
     * Checks, whether the current a user is logged in and the admin backend
     * may be displayed. If no, the user is redirected to the list view.
     *
+    * @throws UrlFormatException
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 21.05.2009<br />
@@ -273,7 +283,7 @@ final class GuestbookService extends APFObject {
       // redirect to admin page
       if ($loggedId !== 'true') {
          $startLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery([
-               'gbview'    => 'list',
+               'gbview' => 'list',
                'adminview' => null
          ]));
          $this->getResponse()->forward($startLink);
@@ -287,6 +297,8 @@ final class GuestbookService extends APFObject {
     * @param User $user The user object containing the username and password typed by the user.
     *
     * @return boolean False in case, the credential check failed, true otherwise.
+    *
+    * @throws UrlFormatException
     *
     * @author Christian Achatz
     * @version
@@ -302,7 +314,7 @@ final class GuestbookService extends APFObject {
 
          // redirect to admin page
          $adminLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery([
-               'gbview'    => 'admin',
+               'gbview' => 'admin',
                'adminview' => null
          ]));
          $this->getResponse()->forward($adminLink);
@@ -315,6 +327,8 @@ final class GuestbookService extends APFObject {
     * Saves the entry and forwards to the list view.
     *
     * @param Entry $entry The guestbook entry to save.
+    *
+    * @throws UrlFormatException
     *
     * @author Christian Achatz
     * @version

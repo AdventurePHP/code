@@ -21,6 +21,7 @@
 namespace APF\tests\suites\tools\link\taglib;
 
 use APF\tools\link\taglib\HtmlLinkTag;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the HtmlLinkTag functionality regarding the active marker.
@@ -29,7 +30,7 @@ use APF\tools\link\taglib\HtmlLinkTag;
  * @version
  * Version 0.1, 05.08.2014<br />
  */
-class HtmlLinkTagTest extends \PHPUnit_Framework_TestCase {
+class HtmlLinkTagTest extends TestCase {
 
    public function testIsActiveSingleParameter() {
 

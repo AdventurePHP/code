@@ -20,26 +20,35 @@
  */
 namespace APF\tests\suites\modules\genericormapper\tools;
 
+use APF\core\configuration\ConfigurationException;
 use APF\core\configuration\ConfigurationManager;
 use APF\core\configuration\ConfigurationProvider;
 use APF\core\configuration\provider\ini\IniConfigurationProvider;
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\ParserException;
 use APF\modules\genericormapper\data\tools\GenericORMapperDomainObjectGenerator;
+use APF\tools\filesystem\FilesystemException;
 use APF\tools\filesystem\Folder;
+use APF\tools\form\FormException;
 use APF\tools\form\taglib\HtmlFormTag;
+use PHPUnit\Framework\TestCase;
+use ReflectionException;
 use ReflectionMethod;
 use ReflectionProperty;
 
 /**
  * Tests domain object / DTO generation for the Generic O/R Mapper.
  */
-class GenericORMapperDomainObjectGeneratorTest extends \PHPUnit_Framework_TestCase {
+class GenericORMapperDomainObjectGeneratorTest extends TestCase {
 
    /**
     * @var ConfigurationProvider
     */
    protected static $configProvider;
 
+   /**
+    * @throws ConfigurationException
+    */
    public static function setUpBeforeClass() {
 
       // save original config provider
@@ -62,6 +71,9 @@ class GenericORMapperDomainObjectGeneratorTest extends \PHPUnit_Framework_TestCa
 
    }
 
+   /**
+    * @throws FilesystemException
+    */
    public static function tearDownAfterClass() {
       // restore previous INI configuration provider
       ConfigurationManager::registerProvider('ini', self::$configProvider);
@@ -72,6 +84,7 @@ class GenericORMapperDomainObjectGeneratorTest extends \PHPUnit_Framework_TestCa
 
    /**
     * Tests whether "real" object properties are generated to allow usage of the form fill mechanism.
+    * @throws ReflectionException
     */
    public function testGenerateBaseObjectCode() {
 
@@ -164,22 +177,35 @@ class GenericORMapperDomainObjectGeneratorTest extends \PHPUnit_Framework_TestCa
     */
    public function testDto() {
 
+      /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+      /** @noinspection PhpUndefinedClassInspection */
+      /** @noinspection PhpUndefinedNamespaceInspection */
       $object = new \APF\tests\suites\modules\genericormapper\tools\test\Dummy();
 
       // test object ID definition
+      /** @noinspection PhpUndefinedMethodInspection */
       $this->assertNull($object->getObjectId());
       $expected = 42;
+      /** @noinspection PhpUndefinedMethodInspection */
       $object->setObjectId($expected);
+      /** @noinspection PhpUndefinedMethodInspection */
       $this->assertEquals($expected, $object->getObjectId());
+      /** @noinspection PhpUndefinedMethodInspection */
       $this->assertEquals($expected, $object->getProperty('DummyID'));
+      /** @noinspection PhpUndefinedMethodInspection */
       $object->deleteProperty('DummyID');
 
       // test property setting
+      /** @noinspection PhpUndefinedMethodInspection */
       $object->setProperty('Foo', 'Bar');
+      /** @noinspection PhpUndefinedMethodInspection */
       $this->assertNull($object->getProperty('Foo'));
 
+      /** @noinspection PhpUndefinedMethodInspection */
       $object->setProperty('Name', 'Foo');
+      /** @noinspection PhpUndefinedMethodInspection */
       $this->assertEquals('Foo', $object->getProperty('Name'));
+      /** @noinspection PhpUndefinedMethodInspection */
       $object->deleteProperty('Name');
 
       // test setting multiple properties
@@ -188,48 +214,71 @@ class GenericORMapperDomainObjectGeneratorTest extends \PHPUnit_Framework_TestCa
             'Name' => 'Foo',
             'Value' => 'Bar'
       ];
+      /** @noinspection PhpUndefinedMethodInspection */
       $object->setProperties(array_merge($expected, ['Foo' => 'Bar']));
 
+      /** @noinspection PhpUndefinedMethodInspection */
       $this->assertEquals($expected, $object->getProperties());
 
       // test convenience methods
+      /** @noinspection PhpUndefinedMethodInspection */
       $object->deleteProperty('DummyID');
+      /** @noinspection PhpUndefinedMethodInspection */
       $object->deleteProperty('Name');
+      /** @noinspection PhpUndefinedMethodInspection */
       $object->deleteProperty('Value');
 
+      /** @noinspection PhpUndefinedMethodInspection */
       $this->assertNotNull($object->getProperties());
+      /** @noinspection PhpUndefinedMethodInspection */
       $this->assertEmpty($object->getProperties());
 
+      /** @noinspection PhpUndefinedMethodInspection */
       $object->setProperty('DummyID', 42);
+      /** @noinspection PhpUndefinedMethodInspection */
       $this->assertEquals(42, $object->getObjectId());
 
+      /** @noinspection PhpUndefinedMethodInspection */
       $object->setName('Foo');
+      /** @noinspection PhpUndefinedMethodInspection */
       $this->assertEquals('Foo', $object->getName());
 
+      /** @noinspection PhpUndefinedMethodInspection */
       $object->setValue('Bar');
+      /** @noinspection PhpUndefinedMethodInspection */
       $this->assertEquals('Bar', $object->getValue());
 
+      /** @noinspection PhpUndefinedMethodInspection */
       $this->assertEquals($expected, $object->getProperties());
 
+      /** @noinspection PhpUndefinedMethodInspection */
       $object->deleteName();
+      /** @noinspection PhpUndefinedMethodInspection */
       $this->assertNull($object->getName());
 
+      /** @noinspection PhpUndefinedMethodInspection */
       $object->deleteValue();
+      /** @noinspection PhpUndefinedMethodInspection */
       $this->assertNull($object->getValue());
 
       $creationTimestamp = '2017-09-02 17:46:21';
       $modificationTimestamp = '0000-00-00 00:00:00';
+      /** @noinspection PhpUndefinedMethodInspection */
       $object->setProperties([
             'CreationTimestamp' => $creationTimestamp,
             'ModificationTimestamp' => $modificationTimestamp
       ]);
+      /** @noinspection PhpUndefinedMethodInspection */
       $this->assertEquals($creationTimestamp, $object->getCreationTimestamp());
+      /** @noinspection PhpUndefinedMethodInspection */
       $this->assertEquals($modificationTimestamp, $object->getModificationTimestamp());
 
    }
 
    /**
     * Test form mapping capabilities for "new" domain objects.
+    * @throws ParserException
+    * @throws FormException
     */
    public function testFormMapping() {
 
@@ -257,8 +306,13 @@ class GenericORMapperDomainObjectGeneratorTest extends \PHPUnit_Framework_TestCa
       $this->assertEmpty($value->getValue());
 
       // test form presetting
+      /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+      /** @noinspection PhpUndefinedClassInspection */
+      /** @noinspection PhpUndefinedNamespaceInspection */
       $model = new \APF\tests\suites\modules\genericormapper\tools\test\Dummy();
+      /** @noinspection PhpUndefinedMethodInspection */
       $model->setName('Foo');
+      /** @noinspection PhpUndefinedMethodInspection */
       $model->setValue('Bar');
 
       $form->fillForm($model);
@@ -267,14 +321,21 @@ class GenericORMapperDomainObjectGeneratorTest extends \PHPUnit_Framework_TestCa
       $this->assertEquals('Bar', $value->getValue());
 
       // test model presetting
+      /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+      /** @noinspection PhpUndefinedClassInspection */
+      /** @noinspection PhpUndefinedNamespaceInspection */
       $model = new \APF\tests\suites\modules\genericormapper\tools\test\Dummy();
 
+      /** @noinspection PhpUndefinedMethodInspection */
       $this->assertNull($model->getName());
+      /** @noinspection PhpUndefinedMethodInspection */
       $this->assertNull($model->getValue());
 
       $form->fillModel($model);
 
+      /** @noinspection PhpUndefinedMethodInspection */
       $this->assertEquals('Foo', $model->getName());
+      /** @noinspection PhpUndefinedMethodInspection */
       $this->assertEquals('Bar', $model->getValue());
 
    }

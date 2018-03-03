@@ -21,10 +21,12 @@
 namespace APF\tests\suites\core\pagecontroller;
 
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\ParserException;
 use APF\core\pagecontroller\TemplateTag;
 use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
-class TemplateTagTest extends \PHPUnit_Framework_TestCase {
+class TemplateTagTest extends TestCase {
 
    protected function setUp() {
       // setup POST super global for form testing...
@@ -33,6 +35,9 @@ class TemplateTagTest extends \PHPUnit_Framework_TestCase {
       }
    }
 
+   /**
+    * @throws ParserException
+    */
    public function testGetForm1() {
       $template = new TemplateTag();
       $template->setContent('<html:form name="testFormName"><form:button name="testButtonName" /></html:form>');
@@ -52,6 +57,9 @@ class TemplateTagTest extends \PHPUnit_Framework_TestCase {
       $template->getForm('testFormName');
    }
 
+   /**
+    * @throws ParserException
+    */
    public function testGetTemplate1() {
       $template = new TemplateTag();
       $template->setContent('<html:template name="testTemplateName">foo</html:template>');

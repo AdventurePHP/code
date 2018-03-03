@@ -36,6 +36,15 @@ class FakeIniProvider extends IniConfigurationProvider {
       $this->configurations[$namespace . $name] = $config;
    }
 
+   /**
+    * @param $namespace
+    * @param $context
+    * @param $language
+    * @param $environment
+    * @param $name
+    * @return Configuration|IniConfiguration
+    * @throws ConfigurationException
+    */
    public function loadConfiguration($namespace, $context, $language, $environment, $name) {
 
       if (isset($this->configurations[$namespace . $name])) {

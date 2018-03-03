@@ -21,10 +21,13 @@
 namespace APF\tests\suites\tools\form\validator;
 
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\ParserException;
+use APF\tools\form\FormException;
 use APF\tools\form\HtmlForm;
 use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\form\validator\TextFieldValidator;
 use APF\tools\form\validator\TextLengthValidator;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests form validation capabilities for
@@ -37,13 +40,14 @@ use APF\tools\form\validator\TextLengthValidator;
  * @version
  * Version 0.1, 03.08.2016 (ID#XXX)<br />
  */
-class FormValidationTest extends \PHPUnit_Framework_TestCase {
+class FormValidationTest extends TestCase {
 
    /**
     * Tests validation of a statically defined form. This ensures that
     * the form is fully created when accessing it within a controller.
     *
     * Use Case: form is not sent.
+    * @throws ParserException
     */
    public function testStaticFormNotSent() {
 
@@ -70,6 +74,7 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * @return HtmlFormTag A static form to be tested.
+    * @throws ParserException
     */
    private function getStaticForm() {
 
@@ -112,6 +117,8 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
     * the form is fully created when accessing it within a controller.
     *
     * Use Case: test mandatory validation of field-1
+    * @throws ParserException
+    * @throws FormException
     */
    public function testStaticFormMandatoryFieldOne() {
 
@@ -135,6 +142,8 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
     * the form is fully created when accessing it within a controller.
     *
     * Use Case: optional field submitted with valid data
+    * @throws ParserException
+    * @throws FormException
     */
    public function testStaticFormOptionalFieldSubmittedCorrectly() {
 
@@ -162,6 +171,8 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
     * the form is fully created when accessing it within a controller.
     *
     * Use Case: optional field not fulfilling validation requirements
+    * @throws ParserException
+    * @throws FormException
     */
    public function testStaticFormOptionalFieldSubmittedErroneous() {
 
@@ -188,6 +199,9 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
     * controller. Ensures that validation mechanisms also apply as with dynamic forms.
     *
     * Use Case: form is not sent
+    *
+    * @throws FormException
+    * @throws ParserException
     */
    public function testDynamicFormNotSent() {
 
@@ -205,6 +219,8 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
     * @param bool $fieldTwoOptional True in case field-2 should be set to hidden, false otherwise.
     *
     * @return HtmlFormTag A form skeleton for dynamic configuration within controllers.
+    * @throws FormException
+    * @throws ParserException
     */
    private function getDynamicForm($fieldTwoOptional = true) {
 
@@ -242,6 +258,9 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
     * controller. Ensures that validation mechanisms also apply as with dynamic forms.
     *
     * Use Case: form sent but with empty values
+    *
+    * @throws FormException
+    * @throws ParserException
     */
    public function testDynamicFormSentWithEmptyValues() {
 
@@ -261,6 +280,8 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
     * controller. Ensures that validation mechanisms also apply as with dynamic forms.
     *
     * Use Case: mandatory validation of field-1
+    * @throws FormException
+    * @throws ParserException
     */
    public function testDynamicFormMandatoryFieldOne() {
 
@@ -283,6 +304,8 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
     * controller. Ensures that validation mechanisms also apply as with dynamic forms.
     *
     * Use Case: mandatory validation of field-1 with field-2 visible
+    * @throws FormException
+    * @throws ParserException
     */
    public function testDynamicFormValidationFieldTwoVisible() {
 
@@ -305,6 +328,8 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
     * controller. Ensures that validation mechanisms also apply as with dynamic forms.
     *
     * Use Case: mandatory validation of field-1 with field-2 hidden by controller
+    * @throws FormException
+    * @throws ParserException
     */
    public function testDynamicFormFieldTwoHiddenByController() {
 
@@ -329,6 +354,8 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
     * controller. Ensures that validation mechanisms also apply as with dynamic forms.
     *
     * Use Case: optional field submitted with correct value
+    * @throws FormException
+    * @throws ParserException
     */
    public function testDynamicFormOptionalFieldSubmittedCorrectly() {
 
@@ -355,6 +382,8 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
     * controller. Ensures that validation mechanisms also apply as with dynamic forms.
     *
     * Use Case: optional field not fulfilling validation requirements
+    * @throws FormException
+    * @throws ParserException
     */
    public function testDynamicFormOptionalFieldSubmittedErroneous() {
 
@@ -381,6 +410,8 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
     * within a controller. Ensures that validation mechanisms also apply as with semi-dynamic forms.
     *
     * Use Case: form not sent
+    * @throws FormException
+    * @throws ParserException
     */
    public function testSemiDynamicFormNotSent() {
 
@@ -406,6 +437,7 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * @return HtmlFormTag A form skeleton for dynamic configuration within controllers.
+    * @throws ParserException
     */
    private function getSemiDynamicForm() {
 
@@ -437,6 +469,8 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
     * within a controller. Ensures that validation mechanisms also apply as with semi-dynamic forms.
     *
     * Use Case: form sent with empty values
+    * @throws ParserException
+    * @throws FormException
     */
    public function testSemiDynamicFormSentWithEmptyValues() {
 
@@ -466,6 +500,8 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
     * within a controller. Ensures that validation mechanisms also apply as with semi-dynamic forms.
     *
     * Use Case: mandatory validation of field-1
+    * @throws ParserException
+    * @throws FormException
     */
    public function testSemiDynamicFormMandatoryFieldOne() {
 
@@ -499,6 +535,8 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
     * within a controller. Ensures that validation mechanisms also apply as with semi-dynamic forms.
     *
     * Use Case: mandatory validation of field-1 with field-2 hidden by controller
+    * @throws ParserException
+    * @throws FormException
     */
    public function testSemiDynamicFormFieldTwoHiddenByController() {
 
@@ -534,6 +572,8 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
     * within a controller. Ensures that validation mechanisms also apply as with semi-dynamic forms.
     *
     * Use Case: optional field submitted with correct data
+    * @throws ParserException
+    * @throws FormException
     */
    public function testSemiDynamicFormOptionalFieldSubmittedCorrectly() {
 
@@ -571,6 +611,8 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
     * within a controller. Ensures that validation mechanisms also apply as with semi-dynamic forms.
     *
     * Use Case: optional field not fulfilling validation requirements
+    * @throws ParserException
+    * @throws FormException
     */
    public function testSemiDynamicFormOptionalFieldSubmittedErroneous() {
 
@@ -605,6 +647,8 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests whether field set in controller gets not validated after hiding in controller.
+    * @throws ParserException
+    * @throws FormException
     */
    public function testValidationWithFormGroupHiddenInController() {
 
@@ -652,6 +696,8 @@ class FormValidationTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * ID#318: Expect all validation listeners to be notified in case of invalid form control content.
+    * @throws ParserException
+    * @throws FormException
     */
    public function testListenerNotification() {
 

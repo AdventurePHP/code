@@ -25,6 +25,8 @@ use APF\tools\link\DefaultLinkScheme;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\RewriteLinkScheme;
 use APF\tools\link\Url;
+use APF\tools\link\UrlFormatException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Implements tests for the link generator and the url abstraction.
@@ -33,7 +35,7 @@ use APF\tools\link\Url;
  * @version
  * Version 0.1, 20.12.2011
  */
-class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
+class LinkGeneratorTest extends TestCase {
 
    private static $DEFAULT_URL = '/page/001-main';
 
@@ -45,6 +47,9 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       );
    }
 
+   /**
+    * @throws UrlFormatException
+    */
    public function testUrlCreationFromString() {
       $scheme = 'https';
       $domain = 'www.domain.tld';
@@ -59,6 +64,9 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $this->assertEquals($paramValue, $url->getQueryParameter($paramName));
    }
 
+   /**
+    * @throws UrlFormatException
+    */
    public function testFrontcontrollerUrlGeneration() {
       $url = Url::fromString('')->setHost('localhost')->setScheme('http');
       $link = LinkGenerator::generateUrl(
@@ -74,6 +82,9 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $this->assertEquals('http://localhost/foo/bar/~/APF_cms_core_biz_setmodel-action/setModel/page.config.section/external', $link);
    }
 
+   /**
+    * @throws UrlFormatException
+    */
    public function testConstructorPlusFluentConfiguration() {
       $host = 'localhost';
       $scheme = 'https';
@@ -83,6 +94,9 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $this->assertEmpty($url->getQuery());
    }
 
+   /**
+    * @throws UrlFormatException
+    */
    public function testConstructorPlusParameterMerge() {
       $host = 'localhost';
       $scheme = 'http';
@@ -97,6 +111,9 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $this->assertEquals($paramTwoValue, $url->getQueryParameter($paramTwoName));
    }
 
+   /**
+    * @throws UrlFormatException
+    */
    public function testConstructorPlusQueryParameterSetting() {
       $paramOneName = 'gbview';
       $paramOneValue = 'display';
@@ -114,6 +131,9 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $this->assertContains('/foo/2/', $link);
    }
 
+   /**
+    * @throws UrlFormatException
+    */
    public function testLinkGenerationFrontcontrollerActionWithActionParsing() {
       $actionNamespace = 'APF_cms_core_biz_setmodel';
 
@@ -192,11 +212,14 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $this->assertEquals($path . '?APF_tools_media-action:streamMedia', $link);
    }
 
+   /**
+    * @throws UrlFormatException
+    */
    public function testExclusionOfNullValueAndInclusionOfZeroValueParameters() {
       $url = Url::fromString('/');
       $url->mergeQuery([
-            'foo'         => 'bar',
-            'exclude'     => null,
+            'foo' => 'bar',
+            'exclude' => null,
          // see bug with ignoring zero values in 1.15 (fixed in 1.16)
             'include-one' => '0',
             'include-two' => 0
@@ -405,8 +428,12 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws UrlFormatException
+    */
    public function testXssEscape() {
 
+      /** @noinspection Annotator */
       $injection = '<script>alert(\'foo\')</script>';
       $url = Url::fromString('/foo/bar/?\'>' . $injection . '=test');
 
@@ -420,17 +447,25 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws UrlFormatException
+    */
    public function testSimpleParameterOverwriting() {
       $url = Url::fromString('/?foo=1&amp;foo=2');
       $this->assertEquals('2', $url->getQueryParameter('foo'));
    }
 
+   /**
+    * @throws UrlFormatException
+    */
    public function testArrayParameterOverwriting() {
       $url = Url::fromString('/?a[x]=1&a[y]=2&b[]=1&b[]=2&b[2]=3&b[1]=7');
 
       $a = $url->getQueryParameter('a');
       $this->assertTrue(is_array($a));
+      /** @noinspection PhpIllegalStringOffsetInspection */
       $this->assertEquals('1', $a['x']);
+      /** @noinspection PhpIllegalStringOffsetInspection */
       $this->assertEquals('2', $a['y']);
 
       $b = $url->getQueryParameter('b');
@@ -440,6 +475,9 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $this->assertEquals('3', $b[2]);
    }
 
+   /**
+    * @throws UrlFormatException
+    */
    public function testNestedArrayParameters() {
 
       // nested arrays with mixed keys (most complex use case)
@@ -458,12 +496,19 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $b = $url->getQueryParameter('b');
 
       $this->assertTrue(is_array($b));
+      /** @noinspection PhpIllegalStringOffsetInspection */
       $this->assertTrue(is_array($b['c']));
+      /** @noinspection PhpIllegalStringOffsetInspection */
       $this->assertTrue(is_array($b['c']['d']));
+      /** @noinspection PhpIllegalStringOffsetInspection */
       $this->assertTrue(is_array($b['c']['d']['e']));
+      /** @noinspection PhpIllegalStringOffsetInspection */
       $this->assertEquals('123', $b['c']['d']['e']['f']);
    }
 
+   /**
+    * @throws UrlFormatException
+    */
    public function testMixedParameterResolvingEdgeCase() {
 
       // mixed parameter types --> later data type declaration overwrites previous one
@@ -471,10 +516,14 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $a = $url->getQueryParameter('a');
 
       $this->assertTrue(is_array($a));
+      /** @noinspection PhpIllegalStringOffsetInspection */
       $this->assertEquals('456', $a['b']);
 
    }
 
+   /**
+    * @throws UrlFormatException
+    */
    public function testMixedArrayParameterUrlGeneration() {
 
       $scheme = new DefaultLinkScheme();
@@ -522,6 +571,7 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests whether blanks are encoded properly within parameters and names.
+    * @throws UrlFormatException
     */
    public function testBlanksInParametersAndValues() {
 
@@ -540,6 +590,9 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws UrlFormatException
+    */
    public function testEncodeRfc3986() {
 
       $scheme = new DefaultLinkScheme(true, true, true);

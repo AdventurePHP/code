@@ -21,7 +21,8 @@
 namespace APF\tests\suites\core\singleton;
 
 use APF\core\singleton\ApplicationSingleton;
-use APF\core\singleton\Singleton;
+use Exception;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests application singleton object creation capabilities.
@@ -30,12 +31,15 @@ use APF\core\singleton\Singleton;
  * @version
  * Version 0.1, 31.12.2016<br />
  */
-class ApplicationSingletonTest extends \PHPUnit_Framework_TestCase {
+class ApplicationSingletonTest extends TestCase {
 
    const TEST_TAG = 'test';
    const MODEL_CLASS = TagModel::class;
    const INSTANCE_ID = 'test-id';
 
+   /**
+    * @throws Exception
+    */
    public function testSimpleCreation() {
 
       ApplicationSingleton::deleteInstance(self::MODEL_CLASS);
@@ -49,6 +53,9 @@ class ApplicationSingletonTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws Exception
+    */
    public function testConstructorCreation() {
 
       ApplicationSingleton::deleteInstance(self::MODEL_CLASS);
@@ -59,6 +66,9 @@ class ApplicationSingletonTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws Exception
+    */
    public function testSimpleInstanceIdCreation() {
 
       ApplicationSingleton::deleteInstance(self::MODEL_CLASS);
@@ -76,6 +86,9 @@ class ApplicationSingletonTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws Exception
+    */
    public function testConstructorInstanceIdCreation() {
 
       ApplicationSingleton::deleteInstance(self::MODEL_CLASS, self::INSTANCE_ID);
@@ -86,6 +99,9 @@ class ApplicationSingletonTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws Exception
+    */
    public function testInstanceDeletion() {
 
       /* @var $model TagModel */
@@ -101,17 +117,20 @@ class ApplicationSingletonTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws Exception
+    */
    public function testInstanceWithIdDeletion() {
 
       /* @var $model TagModel */
-      Singleton::getInstance(self::MODEL_CLASS, [self::TEST_TAG], self::INSTANCE_ID);
+      ApplicationSingleton::getInstance(self::MODEL_CLASS, [self::TEST_TAG], self::INSTANCE_ID);
 
-      $model = Singleton::getInstance(self::MODEL_CLASS, [], self::INSTANCE_ID);
+      $model = ApplicationSingleton::getInstance(self::MODEL_CLASS, [], self::INSTANCE_ID);
       $this->assertNotNull($model->getTag());
 
-      Singleton::deleteInstance(self::MODEL_CLASS, self::INSTANCE_ID);
+      ApplicationSingleton::deleteInstance(self::MODEL_CLASS, self::INSTANCE_ID);
 
-      $model = Singleton::getInstance(self::MODEL_CLASS, [], self::INSTANCE_ID);
+      $model = ApplicationSingleton::getInstance(self::MODEL_CLASS, [], self::INSTANCE_ID);
       $this->assertNull($model->getTag());
 
    }

@@ -20,14 +20,21 @@
  */
 namespace APF\tests\suites\tools\form\taglib;
 
+use APF\core\pagecontroller\ParserException;
+use APF\tools\form\FormException;
 use APF\tools\form\taglib\MultiSelectBoxTag;
 use APF\tools\form\taglib\SelectBoxGroupTag;
 use APF\tools\form\taglib\SelectBoxOptionTag;
+use PHPUnit\Framework\TestCase;
 
-class MultiSelectBoxTagTest extends \PHPUnit_Framework_TestCase {
+class MultiSelectBoxTagTest extends TestCase {
 
    const SELECT_BOX_NAME = 'foo';
 
+   /**
+    * @throws ParserException
+    * @throws FormException
+    */
    public function testControllerPresetting() {
 
       $_REQUEST = [];
@@ -59,6 +66,10 @@ class MultiSelectBoxTagTest extends \PHPUnit_Framework_TestCase {
       return $select;
    }
 
+   /**
+    * @throws FormException
+    * @throws ParserException
+    */
    public function testSubmitPresetting() {
 
       $_REQUEST = [];
@@ -80,6 +91,10 @@ class MultiSelectBoxTagTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws FormException
+    * @throws ParserException
+    */
    public function testControllerPresettingWithGroups() {
 
       $_REQUEST = [];
@@ -104,6 +119,10 @@ class MultiSelectBoxTagTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws FormException
+    * @throws ParserException
+    */
    public function testSubmitPresettingWithGroups() {
 
       $_REQUEST = [];

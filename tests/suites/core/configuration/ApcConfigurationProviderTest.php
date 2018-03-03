@@ -27,7 +27,8 @@ use APF\core\configuration\provider\apc\ApcConfigurationProvider;
 use APF\core\configuration\provider\ini\IniConfigurationProvider;
 use APF\core\loader\RootClassLoader;
 use APF\core\loader\StandardClassLoader;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the APC configuration provider.
@@ -36,7 +37,7 @@ use PHPUnit_Framework_MockObject_MockObject;
  * @version
  * Version 0.1, 31.12.2016 (ID#313 added tests while switching to apcu_*() methods)<br />
  */
-class ApcConfigurationProviderTest extends \PHPUnit_Framework_TestCase {
+class ApcConfigurationProviderTest extends TestCase {
 
    const TEST_VENDOR = 'TEST';
    const TEST_ENVIRONMENT = 'DEFAULT';
@@ -49,6 +50,9 @@ class ApcConfigurationProviderTest extends \PHPUnit_Framework_TestCase {
 
    private static $originalIniProvider;
 
+   /**
+    * @throws ConfigurationException
+    */
    public static function setUpBeforeClass() {
 
       // setup static configuration resource path for test purposes
@@ -86,7 +90,7 @@ class ApcConfigurationProviderTest extends \PHPUnit_Framework_TestCase {
     */
    public function testLoadConfigurationFile() {
 
-      /* @var $provider ApcConfigurationProvider|PHPUnit_Framework_MockObject_MockObject */
+      /* @var $provider ApcConfigurationProvider|MockObject */
       $provider = $this->getMockBuilder(ApcConfigurationProvider::class)
             ->setConstructorArgs(['ini'])
             ->setMethods(['getStoreIdentifier'])
@@ -130,7 +134,7 @@ class ApcConfigurationProviderTest extends \PHPUnit_Framework_TestCase {
       apcu_delete(self::INTERNAL_CACHE_KEY);
       $this->assertFalse(apcu_exists(self::INTERNAL_CACHE_KEY), 'APCu cache entry not empty. Thus test pre-condition not given.');
 
-      /* @var $provider ApcConfigurationProvider|PHPUnit_Framework_MockObject_MockObject */
+      /* @var $provider ApcConfigurationProvider|MockObject */
       $provider = $this->getMockBuilder(ApcConfigurationProvider::class)
             ->setConstructorArgs(['ini'])
             ->setMethods(['getStoreIdentifier'])
@@ -197,7 +201,7 @@ class ApcConfigurationProviderTest extends \PHPUnit_Framework_TestCase {
 
    public function testDeleteConfigurationFile() {
 
-      /* @var $provider ApcConfigurationProvider|PHPUnit_Framework_MockObject_MockObject */
+      /* @var $provider ApcConfigurationProvider|MockObject */
       $provider = $this->getMockBuilder(ApcConfigurationProvider::class)
             ->setConstructorArgs(['ini'])
             ->setMethods(['getStoreIdentifier'])

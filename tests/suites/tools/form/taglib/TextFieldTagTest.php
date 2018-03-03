@@ -20,13 +20,20 @@
  */
 namespace APF\tests\suites\tools\form\taglib;
 
+use APF\core\pagecontroller\ParserException;
+use APF\tools\form\FormException;
 use APF\tools\form\taglib\TextFieldTag;
+use PHPUnit\Framework\TestCase;
 
-class TextFieldTagTest extends \PHPUnit_Framework_TestCase {
+class TextFieldTagTest extends TestCase {
 
    const FIELD_NAME = 'foo';
    const FIELD_VALUE = 'bar';
 
+   /**
+    * @throws ParserException
+    * @throws FormException
+    */
    public function testControllerPresetting() {
 
       $_REQUEST = [];
@@ -53,6 +60,10 @@ class TextFieldTagTest extends \PHPUnit_Framework_TestCase {
       return $field;
    }
 
+   /**
+    * @throws FormException
+    * @throws ParserException
+    */
    public function testSubmitPresetting() {
 
       $_REQUEST = [];
@@ -83,14 +94,16 @@ class TextFieldTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Test whether field can be hidden by template definition and via controller
+    * @throws FormException
+    * @throws ParserException
     */
    public function testHiding() {
 
       // hide via template definition
       $field = new TextFieldTag();
       $field->setAttributes([
-            'name'   => self::FIELD_NAME,
-            'value'  => self::FIELD_VALUE,
+            'name' => self::FIELD_NAME,
+            'value' => self::FIELD_VALUE,
             'hidden' => 'true'
       ]);
       $field->onParseTime();
@@ -101,7 +114,7 @@ class TextFieldTagTest extends \PHPUnit_Framework_TestCase {
       // hide via controller
       $field = new TextFieldTag();
       $field->setAttributes([
-            'name'  => self::FIELD_NAME,
+            'name' => self::FIELD_NAME,
             'value' => self::FIELD_VALUE
       ]);
       $field->onParseTime();

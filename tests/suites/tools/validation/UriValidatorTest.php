@@ -21,8 +21,9 @@
 namespace APF\tests\suites\tools\validation;
 
 use APF\tools\validation\UriValidator;
+use PHPUnit\Framework\TestCase;
 
-class UriValidatorTest extends \PHPUnit_Framework_TestCase {
+class UriValidatorTest extends TestCase {
 
    public function testValidUrl() {
       $validator = new UriValidator();

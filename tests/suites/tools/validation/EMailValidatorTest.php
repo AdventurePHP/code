@@ -21,8 +21,9 @@
 namespace APF\tests\suites\tools\validation;
 
 use APF\tools\validation\EMailValidator;
+use PHPUnit\Framework\TestCase;
 
-class EMailValidatorTest extends \PHPUnit_Framework_TestCase {
+class EMailValidatorTest extends TestCase {
 
    private $validList = [
          'email@example.com',

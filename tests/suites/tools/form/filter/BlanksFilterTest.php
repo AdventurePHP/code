@@ -23,11 +23,12 @@ namespace APF\tests\suites\tools\form\filter;
 use APF\tools\form\filter\BlanksFilter;
 use APF\tools\form\taglib\ButtonTag;
 use APF\tools\form\taglib\TextFieldTag;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the BlanksFilter capabilities.
  */
-class BlanksFilterTest extends \PHPUnit_Framework_TestCase {
+class BlanksFilterTest extends TestCase {
 
    public function testNoBlanks() {
 

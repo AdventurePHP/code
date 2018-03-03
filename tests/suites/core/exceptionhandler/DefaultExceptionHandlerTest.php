@@ -22,9 +22,10 @@ namespace APF\tests\suites\core\exceptionhandler;
 
 use APF\core\exceptionhandler\DefaultExceptionHandler;
 use Exception;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
-class DefaultExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
+class DefaultExceptionHandlerTest extends TestCase {
 
    /**
     * Test internal exception handling (logging and exception page creation).
@@ -35,7 +36,7 @@ class DefaultExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
       $code = 404;
       $exception = new Exception($message, $code);
 
-      /* @var $handler DefaultExceptionHandler|PHPUnit_Framework_MockObject_MockObject */
+      /* @var $handler DefaultExceptionHandler|MockObject */
       $handler = $this->getMockBuilder(DefaultExceptionHandler::class)
             ->setMethods(['logException', 'buildExceptionPage'])
             ->getMock();
@@ -66,7 +67,7 @@ class DefaultExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
       $code = 404;
       $exception = new Exception($message, $code);
 
-      /* @var $handler DefaultExceptionHandler|PHPUnit_Framework_MockObject_MockObject */
+      /* @var $handler DefaultExceptionHandler|MockObject */
       $handler = $this->getMockBuilder(DefaultExceptionHandler::class)
             ->setMethods(['logException'])
             ->getMock();

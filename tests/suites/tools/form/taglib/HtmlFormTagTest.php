@@ -22,6 +22,7 @@ namespace APF\tests\suites\tools\form\taglib;
 
 use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\LanguageLabel;
+use APF\core\pagecontroller\ParserException;
 use APF\core\pagecontroller\XmlParser;
 use APF\tests\suites\tools\form\mock\TextFieldTagMock;
 use APF\tools\form\FormException;
@@ -32,14 +33,17 @@ use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\form\taglib\RadioButtonTag;
 use APF\tools\form\taglib\SelectBoxTag;
 use APF\tools\form\taglib\TextFieldTag;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use ReflectionException;
 use ReflectionMethod;
 use ReflectionProperty;
 
-class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
+class HtmlFormTagTest extends TestCase {
 
    /**
     * Tests form which is not sent.
+    * @throws ParserException
     */
    public function testIsSent1() {
 
@@ -59,6 +63,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * @return HtmlFormTag Simple form to test with.
+    * @throws ParserException
     */
    protected function getSimpleForm4SentCheck() {
       $form = new HtmlFormTag();
@@ -74,6 +79,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * @return HtmlFormTag Complex (=nested structure) form to test with.
+    * @throws ParserException
     */
    protected function getComplexForm4SentCheck() {
       $form = new HtmlFormTag();
@@ -93,6 +99,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests form which is sent.
+    * @throws ParserException
     */
    public function testIsSent2() {
 
@@ -111,6 +118,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests validation with a sent form but empty values.
+    * @throws ParserException
     */
    public function testIsValid1() {
 
@@ -129,6 +137,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * @return HtmlFormTag Simple form to test with.
+    * @throws ParserException
     */
    protected function getSimpleForm4ValidityCheck() {
       $form = new HtmlFormTag();
@@ -145,6 +154,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * @return HtmlFormTag Complex (=nested structure) form to test with.
+    * @throws ParserException
     */
    protected function getComplexForm4ValidityCheck() {
 
@@ -176,6 +186,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests successful validation with a posted form.
+    * @throws ParserException
     */
    public function testIsValid2() {
 
@@ -196,6 +207,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests form resetting including form wrapper structures.
+    * @throws ParserException
+    * @throws FormException
     */
    public function testReset() {
 
@@ -229,6 +242,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests form transformation with a simple and a more sophisticated example.
+    * @throws ReflectionException
     */
    public function testTransform() {
 
@@ -298,6 +312,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Test interface complies for not-existing interface.
+    * @throws FormException
     */
    public function testFindById1() {
       $this->expectException(FormException::class);
@@ -309,6 +324,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Test simple id selection.
+    * @throws ParserException
+    * @throws FormException
     */
    public function testFindById2() {
 
@@ -330,6 +347,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Test id selection within nested elements.
+    * @throws ParserException
+    * @throws FormException
     */
    public function testFindById3() {
 
@@ -356,6 +375,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Test interface complies for not-existing interface.
+    * @throws FormException
     */
    public function testGetLabel1() {
       $this->expectException(FormException::class);
@@ -367,6 +387,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Test simple id selection.
+    * @throws ParserException
+    * @throws FormException
     */
    public function testGetLabel2() {
 
@@ -393,6 +415,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Test id selection within nested elements.
+    * @throws ParserException
+    * @throws FormException
     */
    public function testGetLabel3() {
 
@@ -424,6 +448,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests API complies for non existing tags.
+    * @throws FormException
     */
    public function testGetFormElementsByTagName1() {
       $this->expectException(FormException::class);
@@ -435,6 +460,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Test simple form structure.
+    * @throws ParserException
+    * @throws FormException
     */
    public function testGetFormElementsByTagName2() {
 
@@ -468,6 +495,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Test more complex form structure.
+    * @throws ParserException
+    * @throws FormException
     */
    public function testGetFormElementsByTagName3() {
 
@@ -519,6 +548,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Test more complex use case.
+    * @throws ParserException
     */
    public function testGetFormElementsByName2() {
 
@@ -569,10 +599,11 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests getMarker() delegates to getFormElementByName().
+    * @throws FormException
     */
    public function testGetMarker() {
 
-      /* @var $form HtmlFormTag|PHPUnit_Framework_MockObject_MockObject */
+      /* @var $form HtmlFormTag|MockObject */
       $form = $this->getMockBuilder(HtmlFormTag::class)
             ->setMethods(['getFormElementByName'])
             ->getMock();
@@ -587,6 +618,8 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Checks whether form control creation complies with APF DomNode creation.
+    * @throws ReflectionException
+    * @throws FormException
     */
    public function testCreateFormElement() {
 
@@ -640,6 +673,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    /**
     * Tests whether the form implementation automatically renders hidden fields to
     * preserve GET parameters in action urls for convenience reasons.
+    * @throws ParserException
     */
    public function testSubmitGetParametersInGetMode() {
 
@@ -689,6 +723,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * @return HtmlFormTag
+    * @throws ParserException
     */
    private function getSimpleForm() {
       $form = new HtmlFormTag();
@@ -706,6 +741,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * ID#303: test capabilities to hide form group by default from within a template.
+    * @throws ParserException
     */
    public function testHidingByAttribute() {
 
@@ -727,6 +763,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * ID#326: test mapping a (valid) PHP property name to form control name.
+    * @throws ReflectionException
     */
    public function testMapModelPropertyNameToFormControlName() {
 

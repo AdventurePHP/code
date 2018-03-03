@@ -10,11 +10,12 @@ use APF\tools\form\taglib\ReusableFormBlockTag;
 use APF\tools\form\taglib\TextFieldTag;
 use APF\tools\form\taglib\ValidationListenerTag;
 use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the capabilities of the re-usable form block tag-
  */
-class ReusableFormBlockTagTest extends \PHPUnit_Framework_TestCase {
+class ReusableFormBlockTagTest extends TestCase {
 
    /**
     * @throws ParserException

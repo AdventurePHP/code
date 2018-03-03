@@ -22,7 +22,9 @@ namespace APF\tests\suites\core\registry;
 
 use APF\core\registry\Registry;
 use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use ReflectionException;
 
 /**
  * Test methods of registry class with valid parameters<br />
@@ -31,7 +33,7 @@ use ReflectionClass;
  * @version
  * Version 0.1, 17.12.2011<br />
  */
-class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
+class RegistryPositivTest extends TestCase {
 
    /**
     * @protected static
@@ -65,6 +67,8 @@ class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
     *
     * @return void
     *
+    * @throws ReflectionException
+    *
     * @author Florian Horn
     * @version
     * Version 0.1, 17.12.2011<br />
@@ -81,6 +85,8 @@ class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
     * Tests the class' final declaration
     *
     * @return void
+    *
+    * @throws ReflectionException
     *
     * @author Florian Horn
     * @version
@@ -99,6 +105,8 @@ class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
     *
     * @return void
     *
+    * @throws ReflectionException
+    *
     * @author Florian Horn
     * @version
     * Version 0.1, 17.12.2011<br />
@@ -116,6 +124,8 @@ class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
     * Tests default usage
     *
     * @return void
+    *
+    * @throws ReflectionException
     *
     * @author Florian Horn
     * @version
@@ -153,6 +163,8 @@ class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
     * Tests default usage with readonly flag set to true
     *
     * @return void
+    *
+    * @throws ReflectionException
     *
     * @author Florian Horn
     * @version

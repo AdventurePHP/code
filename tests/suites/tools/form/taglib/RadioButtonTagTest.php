@@ -20,17 +20,21 @@
  */
 namespace APF\tests\suites\tools\form\taglib;
 
+use APF\core\pagecontroller\ParserException;
+use APF\tools\form\FormException;
 use APF\tools\form\HtmlForm;
 use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\form\taglib\RadioButtonTag;
+use PHPUnit\Framework\TestCase;
 
-class RadioButtonTagTest extends \PHPUnit_Framework_TestCase {
+class RadioButtonTagTest extends TestCase {
 
    const BUTTON_NAME = 'send';
    const BUTTON_VALUE = 'Send';
 
    /**
     * @return HtmlFormTag
+    * @throws FormException
     */
    protected function &getForm() {
 
@@ -59,6 +63,10 @@ class RadioButtonTagTest extends \PHPUnit_Framework_TestCase {
       return $button;
    }
 
+   /**
+    * @throws FormException
+    * @throws ParserException
+    */
    public function testInitialFormLoad() {
 
       $buttonOne = $this->getRadioButton('delete-yes', 'delete', '1');
@@ -76,6 +84,10 @@ class RadioButtonTagTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws FormException
+    * @throws ParserException
+    */
    public function testFormSubmitUnChecked() {
 
       $_POST = [];
@@ -96,6 +108,10 @@ class RadioButtonTagTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws FormException
+    * @throws ParserException
+    */
    public function testFormSubmitOneChecked() {
 
       $_POST = [];
@@ -120,6 +136,10 @@ class RadioButtonTagTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws FormException
+    * @throws ParserException
+    */
    public function testFormSubmitTwoChecked() {
 
       $_POST = [];

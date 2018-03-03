@@ -22,8 +22,9 @@ namespace APF\tests\suites\tools\image;
 
 use APF\tools\image\ImageManager;
 use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
-class ImageManagerTest extends \PHPUnit_Framework_TestCase {
+class ImageManagerTest extends TestCase {
 
    public function testEmptySource() {
       $this->expectException(InvalidArgumentException::class);

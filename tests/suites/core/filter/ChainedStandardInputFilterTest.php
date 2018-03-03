@@ -20,12 +20,14 @@
  */
 namespace APF\tests\suites\core\filter;
 
+use APF\core\configuration\ConfigurationException;
 use APF\core\configuration\ConfigurationManager;
 use APF\core\configuration\provider\ini\IniConfiguration;
 use APF\core\configuration\provider\ini\IniConfigurationProvider;
 use APF\core\frontcontroller\ActionUrlMapping;
 use APF\core\frontcontroller\Frontcontroller;
 use APF\tests\suites\core\frontcontroller\FakeIniProvider;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the action mapping capabilities of the ChainedStandardInputFilter.
@@ -34,7 +36,7 @@ use APF\tests\suites\core\frontcontroller\FakeIniProvider;
  * @version
  * Version 0.1, 18.03.2014<br />
  */
-class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
+class ChainedStandardInputFilterTest extends TestCase {
 
    const TEST_ACTION_CONFIG_NAME = 'actionconfig.ini';
 
@@ -345,6 +347,9 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws ConfigurationException
+    */
    protected function setUp() {
 
       // setup config provider to fake tests

@@ -23,9 +23,10 @@ namespace APF\tests\suites\core\exceptionhandler;
 use APF\core\exceptionhandler\ProductionExceptionHandler;
 use APF\core\http\ResponseImpl;
 use Exception;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
-class ProductionExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
+class ProductionExceptionHandlerTest extends TestCase {
 
    /**
     * Test internal exception handling (logging and exception page creation).
@@ -36,7 +37,7 @@ class ProductionExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
       $code = 404;
       $exception = new Exception($message, $code);
 
-      /* @var $handler ProductionExceptionHandler|PHPUnit_Framework_MockObject_MockObject */
+      /* @var $handler ProductionExceptionHandler|MockObject */
       $handler = $this->getMockBuilder(ProductionExceptionHandler::class)
             ->setMethods(['logException', 'getRedirectPage', 'getResponse'])
             ->getMock();
@@ -48,7 +49,7 @@ class ProductionExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
             ->method('getRedirectPage')
             ->willReturn('/');
 
-      /* @var $response ResponseImpl|PHPUnit_Framework_MockObject_MockObject */
+      /* @var $response ResponseImpl|MockObject */
       $response = $this->getMockBuilder(ResponseImpl::class)
             ->setMethods(['forward'])
             ->getMock();

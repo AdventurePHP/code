@@ -22,16 +22,19 @@ namespace APF\tests\suites\core\pagecontroller;
 
 use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\LoopTemplateTag;
+use APF\core\pagecontroller\ParserException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests capabilities of the &lt;loop:template /&gt; tag.
  */
-class LoopTemplateTagTest extends \PHPUnit_Framework_TestCase {
+class LoopTemplateTagTest extends TestCase {
 
    /**
     * @param string $contentMapping
     * @param string $content
     * @return LoopTemplateTag
+    * @throws ParserException
     */
    protected function getLoopTemplate($contentMapping, $content) {
 
@@ -50,6 +53,7 @@ class LoopTemplateTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests whether &lt;loop:template /&gt; has the same behaviour as a "normal" template.
+    * @throws ParserException
     */
    public function testEmptyOutput() {
 
@@ -75,6 +79,7 @@ class LoopTemplateTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests behaviour in case of empty content and content mapping.
+    * @throws ParserException
     */
    public function testEmptyContentMapping() {
 
@@ -92,6 +97,7 @@ class LoopTemplateTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests output generation for simple content including static place holder.
+    * @throws ParserException
     */
    public function testLoopWithSimpleDataAttribute() {
 
@@ -128,6 +134,7 @@ class LoopTemplateTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests output generation for complex content.
+    * @throws ParserException
     */
    public function testLoopWithComplexDataAttribute() {
 
@@ -154,6 +161,7 @@ class LoopTemplateTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests complex content mapping with access to data attribute of grandparent object.
+    * @throws ParserException
     */
    public function testLoopWithAccessToParentNode() {
 
@@ -194,6 +202,7 @@ class LoopTemplateTagTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * ID#302: test direct output using attribute <em>transform-on-place=true</em>.
+    * @throws ParserException
     */
    public function testDirectOutputWithAccessToParentNode() {
 

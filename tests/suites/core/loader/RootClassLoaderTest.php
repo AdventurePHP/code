@@ -24,6 +24,7 @@ use APF\core\loader\RootClassLoader;
 use APF\core\loader\StandardClassLoader;
 use Exception;
 use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the capabilities of the RootClassLoader.
@@ -32,7 +33,7 @@ use InvalidArgumentException;
  * @version
  * Version 0.1, 27.02.2014<br />
  */
-class RootClassLoaderTest extends \PHPUnit_Framework_TestCase {
+class RootClassLoaderTest extends TestCase {
 
    const VENDOR = 'VENDOR';
    const SOURCE_PATH = '/var/www/html/src';
@@ -78,6 +79,9 @@ class RootClassLoaderTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws Exception
+    */
    public function testGetLoaderByNamespacedClass() {
 
       $vendor = RootClassLoader::getLoaderByClass(self::VENDOR . '\foo\Bar');
@@ -94,6 +98,9 @@ class RootClassLoaderTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws Exception
+    */
    public function testGetLoaderByVendorOnlyClass() {
 
       $vendor = RootClassLoader::getLoaderByClass(self::VENDOR . '\Bar');

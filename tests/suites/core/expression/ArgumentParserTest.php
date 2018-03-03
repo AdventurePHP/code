@@ -21,6 +21,7 @@
 namespace APF\tests\suites\core\expression;
 
 use APF\core\expression\ArgumentParser;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the capabilities of the ArgumentParser class used in APF's template expression classes.
@@ -29,7 +30,7 @@ use APF\core\expression\ArgumentParser;
  * @version
  * Version 0.1, 24.02.2018b<br />
  */
-class ArgumentParserTest extends \PHPUnit_Framework_TestCase {
+class ArgumentParserTest extends TestCase {
 
    /**
     * Test the following expressions:

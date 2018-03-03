@@ -23,17 +23,18 @@ namespace APF\tests\suites\core\exceptionhandler;
 use APF\core\exceptionhandler\DefaultExceptionHandler;
 use APF\core\exceptionhandler\GlobalExceptionHandler;
 use Exception;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use ReflectionProperty;
 
-class GlobalExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
+class GlobalExceptionHandlerTest extends TestCase {
 
    /**
     * Tests whether registration and execution of a custom exception handler works.
     */
    public function testHandlerRegistration() {
 
-      /* @var $handler DefaultExceptionHandler|PHPUnit_Framework_MockObject_MockObject */
+      /* @var $handler DefaultExceptionHandler|MockObject */
       $handler = $this->getMockBuilder(DefaultExceptionHandler::class)
             ->setMethods(['handleException'])
             ->getMock();
@@ -68,7 +69,7 @@ class GlobalExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
     */
    public function testFallbackExceptionHandling() {
 
-      /* @var $handler DefaultExceptionHandler|PHPUnit_Framework_MockObject_MockObject */
+      /* @var $handler DefaultExceptionHandler|MockObject */
       $handler = $this->getMockBuilder(DefaultExceptionHandler::class)
             ->setMethods(['handleException'])
             ->getMock();

@@ -21,13 +21,17 @@
 namespace APF\tests\suites\tools\form\taglib;
 
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\ParserException;
 use APF\tests\suites\tools\form\model\FormValuesModel;
+use APF\tools\form\FormException;
 use APF\tools\form\mapping\StandardModelToFormControlMapper;
 use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\form\taglib\MultiSelectBoxTag;
 use APF\tools\form\taglib\SelectBoxOptionTag;
 use APF\tools\form\taglib\SelectBoxTag;
 use DateTime;
+use PHPUnit\Framework\TestCase;
+use ReflectionException;
 use ReflectionProperty;
 
 /**
@@ -37,7 +41,7 @@ use ReflectionProperty;
  * @version
  * Version 0.1, 27.06.2016 (ID#297: introduced model to form mappings)<br />
  */
-class ModelToFormControlMappingTest extends \PHPUnit_Framework_TestCase {
+class ModelToFormControlMappingTest extends TestCase {
 
    const BUTTON_NAME = 'button';
    const BUTTON_VALUE = 'Send';
@@ -59,6 +63,8 @@ class ModelToFormControlMappingTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests adding and clearing of model-to-form mapping configurations.
+    *
+    * @throws ReflectionException
     */
    public function testMappingConfiguration() {
 
@@ -81,6 +87,8 @@ class ModelToFormControlMappingTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests empty fields in model.
+    * @throws FormException
+    * @throws ParserException
     */
    public function testExistingFields1() {
 
@@ -97,6 +105,7 @@ class ModelToFormControlMappingTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * @return HtmlFormTag
+    * @throws ParserException
     */
    private function getSimpleForm() {
       $form = new HtmlFormTag();
@@ -112,6 +121,7 @@ class ModelToFormControlMappingTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * @return HtmlFormTag
+    * @throws ParserException
     */
    private function getFormWithDashFieldNames() {
       $form = new HtmlFormTag();
@@ -127,6 +137,8 @@ class ModelToFormControlMappingTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Test filled fields in model.
+    * @throws ParserException
+    * @throws FormException
     */
    public function testExistingFields2() {
 
@@ -146,6 +158,8 @@ class ModelToFormControlMappingTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests explicit mapping of sub-list of model fields.
+    * @throws ParserException
+    * @throws FormException
     */
    public function testExplicitMapping() {
 
@@ -177,6 +191,8 @@ class ModelToFormControlMappingTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests mapping for select fields and multi-select fields.
+    * @throws ParserException
+    * @throws FormException
     */
    public function testValueMappingOfSelectField() {
 
@@ -248,6 +264,8 @@ class ModelToFormControlMappingTest extends \PHPUnit_Framework_TestCase {
    /**
     * Tests mapping of model values to radio buttons. Difficulty here is that radio buttons typically have
     * two or more options with the same name but with different ids.
+    * @throws FormException
+    * @throws ParserException
     */
    public function testValueMappingOfRadioButtons() {
 
@@ -280,6 +298,8 @@ class ModelToFormControlMappingTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests mapping of check boxes.
+    * @throws FormException
+    * @throws ParserException
     */
    public function testValueMappingOfCheckBox() {
 
@@ -318,6 +338,7 @@ class ModelToFormControlMappingTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * @return HtmlFormTag
+    * @throws ParserException
     */
    private function getFormForCheckBoxTest() {
       $form = new HtmlFormTag();
@@ -333,6 +354,8 @@ class ModelToFormControlMappingTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Test mapping of dates.
+    * @throws ParserException
+    * @throws FormException
     */
    public function testValueMappingOfDateControls() {
 
@@ -364,6 +387,8 @@ class ModelToFormControlMappingTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Test mapping of time.
+    * @throws ParserException
+    * @throws FormException
     */
    public function testValueMappingOfTimeControls() {
 
@@ -394,6 +419,8 @@ class ModelToFormControlMappingTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * ID#326: test mapping with form control names containing dashes.
+    * @throws ParserException
+    * @throws FormException
     */
    public function testMappingWithDashFormControlNames() {
 

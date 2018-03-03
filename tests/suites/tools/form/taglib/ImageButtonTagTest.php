@@ -20,11 +20,14 @@
  */
 namespace APF\tests\suites\tools\form\taglib;
 
+use APF\core\pagecontroller\ParserException;
+use APF\tools\form\FormException;
 use APF\tools\form\HtmlForm;
 use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\form\taglib\ImageButtonTag;
+use PHPUnit\Framework\TestCase;
 
-class ImageButtonTagTest extends \PHPUnit_Framework_TestCase {
+class ImageButtonTagTest extends TestCase {
 
    const BUTTON_NAME = 'foo';
    const BUTTON_VALUE = 'bar';
@@ -54,6 +57,10 @@ class ImageButtonTagTest extends \PHPUnit_Framework_TestCase {
       return $form;
    }
 
+   /**
+    * @throws ParserException
+    * @throws FormException
+    */
    public function testInitialFormLoad() {
 
       $_GET = [];
@@ -73,6 +80,10 @@ class ImageButtonTagTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws FormException
+    * @throws ParserException
+    */
    public function testGetRequestWithPostDefined() {
 
       $_GET = [];
@@ -95,6 +106,10 @@ class ImageButtonTagTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws FormException
+    * @throws ParserException
+    */
    public function testPostRequestWithPostDefined() {
 
       $_GET = [];
@@ -117,6 +132,10 @@ class ImageButtonTagTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws FormException
+    * @throws ParserException
+    */
    public function testPostRequestWithGetDefined() {
 
       $_GET = [];
@@ -139,6 +158,10 @@ class ImageButtonTagTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   /**
+    * @throws FormException
+    * @throws ParserException
+    */
    public function testGetRequestWithGetDefined() {
 
       $_GET = [];

@@ -27,19 +27,23 @@ use APF\core\logging\LoggerException;
 use APF\core\logging\writer\FileLogWriter;
 use APF\core\logging\writer\StdOutLogWriter;
 use APF\core\registry\Registry;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use ReflectionException;
 use ReflectionProperty;
 
 /**
  * Tests all capabilities of the Logger.
  */
-class LoggerTest extends \PHPUnit_Framework_TestCase {
+class LoggerTest extends TestCase {
 
    const LOG_MESSAGE_ONE = 'This is a log message!';
    const LOG_MESSAGE_TWO = 'This is another log message!';
 
    /**
     * Tests whether a initial file log writer is created.
+    * @throws ReflectionException
+    * @throws LoggerException
     */
    public function testConstruction() {
 
@@ -57,6 +61,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests adding a log writer.
+    * @throws LoggerException
     */
    public function testAddLogWriter() {
 
@@ -72,6 +77,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests removing a log writer.
+    * @throws LoggerException
     */
    public function testRemoveLogWriter() {
 
@@ -127,6 +133,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests string-based logging interface.
+    * @throws ReflectionException
     */
    public function testLogEntry() {
 
@@ -158,6 +165,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
 
    /**
     * Tests OO logging interface.
+    * @throws ReflectionException
     */
    public function testAddEntry1() {
 
@@ -193,7 +201,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
     */
    public function testAddEntry2() {
 
-      /* @var $logger Logger|PHPUnit_Framework_MockObject_MockObject */
+      /* @var $logger Logger|MockObject */
       $logger = $this->getMockBuilder(Logger::class)
             ->setMethods(['flushLogBuffer'])
             ->getMock();
@@ -221,6 +229,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
    /**
     * Test flushing. Check whether log entries are delegated to their
     * respective writer.
+    * @throws LoggerException
     */
    public function testFlush() {
 
@@ -229,7 +238,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
       $bufferOne = '';
       $counterOne = 0;
 
-      /* @var $writerOne StdOutLogWriter|PHPUnit_Framework_MockObject_MockObject */
+      /* @var $writerOne StdOutLogWriter|MockObject */
       $writerOne = $this->getMockBuilder(StdOutLogWriter::class)
             ->setMethods(['writeLogEntries'])
             ->getMock();
@@ -251,7 +260,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
       $bufferTwo = '';
       $counterTwo = 0;
 
-      /* @var $writerTwo StdOutLogWriter|PHPUnit_Framework_MockObject_MockObject */
+      /* @var $writerTwo StdOutLogWriter|MockObject */
       $writerTwo = $this->getMockBuilder(StdOutLogWriter::class)
             ->setMethods(['writeLogEntries'])
             ->getMock();
@@ -291,6 +300,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
    /**
     * Test whether threshold level definition is resulting in the correct
     * log entries.
+    * @throws LoggerException
     */
    public function testThresholds() {
 
@@ -346,6 +356,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
     * Tests whether a given amount of error log entries overwrites
     * the log threshold settings to all. This is used to gather all
     * relevant information in case something severe happens.
+    * @throws LoggerException
     */
    public function testThresholdOverride1() {
 
@@ -380,10 +391,11 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
 
    }
 
-   /*
+   /**
     * Tests whether one fatal error overwrites the log threshold
     * settings to all. This is used to gather all relevant
     * information in case something severe happens.
+    * @throws LoggerException
     */
    public function testThresholdOverride2() {
 

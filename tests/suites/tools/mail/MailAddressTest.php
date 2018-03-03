@@ -3,11 +3,12 @@ namespace APF\tests\suites\tools\mail;
 
 use APF\tools\mail\MailAddress;
 use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the capabilities of an e-mail recipient (sender, recipient, CC recipient, or BCC recipient).
  */
-class MailAddressTest extends \PHPUnit_Framework_TestCase {
+class MailAddressTest extends TestCase {
 
    public function testConstructor1() {
       $this->expectException(InvalidArgumentException::class);
