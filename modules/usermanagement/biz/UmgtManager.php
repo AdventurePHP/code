@@ -24,6 +24,7 @@ use APF\core\configuration\Configuration;
 use APF\core\configuration\ConfigurationException;
 use APF\core\pagecontroller\APFObject;
 use APF\modules\genericormapper\data\GenericCriterionObject;
+use APF\modules\genericormapper\data\GenericORMapperDataObject;
 use APF\modules\genericormapper\data\GenericORRelationMapper;
 use APF\modules\usermanagement\biz\model\UmgtApplication;
 use APF\modules\usermanagement\biz\model\UmgtAuthToken;
@@ -312,7 +313,7 @@ class UmgtManager extends APFObject {
    /**
     * Returns a list of users concerning the current page.
     *
-    * @return UmgtUser[] List of users.
+    * @return UmgtUser[]|GenericORMapperDataObject[] List of users.
     *
     * @author Christian Achatz
     * @version
@@ -332,7 +333,7 @@ class UmgtManager extends APFObject {
    /**
     * Returns a list of groups concerning the current page.
     *
-    * @return UmgtGroup[] List of groups.
+    * @return UmgtGroup[]|GenericORMapperDataObject[] List of groups.
     *
     * @author Christian Achatz
     * @version
@@ -351,7 +352,7 @@ class UmgtManager extends APFObject {
    /**
     * Returns a list of roles concerning the current page.
     *
-    * @return UmgtRole[] List of roles.
+    * @return UmgtRole[]|GenericORMapperDataObject[] List of roles.
     *
     * @author Christian Achatz
     * @version
@@ -370,7 +371,7 @@ class UmgtManager extends APFObject {
    /**
     * Returns a list of permissions concerning the current page.
     *
-    * @return UmgtPermission[] List of permissions.
+    * @return UmgtPermission[]|GenericORMapperDataObject[] List of permissions.
     *
     * @author Christian Achatz
     * @version
@@ -389,7 +390,7 @@ class UmgtManager extends APFObject {
    /**
     * Returns the whole list of permissions.
     *
-    * @return UmgtPermission[] A list of all permissions.
+    * @return UmgtPermission[]|GenericORMapperDataObject[] A list of all permissions.
     *
     * @author Christian Achatz
     * @version
@@ -406,7 +407,7 @@ class UmgtManager extends APFObject {
     *
     * @param int $userId id of the desired user
     *
-    * @return UmgtUser The user domain object.
+    * @return UmgtUser|GenericORMapperDataObject The user domain object.
     *
     * @author Christian Achatz
     * @version
@@ -446,7 +447,7 @@ class UmgtManager extends APFObject {
     *
     * @param string $username The user name of the user to load.
     *
-    * @return UmgtUser The user domain object or null.
+    * @return UmgtUser|GenericORMapperDataObject The user domain object or null.
     *
     * @author Christian Achatz
     * @version
@@ -671,7 +672,7 @@ class UmgtManager extends APFObject {
     *
     * @param string $displayName The desired user's display name.
     *
-    * @return UmgtUser|null The desired user or null in case the user has not been found.
+    * @return UmgtUser|GenericORMapperDataObject|null The desired user or null in case the user has not been found.
     *
     * @author Coach83
     * @version
@@ -705,7 +706,7 @@ class UmgtManager extends APFObject {
     *
     * @param string $firstName The first name of the user to load.
     *
-    * @return UmgtUser The user domain object or null.
+    * @return UmgtUser|GenericORMapperDataObject The user domain object or null.
     *
     * @author Christian Achatz
     * @version
@@ -740,7 +741,7 @@ class UmgtManager extends APFObject {
     *
     * @param string $lastName The last name of the user to load.
     *
-    * @return UmgtUser The user domain object or null.
+    * @return UmgtUser|GenericORMapperDataObject The user domain object or null.
     *
     * @author Christian Achatz
     * @version
@@ -776,7 +777,7 @@ class UmgtManager extends APFObject {
     * @param string $firstName The first name of the user to load.
     * @param string $lastName The last name of the user to load.
     *
-    * @return UmgtUser The user domain object or null.
+    * @return UmgtUser|GenericORMapperDataObject The user domain object or null.
     *
     * @author Christian Achatz
     * @version
@@ -840,7 +841,7 @@ class UmgtManager extends APFObject {
     *
     * @param string $email The email of the user to load.
     *
-    * @return UmgtUser The user domain object or null.
+    * @return UmgtUser|GenericORMapperDataObject The user domain object or null.
     *
     * @author Christian Achatz
     * @version
@@ -927,7 +928,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtUser $user the user
     *
-    * @return UmgtGroup[] The group list.
+    * @return UmgtGroup[]|GenericORMapperDataObject[] The group list.
     *
     * @author Christian Achatz
     * @version
@@ -943,7 +944,7 @@ class UmgtManager extends APFObject {
     *
     * @param int $groupId id of the desired group
     *
-    * @return UmgtGroup The group domain object.
+    * @return UmgtGroup|GenericORMapperDataObject The group domain object.
     *
     * @author Christian Achatz
     * @version
@@ -958,7 +959,7 @@ class UmgtManager extends APFObject {
     *
     * @param string $groupName The name of the group to load
     *
-    * @return UmgtGroup The desired group domain object.
+    * @return UmgtGroup|GenericORMapperDataObject The desired group domain object.
     *
     * @author Christian Achatz
     * @version
@@ -976,7 +977,7 @@ class UmgtManager extends APFObject {
     *
     * @param int $roleId id of the desired role
     *
-    * @return UmgtRole The role domain object.
+    * @return UmgtRole|GenericORMapperDataObject The role domain object.
     *
     * @author Christian Achatz
     * @version
@@ -991,7 +992,7 @@ class UmgtManager extends APFObject {
     *
     * @param string $name The name of the role to load.
     *
-    * @return UmgtRole The desired role.
+    * @return UmgtRole|GenericORMapperDataObject The desired role.
     *
     * @author Christian Achatz
     * @version
@@ -1009,7 +1010,7 @@ class UmgtManager extends APFObject {
     *
     * @param int $permissionId the permission's id
     *
-    * @return UmgtPermission The desiried permission.
+    * @return UmgtPermission|GenericORMapperDataObject The desiried permission.
     *
     * @author Christian Achatz
     * @version
@@ -1147,7 +1148,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtRole $role The role to load the assigned groups.
     *
-    * @return UmgtGroup[] The list of groups, that are assigned to the given role.
+    * @return UmgtGroup[]|GenericORMapperDataObject[] The list of groups, that are assigned to the given role.
     *
     * @author Christian Achatz
     * @version
@@ -1166,7 +1167,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtRole $role The role to load the *not* assigned groups.
     *
-    * @return UmgtGroup[] The list of groups, that are *not* assigned to the given role.
+    * @return UmgtGroup[]|GenericORMapperDataObject[] The list of groups, that are *not* assigned to the given role.
     *
     * @author Christian Achatz
     * @version
@@ -1207,7 +1208,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtUser $user the user
     *
-    * @return UmgtGroup[] The group list.
+    * @return UmgtGroup[]|GenericORMapperDataObject[] The group list.
     *
     * @author Christian Achatz
     * @version
@@ -1226,7 +1227,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtGroup $group the group
     *
-    * @return UmgtUser[] The user list.
+    * @return UmgtUser[]|GenericORMapperDataObject[] The user list.
     *
     * @author Christian Achatz
     * @version
@@ -1246,7 +1247,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtGroup $group the group
     *
-    * @return UmgtUser[] The user list.
+    * @return UmgtUser[]|GenericORMapperDataObject[] The user list.
     *
     * @author Christian Achatz
     * @version
@@ -1265,7 +1266,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtUser $user the user
     *
-    * @return UmgtRole[] The role list.
+    * @return UmgtRole[]|GenericORMapperDataObject[] The role list.
     *
     * @author Christian Achatz
     * @version
@@ -1284,7 +1285,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtUser $user the user
     *
-    * @return UmgtRole[] The role list.
+    * @return UmgtRole[]|GenericORMapperDataObject[] The role list.
     *
     * @author Christian Achatz
     * @version
@@ -1303,7 +1304,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtRole $role the role, the users should have
     *
-    * @return UmgtUser[] Desired user list.
+    * @return UmgtUser[]|GenericORMapperDataObject[] Desired user list.
     *
     * @author Christian Achatz
     * @version
@@ -1322,7 +1323,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtRole $role The role, the users should not have
     *
-    * @return UmgtUser[] Desired user list.
+    * @return UmgtUser[]|GenericORMapperDataObject[] Desired user list.
     *
     * @author Christian Achatz
     * @version
@@ -1342,7 +1343,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtGroup $group The group to load the roles with.
     *
-    * @return UmgtRole[] The list of roles, that are *not* assigned to the applied group.
+    * @return UmgtRole[]|GenericORMapperDataObject[] The list of roles, that are *not* assigned to the applied group.
     *
     * @author Christian Achatz
     * @version
@@ -1361,7 +1362,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtGroup $group The group to load the roles with.
     *
-    * @return UmgtRole[] The list of roles, that are assigned to the applied group.
+    * @return UmgtRole[]|GenericORMapperDataObject[] The list of roles, that are assigned to the applied group.
     *
     * @author Christian Achatz
     * @version
@@ -1470,7 +1471,7 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @return UmgtRole[] The list of all permissions.
+    * @return UmgtRole[]|GenericORMapperDataObject[] The list of all permissions.
     *
     * @author Christian Achatz
     * @version
@@ -1487,7 +1488,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtRole $role The role to load it's permissions.
     *
-    * @return UmgtPermission[] The permissions that are assigned to the applied role.
+    * @return UmgtPermission[]|GenericORMapperDataObject[] The permissions that are assigned to the applied role.
     *
     * @author Christian Achatz
     * @version
@@ -1502,7 +1503,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtRole $role The role to load it's *not* associated permissions.
     *
-    * @return UmgtPermission[] The permissions that are *not* assigned to the applied role.
+    * @return UmgtPermission[]|GenericORMapperDataObject[] The permissions that are *not* assigned to the applied role.
     *
     * @author Christian Achatz
     * @version
@@ -1521,7 +1522,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtPermission $permission The permission to load the roles.
     *
-    * @return UmgtRole[] The roles, that are assigned the given permission.
+    * @return UmgtRole[]|GenericORMapperDataObject[] The roles, that are assigned the given permission.
     *
     * @author Christian Achatz
     * @version
@@ -1536,7 +1537,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtPermission $permission The permission to load the roles.
     *
-    * @return UmgtRole[] The roles, that are *not* assigned the given permission.
+    * @return UmgtRole[]|GenericORMapperDataObject[] The roles, that are *not* assigned the given permission.
     *
     * @author Christian Achatz
     * @version
@@ -1775,7 +1776,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtVisibilityDefinitionType $type An optional visibility definitioyn type marker to limit the result.
     *
-    * @return UmgtVisibilityDefinition[] The list of visibility definitions for the current application.
+    * @return UmgtVisibilityDefinition[]|GenericORMapperDataObject[] The list of visibility definitions for the current application.
     *
     * @author Christian Achatz
     * @version
@@ -1820,7 +1821,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtVisibilityDefinition $proxy The proxy object.
     *
-    * @return UmgtUser[] The list of users, that have visibility permission.
+    * @return UmgtUser[]|GenericORMapperDataObject[] The list of users, that have visibility permission.
     *
     * @author Christian Achatz
     * @version
@@ -1835,7 +1836,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtVisibilityDefinition $proxy The proxy object.
     *
-    * @return UmgtGroup[] The list of groups, that have visibility permission.
+    * @return UmgtGroup[]|GenericORMapperDataObject[] The list of groups, that have visibility permission.
     *
     * @author Christian Achatz
     * @version
@@ -1850,7 +1851,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtVisibilityDefinition $definition The appropriate visibility definition.
     *
-    * @return UmgtUser[] The users, that do not have visibility permissions in the given object.
+    * @return UmgtUser[]|GenericORMapperDataObject[] The users, that do not have visibility permissions in the given object.
     *
     * @author Christian Achatz
     * @version
@@ -1869,7 +1870,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtVisibilityDefinition $definition The appropriate visibility definition.
     *
-    * @return UmgtGroup[] The groups, that do not have visibility permissions in the given object.
+    * @return UmgtGroup[]|GenericORMapperDataObject[] The groups, that do not have visibility permissions in the given object.
     *
     * @author Christian Achatz
     * @version
@@ -1915,7 +1916,7 @@ class UmgtManager extends APFObject {
     * @param UmgtUser $user The currently logged-in user.
     * @param UmgtVisibilityDefinitionType $type The type of visibility definition (e.g. <em>Page</em>)
     *
-    * @return UmgtVisibilityDefinition[] A list of visibility definitions, the user has access to.
+    * @return UmgtVisibilityDefinition[]|GenericORMapperDataObject[] A list of visibility definitions, the user has access to.
     *
     * @author Christian Achatz
     * @version
@@ -1940,7 +1941,7 @@ class UmgtManager extends APFObject {
     * @param UmgtGroup $group A desired group.
     * @param UmgtVisibilityDefinitionType $type The type of visibility definition (e.g. <em>Page</em>)
     *
-    * @return UmgtVisibilityDefinition[] A list of visibility definitions, the group has access to.
+    * @return UmgtVisibilityDefinition[]|GenericORMapperDataObject[] A list of visibility definitions, the group has access to.
     *
     * @author Christian Achatz
     * @version
@@ -1963,7 +1964,7 @@ class UmgtManager extends APFObject {
     *
     * @param string $id The of the visibility definition.
     *
-    * @return UmgtVisibilityDefinition The desired visibility definition.
+    * @return UmgtVisibilityDefinition|GenericORMapperDataObject The desired visibility definition.
     *
     * @author Christian Achatz
     * @version
@@ -1980,7 +1981,7 @@ class UmgtManager extends APFObject {
     *
     * @param int $appObjectId The application object id of the visibility definition.
     *
-    * @return UmgtVisibilityDefinition The desired visibility definition.
+    * @return UmgtVisibilityDefinition|GenericORMapperDataObject The desired visibility definition.
     *
     * @author Christian Achatz
     * @version
@@ -2035,7 +2036,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtVisibilityDefinitionType $type The visibility definition type.
     *
-    * @return UmgtVisibilityDefinition[] A list of visibility definitions of the given type.
+    * @return UmgtVisibilityDefinition[]|GenericORMapperDataObject[] A list of visibility definitions of the given type.
     *
     * @author Christian Achatz
     * @version
@@ -2050,7 +2051,7 @@ class UmgtManager extends APFObject {
     *
     * @param int $id The id of the proxy type.
     *
-    * @return UmgtVisibilityDefinitionType The desired proxy type.
+    * @return UmgtVisibilityDefinitionType|GenericORMapperDataObject The desired proxy type.
     *
     * @author Christian Achatz
     * @version
@@ -2063,7 +2064,7 @@ class UmgtManager extends APFObject {
    /**
     * @param string $name The name of the visibility definition type.
     *
-    * @return UmgtVisibilityDefinitionType
+    * @return UmgtVisibilityDefinitionType|GenericORMapperDataObject
     */
    public function loadVisibilityDefinitionTypeByName($name) {
       $crit = new GenericCriterionObject();
@@ -2077,7 +2078,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtVisibilityDefinition $proxy The proxy object to load the type of.
     *
-    * @return UmgtVisibilityDefinitionType The desired proxy type.
+    * @return UmgtVisibilityDefinitionType|GenericORMapperDataObject The desired proxy type.
     *
     * @author Christian Achatz
     * @version
@@ -2097,7 +2098,7 @@ class UmgtManager extends APFObject {
     * conjunction with proxy objects for the dedicated objects of the
     * desired type must be created.
     *
-    * @return UmgtVisibilityDefinitionType[] List of proxy types.
+    * @return UmgtVisibilityDefinitionType[]|GenericORMapperDataObject[] List of proxy types.
     *
     * @author Christian Achatz
     * @version
@@ -2117,7 +2118,7 @@ class UmgtManager extends APFObject {
     *
     * @param string $token The token string from the auto login cookie.
     *
-    * @return UmgtAuthToken|null Returns the desired token or null, if no token has been found.
+    * @return UmgtAuthToken|GenericORMapperDataObject|null Returns the desired token or null, if no token has been found.
     */
    public function loadAuthTokenByTokenString($token) {
       $crit = new GenericCriterionObject();
@@ -2131,7 +2132,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtAuthToken $token The current auth token.
     *
-    * @return UmgtUser|null The corresponding user or null if the user cannot be found.
+    * @return UmgtUser|GenericORMapperDataObject|null The corresponding user or null if the user cannot be found.
     */
    public function loadUserByAuthToken(UmgtAuthToken $token) {
       $crit = new GenericCriterionObject();
@@ -2202,7 +2203,7 @@ class UmgtManager extends APFObject {
     *
     * @param string $hash The hash to reset the password
     *
-    * @return UmgtUser|null The corresponding user or null if the user cannot be found.
+    * @return UmgtUser|GenericORMapperDataObject|null The corresponding user or null if the user cannot be found.
     *
     * @author dave
     * @version
