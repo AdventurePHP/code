@@ -22,6 +22,7 @@ namespace APF\modules\comments\biz;
 
 use APF\core\http\mixins\GetRequestResponse;
 use APF\core\pagecontroller\APFObject;
+use APF\core\service\APFDIService;
 use APF\modules\comments\data\ArticleCommentMapper;
 use APF\modules\pager\biz\PagerManager;
 use APF\tools\link\LinkGenerator;
@@ -65,15 +66,16 @@ class ArticleCommentManager extends APFObject {
     */
    public function loadEntries() {
       $pager = $this->getPagerManager();
+      /* @var $m APFObject */
       $m = $this->getServiceObject(ArticleCommentMapper::class);
 
       return $pager->loadEntriesByAppDataComponent($m, 'loadArticleCommentByID', ['CategoryKey' => $this->categoryKey]);
    }
 
    /**
-    * @return PagerManager
+    * @return PagerManager|APFDIService
     */
-   private function &getPagerManager() {
+   private function getPagerManager() {
       return $this->getDIServiceObject('APF\modules\comments', 'CommentsPager');
    }
 
