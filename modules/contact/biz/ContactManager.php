@@ -108,7 +108,7 @@ class ContactManager extends APFObject {
    /**
     * @return ContactMapper
     */
-   private function &getMapper() {
+   private function getMapper() {
       /** @noinspection PhpIncompatibleReturnTypeInspection */
       // PHP does not allow generic interface definition, so returning APFService would result in an IDE warning.
       return $this->getServiceObject(ContactMapper::class);
