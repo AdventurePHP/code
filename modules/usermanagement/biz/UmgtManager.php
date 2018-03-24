@@ -2229,7 +2229,7 @@ class UmgtManager extends APFObject {
       // direct sql statement is more performance friendly :)
       $select = 'SELECT ent_authtoken.* FROM `ent_authtoken`
                  WHERE
-                    UNIX_TIMESTAMP(ent_authtoken.CreationTimestamp) <= \'' . time() - $this->getAutoLoginCookieLifeTime() . '\';';
+                    UNIX_TIMESTAMP(ent_authtoken.CreationTimestamp) <= \'' . intval(time() - $this->getAutoLoginCookieLifeTime()) . '\';';
       $tokens = $mapper->loadObjectListByTextStatement('AuthToken', $select);
 
       foreach ($tokens as $token) {
