@@ -78,7 +78,7 @@ class ApplicationSingleton extends Singleton {
     * @version
     * Version 0.1, 17.07.2013<br />
     */
-   public static function &getInstance($class, array $arguments = [], $instanceId = null) {
+   public static function getInstance($class, array $arguments = [], $instanceId = null) {
 
       $cacheKey = self::getCacheKey($class, $instanceId);
 

@@ -90,7 +90,7 @@ class SessionSingleton extends Singleton {
     * @version
     * Version 0.1, 24.02.2008<br />
     */
-   public static function &getInstance($class, array $arguments = [], $instanceId = null) {
+   public static function getInstance($class, array $arguments = [], $instanceId = null) {
 
       $cacheKey = self::getCacheKey($class, $instanceId);
 

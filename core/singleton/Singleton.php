@@ -75,7 +75,7 @@ class Singleton {
     * Version 0.1, 12.04.2006<br />
     * Version 0.2, 21.08.2007 (Added check, if the class exists.)<br />
     */
-   public static function &getInstance($class, array $arguments = [], $instanceId = null) {
+   public static function getInstance($class, array $arguments = [], $instanceId = null) {
       $cacheKey = self::getCacheKey($class, $instanceId);
       if (!isset(self::$CACHE[$cacheKey])) {
          if (count($arguments) > 0) {
