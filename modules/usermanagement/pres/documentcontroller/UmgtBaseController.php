@@ -66,7 +66,7 @@ abstract class UmgtBaseController extends BaseDocumentController {
     * @version
     * Version 0.1, 30.04.2010<br />
     */
-   protected function &getManager() {
+   protected function getManager() {
       return $this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
    }
 

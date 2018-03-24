@@ -142,7 +142,7 @@ class UserDependentContentConditionSet extends APFObject {
    /**
     * @return UmgtManager|APFDIService
     */
-   private function &getUmgtManager() {
+   private function getUmgtManager() {
       return $this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
    }
 
@@ -181,7 +181,7 @@ class UserDependentContentConditionSet extends APFObject {
    /**
     * @return UmgtUserSessionStore The session store of the umgt module.
     */
-   private function &getUserSessionStore() {
+   private function getUserSessionStore() {
       return $this->getServiceObject(UmgtUserSessionStore::class, [],
             APFService::SERVICE_TYPE_SESSION_SINGLETON);
    }
