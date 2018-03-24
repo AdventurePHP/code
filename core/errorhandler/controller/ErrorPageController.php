@@ -20,8 +20,9 @@
  */
 namespace APF\core\errorhandler\controller;
 
+use APF\core\errorhandler\model\ErrorPageViewModel;
 use APF\core\pagecontroller\BaseDocumentController;
-use APF\core\registry\Registry;
+use APF\core\singleton\Singleton;
 
 /**
  * Implements the error page's document controller.
@@ -43,8 +44,11 @@ class ErrorPageController extends BaseDocumentController {
    public function transformContent() {
 
       // build stack trace
+      /* @var $model ErrorPageViewModel */
+      $model = Singleton::getInstance(ErrorPageViewModel::class);
+
       $errors = array_reverse(debug_backtrace());
-      $buffer = (string) '';
+      $buffer = (string)'';
 
       $errorEntry = $this->getTemplate('ErrorEntry');
 
@@ -81,14 +85,8 @@ class ErrorPageController extends BaseDocumentController {
 
       $this->setPlaceHolder('Stacktrace', $buffer);
 
-      $document = $this->getDocument();
-      $this->setPlaceHolder('ErrorID', $document->getAttribute('id'));
-      $this->setPlaceHolder('ErrorMessage', htmlspecialchars($document->getAttribute('message'), ENT_QUOTES, Registry::retrieve('APF\core', 'Charset'), false));
-      $this->setPlaceHolder('ErrorNumber', $document->getAttribute('number'));
-      $this->setPlaceHolder('ErrorFile', $document->getAttribute('file'));
-      $this->setPlaceHolder('ErrorLine', $document->getAttribute('line'));
+      $this->setData('model', $model);
 
-      $this->setPlaceHolder('GenerationDate', date('r'));
    }
 
 }

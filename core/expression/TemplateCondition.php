@@ -89,7 +89,7 @@ class TemplateCondition {
     *
     * @throws InvalidArgumentException In case the given condition is invalid.
     */
-   public static function applies($condition, $data) {
+   public static function applies(string $condition, $data) {
       switch ($condition) {
          case strpos($condition, 'true') !== false:
             return $data === true;
@@ -232,7 +232,7 @@ class TemplateCondition {
     *
     * @return array List of arguments.
     */
-   protected static function getArgument($condition) {
+   protected static function getArgument(string $condition) {
       $open = strpos($condition, '(');
       $close = strrpos($condition, ')', $open);
 

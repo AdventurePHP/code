@@ -62,7 +62,7 @@ class MethodEvaluationExpression extends EvaluationExpressionBase implements Eva
       return call_user_func_array([$this->previousResult, $method], $arguments);
    }
 
-   protected function check($expression, $previousResult) {
+   protected function check(string $expression, $previousResult) {
       if (!is_object($previousResult)) {
          throw new ParserException('$previousResult is not of type object but "' . gettype($previousResult) . '"! Expression: "' . $expression . '".');
       }

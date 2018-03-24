@@ -47,7 +47,7 @@ abstract class ExpressionEvaluator {
     * @version
     * Version 0.1, 29.01.2014<br />
     */
-   public static function evaluate(DomNode $dataNode, $expressionString) {
+   public static function evaluate(DomNode $dataNode, string $expressionString) {
 
       $parts = explode('->', $expressionString);
 

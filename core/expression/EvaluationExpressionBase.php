@@ -47,7 +47,7 @@ abstract class EvaluationExpressionBase {
     * @param string $expression The expression to execute.
     * @param mixed $previousResult The previous expression execution result (e.g. an object or array).
     */
-   public function __construct($expression, $previousResult) {
+   public function __construct(string $expression, $previousResult) {
       $this->expression = $expression;
 
       // check result according to executed evaluation
@@ -61,6 +61,6 @@ abstract class EvaluationExpressionBase {
     * @param string $expression The expression to execute.
     * @param mixed $previousResult The previous expression execution result (e.g. an object or array).
     */
-   abstract protected function check($expression, $previousResult);
+   abstract protected function check(string $expression, $previousResult);
 
 }

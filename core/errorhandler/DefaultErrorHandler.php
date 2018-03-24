@@ -20,6 +20,7 @@
  */
 namespace APF\core\errorhandler;
 
+use APF\core\errorhandler\model\ErrorPageViewModel;
 use APF\core\logging\entry\SimpleLogEntry;
 use APF\core\logging\LogEntry;
 use APF\core\logging\Logger;
@@ -119,24 +120,19 @@ class DefaultErrorHandler implements ErrorHandler {
     */
    protected function buildErrorPage() {
 
-      // at this point we have to re-include the benchmark timer, because PHP
-      // sometimes forgets about this import and throws a
-      // Fatal error: Exception thrown without a stack frame in Unknown on line 0
-      // exception.
-
-
       // create page
       $stackTrace = new Page();
-      $stackTrace->setContext('APF\core\errorhandler');
       $stackTrace->loadDesign('APF\core\errorhandler\templates', 'errorpage');
 
       // inject error information into the document attributes array
-      $doc = $stackTrace->getRootDocument();
-      $doc->setAttribute('id', $this->generateErrorID());
-      $doc->setAttribute('message', $this->errorMessage);
-      $doc->setAttribute('number', $this->errorNumber);
-      $doc->setAttribute('file', $this->errorFile);
-      $doc->setAttribute('line', $this->errorLine);
+      /* @var $model ErrorPageViewModel */
+      $model = Singleton::getInstance(ErrorPageViewModel::class);
+
+      $model->setErrorId($this->generateErrorID());
+      $model->setErrorMessage($this->errorMessage);
+      $model->setErrorNumber($this->errorNumber);
+      $model->setErrorFile($this->errorFile);
+      $model->setErrorLine($this->errorLine);
 
       // create error page
       return $stackTrace->transform();

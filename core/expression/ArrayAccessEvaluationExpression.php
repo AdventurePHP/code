@@ -77,7 +77,7 @@ class ArrayAccessEvaluationExpression extends EvaluationExpressionBase implement
       return $result;
    }
 
-   protected function check($expression, $previousResult) {
+   protected function check(string $expression, $previousResult) {
       if (!is_array($previousResult)) {
          throw new ParserException('$previousResult is not of type array but "' . gettype($previousResult) . '"! Expression: "' . $expression . '".');
       }

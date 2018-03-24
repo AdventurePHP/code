@@ -33,7 +33,7 @@ class ArgumentParser {
     * @param string $expression Template expression w/ multiple (string) arguments.
     * @return array The sanitized list if arguments.
     */
-   public static function getArguments($expression) {
+   public static function getArguments(string $expression) {
 
       $expression = trim($expression);
       if (empty($expression) && strval($expression) !== '0') {

@@ -69,7 +69,7 @@ class ModelEvaluationExpression extends EvaluationExpressionBase implements Eval
       }
    }
 
-   protected function check($expression, $previousResult) {
+   protected function check(string $expression, $previousResult) {
       if (!($previousResult instanceof DomNode)) {
          throw new ParserException('$previousResult is not of type Document but "' . gettype($previousResult) . '"! Expression: "' . $expression . '".');
       }
