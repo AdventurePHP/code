@@ -23,7 +23,6 @@ namespace APF\modules\usermanagement\biz\login;
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\modules\usermanagement\biz\UmgtManager;
 
-
 /**
  * Automatically delete expired AuthTokens for the UmgtAutoLogin to reduce load of database.
  * All tokens older than in cookie.lifetime config defined will be deleted.
@@ -33,15 +32,11 @@ use APF\modules\usermanagement\biz\UmgtManager;
  * Version 0.1, 20.03.2018<br />
  */
 class ClearAuthTokenAction extends AbstractFrontcontrollerAction {
-   
+
    public function run() {
-   
       /* @var $umgt UmgtManager */
       $umgt = $this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
-
-      $oldTokens = $umgt->loadOldAuthTokens();
-      foreach($oldTokens as $token) {
-         $umgt->deleteAuthToken($token);
-      }
+      $umgt->cleanUpOldAuthTokens();
    }
+
 }

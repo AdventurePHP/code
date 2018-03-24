@@ -2214,37 +2214,28 @@ class UmgtManager extends APFObject {
 
       return $this->getORMapper()->loadObjectByCriterion('User', $crit);
    }
-   
+
    /**
-    * Loads old AuthTokens to delete or list them.
-    *
-    * @return UmgtAuthToken[]
+    * Cleans up old authentication tokens.
     *
     * @author dave
     * @version
     * Version 0.1, 20.03.2018<br />
     */
-   public function loadOldAuthTokens() {
-      $time = time() - $this->getAutoLoginCookieLifeTime();
-      
+   public function cleanUpOldAuthTokens() {
+
+      $mapper = $this->getORMapper();
+
       // direct sql statement is more performance friendly :)
       $select = 'SELECT ent_authtoken.* FROM `ent_authtoken`
                  WHERE
-                    UNIX_TIMESTAMP(ent_authtoken.CreationTimestamp) <= \'' . $time . '\';';
-      return $this->getORMapper()->loadObjectListByTextStatement('AuthToken', $select);
+                    UNIX_TIMESTAMP(ent_authtoken.CreationTimestamp) <= \'' . time() - $this->getAutoLoginCookieLifeTime() . '\';';
+      $tokens = $mapper->loadObjectListByTextStatement('AuthToken', $select);
+
+      foreach ($tokens as $token) {
+         $mapper->deleteObject($token);
+      }
+
    }
-   
-   /**
-    * Deletes a UmgtAuthToken object
-    *
-    * @param UmgtAuthToken $token
-    * @throws \APF\modules\genericormapper\data\GenericORMapperException
-    *
-    * @author dave
-    * @version
-    * Version 0.1, 20.03.2018<br />
-    */
-   public function deleteAuthToken(UmgtAuthToken $token) {
-      $this->getORMapper()->deleteObject($token);
-   }
+
 }
