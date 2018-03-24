@@ -123,7 +123,7 @@ class ServiceManagerTest extends TestCase {
     */
    public function testEmptyContextCausesException1() {
       $this->expectException(InvalidArgumentException::class);
-      ServiceManager::getServiceObject(DummyService::class, null, null);
+      ServiceManager::getServiceObject(DummyService::class, '', null);
    }
 
    /**
@@ -131,7 +131,7 @@ class ServiceManagerTest extends TestCase {
     */
    public function testEmptyContextCausesException2() {
       $this->expectException(InvalidArgumentException::class);
-      ServiceManager::getServiceObject(DummyService::class, '', null);
+      ServiceManager::getServiceObject(DummyService::class, '', '');
    }
 
 }

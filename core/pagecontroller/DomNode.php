@@ -46,7 +46,7 @@ interface DomNode extends ApplicationContext {
     * Version 0.3, 14.02.2011 (Refactored method signature to be more type safe)<br />
     * Version 0.4, 11.07.2014 (Removed TagLib to gain performance and simplify API)<br />
     */
-   public static function addTagLib($class, $prefix, $name);
+   public static function addTagLib(string $class, string $prefix, string $name);
 
    /**
     * Add a template expressions to the <em>global</em> list of known expressions.
@@ -57,7 +57,7 @@ interface DomNode extends ApplicationContext {
     * @version
     * Version 0.1, 30.08.2014 (ID#229: introduced template expressions)<br />
     */
-   public static function addTemplateExpression($expression);
+   public static function addTemplateExpression(string $expression);
 
    /**
     * Clears the list of registered template expressions to allow building custom lists of template expression per
@@ -104,7 +104,7 @@ interface DomNode extends ApplicationContext {
     * @version
     * Version 0.1, 20.02.2010<br />
     */
-   public function setObjectId($objectId);
+   public function setObjectId(string $objectId);
 
    /**
     * Returns the object id of the current APF object.
@@ -143,7 +143,7 @@ interface DomNode extends ApplicationContext {
     * Version 0.1, 28.12.2006<br />
     * Version 0.2, 02.02.2007 (Added default value handling)<br />
     */
-   public function getAttribute($name, $default = null);
+   public function getAttribute(string $name, string $default = null);
 
    /**
     * Allows you to check whether an attribute has been defined or not.
@@ -161,7 +161,7 @@ interface DomNode extends ApplicationContext {
     * @version
     * Version 0.1, 12.03.2015<br />
     */
-   public function hasAttribute($name);
+   public function hasAttribute(string $name);
 
    /**
     * Let's you retrieve a tag attribute expressing to other developers that it is a mandatory attribute.
@@ -175,7 +175,7 @@ interface DomNode extends ApplicationContext {
     * @version
     * Version 0.1, 27.05.2014<br />
     */
-   public function getRequiredAttribute($name);
+   public function getRequiredAttribute(string $name);
 
    /**
     * Sets an object's attribute.
@@ -189,7 +189,7 @@ interface DomNode extends ApplicationContext {
     * @version
     * Version 0.1, 28.12.2006<br />
     */
-   public function setAttribute($name, $value);
+   public function setAttribute(string $name, string $value = null);
 
    /**
     * Returns an object's attributes.
@@ -213,7 +213,7 @@ interface DomNode extends ApplicationContext {
     * @version
     * Version 0.1, 28.12.2006<br />
     */
-   public function deleteAttribute($name);
+   public function deleteAttribute(string $name);
 
    /**
     * Sets an object's attributes.
@@ -246,7 +246,7 @@ interface DomNode extends ApplicationContext {
     * Version 0.2, 09.02.2013 (Moved to APFObject to avoid multiple implementations)<br />
     * Version 0.3, 21.07.2014 (Added option to define the glue)<br />
     */
-   public function addAttribute($name, $value, $glue = '');
+   public function addAttribute(string $name, string $value, string $glue = '');
 
    /**
     * Returns the textual content of the current node.
@@ -270,7 +270,7 @@ interface DomNode extends ApplicationContext {
     * @version
     * Version 0.1, 20.02.2010<br />
     */
-   public function setContent($content);
+   public function setContent(string $content);
 
    /**
     * Returns the list of the current node's children.
@@ -300,7 +300,7 @@ interface DomNode extends ApplicationContext {
     * Version 0.1, 11.12.2011<br />
     * Version 0.2, 09.02.2013 (Now public access since DocumentController is now derived from APFObject instead of Document)<br />
     */
-   public function getChildNode($attributeName, $value, $tagLibClass);
+   public function getChildNode(string $attributeName, string $value, string $tagLibClass);
 
    /**
     * Same functionality as <em>getChildNode()</em> except returning null in case no matching node
@@ -317,7 +317,7 @@ interface DomNode extends ApplicationContext {
     * Version 0.1, 11.12.2011<br />
     * Version 0.2, 09.02.2013 (Now public access since DocumentController is now derived from APFObject instead of Document)<br />
     */
-   public function getChildNodeIfExists($attributeName, $value, $tagLibClass);
+   public function getChildNodeIfExists(string $attributeName, string $value, string $tagLibClass);
 
    /**
     * Let's you retrieve a list of child nodes of the current document by specifying a selector
@@ -336,7 +336,7 @@ interface DomNode extends ApplicationContext {
     * Version 0.1, 14.07.2012<br />
     * Version 0.2, 09.02.2013 (Now public access since DocumentController is now derived from APFObject instead of Document)<br />
     */
-   public function getChildNodes($attributeName, $value, $tagLibClass);
+   public function getChildNodes(string $attributeName, string $value, string $tagLibClass);
 
    /**
     * API method to set a place holder's content within a document.
@@ -354,7 +354,7 @@ interface DomNode extends ApplicationContext {
     * Version 0.3, 07.02.2013 (Moved to Document to avoid multiple implementations)<br />
     * Version 0.4, 05.08.2013 (Added support to append content to place holders)<br />
     */
-   public function setPlaceHolder($name, $value, $append = false);
+   public function setPlaceHolder(string $name, string $value, bool $append = false);
 
    /**
     * This method is for conveniently setting of multiple place holders. The applied
@@ -382,7 +382,7 @@ interface DomNode extends ApplicationContext {
     * Version 0.2, 09.02.2013 (Moved to Document to avoid multiple implementations)<br />
     * Version 0.3, 06.08.2013 (Added support for appending content to place holders)<br />
     */
-   public function setPlaceHolders(array $placeHolderValues, $append = false);
+   public function setPlaceHolders(array $placeHolderValues, bool $append = false);
 
    /**
     * Returns the list of registered place holders for the current document.
@@ -407,7 +407,7 @@ interface DomNode extends ApplicationContext {
     * @version
     * Version 0.1, 12.03.2016 (ID#287)<br />
     */
-   public function getPlaceHolder($name, $default = null);
+   public function getPlaceHolder(string $name, string $default = null);
 
    /**
     * Clears the list of place holders for the current document. Can be used to reset place holders within templates.
@@ -447,7 +447,7 @@ interface DomNode extends ApplicationContext {
     * @version
     * Version 0.1, 29.01.2014<br />
     */
-   public function setData($name, $data);
+   public function setData(string $name, $data);
 
    /**
     * Allows you to retrieve a data attribute from the current DOM node (similar to Java Script for HTML nodes).
@@ -461,7 +461,7 @@ interface DomNode extends ApplicationContext {
     * @version
     * Version 0.1, 29.01.2014<br />
     */
-   public function getData($name, $default = null);
+   public function getData(string $name, $default = null);
 
    /**
     * Interface definition of the onParseTime() method. This function is called after the creation
@@ -517,7 +517,7 @@ interface DomNode extends ApplicationContext {
     * @version
     * Version 0.1, 13.08.2014<br />
     */
-   public function getNodeById($id);
+   public function getNodeById(string $id);
 
    /**
     * Same functionality as <em>getNodeById()</em> except returning null in case no matching node
@@ -531,6 +531,6 @@ interface DomNode extends ApplicationContext {
     * @version
     * Version 0.1, 13.08.2014<br />
     */
-   public function getNodeByIdIfExists($id);
+   public function getNodeByIdIfExists(string $id);
 
 }

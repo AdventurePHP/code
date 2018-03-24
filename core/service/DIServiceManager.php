@@ -147,7 +147,7 @@ final class DIServiceManager {
     * Version 0.4, 10.07.2012 Jan Wiese (Introduced configuration cache to gain performance)<br />
     * Version 0.5, 10.07.2012 Jan Wiese (Improvements in code quality and removed bugs from v0.3/v0.4)<br />
     */
-   public static function &getServiceObject($configNamespace, $sectionName, $context, $language) {
+   public static function getServiceObject(string $configNamespace, string $sectionName, string $context, string $language = null) {
 
       // ID#317:
       // (Re-)using objects/services with multiple configurations (defined by multiple contexts) within one application
@@ -247,13 +247,13 @@ final class DIServiceManager {
                $arguments[] = $value;
             } else {
                // complex injection with another service
-               $arguments[] = &self::getServiceObject($namespace, $name, $context, $language);
+               $arguments[] = self::getServiceObject($namespace, $name, $context, $language);
             }
          }
       }
 
       /* @var $serviceObject APFDIService */
-      $serviceObject = &ServiceManager::getServiceObject($class, $context, $language, $arguments, $serviceType, $cacheKey);
+      $serviceObject = ServiceManager::getServiceObject($class, $context, $language, $arguments, $serviceType, $cacheKey);
 
       // do param injection (static configuration)
       if ($section->hasSection('conf')) {
@@ -358,7 +358,7 @@ final class DIServiceManager {
                self::$INJECTION_CALL_CACHE[$injectionKey] = true;
 
                // get the dependent service object
-               $miObject = &self::getServiceObject($namespace, $name, $context, $language);
+               $miObject = self::getServiceObject($namespace, $name, $context, $language);
 
                // inject the current service object with the created one
                if (method_exists($serviceObject, $method)) {
@@ -420,7 +420,7 @@ final class DIServiceManager {
     * Version 0.1, 04.10.2010<br />
     * Version 0.2, 15.07.2012 Jan Wiese (Introduced configuration cache and $cacheKey parameter)<br />
     */
-   private static function getServiceConfiguration($configNamespace, $context, $language, $cacheKey) {
+   private static function getServiceConfiguration(string $configNamespace, string $context, string $language = null, string $cacheKey) {
 
       // return cached version as much as possible to gain performance
       if (isset(self::$SERVICE_CONFIG_CACHE[$cacheKey])) {

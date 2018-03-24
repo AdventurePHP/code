@@ -46,7 +46,7 @@ interface TemplateExpression {
     * @version
     * Version 0.1, 30.08.2014<br />
     */
-   public static function applies($token);
+   public static function applies(string $token);
 
    /**
     * This method acts as a DOM node producer (concrete factory) for the DOM node representation of
@@ -65,6 +65,6 @@ interface TemplateExpression {
     * @version
     * Version 0.1, 30.08.2014<br />
     */
-   public static function getDocument($token);
+   public static function getDocument(string $token);
 
 }

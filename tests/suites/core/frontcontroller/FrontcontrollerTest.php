@@ -109,7 +109,7 @@ class FrontcontrollerTest extends TestCase {
       $fC->method('getConfiguration')
             ->willReturn($config);
 
-      $fC->registerActionUrlMappings(null, null);
+      $fC->registerActionUrlMappings('VENDOR\namespace', 'fake');
    }
 
    /**
@@ -128,7 +128,7 @@ class FrontcontrollerTest extends TestCase {
             ->method('getConfiguration')
             ->willReturn(new IniConfiguration());
 
-      $fC->addAction(null, null);
+      $fC->addAction('VENDOR\namespace', 'fake');
    }
 
    /**

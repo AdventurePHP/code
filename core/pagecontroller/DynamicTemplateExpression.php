@@ -31,11 +31,11 @@ use APF\core\expression\taglib\ExpressionEvaluationTag;
  */
 class DynamicTemplateExpression implements TemplateExpression {
 
-   public static function applies($token) {
+   public static function applies(string $token) {
       return strpos($token, '->') !== false || strpos($token, '[') !== false;
    }
 
-   public static function getDocument($token) {
+   public static function getDocument(string $token) {
       $expressionTag = new ExpressionEvaluationTag();
       $expressionTag->setAttribute(ExpressionEvaluationTag::EXPRESSION, $token);
 

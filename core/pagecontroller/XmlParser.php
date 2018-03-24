@@ -67,7 +67,7 @@ final class XmlParser {
     * Version 0.9, 26.09.2012 (Introduced additional arguments for prefix and name to gain performance)<br />
     * Version 1.0, 23.12.2013 (ID#112: fixed parser issue with nested tags of the same tag name)<br />
     */
-   public static function getTagAttributes($prefix, $name, $tagString) {
+   public static function getTagAttributes(string $prefix, string $name, string $tagString) {
 
       // search for taglib to attributes string delimiter
       $tagAttributeDel = strpos($tagString, ' ');
@@ -126,7 +126,7 @@ final class XmlParser {
 
       return [
             'attributes' => $tagAttributes,
-            'content'    => $content
+            'content' => $content
       ];
    }
 
@@ -149,7 +149,7 @@ final class XmlParser {
     * Version 0.3, 14.01.2007 (Improved the error message)<br />
     * Version 0.4, 14.11.2007 (Removed $hasFound; see https://adventure-php-framework.org/forum/viewtopic.php?t=7)<br />
     */
-   public static function getAttributesFromString($attributesString) {
+   public static function getAttributesFromString(string $attributesString) {
 
       $attributes = [];
       $offset = 0;

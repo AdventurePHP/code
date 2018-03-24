@@ -50,7 +50,7 @@ interface APFService extends ApplicationContext {
     * @version
     * Version 0.1, 20.02.2010<br />
     */
-   public function setServiceType($serviceType);
+   public function setServiceType(string $serviceType);
 
    /**
     * Returns the service type of the current APF object.

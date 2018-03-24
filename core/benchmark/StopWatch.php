@@ -41,7 +41,7 @@ interface StopWatch {
     * @version
     * Version 0.1, 31.12.2006<br />
     */
-   public function start($name = null);
+   public function start(string $name);
 
    /**
     * Enables the stop watch for measurement of the predefined events.
@@ -73,7 +73,7 @@ interface StopWatch {
     * @version
     * Version 0.1, 31.12.2006<br />
     */
-   public function stop($name);
+   public function stop(string $name);
 
    /**
     * Generates the report of the recorded events.

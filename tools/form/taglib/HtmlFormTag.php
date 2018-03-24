@@ -118,7 +118,7 @@ class HtmlFormTag extends Document implements HtmlForm {
       $this->attributeWhiteList[] = 'target';
    }
 
-   public static function addFormControlToModelMapper($mapper) {
+   public static function addFormControlToModelMapper(string $mapper) {
       self::$formToModelMappers[] = $mapper;
    }
 
@@ -126,7 +126,7 @@ class HtmlFormTag extends Document implements HtmlForm {
       self::$formToModelMappers = [];
    }
 
-   public static function addModelToFormControlMapper($mapper) {
+   public static function addModelToFormControlMapper(string $mapper) {
       self::$modelToFormMappers[] = $mapper;
    }
 

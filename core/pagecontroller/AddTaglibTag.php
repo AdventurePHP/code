@@ -35,7 +35,7 @@ class AddTaglibTag extends Document {
     * Implements the onParseTime() method of the Document class. Adds the desired
     * taglib to the parent object.
     *
-    * @author Christian Schäfer, Christian Achatz
+    * @author Christian Achatz
     * @version
     * Version 0.1, 28.12.2006<br />
     * Version 0.2, 10.11.2008 (Changed implementation. We now use getAttribute() instead of direct internal attribute addressing)<br />
@@ -45,22 +45,11 @@ class AddTaglibTag extends Document {
     */
    public function onParseTime() {
 
-      $scope = $this->getAttribute('scope', 'global');
-
-      // add tag to parent instance in case overriding is explicitly desired
-      if ($scope === 'local') {
-         $this->addInstanceTagLib(
-               $this->getRequiredAttribute('class'),
-               $this->getRequiredAttribute('prefix'),
-               $this->getRequiredAttribute('name')
-         );
-      } else {
-         self::addTagLib(
-               $this->getRequiredAttribute('class'),
-               $this->getRequiredAttribute('prefix'),
-               $this->getRequiredAttribute('name')
-         );
-      }
+      self::addTagLib(
+            $this->getRequiredAttribute('class'),
+            $this->getRequiredAttribute('prefix'),
+            $this->getRequiredAttribute('name')
+      );
 
       // Resets the attributes list to avoid selection issues with the
       // getChildNode() and getChildNodes() methods that may select this

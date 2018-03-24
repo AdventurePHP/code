@@ -44,7 +44,7 @@ interface DocumentController extends APFDIService {
     * @version
     * Version 0.1, 20.02.2010<br />
     */
-   public function setDocument(DomNode &$document);
+   public function setDocument(DomNode $document);
 
    /**
     * Returns the document that represents the present DOM node the

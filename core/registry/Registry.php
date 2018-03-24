@@ -40,7 +40,7 @@ final class Registry {
    /**
     * Stores the registry content.
     *
-    * @var string[] $REGISTRY_STORE
+    * @var string[][][] $REGISTRY_STORE
     */
    private static $REGISTRY_STORE = [];
 
@@ -61,7 +61,7 @@ final class Registry {
     * @version
     * Version 0.1,19.06.2008<br />
     */
-   public static function register($namespace, $name, $value, $readOnly = false) {
+   public static function register(string $namespace, string $name, string $value, bool $readOnly = false) {
 
       if (isset(self::$REGISTRY_STORE[$namespace][$name]['readonly']) && self::$REGISTRY_STORE[$namespace][$name]['readonly'] === true) {
          throw new InvalidArgumentException('[Registry::register()] The entry with name "'
@@ -88,7 +88,7 @@ final class Registry {
     * Version 0.1, 19.06.2008<br />
     * Version 0.2, 13.09.2010 (Added support for custom default value definition)<br />
     */
-   public static function retrieve($namespace, $name, $default = null) {
+   public static function retrieve(string $namespace, string $name, string $default = null) {
 
       if (isset(self::$REGISTRY_STORE[$namespace][$name]['value'])) {
          return self::$REGISTRY_STORE[$namespace][$name]['value'];

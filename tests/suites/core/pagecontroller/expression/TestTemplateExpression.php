@@ -28,11 +28,11 @@ use APF\core\pagecontroller\TemplateExpression;
  */
 abstract class TestTemplateExpression implements TemplateExpression {
 
-   public static function applies($token) {
+   public static function applies(string $token) {
       return true;
    }
 
-   public static function getDocument($token) {
+   public static function getDocument(string $token) {
       $doc = new Document();
       $doc->setAttribute('expression', static::class);
       return $doc;

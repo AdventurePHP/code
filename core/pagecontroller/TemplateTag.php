@@ -47,7 +47,7 @@ class TemplateTag extends Document implements Template {
       $this->extractTagLibTags();
    }
 
-   public function getLabel($name) {
+   public function getLabel(string $name) {
       try {
          return $this->getChildNode('name', $name, LanguageLabel::class);
       } catch (InvalidArgumentException $e) {
@@ -59,7 +59,7 @@ class TemplateTag extends Document implements Template {
       }
    }
 
-   public function getForm($name) {
+   public function getForm(string $name) {
       try {
          return $this->getChildNode('name', $name, HtmlForm::class);
       } catch (InvalidArgumentException $e) {
@@ -71,7 +71,7 @@ class TemplateTag extends Document implements Template {
       }
    }
 
-   public function getTemplate($name) {
+   public function getTemplate(string $name) {
       try {
          return $this->getChildNode('name', $name, Template::class);
       } catch (InvalidArgumentException $e) {

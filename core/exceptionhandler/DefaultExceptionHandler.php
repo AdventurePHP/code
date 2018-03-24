@@ -20,6 +20,7 @@
  */
 namespace APF\core\exceptionhandler;
 
+use APF\core\exceptionhandler\model\ExceptionPageViewModel;
 use APF\core\logging\entry\SimpleLogEntry;
 use APF\core\logging\LogEntry;
 use APF\core\logging\Logger;
@@ -132,18 +133,19 @@ class DefaultExceptionHandler implements ExceptionHandler {
 
       // create page
       $stackTrace = new Page();
-      $stackTrace->setContext('APF\core\exceptionhandler');
       $stackTrace->loadDesign('APF\core\exceptionhandler\templates', 'exceptionpage');
 
+      /* @var $model ExceptionPageViewModel */
+      $model = Singleton::getInstance(ExceptionPageViewModel::class);
+
       // inject exception information into the document attributes array
-      $doc = $stackTrace->getRootDocument();
-      $doc->setAttribute('id', $this->generateExceptionID());
-      $doc->setAttribute('message', $this->exceptionMessage);
-      $doc->setAttribute('number', $this->exceptionNumber);
-      $doc->setAttribute('file', $this->exceptionFile);
-      $doc->setAttribute('line', $this->exceptionLine);
-      $doc->setAttribute('trace', array_reverse($this->exceptionTrace));
-      $doc->setAttribute('type', $this->exceptionType);
+      $model->setExceptionId($this->generateExceptionID());
+      $model->setExceptionMessage($this->exceptionMessage);
+      $model->setExceptionNumber($this->exceptionNumber);
+      $model->setExceptionFile($this->exceptionFile);
+      $model->setExceptionLine($this->exceptionLine);
+      $model->setExceptionType($this->exceptionType);
+      $model->setExceptionTrace(array_reverse($this->exceptionTrace));
 
       // create exception page
       return $stackTrace->transform();

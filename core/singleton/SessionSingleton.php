@@ -90,7 +90,7 @@ class SessionSingleton extends Singleton {
     * @version
     * Version 0.1, 24.02.2008<br />
     */
-   public static function getInstance($class, array $arguments = [], $instanceId = null) {
+   public static function getInstance(string $class, array $arguments = [], string $instanceId = null) {
 
       $cacheKey = self::getCacheKey($class, $instanceId);
 
@@ -124,7 +124,7 @@ class SessionSingleton extends Singleton {
       return self::$SESSION;
    }
 
-   public static function deleteInstance($class, $instanceId = null) {
+   public static function deleteInstance(string $class, string $instanceId = null) {
 
       // remove from local cache
       $cacheKey = self::getCacheKey($class, $instanceId);

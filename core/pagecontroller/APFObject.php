@@ -90,7 +90,7 @@ abstract class APFObject implements APFDIService {
       return $this->serviceType;
    }
 
-   public function setServiceType($serviceType) {
+   public function setServiceType(string $serviceType) {
       $this->serviceType = $serviceType;
    }
 
@@ -123,7 +123,7 @@ abstract class APFObject implements APFDIService {
     * @version
     * Version 0.1, 18.04.2009<br />
     */
-   protected function getDIServiceObject($namespace, $name) {
+   protected function getDIServiceObject(string $namespace, string $name) {
       return DIServiceManager::getServiceObject(
             $namespace, $name, $this->getContext(), $this->getLanguage());
    }
@@ -132,7 +132,7 @@ abstract class APFObject implements APFDIService {
       return $this->context;
    }
 
-   public function setContext($context) {
+   public function setContext(string $context = null) {
       $this->context = $context;
    }
 
@@ -140,7 +140,7 @@ abstract class APFObject implements APFDIService {
       return $this->language;
    }
 
-   public function setLanguage($lang) {
+   public function setLanguage(string $lang = null) {
       $this->language = $lang;
    }
 
@@ -163,7 +163,7 @@ abstract class APFObject implements APFDIService {
     * Version 0.5, 24.02.2008 (Added the service type param)<br />
     * Version 0.6  21.11.2012 Jens Prangenberg <jprangenberg@mywebhd.com> (Added the instance id param)<br />
     */
-   protected function getServiceObject($class, array $arguments = [], $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
+   protected function getServiceObject(string $class, array $arguments = [], string $type = APFService::SERVICE_TYPE_SINGLETON, string $instanceId = null) {
       return ServiceManager::getServiceObject($class, $this->getContext(), $this->getLanguage(), $arguments, $type, $instanceId);
    }
 
@@ -180,7 +180,7 @@ abstract class APFObject implements APFDIService {
     * @version
     * Version 0.1, 28.09.2010<br />
     */
-   protected function getConfiguration($namespace, $name) {
+   protected function getConfiguration(string $namespace, string $name) {
       return ConfigurationManager::loadConfiguration(
             $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('APF\core', 'Environment'), $name);
    }
@@ -197,7 +197,7 @@ abstract class APFObject implements APFDIService {
     * @version
     * Version 0.1, 28.10.2010<br />
     */
-   protected function saveConfiguration($namespace, $name, Configuration $config) {
+   protected function saveConfiguration(string $namespace, string $name, Configuration $config) {
       ConfigurationManager::saveConfiguration(
             $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('APF\core', 'Environment'), $name, $config);
    }
@@ -213,7 +213,7 @@ abstract class APFObject implements APFDIService {
     * @version
     * Version 0.1, 27.07.2011<br />
     */
-   protected function deleteConfiguration($namespace, $name) {
+   protected function deleteConfiguration(string $namespace, string $name) {
       ConfigurationManager::deleteConfiguration(
             $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('APF\core', 'Environment'), $name);
    }

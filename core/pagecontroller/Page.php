@@ -69,7 +69,7 @@ class Page extends APFObject {
     * Version 0.5, 08.03.2009 (Bug-fix: protected variable parentObject might not be used)<br />
     * Version 0.6, 27.06.2014 (Bug fix: ensure native environment for Document to allow expression-style place holders)<br />
     */
-   public function loadDesign($namespace, $design) {
+   public function loadDesign(string $namespace, string $design) {
 
       $this->document = new Document();
 

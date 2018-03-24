@@ -54,7 +54,12 @@ class ConditionalPlaceHolderTag extends Document implements PlaceHolder {
       // ID#301: un-escape HTML entities such as double quotes to allow passing regular expressions with double quotes
       $condition = html_entity_decode($condition, ENT_COMPAT | ENT_HTML5, Registry::retrieve('APF\core', 'Charset'));
 
-      $content = $this->getParent()->getPlaceHolder($this->getAttribute('name'));
+      $name = $this->getAttribute('name');
+      if ($name === null) {
+         $content = '';
+      } else {
+         $content = $this->getParent()->getPlaceHolder($name);
+      }
 
       if (!TemplateCondition::applies($condition, $content)) {
          return '';

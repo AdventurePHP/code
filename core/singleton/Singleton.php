@@ -75,7 +75,7 @@ class Singleton {
     * Version 0.1, 12.04.2006<br />
     * Version 0.2, 21.08.2007 (Added check, if the class exists.)<br />
     */
-   public static function getInstance($class, array $arguments = [], $instanceId = null) {
+   public static function getInstance(string $class, array $arguments = [], string $instanceId = null) {
       $cacheKey = self::getCacheKey($class, $instanceId);
       if (!isset(self::$CACHE[$cacheKey])) {
          if (count($arguments) > 0) {
@@ -103,7 +103,7 @@ class Singleton {
     * @version
     * Version 0.1, 10.01.2015<br />
     */
-   protected static function getCacheKey($class, $instanceId) {
+   protected static function getCacheKey(string $class, string $instanceId = null) {
       return $instanceId === null ? $class : $instanceId;
    }
 
@@ -119,7 +119,7 @@ class Singleton {
     * @version
     * Version 0.1, 10.01.2015<br />
     */
-   public static function deleteInstance($class, $instanceId = null) {
+   public static function deleteInstance(string $class, string $instanceId = null) {
       $cacheKey = self::getCacheKey($class, $instanceId);
       unset(self::$CACHE[$cacheKey]);
    }

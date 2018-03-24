@@ -31,7 +31,7 @@ interface Process {
     * @param string $name The name of the process.
     * @param int $level The hierarchy level.
     */
-   public function __construct($name, $level);
+   public function __construct(string $name, int $level);
 
    /**
     * @return string The name of the process.

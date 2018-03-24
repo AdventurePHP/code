@@ -45,7 +45,7 @@ class DefaultProcess implements Process {
     */
    private $end;
 
-   public function __construct($name, $level) {
+   public function __construct(string $name, int $level) {
       $this->name = $name;
       $this->level = $level;
    }

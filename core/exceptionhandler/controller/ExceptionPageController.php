@@ -20,8 +20,9 @@
  */
 namespace APF\core\exceptionhandler\controller;
 
+use APF\core\exceptionhandler\model\ExceptionPageViewModel;
 use APF\core\pagecontroller\BaseDocumentController;
-use APF\core\registry\Registry;
+use APF\core\singleton\Singleton;
 
 /**
  * Implements the exception page's document controller.
@@ -42,9 +43,11 @@ class ExceptionPageController extends BaseDocumentController {
    public function transformContent() {
 
       // get the exception trace, init output buffer
-      $document = $this->getDocument();
-      $exceptions = $document->getAttribute('trace');
-      $buffer = (string) '';
+      /* @var $model ExceptionPageViewModel */
+      $model = Singleton::getInstance(ExceptionPageViewModel::class);
+
+      $exceptions = $model->getExceptionTrace();
+      $buffer = '';
 
       // get template
       $templateExceptionEntry = $this->getTemplate('ExceptionEntry');
@@ -77,14 +80,7 @@ class ExceptionPageController extends BaseDocumentController {
 
       $this->setPlaceHolder('Stacktrace', $buffer);
 
-      $this->setPlaceHolder('ExceptionID', $document->getAttribute('id'));
-      $this->setPlaceHolder('ExceptionType', $document->getAttribute('type'));
-      $this->setPlaceHolder('ExceptionMessage', htmlspecialchars($document->getAttribute('message'), ENT_QUOTES, Registry::retrieve('APF\core', 'Charset'), false));
-      $this->setPlaceHolder('ExceptionNumber', $document->getAttribute('number'));
-      $this->setPlaceHolder('ExceptionFile', $document->getAttribute('file'));
-      $this->setPlaceHolder('ExceptionLine', $document->getAttribute('line'));
-
-      $this->setPlaceHolder('GenerationDate', date('r'));
+      $this->setData('model', $model);
    }
 
 }

@@ -38,7 +38,7 @@ interface ApplicationContext {
     * @version
     * Version 0.1, 20.02.2010<br />
     */
-   public function setContext($context);
+   public function setContext(string $context = null);
 
    /**
     * Returns the context of the current APF object.
@@ -60,7 +60,7 @@ interface ApplicationContext {
     * @version
     * Version 0.1, 20.02.2010<br />
     */
-   public function setLanguage($lang);
+   public function setLanguage(string $lang = null);
 
    /**
     * Returns the language of the current APF object.

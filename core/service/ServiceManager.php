@@ -67,7 +67,7 @@ final class ServiceManager {
     * Version 0.9, 23.07.2013 (Added "APPLICATIONSINGLETON" object creation mechanism.)<br />
     * Version 1.0, 14.08.2017 (ID#317: prevent empty context to avoid scoping issues for instances of the same type but different configuration/application contexts)<br />
     */
-   public static function &getServiceObject($class, $context, $language, array $arguments = [], $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
+   public static function getServiceObject(string $class, string $context, string $language = null, array $arguments = [], string $type = APFService::SERVICE_TYPE_SINGLETON, string $instanceId = null) {
 
       // ID#317:
       // (Re-)using objects/services with multiple configurations (defined by multiple contexts) within one application

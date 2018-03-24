@@ -98,7 +98,7 @@ class LanguageLabelTag extends Document implements LanguageLabel {
     * @version
     * Version 0.1, 11.01.2012<br />
     */
-   protected function replace($label) {
+   protected function replace(string $label) {
       foreach ($this->getPlaceHolders() as $key => $value) {
          $label = str_replace('{' . $key . '}', $value, $label);
       }

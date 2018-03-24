@@ -24,7 +24,6 @@ use APF\core\expression\taglib\ConditionalPlaceHolderTag;
 use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\DomNode;
 use APF\core\pagecontroller\TemplateTag;
-use APF\tests\suites\core\expression\LinkModel;
 use PHPUnit\Framework\TestCase;
 
 class ConditionalPlaceHolderTagTest extends TestCase {
@@ -89,47 +88,6 @@ class ConditionalPlaceHolderTagTest extends TestCase {
       $doc = new Document();
       $tag->setParent($doc);
       $this->assertEmpty($tag->transform());
-   }
-
-   public function testArrayContent() {
-
-      $name = 'foo';
-      $tag = $this->getPlaceHolder(
-      /** @lang text */
-            '<a href="${content[\'moreLink\']}">${content[\'moreLabel\']}</a>',
-            ['name' => $name]
-      );
-
-      $parent = new Document();
-      $model = new LinkModel();
-      $parent->setPlaceHolder($name, ['moreLabel' => $model->getLabel(), 'moreLink' => $model->getUrl()]);
-      $tag->setParent($parent);
-
-      $this->assertEquals(
-            '<a href="' . $model->getUrl() . '">' . $model->getLabel() . '</a>',
-            $tag->transform()
-      );
-
-   }
-
-   public function testViewModelContent() {
-
-      $name = 'foo';
-      $tag = $this->getPlaceHolder(
-      /** @lang text */
-            '<a href="${content->getUrl()}">${content->getLabel()}</a>',
-            ['name' => $name]
-      );
-
-      $parent = new Document();
-      $model = new LinkModel();
-      $parent->setPlaceHolder($name, $model);
-      $tag->setParent($parent);
-
-      $this->assertEquals(
-            '<a href="' . $model->getUrl() . '">' . $model->getLabel() . '</a>',
-            $tag->transform()
-      );
    }
 
    public function testComplexExample() {

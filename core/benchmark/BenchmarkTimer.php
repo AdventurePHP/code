@@ -118,7 +118,7 @@ final class BenchmarkTimer {
     * @version
     * Version 0.1, 31.12.2006<br />
     */
-   public function start($name = null) {
+   public function start(string $name) {
       $this->stopWatch->start($name);
    }
 
@@ -131,7 +131,7 @@ final class BenchmarkTimer {
     * @version
     * Version 0.1, 31.12.2006<br />
     */
-   public function stop($name) {
+   public function stop(string $name) {
       $this->stopWatch->stop($name);
    }
 

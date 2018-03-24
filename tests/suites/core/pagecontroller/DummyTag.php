@@ -18,26 +18,12 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-namespace APF\core\pagecontroller;
+namespace APF\tests\suites\core\pagecontroller;
+
+use APF\core\pagecontroller\Document;
 
 /**
- * Implements the extended templating syntax processing functionality for place holders.
- *
- * @author Christian Achatz
- * @version
- * Version 0.1, 30.08.2014<br />
+ * Dummy tag for testing purposed.
  */
-class PlaceHolderTemplateExpression implements TemplateExpression {
-
-   public static function applies(string $token) {
-      return preg_match('#^[A-Za-z\-0-9_\.]+$#', $token);
-   }
-
-   public static function getDocument(string $token) {
-      $placeHolder = new PlaceHolderTag();
-      $placeHolder->setAttribute('name', $token);
-
-      return $placeHolder;
-   }
-
+class DummyTag extends Document {
 }

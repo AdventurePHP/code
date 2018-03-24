@@ -61,7 +61,7 @@ class DefaultStopWatch implements StopWatch {
       $this->start('Root');
    }
 
-   public function start($name = null) {
+   public function start(string $name) {
 
       // do nothing in case disabled
       if ($this->enabled === false) {
@@ -80,7 +80,7 @@ class DefaultStopWatch implements StopWatch {
       $this->enabled = false;
    }
 
-   public function stop($name) {
+   public function stop(string $name) {
 
       // do nothing in case disabled
       if ($this->enabled === false) {

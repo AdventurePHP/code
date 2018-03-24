@@ -61,7 +61,7 @@ interface HtmlForm extends FormControlFinder, FormElement {
     * @version
     * Version 0.1, 29.03.2016 (ID#275: introduced value data mappers to be able to customize form to model mappings)<br />
     */
-   public static function addFormControlToModelMapper($mapper);
+   public static function addFormControlToModelMapper(string $mapper);
 
    /**
     * Use this method to clear the list of form-to-model mappers.
@@ -91,7 +91,7 @@ interface HtmlForm extends FormControlFinder, FormElement {
     * @version
     * Version 0.1, 02.07.2016 (ID#297: introduced form control data mappers to be able to customize model to form mappings)<br />
     */
-   public static function addModelToFormControlMapper($mapper);
+   public static function addModelToFormControlMapper(string $mapper);
 
    /**
     * Use this method to clear the list of model-to-form mappers.

@@ -78,7 +78,7 @@ class ApplicationSingleton extends Singleton {
     * @version
     * Version 0.1, 17.07.2013<br />
     */
-   public static function getInstance($class, array $arguments = [], $instanceId = null) {
+   public static function getInstance(string $class, array $arguments = [], string $instanceId = null) {
 
       $cacheKey = self::getCacheKey($class, $instanceId);
 
@@ -101,14 +101,14 @@ class ApplicationSingleton extends Singleton {
       return self::$CACHE[$cacheKey];
    }
 
-   protected static function getCacheKey($class, $instanceId) {
+   protected static function getCacheKey(string $class, string $instanceId = null) {
       $cacheKey = parent::getCacheKey($class, $instanceId);
 
       // prepend class including namespace to cache key to avoid collisions within the APC store
       return __CLASS__ . '#' . $cacheKey;
    }
 
-   public static function deleteInstance($class, $instanceId = null) {
+   public static function deleteInstance(string $class, string $instanceId = null) {
 
       // remove from local cache
       $cacheKey = self::getCacheKey($class, $instanceId);

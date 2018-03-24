@@ -22,8 +22,8 @@ namespace APF\tests\suites\core\exceptionhandler;
 
 use APF\core\exceptionhandler\DefaultExceptionHandler;
 use Exception;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 class DefaultExceptionHandlerTest extends TestCase {
 
@@ -81,7 +81,9 @@ class DefaultExceptionHandlerTest extends TestCase {
       ob_end_clean();
 
       $this->assertContains('<h1>Uncaught exception!</h1>', $output);
+
       $this->assertContains('<dt>Exception-ID:</dt>', $output);
+      $this->assertContains(md5($exception->getMessage() . $exception->getCode() . __FILE__ . $exception->getLine()), $output);
 
       $this->assertContains('<dt>Type:</dt>', $output);
       $this->assertContains(get_class($exception), $output);
@@ -94,6 +96,11 @@ class DefaultExceptionHandlerTest extends TestCase {
 
       $this->assertContains('<dt>File:</dt>', $output);
       $this->assertContains(__FILE__, $output);
+
+      $this->assertContains('<dt>Line:</dt>', $output);
+      $this->assertContains(strval($exception->getLine()), $output);
+
+      $this->assertContains('<h2>Stacktrace:</h2>', $output);
 
    }
 

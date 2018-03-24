@@ -52,11 +52,11 @@ class ValidationMarkerTemplateExpression implements TemplateExpression {
    const START_TOKEN = 'validationMarker(';
    const END_TOKEN = ')';
 
-   public static function applies($token) {
+   public static function applies(string $token) {
       return strpos($token, self::START_TOKEN) !== false && strpos($token, self::END_TOKEN) !== false;
    }
 
-   public static function getDocument($token) {
+   public static function getDocument(string $token) {
 
       $startTokenPos = strpos($token, self::START_TOKEN);
       $endTokenPos = strpos($token, self::END_TOKEN, $startTokenPos + 1);

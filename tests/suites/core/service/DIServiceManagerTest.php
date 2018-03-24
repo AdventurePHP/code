@@ -93,8 +93,12 @@ class DIServiceManagerTest extends TestCase {
    public function testSetterInjection() {
 
       /* @var $service DummyService */
-      $service = DIServiceManager::getServiceObject(self::TEST_VENDOR, 'DummyService-setter', self::CONTEXT,
-            self::LANGUAGE);
+      $service = DIServiceManager::getServiceObject(
+            self::TEST_VENDOR,
+            'DummyService-setter',
+            self::CONTEXT,
+            self::LANGUAGE
+      );
 
       $this->assertEquals(self::CONTEXT, $service->getContext());
       $this->assertEquals(self::LANGUAGE, $service->getLanguage());
@@ -146,8 +150,12 @@ class DIServiceManagerTest extends TestCase {
       DIServiceManager::$configurationExtension = 'php';
 
       /* @var $service DummyService */
-      $service = DIServiceManager::getServiceObject(self::TEST_VENDOR, 'DummyService-constructor', self::CONTEXT,
-            self::LANGUAGE);
+      $service = DIServiceManager::getServiceObject(
+            self::TEST_VENDOR,
+            'DummyService-constructor',
+            self::CONTEXT,
+            self::LANGUAGE
+      );
 
       $this->assertEquals(self::CONTEXT, $service->getContext());
       $this->assertEquals(self::LANGUAGE, $service->getLanguage());
@@ -205,7 +213,7 @@ class DIServiceManagerTest extends TestCase {
     */
    public function testEmptyContextCausesException1() {
       $this->expectException(InvalidArgumentException::class);
-      DIServiceManager::getServiceObject(self::TEST_VENDOR, 'Dummy-Service', null, null);
+      DIServiceManager::getServiceObject(self::TEST_VENDOR, 'Dummy-Service', '', null);
    }
 
    /**
