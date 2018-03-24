@@ -110,9 +110,7 @@ class Document extends APFObject implements DomNode {
    protected $parent = null;
 
    /**
-    * The attributes of an object (merely the XML tag attributes).
-    *
-    * @var string[] $attributes
+    * @var string[][] $attributes XML attributes of the current node.
     */
    protected $attributes = [];
 
