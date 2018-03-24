@@ -21,7 +21,6 @@
 namespace APF\tests\suites\core\singleton;
 
 use APF\core\singleton\Singleton;
-use Exception;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -37,9 +36,6 @@ class SingletonTest extends TestCase {
    const MODEL_CLASS = TagModel::class;
    const INSTANCE_ID = 'test-id';
 
-   /**
-    * @throws Exception
-    */
    public function testSimpleCreation() {
 
       Singleton::deleteInstance(self::MODEL_CLASS);
@@ -53,9 +49,6 @@ class SingletonTest extends TestCase {
 
    }
 
-   /**
-    * @throws Exception
-    */
    public function testConstructorCreation() {
 
       Singleton::deleteInstance(self::MODEL_CLASS);
@@ -66,9 +59,6 @@ class SingletonTest extends TestCase {
 
    }
 
-   /**
-    * @throws Exception
-    */
    public function testSimpleInstanceIdCreation() {
 
       Singleton::deleteInstance(self::MODEL_CLASS);
@@ -86,9 +76,6 @@ class SingletonTest extends TestCase {
 
    }
 
-   /**
-    * @throws Exception
-    */
    public function testConstructorInstanceIdCreation() {
 
       Singleton::deleteInstance(self::MODEL_CLASS, self::INSTANCE_ID);
@@ -99,9 +86,6 @@ class SingletonTest extends TestCase {
 
    }
 
-   /**
-    * @throws Exception
-    */
    public function testInstanceDeletion() {
 
       /* @var $model TagModel */
@@ -117,9 +101,6 @@ class SingletonTest extends TestCase {
 
    }
 
-   /**
-    * @throws Exception
-    */
    public function testInstanceWithIdDeletion() {
 
       /* @var $model TagModel */

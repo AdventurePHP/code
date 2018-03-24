@@ -122,8 +122,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * value presetting, overwrite the protected method
     * <code>presetValue()</code>.
     *
-    * @throws FormException
-    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 25.08.2009<br />
@@ -169,19 +167,16 @@ abstract class AbstractFormControl extends Document implements FormControl {
       }
    }
 
-   /**
-    * @throws FormException
-    */
-   public function &getForm() {
+   public function getForm() {
 
-      $form = $this->getParentObject();
+      $form = $this->getParent();
 
       if ($form instanceof HtmlForm) {
          return $form;
       }
 
       while (!($form instanceof HtmlForm)) {
-         $form = $form->getParentObject();
+         $form = $form->getParent();
 
          if ($form === null) {
             throw new FormException('Cannot find form starting at form control with name '
@@ -192,10 +187,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return $form;
    }
 
-   /**
-    * @throws FormException
-    */
-   public function &hide() {
+   public function hide() {
       $this->isVisible = false;
 
       // hide all dependent fields
@@ -214,8 +206,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * The dependent control feature can be used to hide/show controls together with their labels etc.
     *
     * @return FormControl[] The list of controls referred to by the <em>dependent-controls</em> tag attribute.
-    *
-    * @throws FormException
     *
     * @author Christian Achatz
     * @version
@@ -297,19 +287,19 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return $this->isVisible;
    }
 
-   public function &markAsInvalid() {
+   public function markAsInvalid() {
       $this->controlIsValid = false;
 
       return $this;
    }
 
-   public function &markAsValid() {
+   public function markAsValid() {
       $this->controlIsValid = true;
 
       return $this;
    }
 
-   public function &markAsSent() {
+   public function markAsSent() {
       $this->controlIsSent = true;
 
       return $this;
@@ -328,25 +318,25 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return $this->getAttribute('checked') == 'checked';
    }
 
-   public function &check() {
+   public function check() {
       $this->setAttribute('checked', 'checked');
 
       return $this;
    }
 
-   public function &uncheck() {
+   public function uncheck() {
       $this->deleteAttribute('checked');
 
       return $this;
    }
 
-   public function &disable() {
+   public function disable() {
       $this->setAttribute('disabled', 'disabled');
 
       return $this;
    }
 
-   public function &enable() {
+   public function enable() {
       $this->deleteAttribute('disabled');
 
       return $this;
@@ -356,13 +346,13 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return $this->getAttribute('disabled') == 'disabled';
    }
 
-   public function &setReadOnly() {
+   public function setReadOnly() {
       $this->setAttribute('readonly', 'readonly');
 
       return $this;
    }
 
-   public function &setReadWrite() {
+   public function setReadWrite() {
       $this->deleteAttribute('readonly');
 
       return $this;
@@ -388,7 +378,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return $this;
    }
 
-   public function &setValue($value) {
+   public function setValue($value) {
       $this->setAttribute('value', $value);
 
       return $this;
@@ -401,7 +391,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return $this;
    }
 
-   public function &addAttributeToWhiteList($name) {
+   public function addAttributeToWhiteList($name) {
       $this->attributeWhiteList[] = $name;
 
       return $this;
@@ -413,7 +403,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return $this;
    }
 
-   public function &appendCssClass($class) {
+   public function appendCssClass($class) {
       $this->addAttribute('class', $class, ' ');
 
       return $this;
@@ -427,10 +417,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return false;
    }
 
-   /**
-    * @throws FormException
-    */
-   public function &show() {
+   public function show() {
       $this->isVisible = true;
 
       // show all dependent fields
@@ -450,13 +437,13 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return $this->filters;
    }
 
-   public function &setOptional() {
+   public function setOptional() {
       $this->setAttribute('optional', 'true');
 
       return $this;
    }
 
-   public function &setMandatory() {
+   public function setMandatory() {
       $this->deleteAttribute('optional');
 
       return $this;

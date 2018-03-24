@@ -20,7 +20,6 @@
  */
 namespace APF\tools\form\taglib;
 
-use APF\tools\form\FormException;
 use DateTime;
 
 /**
@@ -70,7 +69,7 @@ class TimeSelectorTag extends AbstractFormControl {
       $this->initOffsetNames();
 
       if (!empty($this->attributes['minutesinterval'])) {
-         $this->minutesInterval = (int) $this->attributes['minutesinterval'];
+         $this->minutesInterval = (int)$this->attributes['minutesinterval'];
       }
       if (!empty($this->attributes['showseconds']) && $this->attributes['showseconds'] == "false") {
          $this->showSeconds = false;
@@ -112,7 +111,7 @@ class TimeSelectorTag extends AbstractFormControl {
 
 
       // set the values for the hours select box
-      for ($i = (int) $this->hoursRange['Start']; $i <= (int) $this->hoursRange['End']; $i++) {
+      for ($i = (int)$this->hoursRange['Start']; $i <= (int)$this->hoursRange['End']; $i++) {
          $i = $this->appendZero($i);
          $hours->addOption($i, $i);
       }
@@ -151,10 +150,10 @@ class TimeSelectorTag extends AbstractFormControl {
       }
 
       // reference the father object and add to the children list
-      $hours->setParentObject($this);
-      $minutes->setParentObject($this);
+      $hours->setParent($this);
+      $minutes->setParent($this);
       if ($this->showSeconds != false) {
-         $seconds->setParentObject($this);
+         $seconds->setParent($this);
       }
       $this->children['h'] = $hours;
       $this->children['m'] = $minutes;
@@ -226,14 +225,14 @@ class TimeSelectorTag extends AbstractFormControl {
 
          if (count($offsetNames) == 3) {
             $this->offsetNames = [
-                  'Hours'   => $offsetNames[0],
+                  'Hours' => $offsetNames[0],
                   'Minutes' => $offsetNames[1],
                   'Seconds' => $offsetNames[2]
             ];
          }
          if (count($offsetNames) == 2) {
             $this->offsetNames = [
-                  'Hours'   => $offsetNames[0],
+                  'Hours' => $offsetNames[0],
                   'Minutes' => $offsetNames[1]
             ];
          }
@@ -258,7 +257,7 @@ class TimeSelectorTag extends AbstractFormControl {
       // as of 1.12, the time control should be rendered using a
       // surrounding span do enable the client validator extension
       // to address the control more easily.
-      $buffer = (string) '<span id="' . $this->getId() . '"';
+      $buffer = (string)'<span id="' . $this->getId() . '"';
 
       $style = $this->getAttribute('style');
       if ($style != null) {
@@ -408,8 +407,6 @@ class TimeSelectorTag extends AbstractFormControl {
     * Allows you to initialize the time control with a given time (e.g. "08:31" or "08:31:20" or "2011-02-21 08:31:00").
     *
     * @param string $time The time to initialize the control with.
-    *
-    * @throws FormException In case of date parsing errors.
     *
     * @author Christian Achatz
     * @version

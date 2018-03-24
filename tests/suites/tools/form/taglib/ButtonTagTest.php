@@ -20,8 +20,6 @@
  */
 namespace APF\tests\suites\tools\form\taglib;
 
-use APF\core\pagecontroller\ParserException;
-use APF\tools\form\FormException;
 use APF\tools\form\HtmlForm;
 use APF\tools\form\taglib\ButtonTag;
 use APF\tools\form\taglib\HtmlFormTag;
@@ -57,10 +55,6 @@ class ButtonTagTest extends TestCase {
       return $form;
    }
 
-   /**
-    * @throws ParserException
-    * @throws FormException
-    */
    public function testInitialFormLoad() {
 
       $_GET = [];
@@ -71,7 +65,7 @@ class ButtonTagTest extends TestCase {
 
       $button = $this->getButton();
 
-      $button->setParentObject($form);
+      $button->setParent($form);
 
       $button->onParseTime();
       $button->onAfterAppend();
@@ -80,10 +74,6 @@ class ButtonTagTest extends TestCase {
 
    }
 
-   /**
-    * @throws FormException
-    * @throws ParserException
-    */
    public function testGetRequestWithPostDefined() {
 
       $_GET = [];
@@ -96,7 +86,7 @@ class ButtonTagTest extends TestCase {
 
       $button = $this->getButton();
 
-      $button->setParentObject($form);
+      $button->setParent($form);
 
       $button->onParseTime();
       $button->onAfterAppend();
@@ -105,10 +95,6 @@ class ButtonTagTest extends TestCase {
 
    }
 
-   /**
-    * @throws FormException
-    * @throws ParserException
-    */
    public function testPostRequestWithPostDefined() {
 
       $_GET = [];
@@ -121,7 +107,7 @@ class ButtonTagTest extends TestCase {
 
       $button = $this->getButton();
 
-      $button->setParentObject($form);
+      $button->setParent($form);
 
       $button->onParseTime();
       $button->onAfterAppend();
@@ -130,10 +116,6 @@ class ButtonTagTest extends TestCase {
 
    }
 
-   /**
-    * @throws FormException
-    * @throws ParserException
-    */
    public function testPostRequestWithGetDefined() {
 
       $_GET = [];
@@ -146,7 +128,7 @@ class ButtonTagTest extends TestCase {
 
       $button = $this->getButton();
 
-      $button->setParentObject($form);
+      $button->setParent($form);
 
       $button->onParseTime();
       $button->onAfterAppend();
@@ -155,10 +137,6 @@ class ButtonTagTest extends TestCase {
 
    }
 
-   /**
-    * @throws FormException
-    * @throws ParserException
-    */
    public function testGetRequestWithGetDefined() {
 
       $_GET = [];
@@ -171,7 +149,7 @@ class ButtonTagTest extends TestCase {
 
       $button = $this->getButton();
 
-      $button->setParentObject($form);
+      $button->setParent($form);
 
       $button->onParseTime();
       $button->onAfterAppend();

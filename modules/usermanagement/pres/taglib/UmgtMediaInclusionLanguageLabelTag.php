@@ -28,7 +28,7 @@ use APF\core\pagecontroller\LanguageLabelTag;
 class UmgtMediaInclusionLanguageLabelTag extends LanguageLabelTag {
 
    public function onAfterAppend() {
-      $this->getParentObject()->setAttribute('title', parent::transform());
+      $this->getParent()->setAttribute('title', parent::transform());
    }
 
    public function transform() {

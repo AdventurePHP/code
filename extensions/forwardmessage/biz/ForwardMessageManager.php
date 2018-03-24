@@ -67,7 +67,7 @@ class ForwardMessageManager extends APFObject {
     * @param string $name The name of the message to show.
     * @param string $group The group of the message.
     *
-    * @throws Exception
+    * @throws Exception In case the requested message does not exist.
     *
     * @author Daniel Seemaier, Werner Liemberger
     * @version
@@ -91,7 +91,7 @@ class ForwardMessageManager extends APFObject {
     * @param string $name The name of the message to hide.
     * @param string $group The group of the message.
     *
-    * @throws Exception
+    * @throws Exception In case the requested message does not exist.
     *
     * @author Daniel Seemaier, Werner Liemberger
     * @version

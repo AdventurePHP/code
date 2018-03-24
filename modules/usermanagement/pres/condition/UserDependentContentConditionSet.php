@@ -21,6 +21,7 @@
 namespace APF\modules\usermanagement\pres\condition;
 
 use APF\core\pagecontroller\APFObject;
+use APF\core\service\APFDIService;
 use APF\core\service\APFService;
 use APF\modules\usermanagement\biz\UmgtManager;
 use APF\modules\usermanagement\biz\UmgtUserSessionStore;
@@ -139,7 +140,7 @@ class UserDependentContentConditionSet extends APFObject {
    }
 
    /**
-    * @return UmgtManager
+    * @return UmgtManager|APFDIService
     */
    private function &getUmgtManager() {
       return $this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');

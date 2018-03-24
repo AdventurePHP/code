@@ -25,14 +25,11 @@ use APF\core\configuration\ConfigurationManager;
 use APF\core\configuration\ConfigurationProvider;
 use APF\core\configuration\provider\ini\IniConfigurationProvider;
 use APF\core\pagecontroller\Document;
-use APF\core\pagecontroller\ParserException;
 use APF\modules\genericormapper\data\tools\GenericORMapperDomainObjectGenerator;
 use APF\tools\filesystem\FilesystemException;
 use APF\tools\filesystem\Folder;
-use APF\tools\form\FormException;
 use APF\tools\form\taglib\HtmlFormTag;
 use PHPUnit\Framework\TestCase;
-use ReflectionException;
 use ReflectionMethod;
 use ReflectionProperty;
 
@@ -84,7 +81,6 @@ class GenericORMapperDomainObjectGeneratorTest extends TestCase {
 
    /**
     * Tests whether "real" object properties are generated to allow usage of the form fill mechanism.
-    * @throws ReflectionException
     */
    public function testGenerateBaseObjectCode() {
 
@@ -277,8 +273,6 @@ class GenericORMapperDomainObjectGeneratorTest extends TestCase {
 
    /**
     * Test form mapping capabilities for "new" domain objects.
-    * @throws ParserException
-    * @throws FormException
     */
    public function testFormMapping() {
 
@@ -289,7 +283,7 @@ class GenericORMapperDomainObjectGeneratorTest extends TestCase {
       $form = new HtmlFormTag();
 
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
 
       $form->setAttribute('name', 'foo');
       $form->setContent('<form:text name="Name" />

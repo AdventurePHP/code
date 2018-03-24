@@ -20,8 +20,6 @@
  */
 namespace APF\tests\suites\tools\form\taglib;
 
-use APF\core\pagecontroller\ParserException;
-use APF\tools\form\FormException;
 use APF\tools\form\taglib\TimeSelectorTag;
 use DateTime;
 use PHPUnit\Framework\TestCase;
@@ -35,9 +33,6 @@ use PHPUnit\Framework\TestCase;
  */
 class TimeControlTest extends TestCase {
 
-   /**
-    * @throws ParserException
-    */
    public function testSimplePresetting() {
       $tag = new TimeSelectorTag();
       $tag->setAttribute('name', 'time1');
@@ -53,9 +48,6 @@ class TimeControlTest extends TestCase {
       $this->assertEquals($today->format($pattern), $current->format($pattern));
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testGetTimeWithCorrectTime() {
 
       unset($_REQUEST['time1']);
@@ -89,9 +81,6 @@ class TimeControlTest extends TestCase {
       $this->assertEquals($expected, $tag->getTime());
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testGetDateWithImplausibleTime() {
       $tag = new TimeSelectorTag();
       $tag->setAttribute('name', 'time1');
@@ -108,9 +97,6 @@ class TimeControlTest extends TestCase {
       $this->assertEquals(null, $tag->getTime());
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testPresettingWithImplausibleDate() {
       $tag = new TimeSelectorTag();
       $tag->setAttribute('name', 'time1');
@@ -129,10 +115,6 @@ class TimeControlTest extends TestCase {
       $this->assertTrue(preg_match('/<option value="03" selected="selected">03<\/option>/', $result) === 1);
    }
 
-   /**
-    * @throws ParserException
-    * @throws FormException
-    */
    public function testSetTime() {
 
       // set time with full format

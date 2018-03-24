@@ -63,7 +63,7 @@ interface FilterChain {
     * @version
     * Version 0.1, 13.01.2011<br />
     */
-   public function &appendFilter(ChainedContentFilter $filter);
+   public function appendFilter(ChainedContentFilter $filter);
 
    /**
     * Let's you add a filter to the beginning of the chain. Please note, that
@@ -77,7 +77,7 @@ interface FilterChain {
     * @version
     * Version 0.1, 27.08.2011<br />
     */
-   public function &prependFilter(ChainedContentFilter $filter);
+   public function prependFilter(ChainedContentFilter $filter);
 
    /**
     * This method can be used to remove a filter from the chain. The filter
@@ -91,6 +91,6 @@ interface FilterChain {
     * @version
     * Version 0.1, 13.01.2011<br />
     */
-   public function &removeFilter($class);
+   public function removeFilter($class);
 
 }

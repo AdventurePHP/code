@@ -26,7 +26,6 @@ use APF\core\configuration\provider\ini\IniConfigurationProvider;
 use APF\core\loader\RootClassLoader;
 use APF\core\loader\StandardClassLoader;
 use APF\core\pagecontroller\LanguageLabelTag;
-use APF\core\pagecontroller\ParserException;
 use APF\core\pagecontroller\TemplateTag;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -140,7 +139,6 @@ class LanguageLabelTagTest extends TestCase {
 
    /**
     * Complex use case within a template. Checks whether place holder in place holder works.
-    * @throws ParserException
     */
    public function testLanguageLabel4() {
 

@@ -20,8 +20,6 @@
  */
 namespace APF\tests\suites\tools\form\taglib;
 
-use APF\core\pagecontroller\ParserException;
-use APF\tools\form\FormException;
 use APF\tools\form\taglib\Html5NumberFieldTag;
 use PHPUnit\Framework\TestCase;
 
@@ -34,10 +32,6 @@ class Html5NumberFieldTagTest extends TestCase {
       $_REQUEST = [];
    }
 
-   /**
-    * @throws ParserException
-    * @throws FormException
-    */
    public function testHtmlGeneration() {
 
       $tag = new Html5NumberFieldTag();
@@ -58,10 +52,6 @@ class Html5NumberFieldTagTest extends TestCase {
 
    }
 
-   /**
-    * @throws FormException
-    * @throws ParserException
-    */
    public function testVisibility() {
 
       $tag = new Html5NumberFieldTag();

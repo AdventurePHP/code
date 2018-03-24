@@ -24,7 +24,6 @@ use APF\core\configuration\provider\ini\IniConfigurationProvider;
 use APF\core\loader\RootClassLoader;
 use APF\core\loader\StandardClassLoader;
 use PHPUnit\Framework\TestCase;
-use ReflectionException;
 use ReflectionMethod;
 
 /**
@@ -53,7 +52,6 @@ class FilePathGenerationTest extends TestCase {
    }
 
    /**
-    * @throws ReflectionException
     */
    public function testVendorOnlyFilePath() {
 
@@ -89,7 +87,6 @@ class FilePathGenerationTest extends TestCase {
 
    /**
     * @return ReflectionMethod The <em>BaseConfigurationProvider::getFilePath()</em> method instance.
-    * @throws ReflectionException
     */
    private function getFilePathMethod() {
       $method = new ReflectionMethod(IniConfigurationProvider::class, 'getFilePath');
@@ -100,7 +97,6 @@ class FilePathGenerationTest extends TestCase {
 
    /**
     * Test happy case with all parameters.
-    * @throws ReflectionException
     */
    public function testFullyQualifiedFilePath() {
 
@@ -118,7 +114,6 @@ class FilePathGenerationTest extends TestCase {
 
    /**
     * Test context omitted.
-    * @throws ReflectionException
     */
    public function testContextOmitted() {
 
@@ -137,7 +132,6 @@ class FilePathGenerationTest extends TestCase {
 
    /**
     * Test context omitted.
-    * @throws ReflectionException
     */
    public function testEnvironmentOmitted() {
 
@@ -156,7 +150,6 @@ class FilePathGenerationTest extends TestCase {
 
    /**
     * Test base path omitted.
-    * @throws ReflectionException
     */
    public function testConfigSubFilterOmitted() {
 
@@ -175,7 +168,6 @@ class FilePathGenerationTest extends TestCase {
 
    /**
     * Test context omitted.
-    * @throws ReflectionException
     */
    public function testOmitAll() {
 

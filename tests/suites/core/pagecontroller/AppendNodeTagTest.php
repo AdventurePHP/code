@@ -20,7 +20,6 @@
  */
 namespace APF\tests\suites\core\pagecontroller;
 
-use APF\core\pagecontroller\ParserException;
 use APF\core\pagecontroller\PlaceHolder;
 use APF\core\pagecontroller\Template;
 use APF\core\pagecontroller\TemplateTag;
@@ -30,7 +29,6 @@ class AppendNodeTagTest extends TestCase {
 
    /**
     * Test relocation of DOM nodes from included template into current node.
-    * @throws ParserException
     */
    public function testDomRelocation() {
 
@@ -50,7 +48,7 @@ class AppendNodeTagTest extends TestCase {
       $this->assertInstanceOf(PlaceHolder::class, $children[$keys[2]]);
 
       // test whether the nodes have been re-referenced and not copied
-      $appendNodeTag = &$children[$keys[0]];
+      $appendNodeTag = $children[$keys[0]];
       $appendNodeChildren = $appendNodeTag->getChildren();
 
       $innerKeys = array_keys($appendNodeChildren);
@@ -68,7 +66,6 @@ class AppendNodeTagTest extends TestCase {
 
    /**
     * Test static include w/o other DOM nodes.
-    * @throws ParserException
     */
    public function testStaticInclude() {
 
@@ -96,7 +93,6 @@ class AppendNodeTagTest extends TestCase {
 
    /**
     * Test DOM node relocation including static content and transformation.
-    * @throws ParserException
     */
    public function testComplexUseCse() {
 

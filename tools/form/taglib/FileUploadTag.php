@@ -69,8 +69,8 @@ class FileUploadTag extends TextFieldTag {
       $name = $this->getAttribute('name');
       if (substr($name, -2) === '[]') {
          $form = $this->getForm();
-         $doc = $form->getParentObject();
-         $docCon = get_class($doc->getDocumentController());
+         $doc = $form->getParent();
+         $docCon = $doc->getDocumentController() ? get_class($doc->getDocumentController()) : 'n/a';
          throw new FormException('[FileUploadTag::onParseTime()] The attribute "name" of the '
                . '&lt;form:file /&gt; tag with name "' . $name
                . '" in form "' . $form->getAttribute('name') . '" and document '
@@ -179,9 +179,9 @@ class FileUploadTag extends TextFieldTag {
       $files = [];
       foreach ($filesArray['name'] as $key => $name) {
          $files[] = $this->mapFileArray2DomainObject([
-               'name'     => $name,
+               'name' => $name,
                'tmp_name' => $filesArray['tmp_name'][$key],
-               'type'     => $filesArray['type'][$key]
+               'type' => $filesArray['type'][$key]
          ]);
       }
 

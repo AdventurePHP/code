@@ -58,10 +58,10 @@ class FillHtmlIteratorTag extends Document {
       $name = $this->getRequiredAttribute('name');
 
       /* @var $iterator HtmlIteratorTag */
-      $iterator = $this->getParentObject()->getChildNode('name', $name, Iterator::class);
+      $iterator = $this->getParent()->getChildNode('name', $name, Iterator::class);
 
       $expression = $this->getRequiredAttribute('data');
-      $data = ExpressionEvaluator::evaluate($this->getParentObject(), $expression);
+      $data = ExpressionEvaluator::evaluate($this->getParent(), $expression);
 
       $iterator->fillDataContainer($data);
 

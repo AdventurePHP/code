@@ -24,6 +24,7 @@ use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\core\frontcontroller\Action;
 use APF\core\frontcontroller\ActionUrlMapping;
 use APF\core\frontcontroller\Frontcontroller;
+use APF\core\pagecontroller\APFObject;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 
@@ -161,7 +162,7 @@ abstract class BasicLinkScheme {
    protected function getActionsUrlRepresentation(array $query, $urlRewriting) {
 
       // retrieve actions from internal method (to enable testing)
-      $actions = $this->getFrontcontrollerActions();
+      $actions = $this->getFrontControllerActions();
 
       $actionUrlRepresentation = [];
       foreach ($actions as $action) {
@@ -199,14 +200,14 @@ abstract class BasicLinkScheme {
     * @version
     * Version 0.1, 29.12.2011<br />
     */
-   protected function &getFrontcontrollerActions() {
+   protected function getFrontControllerActions() {
       return $this->getFrontController()->getActions();
    }
 
    /**
-    * @return Frontcontroller
+    * @return Frontcontroller|APFObject
     */
-   protected function &getFrontController() {
+   protected function getFrontController() {
       return Singleton::getInstance(Frontcontroller::class);
    }
 

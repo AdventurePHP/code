@@ -31,7 +31,6 @@ use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ReflectionException;
 use ReflectionMethod;
 
 /**
@@ -39,9 +38,6 @@ use ReflectionMethod;
  */
 class FrontcontrollerTest extends TestCase {
 
-   /**
-    * @throws Exception
-    */
    public function testStart() {
 
       /* @var $fC Frontcontroller|MockObject */
@@ -77,7 +73,6 @@ class FrontcontrollerTest extends TestCase {
 
    /**
     * ID#317: Tests whether front controller throws exception when not properly initialized to avoid context clashes.
-    * @throws Exception
     */
    public function testWrongInitialization() {
       $this->expectException(Exception::class);
@@ -331,9 +326,6 @@ class FrontcontrollerTest extends TestCase {
       $this->assertEquals($action, $fC->getActionByName($name));
    }
 
-   /**
-    * @throws ReflectionException
-    */
    public function testGenerateParamsFromInputConfig() {
       $method = new ReflectionMethod(Frontcontroller::class, 'generateParamsFromInputConfig');
       $method->setAccessible(true);

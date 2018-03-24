@@ -360,7 +360,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     *
     * @param string $relationName name of the desired relation
     *
-    * @return GenericORMapperDataObject[] A list of referenced objects that are related with the current object or null
+    * @return GenericORMapperDataObject|GenericORMapperDataObject[]
     *
     * @author Christian Achatz
     * @version
@@ -372,7 +372,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
          return $this->relatedObjects[$relationName];
       } else {
          $null = null;
-
          return $null;
       }
    }

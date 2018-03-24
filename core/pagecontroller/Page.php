@@ -49,7 +49,7 @@ class Page extends APFObject {
     * @version
     * Version 0.1, 20.10.2010<br />
     */
-   public function &getRootDocument() {
+   public function getRootDocument() {
       return $this->document;
    }
 

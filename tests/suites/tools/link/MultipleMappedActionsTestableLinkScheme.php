@@ -40,7 +40,7 @@ trait MultipleMappedActionsTestableLinkScheme {
       $this->actions[] = $action;
    }
 
-   protected function &getFrontcontrollerActions() {
+   protected function getFrontControllerActions() {
       return $this->actions;
    }
 

@@ -21,9 +21,7 @@
 namespace APF\tests\suites\tools\form\filter;
 
 use APF\core\pagecontroller\Document;
-use APF\core\pagecontroller\ParserException;
 use APF\tools\form\filter\EMailFilter;
-use APF\tools\form\FormException;
 use APF\tools\form\taglib\ButtonTag;
 use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\form\taglib\TextFieldTag;
@@ -32,10 +30,6 @@ use PHPUnit\Framework\TestCase;
 
 class EMailFilterTest extends TestCase {
 
-   /**
-    * @throws ParserException
-    * @throws FormException
-    */
    public function testEMailFilter() {
 
       $email = '"§$te%&/st)(@example,"§$.com';
@@ -71,7 +65,7 @@ class EMailFilterTest extends TestCase {
 
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
 
       $form->setAttributes(['name' => 'filter-test']);
       $form->setContent('<form:text name="email" />

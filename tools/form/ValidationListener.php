@@ -36,7 +36,7 @@ interface ValidationListener {
     * @version
     * Version 0.1, 30.08.2009<br />
     */
-   public function notify(): void;
+   public function notify();
 
    /**
     * @return bool <em>True</em>, in case listener is notified, <em>false</em> otherwise.

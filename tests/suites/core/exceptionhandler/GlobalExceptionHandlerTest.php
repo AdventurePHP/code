@@ -26,7 +26,6 @@ use Error;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ReflectionException;
 use ReflectionProperty;
 use Throwable;
 
@@ -55,7 +54,6 @@ class GlobalExceptionHandlerTest extends TestCase {
    /**
     * Test whether fallback to PHP's internal exception handling works.
     *
-    * @throws ReflectionException
     * @throws Throwable|Exception|Error
     */
    public function testPHPExceptionHandling() {

@@ -106,12 +106,12 @@ class Frontcontroller extends APFObject {
    protected $actionStack = [];
 
    /**
-    * @var string[][] $urlMappingsByToken The registered URL mappings for actions accessible via token.
+    * @var ActionUrlMapping[] $urlMappingsByToken The registered URL mappings for actions accessible via token.
     */
    private $urlMappingsByToken = [];
 
    /**
-    * @var string[][] $urlMappingsByNamespaceAndName The registered URL mappings for actions accessible via namespace and name.
+    * @var ActionUrlMapping[] $urlMappingsByNamespaceAndName The registered URL mappings for actions accessible via namespace and name.
     */
    private $urlMappingsByNamespaceAndName = [];
 
@@ -156,7 +156,7 @@ class Frontcontroller extends APFObject {
       $response->setContentType('text/html; charset=' . Registry::retrieve('APF\core', 'Charset'));
 
       // apply input filter to process request
-      $request = InputFilterChain::getInstance()->filter($request);
+      InputFilterChain::getInstance()->filter($request);
 
       // execute pre page create actions (see timing model)
       $this->runActions(Action::TYPE_PRE_PAGE_CREATE);
@@ -244,7 +244,7 @@ class Frontcontroller extends APFObject {
     * Version 0.7, 08.06.2007<br />
     * Version 0.8, 08.11.2007 (Switched to new hash offsets)<br />
     */
-   public function &getActionByName($actionName) {
+   public function getActionByName($actionName) {
 
       foreach ($this->actionStack as &$action) {
          if ($action->getActionName() == $actionName) {
@@ -253,9 +253,7 @@ class Frontcontroller extends APFObject {
       }
 
       // return null, if action could not be found
-      $null = null;
-
-      return $null;
+      return null;
    }
 
    /**
@@ -267,7 +265,7 @@ class Frontcontroller extends APFObject {
     * @version
     * Version 0.1, 05.02.2007<br />
     */
-   public function &getActions() {
+   public function getActions() {
       return $this->actionStack;
    }
 

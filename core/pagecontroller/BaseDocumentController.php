@@ -67,7 +67,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
       $this->getDocument()->setPlaceHolder($name, $value, $append);
    }
 
-   public function &getDocument() {
+   public function getDocument() {
       return $this->document;
    }
 
@@ -117,7 +117,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * Version 0.2, 14.06.2008 (Improved error handling.)<br />
     * Version 0.3, 13.08.2014 (ID#231: Allow custom form tag while still using this method to obtain an instance)<br />
     */
-   protected function &getForm($formName) {
+   protected function getForm($formName) {
       try {
          return $this->getDocument()->getChildNode('name', $formName, HtmlForm::class);
       } catch (InvalidArgumentException $e) {
@@ -144,7 +144,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * Version 0.4, 23.04.2009 (Corrected PHP4 style object access)<br />
     * Version 0.5, 13.08.2014 (ID#231: Allow custom form tag while still using this method to obtain an instance)<br />
     */
-   protected function &getTemplate($name) {
+   protected function getTemplate($name) {
       try {
          return $this->getDocument()->getChildNode('name', $name, Template::class);
       } catch (InvalidArgumentException $e) {
@@ -168,7 +168,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * Version 0.1, 2012<br />
     * Version 0.2, 13.08.2014 (ID#231: Allow custom form tag while still using this method to obtain an instance)<br />
     */
-   protected function &getLabel($name) {
+   protected function getLabel($name) {
       try {
          return $this->getDocument()->getChildNode('name', $name, LanguageLabel::class);
       } catch (InvalidArgumentException $e) {
@@ -241,7 +241,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * Version 0.1, 02.06.2008<br />
     * Version 0.2, 13.08.2014 (ID#231: Allow custom form tag while still using this method to obtain an instance)<br />
     */
-   protected function &getIterator($name) {
+   protected function getIterator($name) {
       try {
          return $this->getDocument()->getChildNode('name', $name, Iterator::class);
       } catch (InvalidArgumentException $e) {
@@ -263,7 +263,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * @version
     * Version 0.1, 29.01.2014<br />
     */
-   protected function &setData($name, $data) {
+   protected function setData($name, $data) {
       return $this->getDocument()->setData($name, $data);
    }
 
@@ -295,7 +295,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * @version
     * Version 0.1, 13.08.2014<br />
     */
-   protected function &getNodeById($id) {
+   protected function getNodeById($id) {
       try {
          return $this->getDocument()->getNodeById($id);
       } catch (InvalidArgumentException $e) {

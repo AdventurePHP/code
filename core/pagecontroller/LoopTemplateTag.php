@@ -34,7 +34,7 @@ use APF\core\expression\ExpressionEvaluator;
  * <p/>
  * Attribute <em>content-mapping</em> allows to define the content to display. You can define arbitrary
  * template expressions to evaluate the list of entries (e.g. simple data attribute access or
- * calling APF API methods such as <em>getParentObject()</em>).
+ * calling APF API methods such as <em>getParent()</em>).
  * <p/>
  * Template content is displayed in case <em>transformOnPlace()</em> is called or attribute
  * <em>transform-on-place</em> is set to <em>true</em>. See <em>TemplateTag</em> for details
@@ -77,7 +77,7 @@ class LoopTemplateTag extends TemplateTag {
       // Most likely, the "model" will be a parent document's data attribute.
       /* @var $list array|null */
       $list = ExpressionEvaluator::evaluate(
-            $this->getParentObject(),
+            $this->getParent(),
             $this->getRequiredAttribute(self::CONTENT_MAPPING_ATTRIBUTE)
       );
 

@@ -100,8 +100,8 @@ class DefaultStopWatch implements StopWatch {
       // do nothing in case disabled
       if ($this->enabled === false) {
          return 'Stop watch is currently disabled. To generate a detailed report, please '
-         . 'enable it calling <em>$t = Singleton::getInstance(BenchmarkTimer::class); '
-         . '$t->enable();</em>!';
+               . 'enable it calling <em>$t = Singleton::getInstance(BenchmarkTimer::class); '
+               . '$t->enable();</em>!';
       }
 
       // Stop root process to be able to measure overall time accurately.
@@ -121,9 +121,9 @@ class DefaultStopWatch implements StopWatch {
     *
     * @return Process The stopped root process.
     */
-   private function &getRootProcess() {
+   private function getRootProcess() {
 
-      $rootProcess = &$this->processes['Root'];
+      $rootProcess = $this->processes['Root'];
       $rootProcess->stop();
 
       return $rootProcess;

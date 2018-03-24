@@ -112,7 +112,7 @@ interface Template {
     * @version
     * Version 0.1, 15.01.2012<br />
     */
-   public function &getLabel($name);
+   public function getLabel($name);
 
    /**
     * Convenience method to obtain a form located within a template.
@@ -126,7 +126,7 @@ interface Template {
     * @version
     * Version 0.1, 26.05.2017<br />
     */
-   public function &getForm($name);
+   public function getForm($name);
 
    /**
     * Convenience method to obtain a (sub) template located within a template.
@@ -140,6 +140,6 @@ interface Template {
     * @version
     * Version 0.1, 26.05.2017<br />
     */
-   public function &getTemplate($name);
+   public function getTemplate($name);
 
 }

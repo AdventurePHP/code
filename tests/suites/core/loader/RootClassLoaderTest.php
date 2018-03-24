@@ -79,9 +79,6 @@ class RootClassLoaderTest extends TestCase {
 
    }
 
-   /**
-    * @throws Exception
-    */
    public function testGetLoaderByNamespacedClass() {
 
       $vendor = RootClassLoader::getLoaderByClass(self::VENDOR . '\foo\Bar');
@@ -98,9 +95,6 @@ class RootClassLoaderTest extends TestCase {
 
    }
 
-   /**
-    * @throws Exception
-    */
    public function testGetLoaderByVendorOnlyClass() {
 
       $vendor = RootClassLoader::getLoaderByClass(self::VENDOR . '\Bar');

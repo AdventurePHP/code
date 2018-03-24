@@ -21,8 +21,8 @@
 namespace APF\tests\suites\tools\form\taglib;
 
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\DomNode;
 use APF\core\pagecontroller\LanguageLabel;
-use APF\core\pagecontroller\ParserException;
 use APF\core\pagecontroller\XmlParser;
 use APF\tests\suites\tools\form\mock\TextFieldTagMock;
 use APF\tools\form\FormException;
@@ -36,7 +36,6 @@ use APF\tools\form\taglib\TextFieldTag;
 use APF\tools\form\ValidationListener;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ReflectionException;
 use ReflectionMethod;
 use ReflectionProperty;
 
@@ -44,7 +43,6 @@ class HtmlFormTagTest extends TestCase {
 
    /**
     * Tests form which is not sent.
-    * @throws ParserException
     */
    public function testIsSent1() {
 
@@ -64,7 +62,6 @@ class HtmlFormTagTest extends TestCase {
 
    /**
     * @return HtmlFormTag Simple form to test with.
-    * @throws ParserException
     */
    protected function getSimpleForm4SentCheck() {
       $form = new HtmlFormTag();
@@ -80,7 +77,6 @@ class HtmlFormTagTest extends TestCase {
 
    /**
     * @return HtmlFormTag Complex (=nested structure) form to test with.
-    * @throws ParserException
     */
    protected function getComplexForm4SentCheck() {
       $form = new HtmlFormTag();
@@ -100,7 +96,6 @@ class HtmlFormTagTest extends TestCase {
 
    /**
     * Tests form which is sent.
-    * @throws ParserException
     */
    public function testIsSent2() {
 
@@ -119,7 +114,6 @@ class HtmlFormTagTest extends TestCase {
 
    /**
     * Tests validation with a sent form but empty values.
-    * @throws ParserException
     */
    public function testIsValid1() {
 
@@ -138,7 +132,6 @@ class HtmlFormTagTest extends TestCase {
 
    /**
     * @return HtmlFormTag Simple form to test with.
-    * @throws ParserException
     */
    protected function getSimpleForm4ValidityCheck() {
       $form = new HtmlFormTag();
@@ -155,7 +148,6 @@ class HtmlFormTagTest extends TestCase {
 
    /**
     * @return HtmlFormTag Complex (=nested structure) form to test with.
-    * @throws ParserException
     */
    protected function getComplexForm4ValidityCheck() {
 
@@ -163,7 +155,7 @@ class HtmlFormTagTest extends TestCase {
 
       // inject parent object to make recursive selection work
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
 
       $form->setAttribute('name', 'foo');
       $form->setContent('<form:text name="user"/>
@@ -187,7 +179,6 @@ class HtmlFormTagTest extends TestCase {
 
    /**
     * Tests successful validation with a posted form.
-    * @throws ParserException
     */
    public function testIsValid2() {
 
@@ -208,8 +199,6 @@ class HtmlFormTagTest extends TestCase {
 
    /**
     * Tests form resetting including form wrapper structures.
-    * @throws ParserException
-    * @throws FormException
     */
    public function testReset() {
 
@@ -243,13 +232,12 @@ class HtmlFormTagTest extends TestCase {
 
    /**
     * Tests form transformation with a simple and a more sophisticated example.
-    * @throws ReflectionException
     */
    public function testTransform() {
 
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
 
       $form->setAction('/some-url');
 
@@ -260,23 +248,23 @@ class HtmlFormTagTest extends TestCase {
       // set up group
       $group = new FormGroupTag();
       $group->setObjectId(XmlParser::generateUniqID());
-      $group->setParentObject($form);
+      $group->setParent($form);
 
       // set up fields
       $user = new TextFieldTag();
       $user->setObjectId(XmlParser::generateUniqID());
       $user->setAttributes(['name' => 'user', 'value' => 'some user']);
-      $user->setParentObject($form);
+      $user->setParent($form);
 
       $pass = new TextFieldTag();
       $pass->setObjectId(XmlParser::generateUniqID());
       $pass->setAttributes(['name' => 'pass', 'value' => 'some pass']);
-      $pass->setParentObject($group);
+      $pass->setParent($group);
 
       $button = new ButtonTag();
       $button->setObjectId(XmlParser::generateUniqID());
       $button->setAttributes(['name' => 'submit', 'value' => 'submit']);
-      $button->setParentObject($form);
+      $button->setParent($form);
 
       // assemble group
       $children->setValue($group, array_merge($children->getValue($group), [$pass->getObjectId() => $pass]));
@@ -313,26 +301,23 @@ class HtmlFormTagTest extends TestCase {
 
    /**
     * Test interface complies for not-existing interface.
-    * @throws FormException
     */
    public function testFindById1() {
       $this->expectException(FormException::class);
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $form->getFormElementByID('not-existing');
    }
 
    /**
     * Test simple id selection.
-    * @throws ParserException
-    * @throws FormException
     */
    public function testFindById2() {
 
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $form->setContent('<form:text id="foo" name="bar" value="123"/>
 <form:text name="foo" />
 <form:button name="submit" value="submit" />');
@@ -348,14 +333,12 @@ class HtmlFormTagTest extends TestCase {
 
    /**
     * Test id selection within nested elements.
-    * @throws ParserException
-    * @throws FormException
     */
    public function testFindById3() {
 
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $form->setContent('<form:text name="bar" />
 <form:group>
    <form:group>
@@ -373,29 +356,60 @@ class HtmlFormTagTest extends TestCase {
 
    }
 
+   /**
+    * Test reference handling for getFormElementByID().
+    */
+   public function testFindById4() {
+
+      $form = new HtmlFormTag();
+      $doc = new Document();
+      $form->setParent($doc);
+      $form->setContent('<form:text id="foo" name="bar" value="123"/>');
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      $actual = $form->getFormElementByID('foo');
+      $this->assertNotNull($actual);
+      $this->assertInstanceOf(TextFieldTag::class, $actual);
+      $this->assertEquals('123', $actual->getAttribute('value'));
+
+      $actual->setAttribute('value', 'bar');
+
+      $property = new ReflectionProperty(HtmlFormTag::class, 'children');
+      $property->setAccessible(true);
+      $children = $property->getValue($form);
+
+      $this->assertEquals(
+            spl_object_hash($children[array_keys($children)[0]]),
+            spl_object_hash($actual)
+      );
+
+      $this->assertEquals(
+            '<form method="post" action=""><input type="text" id="foo" name="bar" value="bar" /></form>',
+            $form->transformForm()
+      );
+
+   }
 
    /**
     * Test interface complies for not-existing interface.
-    * @throws FormException
     */
    public function testGetLabel1() {
       $this->expectException(FormException::class);
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $form->getLabel('not-existing');
    }
 
    /**
     * Test simple id selection.
-    * @throws ParserException
-    * @throws FormException
     */
    public function testGetLabel2() {
 
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $form->setContent('<form:label name="foo">Label</form:label>
 <html:getstring
          name="foo"
@@ -416,14 +430,12 @@ class HtmlFormTagTest extends TestCase {
 
    /**
     * Test id selection within nested elements.
-    * @throws ParserException
-    * @throws FormException
     */
    public function testGetLabel3() {
 
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $form->setContent('<form:text name="bar" />
 <form:group>
    <form:label name="bar">Other Label</form:label>
@@ -449,26 +461,23 @@ class HtmlFormTagTest extends TestCase {
 
    /**
     * Tests API complies for non existing tags.
-    * @throws FormException
     */
    public function testGetFormElementsByTagName1() {
       $this->expectException(FormException::class);
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $form->getFormElementsByTagName('html:placeholder');
    }
 
    /**
     * Test simple form structure.
-    * @throws ParserException
-    * @throws FormException
     */
    public function testGetFormElementsByTagName2() {
 
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $form->setContent('<form:text id="foo-1" name="bar-1" value="123"/>
 <form:text id="foo-2" name="bar-2" />
 <form:radio name="bar-3" value="1" />
@@ -496,14 +505,12 @@ class HtmlFormTagTest extends TestCase {
 
    /**
     * Test more complex form structure.
-    * @throws ParserException
-    * @throws FormException
     */
    public function testGetFormElementsByTagName3() {
 
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $form->setContent('<form:text id="foo-1" name="bar-1" value="123"/>
 <form:group>
    <form:group>
@@ -539,23 +546,20 @@ class HtmlFormTagTest extends TestCase {
     * Tests API complies for no elements found.
     */
    public function testGetFormElementsByName1() {
-
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $this->assertEmpty($form->getFormElementsByName('foo:bar'));
-
    }
 
    /**
     * Test more complex use case.
-    * @throws ParserException
     */
    public function testGetFormElementsByName2() {
 
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $form->setContent('<form:text id="foo-1" name="bar" value="123"/>
 <form:group>
    <form:group>
@@ -598,28 +602,84 @@ class HtmlFormTagTest extends TestCase {
 
    }
 
+
+   /**
+    * Test reference handling for getFormElementsByName().
+    */
+   public function testGetFormElementsByName3() {
+
+      $form = new HtmlFormTag();
+      $doc = new Document();
+      $form->setParent($doc);
+      $form->setContent('<form:radio id="radio-1" name="bar" value="1" />
+      <form:radio id="radio-2" name="bar" value="1" />
+      <form:group>
+         <form:radio id="radio-3" name="bar" value="1" />
+         <form:radio id="radio-1" name="bar" value="1" />
+      </form:group>');
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      $this->assertCount(3, $form->getChildren());
+
+      $actual = $form->getFormElementsByName('bar');
+
+      $this->assertCount(4, $actual);
+
+      $property = new ReflectionProperty(HtmlFormTag::class, 'children');
+      $property->setAccessible(true);
+      /* @var $children DomNode[] */
+      $children = $property->getValue($form);
+
+      $this->assertEquals(
+            spl_object_hash($children[array_keys($children)[0]]),
+            spl_object_hash($actual[0])
+      );
+      $this->assertEquals(
+            spl_object_hash($children[array_keys($children)[1]]),
+            spl_object_hash($actual[1])
+      );
+
+      $actual[0]->setValue('0');
+      $actual[1]->setValue('2');
+
+      $this->assertEquals('0', $children[array_keys($children)[0]]->getAttribute('value'));
+      $this->assertEquals('2', $children[array_keys($children)[1]]->getAttribute('value'));
+
+      $groupProperty = new ReflectionProperty(FormGroupTag::class, 'children');
+      $groupProperty->setAccessible(true);
+      /* @var $groupChildren DomNode[] */
+      $groupChildren = $groupProperty->getValue($children[array_keys($children)[2]]);
+
+      $this->assertEquals(
+            spl_object_hash($groupChildren[array_keys($groupChildren)[0]]),
+            spl_object_hash($actual[2])
+      );
+      $this->assertEquals(
+            spl_object_hash($groupChildren[array_keys($groupChildren)[1]]),
+            spl_object_hash($actual[3])
+      );
+   }
+
    /**
     * Tests API complies for no elements found.
-    * @throws FormException
     */
    public function testGetFormElementsByType1() {
       $this->expectException(FormException::class);
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $this->assertEmpty($form->getFormElementsByType(ValidationListener::class));
    }
 
    /**
     * Test more complex use case.
-    * @throws ParserException
-    * @throws FormException
     */
    public function testGetFormElementsByType2() {
 
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $form->setContent('<form:text id="text-1" name="text-1" value="123"/>
 <form:listener control="text-1" />
 <form:group>
@@ -662,7 +722,6 @@ class HtmlFormTagTest extends TestCase {
 
    /**
     * Tests getMarker() delegates to getFormElementByName().
-    * @throws FormException
     */
    public function testGetMarker() {
 
@@ -681,8 +740,6 @@ class HtmlFormTagTest extends TestCase {
 
    /**
     * Checks whether form control creation complies with APF DomNode creation.
-    * @throws ReflectionException
-    * @throws FormException
     */
    public function testCreateFormElement() {
 
@@ -720,7 +777,7 @@ class HtmlFormTagTest extends TestCase {
       $this->assertEquals($language, $field->getLanguage());
 
       // check whether parent object is initialized (form)
-      $this->assertEquals($form, $field->getParentObject());
+      $this->assertEquals($form, $field->getParent());
 
       // check whether onParseTime() and onAfterAppend() are called
       $this->assertTrue($field->onParseTimeExecuted);
@@ -736,7 +793,6 @@ class HtmlFormTagTest extends TestCase {
    /**
     * Tests whether the form implementation automatically renders hidden fields to
     * preserve GET parameters in action urls for convenience reasons.
-    * @throws ParserException
     */
    public function testSubmitGetParametersInGetMode() {
 
@@ -786,13 +842,12 @@ class HtmlFormTagTest extends TestCase {
 
    /**
     * @return HtmlFormTag
-    * @throws ParserException
     */
    private function getSimpleForm() {
       $form = new HtmlFormTag();
 
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $form->setContent('<form:text id="text" name="text" value="123"/>
 <form:button name="submit" value="submit" />');
 
@@ -804,7 +859,6 @@ class HtmlFormTagTest extends TestCase {
 
    /**
     * ID#303: test capabilities to hide form group by default from within a template.
-    * @throws ParserException
     */
    public function testHidingByAttribute() {
 
@@ -826,7 +880,6 @@ class HtmlFormTagTest extends TestCase {
 
    /**
     * ID#326: test mapping a (valid) PHP property name to form control name.
-    * @throws ReflectionException
     */
    public function testMapModelPropertyNameToFormControlName() {
 

@@ -20,15 +20,11 @@
  */
 namespace APF\tests\suites\core\expression\taglib;
 
-use APF\core\pagecontroller\ParserException;
 use APF\core\pagecontroller\TemplateTag;
 use PHPUnit\Framework\TestCase;
 
 class ConditionalTemplateTagTest extends TestCase {
 
-   /**
-    * @throws ParserException
-    */
    public function testHideEntry() {
       $doc = $this->getTemplate();
       $doc->setData('teaser', new TeaserModel(false, false, false));
@@ -39,7 +35,6 @@ class ConditionalTemplateTagTest extends TestCase {
 
    /**
     * @return TemplateTag
-    * @throws ParserException
     */
    private function getTemplate() {
 
@@ -62,9 +57,6 @@ class ConditionalTemplateTagTest extends TestCase {
       return $doc;
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testDisplayEntry() {
       $doc = $this->getTemplate();
       $model = new TeaserModel(true, false, false);
@@ -77,9 +69,6 @@ class ConditionalTemplateTagTest extends TestCase {
       $this->assertNotContains('<a href="', $actual);
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testDisplayEntryWithHeadline() {
       $doc = $this->getTemplate();
       $model = new TeaserModel(true, true, false);
@@ -93,9 +82,6 @@ class ConditionalTemplateTagTest extends TestCase {
       $this->assertNotContains('<a href="', $actual);
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testDisplayEntryWithEverything() {
       $doc = $this->getTemplate();
       $model = new TeaserModel(true, true, true);
@@ -111,7 +97,6 @@ class ConditionalTemplateTagTest extends TestCase {
 
    /**
     * ID#301: allow passing regular expression conditions including double quotes
-    * @throws ParserException
     */
    public function testRegExpCondition() {
 

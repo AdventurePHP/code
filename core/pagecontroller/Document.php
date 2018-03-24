@@ -105,9 +105,9 @@ class Document extends APFObject implements DomNode {
    /**
     * Reference to the parent object.
     *
-    * @var DomNode $parentObject
+    * @var DomNode $parent
     */
-   protected $parentObject = null;
+   protected $parent = null;
 
    /**
     * The attributes of an object (merely the XML tag attributes).
@@ -146,18 +146,11 @@ class Document extends APFObject implements DomNode {
    protected $data = [];
 
    /**
-    * List of known tags for a dedicated DOM node the APF parser uses to create tag instances during analysis phase.
-    *
-    * @var string[] $knownInstanceTags
-    */
-   protected $knownInstanceTags = [];
-
-   /**
     * ID#287: Stores the place holders set for the current document. As this property is a simple
     * associative array, access is much faster than iterating over the document tree and finding
     * place holders among the list of children.
     *
-    * @var string[][] $placeHolders
+    * @var string[] $placeHolders
     */
    protected $placeHolders = [];
 
@@ -205,7 +198,7 @@ class Document extends APFObject implements DomNode {
       return isset($this->attributes[$name]) ? $this->attributes[$name] : $default;
    }
 
-   public function &setAttribute($name, $value) {
+   public function setAttribute($name, $value) {
       $this->attributes[$name] = $value;
 
       return $this;
@@ -215,7 +208,7 @@ class Document extends APFObject implements DomNode {
       return $this->attributes;
    }
 
-   public function &setAttributes(array $attributes = []) {
+   public function setAttributes(array $attributes = []) {
       if (count($attributes) > 0) {
          if (!is_array($this->attributes)) {
             $this->attributes = [];
@@ -226,13 +219,13 @@ class Document extends APFObject implements DomNode {
       return $this;
    }
 
-   public function &deleteAttribute($name) {
+   public function deleteAttribute($name) {
       unset($this->attributes[$name]);
 
       return $this;
    }
 
-   public function &addAttribute($name, $value, $glue = '') {
+   public function addAttribute($name, $value, $glue = '') {
       if (isset($this->attributes[$name])) {
          if (empty($this->attributes[$name])) { // avoid e.g. starting blanks with CSS classes
             $this->attributes[$name] .= $value;
@@ -246,17 +239,15 @@ class Document extends APFObject implements DomNode {
       return $this;
    }
 
-   public function &getChildNodeIfExists($attributeName, $value, $tagLibClass) {
+   public function getChildNodeIfExists($attributeName, $value, $tagLibClass) {
       try {
          return $this->getChildNode($attributeName, $value, $tagLibClass);
       } catch (InvalidArgumentException $e) {
-         $null = null;
-
-         return $null;
+         return null;
       }
    }
 
-   public function &getChildNode($attributeName, $value, $tagLibClass) {
+   public function getChildNode($attributeName, $value, $tagLibClass) {
       foreach ($this->children as &$child) {
          /* @var $child DomNode */
          if ($child instanceof $tagLibClass
@@ -274,7 +265,7 @@ class Document extends APFObject implements DomNode {
       return $this->children;
    }
 
-   public function &getChildNodes($attributeName, $value, $tagLibClass) {
+   public function getChildNodes($attributeName, $value, $tagLibClass) {
       $result = [];
 
       foreach ($this->children as &$child) {
@@ -298,7 +289,7 @@ class Document extends APFObject implements DomNode {
       return $this->placeHolders;
    }
 
-   public function &setPlaceHolders(array $placeHolderValues, $append = false) {
+   public function setPlaceHolders(array $placeHolderValues, $append = false) {
       foreach ($placeHolderValues as $key => $value) {
          $this->setPlaceHolder($key, $value, $append);
       }
@@ -306,7 +297,7 @@ class Document extends APFObject implements DomNode {
       return $this;
    }
 
-   public function &setPlaceHolder($name, $value, $append = false) {
+   public function setPlaceHolder($name, $value, $append = false) {
       // false handled first, since most usages don't append --> slightly faster
       if ($append === false || !isset($this->placeHolders[$name])) {
          $this->placeHolders[$name] = $value;
@@ -325,24 +316,20 @@ class Document extends APFObject implements DomNode {
       return isset($this->data[$name]) ? $this->data[$name] : $default;
    }
 
-   public function &setData($name, $data) {
+   public function setData($name, $data) {
       $this->data[$name] = $data;
 
       return $this;
    }
 
-   public function &clearPlaceHolders() {
+   public function clearPlaceHolders() {
       $this->placeHolders = [];
 
       return $this;
    }
 
-   public function &getDocumentController() {
+   public function getDocumentController() {
       return $this->documentController;
-   }
-
-   public function addInstanceTagLib($class, $prefix, $name) {
-      $this->knownInstanceTags[$prefix . ':' . $name] = $class;
    }
 
    /**
@@ -406,8 +393,8 @@ class Document extends APFObject implements DomNode {
       } else {
          // get template code from parent object, if the parent exists
          $code = '';
-         if ($this->getParentObject() !== null) {
-            $code = ' Please check your template code (' . $this->getParentObject()->getContent() . ').';
+         if ($this->getParent() !== null) {
+            $code = ' Please check your template code (' . $this->getParent()->getContent() . ').';
          }
 
          throw new IncludeException('[' . get_class($this) . '::loadContentFromFile()] Template "' . $name
@@ -455,12 +442,12 @@ class Document extends APFObject implements DomNode {
       }
    }
 
-   public function &getParentObject() {
-      return $this->parentObject;
+   public function getParent() {
+      return $this->parent;
    }
 
-   public function setParentObject(DomNode &$parentObject) {
-      $this->parentObject = &$parentObject;
+   public function setParent(DomNode $parent) {
+      $this->parent = $parent;
 
       return $this;
    }
@@ -468,6 +455,8 @@ class Document extends APFObject implements DomNode {
    /**
     * Initializes the document controller class, that is executed at APF DOM node
     * transformation time.
+    *
+    * @throws ParserException
     *
     * @author Christian Schäfer
     * @version
@@ -856,7 +845,7 @@ class Document extends APFObject implements DomNode {
          $this->content = substr_replace($this->content, '<' . $objectId . ' />', $tags[$i]['s'] - $offsetCorrection, $tagStringLength);
 
          // advertise the parent object
-         $this->children[$objectId]->setParentObject($this);
+         $this->children[$objectId]->setParent($this);
 
          // add the content to the current APF DOM node
          $this->children[$objectId]->setContent($attributes['content']);
@@ -911,16 +900,10 @@ class Document extends APFObject implements DomNode {
     * Version 0.1, 23.02.2014<br />
     * Version 0.2, 20.06.2014 (ID#186: added overriding mechanism on instance basis)<br />
     * Version 0.3, 11.07.2014 (Removed TagLib to gain performance and simplify API)<br />
+    * Version 0.4, 06.03.2018 (Removed instance tags since they are no longer used)<br />
     */
    protected function getTagLibClass($prefix, $name) {
 
-      // First, look at the list of tags registered for the current
-      // instance to allow overriding on an instance basis.
-      if (isset($this->knownInstanceTags[$prefix . ':' . $name])) {
-         return $this->knownInstanceTags[$prefix . ':' . $name];
-      }
-
-      // Second, deliver tag implementation from global store.
       if (isset(self::$knownTags[$prefix . ':' . $name])) {
          return self::$knownTags[$prefix . ':' . $name];
       }
@@ -931,9 +914,6 @@ class Document extends APFObject implements DomNode {
    public function onParseTime() {
    }
 
-   /**
-    * @throws ParserException
-    */
    public function onAfterAppend() {
       // ID#191: extract "static" expressions (e.g. place holders)
       $this->extractExpressionTags();
@@ -1010,7 +990,7 @@ class Document extends APFObject implements DomNode {
          $this->children[$objectId]->setContext($this->getContext());
          $this->children[$objectId]->setLanguage($this->getLanguage());
 
-         $this->children[$objectId]->setParentObject($this);
+         $this->children[$objectId]->setParent($this);
 
          // add APF parser marker to allow content to be placed appropriately
          $this->content = str_replace($startToken . $token . $endToken, '<' . $objectId . ' />', $this->content);
@@ -1027,17 +1007,15 @@ class Document extends APFObject implements DomNode {
 
    }
 
-   public function &getNodeByIdIfExists($id) {
+   public function getNodeByIdIfExists($id) {
       try {
          return $this->getNodeById($id);
       } catch (InvalidArgumentException $e) {
-         $null = null;
-
-         return $null;
+         return null;
       }
    }
 
-   public function &getNodeById($id) {
+   public function getNodeById($id) {
       if (isset(self::$documentIndex[$id])) {
          return self::$documentIndex[$id];
       }

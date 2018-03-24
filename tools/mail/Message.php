@@ -21,7 +21,6 @@
 namespace APF\tools\mail;
 
 use APF\core\registry\Registry;
-use Exception;
 
 /**
  * Defines a simple interface to send e-mail messages.
@@ -113,7 +112,7 @@ class Message {
 
    /**
     * @return $this This instance for further usage.
-    * @throws Exception In case something went wrong during e-mail delivery.
+    * @throws MessageException In case something went wrong during e-mail delivery.
     */
    public function send() {
 

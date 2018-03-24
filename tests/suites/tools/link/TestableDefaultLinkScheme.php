@@ -33,7 +33,7 @@ use APF\tools\link\DefaultLinkScheme;
  */
 class TestableDefaultLinkScheme extends DefaultLinkScheme {
 
-   protected function &getFrontcontrollerActions() {
+   protected function getFrontControllerActions() {
 
       $actions = [];
       $action = new TestFrontControllerAction();

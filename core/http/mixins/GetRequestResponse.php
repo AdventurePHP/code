@@ -4,6 +4,7 @@ namespace APF\core\http\mixins;
 use APF\core\frontcontroller\Frontcontroller;
 use APF\core\http\RequestImpl;
 use APF\core\http\ResponseImpl;
+use APF\core\pagecontroller\APFObject;
 use APF\core\singleton\Singleton;
 
 trait GetRequestResponse {
@@ -11,28 +12,28 @@ trait GetRequestResponse {
    /**
     * @return RequestImpl The request implementation.
     */
-   protected function &getRequest() {
+   protected function getRequest() {
       return self::getRequestStatic();
    }
 
    /**
-    * @return RequestImpl The request implementation.
+    * @return RequestImpl|APFObject
     */
-   protected static function &getRequestStatic() {
+   protected static function getRequestStatic() {
       return Singleton::getInstance(Frontcontroller::$requestImplClass);
    }
 
    /**
     * @return ResponseImpl The response implementation.
     */
-   protected function &getResponse() {
+   protected function getResponse() {
       return self::getResponseStatic();
    }
 
    /**
-    * @return ResponseImpl The response implementation.
+    * @return ResponseImpl|APFObject
     */
-   protected static function &getResponseStatic() {
+   protected static function getResponseStatic() {
       return Singleton::getInstance(Frontcontroller::$responseImplClass);
    }
 

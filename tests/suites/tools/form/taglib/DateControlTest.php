@@ -20,7 +20,6 @@
  */
 namespace APF\tests\suites\tools\form\taglib;
 
-use APF\core\pagecontroller\ParserException;
 use APF\tools\form\taglib\DateSelectorTag;
 use DateTime;
 use PHPUnit\Framework\TestCase;
@@ -34,9 +33,6 @@ use PHPUnit\Framework\TestCase;
  */
 class DateControlTest extends TestCase {
 
-   /**
-    * @throws ParserException
-    */
    public function testPrependEmptyOptions() {
 
       $tag = new DateSelectorTag();
@@ -51,9 +47,6 @@ class DateControlTest extends TestCase {
       $this->assertEquals($result, $tag->transform());
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testSimplePresetting() {
       $tag = new DateSelectorTag();
       $tag->setAttribute('name', 'date1');
@@ -69,9 +62,6 @@ class DateControlTest extends TestCase {
       $this->assertEquals($today->format($pattern), $current->format($pattern));
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testPresettingWithPrependEmptyOptions() {
       $tag = new DateSelectorTag();
       $tag->setAttribute('name', 'date1');
@@ -83,9 +73,6 @@ class DateControlTest extends TestCase {
       $this->assertEquals(null, $tag->getDate());
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testPresettingWithPrependEmptyOptionsAfterPost() {
       $tag = new DateSelectorTag();
       $tag->setAttribute('name', 'date1');
@@ -102,9 +89,6 @@ class DateControlTest extends TestCase {
       $this->assertEquals(null, $tag->getDate());
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testGetDateWithCorrectDate() {
       $tag = new DateSelectorTag();
       $tag->setAttribute('name', 'date1');
@@ -125,9 +109,6 @@ class DateControlTest extends TestCase {
       $this->assertEquals($expected, $tag->getDate());
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testGetDateWithImplausibleDate() {
       $tag = new DateSelectorTag();
       $tag->setAttribute('name', 'date1');
@@ -145,9 +126,6 @@ class DateControlTest extends TestCase {
       $this->assertEquals($expected, $tag->getDate());
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testPresettingWithImplausibleDate() {
       $tag = new DateSelectorTag();
       $tag->setAttribute('name', 'date1');
@@ -168,9 +146,6 @@ class DateControlTest extends TestCase {
       $this->assertTrue(preg_match('/<option value="2012" selected="selected">2012<\/option>/', $result) === 1);
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testPresettingWithImplausibleDateAndPrependEmptyOptions() {
       $tag = new DateSelectorTag();
       $tag->setAttribute('name', 'date1');

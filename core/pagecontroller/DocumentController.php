@@ -56,7 +56,7 @@ interface DocumentController extends APFDIService {
     * @version
     * Version 0.1, 20.10.2010<br />
     */
-   public function &getDocument();
+   public function getDocument();
 
    /**
     * Interface definition of the transformContent() method. This function is applied to a

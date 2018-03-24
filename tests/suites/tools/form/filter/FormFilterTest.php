@@ -21,11 +21,9 @@
 namespace APF\tests\suites\tools\form\filter;
 
 use APF\core\pagecontroller\Document;
-use APF\core\pagecontroller\ParserException;
 use APF\tools\form\filter\OnlyIntegersFilter;
 use APF\tools\form\filter\OnlyLettersFilter;
 use APF\tools\form\filter\String2LowerFilter;
-use APF\tools\form\FormException;
 use APF\tools\form\HtmlForm;
 use APF\tools\form\taglib\HtmlFormTag;
 use PHPUnit\Framework\TestCase;
@@ -37,8 +35,6 @@ class FormFilterTest extends TestCase {
 
    /**
     * Test execution of statically assigned filter (assigned in form definition).
-    * @throws ParserException
-    * @throws FormException
     */
    public function testStaticFilter() {
 
@@ -51,7 +47,7 @@ class FormFilterTest extends TestCase {
 
       // inject parent object to make recursive selection work
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
 
       $form->setAttributes(['method' => HtmlForm::METHOD_POST_VALUE_NAME]);
 
@@ -71,8 +67,6 @@ class FormFilterTest extends TestCase {
 
    /**
     * Test execution of dynamically assigned filter (assigned in controller).
-    * @throws ParserException
-    * @throws FormException
     */
    public function testDynamicFilter() {
 
@@ -85,7 +79,7 @@ class FormFilterTest extends TestCase {
 
       // inject parent object to make recursive selection work
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
 
       $form->setAttributes(['method' => HtmlForm::METHOD_POST_VALUE_NAME]);
 
@@ -105,8 +99,6 @@ class FormFilterTest extends TestCase {
 
    /**
     * Test filtering one form control w/ multiple filters (assigned in form).
-    * @throws ParserException
-    * @throws FormException
     */
    public function testMultipleStaticFilters() {
 
@@ -119,7 +111,7 @@ class FormFilterTest extends TestCase {
 
       // inject parent object to make recursive selection work
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
 
       $form->setAttributes(['method' => HtmlForm::METHOD_POST_VALUE_NAME]);
 
@@ -145,11 +137,8 @@ class FormFilterTest extends TestCase {
 
    /**
     * Test filtering one form control w/ multiple filters (assigned in controller).
-    * @throws ParserException
-    * @throws FormException
     */
    public function testMultipleDynamicFilters() {
-
 
       // assume form sent with dedicated values
       $_GET = [];
@@ -160,7 +149,7 @@ class FormFilterTest extends TestCase {
 
       // inject parent object to make recursive selection work
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
 
       $form->setAttributes(['method' => HtmlForm::METHOD_POST_VALUE_NAME]);
 

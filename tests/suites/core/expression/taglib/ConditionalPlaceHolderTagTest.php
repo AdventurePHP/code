@@ -23,16 +23,12 @@ namespace APF\tests\suites\core\expression\taglib;
 use APF\core\expression\taglib\ConditionalPlaceHolderTag;
 use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\DomNode;
-use APF\core\pagecontroller\ParserException;
 use APF\core\pagecontroller\TemplateTag;
 use APF\tests\suites\core\expression\LinkModel;
 use PHPUnit\Framework\TestCase;
 
 class ConditionalPlaceHolderTagTest extends TestCase {
 
-   /**
-    * @throws ParserException
-    */
    public function testSimplePlaceHolder() {
 
       $name = 'foo';
@@ -43,7 +39,7 @@ class ConditionalPlaceHolderTagTest extends TestCase {
 
       $parent = new Document();
       $parent->setPlaceHolder($name, $text);
-      $tag->setParentObject($parent);
+      $tag->setParent($parent);
 
       $this->assertEquals('<h3>' . $text . '</h3>', $tag->transform());
    }
@@ -52,7 +48,6 @@ class ConditionalPlaceHolderTagTest extends TestCase {
     * @param string $content
     * @param array $attributes
     * @return ConditionalPlaceHolderTag
-    * @throws ParserException
     */
    protected function getPlaceHolder($content, array $attributes) {
       $tag = new ConditionalPlaceHolderTag();
@@ -64,9 +59,6 @@ class ConditionalPlaceHolderTagTest extends TestCase {
       return $tag;
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testPlaceHolderWithLengthCondition() {
 
       $name = 'foo';
@@ -77,7 +69,7 @@ class ConditionalPlaceHolderTagTest extends TestCase {
 
       $parent = new Document();
       $parent->setPlaceHolder($name, $text);
-      $tag->setParentObject($parent);
+      $tag->setParent($parent);
 
       $this->assertEquals('<h3>' . $text . '</h3>', $tag->transform());
 
@@ -87,24 +79,18 @@ class ConditionalPlaceHolderTagTest extends TestCase {
       $text = 'headline';
       $parent = new Document();
       $parent->setPlaceHolder($name, $text);
-      $tag->setParentObject($parent);
+      $tag->setParent($parent);
 
       $this->assertEquals('', $tag->transform());
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testEmptyOutputForMissingContent() {
       $tag = $this->getPlaceHolder('<h3>${content}</h3>', []);
       $doc = new Document();
-      $tag->setParentObject($doc);
+      $tag->setParent($doc);
       $this->assertEmpty($tag->transform());
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testArrayContent() {
 
       $name = 'foo';
@@ -117,7 +103,7 @@ class ConditionalPlaceHolderTagTest extends TestCase {
       $parent = new Document();
       $model = new LinkModel();
       $parent->setPlaceHolder($name, ['moreLabel' => $model->getLabel(), 'moreLink' => $model->getUrl()]);
-      $tag->setParentObject($parent);
+      $tag->setParent($parent);
 
       $this->assertEquals(
             '<a href="' . $model->getUrl() . '">' . $model->getLabel() . '</a>',
@@ -126,9 +112,6 @@ class ConditionalPlaceHolderTagTest extends TestCase {
 
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testViewModelContent() {
 
       $name = 'foo';
@@ -141,7 +124,7 @@ class ConditionalPlaceHolderTagTest extends TestCase {
       $parent = new Document();
       $model = new LinkModel();
       $parent->setPlaceHolder($name, $model);
-      $tag->setParentObject($parent);
+      $tag->setParent($parent);
 
       $this->assertEquals(
             '<a href="' . $model->getUrl() . '">' . $model->getLabel() . '</a>',
@@ -149,9 +132,6 @@ class ConditionalPlaceHolderTagTest extends TestCase {
       );
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testComplexExample() {
 
       $doc = $this->getDocument();
@@ -172,7 +152,6 @@ class ConditionalPlaceHolderTagTest extends TestCase {
 
    /**
     * @return DomNode
-    * @throws ParserException
     */
    protected function getDocument() {
 
@@ -193,7 +172,6 @@ class ConditionalPlaceHolderTagTest extends TestCase {
 
    /**
     * ID#301: allow passing regular expression conditions including double quotes
-    * @throws ParserException
     */
    public function testRegExpCondition() {
       $name = 'foo';
@@ -204,7 +182,7 @@ class ConditionalPlaceHolderTagTest extends TestCase {
 
       $parent = new Document();
       $parent->setPlaceHolder($name, $text);
-      $tag->setParentObject($parent);
+      $tag->setParent($parent);
 
       $this->assertEquals($text, $tag->transform());
    }

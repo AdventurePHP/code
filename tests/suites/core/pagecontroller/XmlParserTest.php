@@ -23,7 +23,6 @@ namespace APF\tests\suites\core\pagecontroller;
 use APF\core\pagecontroller\ParserException;
 use APF\core\pagecontroller\XmlParser;
 use PHPUnit\Framework\TestCase;
-use ReflectionException;
 use ReflectionProperty;
 
 /**
@@ -35,9 +34,6 @@ use ReflectionProperty;
  */
 class XmlParserTest extends TestCase {
 
-   /**
-    * @throws ParserException
-    */
    public function testSelfClosingTagString() {
 
       // basic tag attributes
@@ -71,9 +67,6 @@ class XmlParserTest extends TestCase {
 
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testExplicitClosingTagString() {
 
       // basic tag attributes
@@ -114,9 +107,6 @@ class XmlParserTest extends TestCase {
 
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testExplicitClosingTagStringWithNestedTags() {
 
       // basic tag attributes
@@ -156,9 +146,6 @@ class XmlParserTest extends TestCase {
 
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testMissingEndTag() {
       $this->expectException(ParserException::class);
       XmlParser::getTagAttributes('foo', 'bar', '<foo:bar bar="baz"');
@@ -205,9 +192,6 @@ class XmlParserTest extends TestCase {
 
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testTagClosingSignInAttribute() {
 
       $expressionAttributeName = 'expression';
@@ -239,9 +223,6 @@ class XmlParserTest extends TestCase {
 
    }
 
-   /**
-    * @throws ReflectionException
-    */
    public function testGenerateUniqueId() {
 
       // reset counter to avoid influence from other unit tests using this static counter

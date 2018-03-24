@@ -20,8 +20,6 @@
  */
 namespace APF\tests\suites\tools\form\taglib;
 
-use APF\core\pagecontroller\ParserException;
-use APF\tools\form\FormException;
 use APF\tools\form\HtmlForm;
 use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\form\taglib\RadioButtonTag;
@@ -34,7 +32,6 @@ class RadioButtonTagTest extends TestCase {
 
    /**
     * @return HtmlFormTag
-    * @throws FormException
     */
    protected function &getForm() {
 
@@ -63,19 +60,15 @@ class RadioButtonTagTest extends TestCase {
       return $button;
    }
 
-   /**
-    * @throws FormException
-    * @throws ParserException
-    */
    public function testInitialFormLoad() {
 
       $buttonOne = $this->getRadioButton('delete-yes', 'delete', '1');
-      $buttonOne->setParentObject($this->getForm());
+      $buttonOne->setParent($this->getForm());
       $buttonOne->onParseTime();
       $buttonOne->onAfterAppend();
 
       $buttonTwo = $this->getRadioButton('delete-no', 'delete', '0');
-      $buttonTwo->setParentObject($this->getForm());
+      $buttonTwo->setParent($this->getForm());
       $buttonTwo->onParseTime();
       $buttonTwo->onAfterAppend();
 
@@ -84,22 +77,18 @@ class RadioButtonTagTest extends TestCase {
 
    }
 
-   /**
-    * @throws FormException
-    * @throws ParserException
-    */
    public function testFormSubmitUnChecked() {
 
       $_POST = [];
       $_POST[self::BUTTON_NAME] = self::BUTTON_VALUE;
 
       $buttonOne = $this->getRadioButton('delete-yes', 'delete', '1');
-      $buttonOne->setParentObject($this->getForm());
+      $buttonOne->setParent($this->getForm());
       $buttonOne->onParseTime();
       $buttonOne->onAfterAppend();
 
       $buttonTwo = $this->getRadioButton('delete-no', 'delete', '0');
-      $buttonTwo->setParentObject($this->getForm());
+      $buttonTwo->setParent($this->getForm());
       $buttonTwo->onParseTime();
       $buttonTwo->onAfterAppend();
 
@@ -108,10 +97,6 @@ class RadioButtonTagTest extends TestCase {
 
    }
 
-   /**
-    * @throws FormException
-    * @throws ParserException
-    */
    public function testFormSubmitOneChecked() {
 
       $_POST = [];
@@ -122,12 +107,12 @@ class RadioButtonTagTest extends TestCase {
       $_REQUEST[$radioName] = '1';
 
       $buttonOne = $this->getRadioButton('delete-yes', 'delete', '1');
-      $buttonOne->setParentObject($this->getForm());
+      $buttonOne->setParent($this->getForm());
       $buttonOne->onParseTime();
       $buttonOne->onAfterAppend();
 
       $buttonTwo = $this->getRadioButton('delete-no', 'delete', '0');
-      $buttonTwo->setParentObject($this->getForm());
+      $buttonTwo->setParent($this->getForm());
       $buttonTwo->onParseTime();
       $buttonTwo->onAfterAppend();
 
@@ -136,10 +121,6 @@ class RadioButtonTagTest extends TestCase {
 
    }
 
-   /**
-    * @throws FormException
-    * @throws ParserException
-    */
    public function testFormSubmitTwoChecked() {
 
       $_POST = [];
@@ -150,12 +131,12 @@ class RadioButtonTagTest extends TestCase {
       $_REQUEST[$radioName] = '0';
 
       $buttonOne = $this->getRadioButton('delete-yes', 'delete', '1');
-      $buttonOne->setParentObject($this->getForm());
+      $buttonOne->setParent($this->getForm());
       $buttonOne->onParseTime();
       $buttonOne->onAfterAppend();
 
       $buttonTwo = $this->getRadioButton('delete-no', 'delete', '0');
-      $buttonTwo->setParentObject($this->getForm());
+      $buttonTwo->setParent($this->getForm());
       $buttonTwo->onParseTime();
       $buttonTwo->onAfterAppend();
 

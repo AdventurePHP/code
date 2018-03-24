@@ -88,7 +88,7 @@ abstract class AbstractListTag extends Document {
       $this->children[$objectId]->onParseTime();
 
       // inject parent object (=this) to guarantee native DOM tree environment
-      $this->children[$objectId]->setParentObject($this);
+      $this->children[$objectId]->setParent($this);
       $this->children[$objectId]->onAfterAppend();
 
       // add xml marker, necessary for transformation

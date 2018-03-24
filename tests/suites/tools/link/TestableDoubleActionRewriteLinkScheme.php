@@ -42,7 +42,7 @@ class TestableDoubleActionRewriteLinkScheme extends RewriteLinkScheme {
       parent::__construct();
    }
 
-   protected function &getFrontcontrollerActions() {
+   protected function getFrontControllerActions() {
 
       $actions = [];
       $action = new TestFrontControllerAction();

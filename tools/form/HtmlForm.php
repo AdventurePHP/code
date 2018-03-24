@@ -93,7 +93,6 @@ interface HtmlForm extends FormControlFinder, FormElement {
     */
    public static function addModelToFormControlMapper($mapper);
 
-
    /**
     * Use this method to clear the list of model-to-form mappers.
     * <p/>
@@ -154,7 +153,7 @@ interface HtmlForm extends FormControlFinder, FormElement {
     * @version
     * Version 0.1, 29.03.2016 (ID#275: introducing automated form value mapping to models/DTOs)<br />
     */
-   public function fillModel(&$model, array $mapping = []);
+   public function fillModel($model, array $mapping = []);
 
    /**
     * This method allows you to fill a form with the current values of a model/DTO/etc.

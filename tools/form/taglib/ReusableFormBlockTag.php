@@ -1,8 +1,6 @@
 <?php
 namespace APF\tools\form\taglib;
 
-use APF\core\pagecontroller\ParserException;
-
 /**
  * This tag allows to define re-usable form blocks. Using front-end frameworks such as Bootstrap, form markup
  * often contains boilerplate code which is hard to maintain in case it is distributed over the entire application.
@@ -35,9 +33,6 @@ use APF\core\pagecontroller\ParserException;
  */
 class ReusableFormBlockTag extends FormGroupTag {
 
-   /**
-    * @throws ParserException
-    */
    public function onParseTime() {
 
       // Load template based on the namespace and template file definition.

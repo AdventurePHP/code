@@ -34,7 +34,7 @@ class LinkLanguageLabelActiveTag extends LanguageLabelTag {
    public function onAfterAppend() {
       // if link is active, Taglib will be transformed to set the data from the defined config file
       /* @var $parent HtmlLinkTag */
-      $parent = $this->getParentObject();
+      $parent = $this->getParent();
       if ($parent->isActive()) {
          $parent->setContent(parent::transform());
 

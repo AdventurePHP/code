@@ -22,7 +22,6 @@ namespace APF\tests\suites\core\pagecontroller;
 
 use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\LoopTemplateTag;
-use APF\core\pagecontroller\ParserException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -34,7 +33,6 @@ class LoopTemplateTagTest extends TestCase {
     * @param string $contentMapping
     * @param string $content
     * @return LoopTemplateTag
-    * @throws ParserException
     */
    protected function getLoopTemplate($contentMapping, $content) {
 
@@ -43,7 +41,7 @@ class LoopTemplateTagTest extends TestCase {
       $template->setContent($content);
 
       $doc = new Document();
-      $template->setParentObject($doc);
+      $template->setParent($doc);
 
       $template->onParseTime();
       $template->onAfterAppend();
@@ -53,7 +51,6 @@ class LoopTemplateTagTest extends TestCase {
 
    /**
     * Tests whether &lt;loop:template /&gt; has the same behaviour as a "normal" template.
-    * @throws ParserException
     */
    public function testEmptyOutput() {
 
@@ -65,13 +62,13 @@ class LoopTemplateTagTest extends TestCase {
       // wrong type of content mapping
       $template = $this->getLoopTemplate('foo', $content);
 
-      $template->getParentObject()->setData('foo', new TestDataModel());
+      $template->getParent()->setData('foo', new TestDataModel());
       $template->transformOnPlace();
       $this->assertEmpty($template->transform());
 
       // calling transformOnPlace() initiates display
       $template = $this->getLoopTemplate('foo', $content);
-      $template->getParentObject()->setData('foo', [1, 2, 3]);
+      $template->getParent()->setData('foo', [1, 2, 3]);
 
       $template->transformOnPlace();
       $this->assertEquals($content . $content . $content, $template->transform());
@@ -79,7 +76,6 @@ class LoopTemplateTagTest extends TestCase {
 
    /**
     * Tests behaviour in case of empty content and content mapping.
-    * @throws ParserException
     */
    public function testEmptyContentMapping() {
 
@@ -90,19 +86,18 @@ class LoopTemplateTagTest extends TestCase {
       $this->assertEmpty($template->transform());
 
       // empty content but w/ content mapping
-      $template->getParentObject()->setData('foo', [1, 2, 3]);
+      $template->getParent()->setData('foo', [1, 2, 3]);
       $template->transformOnPlace();
       $this->assertEmpty($template->transform());
    }
 
    /**
     * Tests output generation for simple content including static place holder.
-    * @throws ParserException
     */
    public function testLoopWithSimpleDataAttribute() {
 
       $template = $this->getLoopTemplate('foo', '<p>${staticPlaceHolder}|${content[\'number\']}|${content[\'title\']}</p>');
-      $template->getParentObject()->setData(
+      $template->getParent()->setData(
             'foo',
             [
                   [
@@ -134,12 +129,11 @@ class LoopTemplateTagTest extends TestCase {
 
    /**
     * Tests output generation for complex content.
-    * @throws ParserException
     */
    public function testLoopWithComplexDataAttribute() {
 
       $template = $this->getLoopTemplate('foo', '<p>${content->getFoo()}|${content->getBar()}</p>');
-      $template->getParentObject()->setData(
+      $template->getParent()->setData(
             'foo',
             [
                   new TestDataModel(),
@@ -161,14 +155,13 @@ class LoopTemplateTagTest extends TestCase {
 
    /**
     * Tests complex content mapping with access to data attribute of grandparent object.
-    * @throws ParserException
     */
    public function testLoopWithAccessToParentNode() {
 
       $template = new LoopTemplateTag();
       $template->setAttribute(
             LoopTemplateTag::CONTENT_MAPPING_ATTRIBUTE,
-            'this->getParentObject()->getData(\'foo\')'
+            'this->getParent()->getData(\'foo\')'
       );
       $template->setContent('<p>${content->getFoo()}|${content->getBar()}</p>');
 
@@ -183,9 +176,9 @@ class LoopTemplateTagTest extends TestCase {
       );
 
       $parent = new Document();
-      $parent->setParentObject($grandParent);
+      $parent->setParent($grandParent);
 
-      $template->setParentObject($parent);
+      $template->setParent($parent);
 
       $template->onParseTime();
       $template->onAfterAppend();
@@ -202,7 +195,6 @@ class LoopTemplateTagTest extends TestCase {
 
    /**
     * ID#302: test direct output using attribute <em>transform-on-place=true</em>.
-    * @throws ParserException
     */
    public function testDirectOutputWithAccessToParentNode() {
 
@@ -211,7 +203,7 @@ class LoopTemplateTagTest extends TestCase {
       $template = new LoopTemplateTag();
       $template->setAttribute(
             LoopTemplateTag::CONTENT_MAPPING_ATTRIBUTE,
-            'this->getParentObject()->getData(\'foo\')'
+            'this->getParent()->getData(\'foo\')'
       );
       $template->setAttribute('transform-on-place', 'true');
       $template->setContent($expected . '|${content[0]}');
@@ -220,9 +212,9 @@ class LoopTemplateTagTest extends TestCase {
       $grandParent->setData('foo', [['bar']]);
 
       $parent = new Document();
-      $parent->setParentObject($grandParent);
+      $parent->setParent($grandParent);
 
-      $template->setParentObject($parent);
+      $template->setParent($parent);
 
       $template->onParseTime();
       $template->onAfterAppend();

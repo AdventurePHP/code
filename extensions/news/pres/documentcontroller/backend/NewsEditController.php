@@ -48,7 +48,7 @@ class NewsEditController extends NewsBaseController {
       $editId = $this->getRequest()->getParameter('editnewsid');
       $news = null;
       if ($editId !== null && $editId !== '') {
-         $news = $newsManager->getNewsById((int) $editId);
+         $news = $newsManager->getNewsById((int)$editId);
          if ($news === null) {
             $this->getTemplate('notfound')->transformOnPlace();
 
@@ -108,7 +108,7 @@ class NewsEditController extends NewsBaseController {
     * @return string The application identifier (for login purposes).
     */
    protected function getAppKey() {
-      return $this->getDocument()->getParentObject()->getAttribute('app-ident', $this->getContext());
+      return $this->getDocument()->getParent()->getAttribute('app-ident', $this->getContext());
    }
 
 }

@@ -49,7 +49,7 @@ class ExpressionEvaluationTag extends Document {
    const EXPRESSION = 'expression';
 
    public function transform() {
-      return ExpressionEvaluator::evaluate($this->getParentObject(), $this->getAttribute(self::EXPRESSION));
+      return ExpressionEvaluator::evaluate($this->getParent(), $this->getAttribute(self::EXPRESSION));
    }
 
 }

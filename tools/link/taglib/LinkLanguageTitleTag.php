@@ -33,7 +33,7 @@ class LinkLanguageTitleTag extends LanguageLabelTag {
 
    public function onParseTime() {
       /* @var $parent HtmlLinkTag */
-      $parent = $this->getParentObject();
+      $parent = $this->getParent();
       foreach ($parent->getChildren() as $child) {
          if ($child instanceof LinkLanguageTitleActiveTag && $parent->isActive()) {
             return;

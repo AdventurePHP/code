@@ -47,9 +47,6 @@ class LinkGeneratorTest extends TestCase {
       );
    }
 
-   /**
-    * @throws UrlFormatException
-    */
    public function testUrlCreationFromString() {
       $scheme = 'https';
       $domain = 'www.domain.tld';
@@ -64,9 +61,6 @@ class LinkGeneratorTest extends TestCase {
       $this->assertEquals($paramValue, $url->getQueryParameter($paramName));
    }
 
-   /**
-    * @throws UrlFormatException
-    */
    public function testFrontcontrollerUrlGeneration() {
       $url = Url::fromString('')->setHost('localhost')->setScheme('http');
       $link = LinkGenerator::generateUrl(
@@ -94,9 +88,6 @@ class LinkGeneratorTest extends TestCase {
       $this->assertEmpty($url->getQuery());
    }
 
-   /**
-    * @throws UrlFormatException
-    */
    public function testConstructorPlusParameterMerge() {
       $host = 'localhost';
       $scheme = 'http';
@@ -111,9 +102,6 @@ class LinkGeneratorTest extends TestCase {
       $this->assertEquals($paramTwoValue, $url->getQueryParameter($paramTwoName));
    }
 
-   /**
-    * @throws UrlFormatException
-    */
    public function testConstructorPlusQueryParameterSetting() {
       $paramOneName = 'gbview';
       $paramOneValue = 'display';
@@ -131,9 +119,6 @@ class LinkGeneratorTest extends TestCase {
       $this->assertContains('/foo/2/', $link);
    }
 
-   /**
-    * @throws UrlFormatException
-    */
    public function testLinkGenerationFrontcontrollerActionWithActionParsing() {
       $actionNamespace = 'APF_cms_core_biz_setmodel';
 
@@ -212,9 +197,6 @@ class LinkGeneratorTest extends TestCase {
       $this->assertEquals($path . '?APF_tools_media-action:streamMedia', $link);
    }
 
-   /**
-    * @throws UrlFormatException
-    */
    public function testExclusionOfNullValueAndInclusionOfZeroValueParameters() {
       $url = Url::fromString('/');
       $url->mergeQuery([
@@ -447,17 +429,11 @@ class LinkGeneratorTest extends TestCase {
 
    }
 
-   /**
-    * @throws UrlFormatException
-    */
    public function testSimpleParameterOverwriting() {
       $url = Url::fromString('/?foo=1&amp;foo=2');
       $this->assertEquals('2', $url->getQueryParameter('foo'));
    }
 
-   /**
-    * @throws UrlFormatException
-    */
    public function testArrayParameterOverwriting() {
       $url = Url::fromString('/?a[x]=1&a[y]=2&b[]=1&b[]=2&b[2]=3&b[1]=7');
 
@@ -475,9 +451,6 @@ class LinkGeneratorTest extends TestCase {
       $this->assertEquals('3', $b[2]);
    }
 
-   /**
-    * @throws UrlFormatException
-    */
    public function testNestedArrayParameters() {
 
       // nested arrays with mixed keys (most complex use case)
@@ -506,9 +479,6 @@ class LinkGeneratorTest extends TestCase {
       $this->assertEquals('123', $b['c']['d']['e']['f']);
    }
 
-   /**
-    * @throws UrlFormatException
-    */
    public function testMixedParameterResolvingEdgeCase() {
 
       // mixed parameter types --> later data type declaration overwrites previous one
@@ -521,9 +491,6 @@ class LinkGeneratorTest extends TestCase {
 
    }
 
-   /**
-    * @throws UrlFormatException
-    */
    public function testMixedArrayParameterUrlGeneration() {
 
       $scheme = new DefaultLinkScheme();
@@ -590,9 +557,6 @@ class LinkGeneratorTest extends TestCase {
 
    }
 
-   /**
-    * @throws UrlFormatException
-    */
    public function testEncodeRfc3986() {
 
       $scheme = new DefaultLinkScheme(true, true, true);

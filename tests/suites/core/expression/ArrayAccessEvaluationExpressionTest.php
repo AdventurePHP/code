@@ -28,9 +28,6 @@ class ArrayAccessEvaluationExpressionTest extends TestCase {
 
    const DATA_ATTRIBUTE_NAME = 'foo';
 
-   /**
-    * @throws ParserException
-    */
    public function testNumericAccess() {
       $previousResult = $this->getPreviousResult();
 
@@ -59,59 +56,38 @@ class ArrayAccessEvaluationExpressionTest extends TestCase {
       ];
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testAssociativeAccess() {
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME . '[\'foo\']', $this->getPreviousResult());
       $this->assertTrue($expression->getResult() instanceof ContentModel);
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testMultiArrayNumericAccess() {
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME . '[42][1]', $this->getPreviousResult());
       $this->assertTrue($expression->getResult() instanceof ContentModel);
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testMultiArrayAssociativeAccess() {
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME . '[42][1]', $this->getPreviousResult());
       $this->assertTrue($expression->getResult() instanceof ContentModel);
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testMultiArrayMixedAccess() {
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME . '[\'bar\'][42]', $this->getPreviousResult());
       $this->assertTrue($expression->getResult() instanceof ContentModel);
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testInvalidOffset() {
       $this->expectException(ParserException::class);
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME . '[\'baz\']', $this->getPreviousResult());
       $expression->getResult();
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testInvalidExpression() {
       $this->expectException(ParserException::class);
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME, []);
       $expression->getResult();
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testInvalidPreviousResult() {
       $this->expectException(ParserException::class);
       $expression = new ArrayAccessEvaluationExpression(self::DATA_ATTRIBUTE_NAME, null);

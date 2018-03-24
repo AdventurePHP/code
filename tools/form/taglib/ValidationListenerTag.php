@@ -20,7 +20,6 @@
  */
 namespace APF\tools\form\taglib;
 
-use APF\core\pagecontroller\ParserException;
 use APF\tools\form\ValidationListener;
 
 /**
@@ -56,7 +55,7 @@ class ValidationListenerTag extends AbstractFormControl implements ValidationLis
     */
    protected $isNotified = false;
 
-   public function notify(): void {
+   public function notify() {
       $this->isNotified = true;
    }
 
@@ -66,8 +65,6 @@ class ValidationListenerTag extends AbstractFormControl implements ValidationLis
 
    /**
     * Overwrites the parent's method, because there is nothing to do here.
-    *
-    * @throws ParserException
     *
     * @author Christian Achatz
     * @version

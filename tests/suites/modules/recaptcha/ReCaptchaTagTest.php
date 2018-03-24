@@ -31,9 +31,6 @@ use PHPUnit\Framework\TestCase;
  */
 class ReCaptchaTagTest extends TestCase {
 
-   /**
-    * @throws FormException
-    */
    public function testParameterCheck1() {
       $this->expectException(FormException::class);
       $this->getReCaptchaTag()->onParseTime();
@@ -44,22 +41,16 @@ class ReCaptchaTagTest extends TestCase {
       $form->setAttribute('name', 'foo');
 
       $tag = new ReCaptchaTag();
-      $tag->setParentObject($form);
+      $tag->setParent($form);
 
       return $tag->setAttributes($params);
    }
 
-   /**
-    * @throws FormException
-    */
    public function testParameterCheck2() {
       $this->expectException(FormException::class);
       $this->getReCaptchaTag(['name' => 'foo'])->onParseTime();
    }
 
-   /**
-    * @throws FormException
-    */
    public function testParameterCheck3() {
       $this->expectException(FormException::class);
       $this->getReCaptchaTag(['name' => 'foo', 'public-key' => 'bar'])->onParseTime();

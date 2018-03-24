@@ -49,7 +49,7 @@ class PlaceHolderTag extends Document implements PlaceHolder {
       // now stored within a simple associative array. This removes the need for Document::setPlaceHolder()
       // to iterate over the document tree over and over again.
       // For transformation this means that place holders are now using a pull mechanism to gather their values.
-      return $this->getParentObject()->getPlaceHolder($this->getAttribute('name'));
+      return $this->getParent()->getPlaceHolder($this->getAttribute('name'));
    }
 
 }

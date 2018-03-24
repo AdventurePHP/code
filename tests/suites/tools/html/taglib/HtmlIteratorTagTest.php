@@ -20,7 +20,6 @@
  */
 namespace APF\tests\suites\tools\html\taglib;
 
-use APF\core\pagecontroller\ParserException;
 use APF\core\pagecontroller\PlaceHolder;
 use APF\core\pagecontroller\Template;
 use APF\tools\html\taglib\HtmlIteratorItemTag;
@@ -38,7 +37,6 @@ class HtmlIteratorTagTest extends TestCase {
 
    /**
     * Tests whether place holders are returned correctly.
-    * @throws ParserException
     */
    public function testPlaceHolders() {
 
@@ -65,7 +63,6 @@ class HtmlIteratorTagTest extends TestCase {
 
    /**
     * Test whether empty list is returned in case no place holder is defined.
-    * @throws ParserException
     */
    public function testEmptyList() {
       $tag = new HtmlIteratorItemTag();
@@ -74,9 +71,6 @@ class HtmlIteratorTagTest extends TestCase {
       $this->assertEmpty($tag->getPlaceHolderNames());
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testListWithPlaceHolders() {
 
       $tag = new HtmlIteratorTag();
@@ -103,7 +97,6 @@ class HtmlIteratorTagTest extends TestCase {
 
    /**
     * Tests iterations with different content per iteration and including the iteration number place holder.
-    * @throws ParserException
     */
    public function testIterationNumber() {
 
@@ -135,9 +128,6 @@ class HtmlIteratorTagTest extends TestCase {
       $this->assertContains('3|test-3', $actual);
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testGenericGettersForPlaceHolders() {
 
       $tag = new HtmlIteratorTag();
@@ -174,7 +164,6 @@ class HtmlIteratorTagTest extends TestCase {
 
    /**
     * Test missing <iterator:item /> definition.
-    * @throws ParserException
     */
    public function testMissingIteratorItem() {
       $this->expectException(InvalidArgumentException::class);
@@ -187,7 +176,6 @@ class HtmlIteratorTagTest extends TestCase {
 
    /**
     * Empty data container should result in an empty iterator (w/ static HTML).
-    * @throws ParserException
     */
    public function testEmptyIterator() {
       $tag = new HtmlIteratorTag();
@@ -199,7 +187,6 @@ class HtmlIteratorTagTest extends TestCase {
 
    /**
     * Test exclusive fallback content.
-    * @throws ParserException
     */
    public function testFallbackContent1() {
       $expected = 'fallback';
@@ -218,7 +205,6 @@ class HtmlIteratorTagTest extends TestCase {
 
    /**
     * Test integrated fallback content.
-    * @throws ParserException
     */
    public function testFallbackContent2() {
       $expected = 'fallback';
@@ -237,7 +223,6 @@ class HtmlIteratorTagTest extends TestCase {
    /**
     * Tests iteration status model capabilities. Includes tests for using expression language accessing
     * the status through ${status} and the current item through ${item}.
-    * @throws ParserException
     */
    public function testIterationStatus() {
 
@@ -265,7 +250,6 @@ class HtmlIteratorTagTest extends TestCase {
 
    /**
     * Tests whether the CSS classes for first, middle, and last entries in status model can be overwritten.
-    * @throws ParserException
     */
    public function testCssClassDefinition() {
 
@@ -290,7 +274,6 @@ class HtmlIteratorTagTest extends TestCase {
 
    /**
     * Tests whether setting an initial iteration number overwrites the internal value for iteration.
-    * @throws ParserException
     */
    public function testIterationNumberDefinition() {
       $tag = new HtmlIteratorTag();
@@ -307,7 +290,6 @@ class HtmlIteratorTagTest extends TestCase {
 
    /**
     * Tests whether an arbitrary tag is processed within the iterator - e.g. place holder.
-    * @throws ParserException
     */
    public function testArbitraryTagIsProcessed() {
       $tag = new HtmlIteratorTag();
@@ -328,7 +310,6 @@ class HtmlIteratorTagTest extends TestCase {
 
    /**
     * Tests whether conditional template can be used within iterator item.
-    * @throws ParserException
     */
    public function testConditionalTemplateInIteratorItem() {
 

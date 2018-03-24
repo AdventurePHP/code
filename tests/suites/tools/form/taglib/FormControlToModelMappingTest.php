@@ -21,13 +21,11 @@
 namespace APF\tests\suites\tools\form\taglib;
 
 use APF\core\pagecontroller\Document;
-use APF\core\pagecontroller\ParserException;
 use APF\tests\suites\tools\form\model\FormValuesModel;
 use APF\tools\form\FormControlToModelMapper;
 use APF\tools\form\taglib\HtmlFormTag;
 use DateTime;
 use PHPUnit\Framework\TestCase;
-use ReflectionException;
 use ReflectionProperty;
 
 /**
@@ -44,7 +42,6 @@ class FormControlToModelMappingTest extends TestCase {
 
    /**
     * Tests adding and clearing of form-to-model mapping configurations.
-    * @throws ReflectionException
     */
    public function testMappingConfiguration() {
 
@@ -74,7 +71,7 @@ class FormControlToModelMappingTest extends TestCase {
 
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $form->setAttribute('name', 'test');
 
       $model = new FormValuesModel();
@@ -86,7 +83,6 @@ class FormControlToModelMappingTest extends TestCase {
 
    /**
     * Tests existing fields with empty form content.
-    * @throws ParserException
     */
    public function testExistingFields1() {
 
@@ -103,12 +99,11 @@ class FormControlToModelMappingTest extends TestCase {
 
    /**
     * @return HtmlFormTag
-    * @throws ParserException
     */
    private function getSimpleForm() {
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $form->setAttribute('name', 'test');
       $form->setContent('<form:text name="foo" /><form:text name="bar" /><form:text name="baz" />');
       $form->onParseTime();
@@ -119,12 +114,11 @@ class FormControlToModelMappingTest extends TestCase {
 
    /**
     * @return HtmlFormTag
-    * @throws ParserException
     */
    private function getFormWithDashFieldNames() {
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $form->setAttribute('name', 'test');
       $form->setContent('<form:text name="foo-bar" />');
       $form->onParseTime();
@@ -135,7 +129,6 @@ class FormControlToModelMappingTest extends TestCase {
 
    /**
     * Test existing fields with filled data.
-    * @throws ParserException
     */
    public function testExistingFields2() {
 
@@ -155,7 +148,6 @@ class FormControlToModelMappingTest extends TestCase {
 
    /**
     * Tests explicit mapping of sub-list of model fields.
-    * @throws ParserException
     */
    public function testExplicitMapping() {
 
@@ -188,7 +180,6 @@ class FormControlToModelMappingTest extends TestCase {
 
    /**
     * Tests model mapping for select fields and multi-select fields.
-    * @throws ParserException
     */
    public function testValueMappingOfSelectField() {
 
@@ -197,7 +188,7 @@ class FormControlToModelMappingTest extends TestCase {
       // simple select field
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $form->setAttribute('name', 'test');
       $form->setContent('<form:select name="foo">
    <select:option value="1">One</select:option>
@@ -217,7 +208,7 @@ class FormControlToModelMappingTest extends TestCase {
       // multi select field
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $form->setAttribute('name', 'test');
       $form->setContent('<form:multiselect name="foo">
    <select:option value="1">One</select:option>
@@ -239,7 +230,6 @@ class FormControlToModelMappingTest extends TestCase {
    /**
     * Tests model mapping for radio buttons. Difficulty here is that radio buttons typically have
     * two or more options with the same name but with different ids.
-    * @throws ParserException
     */
    public function testValueMappingOfRadioButtons() {
 
@@ -247,7 +237,7 @@ class FormControlToModelMappingTest extends TestCase {
 
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $form->setAttribute('name', 'test');
       $form->setContent('<form:group>
 <form:radio name="foo" value="value-1" id="foo-1" />
@@ -267,7 +257,6 @@ class FormControlToModelMappingTest extends TestCase {
 
    /**
     * Test mapping of dates.
-    * @throws ParserException
     */
    public function testValueMappingOfDateControls() {
 
@@ -282,7 +271,7 @@ class FormControlToModelMappingTest extends TestCase {
 
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $form->setAttribute('name', 'test');
       $form->setContent('<form:date name="foo" />');
       $form->onParseTime();
@@ -300,7 +289,6 @@ class FormControlToModelMappingTest extends TestCase {
 
    /**
     * Test mapping of time.
-    * @throws ParserException
     */
    public function testValueMappingOfTimeControls() {
 
@@ -313,7 +301,7 @@ class FormControlToModelMappingTest extends TestCase {
 
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $form->setAttribute('name', 'test');
       $form->setContent('<form:time name="foo" showseconds="false" />');
       $form->onParseTime();
@@ -330,7 +318,6 @@ class FormControlToModelMappingTest extends TestCase {
 
    /**
     * Tests mapping of check boxes.
-    * @throws ParserException
     */
    public function testValueMappingOfCheckBox() {
 
@@ -359,12 +346,11 @@ class FormControlToModelMappingTest extends TestCase {
 
    /**
     * @return HtmlFormTag
-    * @throws ParserException
     */
    private function getFormForCheckBoxTest() {
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParentObject($doc);
+      $form->setParent($doc);
       $form->setAttribute('name', 'test');
       $form->setContent('<form:checkbox name="foo" value="bar" />
 <form:button name="' . self::BUTTON_NAME . '" value="' . self::BUTTON_VALUE . '" />');
@@ -376,7 +362,6 @@ class FormControlToModelMappingTest extends TestCase {
 
    /**
     * ID#326: test mapping with form control names containing dashes.
-    * @throws ParserException
     */
    public function testMappingWithDashFormControlNames() {
 

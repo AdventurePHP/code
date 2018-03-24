@@ -44,9 +44,6 @@ use Exception;
  */
 class ForgotPasswordController extends BaseDocumentController {
 
-   /**
-    * @throws Exception
-    */
    public function transformContent() {
 
       $form = $this->getForm('forgotpw');

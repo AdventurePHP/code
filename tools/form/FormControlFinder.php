@@ -44,7 +44,7 @@ interface FormControlFinder {
     * @version
     * Version 0.1, 21.01.2007<br />
     */
-   public function &getFormElementByID($id);
+   public function getFormElementByID($id);
 
    /**
     * Returns a list of form controls with the given name.
@@ -57,7 +57,7 @@ interface FormControlFinder {
     * @version
     * Version 0.1, 16.08.2010<br />
     */
-   public function &getFormElementsByName($name);
+   public function getFormElementsByName($name);
 
    /**
     * Returns a list of form elements addressed by their tag name.
@@ -72,7 +72,7 @@ interface FormControlFinder {
     * Version 0.1, 14.06.2008 (API change: do use this function instead of getFormElementsByType()!)<br />
     * Version 0.2, 12.12.2012 (Refactoring due to tag renaming)<br />
     */
-   public function &getFormElementsByTagName($tagName);
+   public function getFormElementsByTagName($tagName);
 
    /**
     * Returns a list of form elements addressed by their implementation class name.
@@ -100,7 +100,7 @@ interface FormControlFinder {
     * @version
     * Version 0.1, 03.09.2008<br />
     */
-   public function &getMarker($markerName);
+   public function getMarker($markerName);
 
    /**
     * Returns a reference on the form element identified by the given name.
@@ -115,7 +115,7 @@ interface FormControlFinder {
     * Version 0.1, 07.01.2007<br />
     * Version 0.2, 12.09.2009 (Corrected debug message)<br />
     */
-   public function &getFormElementByName($name);
+   public function getFormElementByName($name);
 
    /**
     * Let's you retrieve an &lt;form:getstring /&gt; tag instance with the specified name.
@@ -129,6 +129,6 @@ interface FormControlFinder {
     * @version
     * Version 0.1, 17.01.2012<br />
     */
-   public function &getLabel($name);
+   public function getLabel($name);
 
 }

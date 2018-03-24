@@ -46,7 +46,7 @@ use APF\core\registry\Registry;
  *       <p style="border: 1px solid red;">
  *          content->displayIt() == true
  *          <br />
- *          content->getFoo(): ${this->getParentObject()->getData('content')->getFoo()}
+ *          content->getFoo(): ${this->getParent()->getData('content')->getFoo()}
  *          <br />
  *          Dynamic place holder: ${dyn-place-holder}
  *       </p>
@@ -63,7 +63,7 @@ class ConditionalTemplateTag extends TemplateTag {
       // Re-map desired model to content data attribute to ease expression and template definition.
       // Most likely, the model will be a parent document's data attribute.
       $model = ExpressionEvaluator::evaluate(
-            $this->getParentObject(),
+            $this->getParent(),
             $this->getRequiredAttribute('content-mapping')
       );
 

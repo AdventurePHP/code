@@ -66,7 +66,7 @@ class ClientValidationListenerTag extends AbstractFormControl {
       $controlName = $this->attributes['control'];
 
       /* @var $parent HtmlFormTag */
-      $parent = $this->getParentObject();
+      $parent = $this->getParent();
       $control = $parent->getFormElementByName($controlName);
 
       $this->transformChildren();

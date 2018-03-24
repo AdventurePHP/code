@@ -20,7 +20,6 @@
  */
 namespace APF\tests\suites\tools\form\taglib;
 
-use APF\core\pagecontroller\ParserException;
 use APF\tools\form\taglib\SelectBoxGroupTag;
 use PHPUnit\Framework\TestCase;
 
@@ -28,7 +27,6 @@ class SelectBoxGroupTagTest extends TestCase {
 
    /**
     * Tests whether an option group tag returns the correct selected options.
-    * @throws ParserException
     */
    public function testSelectedOption() {
 
@@ -56,7 +54,6 @@ class SelectBoxGroupTagTest extends TestCase {
 
    /**
     * Tests whether multiple selected options are returned correctly.
-    * @throws ParserException
     */
    public function testSelectedOptions() {
 
@@ -89,7 +86,6 @@ class SelectBoxGroupTagTest extends TestCase {
 
    /**
     * Tests selecting entries via API (e.g from within controllers).
-    * @throws ParserException
     */
    public function testSetOption2Selected() {
 

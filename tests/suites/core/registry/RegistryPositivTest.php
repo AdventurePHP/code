@@ -24,7 +24,6 @@ use APF\core\registry\Registry;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use ReflectionException;
 
 /**
  * Test methods of registry class with valid parameters<br />
@@ -65,10 +64,6 @@ class RegistryPositivTest extends TestCase {
     * Tests constructor method to not be callable because the class is declared
     * as static.
     *
-    * @return void
-    *
-    * @throws ReflectionException
-    *
     * @author Florian Horn
     * @version
     * Version 0.1, 17.12.2011<br />
@@ -83,10 +78,6 @@ class RegistryPositivTest extends TestCase {
     * @depends testConstructorNotCallable
     *
     * Tests the class' final declaration
-    *
-    * @return void
-    *
-    * @throws ReflectionException
     *
     * @author Florian Horn
     * @version
@@ -103,10 +94,6 @@ class RegistryPositivTest extends TestCase {
     *
     * Tests existing of certain methods
     *
-    * @return void
-    *
-    * @throws ReflectionException
-    *
     * @author Florian Horn
     * @version
     * Version 0.1, 17.12.2011<br />
@@ -122,10 +109,6 @@ class RegistryPositivTest extends TestCase {
     * @depends testMethodsExisting
     *
     * Tests default usage
-    *
-    * @return void
-    *
-    * @throws ReflectionException
     *
     * @author Florian Horn
     * @version
@@ -162,10 +145,6 @@ class RegistryPositivTest extends TestCase {
     *
     * Tests default usage with readonly flag set to true
     *
-    * @return void
-    *
-    * @throws ReflectionException
-    *
     * @author Florian Horn
     * @version
     * Version 0.1, 17.12.2011<br />
@@ -198,8 +177,6 @@ class RegistryPositivTest extends TestCase {
     * Tests default usage with readonly flag set to true and the throw of an
     * exception if the register method is called again for the same key
     *
-    * @return void
-    *
     * @author Florian Horn
     * @version
     * Version 0.1, 17.12.2011<br />
@@ -222,8 +199,6 @@ class RegistryPositivTest extends TestCase {
     * @depends testRegisterReadonlyMethod
     *
     * Tests default usage of the retrieve method
-    *
-    * @return void
     *
     * @author Florian Horn
     * @version

@@ -24,7 +24,6 @@ use APF\core\frontcontroller\Action;
 use APF\core\frontcontroller\Frontcontroller;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ReflectionException;
 use ReflectionMethod;
 use ReflectionProperty;
 
@@ -35,7 +34,6 @@ class FrontControllerActionPermissionTest extends TestCase {
 
    /**
     * Tests whether action is only executed in case of matching types.
-    * @throws ReflectionException
     */
    public function testType() {
 
@@ -58,7 +56,6 @@ class FrontControllerActionPermissionTest extends TestCase {
 
    /**
     * @return ReflectionProperty
-    * @throws ReflectionException
     */
    private function getActionStackProperty() {
       $actionStack = new ReflectionProperty(Frontcontroller::class, 'actionStack');
@@ -87,7 +84,6 @@ class FrontControllerActionPermissionTest extends TestCase {
 
    /**
     * @return ReflectionMethod
-    * @throws ReflectionException
     */
    private function getRunActionsMethod() {
       $runActions = new ReflectionMethod(Frontcontroller::class, 'runActions');
@@ -98,7 +94,6 @@ class FrontControllerActionPermissionTest extends TestCase {
 
    /**
     * Tests whether action is only executed in case of being active.
-    * @throws ReflectionException
     */
    public function testActive() {
 
@@ -138,7 +133,6 @@ class FrontControllerActionPermissionTest extends TestCase {
 
    /**
     * Tests whether action is only executed in case they are allowed to be executed (a.k.a. not being protected).
-    * @throws ReflectionException
     */
    public function testAllowExecution() {
 

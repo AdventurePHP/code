@@ -80,8 +80,8 @@ class AppendNodeTag extends Document {
       $this->extractExpressionTags();
 
       // get parent children list
-      $parentChildren = &$this->parentObject->getChildren();
-      $parentContent = $this->parentObject->getContent();
+      $parentChildren = &$this->parent->getChildren();
+      $parentContent = $this->parent->getContent();
       $currentObjectId = $this->getObjectId();
 
       // include static content, if desired.
@@ -95,12 +95,12 @@ class AppendNodeTag extends Document {
             $parentChildren[$child->getObjectId()] = &$child;
 
             // correct the parent object reference
-            $parentChildren[$child->getObjectId()]->setParentObject($this->parentObject);
+            $parentChildren[$child->getObjectId()]->setParent($this->parent);
          }
 
          // include complete content of the current document and append it to
          // the place holder of the present tag's marker
-         $this->parentObject->setContent(
+         $this->parent->setContent(
                str_replace('<' . $currentObjectId . ' />',
                      '<' . $currentObjectId . ' />' . $this->content,
                      $parentContent)
@@ -114,7 +114,7 @@ class AppendNodeTag extends Document {
             $parentChildren[$child->getObjectId()] = &$child;
 
             // correct the parent object reference
-            $parentChildren[$child->getObjectId()]->setParentObject($this->parentObject);
+            $parentChildren[$child->getObjectId()]->setParent($this->parent);
 
             // add a marker tag to the parent object after the tag's marker
             $parentContent = str_replace(
@@ -126,8 +126,7 @@ class AppendNodeTag extends Document {
          }
 
          // include content of the current document
-         $this->parentObject->setContent($parentContent);
-
+         $this->parent->setContent($parentContent);
       }
    }
 

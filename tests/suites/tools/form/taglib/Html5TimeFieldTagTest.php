@@ -20,8 +20,6 @@
  */
 namespace APF\tests\suites\tools\form\taglib;
 
-use APF\core\pagecontroller\ParserException;
-use APF\tools\form\FormException;
 use APF\tools\form\taglib\Html5TimeFieldTag;
 use DateTime;
 use PHPUnit\Framework\TestCase;
@@ -35,10 +33,6 @@ class Html5TimeFieldTagTest extends TestCase {
       $_REQUEST = [];
    }
 
-   /**
-    * @throws ParserException
-    * @throws FormException
-    */
    public function testHtmlGeneration() {
 
       $_REQUEST = [];
@@ -57,10 +51,6 @@ class Html5TimeFieldTagTest extends TestCase {
 
    }
 
-   /**
-    * @throws FormException
-    * @throws ParserException
-    */
    public function testPreFilling() {
 
       // test presetting w/ value in request
@@ -136,10 +126,6 @@ class Html5TimeFieldTagTest extends TestCase {
 
    }
 
-   /**
-    * @throws FormException
-    * @throws ParserException
-    */
    public function testVisibility() {
 
       $tag = new Html5TimeFieldTag();

@@ -24,10 +24,8 @@ use APF\core\registry\Registry;
 use APF\tools\mail\MailAddress;
 use APF\tools\mail\Message;
 use APF\tools\mail\MessageException;
-use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ReflectionException;
 use ReflectionMethod;
 
 /**
@@ -171,9 +169,6 @@ class MessageTest extends TestCase {
       $this->assertEquals($sender, $message->getReturnPath());
    }
 
-   /**
-    * @throws ReflectionException
-    */
    public function testHeaderCreation() {
 
       $method = new ReflectionMethod(Message::class, 'getAdditionalHeaders');
@@ -200,8 +195,6 @@ class MessageTest extends TestCase {
 
    /**
     * Test sending message throws exception for empty recipient lists.
-    *
-    * @throws Exception
     */
    public function testSend1() {
 
@@ -214,8 +207,6 @@ class MessageTest extends TestCase {
 
    /**
     * Test sending simple message leads to message exception in case mail() fails.
-    *
-    * @throws Exception
     */
    public function testSend2() {
 
@@ -242,8 +233,6 @@ class MessageTest extends TestCase {
 
    /**
     * Test happy case sending simple message.
-    *
-    * @throws Exception
     */
    public function testSend3() {
 

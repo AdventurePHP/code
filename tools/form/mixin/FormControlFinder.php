@@ -20,6 +20,7 @@
  */
 namespace APF\tools\form\mixin;
 
+use APF\core\pagecontroller\DomNode;
 use APF\core\pagecontroller\LanguageLabel;
 use APF\core\pagecontroller\LanguageLabelTag;
 use APF\tools\form\FormControl;
@@ -45,7 +46,7 @@ trait FormControlFinder {
     * @return FormControl A reference on the form element.
     * @throws FormException In case the form element cannot be found.
     */
-   public function &getFormElementByID($id) {
+   public function getFormElementByID($id) {
 
       if (count($this->children) > 0) {
          foreach ($this->children as &$child) {
@@ -69,12 +70,12 @@ trait FormControlFinder {
       // display extended debug message in case no form element was found
       /* @var $form HtmlFormTag */
       if ($this instanceof HtmlForm) {
-         $form = &$this;
+         $form = $this;
       } else {
          $form = $this->getForm();
       }
-      $parent = $form->getParentObject();
-      $docCon = get_class($parent->getDocumentController());
+      $parent = $form->getParent();
+      $docCon = $parent->getDocumentController() ? get_class($parent->getDocumentController()) : 'n/a';
       throw new FormException('[' . get_class($this) . '::getFormElementByID()] No form element with id "'
             . $id . '" composed in current form "' . $form->getAttribute('name')
             . '" in document controller "' . $docCon . '". Please double-check your taglib definitions '
@@ -85,10 +86,10 @@ trait FormControlFinder {
    /**
     * @param string $markerName The desired marker's name.
     *
-    * @return DynamicFormElementMarkerTag The marker.
+    * @return DynamicFormElementMarkerTag|DomNode The marker.
     * @throws FormException In case the marker cannot be found.
     */
-   public function &getMarker($markerName) {
+   public function getMarker($markerName) {
       return $this->getFormElementByName($markerName);
    }
 
@@ -98,7 +99,7 @@ trait FormControlFinder {
     * @return FormControl A reference on the form element.
     * @throws FormException In case the form element cannot be found.
     */
-   public function &getFormElementByName($name) {
+   public function getFormElementByName($name) {
 
       if (count($this->children) > 0) {
          foreach ($this->children as &$child) {
@@ -122,11 +123,11 @@ trait FormControlFinder {
       // display extended debug message in case no form element was found
       /* @var $form HtmlFormTag */
       if ($this instanceof HtmlForm) {
-         $form = &$this;
+         $form = $this;
       } else {
          $form = $this->getForm();
       }
-      $parent = $form->getParentObject();
+      $parent = $form->getParent();
       $docCon = get_class($parent->getDocumentController());
       throw new FormException('[' . get_class($this) . '::getFormElementByName()] No form element with name "'
             . $name . '" composed in current form "' . $form->getAttribute('name')
@@ -141,7 +142,7 @@ trait FormControlFinder {
     * @return LanguageLabelTag The instance of the desired label.
     * @throws FormException In case no label can be found.
     */
-   public function &getLabel($name) {
+   public function getLabel($name) {
       if (count($this->children) > 0) {
          foreach ($this->children as &$child) {
 
@@ -166,11 +167,11 @@ trait FormControlFinder {
       // display extended debug message in case no form elements were found
       /* @var $form HtmlFormTag */
       if ($this instanceof HtmlForm) {
-         $form = &$this;
+         $form = $this;
       } else {
          $form = $this->getForm();
       }
-      $parent = $form->getParentObject();
+      $parent = $form->getParent();
       $docCon = get_class($parent->getDocumentController());
       throw new FormException('[' . get_class($this) . '::getLabel()] No label found with name "' . $name
             . '" composed in form with name "' . $form->getAttribute('name') . '" for document controller "'
@@ -182,7 +183,7 @@ trait FormControlFinder {
     *
     * @return FormControl[] The list of form controls with the given name.
     */
-   public function &getFormElementsByName($name) {
+   public function getFormElementsByName($name) {
       $elements = [];
       if (count($this->children) > 0) {
          foreach ($this->children as &$child) {
@@ -208,11 +209,11 @@ trait FormControlFinder {
     * @return FormControl[] A list of references on the form elements.
     * @throws FormException In case the form element cannot be found or desired tag is not registered.
     */
-   public function &getFormElementsByTagName($tagName) {
+   public function getFormElementsByTagName($tagName) {
 
       /* @var $form HtmlFormTag */
       if ($this instanceof HtmlForm) {
-         $form = &$this;
+         $form = $this;
       } else {
          $form = $this->getForm();
       }
@@ -239,7 +240,7 @@ trait FormControlFinder {
       }
 
       // display extended debug message in case no form elements were found
-      $parent = $form->getParentObject();
+      $parent = $form->getParent();
       $docCon = get_class($parent->getDocumentController());
       throw new FormException('[' . get_class($this) . '::getFormElementsByType()] No form elements of type "&lt;'
             . $tagName . ' /&gt;" composed in ' . 'current form "' . $form->getAttribute('name') . '" in document controller "'
@@ -256,7 +257,7 @@ trait FormControlFinder {
 
       /* @var $form HtmlFormTag */
       if ($this instanceof HtmlForm) {
-         $form = &$this;
+         $form = $this;
       } else {
          $form = $this->getForm();
       }
@@ -281,7 +282,7 @@ trait FormControlFinder {
       }
 
       // display extended debug message in case no form elements were found
-      $parent = $form->getParentObject();
+      $parent = $form->getParent();
       $docCon = get_class($parent->getDocumentController());
       throw new FormException('[' . get_class($this) . '::getFormElementsByType()] No form elements of type "'
             . $class . '" composed in ' . 'current form "' . $form->getAttribute('name') . '" in document controller "'

@@ -65,8 +65,8 @@ class DateSelectorTag extends AbstractFormControl {
       $this->offsetNames = ['Day' => 'Day', 'Month' => 'Month', 'Year' => 'Year'];
 
       // initialize the year range
-      $this->yearRange['Start'] = (int) date('Y') - 10;
-      $this->yearRange['End'] = (int) date('Y') + 10;
+      $this->yearRange['Start'] = (int)date('Y') - 10;
+      $this->yearRange['End'] = (int)date('Y') + 10;
    }
 
    /**
@@ -150,7 +150,7 @@ class DateSelectorTag extends AbstractFormControl {
          $year->setOption2Selected('');
       }
 
-      for ($i = (int) $this->yearRange['Start']; $i <= (int) $this->yearRange['End']; $i++) {
+      for ($i = (int)$this->yearRange['Start']; $i <= (int)$this->yearRange['End']; $i++) {
          $yearNumber = sprintf('%04s', $i);
          $year->addOption($yearNumber, $yearNumber);
       }
@@ -183,9 +183,9 @@ class DateSelectorTag extends AbstractFormControl {
       }
 
       // reference the father object and add to the children list
-      $day->setParentObject($this);
-      $month->setParentObject($this);
-      $year->setParentObject($this);
+      $day->setParent($this);
+      $month->setParent($this);
+      $year->setParent($this);
       $this->children['d'] = $day;
       $this->children['m'] = $month;
       $this->children['y'] = $year;
@@ -245,9 +245,9 @@ class DateSelectorTag extends AbstractFormControl {
 
          if (count($offsetNames) == 3) {
             $this->offsetNames = [
-                  'Day'   => $offsetNames[0],
+                  'Day' => $offsetNames[0],
                   'Month' => $offsetNames[1],
-                  'Year'  => $offsetNames[2]
+                  'Year' => $offsetNames[2]
             ];
          }
       }

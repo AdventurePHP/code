@@ -218,7 +218,7 @@ class HtmlFormTag extends Document implements HtmlForm {
     * Version 0.4, 10.09.2008 (Added the $ElementAttributes param)<br />
     * Version 0.5, 23.08.2014 (ID#198: added unlimited form control nesting capability)<br />
     */
-   public function &addFormElement($elementType, array $elementAttributes = []) {
+   public function addFormElement($elementType, array $elementAttributes = []) {
 
       // create form element
       $control = $this->createFormElement($this, $elementType, $elementAttributes);
@@ -243,7 +243,6 @@ class HtmlFormTag extends Document implements HtmlForm {
     * @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
     *
     * @return FormControl The created form element.
-    * @throws FormException In case form element cannot be found.
     *
     * @author Christian Achatz, Danil Mihajluk
     * @version
@@ -253,7 +252,7 @@ class HtmlFormTag extends Document implements HtmlForm {
     * Version 0.4, 23.08.2014 (ID#198: added unlimited form control nesting capability)<br />
     * Version 0.5, 03.12.2015 (ID#279: changed code to rely on interface type rather than internal structure by Danil Mihajluk)<br />
     */
-   protected function &createFormElement(DomNode &$parent, $elementType, array $elementAttributes = []) {
+   protected function createFormElement(DomNode $parent, $elementType, array $elementAttributes = []) {
 
       $class = $this->getTagClass($elementType);
       if ($class === null) {
@@ -274,7 +273,7 @@ class HtmlFormTag extends Document implements HtmlForm {
       $child->setAttributes($elementAttributes);
 
       // add form element to DOM tree and call the onParseTime() method
-      $child->setParentObject($parent);
+      $child->setParent($parent);
       $child->onParseTime();
 
       // call the onAfterAppend() method
@@ -308,8 +307,8 @@ class HtmlFormTag extends Document implements HtmlForm {
 
       $class = $this->getTagLibClass($prefix, $name);
       if ($class === null) {
-         $parent = $this->getParentObject();
-         $documentController = get_class($parent->getDocumentController());
+         $parent = $this->getParent();
+         $documentController = $parent->getDocumentController() ? get_class($parent->getDocumentController()) : 'n/a';
          throw new FormException('[HtmlFormTag::getTagClass()] No tag with name "' . $tagName
                . '" registered in form with name "' . $this->getAttribute('name') . '" in document controller '
                . $documentController . '!', E_USER_ERROR);
@@ -378,10 +377,10 @@ class HtmlFormTag extends Document implements HtmlForm {
     * Version 0.2, 10.09.2008 (Added the $elementAttributes param)<br />
     * Version 0.3, 23.08.2014 (ID#198: added unlimited form control nesting capability)<br />
     */
-   public function &addFormElementBeforeMarker($markerName, $elementType, array $elementAttributes = []) {
+   public function addFormElementBeforeMarker($markerName, $elementType, array $elementAttributes = []) {
 
       $marker = $this->getMarker($markerName);
-      $control = $this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);
+      $control = $this->createFormElement($marker->getParent(), $elementType, $elementAttributes);
 
       if ($control === null) {
          // notify developer that object creation failed
@@ -391,7 +390,7 @@ class HtmlFormTag extends Document implements HtmlForm {
 
       // add the position place holder to the content
       $markerId = $marker->getObjectId();
-      $parent = $marker->getParentObject();
+      $parent = $marker->getParent();
 
       $parent->setContent(str_replace(
             '<' . $markerId . ' />',
@@ -418,10 +417,10 @@ class HtmlFormTag extends Document implements HtmlForm {
     * Version 0.2, 10.09.2008 (Added the $ElementAttributes param)<br />
     * Version 0.3, 23.08.2014 (ID#198: added unlimited form control nesting capability)<br />
     */
-   public function &addFormElementAfterMarker($markerName, $elementType, array $elementAttributes = []) {
+   public function addFormElementAfterMarker($markerName, $elementType, array $elementAttributes = []) {
 
       $marker = $this->getMarker($markerName);
-      $control = $this->createFormElement($marker->getParentObject(), $elementType, $elementAttributes);
+      $control = $this->createFormElement($marker->getParent(), $elementType, $elementAttributes);
 
       if ($control === null) {
          // notify developer that object creation failed
@@ -431,7 +430,7 @@ class HtmlFormTag extends Document implements HtmlForm {
 
       // add the position place holder to the content
       $markerId = $marker->getObjectId();
-      $parent = $marker->getParentObject();
+      $parent = $marker->getParent();
 
       $parent->setContent(str_replace(
             '<' . $markerId . ' />',
@@ -585,7 +584,7 @@ class HtmlFormTag extends Document implements HtmlForm {
       );
    }
 
-   public function fillModel(&$model, array $mapping = []) {
+   public function fillModel($model, array $mapping = []) {
 
       $class = new ReflectionClass($model);
       $properties = $class->getProperties();

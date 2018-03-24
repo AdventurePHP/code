@@ -26,27 +26,18 @@ use PHPUnit\Framework\TestCase;
 
 class MethodEvaluationExpressionTest extends TestCase {
 
-   /**
-    * @throws ParserException
-    */
    public function testSimpleCall() {
       $model = new ContentModel();
       $expression = new MethodEvaluationExpression('getCssClass()', $model);
       $this->assertEquals($model->getCssClass(), $expression->getResult());
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testWithoutArguments() {
       $model = new MethodArgumentsModel();
       $expression = new MethodEvaluationExpression('singleParamCall()', $model);
       $this->assertEquals($model->singleParamCall(), $expression->getResult());
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testWithOneArgument() {
       $model = new MethodArgumentsModel();
 
@@ -57,9 +48,6 @@ class MethodEvaluationExpressionTest extends TestCase {
       $this->assertEquals($model->singleParamCall('true'), $expression->getResult());
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testWithMultipleArguments() {
 
       $model = new MethodArgumentsModel();
@@ -76,18 +64,12 @@ class MethodEvaluationExpressionTest extends TestCase {
 
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testInvalidPreviousResult() {
       $this->expectException(ParserException::class);
       $expression = new MethodEvaluationExpression('getFoo()', 'bar');
       $expression->getResult();
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testInvalidMethod() {
       $this->expectException(ParserException::class);
       $model = new ContentModel();
@@ -95,9 +77,6 @@ class MethodEvaluationExpressionTest extends TestCase {
       $expression->getResult();
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testInvalidExpression() {
       $this->expectException(ParserException::class);
       $model = new ContentModel();

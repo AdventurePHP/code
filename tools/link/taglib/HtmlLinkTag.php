@@ -20,7 +20,6 @@
  */
 namespace APF\tools\link\taglib;
 
-use APF\core\pagecontroller\ParserException;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 use APF\tools\link\UrlFormatException;
@@ -70,9 +69,6 @@ class HtmlLinkTag extends LinkGenerationTag {
          'target'
    ];
 
-   /**
-    * @throws ParserException
-    */
    public function onParseTime() {
 
       // generate URL using our parent implementation
@@ -82,9 +78,6 @@ class HtmlLinkTag extends LinkGenerationTag {
       $this->extractTagLibTags();
    }
 
-   /**
-    * @throws UrlFormatException
-    */
    public function transform() {
       // If no Content is set, this taglib tries to set the title as content.
       // If this is also missing it throws an Exception. This exception is needed,

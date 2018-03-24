@@ -23,7 +23,6 @@ namespace APF\tests\suites\core\expression;
 use APF\core\expression\TemplateCondition;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use ReflectionException;
 use ReflectionMethod;
 
 /**
@@ -31,9 +30,6 @@ use ReflectionMethod;
  */
 class TemplateConditionTest extends TestCase {
 
-   /**
-    * @throws ReflectionException
-    */
    public function testGetArgument() {
 
       $method = new ReflectionMethod(TemplateCondition::class, 'getArgument');

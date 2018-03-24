@@ -34,8 +34,8 @@ use InvalidArgumentException;
 class HtmlListTag extends Document {
 
    protected $listTypes = [
-         'list:unordered'  => UnorderedListTag::class,
-         'list:ordered'    => OrderedListTag::class,
+         'list:unordered' => UnorderedListTag::class,
+         'list:ordered' => OrderedListTag::class,
          'list:definition' => DefinitionListTag::class
    ];
 
@@ -93,7 +93,7 @@ class HtmlListTag extends Document {
       }
 
       // add list element to DOM tree and call the onParseTime() method
-      $listObject->setParentObject($this);
+      $listObject->setParent($this);
       $listObject->onParseTime();
 
       // add new list element to children list
@@ -124,8 +124,8 @@ class HtmlListTag extends Document {
       }
 
       // display extended debug message in case no list element was found
-      $parent = $this->getParentObject();
-      $grandParent = $parent->getParentObject();
+      $parent = $this->getParent();
+      $grandParent = $parent->getParent();
       $docCon = ($grandParent !== null) ? get_class($grandParent->getDocumentController()) : 'n/a';
 
       throw new InvalidArgumentException('[HtmlListTag::getListById()] No list with id "' . $id

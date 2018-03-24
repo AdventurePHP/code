@@ -33,7 +33,7 @@ use APF\core\pagecontroller\LanguageLabelTag;
 class LabelLanguageLabelTag extends LanguageLabelTag {
 
    public function onAfterAppend() {
-      $this->getParentObject()->setContent(parent::transform());
+      $this->getParent()->setContent(parent::transform());
    }
 
    public function transform() {

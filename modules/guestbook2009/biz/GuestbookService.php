@@ -31,7 +31,6 @@ use APF\modules\pager\biz\PagerManager;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 use APF\tools\link\UrlFormatException;
-use Exception;
 
 /**
  * Implements the central business component of the guestbook. Must be initialized with
@@ -77,8 +76,6 @@ final class GuestbookService extends APFObject {
     * Loads a paged entry list.
     *
     * @return Entry[] The paged entry list.
-    *
-    * @throws Exception
     *
     * @author Christian Achatz
     * @version
@@ -218,8 +215,6 @@ final class GuestbookService extends APFObject {
     *
     * @param Entry $entry The entry domain object.
     *
-    * @throws UrlFormatException
-    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 21.05.2009<br />
@@ -268,8 +263,6 @@ final class GuestbookService extends APFObject {
    /**
     * Checks, whether the current a user is logged in and the admin backend
     * may be displayed. If no, the user is redirected to the list view.
-    *
-    * @throws UrlFormatException
     *
     * @author Christian Achatz
     * @version
@@ -327,8 +320,6 @@ final class GuestbookService extends APFObject {
     * Saves the entry and forwards to the list view.
     *
     * @param Entry $entry The guestbook entry to save.
-    *
-    * @throws UrlFormatException
     *
     * @author Christian Achatz
     * @version

@@ -123,7 +123,7 @@ abstract class APFObject implements APFDIService {
     * @version
     * Version 0.1, 18.04.2009<br />
     */
-   protected function &getDIServiceObject($namespace, $name) {
+   protected function getDIServiceObject($namespace, $name) {
       return DIServiceManager::getServiceObject(
             $namespace, $name, $this->getContext(), $this->getLanguage());
    }
@@ -163,7 +163,7 @@ abstract class APFObject implements APFDIService {
     * Version 0.5, 24.02.2008 (Added the service type param)<br />
     * Version 0.6  21.11.2012 Jens Prangenberg <jprangenberg@mywebhd.com> (Added the instance id param)<br />
     */
-   protected function &getServiceObject($class, array $arguments = [], $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
+   protected function getServiceObject($class, array $arguments = [], $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
       return ServiceManager::getServiceObject($class, $this->getContext(), $this->getLanguage(), $arguments, $type, $instanceId);
    }
 

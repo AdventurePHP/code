@@ -21,9 +21,7 @@
 namespace APF\tests\suites\tools\form\taglib;
 
 use APF\core\pagecontroller\DomNode;
-use APF\core\pagecontroller\ParserException;
 use APF\core\pagecontroller\XmlParser;
-use APF\tools\form\FormException;
 use APF\tools\form\HtmlForm;
 use APF\tools\form\taglib\ButtonTag;
 use APF\tools\form\taglib\HtmlFormTag;
@@ -32,7 +30,6 @@ use APF\tools\form\taglib\SelectBoxOptionTag;
 use APF\tools\form\taglib\SelectBoxTag;
 use APF\tools\form\validator\SimpleSelectControlValidator;
 use PHPUnit\Framework\TestCase;
-use ReflectionException;
 use ReflectionMethod;
 use ReflectionProperty;
 
@@ -41,9 +38,6 @@ class SelectBoxTagTest extends TestCase {
    const SELECT_BOX_NAME = 'foo';
    const COMPLEX_SELECT_BOX_NAME = 'foo[bar]';
 
-   /**
-    * @throws ParserException
-    */
    public function testControllerPresetting() {
 
       $_REQUEST = [];
@@ -73,9 +67,6 @@ class SelectBoxTagTest extends TestCase {
       return $select;
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testSubmitPresetting() {
 
       $selectedOption = 4;
@@ -113,9 +104,6 @@ class SelectBoxTagTest extends TestCase {
 
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testControllerPresettingWithGroups() {
 
       $_REQUEST = [];
@@ -138,9 +126,6 @@ class SelectBoxTagTest extends TestCase {
 
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testSubmitPresettingWithGroups() {
 
       $selectedOption = 4;
@@ -180,7 +165,6 @@ class SelectBoxTagTest extends TestCase {
 
    /**
     * Test whether getGroup() responds correctly.
-    * @throws ParserException
     */
    public function testGroupRetrieving() {
 
@@ -219,7 +203,6 @@ class SelectBoxTagTest extends TestCase {
    /**
     * Test whether other options are unselected during selection of one
     * specific option in simple select boxes.
-    * @throws ReflectionException
     */
    public function testRemoveSelectedOptions() {
 
@@ -257,7 +240,6 @@ class SelectBoxTagTest extends TestCase {
 
    /**
     * Tests resetting a select box including option groups.
-    * @throws ParserException
     */
    public function testReset() {
 
@@ -299,7 +281,6 @@ class SelectBoxTagTest extends TestCase {
 
    /**
     * Tests whether validation is omitted with optional="true" and empty selection
-    * @throws ParserException
     */
    public function testOptionalValidation() {
 
@@ -327,8 +308,6 @@ class SelectBoxTagTest extends TestCase {
 
    /**
     * Tests whether validation for mandatory field works.
-    * @throws ParserException
-    * @throws FormException
     */
    public function testMandatoryValidation() {
 
@@ -362,7 +341,6 @@ class SelectBoxTagTest extends TestCase {
 
    /**
     * ID#319: test whether method complies w/ interface definition in case no option is present and/or selected.
-    * @throws ParserException
     */
    public function testIsSelected() {
 
@@ -408,7 +386,6 @@ class SelectBoxTagTest extends TestCase {
 
    /**
     * ID#324: test single option removal
-    * @throws ParserException
     */
    public function testRemoveOption() {
 
@@ -457,7 +434,6 @@ class SelectBoxTagTest extends TestCase {
 
    /**
     * ID#324: test group option removal
-    * @throws ParserException
     */
    public function testRemoveGroupOptions() {
 
@@ -506,7 +482,6 @@ class SelectBoxTagTest extends TestCase {
 
    /**
     * ID#324: test all option removal
-    * @throws ParserException
     */
    public function testRemoveAllOptions() {
 
@@ -556,7 +531,6 @@ class SelectBoxTagTest extends TestCase {
 
    /**
     * @return SelectBoxTag
-    * @throws ParserException
     */
    protected function getSelectBoxTagForRemovalTest() {
       $select = new SelectBoxTag();
@@ -572,7 +546,6 @@ class SelectBoxTagTest extends TestCase {
 
    /**
     * @return SelectBoxTag
-    * @throws ParserException
     */
    protected function getSelectBoxTagWithGroupForRemovalTest() {
       $select = new SelectBoxTag();
@@ -590,7 +563,6 @@ class SelectBoxTagTest extends TestCase {
 
    /**
     * @return SelectBoxTag
-    * @throws ParserException
     */
    protected function getDynamicSelectBoxForRemovalTest() {
       $select = new SelectBoxTag();
@@ -607,7 +579,6 @@ class SelectBoxTagTest extends TestCase {
 
    /**
     * @return SelectBoxTag
-    * @throws ParserException
     */
    protected function getDynamicSelectBoxWithGroupForRemovalTest() {
       $select = new SelectBoxTag();

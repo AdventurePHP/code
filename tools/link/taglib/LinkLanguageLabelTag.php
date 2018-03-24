@@ -33,7 +33,7 @@ class LinkLanguageLabelTag extends LanguageLabelTag {
 
    public function onAfterAppend() {
       /* @var $parent HtmlLinkTag */
-      $parent = $this->getParentObject();
+      $parent = $this->getParent();
       foreach ($parent->getChildren() as $child) {
          if ($child instanceof LinkLanguageLabelActiveTag && $parent->isActive()) {
             return;

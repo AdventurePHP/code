@@ -43,7 +43,7 @@ abstract class CommentBaseDocumentController extends BaseDocumentController {
     * Version 0.2, 02.05.2011 (Refactored to return the value to have a more clean API)<br />
     */
    protected function getCategoryKey() {
-      $parent = $this->getDocument()->getParentObject();
+      $parent = $this->getDocument()->getParent();
 
       return $parent->getAttribute('categorykey', 'standard');
    }

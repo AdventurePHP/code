@@ -21,7 +21,6 @@
 namespace APF\tools\form\validator;
 
 use APF\tools\form\FormControl;
-use APF\tools\form\FormException;
 use APF\tools\form\taglib\ValidationListenerTag;
 use APF\tools\form\ValidationListener;
 
@@ -36,8 +35,6 @@ abstract class TextFieldValidator extends AbstractFormValidator {
 
    /**
     * Notifies the form control to be invalid.
-    *
-    * @throws FormException
     *
     * @author Christian Achatz
     * @version
@@ -102,8 +99,6 @@ abstract class TextFieldValidator extends AbstractFormValidator {
     * displayed when triggered by a special validator.
     *
     * @param FormControl $control The control who's listeners should be notified.
-    *
-    * @throws FormException
     *
     * @author Christian Achatz
     * @version

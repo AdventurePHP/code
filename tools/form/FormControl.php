@@ -48,7 +48,7 @@ interface FormControl extends FormElement {
     * @version
     * Version 16.12.2012<br />
     */
-   public function &hide();
+   public function hide();
 
    /**
     * Shows a previously hidden form control from the HTML output of the form it is contained in.
@@ -64,7 +64,7 @@ interface FormControl extends FormElement {
     * @version
     * Version 16.12.2012<br />
     */
-   public function &show();
+   public function show();
 
    /**
     * Convenience method to obtain the form a control is located in. Lays the foundation for
@@ -78,7 +78,7 @@ interface FormControl extends FormElement {
     * @version
     * Version 0.1, 21.08.2014<br />
     */
-   public function &getForm();
+   public function getForm();
 
    /**
     * Applies the given filter to the present input element.
@@ -148,7 +148,7 @@ interface FormControl extends FormElement {
     * @version
     * Version 0.1, 25.08.2009<br />
     */
-   public function &markAsInvalid();
+   public function markAsInvalid();
 
    /**
     * Allows you to mark this form control as valid (again).
@@ -161,7 +161,7 @@ interface FormControl extends FormElement {
     * @version
     * Version 0.1, 05.01.2013<br />
     */
-   public function &markAsValid();
+   public function markAsValid();
 
    /**
     * Marks a form as sent.
@@ -172,7 +172,7 @@ interface FormControl extends FormElement {
     * @version
     * Version 0.1, 27.09.2009<br />
     */
-   public function &markAsSent();
+   public function markAsSent();
 
    /**
     * Let's you check, if a radio button was checked.
@@ -194,7 +194,7 @@ interface FormControl extends FormElement {
     * @version
     * Version 0.1, 29.08.2009<br />
     */
-   public function &check();
+   public function check();
 
    /**
     * Method for un-checking the checkbox.
@@ -205,7 +205,7 @@ interface FormControl extends FormElement {
     * @version
     * Version 0.1, 29.08.2009<br />
     */
-   public function &uncheck();
+   public function uncheck();
 
    /**
     * Disables a form control for usage.
@@ -218,7 +218,7 @@ interface FormControl extends FormElement {
     * @version
     * Version 0.1, 13.02.2010<br />
     */
-   public function &disable();
+   public function disable();
 
    /**
     * Enables a form control for user access.
@@ -231,7 +231,7 @@ interface FormControl extends FormElement {
     * @version
     * Version 0.1, 13.02.2010<br />
     */
-   public function &enable();
+   public function enable();
 
    /**
     * Let's you query the user access status.
@@ -257,7 +257,7 @@ interface FormControl extends FormElement {
     * @version
     * Version 0.1, 13.02.2010<br />
     */
-   public function &setReadOnly();
+   public function setReadOnly();
 
    /**
     * Enables a form control for write access.
@@ -270,7 +270,7 @@ interface FormControl extends FormElement {
     * @version
     * Version 0.1, 13.02.2010<br />
     */
-   public function &setReadWrite();
+   public function setReadWrite();
 
    /**
     * Let's you query the read only status.
@@ -315,7 +315,7 @@ interface FormControl extends FormElement {
     * @version
     * Version 0.1, 26.07.2011<br />
     */
-   public function &setValue($value);
+   public function setValue($value);
 
    /**
     * Returns the current control's visibility status.
@@ -366,7 +366,7 @@ interface FormControl extends FormElement {
     * @version
     * Version 0.1, 03.02.2010<br />
     */
-   public function &appendCssClass($class);
+   public function appendCssClass($class);
 
    /**
     * Adds an additional attribute to the white list of the control.
@@ -380,7 +380,7 @@ interface FormControl extends FormElement {
     * @version
     * Version 0.1, 21.07.2010<br />
     */
-   public function &addAttributeToWhiteList($name);
+   public function addAttributeToWhiteList($name);
 
    /**
     * Adds a set of additional attributes to the white list of the control.
@@ -394,7 +394,7 @@ interface FormControl extends FormElement {
     * @version
     * Version 0.1, 21.07.2010<br />
     */
-   public function &addAttributesToWhiteList(array $names);
+   public function addAttributesToWhiteList(array $names);
 
    /**
     * Define this field as optional. This allows to exclude it from validation e.g. from within a controller.
@@ -407,7 +407,7 @@ interface FormControl extends FormElement {
     * @version
     * Version 0.1, 03.08.2016<br />
     */
-   public function &setOptional();
+   public function setOptional();
 
    /**
     * Let's you determine whether or not a field is optional (regarding validation).
@@ -433,7 +433,7 @@ interface FormControl extends FormElement {
     * @version
     * Version 0.1, 03.08.2016<br />
     */
-   public function &setMandatory();
+   public function setMandatory();
 
    /**
     * Let's you determine whether or not a field is mandatory (regarding validation).

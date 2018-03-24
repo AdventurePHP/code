@@ -54,7 +54,7 @@ class FormClientErrorDisplayTag extends AbstractFormControl {
    public function transform() {
       $this->transformChildren();
 
-      $formID = $this->getParentObject()->getAttribute('id');
+      $formID = $this->getParent()->getAttribute('id');
       $output = '<div id="apf-error-' . $formID . '" class="apf-form-clienterror">' . $this->content . '</div>';
       /*
        * Generate javascript for binding on the ValidationNotify event.

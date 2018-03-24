@@ -86,7 +86,7 @@ class NewsListController extends NewsBaseController {
     * @return string The application identifier (for login purposes).
     */
    protected function getAppKey() {
-      return $this->getDocument()->getParentObject()->getAttribute('app-ident', $this->getContext());
+      return $this->getDocument()->getParent()->getAttribute('app-ident', $this->getContext());
    }
 
 }

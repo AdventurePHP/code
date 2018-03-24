@@ -23,6 +23,7 @@ namespace APF\core\filter;
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\frontcontroller\Frontcontroller;
 use APF\core\http\mixins\GetRequestResponse;
+use APF\core\pagecontroller\APFObject;
 use APF\core\singleton\Singleton;
 
 /**
@@ -96,7 +97,7 @@ class ChainedStandardInputFilter implements ChainedContentFilter {
 
                // ID#240: allow "0" values to be passed as within front controller action input value.
                if (isset($pairs[0]) && isset($pairs[1])
-                     && !empty($pairs[0]) && (!empty($pairs[1]) || (string) $pairs[1] === '0')
+                     && !empty($pairs[0]) && (!empty($pairs[1]) || (string)$pairs[1] === '0')
                ) {
                   $inputParams[$pairs[0]] = $pairs[1];
                }
@@ -114,9 +115,9 @@ class ChainedStandardInputFilter implements ChainedContentFilter {
    }
 
    /**
-    * @return Frontcontroller The current front controller instance.
+    * @return Frontcontroller|APFObject
     */
-   protected function &getFrontcontroller() {
+   protected function getFrontcontroller() {
       return Singleton::getInstance(Frontcontroller::class);
    }
 

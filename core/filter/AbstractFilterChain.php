@@ -59,7 +59,7 @@ abstract class AbstractFilterChain implements FilterChain {
     *
     * @return FilterChain The current filter chain instance for further usage.
     */
-   public function &appendFilter(ChainedContentFilter $filter) {
+   public function appendFilter(ChainedContentFilter $filter) {
       $this->filters[] = $filter;
       $this->count++;
 
@@ -78,7 +78,7 @@ abstract class AbstractFilterChain implements FilterChain {
     * @version
     * Version 0.1, 27.08.2011<br />
     */
-   public function &prependFilter(ChainedContentFilter $filter) {
+   public function prependFilter(ChainedContentFilter $filter) {
 
       array_unshift($this->filters, $filter);
       $this->count++;
@@ -99,7 +99,7 @@ abstract class AbstractFilterChain implements FilterChain {
     *
     * @return FilterChain The current filter chain instance for further usage.
     */
-   public function &removeFilter($class) {
+   public function removeFilter($class) {
 
       // since it is possible to remove a filter during chain execution,
       // start at the current offset to disallow removal of filters that
@@ -145,7 +145,7 @@ abstract class AbstractFilterChain implements FilterChain {
     * @version
     * Version 0.1, 13.01.2011<br />
     */
-   public function &reset() {
+   public function reset() {
       $this->offset = 0;
 
       return $this;
@@ -165,7 +165,7 @@ abstract class AbstractFilterChain implements FilterChain {
     * @version
     * Version 0.1, 22.03.2011<br />
     */
-   public function &clear() {
+   public function clear() {
       $this->filters = [];
       $this->count = 0;
       $this->offset = 0;

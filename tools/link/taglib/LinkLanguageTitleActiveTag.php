@@ -35,7 +35,7 @@ class LinkLanguageTitleActiveTag extends LanguageLabelTag {
    public function onParseTime() {
       // if link is active, content will be set.
       /* @var $parent HtmlLinkTag */
-      $parent = $this->getParentObject();
+      $parent = $this->getParent();
       if ($parent->isActive()) {
          $parent->setAttribute('title', parent::transform());
       }

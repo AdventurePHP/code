@@ -72,7 +72,7 @@ interface DomNode extends ApplicationContext {
    /**
     * Injects the parent node of the current APF object.
     *
-    * @param DomNode $parentObject The parent node.
+    * @param DomNode $parent The parent node.
     *
     * @return $this This instance for further usage.
     *
@@ -80,7 +80,7 @@ interface DomNode extends ApplicationContext {
     * @version
     * Version 0.1, 20.02.2010<br />
     */
-   public function setParentObject(DomNode &$parentObject);
+   public function setParent(DomNode $parent);
 
    /**
     * Returns the parent node of the current APF object.
@@ -91,7 +91,7 @@ interface DomNode extends ApplicationContext {
     * @version
     * Version 0.1, 20.02.2010<br />
     */
-   public function &getParentObject();
+   public function getParent();
 
    /**
     * Sets the object id of the current APF object.
@@ -189,7 +189,7 @@ interface DomNode extends ApplicationContext {
     * @version
     * Version 0.1, 28.12.2006<br />
     */
-   public function &setAttribute($name, $value);
+   public function setAttribute($name, $value);
 
    /**
     * Returns an object's attributes.
@@ -213,7 +213,7 @@ interface DomNode extends ApplicationContext {
     * @version
     * Version 0.1, 28.12.2006<br />
     */
-   public function &deleteAttribute($name);
+   public function deleteAttribute($name);
 
    /**
     * Sets an object's attributes.
@@ -226,7 +226,7 @@ interface DomNode extends ApplicationContext {
     * @version
     * Version 0.1, 28.12.2006<br />
     */
-   public function &setAttributes(array $attributes = array());
+   public function setAttributes(array $attributes = []);
 
    /**
     * Let's you add the applied value to the given attribute. The glue parameter
@@ -246,7 +246,7 @@ interface DomNode extends ApplicationContext {
     * Version 0.2, 09.02.2013 (Moved to APFObject to avoid multiple implementations)<br />
     * Version 0.3, 21.07.2014 (Added option to define the glue)<br />
     */
-   public function &addAttribute($name, $value, $glue = '');
+   public function addAttribute($name, $value, $glue = '');
 
    /**
     * Returns the textual content of the current node.
@@ -300,7 +300,7 @@ interface DomNode extends ApplicationContext {
     * Version 0.1, 11.12.2011<br />
     * Version 0.2, 09.02.2013 (Now public access since DocumentController is now derived from APFObject instead of Document)<br />
     */
-   public function &getChildNode($attributeName, $value, $tagLibClass);
+   public function getChildNode($attributeName, $value, $tagLibClass);
 
    /**
     * Same functionality as <em>getChildNode()</em> except returning null in case no matching node
@@ -317,7 +317,7 @@ interface DomNode extends ApplicationContext {
     * Version 0.1, 11.12.2011<br />
     * Version 0.2, 09.02.2013 (Now public access since DocumentController is now derived from APFObject instead of Document)<br />
     */
-   public function &getChildNodeIfExists($attributeName, $value, $tagLibClass);
+   public function getChildNodeIfExists($attributeName, $value, $tagLibClass);
 
    /**
     * Let's you retrieve a list of child nodes of the current document by specifying a selector
@@ -336,7 +336,7 @@ interface DomNode extends ApplicationContext {
     * Version 0.1, 14.07.2012<br />
     * Version 0.2, 09.02.2013 (Now public access since DocumentController is now derived from APFObject instead of Document)<br />
     */
-   public function &getChildNodes($attributeName, $value, $tagLibClass);
+   public function getChildNodes($attributeName, $value, $tagLibClass);
 
    /**
     * API method to set a place holder's content within a document.
@@ -354,7 +354,7 @@ interface DomNode extends ApplicationContext {
     * Version 0.3, 07.02.2013 (Moved to Document to avoid multiple implementations)<br />
     * Version 0.4, 05.08.2013 (Added support to append content to place holders)<br />
     */
-   public function &setPlaceHolder($name, $value, $append = false);
+   public function setPlaceHolder($name, $value, $append = false);
 
    /**
     * This method is for conveniently setting of multiple place holders. The applied
@@ -382,7 +382,7 @@ interface DomNode extends ApplicationContext {
     * Version 0.2, 09.02.2013 (Moved to Document to avoid multiple implementations)<br />
     * Version 0.3, 06.08.2013 (Added support for appending content to place holders)<br />
     */
-   public function &setPlaceHolders(array $placeHolderValues, $append = false);
+   public function setPlaceHolders(array $placeHolderValues, $append = false);
 
    /**
     * Returns the list of registered place holders for the current document.
@@ -420,7 +420,7 @@ interface DomNode extends ApplicationContext {
     * @version
     * Version 0.1, 12.03.2016 (ID#287)<br />
     */
-   public function &clearPlaceHolders();
+   public function clearPlaceHolders();
 
    /**
     * Returns the name of the document controller in case the document should
@@ -436,22 +436,6 @@ interface DomNode extends ApplicationContext {
    public function getDocumentController();
 
    /**
-    * This method adds a given tag to the <em>local</em> list of known tags for the APF parser.
-    * <p/>
-    * Using this method, you can override globally defined tags for this particular instance.
-    *
-    * @param string $class The fully-qualified name of the tag implementation.
-    * @param string $prefix The tag prefix.
-    * @param string $name The tag name.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 14.02.2011 (ID#185, ID#1786: introduced local override mechanism)<br />
-    * Version 0.2, 11.07.2014 (Removed TagLib to gain performance and simplify API)<br />
-    */
-   public function addInstanceTagLib($class, $prefix, $name);
-
-   /**
     * Allows you to set data attributes to the current DOM node (similar to Java Script for HTML nodes).
     *
     * @param string $name The reference name of the data field to set/add.
@@ -463,7 +447,7 @@ interface DomNode extends ApplicationContext {
     * @version
     * Version 0.1, 29.01.2014<br />
     */
-   public function &setData($name, $data);
+   public function setData($name, $data);
 
    /**
     * Allows you to retrieve a data attribute from the current DOM node (similar to Java Script for HTML nodes).
@@ -533,7 +517,7 @@ interface DomNode extends ApplicationContext {
     * @version
     * Version 0.1, 13.08.2014<br />
     */
-   public function &getNodeById($id);
+   public function getNodeById($id);
 
    /**
     * Same functionality as <em>getNodeById()</em> except returning null in case no matching node
@@ -547,6 +531,6 @@ interface DomNode extends ApplicationContext {
     * @version
     * Version 0.1, 13.08.2014<br />
     */
-   public function &getNodeByIdIfExists($id);
+   public function getNodeByIdIfExists($id);
 
 }

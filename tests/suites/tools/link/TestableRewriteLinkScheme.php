@@ -33,7 +33,7 @@ use APF\tools\link\RewriteLinkScheme;
  */
 class TestableRewriteLinkScheme extends RewriteLinkScheme {
 
-   protected function &getFrontcontrollerActions() {
+   protected function getFrontControllerActions() {
 
       $actions = [];
       $action = new TestFrontControllerAction();

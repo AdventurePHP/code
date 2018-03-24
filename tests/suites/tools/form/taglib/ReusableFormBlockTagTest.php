@@ -2,8 +2,6 @@
 namespace APF\tests\suites\tools\form\taglib;
 
 use APF\core\pagecontroller\ImportTemplateTag;
-use APF\core\pagecontroller\ParserException;
-use APF\tools\form\FormException;
 use APF\tools\form\taglib\FormLabelTag;
 use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\form\taglib\ReusableFormBlockTag;
@@ -17,17 +15,11 @@ use PHPUnit\Framework\TestCase;
  */
 class ReusableFormBlockTagTest extends TestCase {
 
-   /**
-    * @throws ParserException
-    */
    public function testRequiredAttributeNamespace() {
       $this->expectException(InvalidArgumentException::class);
       (new ReusableFormBlockTag())->onParseTime();
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testRequiredAttributeTemplate() {
       $this->expectException(InvalidArgumentException::class);
       $tag = new ReusableFormBlockTag();
@@ -35,9 +27,6 @@ class ReusableFormBlockTagTest extends TestCase {
       $tag->onParseTime();
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testTemplateLoading() {
       $tag = new ReusableFormBlockTag();
       $tag->setAttributes([
@@ -49,9 +38,6 @@ class ReusableFormBlockTagTest extends TestCase {
       $this->assertEquals('test', $tag->getContent());
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testPlaceHolderReplacement() {
       $tag = new ReusableFormBlockTag();
       $tag->setAttributes([
@@ -66,9 +52,6 @@ class ReusableFormBlockTagTest extends TestCase {
       $this->assertEquals('foo:baz:${other}', $tag->getContent());
    }
 
-   /**
-    * @throws ParserException
-    */
    public function testTagParsing() {
 
       $fieldName = 'foo';
@@ -95,10 +78,6 @@ class ReusableFormBlockTagTest extends TestCase {
 
    }
 
-   /**
-    * @throws ParserException
-    * @throws FormException
-    */
    public function testComplexBlockDefinition() {
 
       $name = 'foo';
@@ -137,10 +116,6 @@ class ReusableFormBlockTagTest extends TestCase {
 
    }
 
-   /**
-    * @throws ParserException
-    * @throws FormException
-    */
    public function testValidation() {
 
       $_GET = [];

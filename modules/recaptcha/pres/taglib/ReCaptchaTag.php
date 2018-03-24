@@ -79,7 +79,7 @@ class ReCaptchaTag extends AbstractFormControl {
       // do nothing except an attribute check, since presetting on reCaptcha fields is not needed.
       $name = $this->getAttribute('name');
       if (empty($name)) {
-         $form = $this->getParentObject();
+         $form = $this->getParent();
          throw new FormException(
                'ReCaptcha control within form "' . $form->getAttribute('name')
                . '" has no "name" attribute specified! Please re-check your form definition.'
@@ -88,7 +88,7 @@ class ReCaptchaTag extends AbstractFormControl {
 
       $publicKey = $this->getAttribute('public-key');
       if (empty($publicKey)) {
-         $form = $this->getParentObject();
+         $form = $this->getParent();
          throw new FormException(
                'ReCaptcha control within form "' . $form->getAttribute('name')
                . '" has no "public-key" attribute specified! Please re-check your form definition.'
@@ -97,7 +97,7 @@ class ReCaptchaTag extends AbstractFormControl {
 
       $privateKey = $this->getAttribute('private-key');
       if (empty($privateKey)) {
-         $form = $this->getParentObject();
+         $form = $this->getParent();
          throw new FormException(
                'ReCaptcha control within form "' . $form->getAttribute('name')
                . '" has no "private-key" attribute specified! Please re-check your form definition.'

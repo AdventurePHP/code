@@ -20,8 +20,6 @@
  */
 namespace APF\tests\suites\tools\form\taglib;
 
-use APF\core\pagecontroller\ParserException;
-use APF\tools\form\FormException;
 use APF\tools\form\taglib\AddFormControlValidatorTag;
 use APF\tools\form\taglib\ButtonTag;
 use APF\tools\form\taglib\HtmlFormTag;
@@ -29,7 +27,6 @@ use APF\tools\form\taglib\TextFieldTag;
 use APF\tools\form\validator\TextLengthValidator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ReflectionException;
 use ReflectionProperty;
 
 /**
@@ -40,9 +37,6 @@ class AddFormControlValidatorTagTest extends TestCase {
    /**
     * Ensure form validator is constructed correctly (applying context and language) as well as
     * injected form control to validate and the button to trigger the validation.
-    * @throws FormException
-    * @throws ParserException
-    * @throws ReflectionException
     */
    public function testFormValidatorSetup() {
 
@@ -60,7 +54,7 @@ class AddFormControlValidatorTagTest extends TestCase {
       // Mock control to set expectations
       $control = new TextFieldTag();
       $control->setAttribute('name', $controlName);
-      $control->setParentObject($form);
+      $control->setParent($form);
       $control->onParseTime();
       $control->onAfterAppend();
 
@@ -68,7 +62,7 @@ class AddFormControlValidatorTagTest extends TestCase {
       $button = new ButtonTag();
       $button->setAttribute('name', $buttonName);
       $button->setAttribute('value', 'GO');
-      $button->setParentObject($form);
+      $button->setParent($form);
       $button->onParseTime();
       $button->onAfterAppend();
 

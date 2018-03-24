@@ -44,19 +44,22 @@ trait AddSelectBoxEntry {
     * @version
     * Version 0.1, 21.10.2015<br />
     */
-   protected function &addEntry(DomNode $tag) {
+   protected function addEntry(DomNode $tag) {
 
       $objectId = XmlParser::generateUniqID();
-      $this->children[$objectId] = $tag;
-      $this->children[$objectId]->setObjectId($objectId);
 
-      $this->children[$objectId]->setLanguage($this->language);
-      $this->children[$objectId]->setContext($this->context);
-      $this->children[$objectId]->onParseTime();
+      $tag->setObjectId($objectId);
+
+      $tag->setLanguage($this->language);
+      $tag->setContext($this->context);
+      $tag->onParseTime();
 
       // inject parent object (=this) to guarantee native DOM tree environment
-      $this->children[$objectId]->setParentObject($this);
-      $this->children[$objectId]->onAfterAppend();
+      /** @var DomNode $this */
+      $tag->setParent($this);
+      $tag->onAfterAppend();
+
+      $this->children[$objectId] = $tag;
 
       // add xml marker, necessary for transformation
       $this->content .= '<' . $objectId . ' />';

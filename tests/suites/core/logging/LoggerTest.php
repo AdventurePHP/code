@@ -29,7 +29,6 @@ use APF\core\logging\writer\StdOutLogWriter;
 use APF\core\registry\Registry;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ReflectionException;
 use ReflectionProperty;
 
 /**
@@ -42,8 +41,6 @@ class LoggerTest extends TestCase {
 
    /**
     * Tests whether a initial file log writer is created.
-    * @throws ReflectionException
-    * @throws LoggerException
     */
    public function testConstruction() {
 
@@ -133,7 +130,6 @@ class LoggerTest extends TestCase {
 
    /**
     * Tests string-based logging interface.
-    * @throws ReflectionException
     */
    public function testLogEntry() {
 
@@ -165,7 +161,6 @@ class LoggerTest extends TestCase {
 
    /**
     * Tests OO logging interface.
-    * @throws ReflectionException
     */
    public function testAddEntry1() {
 

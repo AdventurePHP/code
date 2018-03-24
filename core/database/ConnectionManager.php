@@ -117,7 +117,7 @@ final class ConnectionManager extends APFObject {
     * Version 0.8, 20.09.2009 (Removed check for MySQLHandler usage, due to removal of the MySQLHandler)<br />
     * Version 0.9, 07.05.2012 (Introduced connection identifier to enable multiple connections for the same connection key)<br />
     */
-   public function &getConnection($connectionKey, $instanceId = 'default') {
+   public function getConnection($connectionKey, $instanceId = 'default') {
 
       // check, if connection was already created
       $cacheKey = $connectionKey . $instanceId;

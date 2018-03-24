@@ -49,7 +49,7 @@ class GetClientFormValidationTag extends AbstractFormControl {
     */
    public function onParseTime() {
       // inject form id to append validators
-      $this->getParentObject()->setAttribute('id', $this->getFormId());
+      $this->getParent()->setAttribute('id', $this->getFormId());
    }
 
    /**
@@ -62,7 +62,7 @@ class GetClientFormValidationTag extends AbstractFormControl {
     * Version 1.0, 18.03.2010<br />
     */
    protected function getFormId() {
-      $parent = $this->getParentObject();
+      $parent = $this->getParent();
       $formId = $parent->getAttribute('id');
       if ($formId === null) {
          $formId = 'apf-form-' . $parent->getObjectId();
@@ -87,7 +87,7 @@ class GetClientFormValidationTag extends AbstractFormControl {
       // separate index, in order to avoid multiple selecting of the form.
       $javascript = [
             'general' => '',
-            'form'    => '$(\'form[id=' . $this->getFormId() . ']\')'
+            'form' => '$(\'form[id=' . $this->getFormId() . ']\')'
       ];
 
       /* @var $CVSS ClientValidationScriptStore */
@@ -136,7 +136,7 @@ class GetClientFormValidationTag extends AbstractFormControl {
       // separate index, in order to avoid multiple selecting of the form.
       $output = [
             'general' => '',
-            'form'    => ''
+            'form' => ''
       ];
 
       // Check if we already set an event on this button
@@ -154,7 +154,7 @@ class GetClientFormValidationTag extends AbstractFormControl {
 
       // Check type of control, and generate jQuery selector
       /* @var $parent HtmlFormTag */
-      $parent = $this->getParentObject();
+      $parent = $this->getParent();
       switch (get_class($parent->getFormElementByName($definition['control']))) {
          case 'SelectBoxTag':
             $jQSelector = ':input[name=\'' . $definition['control'] . '\[\]\']';

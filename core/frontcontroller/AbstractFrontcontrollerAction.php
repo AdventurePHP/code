@@ -84,7 +84,7 @@ abstract class AbstractFrontcontrollerAction extends APFObject implements Action
     */
    private $frontController;
 
-   public function &getInput() {
+   public function getInput() {
       return $this->input;
    }
 
@@ -136,7 +136,7 @@ abstract class AbstractFrontcontrollerAction extends APFObject implements Action
       return 10;
    }
 
-   public function &getFrontController() {
+   public function getFrontController() {
       return $this->frontController;
    }
 

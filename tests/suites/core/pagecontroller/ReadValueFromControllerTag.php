@@ -27,7 +27,7 @@ class ReadValueFromControllerTag extends Document {
    public function transform() {
 
       /* @var $controller TestDocumentController */
-      $controller = $this->getParentObject()->getDocumentController();
+      $controller = $this->getParent()->getDocumentController();
 
       return $controller->getValue();
 

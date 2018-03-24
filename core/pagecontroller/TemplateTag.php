@@ -47,33 +47,39 @@ class TemplateTag extends Document implements Template {
       $this->extractTagLibTags();
    }
 
-   public function &getLabel($name) {
+   public function getLabel($name) {
       try {
          return $this->getChildNode('name', $name, LanguageLabel::class);
       } catch (InvalidArgumentException $e) {
+         $controller = $this->getParent()->getDocumentController();
+         $class = $controller ? get_class($controller) : 'n/a';
          throw new InvalidArgumentException('[TemplateTag::getLabel()] No label found with name "' . $name
                . '" composed in template with name "' . $this->getAttribute('name') . '" for document controller "'
-               . get_class($this->getParentObject()->getDocumentController()) . '"!', E_USER_ERROR, $e);
+               . $class . '"!', E_USER_ERROR, $e);
       }
    }
 
-   public function &getForm($name) {
+   public function getForm($name) {
       try {
          return $this->getChildNode('name', $name, HtmlForm::class);
       } catch (InvalidArgumentException $e) {
+         $controller = $this->getParent()->getDocumentController();
+         $class = $controller ? get_class($controller) : 'n/a';
          throw new InvalidArgumentException('[TemplateTag::getForm()] No form found with name "' . $name
                . '" composed in template with name "' . $this->getAttribute('name') . '" for document controller "'
-               . get_class($this->getParentObject()->getDocumentController()) . '"!', E_USER_ERROR, $e);
+               . $class . '"!', E_USER_ERROR, $e);
       }
    }
 
-   public function &getTemplate($name) {
+   public function getTemplate($name) {
       try {
          return $this->getChildNode('name', $name, Template::class);
       } catch (InvalidArgumentException $e) {
+         $controller = $this->getParent()->getDocumentController();
+         $class = $controller ? get_class($controller) : 'n/a';
          throw new InvalidArgumentException('[TemplateTag::getTemplate()] No nested template found with name "' . $name
                . '" composed in template with name "' . $this->getAttribute('name') . '" for document controller "'
-               . get_class($this->getParentObject()->getDocumentController()) . '"!', E_USER_ERROR, $e);
+               . $class . '"!', E_USER_ERROR, $e);
       }
    }
 
