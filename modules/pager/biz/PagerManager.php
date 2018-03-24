@@ -24,6 +24,7 @@ use APF\core\benchmark\BenchmarkTimer;
 use APF\core\http\mixins\GetRequestResponse;
 use APF\core\pagecontroller\APFObject;
 use APF\core\pagecontroller\Page;
+use APF\core\service\APFService;
 use APF\core\singleton\Singleton;
 use APF\modules\pager\data\PagerMapper;
 use APF\tools\link\LinkGenerator;
@@ -224,7 +225,7 @@ final class PagerManager extends APFObject {
       $section = $config->getSection($initParam);
 
       // translate entries per page
-      $this->entriesPerPage = (int) $section->getValue('EntriesPerPage', '10');
+      $this->entriesPerPage = (int)$section->getValue('EntriesPerPage', '10');
 
       // translate url parameters
       $this->pageUrlParameterName = $section->getValue('ParameterPageName', 'page');
@@ -319,9 +320,9 @@ final class PagerManager extends APFObject {
    }
 
    /**
-    * @return PagerMapper
+    * @return PagerMapper|APFService
     */
-   protected function &getMapper() {
+   protected function getMapper() {
       return $this->getServiceObject(PagerMapper::class, [$this->databaseConnectionName]);
    }
 
@@ -338,7 +339,7 @@ final class PagerManager extends APFObject {
     */
    private function getStatementParams(array $addStmtParams = []) {
       if ($this->isDynamicPageSizeActivated()) {
-         $entriesCount = (int) $this->getRequest()->getParameter($this->countUrlParameterName, $this->entriesPerPage);
+         $entriesCount = (int)$this->getRequest()->getParameter($this->countUrlParameterName, $this->entriesPerPage);
       } else {
          $entriesCount = $this->entriesPerPage;
       }
@@ -351,7 +352,7 @@ final class PagerManager extends APFObject {
       }
 
       $defaultParams = [
-            'Start'        => $start,
+            'Start' => $start,
             'EntriesCount' => $entriesCount
       ];
 
@@ -467,7 +468,7 @@ final class PagerManager extends APFObject {
     *
     * @param string[] $addStmtParams list of additional statement params
     *
-    * @return Page[] List of pages.
+    * @return PageItem[] List of pages.
     *
     * @author Christian Achatz
     * @version
@@ -486,10 +487,10 @@ final class PagerManager extends APFObject {
       $t->start('PagerManager::createPages4PagerDisplay()');
 
       // initialize start params
-      $start = (int) 1;
+      $start = (int)1;
 
       $countPerPage = $this->getCountPerPage();
-      $currentStart = (int) $this->getRequest()->getParameter($this->pageUrlParameterName, 1) * $countPerPage;
+      $currentStart = (int)$this->getRequest()->getParameter($this->pageUrlParameterName, 1) * $countPerPage;
 
       // initialize page delimiter params
       $m = $this->getMapper();
@@ -552,7 +553,7 @@ final class PagerManager extends APFObject {
       $countPerPage = 0;
 
       if ($this->isDynamicPageSizeActivated()) {
-         $countPerPage = (int) $this->getRequest()->getParameter($this->countUrlParameterName, 0);
+         $countPerPage = (int)$this->getRequest()->getParameter($this->countUrlParameterName, 0);
       }
 
       if (!$this->isDynamicPageSizeActivated() || $countPerPage === 0) { // avoid division by zero!
@@ -578,7 +579,7 @@ final class PagerManager extends APFObject {
     */
    public function getPagerURLParameters() {
       return [
-            'PageName'  => $this->pageUrlParameterName,
+            'PageName' => $this->pageUrlParameterName,
             'CountName' => $this->countUrlParameterName
       ];
    }
