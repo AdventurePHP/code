@@ -44,7 +44,7 @@ use InvalidArgumentException;
  * the {@link APFObject} contains the getDIServiceObject() method. Usage:
  * <br />
  * <pre>$initializedServiceObject =
- *             &$this->getDIServiceObject(
+ *             $this->getDIServiceObject(
  *                        'VENDOR\namespace\of\the\configuration',
  *                        'ServiceName'
  *             );</pre>
