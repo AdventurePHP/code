@@ -34,12 +34,12 @@ class SimplePagerController extends BaseDocumentController {
 
    public function transformContent() {
 
-      $buffer = (string) '';
+      $buffer = '';
 
       $document = $this->getDocument();
 
       /* @var $pages PageItem[] */
-      $pages = $document->getAttribute('Pages');
+      $pages = $document->getData('Pages');
       $count = count($pages);
       for ($i = 0; $i < $count; $i++) {
 
@@ -49,7 +49,7 @@ class SimplePagerController extends BaseDocumentController {
             $tmplPage = $this->getTemplate('Page_Normal_' . $this->getLanguage());
          }
 
-         $anchorName = $document->getAttribute('AnchorName');
+         $anchorName = $document->getData('AnchorName');
          if (empty($anchorName)) {
             $tmplPage->setPlaceHolder('Link', $pages[$i]->getLink());
          } else {

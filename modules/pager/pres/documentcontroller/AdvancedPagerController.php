@@ -50,15 +50,15 @@ class AdvancedPagerController extends BaseDocumentController {
       // fill document attributes to local variable
       $document = $this->getDocument();
 
-      $pageUrlParameterName = $document->getAttribute('PageUrlParameterName');
-      $countUrlParameterName = $document->getAttribute('CountUrlParameterName');
-      $entriesPerPage = $document->getAttribute('EntriesPerPage');
-      $isDynamicPageSizeActivated = $document->getAttribute('DynamicPageSizeActivated');
+      $pageUrlParameterName = $document->getData('PageUrlParameterName');
+      $countUrlParameterName = $document->getData('CountUrlParameterName');
+      $entriesPerPage = $document->getData('EntriesPerPage');
+      $isDynamicPageSizeActivated = $document->getData('DynamicPageSizeActivated');
 
-      $anchorName = $document->getAttribute('AnchorName');
+      $anchorName = $document->getData('AnchorName');
 
       /* @var $pages PageItem[] */
-      $pages = $document->getAttribute('Pages');
+      $pages = $document->getData('Pages');
 
       // do not display the pager in case we have no pages
       if (count($pages) == 0) {

@@ -46,10 +46,10 @@ class ArrayPagerController extends BaseDocumentController {
       $document = $this->getDocument();
 
       /* @var $config array */
-      $config = $document->getAttribute('Config');
+      $config = $document->getData('Config');
 
-      $dataCount = $document->getAttribute('DataCount');
-      $anchorName = $document->getAttribute('AnchorName');
+      $dataCount = $document->getData('DataCount');
+      $anchorName = $document->getData('AnchorName');
 
       $request = $this->getRequest();
 
@@ -181,7 +181,7 @@ class ArrayPagerController extends BaseDocumentController {
 
             $stringURL = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
                   [
-                        $config['ParameterPage']    => 1,
+                        $config['ParameterPage'] => 1,
                         $config['ParameterEntries'] => $integerEntries
                   ]
             ));

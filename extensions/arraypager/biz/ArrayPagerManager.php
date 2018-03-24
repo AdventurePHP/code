@@ -24,6 +24,7 @@ use APF\core\configuration\ConfigurationException;
 use APF\core\http\mixins\GetRequestResponse;
 use APF\core\pagecontroller\APFObject;
 use APF\core\pagecontroller\Page;
+use APF\core\service\APFService;
 use APF\extensions\arraypager\data\ArrayPagerMapper;
 use Exception;
 
@@ -74,10 +75,10 @@ final class ArrayPagerManager extends APFObject {
       }
 
       $arrayParameter = [
-            'ParameterPage'    => 'page',
+            'ParameterPage' => 'page',
             'ParameterEntries' => 'entries',
-            'Entries'          => 10,
-            'EntriesPossible'  => '5|10|15'
+            'Entries' => 10,
+            'EntriesPossible' => '5|10|15'
       ];
 
       $this->pagerConfig = array_merge($arrayParameter, $configParams);
@@ -150,13 +151,13 @@ final class ArrayPagerManager extends APFObject {
    /**
     * Returns the mapper.
     *
-    * @return ArrayPagerMapper The pager mapper.
+    * @return ArrayPagerMapper|APFService The pager mapper.
     *
     * @author Lutz Mahlstedt
     * @version
     * Version 0.1, 21.12.2009<br />
     */
-   protected function &getDataMapper() {
+   protected function getDataMapper() {
       return $this->getServiceObject(ArrayPagerMapper::class);
    }
 
@@ -196,26 +197,26 @@ final class ArrayPagerManager extends APFObject {
             // add the necessary config params and pages
             $rootDoc = $pager->getRootDocument();
 
-            $rootDoc->setAttribute('Config',
+            $rootDoc->setData('Config',
                   [
                         'ParameterPage' => $this->pagerConfig['ParameterPage'],
-                        'ParameterEntries'  => $this->pagerConfig['ParameterEntries'],
-                        'Entries'       => intval(
+                        'ParameterEntries' => $this->pagerConfig['ParameterEntries'],
+                        'Entries' => intval(
                               $this->getRequest()->getParameter($this->pagerConfig['ParameterEntries'],
                                     $this->pagerConfig['Entries'])
                         ),
-                        'EntriesPossible'   => $this->pagerConfig['EntriesPossible'],
+                        'EntriesPossible' => $this->pagerConfig['EntriesPossible'],
                         'EntriesChangeable' => $this->pagerConfig['EntriesChangeable']
                   ]
             );
 
-            $rootDoc->setAttribute('DataCount',
+            $rootDoc->setData('DataCount',
                   count($arrayData)
             );
 
             // add the anchor if desired
             if ($this->anchorName !== null) {
-               $rootDoc->setAttribute('AnchorName',
+               $rootDoc->setData('AnchorName',
                      $this->anchorName
                );
             }
