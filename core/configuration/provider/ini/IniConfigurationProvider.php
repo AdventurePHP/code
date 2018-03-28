@@ -55,7 +55,7 @@ use APF\core\configuration\provider\BaseConfigurationProvider;
  */
 class IniConfigurationProvider extends BaseConfigurationProvider implements ConfigurationProvider {
 
-   public function loadConfiguration($namespace, $context, $language, $environment, $name) {
+   public function loadConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
 
       $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
 
@@ -85,7 +85,7 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
     * @version
     * Version 0.1, 04.10.2010<br />
     */
-   private function parseConfig($entries) {
+   private function parseConfig(array $entries) {
 
       // prevent errors with foreach loop
       if ($entries === false) {
@@ -139,7 +139,7 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
     * @version
     * Version 0.1, 04.10.2010<br />
     */
-   private function parseSubSection(Configuration &$config, $name, $value) {
+   private function parseSubSection(Configuration &$config, string $name, string $value) {
 
       $dot = strpos($name, Configuration::SECTION_PATH_SEPARATOR);
       if ($dot === false) {
@@ -159,7 +159,7 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
       }
    }
 
-   public function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config) {
+   public function saveConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name, Configuration $config) {
 
       $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
 
@@ -208,7 +208,7 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
       return $buffer;
    }
 
-   private function generateComplexConfigValue(Configuration $config, $currentName) {
+   private function generateComplexConfigValue(Configuration $config, string $currentName) {
 
       $buffer = '';
 
@@ -233,7 +233,7 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
       return $buffer;
    }
 
-   public function deleteConfiguration($namespace, $context, $language, $environment, $name) {
+   public function deleteConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
 
       $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
       if (unlink($fileName) === false) {

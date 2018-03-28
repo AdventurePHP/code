@@ -52,7 +52,7 @@ interface Configuration {
     * @version
     * Version 0.1, 28.10.2010<br />
     */
-   public function getValue($name, $defaultValue = null);
+   public function getValue(string $name, string $defaultValue = null);
 
    /**
     * Returns the desired configuration section.
@@ -69,7 +69,7 @@ interface Configuration {
     * @version
     * Version 0.1, 28.10.2010<br />
     */
-   public function getSection($name);
+   public function getSection(string $name);
 
    /**
     * Let's you check whether the current configuration object has
@@ -85,7 +85,7 @@ interface Configuration {
     * @version
     * Version 0.1, 13.03.2015<br />
     */
-   public function hasSection($name);
+   public function hasSection(string $name);
 
    /**
     * Allows you to set a configuration value within the current configuration instance.
@@ -101,7 +101,7 @@ interface Configuration {
     * @version
     * Version 0.1, 13.03.2015<br />
     */
-   public function setValue($name, $value);
+   public function setValue(string $name, string $value);
 
    /**
     * Allows you to add a configuration section to the current configuration instance.
@@ -117,7 +117,7 @@ interface Configuration {
     * @version
     * Version 0.1, 13.03.2015<br />
     */
-   public function setSection($name, Configuration $section);
+   public function setSection(string $name, Configuration $section);
 
    /**
     * Let's you check whether the current configuration object has
@@ -133,7 +133,7 @@ interface Configuration {
     * @version
     * Version 0.1, 11.03.2015<br />
     */
-   public function hasValue($name);
+   public function hasValue(string $name);
 
    /**
     * Enumerates the names of the CURRENT instance' configuration keys.
@@ -169,7 +169,7 @@ interface Configuration {
     * @version
     * Version 0.1, 28.10.2010<br />
     */
-   public function removeSection($name);
+   public function removeSection(string $name);
 
    /**
     * Removes the value with the given name from the configuration.
@@ -183,6 +183,6 @@ interface Configuration {
     * @version
     * Version 0.1, 28.10.2010<br />
     */
-   public function removeValue($name);
+   public function removeValue(string $name);
 
 }

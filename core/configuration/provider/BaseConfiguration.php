@@ -46,7 +46,7 @@ abstract class BaseConfiguration implements Configuration {
     */
    protected $sections = [];
 
-   public function getSection($name) {
+   public function getSection(string $name) {
 
       // Exit with direct match (check for section path usage not necessary as ConfigurationProvider
       // don't produce section names with a delimiter).
@@ -72,7 +72,7 @@ abstract class BaseConfiguration implements Configuration {
       return (new $configType());
    }
 
-   public function hasSection($name) {
+   public function hasSection(string $name) {
 
       if (strpos($name, Configuration::SECTION_PATH_SEPARATOR) !== false) {
          $path = explode(Configuration::SECTION_PATH_SEPARATOR, $name);
@@ -107,7 +107,7 @@ abstract class BaseConfiguration implements Configuration {
       return array_keys($this->sections);
    }
 
-   public function getValue($name, $defaultValue = null) {
+   public function getValue(string $name, string $defaultValue = null) {
 
       // Exit with direct match (check for value path usage not necessary as ConfigurationProvider
       // don't produce value names with a delimiter).
@@ -133,11 +133,11 @@ abstract class BaseConfiguration implements Configuration {
       return array_keys($this->values);
    }
 
-   public function hasValue($name) {
+   public function hasValue(string $name) {
       return $this->getValue($name) !== null;
    }
 
-   public function setSection($name, Configuration $section) {
+   public function setSection(string $name, Configuration $section) {
 
       if (strpos($name, Configuration::SECTION_PATH_SEPARATOR) !== false) {
          list($path, $sectionName) = $this->getPathParts($name);
@@ -149,7 +149,7 @@ abstract class BaseConfiguration implements Configuration {
       return $this;
    }
 
-   public function setValue($name, $value) {
+   public function setValue(string $name, string $value) {
 
       if (strpos($name, Configuration::SECTION_PATH_SEPARATOR) !== false) {
          list($path, $valueName) = $this->getPathParts($name);
@@ -161,7 +161,7 @@ abstract class BaseConfiguration implements Configuration {
       return $this;
    }
 
-   public function removeSection($name) {
+   public function removeSection(string $name) {
 
       if (strpos($name, Configuration::SECTION_PATH_SEPARATOR) !== false) {
          list($path, $sectionName) = $this->getPathParts($name);
@@ -173,7 +173,7 @@ abstract class BaseConfiguration implements Configuration {
       return $this;
    }
 
-   public function removeValue($name) {
+   public function removeValue(string $name) {
 
       if (strpos($name, Configuration::SECTION_PATH_SEPARATOR) !== false) {
          list($path, $valueName) = $this->getPathParts($name);
@@ -197,7 +197,7 @@ abstract class BaseConfiguration implements Configuration {
     * @version
     * Version 0.1, 16.03.2015<br />
     */
-   protected function getPathParts($name) {
+   protected function getPathParts(string $name) {
       $parts = explode(Configuration::SECTION_PATH_SEPARATOR, $name);
       $length = count($parts);
 

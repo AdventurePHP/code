@@ -52,7 +52,7 @@ use APF\core\configuration\provider\BaseConfigurationProvider;
  */
 class JsonConfigurationProvider extends BaseConfigurationProvider implements ConfigurationProvider {
 
-   public function loadConfiguration($namespace, $context, $language, $environment, $name) {
+   public function loadConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
 
       $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
 
@@ -81,7 +81,7 @@ class JsonConfigurationProvider extends BaseConfigurationProvider implements Con
     * @version
     * Version 0.1, 07.11.2010<br />
     */
-   private function mapStructure($fileContent) {
+   private function mapStructure(string $fileContent) {
 
       $rawConfiguration = json_decode($fileContent, true);
 
@@ -124,7 +124,7 @@ class JsonConfigurationProvider extends BaseConfigurationProvider implements Con
       return $config;
    }
 
-   public function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config) {
+   public function saveConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name, Configuration $config) {
       $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
 
       // create file path if necessary to avoid "No such file or directory" errors
@@ -186,7 +186,7 @@ class JsonConfigurationProvider extends BaseConfigurationProvider implements Con
       return $rawConfig;
    }
 
-   public function deleteConfiguration($namespace, $context, $language, $environment, $name) {
+   public function deleteConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
 
       $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
       if (unlink($fileName) === false) {

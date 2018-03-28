@@ -95,6 +95,11 @@ class ApcConfigurationProviderTest extends TestCase {
             ->setConstructorArgs(['ini'])
             ->setMethods(['getStoreIdentifier'])
             ->getMock();
+
+      $this->assertEquals(3600, $provider->getExpireTime());
+      $provider->setExpireTime(3601);
+      $this->assertEquals(3601, $provider->getExpireTime());
+
       $provider->method('getStoreIdentifier')
             ->willReturn(self::INTERNAL_CACHE_KEY);
 

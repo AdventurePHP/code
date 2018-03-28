@@ -74,7 +74,7 @@ class MemcachedConfigurationProvider implements ConfigurationProvider {
     * @version
     * Version 0.1, 30.10.2010<br />
     */
-   public function __construct($persistenceProviderExtension, \Memcache $memcachedService) {
+   public function __construct(string $persistenceProviderExtension, \Memcache $memcachedService) {
       $this->persistenceProviderExtension = $persistenceProviderExtension;
       $this->memcachedService = $memcachedService;
    }
@@ -89,11 +89,11 @@ class MemcachedConfigurationProvider implements ConfigurationProvider {
    /**
     * @param int $expireTime The expiring time in seconds.
     */
-   public function setExpireTime($expireTime) {
+   public function setExpireTime(int $expireTime) {
       $this->expireTime = $expireTime;
    }
 
-   public function loadConfiguration($namespace, $context, $language, $environment, $name) {
+   public function loadConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
 
       $name = $this->remapConfigurationName($name);
 
@@ -123,15 +123,15 @@ class MemcachedConfigurationProvider implements ConfigurationProvider {
     * @version
     * Version 0.1, 30.10.2010<br />
     */
-   private function remapConfigurationName($name) {
+   private function remapConfigurationName(string $name) {
       return str_replace('.' . $this->extension, '.' . $this->persistenceProviderExtension, $name);
    }
 
-   private function getStoreIdentifier($namespace, $context, $language, $environment, $name) {
+   private function getStoreIdentifier(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
       return md5($namespace . $context . $language . $environment . $name);
    }
 
-   public function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config) {
+   public function saveConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name, Configuration $config) {
 
       $name = $this->remapConfigurationName($name);
 
@@ -143,7 +143,7 @@ class MemcachedConfigurationProvider implements ConfigurationProvider {
 
    }
 
-   public function setExtension($extension) {
+   public function setExtension(string $extension) {
       $this->extension = $extension;
    }
 
@@ -162,7 +162,7 @@ class MemcachedConfigurationProvider implements ConfigurationProvider {
     * @version
     * Version 0.1, 27.10.2011<br />
     */
-   public function deleteConfiguration($namespace, $context, $language, $environment, $name) {
+   public function deleteConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
       $name = $this->remapConfigurationName($name);
 
       $key = $this->getStoreIdentifier($namespace, $context, $language, $environment, $name);

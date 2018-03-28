@@ -42,7 +42,7 @@ interface ClassLoader {
     * @version
     * Version 0.1, 20.03.2013<br />
     */
-   public function load($class);
+   public function load(string $class);
 
    /**
     * Returns the vendor name the class loader represents.

@@ -75,27 +75,27 @@ abstract class BaseConfigurationProvider {
     */
    protected $folderPermission = 0770;
 
-   public function setOmitContext($omitContext) {
+   public function setOmitContext(bool $omitContext) {
       $this->omitContext = $omitContext;
    }
 
-   public function setActivateEnvironmentFallback($activateEnvironmentFallback) {
+   public function setActivateEnvironmentFallback(bool $activateEnvironmentFallback) {
       $this->activateEnvironmentFallback = $activateEnvironmentFallback;
    }
 
-   public function setOmitEnvironment($omitEnvironment) {
+   public function setOmitEnvironment(bool $omitEnvironment) {
       $this->omitEnvironment = $omitEnvironment;
    }
 
-   public function setOmitConfigSubFolder($omitConfigSubFolder) {
+   public function setOmitConfigSubFolder(bool $omitConfigSubFolder) {
       $this->omitConfigSubFolder = $omitConfigSubFolder;
    }
 
-   public function setExtension($extension) {
+   public function setExtension(string $extension) {
       $this->extension = $extension;
    }
 
-   public function setFolderPermission($folderPermission) {
+   public function setFolderPermission(int $folderPermission) {
       $this->folderPermission = $folderPermission;
    }
 
@@ -109,7 +109,7 @@ abstract class BaseConfigurationProvider {
     * @return string The appropriate file path.
     * @throws ConfigurationException In case the root path cannot be determined using the applied namespace.
     */
-   protected function getFilePath($namespace, $context, $language, $environment, $name) {
+   protected function getFilePath(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
 
       // assemble the context
       $contextPath = ($this->omitContext || $context === null) ? '' : '/' . str_replace('\\', '/', $context);
@@ -164,7 +164,7 @@ abstract class BaseConfigurationProvider {
     * @version
     * Version 0.1, 21.11.2010<br />
     */
-   protected function createFilePath($fileName) {
+   protected function createFilePath(string $fileName) {
       $path = dirname($fileName);
       if (!file_exists($path)) {
          mkdir($path, $this->folderPermission, true);

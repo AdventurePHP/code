@@ -62,7 +62,7 @@ class StandardClassLoader implements ClassLoader {
     * Version 0.1, 20.03.2013<br />
     * Version 0.2, 19.05.2013 (Introduced config root path mechanism to allow separation of APF source and config files)<br />
     */
-   public function __construct($vendorName, $rootPath, $configRootPath = null) {
+   public function __construct(string $vendorName, string $rootPath, string $configRootPath = null) {
       $this->vendorName = $vendorName;
       $this->rootPath = $rootPath;
 
@@ -76,7 +76,7 @@ class StandardClassLoader implements ClassLoader {
       $this->configRootPath = $configRootPath;
    }
 
-   public function load($class) {
+   public function load(string $class) {
 
       if (strpos($class, $this->vendorName . '\\') !== false) {
 
@@ -116,7 +116,7 @@ class StandardClassLoader implements ClassLoader {
     * @version
     * Version 0.1, 20.03.2013<br />
     */
-   public function setVendorName($name) {
+   public function setVendorName(string $name) {
       $this->vendorName = $name;
 
       return $this;
@@ -133,7 +133,7 @@ class StandardClassLoader implements ClassLoader {
     * @version
     * Version 0.1, 20.03.2013<br />
     */
-   public function setRootPath($rootPath) {
+   public function setRootPath(string $rootPath) {
       $this->rootPath = $rootPath;
 
       return $this;

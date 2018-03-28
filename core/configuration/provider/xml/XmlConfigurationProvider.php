@@ -54,7 +54,7 @@ use SimpleXMLElement;
  */
 class XmlConfigurationProvider extends BaseConfigurationProvider implements ConfigurationProvider {
 
-   public function loadConfiguration($namespace, $context, $language, $environment, $name) {
+   public function loadConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
 
       $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
 
@@ -88,7 +88,7 @@ class XmlConfigurationProvider extends BaseConfigurationProvider implements Conf
             . '"' . $name . '" cannot be loaded (file name: ' . $fileName . ')!', E_USER_ERROR);
    }
 
-   public function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config) {
+   public function saveConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name, Configuration $config) {
 
       $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><configuration></configuration>');
 
@@ -120,7 +120,7 @@ class XmlConfigurationProvider extends BaseConfigurationProvider implements Conf
     * @version
     * Version 0.1, 28.10.2010<br />
     */
-   private function processSection(SimpleXMLElement &$xml, Configuration $config, $name) {
+   private function processSection(SimpleXMLElement &$xml, Configuration $config, string $name) {
 
       // create current section and append it to the parent node structure.
       $section = $xml->addChild('section');
@@ -147,7 +147,7 @@ class XmlConfigurationProvider extends BaseConfigurationProvider implements Conf
     * Version 0.1, 09.10.2010<br />
     */
    private function parseSection(Configuration $config, SimpleXMLElement $section) {
-      $config->setSection((string) $section->attributes()->name, $this->parseXmlElement($section));
+      $config->setSection((string)$section->attributes()->name, $this->parseXmlElement($section));
    }
 
    /**
@@ -165,7 +165,7 @@ class XmlConfigurationProvider extends BaseConfigurationProvider implements Conf
 
       // parse properties
       foreach ($element->xpath('property') as $property) {
-         $config->setValue((string) $property->attributes()->name, (string) $property);
+         $config->setValue((string)$property->attributes()->name, (string)$property);
       }
 
       // parse sections
@@ -176,7 +176,7 @@ class XmlConfigurationProvider extends BaseConfigurationProvider implements Conf
       return $config;
    }
 
-   public function deleteConfiguration($namespace, $context, $language, $environment, $name) {
+   public function deleteConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
 
       $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
       if (unlink($fileName) === false) {

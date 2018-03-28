@@ -48,7 +48,7 @@ class FilePathGenerationTest extends TestCase {
    public function setUp() {
       // register config-only class loader
       $this->configRootPath = dirname(__FILE__) . '/config';
-      RootClassLoader::addLoader(new StandardClassLoader(self::VENDOR_NAME, null, $this->configRootPath));
+      RootClassLoader::addLoader(new StandardClassLoader(self::VENDOR_NAME, '.', $this->configRootPath));
    }
 
    /**

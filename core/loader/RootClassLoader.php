@@ -68,7 +68,7 @@ class RootClassLoader {
     * @version
     * Version 0.1, 20.03.2013<br />
     */
-   public static function load($class) {
+   public static function load(string $class) {
       foreach (self::$loaders as $loader) {
          $loader->load($class);
       }
@@ -86,7 +86,7 @@ class RootClassLoader {
     * @version
     * Version 0.1, 20.03.2013<br />
     */
-   public static function getLoaderByVendor($vendorName) {
+   public static function getLoaderByVendor(string $vendorName) {
       if (isset(self::$loaders[$vendorName])) {
          return self::$loaders[$vendorName];
       }
@@ -105,7 +105,7 @@ class RootClassLoader {
     * @version
     * Version 0.1, 20.03.2013<br />
     */
-   public static function getLoaderByNamespace($namespace) {
+   public static function getLoaderByNamespace(string $namespace) {
       // we can use getVendor() here, because only the first section is of our interest!
       return self::getLoaderByVendor(self::getVendor($namespace));
    }
@@ -122,7 +122,7 @@ class RootClassLoader {
     * @version
     * Version 0.1, 05.04.2013<br />
     */
-   public static function getLoaderByClass($class) {
+   public static function getLoaderByClass(string $class) {
       $namespace = self::getNamespace($class);
       if (self::isVendorOnlyNamespace($namespace)) {
          return self::getLoaderByVendor($namespace);
@@ -142,7 +142,7 @@ class RootClassLoader {
     * @version
     * Version 0.1, 05.04.2013<br />
     */
-   public static function getClassName($class) {
+   public static function getClassName(string $class) {
       return substr($class, strrpos($class, '\\') + 1);
    }
 
@@ -157,7 +157,7 @@ class RootClassLoader {
     * @version
     * Version 0.1, 05.04.2013<br />
     */
-   public static function getNamespace($class) {
+   public static function getNamespace(string $class) {
       return substr($class, 0, strrpos($class, '\\'));
    }
 
@@ -172,7 +172,7 @@ class RootClassLoader {
     * @version
     * Version 0.1, 28.05.2013<br />
     */
-   public static function getNamespaceWithoutVendor($class) {
+   public static function getNamespaceWithoutVendor(string $class) {
 
       $start = strpos($class, '\\');
       $end = strrpos($class, '\\');
@@ -191,7 +191,7 @@ class RootClassLoader {
     * @version
     * Version 0.1, 05.04.2013<br />
     */
-   public static function getVendor($class) {
+   public static function getVendor(string $class) {
       return substr($class, 0, strpos($class, '\\'));
    }
 
@@ -206,7 +206,7 @@ class RootClassLoader {
     * @version
     * Version 0.1, 27.02.2014<br />
     */
-   public static function isVendorOnlyNamespace($namespace) {
+   public static function isVendorOnlyNamespace(string $namespace) {
       return strpos($namespace, '\\') === false;
    }
 

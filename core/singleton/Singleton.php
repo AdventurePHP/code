@@ -46,7 +46,7 @@ class Singleton {
    /**
     * Stores the objects, that are requested as singletons.
     *
-    * @var string[] $CACHE
+    * @var mixed $CACHE
     */
    private static $CACHE = [];
 

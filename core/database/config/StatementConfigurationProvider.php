@@ -35,7 +35,7 @@ use APF\core\configuration\provider\BaseConfigurationProvider;
  */
 class StatementConfigurationProvider extends BaseConfigurationProvider implements ConfigurationProvider {
 
-   public function loadConfiguration($namespace, $context, $language, $environment, $name) {
+   public function loadConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
 
       $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
 
@@ -56,7 +56,7 @@ class StatementConfigurationProvider extends BaseConfigurationProvider implement
             . '"' . $name . '" cannot be loaded!', E_USER_ERROR);
    }
 
-   public function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config) {
+   public function saveConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name, Configuration $config) {
 
       $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
 
@@ -71,7 +71,7 @@ class StatementConfigurationProvider extends BaseConfigurationProvider implement
       }
    }
 
-   public function deleteConfiguration($namespace, $context, $language, $environment, $name) {
+   public function deleteConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
 
       $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
       if (unlink($fileName) === false) {

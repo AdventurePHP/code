@@ -54,7 +54,7 @@ use APF\core\configuration\provider\BaseConfigurationProvider;
  */
 class PhpConfigurationProvider extends BaseConfigurationProvider implements ConfigurationProvider {
 
-   public function loadConfiguration($namespace, $context, $language, $environment, $name) {
+   public function loadConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
 
       $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
 
@@ -115,7 +115,7 @@ class PhpConfigurationProvider extends BaseConfigurationProvider implements Conf
       }
    }
 
-   public function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config) {
+   public function saveConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name, Configuration $config) {
 
       $php = '<?php' . PHP_EOL . 'return [' . PHP_EOL;
 
@@ -167,7 +167,7 @@ class PhpConfigurationProvider extends BaseConfigurationProvider implements Conf
       $output .= str_repeat(' ', $indention) . '],' . PHP_EOL;
    }
 
-   public function deleteConfiguration($namespace, $context, $language, $environment, $name) {
+   public function deleteConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
       $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
       if (unlink($fileName) === false) {
          throw new ConfigurationException('[PhpConfigurationProvider::deleteConfiguration()] '

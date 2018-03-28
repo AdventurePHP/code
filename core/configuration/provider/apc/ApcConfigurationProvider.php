@@ -66,7 +66,7 @@ class ApcConfigurationProvider implements ConfigurationProvider {
     * @version
     * Version 0.1, 03.01.2013<br />
     */
-   public function __construct($persistenceProviderExtension) {
+   public function __construct(string $persistenceProviderExtension) {
       $this->persistenceProviderExtension = $persistenceProviderExtension;
    }
 
@@ -80,7 +80,7 @@ class ApcConfigurationProvider implements ConfigurationProvider {
    /**
     * @param int $expireTime The expiring time in seconds.
     */
-   public function setExpireTime($expireTime) {
+   public function setExpireTime(int $expireTime) {
       $this->expireTime = $expireTime;
    }
 
@@ -96,15 +96,15 @@ class ApcConfigurationProvider implements ConfigurationProvider {
     * @version
     * Version 0.1, 30.10.2010<br />
     */
-   protected function remapConfigurationName($name) {
+   protected function remapConfigurationName(string $name) {
       return str_replace('.' . $this->extension, '.' . $this->persistenceProviderExtension, $name);
    }
 
-   protected function getStoreIdentifier($namespace, $context, $language, $environment, $name) {
+   protected function getStoreIdentifier(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
       return md5($namespace . $context . $language . $environment . $name);
    }
 
-   public function loadConfiguration($namespace, $context, $language, $environment, $name) {
+   public function loadConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
 
       $name = $this->remapConfigurationName($name);
 
@@ -122,7 +122,7 @@ class ApcConfigurationProvider implements ConfigurationProvider {
       return $config;
    }
 
-   public function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config) {
+   public function saveConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name, Configuration $config) {
 
       $name = $this->remapConfigurationName($name);
 
@@ -133,11 +133,11 @@ class ApcConfigurationProvider implements ConfigurationProvider {
       ConfigurationManager::saveConfiguration($namespace, $context, $language, $environment, $name, $config);
    }
 
-   public function setExtension($extension) {
+   public function setExtension(string $extension) {
       $this->extension = $extension;
    }
 
-   public function deleteConfiguration($namespace, $context, $language, $environment, $name) {
+   public function deleteConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
 
       $name = $this->remapConfigurationName($name);
 
@@ -157,7 +157,7 @@ class ApcConfigurationProvider implements ConfigurationProvider {
     * @param string $key Cache key.
     * @return mixed Cache content.
     */
-   protected function fetch($key) {
+   protected function fetch(string $key) {
       return apcu_fetch($key);
    }
 
@@ -166,7 +166,7 @@ class ApcConfigurationProvider implements ConfigurationProvider {
     * @param mixed $config Cache content.
     * @return array|bool
     */
-   protected function store($key, $config) {
+   protected function store(string $key, $config) {
       return apcu_store($key, $config, $this->expireTime);
    }
 

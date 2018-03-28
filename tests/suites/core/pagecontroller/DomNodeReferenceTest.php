@@ -178,4 +178,26 @@ class DomNodeReferenceTest extends TestCase {
 
    }
 
+   /**
+    * Negative test that getAttributes() does not return a reference but an array copy
+    * due to missing & sign in method declaration.
+    */
+   public function testAttributesManipulation() {
+
+      $node = new Document();
+      $node->setAttributes(['foo' => 'bar', 'bar' => 'baz']);
+
+      $node->getAttributes()['baz'] = 'foo';
+      $this->assertCount(2, $node->getAttributes());
+
+      $attributes = $node->getAttributes();
+      $attributes['baz'] = 'foo';
+      $this->assertCount(2, $node->getAttributes());
+
+      // only directly operating on the object reflects changes!
+      $node->setAttribute('baz', 'foo');
+      $this->assertCount(3, $node->getAttributes());
+
+   }
+
 }

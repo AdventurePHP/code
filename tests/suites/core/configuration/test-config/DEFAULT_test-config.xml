@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+    <section name="Section">
+        <section name="SubSection">
+            <property name="ValueOne">foo</property>
+            <property name="ValueTwo">bar</property>
+        </section>
+    </section>
+</configuration>

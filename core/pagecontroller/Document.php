@@ -342,7 +342,7 @@ class Document extends APFObject implements DomNode {
     * Version 0.1, 28.12.2006<br />
     * Version 0.2, 15.01.2007 (Now document controller are extracted first)<br />
     */
-   public function loadDesign($namespace, $design) {
+   public function loadDesign(string $namespace, string $design) {
 
       // read the content of the template
       $this->loadContentFromFile($namespace, $design);
@@ -900,7 +900,7 @@ class Document extends APFObject implements DomNode {
     * Version 0.3, 11.07.2014 (Removed TagLib to gain performance and simplify API)<br />
     * Version 0.4, 06.03.2018 (Removed instance tags since they are no longer used)<br />
     */
-   protected function getTagLibClass($prefix, $name) {
+   protected function getTagLibClass(string $prefix, string $name) {
 
       if (isset(self::$knownTags[$prefix . ':' . $name])) {
          return self::$knownTags[$prefix . ':' . $name];

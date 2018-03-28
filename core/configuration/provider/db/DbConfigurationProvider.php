@@ -76,11 +76,11 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
    /**
     * @param string $connectionName The name of the database connection to use.
     */
-   public function __construct($connectionName) {
+   public function __construct(string $connectionName) {
       $this->connectionName = $connectionName;
    }
 
-   public function loadConfiguration($namespace, $context, $language, $environment, $name) {
+   public function loadConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
 
       $table = 'config_' . $this->getTableNameSuffix($namespace);
 
@@ -135,7 +135,7 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
     * @version
     * Version 0.1, 29.10.2010<br />
     */
-   private function getTableNameSuffix($namespace) {
+   private function getTableNameSuffix(string $namespace) {
       return preg_replace('/([^a-z_]+)/i', '', strtolower(str_replace('\\', '_', $namespace)));
    }
 
@@ -151,7 +151,7 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
     * @version
     * Version 0.1, 29.10.2010<br />
     */
-   private function getConnection($context, $language) {
+   protected function getConnection(string $context, string $language = null) {
       // create service "manually", since we have no convenience method
       /* @var $connMgr ConnectionManager */
       $connMgr = ServiceManager::getServiceObject(ConnectionManager::class, $context, $language);
@@ -170,11 +170,11 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
     * @version
     * Version 0.1, 29.10.2010<br />
     */
-   private function getConfigName($name) {
+   private function getConfigName(string $name) {
       return str_replace('.' . $this->extension, '', $name);
    }
 
-   public function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config) {
+   public function saveConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name, Configuration $config) {
 
       $table = 'config_' . $this->getTableNameSuffix($namespace);
 
@@ -219,7 +219,7 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
     * @version
     * Version 0.1, 27.10.2011<br />
     */
-   public function deleteConfiguration($namespace, $context, $language, $environment, $name) {
+   public function deleteConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
       $table = 'config_' . $this->getTableNameSuffix($namespace);
 
       $conn = $this->getConnection($context, $language);

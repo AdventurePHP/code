@@ -43,6 +43,6 @@ interface TemplateTagClearApproach {
     * @version
     * Version 0.1, 03.05.2013<br />
     */
-   public function clear(TemplateTag &$node);
+   public function clear(TemplateTag $node);
 
 }

@@ -64,7 +64,7 @@ final class ConfigurationManager {
     * Version 0.1, 27.09.2010<br />
     * Version 0.2, 10.10.2010 (Added support to inject the extension into the provider to reuse a provider for several extensions)<br />
     */
-   public static function registerProvider($extension, ConfigurationProvider $provider) {
+   public static function registerProvider(string $extension, ConfigurationProvider $provider) {
       $provider->setExtension($extension);
       self::$PROVIDER[strtolower($extension)] = $provider;
    }
@@ -78,7 +78,7 @@ final class ConfigurationManager {
     * @version
     * Version 0.1, 27.09.2010<br />
     */
-   public static function removeProvider($extension) {
+   public static function removeProvider(string $extension) {
       unset(self::$PROVIDER[strtolower($extension)]);
    }
 
@@ -108,7 +108,7 @@ final class ConfigurationManager {
     * @version
     * Version 0.1, 27.09.2010<br />
     */
-   public static function retrieveProvider($extension) {
+   public static function retrieveProvider(string $extension) {
       return self::getProvider($extension);
    }
 
@@ -127,7 +127,7 @@ final class ConfigurationManager {
     * @version
     * Version 0.1, 27.09.2010<br />
     */
-   public static function loadConfiguration($namespace, $context, $language, $environment, $name) {
+   public static function loadConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
       $key = self::getCacheKey($namespace, $context, $language, $environment, $name);
       if (!isset(self::$CONFIG_CACHE[$key])) {
          self::$CONFIG_CACHE[$key] = self::getProvider($name)->loadConfiguration($namespace, $context, $language, $environment, $name);
@@ -150,7 +150,7 @@ final class ConfigurationManager {
     * @version
     * Version 0.1, 27.09.2010<br />
     */
-   public static function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config) {
+   public static function saveConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name, Configuration $config) {
       $key = self::getCacheKey($namespace, $context, $language, $environment, $name);
       unset(self::$CONFIG_CACHE[$key]); // clear cache to not have to refresh manually
       return self::getProvider($name)->saveConfiguration($namespace, $context, $language, $environment, $name, $config);
@@ -169,7 +169,7 @@ final class ConfigurationManager {
     * @version
     * Version 0.1, 27.07.2011<br />
     */
-   public static function deleteConfiguration($namespace, $context, $language, $environment, $name) {
+   public static function deleteConfiguration(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
       $key = self::getCacheKey($namespace, $context, $language, $environment, $name);
       unset(self::$CONFIG_CACHE[$key]); // clear cache to not have to refresh manually
       self::getProvider($name)->deleteConfiguration($namespace, $context, $language, $environment, $name);
@@ -190,7 +190,7 @@ final class ConfigurationManager {
     * @version
     * Version 0.1, 27.09.2010<br />
     */
-   private static function getCacheKey($namespace, $context, $language, $environment, $name) {
+   private static function getCacheKey(string $namespace, string $context = null, string $language = null, string $environment = null, string $name) {
       return $namespace . $context . $language . $environment . $name;
    }
 
@@ -202,7 +202,7 @@ final class ConfigurationManager {
     * <p/>
     * In order you want to influence the fallback mechanism, the providers must be cleared
     * using the following code:
-    * <code>foreach(ConfigurationManager::getRegisteredProviders() as $key){
+    * <code>foreach(ConfigurationManager::getRegisteredProviders() as $key) {
     *    ConfigurationManager::removeProvider($key);
     * }</code>
     *
@@ -211,7 +211,7 @@ final class ConfigurationManager {
     * @return ConfigurationProvider The desired configuration provider.
     * @throws ConfigurationException In case no provider can be found.
     */
-   private static function getProvider($name) {
+   private static function getProvider(string $name) {
 
       // try to resolve the provider by it's file extension
       $extPos = strripos($name, '.');
@@ -233,8 +233,7 @@ final class ConfigurationManager {
       }
 
       // In case, no fallback is possible, we have to end here.
-      throw new ConfigurationException('Provider with extension "' . $ext . '" is not registered!',
-            E_USER_ERROR);
+      throw new ConfigurationException('Provider with extension "' . $ext . '" is not registered!');
    }
 
 }
