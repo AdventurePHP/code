@@ -475,7 +475,7 @@ final class PagerManager extends APFObject {
     * Version 0.1, 05.08.2006<br />
     * Version 0.2, 06.08.2006<br />
     * Version 0.3, 14.08.2006 (Added a global configuration for url rewriting)<br />
-    * Version 0.4, 16.11.2007 (Switched to the FrontcontrollerLinkHandler)<br />
+    * Version 0.4, 16.11.2007 (Switched to the FrontControllerLinkHandler)<br />
     * Version 0.5, 26.04.2008 (Avoid division by zero)<br />
     * Version 0.6, 19.01.2009 (Changed the implementation due to refactoring)<br />
     * Version 0.7, 10.04.2011 (Switched to LinkGenerator due to new link generation concept in 1.14)<br />

@@ -20,7 +20,7 @@
  */
 namespace APF\modules\usermanagement\biz\login;
 
-use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\AbstractFrontControllerAction;
 use APF\modules\usermanagement\biz\UmgtManager;
 
 /**
@@ -31,7 +31,7 @@ use APF\modules\usermanagement\biz\UmgtManager;
  * @version
  * Version 0.1, 20.03.2018<br />
  */
-class ClearAuthTokenAction extends AbstractFrontcontrollerAction {
+class ClearAuthTokenAction extends AbstractFrontControllerAction {
 
    public function run() {
       /* @var $umgt UmgtManager */

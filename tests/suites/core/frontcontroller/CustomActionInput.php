@@ -20,8 +20,8 @@
  */
 namespace APF\tests\suites\core\frontcontroller;
 
-use APF\core\frontcontroller\FrontcontrollerInput;
+use APF\core\frontcontroller\FrontControllerActionParameters;
 
-class CustomActionInput extends FrontcontrollerInput {
+class CustomActionInput extends FrontControllerActionParameters {
 
 }

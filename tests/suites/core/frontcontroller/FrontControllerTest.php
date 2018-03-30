@@ -23,8 +23,8 @@ namespace APF\tests\suites\core\frontcontroller;
 use APF\core\configuration\provider\ini\IniConfiguration;
 use APF\core\frontcontroller\Action;
 use APF\core\frontcontroller\ActionUrlMapping;
-use APF\core\frontcontroller\Frontcontroller;
-use APF\core\frontcontroller\FrontcontrollerInput;
+use APF\core\frontcontroller\FrontController;
+use APF\core\frontcontroller\FrontControllerActionParameters;
 use APF\core\http\RequestImpl;
 use APF\core\http\ResponseImpl;
 use Exception;
@@ -36,12 +36,12 @@ use ReflectionMethod;
 /**
  * Tests various front controller capabilities.
  */
-class FrontcontrollerTest extends TestCase {
+class FrontControllerTest extends TestCase {
 
    public function testStart() {
 
-      /* @var $fC Frontcontroller|MockObject */
-      $fC = $this->getMockBuilder(Frontcontroller::class)
+      /* @var $fC FrontController|MockObject */
+      $fC = $this->getMockBuilder(FrontController::class)
             ->setMethods(['getRequest', 'getResponse', 'runActions'])
             ->getMock();
 
@@ -78,7 +78,7 @@ class FrontcontrollerTest extends TestCase {
       $this->expectException(Exception::class);
       $this->expectExceptionMessage('Front controller requires context initialization to guarantee accurate '
             . 'application execution! Please inject desired context via $fC->setContext(\'...\').');
-      $fC = new Frontcontroller();
+      $fC = new FrontController();
       $fC->start('foo', 'bar');
    }
 
@@ -87,8 +87,8 @@ class FrontcontrollerTest extends TestCase {
     */
    public function testRegisterActionUrlMappings() {
 
-      /* @var $fC Frontcontroller|MockObject */
-      $fC = $this->getMockBuilder(Frontcontroller::class)
+      /* @var $fC FrontController|MockObject */
+      $fC = $this->getMockBuilder(FrontController::class)
             ->setMethods(['getConfiguration', 'registerActionUrlMapping'])
             ->getMock();
 
@@ -119,8 +119,8 @@ class FrontcontrollerTest extends TestCase {
 
       $this->expectException(InvalidArgumentException::class);
 
-      /* @var $fC Frontcontroller|MockObject */
-      $fC = $this->getMockBuilder(Frontcontroller::class)
+      /* @var $fC FrontController|MockObject */
+      $fC = $this->getMockBuilder(FrontController::class)
             ->setMethods(['getConfiguration'])
             ->getMock();
 
@@ -138,8 +138,8 @@ class FrontcontrollerTest extends TestCase {
 
       $this->expectException(InvalidArgumentException::class);
 
-      /* @var $fC Frontcontroller|MockObject */
-      $fC = $this->getMockBuilder(Frontcontroller::class)
+      /* @var $fC FrontController|MockObject */
+      $fC = $this->getMockBuilder(FrontController::class)
             ->setMethods(['getConfiguration'])
             ->getMock();
 
@@ -165,8 +165,8 @@ class FrontcontrollerTest extends TestCase {
       $context = 'context';
       $lang = 'es';
 
-      /* @var $fC Frontcontroller|MockObject */
-      $fC = $this->getMockBuilder(Frontcontroller::class)
+      /* @var $fC FrontController|MockObject */
+      $fC = $this->getMockBuilder(FrontController::class)
             ->setMethods(['getConfiguration'])
             ->getMock();
       $fC->setContext($context);
@@ -196,8 +196,8 @@ class FrontcontrollerTest extends TestCase {
       $this->assertEquals($lang, $action->getLanguage());
 
       // check whether input representation has been created correctly
-      $input = $action->getInput();
-      $this->assertInstanceOf(FrontcontrollerInput::class, $input);
+      $input = $action->getParameters();
+      $this->assertInstanceOf(FrontControllerActionParameters::class, $input);
       $this->assertEquals('bar', $input->getParameter('foo'));
       $this->assertEquals('bar', $input->getParameter('non-existing', 'bar'));
 
@@ -216,8 +216,8 @@ class FrontcontrollerTest extends TestCase {
 
       $this->expectException(InvalidArgumentException::class);
 
-      /* @var $fC Frontcontroller|MockObject */
-      $fC = $this->getMockBuilder(Frontcontroller::class)
+      /* @var $fC FrontController|MockObject */
+      $fC = $this->getMockBuilder(FrontController::class)
             ->setMethods(['getConfiguration'])
             ->getMock();
 
@@ -240,8 +240,8 @@ class FrontcontrollerTest extends TestCase {
     */
    public function testAddAction5() {
 
-      /* @var $fC Frontcontroller|MockObject */
-      $fC = $this->getMockBuilder(Frontcontroller::class)
+      /* @var $fC FrontController|MockObject */
+      $fC = $this->getMockBuilder(FrontController::class)
             ->setMethods(['getConfiguration'])
             ->getMock();
 
@@ -263,7 +263,7 @@ class FrontcontrollerTest extends TestCase {
       $this->assertNotEmpty($action);
 
       // check whether input representation has been created correctly
-      $input = $action->getInput();
+      $input = $action->getParameters();
       $this->assertInstanceOf(CustomActionInput::class, $input);
    }
 
@@ -272,8 +272,8 @@ class FrontcontrollerTest extends TestCase {
     */
    public function testAddAction6() {
 
-      /* @var $fC Frontcontroller|MockObject */
-      $fC = $this->getMockBuilder(Frontcontroller::class)
+      /* @var $fC FrontController|MockObject */
+      $fC = $this->getMockBuilder(FrontController::class)
             ->setMethods(['getConfiguration', 'registerActionUrlMapping'])
             ->getMock();
 
@@ -300,8 +300,8 @@ class FrontcontrollerTest extends TestCase {
     */
    public function testAddAction7() {
 
-      /* @var $fC Frontcontroller|MockObject */
-      $fC = $this->getMockBuilder(Frontcontroller::class)
+      /* @var $fC FrontController|MockObject */
+      $fC = $this->getMockBuilder(FrontController::class)
             ->setMethods(['getConfiguration', 'getDIServiceObject'])
             ->getMock();
 
@@ -327,30 +327,30 @@ class FrontcontrollerTest extends TestCase {
    }
 
    public function testGenerateParamsFromInputConfig() {
-      $method = new ReflectionMethod(Frontcontroller::class, 'generateParamsFromInputConfig');
+      $method = new ReflectionMethod(FrontController::class, 'generateParamsFromInputConfig');
       $method->setAccessible(true);
 
       // empty config generates empty array
-      $this->assertEmpty($method->invoke(new Frontcontroller(), ''));
-      $this->assertEmpty($method->invoke(new Frontcontroller(), ' '));
+      $this->assertEmpty($method->invoke(new FrontController(), ''));
+      $this->assertEmpty($method->invoke(new FrontController(), ' '));
 
       // test single kay value couple
-      $this->assertEquals(['foo' => 'bar'], $method->invoke(new Frontcontroller(), 'foo:bar'));
+      $this->assertEquals(['foo' => 'bar'], $method->invoke(new FrontController(), 'foo:bar'));
 
       // test multiple couples
-      $this->assertEquals(['foo' => 'bar', 'bar' => 'baz'], $method->invoke(new Frontcontroller(), 'foo:bar|bar:baz'));
+      $this->assertEquals(['foo' => 'bar', 'bar' => 'baz'], $method->invoke(new FrontController(), 'foo:bar|bar:baz'));
 
       // test missing key/value
       // test missing ":"
       // test missing "|"
-      $this->assertEquals(['foo' => 'bar'], $method->invoke(new Frontcontroller(), 'foo:bar|barbaz'));
-      $this->assertEquals(['foo' => 'bar'], $method->invoke(new Frontcontroller(), 'foo:bar|bar:'));
-      $this->assertEquals(['foo' => 'bar'], $method->invoke(new Frontcontroller(), 'foo:bar|:baz'));
-      $this->assertEquals(['foo' => 'bar'], $method->invoke(new Frontcontroller(), 'foo:bar|'));
-      $this->assertEquals(['bar' => 'baz'], $method->invoke(new Frontcontroller(), 'foobar|bar:baz'));
-      $this->assertEquals(['bar' => 'baz'], $method->invoke(new Frontcontroller(), 'foo:|bar:baz'));
-      $this->assertEquals(['bar' => 'baz'], $method->invoke(new Frontcontroller(), ':bar|bar:baz'));
-      $this->assertEquals(['bar' => 'baz'], $method->invoke(new Frontcontroller(), '|bar:baz'));
+      $this->assertEquals(['foo' => 'bar'], $method->invoke(new FrontController(), 'foo:bar|barbaz'));
+      $this->assertEquals(['foo' => 'bar'], $method->invoke(new FrontController(), 'foo:bar|bar:'));
+      $this->assertEquals(['foo' => 'bar'], $method->invoke(new FrontController(), 'foo:bar|:baz'));
+      $this->assertEquals(['foo' => 'bar'], $method->invoke(new FrontController(), 'foo:bar|'));
+      $this->assertEquals(['bar' => 'baz'], $method->invoke(new FrontController(), 'foobar|bar:baz'));
+      $this->assertEquals(['bar' => 'baz'], $method->invoke(new FrontController(), 'foo:|bar:baz'));
+      $this->assertEquals(['bar' => 'baz'], $method->invoke(new FrontController(), ':bar|bar:baz'));
+      $this->assertEquals(['bar' => 'baz'], $method->invoke(new FrontController(), '|bar:baz'));
    }
 
 }

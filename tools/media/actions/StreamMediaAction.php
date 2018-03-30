@@ -23,7 +23,7 @@ namespace APF\tools\media\actions;
 session_cache_limiter('none');
 
 use APF\core\configuration\ConfigurationException;
-use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\AbstractFrontControllerAction;
 use APF\core\http\HeaderImpl;
 use APF\core\loader\RootClassLoader;
 use Exception;
@@ -36,7 +36,7 @@ use Exception;
  * @version
  * Version 0.1, 01.11.2008<br />
  */
-class StreamMediaAction extends AbstractFrontcontrollerAction {
+class StreamMediaAction extends AbstractFrontControllerAction {
 
    public function run() {
 
@@ -129,7 +129,7 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
    private function getSanitizedNamespace() {
       $namespace = str_replace('_', '\\', // resolve url notation for namespaces
             preg_replace('/[^A-Za-z0-9\-_\.]/', '',
-                  $this->getInput()->getParameter('namespace'))
+                  $this->getParameters()->getParameter('namespace'))
 
       );
 
@@ -153,7 +153,7 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
     * Version 0.1, 18.07.2011<br />
     */
    private function getSanitizedFileBody() {
-      return preg_replace('/[^A-Za-z0-9\-_]/', '', $this->getInput()->getParameter('filebody'));
+      return preg_replace('/[^A-Za-z0-9\-_]/', '', $this->getParameters()->getParameter('filebody'));
    }
 
    /**
@@ -166,7 +166,7 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
     * Version 0.1, 18.07.2011<br />
     */
    private function getSanitizedExtension() {
-      return preg_replace('/[^A-Za-z0-9]/', '', $this->getInput()->getParameter('extension'));
+      return preg_replace('/[^A-Za-z0-9]/', '', $this->getParameters()->getParameter('extension'));
    }
 
    /**

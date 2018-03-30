@@ -20,7 +20,7 @@
  */
 namespace APF\modules\captcha\biz\actions;
 
-use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\AbstractFrontControllerAction;
 use APF\core\http\HeaderImpl;
 use APF\core\loader\RootClassLoader;
 
@@ -31,7 +31,7 @@ use APF\core\loader\RootClassLoader;
  * @version
  * Version 0.1, 20.07.2008<br />
  */
-class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
+class ShowCaptchaImageAction extends AbstractFrontControllerAction {
 
    const SESSION_NAMESPACE = 'APF\modules\captcha';
 
@@ -54,7 +54,7 @@ class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
       $session = $this->getRequest()->getSession(self::SESSION_NAMESPACE);
 
       // read captcha string from the session.
-      $CaptchaStringName = $this->getInput()->getParameter('name');
+      $CaptchaStringName = $this->getParameters()->getParameter('name');
       $text = $session->load($CaptchaStringName);
 
       // choose background

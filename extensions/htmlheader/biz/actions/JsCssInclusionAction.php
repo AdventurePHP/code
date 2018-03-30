@@ -20,7 +20,7 @@
  */
 namespace APF\extensions\htmlheader\biz\actions;
 
-use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\AbstractFrontControllerAction;
 use APF\core\http\HeaderImpl;
 use APF\core\http\ResponseImpl;
 use APF\extensions\htmlheader\biz\JsCssPackager;
@@ -41,7 +41,7 @@ use InvalidArgumentException;
  * @version 1.1, 27.09.2009 Renamed Tool<br />
  * @version 1.2, 13.09.2011 Merged JsCssPackager, JsCssInclusion to HtmlHeader<br />
  */
-final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
+final class JsCssInclusionAction extends AbstractFrontControllerAction {
 
    /**
     * TimeToLive for cache headers in seconds
@@ -64,7 +64,7 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
    }
 
    protected function getRequestedType() {
-      $PackageName = $this->getInput()->getParameter('package');
+      $PackageName = $this->getParameters()->getParameter('package');
       if (!empty($PackageName)) {
          return 'package';
       }
@@ -73,7 +73,7 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
    }
 
    protected function sendPackage() {
-      $package = $this->getInput()->getParameter('package');
+      $package = $this->getParameters()->getParameter('package');
 
       $packageExpl = explode('.', $package);
       if (count($packageExpl) !== 2) {
@@ -144,9 +144,9 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
    }
 
    protected function sendFile() {
-      $namespace = $this->getSanitizedNamespace($this->getInput()->getParameter('path'));
-      $file = $this->getSanitizedFileBody($this->getInput()->getParameter('file'));
-      $type = $this->getInput()->getParameter('type');
+      $namespace = $this->getSanitizedNamespace($this->getParameters()->getParameter('path'));
+      $file = $this->getSanitizedFileBody($this->getParameters()->getParameter('file'));
+      $type = $this->getParameters()->getParameter('type');
 
       // Check if all required attributes are given
       if (empty($namespace)) {

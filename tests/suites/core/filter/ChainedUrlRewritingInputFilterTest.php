@@ -25,7 +25,7 @@ use APF\core\configuration\ConfigurationManager;
 use APF\core\configuration\provider\ini\IniConfiguration;
 use APF\core\configuration\provider\ini\IniConfigurationProvider;
 use APF\core\frontcontroller\ActionUrlMapping;
-use APF\core\frontcontroller\Frontcontroller;
+use APF\core\frontcontroller\FrontController;
 use APF\tests\suites\core\frontcontroller\FakeIniProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -59,30 +59,30 @@ class ChainedUrlRewritingInputFilterTest extends TestCase {
       $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/VENDOR_foo-action/' . $actionName;
 
       $filter = new TestableChainedUrlRewritingInputFilter();
-      $fC = new Frontcontroller();
-      $filter->setFrontcontroller($fC);
+      $fC = new FrontController();
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
       $actions = $fC->getActions();
       $this->assertEquals($actionNamespace, $actions[0]->getActionNamespace());
       $this->assertEquals($actionName, $actions[0]->getActionName());
-      $this->assertEquals([], $actions[0]->getInput()->getParameters());
+      $this->assertEquals([], $actions[0]->getParameters()->getParameters());
 
       // action on stack w/ params
       $_REQUEST = [];
       $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/VENDOR_foo-action/' . $actionName . '/one/1/two/2';
 
       $filter = new TestableChainedUrlRewritingInputFilter();
-      $fC = new Frontcontroller();
-      $filter->setFrontcontroller($fC);
+      $fC = new FrontController();
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
       $actions = $fC->getActions();
       $this->assertEquals($actionNamespace, $actions[0]->getActionNamespace());
       $this->assertEquals($actionName, $actions[0]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getParameters()->getParameters());
 
    }
 
@@ -93,8 +93,8 @@ class ChainedUrlRewritingInputFilterTest extends TestCase {
       $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/VENDOR_foo-action/say-foo/~/VENDOR_bar-action/say-bar';
 
       $filter = new TestableChainedUrlRewritingInputFilter();
-      $fC = new Frontcontroller();
-      $filter->setFrontcontroller($fC);
+      $fC = new FrontController();
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
@@ -102,19 +102,19 @@ class ChainedUrlRewritingInputFilterTest extends TestCase {
 
       $this->assertEquals('VENDOR\foo', $actions[0]->getActionNamespace());
       $this->assertEquals('say-foo', $actions[0]->getActionName());
-      $this->assertEquals([], $actions[0]->getInput()->getParameters());
+      $this->assertEquals([], $actions[0]->getParameters()->getParameters());
 
       $this->assertEquals('VENDOR\bar', $actions[1]->getActionNamespace());
       $this->assertEquals('say-bar', $actions[1]->getActionName());
-      $this->assertEquals([], $actions[1]->getInput()->getParameters());
+      $this->assertEquals([], $actions[1]->getParameters()->getParameters());
 
       // action on stack w/ params
       $_REQUEST = [];
       $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/VENDOR_foo-action/say-foo/one/1/two/2/~/VENDOR_bar-action/say-bar/one/1/two/2';
 
       $filter = new TestableChainedUrlRewritingInputFilter();
-      $fC = new Frontcontroller();
-      $filter->setFrontcontroller($fC);
+      $fC = new FrontController();
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
@@ -122,11 +122,11 @@ class ChainedUrlRewritingInputFilterTest extends TestCase {
 
       $this->assertEquals('VENDOR\foo', $actions[0]->getActionNamespace());
       $this->assertEquals('say-foo', $actions[0]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getParameters()->getParameters());
 
       $this->assertEquals('VENDOR\bar', $actions[1]->getActionNamespace());
       $this->assertEquals('say-bar', $actions[1]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[1]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[1]->getParameters()->getParameters());
 
    }
 
@@ -136,8 +136,8 @@ class ChainedUrlRewritingInputFilterTest extends TestCase {
       $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/zero/0/~/VENDOR_foo-action/say-foo/one/1/two/2/~/VENDOR_bar-action/say-bar/one/1/two/2/~/three/3/four/4';
 
       $filter = new TestableChainedUrlRewritingInputFilter();
-      $fC = new Frontcontroller();
-      $filter->setFrontcontroller($fC);
+      $fC = new FrontController();
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
@@ -145,11 +145,11 @@ class ChainedUrlRewritingInputFilterTest extends TestCase {
 
       $this->assertEquals('VENDOR\foo', $actions[0]->getActionNamespace());
       $this->assertEquals('say-foo', $actions[0]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getParameters()->getParameters());
 
       $this->assertEquals('VENDOR\bar', $actions[1]->getActionNamespace());
       $this->assertEquals('say-bar', $actions[1]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[1]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[1]->getParameters()->getParameters());
 
    }
 
@@ -164,68 +164,68 @@ class ChainedUrlRewritingInputFilterTest extends TestCase {
       $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/' . $urlToken;
 
       $filter = new TestableChainedUrlRewritingInputFilter();
-      $fC = new Frontcontroller();
+      $fC = new FrontController();
       $fC->registerActionUrlMapping(new ActionUrlMapping($urlToken, $actionNamespace, $actionName));
 
-      $filter->setFrontcontroller($fC);
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
       $actions = $fC->getActions();
       $this->assertEquals($actionNamespace, $actions[0]->getActionNamespace());
       $this->assertEquals($actionName, $actions[0]->getActionName());
-      $this->assertEquals([], $actions[0]->getInput()->getParameters());
+      $this->assertEquals([], $actions[0]->getParameters()->getParameters());
 
       // action on stack w/o params - start with action delimiter
       $_REQUEST = [];
       $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/~/' . $urlToken;
 
       $filter = new TestableChainedUrlRewritingInputFilter();
-      $fC = new Frontcontroller();
+      $fC = new FrontController();
       $fC->registerActionUrlMapping(new ActionUrlMapping($urlToken, $actionNamespace, $actionName));
 
-      $filter->setFrontcontroller($fC);
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
       $actions = $fC->getActions();
       $this->assertEquals($actionNamespace, $actions[0]->getActionNamespace());
       $this->assertEquals($actionName, $actions[0]->getActionName());
-      $this->assertEquals([], $actions[0]->getInput()->getParameters());
+      $this->assertEquals([], $actions[0]->getParameters()->getParameters());
 
       // action on stack w/ params - start with action
       $_REQUEST = [];
       $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/' . $urlToken . '/one/1/two/2';
 
       $filter = new TestableChainedUrlRewritingInputFilter();
-      $fC = new Frontcontroller();
+      $fC = new FrontController();
       $fC->registerActionUrlMapping(new ActionUrlMapping($urlToken, $actionNamespace, $actionName));
 
-      $filter->setFrontcontroller($fC);
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
       $actions = $fC->getActions();
       $this->assertEquals($actionNamespace, $actions[0]->getActionNamespace());
       $this->assertEquals($actionName, $actions[0]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getParameters()->getParameters());
 
       // action on stack w/ params - start with action delimiter
       $_REQUEST = [];
       $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/~/' . $urlToken . '/one/1/two/2';
 
       $filter = new TestableChainedUrlRewritingInputFilter();
-      $fC = new Frontcontroller();
+      $fC = new FrontController();
       $fC->registerActionUrlMapping(new ActionUrlMapping($urlToken, $actionNamespace, $actionName));
 
-      $filter->setFrontcontroller($fC);
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
       $actions = $fC->getActions();
       $this->assertEquals($actionNamespace, $actions[0]->getActionNamespace());
       $this->assertEquals($actionName, $actions[0]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getParameters()->getParameters());
 
    }
 
@@ -244,11 +244,11 @@ class ChainedUrlRewritingInputFilterTest extends TestCase {
       $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/' . $fooUrlToken . '/~/' . $barUrlToken;
 
       $filter = new TestableChainedUrlRewritingInputFilter();
-      $fC = new Frontcontroller();
+      $fC = new FrontController();
       $fC->registerActionUrlMapping(new ActionUrlMapping($fooUrlToken, $fooActionNamespace, $fooActionName));
       $fC->registerActionUrlMapping(new ActionUrlMapping($barUrlToken, $barActionNamespace, $barActionName));
 
-      $filter->setFrontcontroller($fC);
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
@@ -256,22 +256,22 @@ class ChainedUrlRewritingInputFilterTest extends TestCase {
 
       $this->assertEquals($fooActionNamespace, $actions[0]->getActionNamespace());
       $this->assertEquals($fooActionName, $actions[0]->getActionName());
-      $this->assertEquals([], $actions[0]->getInput()->getParameters());
+      $this->assertEquals([], $actions[0]->getParameters()->getParameters());
 
       $this->assertEquals($barActionNamespace, $actions[1]->getActionNamespace());
       $this->assertEquals($barActionName, $actions[1]->getActionName());
-      $this->assertEquals([], $actions[1]->getInput()->getParameters());
+      $this->assertEquals([], $actions[1]->getParameters()->getParameters());
 
       // action on stack w/ params - start with action delimiter
       $_REQUEST = [];
       $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/~/' . $fooUrlToken . '/one/1/two/2/~/' . $barUrlToken . '/one/1/two/2/';
 
       $filter = new TestableChainedUrlRewritingInputFilter();
-      $fC = new Frontcontroller();
+      $fC = new FrontController();
       $fC->registerActionUrlMapping(new ActionUrlMapping($fooUrlToken, $fooActionNamespace, $fooActionName));
       $fC->registerActionUrlMapping(new ActionUrlMapping($barUrlToken, $barActionNamespace, $barActionName));
 
-      $filter->setFrontcontroller($fC);
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
@@ -279,11 +279,11 @@ class ChainedUrlRewritingInputFilterTest extends TestCase {
 
       $this->assertEquals($fooActionNamespace, $actions[0]->getActionNamespace());
       $this->assertEquals($fooActionName, $actions[0]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getParameters()->getParameters());
 
       $this->assertEquals($barActionNamespace, $actions[1]->getActionNamespace());
       $this->assertEquals($barActionName, $actions[1]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[1]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[1]->getParameters()->getParameters());
 
    }
 
@@ -302,11 +302,11 @@ class ChainedUrlRewritingInputFilterTest extends TestCase {
       $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/' . $fooUrlToken . '/~/VENDOR_baz-action/say-baz/~/' . $barUrlToken . '/';
 
       $filter = new TestableChainedUrlRewritingInputFilter();
-      $fC = new Frontcontroller();
+      $fC = new FrontController();
       $fC->registerActionUrlMapping(new ActionUrlMapping($fooUrlToken, $fooActionNamespace, $fooActionName));
       $fC->registerActionUrlMapping(new ActionUrlMapping($barUrlToken, $barActionNamespace, $barActionName));
 
-      $filter->setFrontcontroller($fC);
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
@@ -314,26 +314,26 @@ class ChainedUrlRewritingInputFilterTest extends TestCase {
 
       $this->assertEquals($fooActionNamespace, $actions[0]->getActionNamespace());
       $this->assertEquals($fooActionName, $actions[0]->getActionName());
-      $this->assertEquals([], $actions[0]->getInput()->getParameters());
+      $this->assertEquals([], $actions[0]->getParameters()->getParameters());
 
       $this->assertEquals('VENDOR\baz', $actions[1]->getActionNamespace());
       $this->assertEquals('say-baz', $actions[1]->getActionName());
-      $this->assertEquals([], $actions[1]->getInput()->getParameters());
+      $this->assertEquals([], $actions[1]->getParameters()->getParameters());
 
       $this->assertEquals($barActionNamespace, $actions[2]->getActionNamespace());
       $this->assertEquals($barActionName, $actions[2]->getActionName());
-      $this->assertEquals([], $actions[2]->getInput()->getParameters());
+      $this->assertEquals([], $actions[2]->getParameters()->getParameters());
 
       // action on stack w/ params
       $_REQUEST = [];
       $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/~/' . $fooUrlToken . '/one/1/two/2/~/VENDOR_baz-action/say-baz/one/1/two/2/~/' . $barUrlToken . '/one/1/two/2';
 
       $filter = new TestableChainedUrlRewritingInputFilter();
-      $fC = new Frontcontroller();
+      $fC = new FrontController();
       $fC->registerActionUrlMapping(new ActionUrlMapping($fooUrlToken, $fooActionNamespace, $fooActionName));
       $fC->registerActionUrlMapping(new ActionUrlMapping($barUrlToken, $barActionNamespace, $barActionName));
 
-      $filter->setFrontcontroller($fC);
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
@@ -341,15 +341,15 @@ class ChainedUrlRewritingInputFilterTest extends TestCase {
 
       $this->assertEquals($fooActionNamespace, $actions[0]->getActionNamespace());
       $this->assertEquals($fooActionName, $actions[0]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getParameters()->getParameters());
 
       $this->assertEquals('VENDOR\baz', $actions[1]->getActionNamespace());
       $this->assertEquals('say-baz', $actions[1]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[1]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[1]->getParameters()->getParameters());
 
       $this->assertEquals($barActionNamespace, $actions[2]->getActionNamespace());
       $this->assertEquals($barActionName, $actions[2]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[2]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[2]->getParameters()->getParameters());
 
    }
 
@@ -359,8 +359,8 @@ class ChainedUrlRewritingInputFilterTest extends TestCase {
       $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/zero/0/one/1/two/2';
 
       $filter = new TestableChainedUrlRewritingInputFilter();
-      $fC = new Frontcontroller();
-      $filter->setFrontcontroller($fC);
+      $fC = new FrontController();
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
@@ -371,8 +371,8 @@ class ChainedUrlRewritingInputFilterTest extends TestCase {
       $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/~/zero/0/one/1/two/2';
 
       $filter = new TestableChainedUrlRewritingInputFilter();
-      $fC = new Frontcontroller();
-      $filter->setFrontcontroller($fC);
+      $fC = new FrontController();
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 

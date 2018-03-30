@@ -21,20 +21,20 @@
 namespace APF\tests\suites\core\filter;
 
 use APF\core\filter\ChainedUrlRewritingInputFilter;
-use APF\core\frontcontroller\Frontcontroller;
+use APF\core\frontcontroller\FrontController;
 
 class TestableChainedUrlRewritingInputFilter extends ChainedUrlRewritingInputFilter {
 
    /**
-    * @var Frontcontroller
+    * @var FrontController
     */
    private $frontController;
 
-   public function setFrontcontroller(Frontcontroller $frontController) {
+   public function setFrontController(FrontController $frontController) {
       $this->frontController = $frontController;
    }
 
-   protected function &getFrontcontroller() {
+   protected function &getFrontController() {
       return $this->frontController;
    }
 

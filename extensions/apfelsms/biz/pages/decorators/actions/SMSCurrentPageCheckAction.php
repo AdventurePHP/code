@@ -20,7 +20,7 @@
  */
 namespace APF\extensions\apfelsms\biz\pages\decorators\actions;
 
-use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\AbstractFrontControllerAction;
 use APF\extensions\apfelsms\biz\SMSManager;
 use APF\extensions\apfelsms\biz\SMSWrongParameterException;
 use APF\tools\link\Url;
@@ -30,7 +30,7 @@ use APF\tools\link\Url;
  * @version v0.1 (03.10.12)
  *
  */
-class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
+class SMSCurrentPageCheckAction extends AbstractFrontControllerAction {
 
    /**
     * @var string SESSION_NAMESPACE

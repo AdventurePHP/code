@@ -21,7 +21,7 @@
 namespace APF\tests\suites\core\frontcontroller;
 
 use APF\core\frontcontroller\ActionUrlMapping;
-use APF\core\frontcontroller\Frontcontroller;
+use APF\core\frontcontroller\FrontController;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -35,7 +35,7 @@ class FrontControllerActionMappingTest extends TestCase {
 
    public function testMappingRegistration() {
 
-      $fC = new Frontcontroller();
+      $fC = new FrontController();
 
       $fooUrlToken = 'foo';
       $barUrlToken = 'bar';

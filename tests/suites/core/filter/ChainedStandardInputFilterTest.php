@@ -25,7 +25,7 @@ use APF\core\configuration\ConfigurationManager;
 use APF\core\configuration\provider\ini\IniConfiguration;
 use APF\core\configuration\provider\ini\IniConfigurationProvider;
 use APF\core\frontcontroller\ActionUrlMapping;
-use APF\core\frontcontroller\Frontcontroller;
+use APF\core\frontcontroller\FrontController;
 use APF\tests\suites\core\frontcontroller\FakeIniProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -58,30 +58,30 @@ class ChainedStandardInputFilterTest extends TestCase {
       $_REQUEST['VENDOR_foo-action:' . $actionName] = '';
 
       $filter = new TestableChainedStandardInputFilter();
-      $fC = new Frontcontroller();
-      $filter->setFrontcontroller($fC);
+      $fC = new FrontController();
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
       $actions = $fC->getActions();
       $this->assertEquals($actionNamespace, $actions[0]->getActionNamespace());
       $this->assertEquals($actionName, $actions[0]->getActionName());
-      $this->assertEquals([], $actions[0]->getInput()->getParameters());
+      $this->assertEquals([], $actions[0]->getParameters()->getParameters());
 
       // action on stack w/ params
       $_REQUEST = [];
       $_REQUEST['VENDOR_foo-action:' . $actionName] = 'one:1|two:2';
 
       $filter = new TestableChainedStandardInputFilter();
-      $fC = new Frontcontroller();
-      $filter->setFrontcontroller($fC);
+      $fC = new FrontController();
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
       $actions = $fC->getActions();
       $this->assertEquals($actionNamespace, $actions[0]->getActionNamespace());
       $this->assertEquals($actionName, $actions[0]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getParameters()->getParameters());
 
    }
 
@@ -93,8 +93,8 @@ class ChainedStandardInputFilterTest extends TestCase {
       $_REQUEST['VENDOR_bar-action:say-bar'] = '';
 
       $filter = new TestableChainedStandardInputFilter();
-      $fC = new Frontcontroller();
-      $filter->setFrontcontroller($fC);
+      $fC = new FrontController();
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
@@ -102,11 +102,11 @@ class ChainedStandardInputFilterTest extends TestCase {
 
       $this->assertEquals('VENDOR\foo', $actions[0]->getActionNamespace());
       $this->assertEquals('say-foo', $actions[0]->getActionName());
-      $this->assertEquals([], $actions[0]->getInput()->getParameters());
+      $this->assertEquals([], $actions[0]->getParameters()->getParameters());
 
       $this->assertEquals('VENDOR\bar', $actions[1]->getActionNamespace());
       $this->assertEquals('say-bar', $actions[1]->getActionName());
-      $this->assertEquals([], $actions[1]->getInput()->getParameters());
+      $this->assertEquals([], $actions[1]->getParameters()->getParameters());
 
       // action on stack w/ params
       $_REQUEST = [];
@@ -114,8 +114,8 @@ class ChainedStandardInputFilterTest extends TestCase {
       $_REQUEST['VENDOR_bar-action:say-bar'] = 'one:1|two:2';
 
       $filter = new TestableChainedStandardInputFilter();
-      $fC = new Frontcontroller();
-      $filter->setFrontcontroller($fC);
+      $fC = new FrontController();
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
@@ -123,11 +123,11 @@ class ChainedStandardInputFilterTest extends TestCase {
 
       $this->assertEquals('VENDOR\foo', $actions[0]->getActionNamespace());
       $this->assertEquals('say-foo', $actions[0]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getParameters()->getParameters());
 
       $this->assertEquals('VENDOR\bar', $actions[1]->getActionNamespace());
       $this->assertEquals('say-bar', $actions[1]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[1]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[1]->getParameters()->getParameters());
 
    }
 
@@ -141,8 +141,8 @@ class ChainedStandardInputFilterTest extends TestCase {
       $_REQUEST['four'] = '4';
 
       $filter = new TestableChainedStandardInputFilter();
-      $fC = new Frontcontroller();
-      $filter->setFrontcontroller($fC);
+      $fC = new FrontController();
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
@@ -150,11 +150,11 @@ class ChainedStandardInputFilterTest extends TestCase {
 
       $this->assertEquals('VENDOR\foo', $actions[0]->getActionNamespace());
       $this->assertEquals('say-foo', $actions[0]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getParameters()->getParameters());
 
       $this->assertEquals('VENDOR\bar', $actions[1]->getActionNamespace());
       $this->assertEquals('say-bar', $actions[1]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[1]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[1]->getParameters()->getParameters());
 
    }
 
@@ -169,34 +169,34 @@ class ChainedStandardInputFilterTest extends TestCase {
       $_REQUEST[$urlToken] = '';
 
       $filter = new TestableChainedStandardInputFilter();
-      $fC = new Frontcontroller();
+      $fC = new FrontController();
       $fC->registerActionUrlMapping(new ActionUrlMapping($urlToken, $actionNamespace, $actionName));
 
-      $filter->setFrontcontroller($fC);
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
       $actions = $fC->getActions();
       $this->assertEquals($actionNamespace, $actions[0]->getActionNamespace());
       $this->assertEquals($actionName, $actions[0]->getActionName());
-      $this->assertEquals([], $actions[0]->getInput()->getParameters());
+      $this->assertEquals([], $actions[0]->getParameters()->getParameters());
 
       // action on stack w/ params
       $_REQUEST = [];
       $_REQUEST[$urlToken] = 'one:1|two:2';
 
       $filter = new TestableChainedStandardInputFilter();
-      $fC = new Frontcontroller();
+      $fC = new FrontController();
       $fC->registerActionUrlMapping(new ActionUrlMapping($urlToken, $actionNamespace, $actionName));
 
-      $filter->setFrontcontroller($fC);
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
       $actions = $fC->getActions();
       $this->assertEquals($actionNamespace, $actions[0]->getActionNamespace());
       $this->assertEquals($actionName, $actions[0]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getParameters()->getParameters());
 
    }
 
@@ -216,11 +216,11 @@ class ChainedStandardInputFilterTest extends TestCase {
       $_REQUEST[$barUrlToken] = '';
 
       $filter = new TestableChainedStandardInputFilter();
-      $fC = new Frontcontroller();
+      $fC = new FrontController();
       $fC->registerActionUrlMapping(new ActionUrlMapping($fooUrlToken, $fooActionNamespace, $fooActionName));
       $fC->registerActionUrlMapping(new ActionUrlMapping($barUrlToken, $barActionNamespace, $barActionName));
 
-      $filter->setFrontcontroller($fC);
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
@@ -228,11 +228,11 @@ class ChainedStandardInputFilterTest extends TestCase {
 
       $this->assertEquals($fooActionNamespace, $actions[0]->getActionNamespace());
       $this->assertEquals($fooActionName, $actions[0]->getActionName());
-      $this->assertEquals([], $actions[0]->getInput()->getParameters());
+      $this->assertEquals([], $actions[0]->getParameters()->getParameters());
 
       $this->assertEquals($barActionNamespace, $actions[1]->getActionNamespace());
       $this->assertEquals($barActionName, $actions[1]->getActionName());
-      $this->assertEquals([], $actions[1]->getInput()->getParameters());
+      $this->assertEquals([], $actions[1]->getParameters()->getParameters());
 
       // action on stack w/ params
       $_REQUEST = [];
@@ -240,11 +240,11 @@ class ChainedStandardInputFilterTest extends TestCase {
       $_REQUEST[$barUrlToken] = 'one:1|two:2';
 
       $filter = new TestableChainedStandardInputFilter();
-      $fC = new Frontcontroller();
+      $fC = new FrontController();
       $fC->registerActionUrlMapping(new ActionUrlMapping($fooUrlToken, $fooActionNamespace, $fooActionName));
       $fC->registerActionUrlMapping(new ActionUrlMapping($barUrlToken, $barActionNamespace, $barActionName));
 
-      $filter->setFrontcontroller($fC);
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
@@ -252,11 +252,11 @@ class ChainedStandardInputFilterTest extends TestCase {
 
       $this->assertEquals($fooActionNamespace, $actions[0]->getActionNamespace());
       $this->assertEquals($fooActionName, $actions[0]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getParameters()->getParameters());
 
       $this->assertEquals($barActionNamespace, $actions[1]->getActionNamespace());
       $this->assertEquals($barActionName, $actions[1]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[1]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[1]->getParameters()->getParameters());
 
    }
 
@@ -277,11 +277,11 @@ class ChainedStandardInputFilterTest extends TestCase {
       $_REQUEST[$barUrlToken] = '';
 
       $filter = new TestableChainedStandardInputFilter();
-      $fC = new Frontcontroller();
+      $fC = new FrontController();
       $fC->registerActionUrlMapping(new ActionUrlMapping($fooUrlToken, $fooActionNamespace, $fooActionName));
       $fC->registerActionUrlMapping(new ActionUrlMapping($barUrlToken, $barActionNamespace, $barActionName));
 
-      $filter->setFrontcontroller($fC);
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
@@ -289,15 +289,15 @@ class ChainedStandardInputFilterTest extends TestCase {
 
       $this->assertEquals($fooActionNamespace, $actions[0]->getActionNamespace());
       $this->assertEquals($fooActionName, $actions[0]->getActionName());
-      $this->assertEquals([], $actions[0]->getInput()->getParameters());
+      $this->assertEquals([], $actions[0]->getParameters()->getParameters());
 
       $this->assertEquals('VENDOR\baz', $actions[1]->getActionNamespace());
       $this->assertEquals('say-baz', $actions[1]->getActionName());
-      $this->assertEquals([], $actions[1]->getInput()->getParameters());
+      $this->assertEquals([], $actions[1]->getParameters()->getParameters());
 
       $this->assertEquals($barActionNamespace, $actions[2]->getActionNamespace());
       $this->assertEquals($barActionName, $actions[2]->getActionName());
-      $this->assertEquals([], $actions[2]->getInput()->getParameters());
+      $this->assertEquals([], $actions[2]->getParameters()->getParameters());
 
       // action on stack w/ params
       $_REQUEST = [];
@@ -306,11 +306,11 @@ class ChainedStandardInputFilterTest extends TestCase {
       $_REQUEST[$barUrlToken] = 'one:1|two:2';
 
       $filter = new TestableChainedStandardInputFilter();
-      $fC = new Frontcontroller();
+      $fC = new FrontController();
       $fC->registerActionUrlMapping(new ActionUrlMapping($fooUrlToken, $fooActionNamespace, $fooActionName));
       $fC->registerActionUrlMapping(new ActionUrlMapping($barUrlToken, $barActionNamespace, $barActionName));
 
-      $filter->setFrontcontroller($fC);
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 
@@ -318,15 +318,15 @@ class ChainedStandardInputFilterTest extends TestCase {
 
       $this->assertEquals($fooActionNamespace, $actions[0]->getActionNamespace());
       $this->assertEquals($fooActionName, $actions[0]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[0]->getParameters()->getParameters());
 
       $this->assertEquals('VENDOR\baz', $actions[1]->getActionNamespace());
       $this->assertEquals('say-baz', $actions[1]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[1]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[1]->getParameters()->getParameters());
 
       $this->assertEquals($barActionNamespace, $actions[2]->getActionNamespace());
       $this->assertEquals($barActionName, $actions[2]->getActionName());
-      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[2]->getInput()->getParameters());
+      $this->assertEquals(['one' => '1', 'two' => '2'], $actions[2]->getParameters()->getParameters());
 
    }
 
@@ -338,8 +338,8 @@ class ChainedStandardInputFilterTest extends TestCase {
       $_REQUEST['two'] = '2';
 
       $filter = new TestableChainedStandardInputFilter();
-      $fC = new Frontcontroller();
-      $filter->setFrontcontroller($fC);
+      $fC = new FrontController();
+      $filter->setFrontController($fC);
       $chain = new TestableFilterChain();
       $filter->filter($chain, null);
 

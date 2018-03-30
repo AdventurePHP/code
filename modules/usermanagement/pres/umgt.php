@@ -21,7 +21,7 @@
 namespace APF\modules\usermanagement\pres;
 
 use APF\core\benchmark\BenchmarkTimer;
-use APF\core\frontcontroller\Frontcontroller;
+use APF\core\frontcontroller\FrontController;
 use APF\core\singleton\Singleton;
 
 /**
@@ -33,8 +33,8 @@ use APF\core\singleton\Singleton;
 include_once('./APF/core/bootstrap.php');
 
 // create the front controller instance
-/* @var $fC Frontcontroller */
-$fC = Singleton::getInstance(Frontcontroller::class);
+/* @var $fC FrontController */
+$fC = Singleton::getInstance(FrontController::class);
 
 // set the current context (change the context to what ever you want)
 $fC->setContext('...');

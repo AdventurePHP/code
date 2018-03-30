@@ -20,7 +20,7 @@
  */
 namespace APF\tools\form\multifileupload\actions;
 
-use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\AbstractFrontControllerAction;
 use APF\core\http\HeaderImpl;
 use APF\tools\form\FormException;
 use APF\tools\form\multifileupload\biz\MultiFileUploadManager;
@@ -32,7 +32,7 @@ use APF\tools\form\multifileupload\biz\MultiFileUploadManager;
  * @version 1.0, 14.3.2011<br>
  * @version 1.1, 11.07.2012 (Change Exception to FormException)<br>
  */
-class MultiFileUploadAction extends AbstractFrontcontrollerAction {
+class MultiFileUploadAction extends AbstractFrontControllerAction {
 
    public function run() {
       // modify header to avoid caching of this request
@@ -43,8 +43,8 @@ class MultiFileUploadAction extends AbstractFrontcontrollerAction {
       $response->setHeader(new HeaderImpl('Pragma', 'no-cache'));
 
       try {
-         $fieldName = $this->getInput()->getParameter('name');
-         $formName = $this->getInput()->getParameter('formname');
+         $fieldName = $this->getParameters()->getParameter('name');
+         $formName = $this->getParameters()->getParameter('formname');
 
          /* @var $manager MultiFileUploadManager */
          $manager = $this->getServiceObject(

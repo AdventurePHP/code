@@ -20,12 +20,12 @@
  */
 namespace APF\tests\suites\core\frontcontroller;
 
-use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\AbstractFrontControllerAction;
 
 /**
  * Dummy test action.
  */
-class SimpleTestAction extends AbstractFrontcontrollerAction {
+class SimpleTestAction extends AbstractFrontControllerAction {
 
    public function run() {
    }

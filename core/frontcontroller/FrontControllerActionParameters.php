@@ -30,7 +30,7 @@ use APF\core\pagecontroller\APFObject;
  * Version 0.1, 27.01.2007<br />
  * Version 0.2, 17.06.2014 (Introduced interface and separated from APFObject's attributes implementation)<br />
  */
-class FrontcontrollerInput extends APFObject implements ActionParameters {
+class FrontControllerActionParameters extends APFObject implements ActionParameters {
 
    /**
     * The action the input belongs to.
@@ -50,11 +50,11 @@ class FrontcontrollerInput extends APFObject implements ActionParameters {
       return $this->action;
    }
 
-   public function setAction(Action &$action) {
+   public function setAction(Action $action) {
       $this->action = &$action;
    }
 
-   public function setParameter($name, $value) {
+   public function setParameter(string $name, string $value) {
       $this->parameters[$name] = $value;
    }
 
@@ -62,7 +62,7 @@ class FrontcontrollerInput extends APFObject implements ActionParameters {
       $this->parameters = array_merge($this->parameters, $parameters);
    }
 
-   public function getParameter($name, $default = null) {
+   public function getParameter(string $name, string $default = null) {
       return isset($this->parameters[$name]) ? $this->parameters[$name] : $default;
    }
 

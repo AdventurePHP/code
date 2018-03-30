@@ -1,7 +1,7 @@
 <?php
 namespace APF\core\http\mixins;
 
-use APF\core\frontcontroller\Frontcontroller;
+use APF\core\frontcontroller\FrontController;
 use APF\core\http\RequestImpl;
 use APF\core\http\ResponseImpl;
 use APF\core\pagecontroller\APFObject;
@@ -20,7 +20,7 @@ trait GetRequestResponse {
     * @return RequestImpl|APFObject
     */
    protected static function getRequestStatic() {
-      return Singleton::getInstance(Frontcontroller::$requestImplClass);
+      return Singleton::getInstance(FrontController::$requestImplClass);
    }
 
    /**
@@ -34,7 +34,7 @@ trait GetRequestResponse {
     * @return ResponseImpl|APFObject
     */
    protected static function getResponseStatic() {
-      return Singleton::getInstance(Frontcontroller::$responseImplClass);
+      return Singleton::getInstance(FrontController::$responseImplClass);
    }
 
 }

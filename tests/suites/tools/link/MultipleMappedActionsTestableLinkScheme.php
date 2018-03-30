@@ -20,7 +20,7 @@
  */
 namespace APF\tests\suites\tools\link;
 
-use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\AbstractFrontControllerAction;
 
 /**
  * Encapsulates link scheme overrides for front controller actions used for testing purposes.
@@ -32,11 +32,11 @@ use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 trait MultipleMappedActionsTestableLinkScheme {
 
    /**
-    * @var AbstractFrontcontrollerAction[]
+    * @var AbstractFrontControllerAction[]
     */
    private $actions = [];
 
-   public function addAction(AbstractFrontcontrollerAction $action) {
+   public function addAction(AbstractFrontControllerAction $action) {
       $this->actions[] = $action;
    }
 

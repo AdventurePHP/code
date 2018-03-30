@@ -39,7 +39,7 @@ interface ActionParameters {
     * @version
     * Version 0.1, 20.06.2014<br />
     */
-   public function setParameter($name, $value);
+   public function setParameter(string $name, string $value);
 
    /**
     * Let's you set multiple action (URL) parameters.
@@ -64,7 +64,7 @@ interface ActionParameters {
     * @version
     * Version 0.1, 20.06.2014<br />
     */
-   public function getParameter($name, $default = null);
+   public function getParameter(string $name, string $default = null);
 
    /**
     * Returns all action (URL) parameters with their values.
@@ -97,6 +97,6 @@ interface ActionParameters {
     * @version
     * Version 0.1, 20.06.2014<br />
     */
-   public function setAction(Action &$action);
+   public function setAction(Action $action);
 
 }

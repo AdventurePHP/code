@@ -40,7 +40,7 @@ use APF\tools\link\Url;
  * Version 0.2, 26.11.2006 (Pager elements are not displayed in case no pages are available)<br />
  * Version 0.3, 03.01.2007 (Page controller V2 ready)<br />
  * Version 0.4, 11.03.2007 (Migrated to new page controller)<br />
- * Version 0.5, 16.11.2007 (Migrated to FrontcontrollerLinkHandler)<br />
+ * Version 0.5, 16.11.2007 (Migrated to FrontControllerLinkHandler)<br />
  * Version 0.6, 21.09.2010 (Migrated to page addressing instead of the start parameter)<br />
  */
 class AdvancedPagerController extends BaseDocumentController {

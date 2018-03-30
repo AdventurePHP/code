@@ -20,7 +20,7 @@
  */
 namespace APF\tools\form\multifileupload\actions;
 
-use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\AbstractFrontControllerAction;
 use APF\core\http\HeaderImpl;
 use APF\tools\form\FormException;
 use APF\tools\form\multifileupload\biz\MultiFileUploadManager;
@@ -33,7 +33,7 @@ use APF\tools\form\multifileupload\biz\MultiFileUploadManager;
  * @version 1.1, 11.07.2012 (Change Exception to FormException)<br>
  * @version 1.2, 25.01.2014 (Security-patch: fixed path traversal vulnerability)<br>
  */
-class MultiFileDeleteAction extends AbstractFrontcontrollerAction {
+class MultiFileDeleteAction extends AbstractFrontControllerAction {
 
    public function run() {
       // modify header to avoid caching of this request
@@ -44,8 +44,8 @@ class MultiFileDeleteAction extends AbstractFrontcontrollerAction {
       $response->setHeader(new HeaderImpl('Pragma', 'no-cache'));
 
       try {
-         $fieldName = $this->getInput()->getParameter('name');
-         $formName = $this->getInput()->getParameter('formname');
+         $fieldName = $this->getParameters()->getParameter('name');
+         $formName = $this->getParameters()->getParameter('formname');
          $uploadName = $this->getSanitizedUploadName();
 
          /* @var $manager MultiFileUploadManager */
@@ -75,7 +75,7 @@ class MultiFileDeleteAction extends AbstractFrontcontrollerAction {
     * Version 0.1, 25.01.2014<br />
     */
    private function getSanitizedUploadName() {
-      return preg_replace('/[^A-Za-z0-9\-_]/', '', $this->getInput()->getParameter('uploadname'));
+      return preg_replace('/[^A-Za-z0-9\-_]/', '', $this->getParameters()->getParameter('uploadname'));
    }
 
 }

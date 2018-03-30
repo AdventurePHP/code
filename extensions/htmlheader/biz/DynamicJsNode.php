@@ -39,7 +39,7 @@ class DynamicJsNode extends HtmlNode implements JsNode {
     * @param bool $fcaction Optional. Create link for FC-Action.
     */
    public function __construct($url, $namespace, $filename, $fcaction = null) {
-      $this->setAttribute('src', $this->buildFrontcontrollerLink(
+      $this->setAttribute('src', $this->buildFrontControllerLink(
             $url,
             $namespace,
             $filename,

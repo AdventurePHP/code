@@ -108,7 +108,7 @@ abstract class HtmlNode extends Document implements HeaderNode {
     *
     * @return string elements' link.
     */
-   protected function buildFrontcontrollerLink($url, $namespace, $filename, $fcaction, $type) {
+   protected function buildFrontControllerLink($url, $namespace, $filename, $fcaction, $type) {
 
       if ($fcaction === null) {
          $fcaction = true;

@@ -61,7 +61,7 @@ class LinkGeneratorTest extends TestCase {
       $this->assertEquals($paramValue, $url->getQueryParameter($paramName));
    }
 
-   public function testFrontcontrollerUrlGeneration() {
+   public function testFrontControllerUrlGeneration() {
       $url = Url::fromString('')->setHost('localhost')->setScheme('http');
       $link = LinkGenerator::generateUrl(
             $url->mergeQuery(['foo' => 'bar', 'blubber' => null]),
@@ -119,7 +119,7 @@ class LinkGeneratorTest extends TestCase {
       $this->assertContains('/foo/2/', $link);
    }
 
-   public function testLinkGenerationFrontcontrollerActionWithActionParsing() {
+   public function testLinkGenerationFrontControllerActionWithActionParsing() {
       $actionNamespace = 'APF_cms_core_biz_setmodel';
 
       $url = Url::fromString('/de/my-page/topic/2-user-research/~/' . $actionNamespace . '-action/setModel/page.config.section/external');

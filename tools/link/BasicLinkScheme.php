@@ -20,10 +20,10 @@
  */
 namespace APF\tools\link;
 
-use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\AbstractFrontControllerAction;
 use APF\core\frontcontroller\Action;
 use APF\core\frontcontroller\ActionUrlMapping;
-use APF\core\frontcontroller\Frontcontroller;
+use APF\core\frontcontroller\FrontController;
 use APF\core\pagecontroller\APFObject;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
@@ -166,7 +166,7 @@ abstract class BasicLinkScheme {
 
       $actionUrlRepresentation = [];
       foreach ($actions as $action) {
-         /* @var $action AbstractFrontcontrollerAction */
+         /* @var $action AbstractFrontControllerAction */
          if ($action->getKeepInUrl() === true) {
             // Only add actions in case they are not yet added within LinkGenerator::generateActionUrl().
             // This is done to avoid duplicate action definition within the generated url. Please note,
@@ -205,10 +205,10 @@ abstract class BasicLinkScheme {
    }
 
    /**
-    * @return Frontcontroller|APFObject
+    * @return FrontController|APFObject
     */
    protected function getFrontController() {
-      return Singleton::getInstance(Frontcontroller::class);
+      return Singleton::getInstance(FrontController::class);
    }
 
    /**
@@ -247,7 +247,7 @@ abstract class BasicLinkScheme {
    /**
     * Creates a url sub-string that contains one action's encoded information.
     *
-    * @param AbstractFrontcontrollerAction $action The front controller action.
+    * @param AbstractFrontControllerAction $action The front controller action.
     * @param boolean $urlRewriting True in case url rewriting is activated, false otherwise.
     *
     * @return string The action's url representations.
@@ -256,8 +256,8 @@ abstract class BasicLinkScheme {
     * @version
     * Version 0.1, 07.04.2011<br />
     */
-   protected function getActionUrlRepresentation(AbstractFrontcontrollerAction $action, $urlRewriting) {
-      $value = $this->formatActionParameters($action->getInput()->getParameters(), $urlRewriting);
+   protected function getActionUrlRepresentation(AbstractFrontControllerAction $action, $urlRewriting) {
+      $value = $this->formatActionParameters($action->getParameters()->getParameters(), $urlRewriting);
       $key = $this->formatActionIdentifier($action->getActionNamespace(), $action->getActionName(), $urlRewriting);
 
       // avoid "=" sign with empty value list
@@ -280,7 +280,7 @@ abstract class BasicLinkScheme {
     * Version 0.2, 08.11.2007 (Corrected error with empty input object)<br />
     * Version 0.3, 21.06.2008 (Removed APPS__URL_REWRITING and introduced the Registry instead)<br />
     * Version 0.4, 25.03.2011 (Renamed to <em>getParameterURLRepresentation()</em> due to page controller refactoring)<br />
-    * Version 0.5, 08.04.2011 (Moved from FrontcontrollerInput to the link scheme implementation for consistency)<br />
+    * Version 0.5, 08.04.2011 (Moved from FrontControllerActionParameters to the link scheme implementation for consistency)<br />
     */
    protected function formatActionParameters(array $params, $urlRewriting) {
 

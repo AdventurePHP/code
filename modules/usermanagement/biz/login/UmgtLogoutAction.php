@@ -20,7 +20,7 @@
  */
 namespace APF\modules\usermanagement\biz\login;
 
-use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\AbstractFrontControllerAction;
 use APF\core\http\Cookie;
 use APF\core\service\APFService;
 use APF\modules\usermanagement\biz\UmgtUserSessionStore;
@@ -35,10 +35,10 @@ use APF\tools\link\Url;
  * @version
  * Version 0.1, 03.06.2011<br />
  */
-class UmgtLogoutAction extends AbstractFrontcontrollerAction {
+class UmgtLogoutAction extends AbstractFrontControllerAction {
 
    public function run() {
-      $logout = $this->getInput()->getParameter('logout', 'false');
+      $logout = $this->getParameters()->getParameter('logout', 'false');
       if ($logout === 'true') {
          $sessionStore = $this->getServiceObject(UmgtUserSessionStore::class, [],
                APFService::SERVICE_TYPE_SESSION_SINGLETON);

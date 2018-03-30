@@ -20,7 +20,7 @@
  */
 namespace APF\modules\newspager\biz\actions;
 
-use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\AbstractFrontControllerAction;
 use APF\core\http\HeaderImpl;
 use APF\modules\newspager\data\NewsPagerProvider;
 
@@ -31,7 +31,7 @@ use APF\modules\newspager\data\NewsPagerProvider;
  * @version
  * Version 0.1, 02.20.2008<br />
  */
-class NewsPagerAjaxBackendAction extends AbstractFrontcontrollerAction {
+class NewsPagerAjaxBackendAction extends AbstractFrontControllerAction {
 
    /**
     * Implements the abstract run() method to deliver the news XML for the AJAX call.
@@ -44,7 +44,7 @@ class NewsPagerAjaxBackendAction extends AbstractFrontcontrollerAction {
     */
    public function run() {
 
-      $input = $this->getInput();
+      $input = $this->getParameters();
 
       $page = $input->getParameter('page');
       $dataDir = base64_decode($input->getParameter('datadir'));

@@ -21,7 +21,7 @@
 namespace APF\core\filter;
 
 use APF\core\benchmark\BenchmarkTimer;
-use APF\core\frontcontroller\Frontcontroller;
+use APF\core\frontcontroller\FrontController;
 use APF\core\http\mixins\GetRequestResponse;
 use APF\core\pagecontroller\APFObject;
 use APF\core\singleton\Singleton;
@@ -67,7 +67,7 @@ class ChainedStandardInputFilter implements ChainedContentFilter {
       $id = get_class($this);
       $t->start($id);
 
-      $fC = $this->getFrontcontroller();
+      $fC = $this->getFrontController();
       $tokens = $fC->getActionUrlMappingTokens();
 
       foreach ($this->getRequest()->getParameters() as $key => $value) {
@@ -115,10 +115,10 @@ class ChainedStandardInputFilter implements ChainedContentFilter {
    }
 
    /**
-    * @return Frontcontroller|APFObject
+    * @return FrontController|APFObject
     */
-   protected function getFrontcontroller() {
-      return Singleton::getInstance(Frontcontroller::class);
+   protected function getFrontController() {
+      return Singleton::getInstance(FrontController::class);
    }
 
 }

@@ -20,9 +20,9 @@
  */
 namespace APF\tests\suites\core\filter;
 
-use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\AbstractFrontControllerAction;
 
-class FilterTestAction extends AbstractFrontcontrollerAction {
+class FilterTestAction extends AbstractFrontControllerAction {
 
    public function run() {
    }

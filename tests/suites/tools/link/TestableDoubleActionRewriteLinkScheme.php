@@ -20,7 +20,7 @@
  */
 namespace APF\tests\suites\tools\link;
 
-use APF\core\frontcontroller\FrontcontrollerInput;
+use APF\core\frontcontroller\FrontControllerActionParameters;
 use APF\tools\link\RewriteLinkScheme;
 
 /**
@@ -50,7 +50,7 @@ class TestableDoubleActionRewriteLinkScheme extends RewriteLinkScheme {
       $action->setActionName($this->actionName);
       $action->setKeepInUrl(true); // to test action inclusion
 
-      $action->setInput(new FrontcontrollerInput());
+      $action->setParameters(new FrontControllerActionParameters());
 
       $actions[] = $action;
 

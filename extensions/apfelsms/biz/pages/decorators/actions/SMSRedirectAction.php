@@ -20,7 +20,7 @@
  */
 namespace APF\extensions\apfelsms\biz\pages\decorators\actions;
 
-use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\AbstractFrontControllerAction;
 use APF\extensions\apfelsms\biz\pages\decorators\SMSPageDec;
 use APF\extensions\apfelsms\biz\pages\decorators\SMSRedirectPageDec;
 use APF\extensions\apfelsms\biz\pages\SMSPage;
@@ -33,7 +33,7 @@ use APF\tools\link\Url;
  *           v02. (09.03.13) Changed HTTP status code on redirect to 301 (moved permanently)
  *
  */
-class SMSRedirectAction extends AbstractFrontcontrollerAction {
+class SMSRedirectAction extends AbstractFrontControllerAction {
 
 
    /**

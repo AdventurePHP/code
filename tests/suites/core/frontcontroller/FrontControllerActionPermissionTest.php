@@ -21,14 +21,14 @@
 namespace APF\tests\suites\core\frontcontroller;
 
 use APF\core\frontcontroller\Action;
-use APF\core\frontcontroller\Frontcontroller;
+use APF\core\frontcontroller\FrontController;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 use ReflectionProperty;
 
 /**
- * Tests the Frontcontroller's action execution capabilities.
+ * Tests the FrontController's action execution capabilities.
  */
 class FrontControllerActionPermissionTest extends TestCase {
 
@@ -37,7 +37,7 @@ class FrontControllerActionPermissionTest extends TestCase {
     */
    public function testType() {
 
-      $fC = new Frontcontroller();
+      $fC = new FrontController();
       $actionStack = $this->getActionStackProperty();
 
       $typeToExecute = Action::TYPE_PRE_PAGE_CREATE;
@@ -58,7 +58,7 @@ class FrontControllerActionPermissionTest extends TestCase {
     * @return ReflectionProperty
     */
    private function getActionStackProperty() {
-      $actionStack = new ReflectionProperty(Frontcontroller::class, 'actionStack');
+      $actionStack = new ReflectionProperty(FrontController::class, 'actionStack');
       $actionStack->setAccessible(true);
 
       return $actionStack;
@@ -86,7 +86,7 @@ class FrontControllerActionPermissionTest extends TestCase {
     * @return ReflectionMethod
     */
    private function getRunActionsMethod() {
-      $runActions = new ReflectionMethod(Frontcontroller::class, 'runActions');
+      $runActions = new ReflectionMethod(FrontController::class, 'runActions');
       $runActions->setAccessible(true);
 
       return $runActions;
@@ -97,7 +97,7 @@ class FrontControllerActionPermissionTest extends TestCase {
     */
    public function testActive() {
 
-      $fC = new Frontcontroller();
+      $fC = new FrontController();
       $actionStack = $this->getActionStackProperty();
 
       $typeToExecute = Action::TYPE_PRE_PAGE_CREATE;
@@ -136,7 +136,7 @@ class FrontControllerActionPermissionTest extends TestCase {
     */
    public function testAllowExecution() {
 
-      $fC = new Frontcontroller();
+      $fC = new FrontController();
       $actionStack = $this->getActionStackProperty();
 
       $typeToExecute = Action::TYPE_PRE_PAGE_CREATE;

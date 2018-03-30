@@ -20,7 +20,7 @@
  */
 namespace APF\tests\suites\tools\link;
 
-use APF\core\frontcontroller\FrontcontrollerInput;
+use APF\core\frontcontroller\FrontControllerActionParameters;
 use APF\tools\link\DefaultLinkScheme;
 
 /**
@@ -41,9 +41,9 @@ class TestableDefaultLinkScheme extends DefaultLinkScheme {
       $action->setActionName('setModel');
       $action->setKeepInUrl(true); // to test action inclusion
 
-      $input = new FrontcontrollerInput();
+      $input = new FrontControllerActionParameters();
       $input->setParameter('page.config.section', 'external');
-      $action->setInput($input);
+      $action->setParameters($input);
 
       $actions[] = $action;
 

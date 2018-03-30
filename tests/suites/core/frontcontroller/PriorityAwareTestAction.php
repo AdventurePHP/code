@@ -20,9 +20,9 @@
  */
 namespace APF\tests\suites\core\frontcontroller;
 
-use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\AbstractFrontControllerAction;
 
-class PriorityAwareTestAction extends AbstractFrontcontrollerAction {
+class PriorityAwareTestAction extends AbstractFrontControllerAction {
 
    /**
     * @var int The priority to inject into the action for testing purposes.

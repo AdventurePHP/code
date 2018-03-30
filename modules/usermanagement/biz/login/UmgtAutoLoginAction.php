@@ -20,7 +20,7 @@
  */
 namespace APF\modules\usermanagement\biz\login;
 
-use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\AbstractFrontControllerAction;
 use APF\core\service\APFService;
 use APF\modules\usermanagement\biz\UmgtManager;
 use APF\modules\usermanagement\biz\UmgtUserSessionStore;
@@ -33,7 +33,7 @@ use APF\modules\usermanagement\biz\UmgtUserSessionStore;
  * @version
  * Version 0.1, 03.06.2011<br />
  */
-class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
+class UmgtAutoLoginAction extends AbstractFrontControllerAction {
 
    /**
     * Defines the cookie name for the user's permanent auth token.

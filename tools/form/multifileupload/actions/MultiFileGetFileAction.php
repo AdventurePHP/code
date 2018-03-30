@@ -20,7 +20,7 @@
  */
 namespace APF\tools\form\multifileupload\actions;
 
-use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\AbstractFrontControllerAction;
 use APF\core\http\HeaderImpl;
 use APF\tools\form\FormException;
 use APF\tools\form\multifileupload\biz\MultiFileUploadManager;
@@ -32,12 +32,12 @@ use APF\tools\form\multifileupload\biz\MultiFileUploadManager;
  * @version 1.0, 14.3.2011<br>
  * @version 1.1, 11.07.2012 (Change Exception to FormException)<br>
  */
-class MultiFileGetFileAction extends AbstractFrontcontrollerAction {
+class MultiFileGetFileAction extends AbstractFrontControllerAction {
 
    public function run() {
-      $fieldName = $this->getInput()->getParameter('name');
-      $formName = $this->getInput()->getParameter('formname');
-      $uploadName = $this->getInput()->getParameter('uploadname');
+      $fieldName = $this->getParameters()->getParameter('name');
+      $formName = $this->getParameters()->getParameter('formname');
+      $uploadName = $this->getParameters()->getParameter('uploadname');
 
       // only upload if we have a valid request
       $response = $this->getResponse();

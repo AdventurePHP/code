@@ -42,29 +42,29 @@ interface Action extends APFDIService {
    /**
     * Returns the input object of the action.
     *
-    * @return FrontcontrollerInput The input object associated with the action.
+    * @return FrontControllerActionParameters The input object associated with the action.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 05.02.2007<br />
     */
-   public function getInput();
+   public function getParameters();
 
    /**
     * Injects the input param wrapper of the current action.
     *
-    * @param FrontcontrollerInput $input The input object associated with the action.
+    * @param ActionParameters $input The input object associated with the action.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 20.02.2010<br />
     */
-   public function setInput($input);
+   public function setParameters(ActionParameters $input);
 
    /**
     * Returns the associated front controller instance.
     *
-    * @return Frontcontroller The associated front controller instance.
+    * @return FrontController The associated front controller instance.
     *
     * @author Christian Achatz
     * @version
@@ -89,13 +89,13 @@ interface Action extends APFDIService {
    /**
     * Let's the front controller inject itself.
     *
-    * @param Frontcontroller $frontController The current front controller instance.
+    * @param FrontController $frontController The current front controller instance.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 20.02.2010<br />
     */
-   public function setFrontController(Frontcontroller &$frontController);
+   public function setFrontController(FrontController $frontController);
 
    /**
     * Returns the name of the action, that is used to refer it within the
@@ -131,7 +131,7 @@ interface Action extends APFDIService {
     * @version
     * Version 0.1, 20.02.2010<br />
     */
-   public function setActionName($name);
+   public function setActionName(string $name);
 
    /**
     * Sets the type of the action, that defines the execution time.
@@ -142,7 +142,7 @@ interface Action extends APFDIService {
     * @version
     * Version 0.1, 20.02.2010<br />
     */
-   public function setType($type);
+   public function setType(string $type);
 
    /**
     * Returns the type of the action, that defines the execution time.
@@ -165,7 +165,7 @@ interface Action extends APFDIService {
     * @version
     * Version 0.1, 20.02.2010<br />
     */
-   public function setActionNamespace($namespace);
+   public function setActionNamespace(string $namespace);
 
    /**
     * Set the indicator, whether the action should be kept in the url
@@ -177,7 +177,7 @@ interface Action extends APFDIService {
     * @version
     * Version 0.1, 20.02.2010<br />
     */
-   public function setKeepInUrl($keepInUrl);
+   public function setKeepInUrl(bool $keepInUrl);
 
    /**
     * Indicates, whether the action should be executed by the front controller or not.

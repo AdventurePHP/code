@@ -40,7 +40,7 @@ class DynamicCssNode extends HtmlNode implements CssNode {
     * @param string $media Optional css media definition (e.g. "print", "screen", or any other media query).
     */
    public function __construct($url, $namespace, $filename, $fcaction = true, $media = null) {
-      $this->setAttribute('href', $this->buildFrontcontrollerLink(
+      $this->setAttribute('href', $this->buildFrontControllerLink(
             $url,
             $namespace,
             $filename,

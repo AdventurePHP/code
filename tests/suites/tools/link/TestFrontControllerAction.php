@@ -20,8 +20,8 @@
  */
 namespace APF\tests\suites\tools\link;
 
-use APF\core\frontcontroller\AbstractFrontcontrollerAction;
-use APF\core\frontcontroller\FrontcontrollerInput;
+use APF\core\frontcontroller\AbstractFrontControllerAction;
+use APF\core\frontcontroller\FrontControllerActionParameters;
 
 /**
  * Implements a dummy front controller action to enable testing the link scheme.
@@ -30,10 +30,10 @@ use APF\core\frontcontroller\FrontcontrollerInput;
  * @version
  * Version 0.1, 29.12.2011<br />
  */
-class TestFrontControllerAction extends AbstractFrontcontrollerAction {
+class TestFrontControllerAction extends AbstractFrontControllerAction {
 
    public function __construct() {
-      $this->input = new FrontcontrollerInput();
+      $this->parameters = new FrontControllerActionParameters();
    }
 
    public function run() {

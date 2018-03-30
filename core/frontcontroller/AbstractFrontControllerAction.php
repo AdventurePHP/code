@@ -34,7 +34,7 @@ use APF\core\pagecontroller\APFObject;
  * Version 0.4, 07.08.2010 (Added the isActive() method to be able to self-deactivate actions on demand)<br />
  * Version 0.5, 12.04.2011 (Introduced constants for action types to be more type safe)<br />
  */
-abstract class AbstractFrontcontrollerAction extends APFObject implements Action {
+abstract class AbstractFrontControllerAction extends APFObject implements Action {
 
    use GetRequestResponse;
 
@@ -55,9 +55,9 @@ abstract class AbstractFrontcontrollerAction extends APFObject implements Action
    /**
     * Input object of the action.
     *
-    * @var FrontcontrollerInput $input
+    * @var ActionParameters $parameters
     */
-   protected $input;
+   protected $parameters;
 
    /**
     * Defines the type of the action. Allowed values
@@ -80,19 +80,19 @@ abstract class AbstractFrontcontrollerAction extends APFObject implements Action
    /**
     * The front controller instance the action belongs to.
     *
-    * @var Frontcontroller $frontController
+    * @var FrontController $frontController
     */
    private $frontController;
 
-   public function getInput() {
-      return $this->input;
+   public function getParameters() {
+      return $this->parameters;
    }
 
-   public function setInput($input) {
-      $this->input = $input;
+   public function setParameters(ActionParameters $input) {
+      $this->parameters = $input;
    }
 
-   public function setActionName($name) {
+   public function setActionName(string $name) {
       $this->actionName = $name;
    }
 
@@ -100,7 +100,7 @@ abstract class AbstractFrontcontrollerAction extends APFObject implements Action
       return $this->actionName;
    }
 
-   public function setActionNamespace($namespace) {
+   public function setActionNamespace(string $namespace) {
       $this->actionNamespace = $namespace;
    }
 
@@ -108,7 +108,7 @@ abstract class AbstractFrontcontrollerAction extends APFObject implements Action
       return $this->actionNamespace;
    }
 
-   public function setType($type) {
+   public function setType(string $type) {
       $this->type = $type;
    }
 
@@ -116,7 +116,7 @@ abstract class AbstractFrontcontrollerAction extends APFObject implements Action
       return $this->type;
    }
 
-   public function setKeepInUrl($keepInUrl) {
+   public function setKeepInUrl(bool $keepInUrl) {
       $this->keepInUrl = $keepInUrl;
    }
 
@@ -140,8 +140,8 @@ abstract class AbstractFrontcontrollerAction extends APFObject implements Action
       return $this->frontController;
    }
 
-   public function setFrontController(Frontcontroller &$frontController) {
-      $this->frontController = &$frontController;
+   public function setFrontController(FrontController $frontController) {
+      $this->frontController = $frontController;
    }
 
 }

@@ -20,7 +20,7 @@
  */
 namespace APF\extensions\apfelsms\biz\pages\decorators\actions;
 
-use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\AbstractFrontControllerAction;
 use APF\extensions\apfelsms\biz\pages\decorators\SMSExternalURLPageDec;
 use APF\extensions\apfelsms\biz\pages\decorators\SMSPageDec;
 use APF\extensions\apfelsms\biz\SMSManager;
@@ -31,7 +31,7 @@ use APF\tools\link\Url;
  * @version v0.1 (02.10.12)
  *
  */
-class SMSExternalURLRedirectAction extends AbstractFrontcontrollerAction {
+class SMSExternalURLRedirectAction extends AbstractFrontControllerAction {
 
 
    /**

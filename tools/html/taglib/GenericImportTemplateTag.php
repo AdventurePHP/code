@@ -20,7 +20,7 @@
  */
 namespace APF\tools\html\taglib;
 
-use APF\core\frontcontroller\Frontcontroller;
+use APF\core\frontcontroller\FrontController;
 use APF\core\pagecontroller\ImportTemplateTag;
 use APF\core\singleton\Singleton;
 use InvalidArgumentException;
@@ -103,8 +103,8 @@ class GenericImportTemplateTag extends ImportTemplateTag {
          }
 
          // register action with the front controller
-         /* @var $fC Frontcontroller */
-         $fC = Singleton::getInstance(Frontcontroller::class);
+         /* @var $fC FrontController */
+         $fC = Singleton::getInstance(FrontController::class);
          $action = $fC->getActionByName($dependentActionName);
          if ($action === null) {
             $fC->addAction($dependentActionNamespace, $dependentActionName, $actionParamList);
