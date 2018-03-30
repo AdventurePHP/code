@@ -50,5 +50,5 @@ interface LogWriter {
     * @version
     * Version 0.1, 12.01.2013<br />
     */
-   public function setTarget($target);
+   public function setTarget(string $target);
 }

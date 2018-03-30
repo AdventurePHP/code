@@ -44,7 +44,7 @@ class StdOutLogWriter implements LogWriter {
       }
    }
 
-   public function setTarget($target) {
+   public function setTarget(string $target) {
       $this->target = $target;
    }
 

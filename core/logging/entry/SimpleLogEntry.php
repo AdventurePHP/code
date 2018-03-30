@@ -66,7 +66,7 @@ class SimpleLogEntry implements LogEntry {
     */
    protected $target;
 
-   public function __construct($target, $message, $severity) {
+   public function __construct(string $target, string $message, string $severity) {
       $this->date = date('Y-m-d');
       $this->time = date('H:i:s');
       $this->target = $target;

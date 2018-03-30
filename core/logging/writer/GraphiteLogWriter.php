@@ -53,7 +53,7 @@ class GraphiteLogWriter implements LogWriter {
    /**
     * The Graphite server port.
     *
-    * @var string $port
+    * @var int $port
     */
    protected $port;
 
@@ -82,14 +82,14 @@ class GraphiteLogWriter implements LogWriter {
     * Configures the Graphite log writer.
     *
     * @param string $host The Graphite server address (IP or DNS name).
-    * @param string $port The Graphite server port.
+    * @param int $port The Graphite server port.
     * @param bool $batchWrites Specifies if multiple LogEntries will be written in one datagram (true) or not (false).
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 17.01.2013<br />
     */
-   public function __construct($host, $port, $batchWrites = true) {
+   public function __construct(string $host, int $port, bool $batchWrites = true) {
       $this->host = $host;
       $this->port = $port;
       $this->batchWrites = $batchWrites;
@@ -104,7 +104,7 @@ class GraphiteLogWriter implements LogWriter {
     * @version
     * Version 0.1, 17.01.2013<br />
     */
-   public function setEntrySeparator($entrySeparator) {
+   public function setEntrySeparator(string $entrySeparator) {
       $this->entrySeparator = $entrySeparator;
    }
 
@@ -117,7 +117,7 @@ class GraphiteLogWriter implements LogWriter {
     * @version
     * Version 0.1, 14.02.2013<br />
     */
-   public function setBatchWrites($batchWrites) {
+   public function setBatchWrites(bool $batchWrites) {
       $this->batchWrites = $batchWrites;
    }
 
@@ -142,7 +142,7 @@ class GraphiteLogWriter implements LogWriter {
     * @version
     * Version 0.1, 17.01.2013<br />
     */
-   private function sendDatagram($data) {
+   private function sendDatagram(string $data) {
       // suppress errors for fsockopen() to have one nice exception message instead of several error messages
       $socket = @fsockopen('udp://' . $this->host, $this->port, $errorNumber, $errorMessage);
       if ($socket === false || !empty($errorNumber) || !empty($errorMessage)) { // really a good check for not-empty?
@@ -160,7 +160,7 @@ class GraphiteLogWriter implements LogWriter {
       fclose($socket);
    }
 
-   public function setTarget($target) {
+   public function setTarget(string $target) {
       $this->target = $target;
    }
 

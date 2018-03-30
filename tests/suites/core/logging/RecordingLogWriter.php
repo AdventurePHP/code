@@ -33,7 +33,7 @@ class RecordingLogWriter implements LogWriter {
       $this->entries = array_merge($this->entries, $entries);
    }
 
-   public function setTarget($target) {
+   public function setTarget(string $target) {
    }
 
    public function getEntries() {

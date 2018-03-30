@@ -67,7 +67,7 @@ class DatabaseLogWriter extends APFObject implements LogWriter {
     *
     * @var string $connectionName
     */
-   protected $connectionName = null;
+   protected $connectionName;
 
    /**
     * The name of the table to write the log entries to.
@@ -86,7 +86,7 @@ class DatabaseLogWriter extends APFObject implements LogWriter {
     * @version
     * Version 0.1, 12.01.2013<br />
     */
-   public function __construct($connectionName, $logTable) {
+   public function __construct(string $connectionName, string $logTable) {
       $this->connectionName = $connectionName;
       $this->logTable = $logTable;
    }
@@ -103,7 +103,7 @@ class DatabaseLogWriter extends APFObject implements LogWriter {
     * @version
     * Version 0.1, 12.01.2013<br />
     */
-   public function setConnectionName($connectionName) {
+   public function setConnectionName(string $connectionName) {
       $this->connectionName = $connectionName;
    }
 
@@ -116,7 +116,7 @@ class DatabaseLogWriter extends APFObject implements LogWriter {
     * @version
     * Version 0.1, 12.01.2013<br />
     */
-   public function setLogTable($logTable) {
+   public function setLogTable(string $logTable) {
       $this->logTable = $logTable;
    }
 
@@ -153,7 +153,7 @@ class DatabaseLogWriter extends APFObject implements LogWriter {
       }
    }
 
-   public function setTarget($target) {
+   public function setTarget(string $target) {
       $this->target = $target;
    }
 

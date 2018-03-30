@@ -70,7 +70,7 @@ class FileLogWriter implements LogWriter {
     * @version
     * Version 0.1, 12.01.2013<br />
     */
-   public function __construct($logDir) {
+   public function __construct(string $logDir) {
       $this->logDir = $logDir;
    }
 
@@ -83,7 +83,7 @@ class FileLogWriter implements LogWriter {
     * @version
     * Version 0.1, 18.03.2012<br />
     */
-   public function setLogDir($logDir) {
+   public function setLogDir(string $logDir) {
       $this->logDir = $logDir;
    }
 
@@ -98,7 +98,7 @@ class FileLogWriter implements LogWriter {
     * @version
     * Version 0.1, 18.03.2012<br />
     */
-   public function setHostPrefix($hostPrefix) {
+   public function setHostPrefix(string $hostPrefix) {
       $this->hostPrefix = $hostPrefix;
    }
 
@@ -111,7 +111,7 @@ class FileLogWriter implements LogWriter {
     * @version
     * Version 0.1, 12.01.2013<br />
     */
-   public function setLogFolderPermissions($logFolderPermissions) {
+   public function setLogFolderPermissions(string $logFolderPermissions) {
       $this->logFolderPermissions = $logFolderPermissions;
    }
 
@@ -131,7 +131,7 @@ class FileLogWriter implements LogWriter {
     * Version 0.1, 29.03.2007<br />
     * Version 0.2, 12.05.2012 (Added support for clustered hosting environments to write host-dependent log files)<br />
     */
-   protected function getLogFileName($fileName) {
+   protected function getLogFileName(string $fileName) {
 
       // prepend host prefix to support multiple log files for clustered hosting environments
       if ($this->hostPrefix !== null) {
@@ -141,7 +141,7 @@ class FileLogWriter implements LogWriter {
       return $this->logDir . '/' . date('Y_m_d') . '__' . strtolower(preg_replace('/[^A-Za-z0-9\-_]/', '', $fileName)) . '.log';
    }
 
-   public function setTarget($target) {
+   public function setTarget(string $target) {
       $this->target = $target;
    }
 

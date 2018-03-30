@@ -94,7 +94,7 @@ class GraphiteLogEntry implements LogEntry {
     * @version
     * Version 0.1, 17.01.2013<br />
     */
-   public function __construct($target, $metric, $unit, $value, $severity) {
+   public function __construct(string $target, string $metric, string $unit, string $value, string $severity) {
       $this->target = $target;
       $this->metric = $metric;
       $this->unit = $unit;
