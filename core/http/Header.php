@@ -44,7 +44,7 @@ interface Header {
     *
     * @throws InvalidArgumentException In case of an invalid format given.
     */
-   public static function fromString($string);
+   public static function fromString(string $string);
 
    /**
     * Creates a HTTP header.
@@ -52,7 +52,7 @@ interface Header {
     * @param string $name The name of the header.
     * @param string $value The value of the header.
     */
-   public function __construct($name, $value);
+   public function __construct(string $name, string $value);
 
    /**
     * @return string The name of the header.

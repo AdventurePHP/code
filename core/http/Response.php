@@ -90,7 +90,7 @@ interface Response {
     *
     * @return Response This instance for further usage.
     */
-   public function setVersion($version);
+   public function setVersion(string $version);
 
    /**
     * @return int The current HTTP status code.
@@ -102,7 +102,7 @@ interface Response {
     *
     * @return Response This instance for further usage.
     */
-   public function setStatusCode($code);
+   public function setStatusCode(int $code);
 
    /**
     * @return string The current reason phrase.
@@ -114,7 +114,7 @@ interface Response {
     *
     * @return Response This instance for further usage.
     */
-   public function setReasonPhrase($phrase);
+   public function setReasonPhrase(string $phrase);
 
    /**
     * @return string The HTTP response body to send back to the client.
@@ -127,7 +127,7 @@ interface Response {
     *
     * @return Response This instance for further usage.
     */
-   public function setBody($body, $append = false);
+   public function setBody(string $body, bool $append = false);
 
    /**
     * Allows to (explicitly) send a response <em>manually</em> within document controllers and front
@@ -142,7 +142,7 @@ interface Response {
     * @version
     * Version 0.1, 11.09.2014<br />
     */
-   public function send($exit = true);
+   public function send(bool $exit = true);
 
    /**
     * @see http://www.faqs.org/rfcs/rfc2616 (section 10.3.4 303 See Other)
@@ -157,7 +157,7 @@ interface Response {
     * Version 0.1, 09.10.2008<br />
     * Version 0.2, 11.03.2014 (ID#173: corrected wrong header() parameter usage)<br />
     */
-   public function forward($url, $exitAfterForward = true);
+   public function forward(string $url, bool $exitAfterForward = true);
 
    /**
     * Redirects to a given target.
@@ -172,7 +172,7 @@ interface Response {
     * @version
     * Version 0.1, 09.10.2008<br />
     */
-   public function redirect($url, $permanent = false, $exitAfterForward = true);
+   public function redirect(string $url, bool $permanent = false, bool $exitAfterForward = true);
 
    /**
     * Sends a 404 answer back to the client.
@@ -183,7 +183,7 @@ interface Response {
     * @version
     * Version 0.1, 26.05.2014
     */
-   public function sendNotFound($exitAfterForward = true);
+   public function sendNotFound(bool $exitAfterForward = true);
 
    /**
     * Sends an 500 answer back to the client.
@@ -194,7 +194,7 @@ interface Response {
     * @version
     * Version 0.1, 26.05.2014
     */
-   public function sendServerError($exitAfterForward = true);
+   public function sendServerError(bool $exitAfterForward = true);
 
    /**
     * @return bool <em>True</em> in case this instance has already been sent to the client, <em>false</em> otherwise.

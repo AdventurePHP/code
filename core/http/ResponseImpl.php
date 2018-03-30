@@ -168,7 +168,7 @@ class ResponseImpl implements Response {
       return $this->version;
    }
 
-   public function setVersion($version) {
+   public function setVersion(string $version) {
       $this->version = $version;
 
       return $this;
@@ -178,7 +178,7 @@ class ResponseImpl implements Response {
       return $this->statusCode;
    }
 
-   public function setStatusCode($code) {
+   public function setStatusCode(int $code) {
       $this->statusCode = $code;
 
       return $this;
@@ -198,7 +198,7 @@ class ResponseImpl implements Response {
       return $this->reasonPhrase;
    }
 
-   public function setReasonPhrase($phrase) {
+   public function setReasonPhrase(string $phrase) {
       $this->reasonPhrase = $phrase;
 
       return $this;
@@ -208,7 +208,7 @@ class ResponseImpl implements Response {
       return $this->body;
    }
 
-   public function setBody($body, $append = false) {
+   public function setBody(string $body, bool $append = false) {
       $this->body = $append ? $this->body . $body : $body;
 
       return $this;
@@ -291,7 +291,7 @@ class ResponseImpl implements Response {
       throw new Exception('Header "' . HeaderImpl::CONTENT_TYPE . '" is not set for this response.');
    }
 
-   public function send($exit = true) {
+   public function send(bool $exit = true) {
       // rely on __toString() sending the actual response.
       echo $this;
 
@@ -309,25 +309,25 @@ class ResponseImpl implements Response {
       return str_replace('&amp;', '&', $url);
    }
 
-   public function forward($url, $exitAfterForward = true) {
+   public function forward(string $url, bool $exitAfterForward = true) {
       self::setStatusCode(self::CODE_SEE_OTHER);
       self::setHeader(new HeaderImpl('Location', self::decodeUrl($url)));
       self::send($this->exitAfterForward === true && $exitAfterForward === true);
    }
 
-   public function redirect($url, $permanent = false, $exitAfterForward = true) {
+   public function redirect(string $url, bool $permanent = false, bool $exitAfterForward = true) {
       self::setStatusCode($permanent === true ? self::CODE_PERMANENT_REDIRECT : self::CODE_TEMPORARY_REDIRECT);
       self::setHeader(new HeaderImpl('Location', self::decodeUrl($url)));
       self::send($this->exitAfterForward === true && $exitAfterForward === true);
    }
 
-   public function sendNotFound($exitAfterForward = true) {
+   public function sendNotFound(bool $exitAfterForward = true) {
       self::setStatusCode(self::CODE_NOT_FOUND);
       self::setReasonPhrase($this->reasonPhrases[self::CODE_NOT_FOUND]);
       self::send($this->exitAfterForward === true && $exitAfterForward === true);
    }
 
-   public function sendServerError($exitAfterForward = true) {
+   public function sendServerError(bool $exitAfterForward = true) {
       self::setStatusCode(self::CODE_INTERNAL_SERVER_ERROR);
       self::setReasonPhrase($this->reasonPhrases[self::CODE_INTERNAL_SERVER_ERROR]);
       self::send($this->exitAfterForward === true && $exitAfterForward === true);

@@ -170,10 +170,12 @@ class SelectBoxTagTest extends TestCase {
 
       // test no group defined
       $tag = new SelectBoxTag();
+      $tag->setAttribute('name', 'foo');
       $this->assertNull($tag->getGroup('foo'));
 
       // test groups defined
       $tag = new SelectBoxTag();
+      $tag->setAttribute('name', 'foo');
       $tag->setContent('<select:group label="foo">
    <group:option value="0">Zero</group:option>
    <group:option value="1" selected="selected">One</group:option>
@@ -243,7 +245,10 @@ class SelectBoxTagTest extends TestCase {
     */
    public function testReset() {
 
+      $_REQUEST = [];
+
       $tag = new SelectBoxTag();
+      $tag->setAttribute('name', 'foo');
       $tag->setContent('<select:option value="1" selected="selected">One</select:option>
 <select:group label="foo">
    <group:option value="2" selected="selected">Two</group:option>
@@ -287,6 +292,7 @@ class SelectBoxTagTest extends TestCase {
       $_REQUEST = [];
 
       $tag = new SelectBoxTag();
+      $tag->setAttribute('name', 'foo');
       $tag->setAttribute('optional', 'true');
 
       $tag->setContent('<select:option value="1">One</select:option>
@@ -349,6 +355,7 @@ class SelectBoxTagTest extends TestCase {
 
       // use case 1: no values
       $select = new SelectBoxTag();
+      $select->setAttribute('name', 'foo');
       $select->onParseTime();
       $select->onAfterAppend();
 

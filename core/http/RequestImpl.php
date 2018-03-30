@@ -50,11 +50,11 @@ class RequestImpl implements Request {
     *
     * @return bool <em>True</em> in case the given parameter is contained in the current request, <em>false</em> otherwise.
     */
-   public function hasParameter($name) {
+   public function hasParameter(string $name) {
       return $this->getParameter($name) !== null;
    }
 
-   public function getParameter($name, $default = null) {
+   public function getParameter(string $name, $default = null) {
       return $this->getGenericParameter($name, $default, self::USE_REQUEST_PARAMS);
    }
 
@@ -65,13 +65,13 @@ class RequestImpl implements Request {
     *
     * @return string The value of the requested parameter.
     */
-   protected function getGenericParameter($name, $default, $type) {
+   protected function getGenericParameter(string $name, $default, $type) {
       $lookupTable = $GLOBALS['_' . $type];
 
       return isset($lookupTable[$name])
       // avoid issues with "0" values being skipped due to empty() check
       // TODO eventually switch to array_key_exists() instead of empty() as an existing offset with value "null" will be considered empty (UnitTests necessary).
-      && (!empty($lookupTable[$name]) || (string) $lookupTable[$name] === '0')
+      && (!empty($lookupTable[$name]) || (string)$lookupTable[$name] === '0')
             ? $lookupTable[$name]
             : $default;
    }
@@ -83,11 +83,11 @@ class RequestImpl implements Request {
     *
     * @return bool <em>True</em> in case the given parameter is contained in the current GET request, <em>false</em> otherwise.
     */
-   public function hasGetParameter($name) {
+   public function hasGetParameter(string $name) {
       return $this->getGetParameter($name) !== null;
    }
 
-   public function getGetParameter($name, $default = null) {
+   public function getGetParameter(string $name, $default = null) {
       return $this->getGenericParameter($name, $default, self::USE_GET_PARAMS);
    }
 
@@ -98,15 +98,15 @@ class RequestImpl implements Request {
     *
     * @return bool <em>True</em> in case the given parameter is contained in the current POST request, <em>false</em> otherwise.
     */
-   public function hasPostParameter($name) {
+   public function hasPostParameter(string $name) {
       return $this->getPostParameter($name) !== null;
    }
 
-   public function getPostParameter($name, $default = null) {
+   public function getPostParameter(string $name, $default = null) {
       return $this->getGenericParameter($name, $default, self::USE_POST_PARAMS);
    }
 
-   public function getSession($name) {
+   public function getSession(string $name) {
       return new Session($name);
    }
 
@@ -132,7 +132,7 @@ class RequestImpl implements Request {
     *
     * @return array The request parameters of the given type.
     */
-   protected function getGenericParameters($type) {
+   protected function getGenericParameters(string $type) {
       return is_array($GLOBALS['_' . $type]) ? $GLOBALS['_' . $type] : [];
    }
 
@@ -159,7 +159,7 @@ class RequestImpl implements Request {
       return $this;
    }
 
-   public function setParameter($name, $value) {
+   public function setParameter(string $name, $value) {
       $_REQUEST[$name] = $value;
 
       return $this;
@@ -180,7 +180,7 @@ class RequestImpl implements Request {
       return $this;
    }
 
-   public function setGetParameter($name, $value) {
+   public function setGetParameter(string $name, $value) {
       $_GET[$name] = $value;
       $_REQUEST[$name] = $value;
 
@@ -202,7 +202,7 @@ class RequestImpl implements Request {
       return $this;
    }
 
-   public function setPostParameter($name, $value) {
+   public function setPostParameter(string $name, $value) {
       $_POST[$name] = $value;
       $_REQUEST[$name] = $value;
 
@@ -224,7 +224,7 @@ class RequestImpl implements Request {
       return $this;
    }
 
-   public function deleteParameter($name) {
+   public function deleteParameter(string $name) {
       unset($_GET[$name]);
       unset($_POST[$name]);
       unset($_REQUEST[$name]);
@@ -249,7 +249,7 @@ class RequestImpl implements Request {
       return $this;
    }
 
-   public function deleteGetParameter($name) {
+   public function deleteGetParameter(string $name) {
       if (isset($_GET[$name])) {
          unset($_GET[$name]);
          unset($_REQUEST[$name]);
@@ -275,7 +275,7 @@ class RequestImpl implements Request {
       return $this;
    }
 
-   public function deletePostParameter($name) {
+   public function deletePostParameter(string $name) {
       if (isset($_POST[$name])) {
          unset($_POST[$name]);
          unset($_REQUEST[$name]);
@@ -318,7 +318,7 @@ class RequestImpl implements Request {
       return file_get_contents('php://input');
    }
 
-   public function getUrl($absolute = false) {
+   public function getUrl(bool $absolute = false) {
 
       // construct url from standard PHP variables
       $protocol = $this->isSecure() ? self::SECURE_PROTOCOL_IDENTIFIER . '://' : self::DEFAULT_PROTOCOL_IDENTIFIER . '://';
@@ -342,7 +342,7 @@ class RequestImpl implements Request {
       return isset($_SERVER['HTTPS']) && (strtolower($_SERVER['HTTPS']) == 'on' || $_SERVER['HTTPS'] == 1);
    }
 
-   public function getReferrerUrl($absolute = false) {
+   public function getReferrerUrl(bool $absolute = false) {
 
       if (isset($_SERVER['HTTP_REFERER'])) {
          $url = Url::fromString($_SERVER['HTTP_REFERER']);
@@ -368,7 +368,7 @@ class RequestImpl implements Request {
       return $cookies;
    }
 
-   public function getCookie($name) {
+   public function getCookie(string $name) {
       if (isset($_COOKIE[$name])) {
          $cookie = new Cookie($name);
          $cookie->setValue($_COOKIE[$name]);
@@ -379,7 +379,7 @@ class RequestImpl implements Request {
       return null;
    }
 
-   public function hasCookie($name) {
+   public function hasCookie(string $name) {
       return isset($_COOKIE[$name]);
    }
 
@@ -413,7 +413,7 @@ class RequestImpl implements Request {
     *
     * @return HeaderImpl|null The desired header instance or null.
     */
-   public function getHeader($name) {
+   public function getHeader(string $name) {
       /* @var $header HeaderImpl */
       foreach ($this->getHeaders() as $header) {
          if ($header->getName() == $name) {

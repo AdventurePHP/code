@@ -60,7 +60,7 @@ class GroupRemoveRoleFromGroupsController extends UmgtBaseController {
 
       if ($form->isSent() && $form->isValid()) {
 
-         $options = &$groupsControl->getSelectedOptions();
+         $options = $groupsControl->getSelectedOptions();
          $additionalGroups = [];
          foreach ($options as $option) {
             /* @var $option SelectBoxOptionTag */

@@ -39,7 +39,7 @@ class HeaderImpl implements Header {
     */
    protected $value;
 
-   public static function fromString($string) {
+   public static function fromString(string $string) {
       $parts = explode(self::SEPARATOR, $string);
       if (count($parts) != 2) {
          throw new InvalidArgumentException('Construction of HTTP header from string "' . $string
@@ -49,7 +49,7 @@ class HeaderImpl implements Header {
       return new HeaderImpl(trim($parts[0]), trim($parts[1]));
    }
 
-   public function __construct($name, $value) {
+   public function __construct(string $name, string $value) {
       $this->name = $name;
       $this->value = $value;
    }

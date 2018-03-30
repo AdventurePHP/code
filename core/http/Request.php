@@ -79,11 +79,11 @@ interface Request {
     * Returns the value of a request parameter (both GET and POST).
     *
     * @param string $name The name of the URL parameter to get.
-    * @param string $default The default value to return in case the parameter is not present (default: <em>null</em>).
+    * @param mixed $default The default value to return in case the parameter is not present (default: <em>null</em>).
     *
     * @return string|array The value of the requested parameter.
     */
-   public function getParameter($name, $default = null);
+   public function getParameter(string $name, $default = null);
 
    /**
     * Returns the value of the desired parameter if included in a GET request variable.
@@ -94,11 +94,11 @@ interface Request {
     * If you intend to use the value either in GET or POST mode use getParameter() instead.
     *
     * @param string $name The name of the URL parameter to get.
-    * @param string $default The default value to return in case the parameter is not present (default: <em>null</em>).
+    * @param mixed $default The default value to return in case the parameter is not present (default: <em>null</em>).
     *
     * @return string|array The value of the requested parameter.
     */
-   public function getGetParameter($name, $default = null);
+   public function getGetParameter(string $name, $default = null);
 
    /**
     * Returns the value of the desired parameter if included in a POST request variable.
@@ -109,18 +109,18 @@ interface Request {
     * If you intend to use the value either in GET or POST mode use getParameter() instead.
     *
     * @param string $name The name of the URL parameter to get.
-    * @param string $default The default value to return in case the parameter is not present (default: <em>null</em>).
+    * @param mixed $default The default value to return in case the parameter is not present (default: <em>null</em>).
     *
     * @return string|array The value of the requested parameter.
     */
-   public function getPostParameter($name, $default = null);
+   public function getPostParameter(string $name, $default = null);
 
    /**
     * @param string $name The name of the named session instance to return.
     *
     * @return Session
     */
-   public function getSession($name);
+   public function getSession(string $name);
 
    /**
     * Let's you retrieve the list of request parameters defined for this instance.
@@ -147,11 +147,11 @@ interface Request {
     * Allows you to set a request parameter (both GET and POST).
     *
     * @param string $name The name of the URL parameter to get.
-    * @param string $value The default value to return in case the parameter is not present (default: <em>null</em>).
+    * @param mixed $value The default value to return in case the parameter is not present (default: <em>null</em>).
     *
     * @return $this This instance for further usage.
     */
-   public function setParameter($name, $value);
+   public function setParameter(string $name, $value);
 
    /**
     * Allows you to set a GET parameter.
@@ -160,11 +160,11 @@ interface Request {
     * please be sure to use the correct method.
     *
     * @param string $name The name of the URL parameter to get.
-    * @param string $value The default value to return in case the parameter is not present (default: <em>null</em>).
+    * @param mixed $value The default value to return in case the parameter is not present (default: <em>null</em>).
     *
     * @return $this This instance for further usage.
     */
-   public function setGetParameter($name, $value);
+   public function setGetParameter(string $name, $value);
 
    /**
     * Allows you to set a POST parameter.
@@ -173,11 +173,11 @@ interface Request {
     * please be sure to use the correct method.
     *
     * @param string $name The name of the URL parameter to get.
-    * @param string $value The default value to return in case the parameter is not present (default: <em>null</em>).
+    * @param mixed $value The default value to return in case the parameter is not present (default: <em>null</em>).
     *
     * @return $this This instance for further usage.
     */
-   public function setPostParameter($name, $value);
+   public function setPostParameter(string $name, $value);
 
    /**
     * Let's you delete a request parameter.
@@ -186,7 +186,7 @@ interface Request {
     *
     * @return $this This instance for further usage.
     */
-   public function deleteParameter($name);
+   public function deleteParameter(string $name);
 
    /**
     * Let's you delete a GET parameter. If contained in the POST part of the request,
@@ -196,7 +196,7 @@ interface Request {
     *
     * @return $this This instance for further usage.
     */
-   public function deleteGetParameter($name);
+   public function deleteGetParameter(string $name);
 
    /**
     * Let's you delete a GET parameter. If contained in the POST part of the request,
@@ -206,7 +206,7 @@ interface Request {
     *
     * @return $this This instance for further usage.
     */
-   public function deletePostParameter($name);
+   public function deletePostParameter(string $name);
 
    /**
     * Allows to reset the entire set of request parameters.
@@ -272,7 +272,7 @@ interface Request {
     *
     * @return Url A url representation of the current request.
     */
-   public function getUrl($absolute = false);
+   public function getUrl(bool $absolute = false);
 
    /**
     * @param bool $absolute Returns an absolute URL if set to <em>true</em>. Default is <em>false</em>.
@@ -281,7 +281,7 @@ interface Request {
     *
     * @throws UrlFormatException In case no referrer is present.
     */
-   public function getReferrerUrl($absolute = false);
+   public function getReferrerUrl(bool $absolute = false);
 
    /**
     * Returns the list of Cookies sent along with the request.
@@ -300,7 +300,7 @@ interface Request {
     *
     * @return Cookie|null The desired cookie or <em>null</em> in case it doesn't exist within the current request.
     */
-   public function getCookie($name);
+   public function getCookie(string $name);
 
    /**
     * Let's you check whether the current request has a specific cookie or not.
@@ -311,7 +311,7 @@ interface Request {
     *
     * @return bool <em>True</em> in case the current request has the desired cookie specified, <em>false</em> otherwise.
     */
-   public function hasCookie($name);
+   public function hasCookie(string $name);
 
    /**
     * @return string The request method name (e.g. GET).
