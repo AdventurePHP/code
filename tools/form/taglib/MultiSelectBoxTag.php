@@ -41,7 +41,7 @@ class MultiSelectBoxTag extends SelectBoxTag {
     * @version
     * Version 0.1, 07.01.2007<br />
     * Version 0.2, 03.03.2007 (Removed the "&" before the "new" operator)<br />
-    * Version 0.3, 26.08.2007 (Added the "multiple" attribut)<br />
+    * Version 0.3, 26.08.2007 (Added the "multiple" attribute)<br />
     * Version 0.4, 28.08.2010 (Added option groups)<br />
     */
    public function __construct() {
@@ -186,7 +186,7 @@ class MultiSelectBoxTag extends SelectBoxTag {
     * @version
     * Version 0.1, 08.06.2008<br />
     */
-   public function &getSelectedOptions() {
+   public function getSelectedOptions() {
 
       // call presetting lazy if we have dynamic field
       if ($this->isDynamicField === true) {
@@ -210,7 +210,6 @@ class MultiSelectBoxTag extends SelectBoxTag {
       }
 
       return $selectedOptions;
-
    }
 
    /**
