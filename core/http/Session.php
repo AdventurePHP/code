@@ -37,7 +37,7 @@ use InvalidArgumentException;
  * Version 0.4, 06.05.2013 (Renamed from SessionManager to Session to ensure better naming)<br />
  * Version 0.5, 22.01.2015 (ID#234: moved to APF\core\http namespace to streamline request/response API)<br />
  */
-final class Session {
+class Session {
 
    /**
     * The namespace of the current instance of the session.
@@ -57,7 +57,7 @@ final class Session {
     * Version 0.1, 08.03.2006<br />
     * Version 0.2, 15.05.2013 (Changed to __construct [Tobias Lückel|Megger])<br />
     */
-   public function __construct($namespace) {
+   public function __construct(string $namespace) {
 
       if (empty($namespace)) {
          throw new InvalidArgumentException('Session cannot be created with an empty namespace!');
@@ -69,7 +69,7 @@ final class Session {
       // deprecated as of PHP 5.3. so we have to use
       // session_start(), but with an additional check :(
       if (isset($_SESSION) === false) {
-         session_start();
+         $this->startSession();
       }
 
       // init the session if not existent yet to avoid array access issues and weired error messages.
@@ -77,6 +77,13 @@ final class Session {
          $_SESSION[$namespace] = [];
       }
 
+   }
+
+   /**
+    * Internal wrapper method for PHP native function to allow unit testing.
+    */
+   protected function startSession() {
+      session_start();
    }
 
    /**
@@ -106,7 +113,7 @@ final class Session {
     * Version 0.3, 30.01.2010 (Switched return value to null to be consistent with the RequestHandler)<br />
     * Version 0.4, 28.02.2010 (Added default value behaviour)<br />
     */
-   public function load($attribute, $default = null) {
+   public function load(string $attribute, $default = null) {
       if (isset($_SESSION[$this->namespace][$attribute])) {
          return $_SESSION[$this->namespace][$attribute];
       } else {
@@ -151,7 +158,7 @@ final class Session {
     * @version
     * Version 0.1, 08.03.2006<br />
     */
-   public function save($attribute, $value) {
+   public function save(string $attribute, $value) {
       $_SESSION[$this->namespace][$attribute] = $value;
    }
 
@@ -164,7 +171,7 @@ final class Session {
     * @version
     * Version 0.1, 08.03.2006<br />
     */
-   public function delete($attribute) {
+   public function delete(string $attribute) {
       unset($_SESSION[$this->namespace][$attribute]);
    }
 
