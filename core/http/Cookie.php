@@ -128,7 +128,7 @@ class Cookie {
     * Version 0.1, 08.11.2008<br />
     * Version 0.2, 13.06.2013 (Refactoring to real domain object representation)<br />
     */
-   public function __construct($name, $expireTime = null, $domain = null, $path = null, $secure = null, $httpOnly = null) {
+   public function __construct(string $name, int $expireTime = null, string $domain = null, string $path = null, bool $secure = false, bool $httpOnly = false) {
 
       if (empty($name)) {
          throw new InvalidArgumentException('Cookie cannot be created with an empty name!');
@@ -167,7 +167,7 @@ class Cookie {
     * Version 0.1, 08.11.2008<br />
     * Version 0.2, 13.06.2013 (Refactoring to real domain object representation)<br />
     */
-   public function setValue($value) {
+   public function setValue(string $value) {
       $this->value = $value;
 
       return $this;
@@ -186,7 +186,7 @@ class Cookie {
     * Version 0.2, 10.01.2009 (Added namespace support)<br />
     * Version 0.3, 13.06.2013 (Refactoring to real domain object representation)<br />
     */
-   public function getValue($default = null) {
+   public function getValue(string $default = null) {
       return $this->value !== null ? $this->value : $default;
    }
 
@@ -224,7 +224,7 @@ class Cookie {
     *
     * @return Cookie This instance for further usage.
     */
-   public function setDomain($domain) {
+   public function setDomain(string $domain) {
       $this->domain = $domain;
 
       return $this;
@@ -242,7 +242,7 @@ class Cookie {
     *
     * @return Cookie This instance for further usage.
     */
-   public function setExpireTime($expireTime) {
+   public function setExpireTime(int $expireTime) {
       $this->expireTime = $expireTime;
 
       return $this;
@@ -256,12 +256,12 @@ class Cookie {
    }
 
    /**
-    * @param boolean $httpOnly True in case the cookie should be restricted to HTTP protocol chances, false otherwise
+    * @param bool $httpOnly True in case the cookie should be restricted to HTTP protocol chances, false otherwise
     * (e.g. for Java Script manipulation).
     *
     * @return Cookie This instance for further usage.
     */
-   public function setHttpOnly($httpOnly) {
+   public function setHttpOnly(bool $httpOnly) {
       $this->httpOnly = $httpOnly;
 
       return $this;
@@ -279,7 +279,7 @@ class Cookie {
     *
     * @return Cookie This instance for further usage.
     */
-   public function setPath($path) {
+   public function setPath(string $path) {
       $this->path = $path;
 
       return $this;
@@ -293,11 +293,11 @@ class Cookie {
    }
 
    /**
-    * @param boolean $secure True in case the cookie is only sent via a secure connection, false otherwise.
+    * @param bool $secure True in case the cookie is only sent via a secure connection, false otherwise.
     *
     * @return Cookie This instance for further usage.
     */
-   public function setSecure($secure) {
+   public function setSecure(bool $secure) {
       $this->secure = $secure;
 
       return $this;
