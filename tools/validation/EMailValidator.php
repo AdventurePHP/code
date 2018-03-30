@@ -53,7 +53,7 @@ class EMailValidator implements Validator {
     * @version
     * Version 0.1, 23.08.2014<br />
     */
-   public function __construct($rule = self::RULE_SIMPLE) {
+   public function __construct(string $rule = self::RULE_SIMPLE) {
       $this->rule = $rule;
    }
 

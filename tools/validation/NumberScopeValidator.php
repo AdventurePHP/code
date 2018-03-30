@@ -67,7 +67,7 @@ class NumberScopeValidator implements Validator {
     * @version
     * Version 0.1, 23.08.2014<br />
     */
-   public function __construct($minValue = null, $maxValue = null, $onlyIntegersAccepted = false, $includeLowerEnd = false, $includeUpperEnd = false) {
+   public function __construct(int $minValue = null, int $maxValue = null, bool $onlyIntegersAccepted = false, bool $includeLowerEnd = false, bool $includeUpperEnd = false) {
       $this->maxValue = $maxValue;
       $this->minValue = $minValue;
       $this->onlyIntegersAccepted = $onlyIntegersAccepted;
@@ -86,7 +86,7 @@ class NumberScopeValidator implements Validator {
          }
 
          // convert input from string to int
-         $input = (int) $subject;
+         $input = (int)$subject;
 
       } else {
 
@@ -96,7 +96,7 @@ class NumberScopeValidator implements Validator {
          }
 
          // convert input from string to float
-         $input = (float) $subject;
+         $input = (float)$subject;
 
       }
 

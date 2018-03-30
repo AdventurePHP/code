@@ -48,7 +48,7 @@ class PhoneNumberValidator implements Validator {
     * @version
     * Version 0.1, 23.08.2014<br />
     */
-   public function __construct($rule = self::STANDARD) {
+   public function __construct(string $rule = self::STANDARD) {
       $this->rule = $rule;
    }
 

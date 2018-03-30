@@ -65,7 +65,7 @@ class TextLengthValidator implements Validator {
     * @version
     * Version 0.1, 23.08.2014<br />
     */
-   public function __construct($minLength, $maxLength, $mode = self::MODE_LAX) {
+   public function __construct(int $minLength, int $maxLength, $mode = self::MODE_LAX) {
       $this->minLength = $minLength;
       $this->maxLength = $maxLength;
       $this->mode = $mode;

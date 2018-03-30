@@ -46,7 +46,7 @@ class StringAssistant {
     * @version
     * Version 0.1, 11.01.2005<br />
     */
-   public static function escapeSpecialCharacters($string) {
+   public static function escapeSpecialCharacters(string $string) {
       return addslashes(htmlspecialchars($string, ENT_QUOTES, Registry::retrieve('APF\core', 'Charset'), false));
    }
 
@@ -61,11 +61,11 @@ class StringAssistant {
     * @version
     * Version 0.1, 24.06.2007<br />
     */
-   public static function encodeCharactersToHTML($string) {
+   public static function encodeCharactersToHTML(string $string) {
 
       $content = trim($string);
 
-      $encodedContent = (string) '';
+      $encodedContent = (string)'';
 
       for ($i = 0; $i < strlen($content); $i++) {
          $encodedContent .= '&#' . ord($content[$i]) . ';';
@@ -86,21 +86,20 @@ class StringAssistant {
     * @version
     * Version 0.1, 28.12.2007<br />
     */
-   public static function generateCaptchaString($length) {
+   public static function generateCaptchaString(int $length) {
 
       // shuffles random numbers
       srand(StringAssistant::generateSeed());
 
       $characterBase = 'ABCDEFGHJKLMNPRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
 
-      $captchaString = (string) '';
+      $string = (string)'';
 
-      while (strlen($captchaString) < $length) {
-         $captchaString .= substr($characterBase, (rand() % (strlen($characterBase))), 1);
+      while (strlen($string) < $length) {
+         $string .= substr($characterBase, (rand() % (strlen($characterBase))), 1);
       }
 
-      return $captchaString;
-
+      return $string;
    }
 
    /**
@@ -112,10 +111,10 @@ class StringAssistant {
     * @version
     * Version 0.1, 28.12.2007<br />
     */
-   public static function generateSeed() {
+   protected static function generateSeed() {
       list($usec, $sec) = explode(' ', microtime());
 
-      return (float) $sec + ((float) $usec * 100000);
+      return (float)$sec + ((float)$usec * 100000);
    }
 
 }

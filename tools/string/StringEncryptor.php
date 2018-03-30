@@ -48,7 +48,7 @@ class StringEncryptor extends APFObject {
     * Version 0.1, 24.06.2006<br />
     * Version 0.2, 02.06.2007 (Switched to ConfigurationManager)<br />
     */
-   public function getPasswordHash($password, $section = 'Standard') {
+   public function getPasswordHash(string $password, string $section = 'Standard') {
       $config = $this->getConfiguration('APF\tools\string', 'encryption.ini');
 
       return crypt($password, $config->getSection($section)->getValue('PasswordSalt'));
