@@ -24,7 +24,6 @@ use APF\modules\comments\biz\ArticleComment;
 use APF\modules\comments\biz\ArticleCommentManager;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
-use APF\tools\string\AdvancedBBCodeParser;
 
 /**
  * Implements the document controller for the 'listing.html' template.
@@ -56,14 +55,8 @@ class CommentListingController extends CommentBaseDocumentController {
       // load the entries using the business component
       $entries = $m->loadEntries();
 
-      $buffer = (string) '';
+      $buffer = (string)'';
       $template = $this->getTemplate('ArticleComment');
-
-      // init bb code parser (remove some provider, that we don't need configuration files)
-      /* @var $bP AdvancedBBCodeParser */
-      $bP = $this->getServiceObject(AdvancedBBCodeParser::class);
-      $bP->removeProvider('standard.font.color');
-      $bP->removeProvider('standard.font.size');
 
       $i = 1;
       foreach ($entries as $entry) {
@@ -73,7 +66,7 @@ class CommentListingController extends CommentBaseDocumentController {
          $template->setPlaceHolder('Name', $entry->getName());
          $template->setPlaceHolder('Date', \DateTime::createFromFormat('Y-m-d', $entry->getDate())->format('d.m.Y'));
          $template->setPlaceHolder('Time', $entry->getTime());
-         $template->setPlaceHolder('Comment', $bP->parseCode($entry->getComment()));
+         $template->setPlaceHolder('Comment', $entry->getComment());
 
          $buffer .= $template->transformTemplate();
       }
@@ -97,9 +90,9 @@ class CommentListingController extends CommentBaseDocumentController {
       // generate the add comment link
       $this->setPlaceHolder('Link',
             LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery([
-                        $urlParams['PageName']  => '',
+                        $urlParams['PageName'] => '',
                         $urlParams['CountName'] => '',
-                        'coview'                => 'form'
+                        'coview' => 'form'
                   ]
             )
             )
