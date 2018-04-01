@@ -71,12 +71,16 @@ class SimpleCaptchaTag extends AbstractFormControl {
     *
     * @param FormValidator $validator The desired validator.
     *
+    * @return $this
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 30.08.2009<br />
     */
    public function addValidator(FormValidator $validator) {
       $this->textField->addValidator($validator);
+
+      return $this;
    }
 
    /**
@@ -86,6 +90,8 @@ class SimpleCaptchaTag extends AbstractFormControl {
     *
     * @param FormFilter $filter The desired filter.
     *
+    * @return $this
+    *
     * @since 1.11
     *
     * @author Christian Achatz
@@ -94,6 +100,8 @@ class SimpleCaptchaTag extends AbstractFormControl {
     */
    public function addFilter(FormFilter $filter) {
       $this->textField->addFilter($filter);
+
+      return $this;
    }
 
    /**
@@ -187,7 +195,7 @@ class SimpleCaptchaTag extends AbstractFormControl {
    /**
     * Returns a reference on the captcha control's text field.
     *
-    * @return TextFieldTag The captcha's text field.
+    * @return AbstractFormControl|TextFieldTag
     *
     * @author Christian Achatz
     * @version
