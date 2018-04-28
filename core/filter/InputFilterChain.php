@@ -40,7 +40,7 @@ class InputFilterChain extends AbstractFilterChain {
    /**
     * @return InputFilterChain The instance of the current input filter chain.
     */
-   public static function &getInstance() {
+   public static function getInstance() {
       if (self::$CHAIN === null) {
          self::$CHAIN = new InputFilterChain();
       }

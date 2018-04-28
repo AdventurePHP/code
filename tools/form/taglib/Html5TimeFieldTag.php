@@ -91,7 +91,7 @@ class Html5TimeFieldTag extends TextFieldTag {
       return $this->getTime();
    }
 
-   public function &setValue($value) {
+   public function setValue($value) {
       $this->setTime($value);
 
       return $this;

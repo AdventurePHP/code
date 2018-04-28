@@ -71,7 +71,7 @@ class FormGroupTag extends AbstractFormControl implements FormElementGroup {
       return false;
    }
 
-   public function &hide() {
+   public function hide() {
       foreach ($this->children as &$child) {
          if ($child instanceof FormControl) {
             $child->hide();
@@ -95,7 +95,7 @@ class FormGroupTag extends AbstractFormControl implements FormElementGroup {
       }
    }
 
-   public function &show() {
+   public function show() {
       foreach ($this->children as &$child) {
          if ($child instanceof FormControl) {
             $child->show();

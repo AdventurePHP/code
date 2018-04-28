@@ -92,7 +92,7 @@ class Html5WeekFieldTag extends TextFieldTag {
       return $this->getWeek();
    }
 
-   public function &setValue($value) {
+   public function setValue($value) {
       $this->setWeek($value);
 
       return $this;

@@ -30,7 +30,7 @@ class CheckBoxTagTest extends TestCase {
    const BUTTON_NAME = 'send';
    const BUTTON_VALUE = 'Send';
 
-   protected function &getForm() {
+   protected function getForm() {
 
       $form = new HtmlFormTag();
       $form->setAttribute('name', 'test-form');
@@ -103,7 +103,7 @@ class CheckBoxTagTest extends TestCase {
     * @param bool $checked Whether to att checked="checked" attribute.
     * @return HtmlFormTag The generated form tag.
     */
-   protected function &getFormWithCheckBox($name, $value, $checked) {
+   protected function getFormWithCheckBox($name, $value, $checked) {
 
       $form = new HtmlFormTag();
       $form->setAttribute('name', 'test-form');

@@ -265,7 +265,7 @@ class SelectBoxTag extends AbstractFormControl {
     * @version
     * Version 0.1, 07.01.2014<br />
     */
-   protected function &getOrCreateGroup($groupLabel) {
+   protected function getOrCreateGroup($groupLabel) {
       $group = $this->getGroup($groupLabel);
 
       // lazily create group for convenience reason
@@ -289,7 +289,7 @@ class SelectBoxTag extends AbstractFormControl {
     * @version
     * Version 0.1, 15.02.2010<br />
     */
-   public function &getGroup($label) {
+   public function getGroup($label) {
 
       /* @var $group SelectBoxGroupTag */
       $group = null;
@@ -425,7 +425,7 @@ class SelectBoxTag extends AbstractFormControl {
     * @version
     * Version 0.1, 15.02.2010<br />
     */
-   public function &getSelectedOption() {
+   public function getSelectedOption() {
 
       // lazily do request presetting when not already done
       if ($this->isDynamicField === true) {
@@ -469,7 +469,7 @@ class SelectBoxTag extends AbstractFormControl {
     * @version
     * Version 0.1, 26.07.2011<br />
     */
-   public function &setValue($value) {
+   public function setValue($value) {
       $this->setOption2Selected($value);
 
       return $this;

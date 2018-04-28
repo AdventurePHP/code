@@ -56,7 +56,7 @@ final class CacheManagerFabric extends APFObject {
     * Version 0.2, 04.08.2010 (Bug-fix: initializing two cache managers failed due to wrong service mode)<br />
     * Version 0.3, 24.06.2014 (ID#207: directly injecting configuration instead of re-mapping)<br />
     */
-   public function &getCacheManager($configSection) {
+   public function getCacheManager($configSection) {
 
       if (!isset($this->cacheManagerCache[$configSection])) {
 

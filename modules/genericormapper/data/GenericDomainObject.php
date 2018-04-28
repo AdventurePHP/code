@@ -196,7 +196,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * @version
     * Version 0.1, 11.10.2009<br />
     */
-   public function &getDataComponent() {
+   public function getDataComponent() {
       return $this->dataComponent;
    }
 

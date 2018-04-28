@@ -87,7 +87,7 @@ class UserDependentContentConditionSet extends APFObject {
     *
     * @return UserDependentContentConditionSet This instance for further usage.
     */
-   public function &addCondition(UserDependentContentCondition $condition) {
+   public function addCondition(UserDependentContentCondition $condition) {
       $this->conditions[] = $condition;
 
       return $this;

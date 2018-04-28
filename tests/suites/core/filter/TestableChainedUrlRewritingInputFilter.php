@@ -34,7 +34,7 @@ class TestableChainedUrlRewritingInputFilter extends ChainedUrlRewritingInputFil
       $this->frontController = $frontController;
    }
 
-   protected function &getFrontController() {
+   protected function getFrontController() {
       return $this->frontController;
    }
 

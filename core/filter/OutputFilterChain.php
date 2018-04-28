@@ -40,7 +40,7 @@ class OutputFilterChain extends AbstractFilterChain {
    /**
     * @return OutputFilterChain The instance of the current output filter chain.
     */
-   public static function &getInstance() {
+   public static function getInstance() {
       if (self::$CHAIN === null) {
          self::$CHAIN = new OutputFilterChain();
       }

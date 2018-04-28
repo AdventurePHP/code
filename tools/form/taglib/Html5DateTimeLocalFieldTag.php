@@ -91,7 +91,7 @@ class Html5DateTimeLocalFieldTag extends TextFieldTag {
       return $this->getDateTime();
    }
 
-   public function &setValue($value) {
+   public function setValue($value) {
       $this->setDateTime($value);
 
       return $this;

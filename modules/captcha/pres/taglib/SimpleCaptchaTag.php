@@ -201,7 +201,7 @@ class SimpleCaptchaTag extends AbstractFormControl {
     * @version
     * Version 0.1, 30.08.2009<br />
     */
-   public function &getCaptchaTextField() {
+   public function getCaptchaTextField() {
       return $this->textField;
    }
 

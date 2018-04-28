@@ -21,6 +21,7 @@
 namespace APF\modules\guestbook2009\pres\controller;
 
 use APF\core\pagecontroller\BaseDocumentController;
+use APF\core\service\APFDIService;
 use APF\modules\guestbook2009\biz\GuestbookService;
 
 /**
@@ -33,9 +34,9 @@ use APF\modules\guestbook2009\biz\GuestbookService;
 abstract class GuestbookBaseController extends BaseDocumentController {
 
    /**
-    * @return GuestbookService The instance of the guestbook service.
+    * @return APFDIService|GuestbookService
     */
-   protected function &getGuestbookService() {
+   protected function getGuestbookService() {
       return $this->getDIServiceObject('APF\modules\guestbook2009\biz', 'GuestbookService');
    }
 

@@ -234,7 +234,7 @@ class UmgtManager extends APFObject {
     * Version 0.2, 16.03.2010 (Bug fix 299: moved the service type to the GORM factory call)<br />
     * Version 0.1, 25.08.2011 (Switched to DI configuration)<br />
     */
-   public function &getORMapper() {
+   public function getORMapper() {
       return $this->orm;
    }
 

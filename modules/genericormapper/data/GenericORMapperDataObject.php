@@ -48,7 +48,7 @@ interface GenericORMapperDataObject {
    /**
     * @return GenericORRelationMapper The instance of the o/r mapper.
     */
-   public function &getDataComponent();
+   public function getDataComponent();
 
    /**
     * @param string $relationName The name of the relation to load the objects with.

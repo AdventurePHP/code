@@ -354,7 +354,7 @@ class TimeSelectorTag extends AbstractFormControl {
     * @version
     * Version 0.1, 21.2.2011<br />
     */
-   public function &getHoursControl() {
+   public function getHoursControl() {
       return $this->children['h'];
    }
 
@@ -367,7 +367,7 @@ class TimeSelectorTag extends AbstractFormControl {
     * @version
     * Version 0.1, 21.2.2011<br />
     */
-   public function &getMinutesControl() {
+   public function getMinutesControl() {
       return $this->children['m'];
    }
 
@@ -380,7 +380,7 @@ class TimeSelectorTag extends AbstractFormControl {
     * @version
     * Version 0.1, 21.2.2011<br />
     */
-   public function &getSecondsControl() {
+   public function getSecondsControl() {
       return $this->children['s'];
    }
 
@@ -397,7 +397,7 @@ class TimeSelectorTag extends AbstractFormControl {
     * @version
     * Version 0.1, 26.07.2011<br />
     */
-   public function &setValue($value) {
+   public function setValue($value) {
       $this->setTime($value);
 
       return $this;

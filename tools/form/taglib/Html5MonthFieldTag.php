@@ -90,7 +90,7 @@ class Html5MonthFieldTag extends TextFieldTag {
       return $this->getMonth();
    }
 
-   public function &setValue($value) {
+   public function setValue($value) {
       $this->setMonth($value);
 
       return $this;

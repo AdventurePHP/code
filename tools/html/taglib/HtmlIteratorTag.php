@@ -21,6 +21,7 @@
 namespace APF\tools\html\taglib;
 
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\DomNode;
 use APF\core\pagecontroller\TemplateTag;
 use APF\tools\html\Iterator;
 use APF\tools\html\model\IteratorStatus;
@@ -350,13 +351,13 @@ class HtmlIteratorTag extends Document implements Iterator {
    /**
     * Returns the fallback content template in case defined for the present iterator.
     *
-    * @return TemplateTag|null Fallback template or <em>null</em> in case nothing is defined.
+    * @return DomNode|TemplateTag|null
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 06.05.2014<br />
     */
-   public function &getFallbackContent() {
+   public function getFallbackContent() {
 
       $fallbackObjectId = $this->getFallbackContentItemObjectId();
 

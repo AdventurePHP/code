@@ -54,7 +54,7 @@ final class ArrayPagerManagerFabric extends APFObject {
     * @version
     * Version 0.1, 21.12.2009<br />
     */
-   public function &getArrayPagerManager($config) {
+   public function getArrayPagerManager($config) {
 
       // create cache key
       $cacheKey = md5($config);

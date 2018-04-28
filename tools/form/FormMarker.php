@@ -41,7 +41,7 @@ interface FormMarker {
     * @version
     * Version 0.1, 23.08.2014<br />
     */
-   public function &addContentAfter($content);
+   public function addContentAfter($content);
 
    /**
     * Allows you to add content (e.g. HTML, text) BEFORE the form marker.
@@ -54,5 +54,5 @@ interface FormMarker {
     * @version
     * Version 0.1, 23.08.2014<br />
     */
-   public function &addContentBefore($content);
+   public function addContentBefore($content);
 }

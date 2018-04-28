@@ -46,7 +46,7 @@ class ButtonTagTest extends TestCase {
     *
     * @return HtmlFormTag
     */
-   protected function &getForm($method) {
+   protected function getForm($method) {
 
       $form = new HtmlFormTag();
       $form->setAttribute('name', 'test-form');

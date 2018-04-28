@@ -33,7 +33,7 @@ class RadioButtonTagTest extends TestCase {
    /**
     * @return HtmlFormTag
     */
-   protected function &getForm() {
+   protected function getForm() {
 
       $form = new HtmlFormTag();
       $form->setAttribute('name', 'test-form');

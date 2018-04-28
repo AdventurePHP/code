@@ -113,7 +113,7 @@ final class GuestbookService extends APFObject {
     * @version
     * Version 0.1, 13.06.2009<br />
     */
-   private function &getPager() {
+   private function getPager() {
 
       if ($this->pager === null) {
          $this->pager = $this->getServiceObject(PagerManager::class, [], APFService::SERVICE_TYPE_NORMAL);
@@ -126,7 +126,7 @@ final class GuestbookService extends APFObject {
    /**
     * @return APFService|GuestbookModel
     */
-   protected function &getModel() {
+   protected function getModel() {
       return $this->getServiceObject(GuestbookModel::class);
    }
 
@@ -139,7 +139,7 @@ final class GuestbookService extends APFObject {
     * @version
     * Version 0.1, 10.05.2009<br />
     */
-   private function &getMapper() {
+   private function getMapper() {
       return $this->getDIServiceObject('APF\modules\guestbook2009\data', 'GuestbookMapper');
    }
 

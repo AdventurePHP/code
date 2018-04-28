@@ -115,7 +115,7 @@ class SelectBoxGroupTag extends AbstractFormControl {
     * @version
     * Version 0.1, 28.08.2010<br />
     */
-   public function &getSelectedOption() {
+   public function getSelectedOption() {
 
       /* @var $selectedOption SelectBoxOptionTag */
       $selectedOption = null;
@@ -139,7 +139,7 @@ class SelectBoxGroupTag extends AbstractFormControl {
     * @version
     * Version 0.1, 15.02.2010<br />
     */
-   public function &getSelectedOptions() {
+   public function getSelectedOptions() {
 
       $selectedOptions = [];
 

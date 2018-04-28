@@ -68,7 +68,7 @@ class ArticleCommentMapper extends APFObject {
     * @version
     * Version 0.1, 09.06.2008<br />
     */
-   private function &getConnection() {
+   private function getConnection() {
 
       /* @var $cM ConnectionManager */
       $cM = $this->getServiceObject(ConnectionManager::class);

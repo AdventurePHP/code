@@ -397,7 +397,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return $this;
    }
 
-   public function &addAttributesToWhiteList(array $names) {
+   public function addAttributesToWhiteList(array $names) {
       $this->attributeWhiteList = array_merge($this->attributeWhiteList, $names);
 
       return $this;

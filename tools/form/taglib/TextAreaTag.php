@@ -90,7 +90,7 @@ class TextAreaTag extends AbstractFormControl {
     * @version
     * Version 0.1, 26.07.2011<br />
     */
-   public function &setValue($value) {
+   public function setValue($value) {
       $this->content = $value;
 
       return $this;

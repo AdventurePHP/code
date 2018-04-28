@@ -508,7 +508,7 @@ class BaseMapper extends APFObject {
     * @version
     * Version 0.1, 20.02.2010<br />
     */
-   public function &getDbDriver() {
+   public function getDbDriver() {
       return $this->dbDriver;
    }
 

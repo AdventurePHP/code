@@ -43,7 +43,7 @@ class JsCssInclusionFilterChain extends AbstractFilterChain {
    /**
     * @return JsCssInclusionFilterChain The instance of the current jscssinclusion filter chain.
     */
-   public static function &getInstance() {
+   public static function getInstance() {
       if (self::$CHAIN === null) {
          self::$CHAIN = new JsCssInclusionFilterChain();
       }

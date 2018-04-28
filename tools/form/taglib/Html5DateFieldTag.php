@@ -91,7 +91,7 @@ class Html5DateFieldTag extends TextFieldTag {
       return $this->getDate();
    }
 
-   public function &setValue($value) {
+   public function setValue($value) {
       $this->setDate($value);
 
       return $this;

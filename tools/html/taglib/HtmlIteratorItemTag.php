@@ -51,7 +51,7 @@ class HtmlIteratorItemTag extends Document {
     * Version 0.1, 19.10.2009<br />
     * Version 0.2, 12.03.2016 (ID#287: switched to different place holder concept)<br />
     */
-   public function &getPlaceHolderNames() {
+   public function getPlaceHolderNames() {
       $placeHolderNames = [];
       if (count($this->children) > 0) {
          foreach ($this->children as &$child) {
