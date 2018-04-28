@@ -43,7 +43,7 @@ interface GenericORMapperDataObject {
    /**
     * @param GenericORRelationMapper $orm The instance of the o/r mapper to use.
     */
-   public function setDataComponent(GenericORRelationMapper &$orm);
+   public function setDataComponent(GenericORRelationMapper $orm);
 
    /**
     * @return GenericORRelationMapper The instance of the o/r mapper.

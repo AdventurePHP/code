@@ -51,7 +51,7 @@ class FrontControllerActionParameters extends APFObject implements ActionParamet
    }
 
    public function setAction(Action $action) {
-      $this->action = &$action;
+      $this->action = $action;
    }
 
    public function setParameter(string $name, string $value) {

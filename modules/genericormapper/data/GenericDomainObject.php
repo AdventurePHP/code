@@ -209,8 +209,8 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * @version
     * Version 0.1, 11.10.2009<br />
     */
-   public function setDataComponent(GenericORRelationMapper &$orm) {
-      $this->dataComponent = &$orm;
+   public function setDataComponent(GenericORRelationMapper $orm) {
+      $this->dataComponent = $orm;
    }
 
    /**

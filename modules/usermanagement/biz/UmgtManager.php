@@ -200,8 +200,8 @@ class UmgtManager extends APFObject {
     * @version
     * Version 0.1, 25.08.2011<br />
     */
-   public function setORMapper(GenericORRelationMapper &$orm) {
-      $this->orm = &$orm;
+   public function setORMapper(GenericORRelationMapper $orm) {
+      $this->orm = $orm;
    }
 
    /**
