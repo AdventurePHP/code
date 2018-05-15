@@ -68,7 +68,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * @version
     * Version 0.1, 10.03.2010<br />
     */
-   public function executeStatement($namespace, $statementFile, array $params = [], $logStatement = false) {
+   public function executeStatement(string $namespace, string $statementFile, array $params = [], bool $logStatement = false) {
 
       // load statement file content
       $statement = $this->getPreparedStatement($namespace, $statementFile, $params);
@@ -393,7 +393,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * @version
     * Version 0.1, 24.02.2010<br />
     */
-   public function escapeValue($value) {
+   public function escapeValue(string $value) {
       return $this->dbConn->real_escape_string($value);
    }
 
@@ -491,7 +491,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * @version
     * Version 0.1, 09.03.2010<br />
     */
-   public function executeTextStatement($statement, $logStatement = false) {
+   public function executeTextStatement(string $statement, bool $logStatement = false) {
 
       // log statements in debug mode or when requested explicitly
       if ($this->dbDebug == true || $logStatement == true) {

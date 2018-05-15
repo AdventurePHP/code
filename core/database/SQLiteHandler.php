@@ -69,7 +69,7 @@ class SQLiteHandler extends AbstractDatabaseHandler {
     * @version
     * Version 0.1, 10.02.2008<br />
     */
-   public function executeTextStatement($statement, $logStatement = false) {
+   public function executeTextStatement(string $statement, bool $logStatement = false) {
 
       if ($logStatement == true) {
          $this->dbLog->logEntry($this->dbLogTarget, '[SQLiteHandler::executeTextStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
@@ -106,7 +106,7 @@ class SQLiteHandler extends AbstractDatabaseHandler {
     * Version 0.1, 24.02.2008<br />
     * Version 0.2, 21.06.2008 (Replaced APPS__ENVIRONMENT with a value from the Registry)<br />
     */
-   public function executeStatement($namespace, $statementName, array $params = [], $logStatement = false) {
+   public function executeStatement(string $namespace, string $statementName, array $params = [], bool $logStatement = false) {
 
       $statement = $this->getPreparedStatement($namespace, $statementName, $params);
 
@@ -162,7 +162,7 @@ class SQLiteHandler extends AbstractDatabaseHandler {
     * @version
     * Version 0.1, 23.02.2008<br />
     */
-   public function escapeValue($value) {
+   public function escapeValue(string $value) {
       return sqlite_escape_string($value);
    }
 

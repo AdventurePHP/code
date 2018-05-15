@@ -201,12 +201,16 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
     *
     * @param string $host The database host to connect to.
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.05.2012<br />
     */
-   public function setHost($host) {
+   public function setHost(string $host) {
       $this->dbHost = $host;
+
+      return $this;
    }
 
    /**
@@ -214,14 +218,18 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
     * <p/>
     * Can be used for manual or DI configuration.
     *
-    * @param int $port The database port to connect to.
+    * @param string $port The database port to connect to.
+    *
+    * @return $this This instance for further usage.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.05.2012<br />
     */
-   public function setPort($port) {
+   public function setPort(string $port) {
       $this->dbPort = $port;
+
+      return $this;
    }
 
    /**
@@ -231,12 +239,16 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
     *
     * @param string $name Th name of the database to connect to.
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.05.2012<br />
     */
-   public function setDatabaseName($name) {
+   public function setDatabaseName(string $name) {
       $this->dbName = $name;
+
+      return $this;
    }
 
    /**
@@ -246,12 +258,16 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
     *
     * @param string $user The database user.
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.05.2012<br />
     */
-   public function setUser($user) {
+   public function setUser(string $user) {
       $this->dbUser = $user;
+
+      return $this;
    }
 
    /**
@@ -261,12 +277,16 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
     *
     * @param string $pass The database password.
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.05.2012<br />
     */
-   public function setPass($pass) {
+   public function setPass(string $pass) {
       $this->dbPass = $pass;
+
+      return $this;
    }
 
    /**
@@ -276,12 +296,16 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
     *
     * @param string $socket The socket descriptor.
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.05.2012<br />
     */
-   public function setSocket($socket) {
+   public function setSocket(string $socket) {
       $this->dbSocket = $socket;
+
+      return $this;
    }
 
    /**
@@ -291,12 +315,16 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
     *
     * @param string $charset The desired character set.
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.05.2012<br />
     */
-   public function setCharset($charset) {
+   public function setCharset(string $charset) {
       $this->dbCharset = $charset;
+
+      return $this;
    }
 
    /**
@@ -306,12 +334,16 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
     *
     * @param string $collation The desired collation.
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.05.2012<br />
     */
-   public function setCollation($collation) {
+   public function setCollation(string $collation) {
       $this->dbCollation = $collation;
+
+      return $this;
    }
 
    /**
@@ -319,14 +351,18 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
     * <p/>
     * Can be used for manual or DI configuration.
     *
-    * @param boolean $debug <em>True</em> in case the logging feature should be switched on, <em>false</em> otherwise.
+    * @param string $debug <em>true|1</em> in case the logging feature should be switched on, <em>false|0</em> otherwise.
+    *
+    * @return $this This instance for further usage.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.05.2012<br />
     */
-   public function setDebug($debug) {
+   public function setDebug(string $debug) {
       $this->dbDebug = ($debug == 'true' || $debug == '1') ? true : false;
+
+      return $this;
    }
 
    /**
@@ -336,12 +372,16 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
     *
     * @param string $logTarget The name of debug log file.
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.05.2012<br />
     */
-   public function setLogTarget($logTarget) {
+   public function setLogTarget(string $logTarget) {
       $this->dbLogTarget = $logTarget;
+
+      return $this;
    }
 
    /**
@@ -367,7 +407,7 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
     * @version
     * Version 0.1, 10.02.2008<br />
     */
-   public function init($initParam) {
+   public function init(array $initParam) {
 
       if ($this->isInitialized == false) {
 
@@ -484,7 +524,7 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
     * @version
     * Version 0.1, 03.02.2011<br />
     */
-   protected function getPreparedStatement($namespace, $name, array $params = []) {
+   protected function getPreparedStatement(string $namespace, string $name, array $params = []) {
       try {
          $config = $this->getConfiguration($namespace, $name);
       } catch (ConfigurationException $e) {

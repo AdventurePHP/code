@@ -57,7 +57,7 @@ interface DatabaseConnection extends APFDIService {
     * @version
     * Version 0.1, 10.02.2008<br />
     */
-   public function executeStatement($namespace, $statementName, array $params = [], $logStatement = false);
+   public function executeStatement(string $namespace, string $statementName, array $params = [], bool $logStatement = false);
 
    /**
     * Executes a statement applied as a string to the method and returns the
@@ -73,7 +73,7 @@ interface DatabaseConnection extends APFDIService {
     * @version
     * Version 0.1, 10.02.2008<br />
     */
-   public function executeTextStatement($statement, $logStatement = false);
+   public function executeTextStatement(string $statement, bool $logStatement = false);
 
    /**
     * Fetches a record from the database using the given result resource.
@@ -101,7 +101,7 @@ interface DatabaseConnection extends APFDIService {
     * @version
     * Version 0.1, 23.02.2008<br />
     */
-   public function escapeValue($value);
+   public function escapeValue(string $value);
 
    /**
     * Returns the amount of rows, that are affected by a previous update or delete call.
