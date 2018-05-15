@@ -156,7 +156,7 @@ final class DIServiceManager {
       // To avoid such context clashes, objects/services must be created with proper context information!
       if (empty($context)) {
          throw new InvalidArgumentException('[ServiceManager::getServiceObject()] Instance/service creation for namespace "'
-               . $sectionName . '" and name "' . $sectionName . '" failed due to missing/empty context information (' . $context
+               . $configNamespace . '" and name "' . $sectionName . '" failed due to missing/empty context information (' . $context
                . ')! Please provide appropriate context definition to avoid context clashes.');
       }
 
