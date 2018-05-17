@@ -240,20 +240,20 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
             '    ];' . self::EOL . self::EOL;
 
       // add constructor
-      $code .= '   public function __construct($objectName = null) {' . self::EOL .
+      $code .= '   public function __construct(string $objectName = null) {' . self::EOL .
             '      parent::__construct(\'' . $name . '\');' . self::EOL .
             '   }' . self::EOL . self::EOL;
 
 
       // overwrite generic methods to comply w/ generic GORM concept
-      $code .= '   public function getProperty($name) {' . self::EOL .
+      $code .= '   public function getProperty(string $name) {' . self::EOL .
             '      if (in_array($name, $this->propertyNames)) {' . self::EOL .
             '         return $this->$name;' . self::EOL .
             '      }' . self::EOL . self::EOL .
             '      return null;' . self::EOL .
             '   }' . self::EOL . self::EOL .
 
-            '   public function setProperty($name, $value) {' . self::EOL .
+            '   public function setProperty(string $name, $value) {' . self::EOL .
             '      if (in_array($name, $this->propertyNames)) {' . self::EOL .
             '         $this->$name = $value;' . self::EOL .
             '      }' . self::EOL .
@@ -269,7 +269,7 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
             '      return $properties;' . self::EOL .
             '   }' . self::EOL . self::EOL .
 
-            '   public function setProperties($properties = []) {' . self::EOL .
+            '   public function setProperties(array $properties = []) {' . self::EOL .
             '      foreach ($properties as $key => $value) {' . self::EOL .
             '         if (in_array($key, $this->propertyNames)) {' . self::EOL .
             '            $this->$key = $value;' . self::EOL .
@@ -277,14 +277,16 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
             '      }' . self::EOL .
             '   }' . self::EOL . self::EOL .
 
-            '   public function deleteProperty($name) {' . self::EOL .
+            '   public function deleteProperty(string $name) {' . self::EOL .
             '      if (in_array($name, $this->propertyNames)) {' . self::EOL .
             '         $this->$name = null;' . self::EOL .
             '      }' . self::EOL .
             '   }' . self::EOL . self::EOL .
 
-            '   public function setObjectId($id) {' . self::EOL .
+            '   public function setObjectId(int $id) {' . self::EOL .
             '      $this->' . $name . 'ID = $id;' . self::EOL .
+            self::EOL .
+            '      return $this;' . self::EOL .
             '   }' . self::EOL . self::EOL .
 
             '   public function getObjectId() {' . self::EOL .
@@ -484,7 +486,7 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
             '    *' . self::EOL .
             '    * @param string $objectName The internal object name of the domain object.' . self::EOL .
             '    */' . self::EOL .
-            '   public function __construct($objectName = null) {' . self::EOL .
+            '   public function __construct(string $objectName = null) {' . self::EOL .
             '      parent::__construct();' . self::EOL .
             '   }' . self::EOL .
             self::EOL .

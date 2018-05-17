@@ -38,7 +38,7 @@ class UmgtPermission extends UmgtPermissionBase {
     *
     * @param string $objectName The internal object name of the domain object.
     */
-   public function __construct($objectName = null) {
+   public function __construct(string $objectName = null) {
       parent::__construct();
    }
 

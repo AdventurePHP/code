@@ -29,7 +29,7 @@ namespace APF\modules\genericormapper\data;
  */
 interface GenericORMapperDataObject {
 
-   public function __construct($objectName = null);
+   public function __construct(string $objectName = null);
 
    /**
     * @return string The name of the current object.
@@ -38,7 +38,7 @@ interface GenericORMapperDataObject {
 
    public function getObjectId();
 
-   public function setObjectId($id);
+   public function setObjectId(int $id);
 
    /**
     * @param GenericORRelationMapper $orm The instance of the o/r mapper to use.
@@ -56,7 +56,7 @@ interface GenericORMapperDataObject {
     *
     * @return GenericORMapperDataObject The related object.
     */
-   public function loadRelatedObject($relationName, GenericCriterionObject $criterion = null);
+   public function loadRelatedObject(string $relationName, GenericCriterionObject $criterion = null);
 
    /**
     * @param string $relationName The name of the relation to load the objects with.
@@ -64,45 +64,45 @@ interface GenericORMapperDataObject {
     *
     * @return GenericORMapperDataObject[] A list of related objects.
     */
-   public function loadRelatedObjects($relationName, GenericCriterionObject $criterion = null);
+   public function loadRelatedObjects(string $relationName, GenericCriterionObject $criterion = null);
 
-   public function createAssociation($relationName, GenericORMapperDataObject $targetObject);
+   public function createAssociation(string $relationName, GenericORMapperDataObject $targetObject);
 
-   public function deleteAssociation($relationName, GenericORMapperDataObject $targetObject);
+   public function deleteAssociation(string $relationName, GenericORMapperDataObject $targetObject);
 
-   public function deleteAssociations($relationName);
+   public function deleteAssociations(string $relationName);
 
    /**
     * @param string $relationName The name of the relation to get the related objects with.
     *
     * @return GenericORMapperDataObject[] The list of related objects.
     */
-   public function &getRelatedObjects($relationName);
+   public function &getRelatedObjects(string $relationName);
 
    /**
     * @return GenericORMapperDataObject[]
     */
    public function &getAllRelatedObjects();
 
-   public function addRelatedObject($relationName, GenericORMapperDataObject &$object);
+   public function addRelatedObject(string $relationName, GenericORMapperDataObject &$object);
 
-   public function setProperty($name, $value);
+   public function setProperty(string $name, $value);
 
    /**
     * @param $name
     *
     * @return string The value of the desired property.
     */
-   public function getProperty($name);
+   public function getProperty(string $name);
 
-   public function setProperties($properties = []);
+   public function setProperties(array $properties = []);
 
    /**
     * @return string[] An associative array of the object's properties.
     */
    public function getProperties();
 
-   public function deleteProperty($name);
+   public function deleteProperty(string $name);
 
    /**
     * Will be called by GORM before object will be saved.

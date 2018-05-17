@@ -60,11 +60,11 @@ abstract class UmgtVisibilityDefinitionTypeBase extends GenericDomainObject {
          'AppObjectName'
    ];
 
-   public function __construct($objectName = null) {
+   public function __construct(string $objectName = null) {
       parent::__construct('AppProxyType');
    }
 
-   public function getProperty($name) {
+   public function getProperty(string $name) {
       if (in_array($name, $this->propertyNames)) {
          return $this->$name;
       }
@@ -72,7 +72,7 @@ abstract class UmgtVisibilityDefinitionTypeBase extends GenericDomainObject {
       return null;
    }
 
-   public function setProperty($name, $value) {
+   public function setProperty(string $name, $value) {
       if (in_array($name, $this->propertyNames)) {
          $this->$name = $value;
       }
@@ -88,7 +88,7 @@ abstract class UmgtVisibilityDefinitionTypeBase extends GenericDomainObject {
       return $properties;
    }
 
-   public function setProperties($properties = []) {
+   public function setProperties(array $properties = []) {
       foreach ($properties as $key => $value) {
          if (in_array($key, $this->propertyNames)) {
             $this->$key = $value;
@@ -96,14 +96,16 @@ abstract class UmgtVisibilityDefinitionTypeBase extends GenericDomainObject {
       }
    }
 
-   public function deleteProperty($name) {
+   public function deleteProperty(string $name) {
       if (in_array($name, $this->propertyNames)) {
          $this->$name = null;
       }
    }
 
-   public function setObjectId($id) {
+   public function setObjectId(int $id) {
       $this->AppProxyTypeID = $id;
+
+      return $this;
    }
 
    public function getObjectId() {

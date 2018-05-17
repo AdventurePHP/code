@@ -81,7 +81,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * @version
     * Version 0.1, 15.04.2008<br />
     */
-   public function __construct($objectName = null) {
+   public function __construct(string $objectName = null) {
       if (empty($objectName)) {
          throw new InvalidArgumentException('[GenericDomainObject::__construct()] Creating a '
                . 'GenericDomainObject must include an object name specification. Otherwise, '
@@ -114,7 +114,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * @version
     * Version 0.1, 26.04.2008<br />
     */
-   public function getProperty($name) {
+   public function getProperty(string $name) {
 
       if (isset($this->properties[$name])) {
          return $this->properties[$name];
@@ -128,12 +128,16 @@ class GenericDomainObject implements GenericORMapperDataObject {
     *
     * @param int $id The object's internal id (id of the object in database).
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 05.06.2010<br />
     */
-   public function setObjectId($id) {
+   public function setObjectId(int $id) {
       $this->setProperty($this->objectName . 'ID', $id);
+
+      return $this;
    }
 
    /**
@@ -146,7 +150,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * @version
     * Version 0.1, 26.04.2008<br />
     */
-   public function setProperty($name, $value) {
+   public function setProperty(string $name, $value) {
       $this->properties[$name] = $value;
    }
 
@@ -226,7 +230,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * @version
     * Version 0.1, 09.09.2010<br />
     */
-   public function loadRelatedObject($relationName, GenericCriterionObject $criterion = null) {
+   public function loadRelatedObject(string $relationName, GenericCriterionObject $criterion = null) {
 
       // check weather data component is there
       if ($this->dataComponent === null) {
@@ -257,7 +261,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * Version 0.3, 16.06.2008 (Caching of objects disabled, due to recursion errors)<br />
     * Version 0.4, 25.06.2008 (Added a second parameter to have influence on the loaded list)<br />
     */
-   public function loadRelatedObjects($relationName, GenericCriterionObject $criterion = null) {
+   public function loadRelatedObjects(string $relationName, GenericCriterionObject $criterion = null) {
 
       // check weather data component is there
       if ($this->dataComponent === null) {
@@ -285,7 +289,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * @version
     * Version 0.1, 30.10.2010<br />
     */
-   public function createAssociation($relationName, GenericORMapperDataObject $targetObject) {
+   public function createAssociation(string $relationName, GenericORMapperDataObject $targetObject) {
 
       // check weather data component is there
       if ($this->dataComponent === null) {
@@ -313,7 +317,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * @version
     * Version 0.1, 30.10.2010<br />
     */
-   public function deleteAssociation($relationName, GenericORMapperDataObject $targetObject) {
+   public function deleteAssociation(string $relationName, GenericORMapperDataObject $targetObject) {
 
       // check weather data component is there
       if ($this->dataComponent === null) {
@@ -340,7 +344,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * @version
     * Version 0.1, 30.10.2010<br />
     */
-   public function deleteAssociations($relationName) {
+   public function deleteAssociations(string $relationName) {
 
       // check weather data component is there
       if ($this->dataComponent === null) {
@@ -366,7 +370,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * @version
     * Version 0.1, 28.12.2008<br />
     */
-   public function &getRelatedObjects($relationName) {
+   public function &getRelatedObjects(string $relationName) {
 
       if (isset($this->relatedObjects[$relationName])) {
          return $this->relatedObjects[$relationName];
@@ -402,7 +406,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * Version 0.1, 15.04.2008<br />
     * Version 0.2, 03.05.2009 (Added check for null objects. In null cases, the object is not added.)<br />
     */
-   public function addRelatedObject($relationName, GenericORMapperDataObject &$object) {
+   public function addRelatedObject(string $relationName, GenericORMapperDataObject &$object) {
       if ($object !== null) {
          $this->relatedObjects[$relationName][] = $object;
       }
@@ -430,7 +434,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * @version
     * Version 0.1, 26.04.2008<br />
     */
-   public function setProperties($properties = []) {
+   public function setProperties(array $properties = []) {
       if (count($properties) > 0) {
          $this->properties = $properties;
       }
@@ -574,7 +578,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * @version
     * Version 0.1, 20.09.2009 (Introduces because of bug 202)<br />
     */
-   public function deleteProperty($name) {
+   public function deleteProperty(string $name) {
       unset($this->properties[$name]);
    }
 

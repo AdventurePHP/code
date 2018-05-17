@@ -119,13 +119,85 @@ class GenericORMapperTest extends TestCase {
 
       // delete object w/ invalid id
       $object = new GenericDomainObject($objectName);
-      $object->setObjectId('foo');
+      $object->setObjectId(1);
       $this->assertEquals(0, $mapper->deleteObject($object));
 
       // delete object w/ valid id
       $object = new GenericDomainObject($objectName);
       $object->setObjectId('12');
       $this->assertEquals(12, $mapper->deleteObject($object));
+
+   }
+
+   /**
+    * Test object deletion w/ complex object setup.
+    */
+   public function testDeleteObject2() {
+
+      $objectOneName = 'ObjectOne';
+      $objectTwoName = 'ObjectTwo';
+      $objectThreeName = 'ObjectThree';
+      $attributeName = 'DisplayName';
+
+      /* @var $mapper GenericORMapper|MockObject */
+      $mapper = $this->getMockBuilder(GenericORRelationMapper::class)
+            ->setMethods(['getConfiguration'])
+            ->getMock();
+
+      // mock configuration
+      $mappingConfig = new IniConfiguration();
+      $mappingConfig->setValue($objectOneName . '.' . $attributeName, 'VARCHAR(100)');
+      $mappingConfig->setValue($objectTwoName . '.' . $attributeName, 'VARCHAR(100)');
+      $mappingConfig->setValue($objectThreeName . '.' . $attributeName, 'VARCHAR(100)');
+
+      $relationConfig = new IniConfiguration();
+
+      $associationName = $objectOneName . '2' . $objectTwoName;
+      $relationConfig->setValue($associationName . '.Type', 'ASSOCIATION');
+      $relationConfig->setValue($associationName . '.SourceObject', $objectOneName);
+      $relationConfig->setValue($associationName . '.TargetObject', $objectTwoName);
+
+      $compositionName = $objectThreeName . '2' . $objectOneName;
+      $relationConfig->setValue($compositionName . '.Type', 'COMPOSITION');
+      $relationConfig->setValue($compositionName . '.SourceObject', $objectThreeName);
+      $relationConfig->setValue($compositionName . '.TargetObject', $objectOneName);
+
+      $mapper->method('getConfiguration')
+            ->will($this->onConsecutiveCalls(
+                  $mappingConfig,
+                  $relationConfig
+            ));
+
+      // setup mapping table
+      $mapper->addMappingConfiguration('namespace', 'affix');
+      $mapper->addRelationConfiguration('namespace', 'affix');
+
+      // inject pre-configured DB handler
+      /* @var $driver MySQLiHandler|MockObject */
+      $driver = $this->getMockBuilder(MySQLiHandler::class)
+            ->setMethods(['executeTextStatement', 'escapeValue'])
+            ->getMock();
+
+      $driver->expects($this->exactly(3))
+            ->method('executeTextStatement')
+            ->withConsecutive(
+                  ['DELETE FROM `ass_objectone2objecttwo`
+                       WHERE `Source_ObjectOneID` = \'1\';'],
+                  ['DELETE FROM `ent_objectone` WHERE `ObjectOneID` = \'1\';'],
+                  ['DELETE FROM `cmp_objectthree2objectone`
+                       WHERE `Target_ObjectOneID` = \'1\';']
+            );
+
+      $driver->expects($this->exactly(2))
+            ->method('escapeValue')
+            ->willReturnMap([['1', 1]]);
+
+      $mapper->setDbDriver($driver);
+
+      // delete object
+      $object = new GenericDomainObject($objectOneName);
+      $object->setObjectId(1);
+      $this->assertEquals(1, $mapper->deleteObject($object));
 
    }
 
@@ -162,7 +234,7 @@ class GenericORMapperTest extends TestCase {
 
       $driver->expects($this->exactly(2))
             ->method('escapeValue')
-            ->willReturnMap([[$id, $id], [$attributeValue, $attributeValue]]);
+            ->willReturnMap([[strval($id), $id], [strval($attributeValue), $attributeValue]]);
 
       $driver->expects($this->once())
             ->method('executeTextStatement')
@@ -239,8 +311,8 @@ class GenericORMapperTest extends TestCase {
       $driver->expects($this->exactly(2))
             ->method('escapeValue')
             ->willReturnMap([
-                  [$sourceId, $sourceId],
-                  [$targetId, $targetId]
+                  [strval($sourceId), $sourceId],
+                  [strval($targetId), $targetId]
             ]);
 
       $driver->expects($this->once())
@@ -306,8 +378,8 @@ class GenericORMapperTest extends TestCase {
       $driver->expects($this->exactly(2))
             ->method('escapeValue')
             ->willReturnMap([
-                  [$sourceId, $sourceId],
-                  [$targetId, $targetId]
+                  [strval($sourceId), $sourceId],
+                  [strval($targetId), $targetId]
             ]);
 
       $driver->expects($this->once())
@@ -407,6 +479,85 @@ class GenericORMapperTest extends TestCase {
 
       $this->assertInternalType('array', $result);
       $this->assertEmpty($result);
+   }
+
+   /**
+    * Test whether two objects are associated.
+    */
+   public function testIsAssociated() {
+
+      $relationName = 'Foo2Bar';
+
+      /* @var $mapper GenericORRelationMapper|MockObject */
+      $mapper = $this->getMockBuilder(GenericORRelationMapper::class)
+            ->setMethods(['getConfiguration'])
+            ->getMock();
+
+      // mock configuration
+      $mappingConfig = new IniConfiguration();
+      $mappingConfig->setValue('Foo.DisplayName', 'VARCHAR(100)');
+      $mappingConfig->setValue('Bar.DisplayName', 'VARCHAR(100)');
+
+      $relationConfig = new IniConfiguration();
+      $relationConfig->setValue($relationName . '.Type', 'ASSOCIATION');
+      $relationConfig->setValue($relationName . '.SourceObject', 'Foo');
+      $relationConfig->setValue($relationName . '.TargetObject', 'Bar');
+
+      $mapper->method('getConfiguration')
+            ->will($this->onConsecutiveCalls(
+                  $mappingConfig,
+                  $relationConfig
+            ));
+
+      $mapper->addMappingConfiguration('namespace', 'affix');
+      $mapper->addRelationConfiguration('namespace', 'affix');
+
+      /* @var $driver MySQLiHandler|MockObject */
+      $driver = $this->getMockBuilder(MySQLiHandler::class)
+            ->setMethods(['executeTextStatement', 'escapeValue', 'getNumRows'])
+            ->getMock();
+
+      $driver->method('getNumRows')
+            ->will($this->onConsecutiveCalls(true, false));
+
+      $driver->method('escapeValue')
+            ->willReturnMap([
+                  ['1', 1],
+                  ['2', 2],
+                  ['1', 1],
+                  ['3', 3]
+            ]);
+
+      $mapper->setDbDriver($driver);
+
+      $foo = new GenericDomainObject('Foo');
+      $foo->setObjectId(1);
+
+      $bar = new GenericDomainObject('Bar');
+      $bar->setObjectId(1);
+
+      $this->assertTrue($mapper->isAssociated($relationName, $foo->setObjectId(1), $bar->setObjectId(1)));
+      $this->assertFalse($mapper->isAssociated($relationName, $foo->setObjectId(1), $bar->setObjectId(3)));
+   }
+
+   public function testIsComposed() {
+      $this->markTestSkipped('Not yet implemented!');
+   }
+
+   public function testLoadRelatedObjects() {
+      $this->markTestSkipped('Not yet implemented!');
+   }
+
+   public function testLoadNotRelatedObjects() {
+      $this->markTestSkipped('Not yet implemented!');
+   }
+
+   public function testLoadRelationMultiplicity() {
+      $this->markTestSkipped('Not yet implemented!');
+   }
+
+   public function testDeleteAssociations() {
+      $this->markTestSkipped('Not yet implemented!');
    }
 
 }

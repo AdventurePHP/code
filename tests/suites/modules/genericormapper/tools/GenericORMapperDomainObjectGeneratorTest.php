@@ -126,12 +126,14 @@ class GenericORMapperDomainObjectGeneratorTest extends TestCase {
 
       $this->assertContains('protected $propertyNames = [', $code);
 
-      $this->assertContains('public function setProperty($name, $value)', $code);
+      $this->assertContains('public function setProperty(string $name, $value)', $code);
       $this->assertContains('public function getProperties()', $code);
-      $this->assertContains('public function setProperties($properties = [])', $code);
-      $this->assertContains('public function deleteProperty($name)', $code);
+      $this->assertContains('public function setProperties(array $properties = [])', $code);
+      $this->assertContains('public function deleteProperty(string $name)', $code);
 
-      $this->assertContains('public function setObjectId($id)', $code);
+      $this->assertContains('public function __construct(string $objectName = null)', $code);
+
+      $this->assertContains('public function setObjectId(int $id)', $code);
       $this->assertContains('public function getObjectId()', $code);
 
       $this->assertContains('public function getName()', $code);

@@ -108,7 +108,7 @@ class GenericORMapper extends BaseMapper {
     * Version 0.2, 30.05.2008 (Now returns null, if no properties are available)<br />
     * Version 0.3, 15.06.2008 (Now uses the constructor of GenericDomainObject to set the object name)<br />
     * Version 0.4, 15.01.2011 (Added support for own domain objects and event handler)<br />
-    * Version 0.5, 09.08.2017 Remove Datatype from $propertyies.
+    * Version 0.5, 09.08.2017 Remove data type from $properties.
     */
    protected function mapResult2DomainObject($objectName, $properties) {
 
@@ -309,7 +309,7 @@ class GenericORMapper extends BaseMapper {
       $objectID = $this->mappingTable[$objectName]['ID'];
 
       // ID#306: escape ID to avoid SQL injection
-      $id = $this->dbDriver->escapeValue($object->getProperty($objectID));
+      $id = $this->dbDriver->escapeValue(strval($object->getObjectId()));
 
       // Build query
       $delete = 'DELETE FROM `' . $this->mappingTable[$objectName]['Table'] . '`';
@@ -446,7 +446,7 @@ class GenericORMapper extends BaseMapper {
          }
 
          // ID#306: escape ID to avoid SQL injection
-         $id = $this->dbDriver->escapeValue($id);
+         $id = $this->dbDriver->escapeValue(strval($id));
 
          $update .= ' SET ' . implode(', ', $queryParams) . ', ModificationTimestamp = NOW()';
          $update .= ' WHERE ' . $pkName . ' = \'' . $id . '\';';

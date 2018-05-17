@@ -253,7 +253,7 @@ class GenericORRelationMapper extends GenericORMapper {
          $targetObjectId = $this->mappingTable[$targetObjectName]['ID'];
 
          // ID#306: escape ID to avoid SQL injection
-         $id = $this->dbDriver->escapeValue($relatedObject->getObjectId());
+         $id = $this->dbDriver->escapeValue(strval($relatedObject->getObjectId()));
 
          // add statement to where list
          $whereList[] = '`' . $uniqueRelationTargetId . '_' . $toTable . '`.`' . $targetObjectId . '` = ' . $id;
@@ -676,7 +676,7 @@ class GenericORRelationMapper extends GenericORMapper {
       }
 
       // ID#306: escape ID to avoid SQL injection
-      $id = $this->dbDriver->escapeValue($object->getObjectId());
+      $id = $this->dbDriver->escapeValue(strval($object->getObjectId()));
 
       // add where statement
       $where = array_merge($whereList, $this->buildWhere($targetObjectName, $criterion));
@@ -803,7 +803,7 @@ class GenericORRelationMapper extends GenericORMapper {
                    INNER JOIN `' . $sourceObject['Table'] . '` AS `' . $uniqueRelationTargetId . '_' . $sourceObject['Table'] . '` ON `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`' . $relationSourceObjectId . '` = `' . $uniqueRelationTargetId . '_' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '`';
 
       // ID#306: escape ID to avoid SQL injection
-      $id = $this->dbDriver->escapeValue($object->getObjectId());
+      $id = $this->dbDriver->escapeValue(strval($object->getObjectId()));
 
       // add inner where
       $select .= ' WHERE `' . $uniqueRelationTargetId . '_' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '` = \'' . $id . '\'';
@@ -856,7 +856,7 @@ class GenericORRelationMapper extends GenericORMapper {
       $targetObject = $this->mappingTable[$targetObjectName];
 
       // ID#306: escape ID to avoid SQL injection
-      $id = $this->dbDriver->escapeValue($object->getObjectId());
+      $id = $this->dbDriver->escapeValue(strval($object->getObjectId()));
 
       // load multiplicity
       $relationTable = $this->relationTable[$relationName];
@@ -998,7 +998,7 @@ class GenericORRelationMapper extends GenericORMapper {
       $targetCompositions = $this->getCompositionsByObjectName($objectName, 'source');
 
       // ID#306: escape ID to avoid SQL injection
-      $id = $this->dbDriver->escapeValue($object->getObjectId());
+      $id = $this->dbDriver->escapeValue(strval($object->getObjectId()));
 
       // 2. test, if the current object has child objects and though can't be deleted
       $targetcmpcount = count($targetCompositions);
@@ -1171,8 +1171,8 @@ class GenericORRelationMapper extends GenericORMapper {
       $targetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
 
       // ID#306: escape ID to avoid SQL injection
-      $sourceId = $this->dbDriver->escapeValue($sourceObject->getObjectId());
-      $targetId = $this->dbDriver->escapeValue($targetObject->getObjectId());
+      $sourceId = $this->dbDriver->escapeValue(strval($sourceObject->getObjectId()));
+      $targetId = $this->dbDriver->escapeValue(strval($targetObject->getObjectId()));
 
       $insert = 'INSERT INTO `' . $this->relationTable[$relationName]['Table'] . '`
                     (`' . $sourceObjectId . '`,`' . $targetObjectId . '`)
@@ -1224,8 +1224,8 @@ class GenericORRelationMapper extends GenericORMapper {
       $targetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
 
       // ID#306: escape ID to avoid SQL injection
-      $sourceId = $this->dbDriver->escapeValue($sourceObject->getObjectId());
-      $targetId = $this->dbDriver->escapeValue($targetObject->getObjectId());
+      $sourceId = $this->dbDriver->escapeValue(strval($sourceObject->getObjectId()));
+      $targetId = $this->dbDriver->escapeValue(strval($targetObject->getObjectId()));
 
       $delete = 'DELETE FROM `' . $this->relationTable[$relationName]['Table'] . '`
                     WHERE
@@ -1274,7 +1274,7 @@ class GenericORRelationMapper extends GenericORMapper {
       $sourceObjectId = $this->getRelationIdColumn($sourceObjectName, $relationName, self::RELATION_SOURCE);
 
       // ID#306: escape ID to avoid SQL injection
-      $id = $this->dbDriver->escapeValue($sourceObject->getObjectId());
+      $id = $this->dbDriver->escapeValue(strval($sourceObject->getObjectId()));
 
       $delete = 'DELETE FROM `' . $this->relationTable[$relationName]['Table'] . '`
                     WHERE
@@ -1321,8 +1321,8 @@ class GenericORRelationMapper extends GenericORMapper {
       $targetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
 
       // ID#306: escape ID to avoid SQL injection
-      $sourceId = $this->dbDriver->escapeValue($sourceObject->getObjectId());
-      $targetId = $this->dbDriver->escapeValue($targetObject->getObjectId());
+      $sourceId = $this->dbDriver->escapeValue(strval($sourceObject->getObjectId()));
+      $targetId = $this->dbDriver->escapeValue(strval($targetObject->getObjectId()));
 
       $select = 'SELECT * FROM `' . $this->relationTable[$relationName]['Table'] . '`
                     WHERE
@@ -1387,8 +1387,8 @@ class GenericORRelationMapper extends GenericORMapper {
       $childObjectId = $this->getRelationIdColumn($childObjectName, $relationName, self::RELATION_TARGET);
 
       // ID#306: escape ID to avoid SQL injection
-      $fatherId = $this->dbDriver->escapeValue($father->getObjectId());
-      $childId = $this->dbDriver->escapeValue($child->getObjectId());
+      $fatherId = $this->dbDriver->escapeValue(strval($father->getObjectId()));
+      $childId = $this->dbDriver->escapeValue(strval($child->getObjectId()));
 
       $select = 'SELECT * FROM `' . $this->relationTable[$relationName]['Table'] . '`
                     WHERE
