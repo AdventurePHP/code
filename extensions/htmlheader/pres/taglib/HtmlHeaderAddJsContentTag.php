@@ -49,7 +49,7 @@ class HtmlHeaderAddJsContentTag extends Document {
          $node->setAppendToBody(true);
       }
 
-      $node->setPriority($this->getAttribute('priority'));
+      $node->setPriority(intval($this->getAttribute('priority')));
       $header->addNode($node);
 
       return '';

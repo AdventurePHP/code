@@ -55,7 +55,7 @@ class HtmlHeaderAddPackageTag extends Document {
          $node = new CssPackageNode($url, $name, $media);
       }
 
-      $node->setPriority($this->getAttribute('priority'));
+      $node->setPriority(intval($this->getAttribute('priority')));
       $header->addNode($node);
 
       return '';

@@ -46,7 +46,7 @@ class HtmlHeaderAddCssImageTag extends Document {
       $type = $this->getAttribute('type');
       $node = new CssImageNode($href, $rel, $type);
 
-      $node->setPriority($this->getAttribute('priority'));
+      $node->setPriority(intval($this->getAttribute('priority')));
       $header->addNode($node);
 
       return '';

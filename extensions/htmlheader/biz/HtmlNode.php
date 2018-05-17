@@ -52,7 +52,7 @@ abstract class HtmlNode extends Document implements HeaderNode {
       return $this->priority;
    }
 
-   public function setPriority($priority) {
+   public function setPriority(int $priority) {
       $this->priority = intval($priority); // normalize priority to 0 for all faulty inputs
       return $this;
    }
@@ -61,7 +61,7 @@ abstract class HtmlNode extends Document implements HeaderNode {
       return $this->appendToBody;
    }
 
-   public function setAppendToBody($value) {
+   public function setAppendToBody(bool $value) {
       $this->appendToBody = $value;
 
       return $this;

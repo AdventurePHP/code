@@ -62,7 +62,7 @@ interface HeaderNode {
     * @version
     * Version 0.1, 09.05.2011<br />
     */
-   public function setPriority($priority);
+   public function setPriority(int $priority);
 
    /**
     * Returns the priority defined for the current header node.
@@ -84,7 +84,7 @@ interface HeaderNode {
     * @version
     * Version 0.1, 21.09.2011<br />
     */
-   public function setAppendToBody($value);
+   public function setAppendToBody(bool $value);
 
    /**
     * Defines if the tag should be placed in gethead- or getjsbody taglib.

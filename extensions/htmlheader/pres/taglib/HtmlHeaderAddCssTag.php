@@ -87,7 +87,7 @@ class HtmlHeaderAddCssTag extends Document {
          $node = new DynamicCssNode(null, $namespace, $filename, $fcaction, $media);
       }
 
-      $node->setPriority($this->getAttribute('priority'));
+      $node->setPriority(intval($this->getAttribute('priority')));
       $header->addNode($node);
 
       return '';

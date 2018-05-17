@@ -44,7 +44,7 @@ class HtmlHeaderAddCssContentTag extends Document {
       $header = $this->getServiceObject(HtmlHeaderManager::class);
 
       $node = new CssContentNode($this->getContent(), $this->getAttribute('media'));
-      $node->setPriority($this->getAttribute('priority'));
+      $node->setPriority(intval($this->getAttribute('priority')));
       $header->addNode($node);
 
       return '';

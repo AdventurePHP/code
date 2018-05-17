@@ -48,7 +48,7 @@ class HtmlHeaderAddStaticCssTag extends Document {
 
       $node = new StaticCssNode($file, $this->getAttribute('media'));
 
-      $node->setPriority($this->getAttribute('priority'));
+      $node->setPriority(intval($this->getAttribute('priority')));
       $header->addNode($node);
 
       return '';
