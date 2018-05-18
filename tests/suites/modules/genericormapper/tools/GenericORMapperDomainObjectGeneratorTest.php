@@ -160,11 +160,11 @@ class GenericORMapperDomainObjectGeneratorTest extends TestCase {
 
       // test dynamic property name generation
       $propertyNamesCode = '   protected $propertyNames = [' . GenericORMapperDomainObjectGenerator::EOL .
-            '       \'DummyID\',' . GenericORMapperDomainObjectGenerator::EOL .
-            '       \'CreationTimestamp\',' . GenericORMapperDomainObjectGenerator::EOL .
-            '       \'ModificationTimestamp\',' . GenericORMapperDomainObjectGenerator::EOL .
-            '       \'Name\',' . GenericORMapperDomainObjectGenerator::EOL .
-            '       \'Value\'' . GenericORMapperDomainObjectGenerator::EOL .
+            '         \'DummyID\',' . GenericORMapperDomainObjectGenerator::EOL .
+            '         \'CreationTimestamp\',' . GenericORMapperDomainObjectGenerator::EOL .
+            '         \'ModificationTimestamp\',' . GenericORMapperDomainObjectGenerator::EOL .
+            '         \'Name\',' . GenericORMapperDomainObjectGenerator::EOL .
+            '         \'Value\'' . GenericORMapperDomainObjectGenerator::EOL .
             '    ];';
       $this->assertContains($propertyNamesCode, $code);
 
