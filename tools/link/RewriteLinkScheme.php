@@ -36,7 +36,7 @@ namespace APF\tools\link;
  */
 class RewriteLinkScheme extends BasicLinkScheme implements LinkScheme {
 
-   public function formatActionLink(Url $url, $namespace, $name, array $params = []) {
+   public function formatActionLink(Url $url, string $namespace, string $name, array $params = []) {
       return $this->formatLink(
             $url->setQueryParameter(
                   $this->formatActionIdentifier($namespace, $name, true),

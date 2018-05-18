@@ -49,7 +49,7 @@ interface LinkScheme {
     *
     * @return string The result url.
     */
-   public function formatActionLink(Url $url, $namespace, $name, array $params = []);
+   public function formatActionLink(Url $url, string $namespace, string $name, array $params = []);
 
    public function setEncodeAmpersands($encode);
 

@@ -120,7 +120,7 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
       return $queryString;
    }
 
-   public function formatActionLink(Url $url, $namespace, $name, array $params = []) {
+   public function formatActionLink(Url $url, string $namespace, string $name, array $params = []) {
       $url = $this->removeActionInstructions($url);
 
       return $this->formatLinkInternal(
