@@ -224,15 +224,15 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
 
       // add names of properties for further usage
       $properties = [
-            '       \'' . $name . 'ID\'',
-            '       \'CreationTimestamp\'',
-            '       \'ModificationTimestamp\''
+            '         \'' . $name . 'ID\'',
+            '         \'CreationTimestamp\'',
+            '         \'ModificationTimestamp\''
       ];
       foreach ($this->mappingTable[$name] as $key => $value) {
          if ($key === 'ID' || $key === 'Table') {
             continue;
          }
-         $properties[] = '       \'' . $key . '\'';
+         $properties[] = '         \'' . $key . '\'';
       }
 
       $code .= '   protected $propertyNames = [' . self::EOL .
@@ -262,7 +262,7 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
             '   }' . self::EOL . self::EOL .
 
             '   public function getProperties() {' . self::EOL .
-            '      $properties = []; ' . self::EOL .
+            '      $properties = [];' . self::EOL .
             '      foreach ($this->propertyNames as $name) {' . self::EOL .
             '         if ($this->$name !== null) {' . self::EOL .
             '            $properties[$name] = $this->$name;' . self::EOL .
