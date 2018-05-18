@@ -237,7 +237,7 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
 
       $code .= '   protected $propertyNames = [' . self::EOL .
             implode(',' . self::EOL, $properties) . self::EOL .
-            '    ];' . self::EOL . self::EOL;
+            '   ];' . self::EOL . self::EOL;
 
       // add constructor
       $code .= '   public function __construct(string $objectName = null) {' . self::EOL .

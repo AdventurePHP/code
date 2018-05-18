@@ -165,7 +165,7 @@ class GenericORMapperDomainObjectGeneratorTest extends TestCase {
             '         \'ModificationTimestamp\',' . GenericORMapperDomainObjectGenerator::EOL .
             '         \'Name\',' . GenericORMapperDomainObjectGenerator::EOL .
             '         \'Value\'' . GenericORMapperDomainObjectGenerator::EOL .
-            '    ];';
+            '   ];';
       $this->assertContains($propertyNamesCode, $code);
 
    }
