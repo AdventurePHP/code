@@ -74,11 +74,6 @@ abstract class UmgtUserBase extends GenericDomainObject {
    protected $EMail;
 
    /**
-    * @var string The value for property "Phone".
-    */
-   protected $Phone;
-
-   /**
     * @var string The value for property "Mobile".
     */
    protected $Mobile;
@@ -135,7 +130,6 @@ abstract class UmgtUserBase extends GenericDomainObject {
          'ZIPCode',
          'City',
          'EMail',
-         'Phone',
          'Mobile',
          'Username',
          'Password',
@@ -216,7 +210,6 @@ abstract class UmgtUserBase extends GenericDomainObject {
             'ZIPCode',
             'City',
             'EMail',
-            'Phone',
             'Mobile',
             'Username',
             'Password',
@@ -439,33 +432,6 @@ abstract class UmgtUserBase extends GenericDomainObject {
     */
    public function deleteEMail() {
       $this->deleteProperty('EMail');
-
-      return $this;
-   }
-
-   /**
-    * @return string The value for property "Phone".
-    */
-   public function getPhone() {
-      return $this->getProperty('Phone');
-   }
-
-   /**
-    * @param string $value The value to set for property "Phone".
-    *
-    * @return UmgtUser The domain object for further usage.
-    */
-   public function setPhone($value) {
-      $this->setProperty('Phone', $value);
-
-      return $this;
-   }
-
-   /**
-    * @return UmgtUser The domain object for further usage.
-    */
-   public function deletePhone() {
-      $this->deleteProperty('Phone');
 
       return $this;
    }
