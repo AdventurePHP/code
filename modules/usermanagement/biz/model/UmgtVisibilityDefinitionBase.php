@@ -100,6 +100,8 @@ abstract class UmgtVisibilityDefinitionBase extends GenericDomainObject {
       if (in_array($name, $this->propertyNames)) {
          $this->$name = $value;
       }
+
+      return $this;
    }
 
    public function getProperties() {
@@ -118,12 +120,16 @@ abstract class UmgtVisibilityDefinitionBase extends GenericDomainObject {
             $this->$key = $value;
          }
       }
+
+      return $this;
    }
 
    public function deleteProperty(string $name) {
       if (in_array($name, $this->propertyNames)) {
          $this->$name = null;
       }
+
+      return $this;
    }
 
    public function setObjectId(int $id) {

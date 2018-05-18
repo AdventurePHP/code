@@ -146,12 +146,16 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * @param string $name name of the specified domain object property
     * @param string $value value of the specified domain object property
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 26.04.2008<br />
     */
    public function setProperty(string $name, $value) {
       $this->properties[$name] = $value;
+
+      return $this;
    }
 
    /**
@@ -430,6 +434,8 @@ class GenericDomainObject implements GenericORMapperDataObject {
     *
     * @param string[] $properties list of defined properties to apply to the domain object
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 26.04.2008<br />
@@ -438,6 +444,8 @@ class GenericDomainObject implements GenericORMapperDataObject {
       if (count($properties) > 0) {
          $this->properties = $properties;
       }
+
+      return $this;
    }
 
    /**
@@ -574,12 +582,16 @@ class GenericDomainObject implements GenericORMapperDataObject {
     *
     * @param string $name The name of the property to delete.
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 20.09.2009 (Introduces because of bug 202)<br />
     */
    public function deleteProperty(string $name) {
       unset($this->properties[$name]);
+
+      return $this;
    }
 
    /**

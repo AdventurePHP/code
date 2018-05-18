@@ -26,7 +26,6 @@ namespace APF\extensions\postbox\biz;
  * CHANGES WILL BE OVERWRITTEN WHEN UPDATING!!
  * You can change class "PostboxFolder" which extends this base-class.
  */
-use APF\extensions\postbox\biz\AbstractPostboxFolder;
 
 /**
  * This class provides the descriptive getter and setter methods for the "APF\extensions\postbox\biz\PostboxFolder" domain object.
@@ -76,6 +75,8 @@ abstract class PostboxFolderBase extends AbstractPostboxFolder {
       if (in_array($name, $this->propertyNames)) {
          $this->$name = $value;
       }
+
+      return $this;
    }
 
    public function getProperties() {
@@ -94,12 +95,16 @@ abstract class PostboxFolderBase extends AbstractPostboxFolder {
             $this->$key = $value;
          }
       }
+
+      return $this;
    }
 
    public function deleteProperty(string $name) {
       if (in_array($name, $this->propertyNames)) {
          $this->$name = null;
       }
+
+      return $this;
    }
 
    public function setObjectId(int $id) {

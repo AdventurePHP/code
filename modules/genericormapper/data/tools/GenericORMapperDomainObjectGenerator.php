@@ -257,6 +257,8 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
             '      if (in_array($name, $this->propertyNames)) {' . self::EOL .
             '         $this->$name = $value;' . self::EOL .
             '      }' . self::EOL .
+            self::EOL .
+            '      return $this;' . self::EOL .
             '   }' . self::EOL . self::EOL .
 
             '   public function getProperties() {' . self::EOL .
@@ -275,12 +277,16 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
             '            $this->$key = $value;' . self::EOL .
             '         }' . self::EOL .
             '      }' . self::EOL .
+            self::EOL .
+            '      return $this;' . self::EOL .
             '   }' . self::EOL . self::EOL .
 
             '   public function deleteProperty(string $name) {' . self::EOL .
             '      if (in_array($name, $this->propertyNames)) {' . self::EOL .
             '         $this->$name = null;' . self::EOL .
             '      }' . self::EOL .
+            self::EOL .
+            '      return $this;' . self::EOL .
             '   }' . self::EOL . self::EOL .
 
             '   public function setObjectId(int $id) {' . self::EOL .
