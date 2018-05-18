@@ -46,7 +46,7 @@ class MailAddress {
     *
     * @throws InvalidArgumentException In case of invalid/empty name and/or e-mail.
     */
-   public function __construct($name, $email) {
+   public function __construct(string $name = null, string $email = null) {
 
       if (empty($email)) {
          throw new InvalidArgumentException('(Display) Name and/or e-mail must not be empty!');

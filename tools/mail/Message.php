@@ -81,7 +81,7 @@ class Message {
     * @param string $subject The message's subject.
     * @param string $content The message content.
     */
-   public function __construct(MailAddress $sender, $subject, $content) {
+   public function __construct(MailAddress $sender, string $subject, string $content) {
 
       $this->sender = $sender;
       $this->subject = $subject;

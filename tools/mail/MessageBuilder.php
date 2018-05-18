@@ -47,7 +47,7 @@ class MessageBuilder extends APFObject {
     * @version
     * Version 0.1, 26.01.2017 (ID#251: added builder to allow backward-compatible configuration of e-mail message)<br />
     */
-   public function createMessage($section, $subject, $content) {
+   public function createMessage(string $section, string $subject, string $content) {
 
       $config = $this->getConfiguration('APF\tools\mail', 'mailsender.ini');
 
