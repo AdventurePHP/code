@@ -52,7 +52,7 @@ class TextAreaTag extends AbstractFormControl {
    public function transform() {
       if ($this->isVisible) {
          return '<textarea ' . $this->getSanitizedAttributesAsString($this->attributes) . '>'
-         . $this->content . '</textarea>';
+               . $this->content . '</textarea>';
       }
 
       return '';
@@ -113,6 +113,8 @@ class TextAreaTag extends AbstractFormControl {
 
    public function reset() {
       $this->content = null;
+
+      return $this;
    }
 
    /**

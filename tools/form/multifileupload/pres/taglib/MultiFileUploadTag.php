@@ -174,8 +174,8 @@ class MultiFileUploadTag extends AbstractFormControl {
     */
    private function createUploadButton() {
       return '<div id="' . $this->uploadFieldName . '_file_upload_container"><input type="file" name="' . $this->uploadFieldName . '" id="' . $this->uploadFieldName . '" multiple="multiple" /><button>'
-      . $this->languageConfig->getValue('upload.button.label') . '</button><div class="uploadlabel">'
-      . $this->languageConfig->getValue('upload.label') . '</div></div>';
+            . $this->languageConfig->getValue('upload.button.label') . '</button><div class="uploadlabel">'
+            . $this->languageConfig->getValue('upload.label') . '</div></div>';
    }
 
    /**
@@ -188,8 +188,8 @@ class MultiFileUploadTag extends AbstractFormControl {
     */
    private function createDialogFileDelete() {
       return '<div class="confirm_delete ui-dialog-content ui-widget-content dialog_confirm_delete" title="'
-      . $this->languageConfig->getValue('delete.title') . '">'
-      . $this->languageConfig->getValue('delete.message') . '</div>';
+            . $this->languageConfig->getValue('delete.title') . '">'
+            . $this->languageConfig->getValue('delete.message') . '</div>';
    }
 
    /**
@@ -202,8 +202,8 @@ class MultiFileUploadTag extends AbstractFormControl {
     */
    private function createDialogFileSize() {
       return '<div class="filesize_dialog ui-dialog-content ui-widget-content" title="'
-      . $this->languageConfig->getValue('filesize.title') . '">'
-      . $this->languageConfig->getValue('filesize.message') . ' ' . $this->manager->getMaxFileSizeWithUnit() . '</div>';
+            . $this->languageConfig->getValue('filesize.title') . '">'
+            . $this->languageConfig->getValue('filesize.message') . ' ' . $this->manager->getMaxFileSizeWithUnit() . '</div>';
    }
 
    /**
@@ -216,8 +216,8 @@ class MultiFileUploadTag extends AbstractFormControl {
     */
    private function createDialogFileType() {
       return '<div class="filetype_dialog ui-dialog-content ui-widget-content" title="'
-      . $this->languageConfig->getValue('filetype.title') . '">'
-      . $this->languageConfig->getValue('filetype.message') . ' ' . $this->createFileExtensionFromMimeType($this->manager->getMimeTypes()) . '</div>';
+            . $this->languageConfig->getValue('filetype.title') . '">'
+            . $this->languageConfig->getValue('filetype.message') . ' ' . $this->createFileExtensionFromMimeType($this->manager->getMimeTypes()) . '</div>';
    }
 
    /**
@@ -566,6 +566,8 @@ class MultiFileUploadTag extends AbstractFormControl {
          $this->manager->deleteFile($file);
          $this->manager->deleteFileFromSession($file);
       }
+
+      return $this;
    }
 
 }

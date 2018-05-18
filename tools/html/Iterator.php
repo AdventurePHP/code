@@ -41,6 +41,6 @@ interface Iterator {
     * @version
     * Version 0.1, 01.06.2008<br />
     */
-   public function fillDataContainer($data);
+   public function fillDataContainer(array $data = []);
 
 }

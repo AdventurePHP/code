@@ -63,6 +63,8 @@ interface FormElement extends DomNode {
     * <p/>
     * What happens when resetting a form control is up to the dedicated implementation.
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 06.09.2014 (ID#206: Added interface enhancement to allow resetting)<br />

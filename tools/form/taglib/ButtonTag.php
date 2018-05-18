@@ -105,6 +105,7 @@ class ButtonTag extends AbstractFormControl {
 
    public function reset() {
       // nothing to do as buttons contain no user input.
+      return $this;
    }
 
 }

@@ -505,6 +505,8 @@ class SelectBoxTag extends AbstractFormControl {
             $child->deleteAttribute('selected');
          }
       }
+
+      return $this;
    }
 
    /**

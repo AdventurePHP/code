@@ -132,7 +132,7 @@ class HtmlIteratorTag extends Document implements Iterator {
       $this->transformOnPlace = true;
    }
 
-   public function fillDataContainer($data) {
+   public function fillDataContainer(array $data = []) {
       $this->dataContainer = $data;
 
       return $this;

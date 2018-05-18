@@ -99,6 +99,8 @@ class RadioButtonTag extends AbstractFormControl {
 
    public function reset() {
       $this->uncheck();
+
+      return $this;
    }
 
 }

@@ -366,7 +366,7 @@ interface FormControl extends FormElement {
     * @version
     * Version 0.1, 03.02.2010<br />
     */
-   public function appendCssClass($class);
+   public function appendCssClass(string $class);
 
    /**
     * Adds an additional attribute to the white list of the control.
@@ -380,7 +380,7 @@ interface FormControl extends FormElement {
     * @version
     * Version 0.1, 21.07.2010<br />
     */
-   public function addAttributeToWhiteList($name);
+   public function addAttributeToWhiteList(string $name);
 
    /**
     * Adds a set of additional attributes to the white list of the control.

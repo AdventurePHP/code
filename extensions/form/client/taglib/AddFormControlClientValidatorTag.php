@@ -112,6 +112,7 @@ class AddFormControlClientValidatorTag extends AbstractFormControl {
 
    public function reset() {
       // nothing to do as client listeners cannot be reset
+      return $this;
    }
 
 }

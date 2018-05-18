@@ -66,6 +66,7 @@ abstract class FormControlObserverBase extends AbstractFormControl {
 
    public function reset() {
       // nothing to do as observer tags create no visible output
+      return $this;
    }
 
    /**

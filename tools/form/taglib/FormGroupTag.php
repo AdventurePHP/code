@@ -93,6 +93,8 @@ class FormGroupTag extends AbstractFormControl implements FormElementGroup {
             $child->reset();
          }
       }
+
+      return $this;
    }
 
    public function show() {

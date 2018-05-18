@@ -110,6 +110,8 @@ interface HtmlForm extends FormControlFinder, FormElement {
     *
     * @param string $action The action URL of the form.
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 07.01.2007<br />

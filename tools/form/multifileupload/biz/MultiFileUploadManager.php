@@ -168,7 +168,7 @@ class MultiFileUploadManager extends APFObject {
     * @param array $file
     * @param boolean $js True, in case of java script upload, false otherwise.
     *
-    * @return boolean
+    * @return boolean|array
     * @throws FormException
     *
     * @author Werner Liemberger <wpublicmail@gmail.com>
@@ -311,7 +311,7 @@ class MultiFileUploadManager extends APFObject {
     * @param string $dir - Zielverzeichnis
     * @param string $name - Zieldateiname
     *
-    * @return File::moveTo
+    * @return bool
     *
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.03.2011<br>
@@ -381,7 +381,7 @@ class MultiFileUploadManager extends APFObject {
     *
     * @param string $uploadname - Dateiname
     *
-    * @return array
+    * @return mixed
     *
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>

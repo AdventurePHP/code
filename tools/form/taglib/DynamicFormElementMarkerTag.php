@@ -40,7 +40,7 @@ class DynamicFormElementMarkerTag extends AbstractFormControl implements FormMar
       return '';
    }
 
-   public function addContentBefore($content) {
+   public function addContentBefore(string $content) {
       $objectId = $this->getObjectId();
       $this->getParent()->setContent(str_replace(
                   '<' . $objectId . ' />',
@@ -51,7 +51,7 @@ class DynamicFormElementMarkerTag extends AbstractFormControl implements FormMar
       return $this;
    }
 
-   public function addContentAfter($content) {
+   public function addContentAfter(string $content) {
       $objectId = $this->getObjectId();
       $this->getParent()->setContent(str_replace(
                   '<' . $objectId . ' />',
@@ -64,6 +64,7 @@ class DynamicFormElementMarkerTag extends AbstractFormControl implements FormMar
 
    public function reset() {
       // nothing to do as markers don't generate output
+      return $this;
    }
 
 }

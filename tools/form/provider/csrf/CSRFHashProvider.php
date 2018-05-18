@@ -41,6 +41,6 @@ interface CSRFHashProvider {
     * @version
     * Version 0.1, 06.11.2010
     */
-   public function generateHash($salt);
+   public function generateHash(string $salt);
 
 }

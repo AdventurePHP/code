@@ -484,6 +484,8 @@ class DateSelectorTag extends AbstractFormControl {
       $this->getYearControl()->reset();
       $this->getMonthControl()->reset();
       $this->getDayControl()->reset();
+
+      return $this;
    }
 
 }

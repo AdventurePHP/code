@@ -312,6 +312,8 @@ abstract class AbstractFormControl extends Document implements FormControl {
    public function reset() {
       // reset value attribute as basic implementation as it applies in several cases
       $this->setAttribute('value', '');
+
+      return $this;
    }
 
    public function isChecked() {
@@ -391,7 +393,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return $this;
    }
 
-   public function addAttributeToWhiteList($name) {
+   public function addAttributeToWhiteList(string $name) {
       $this->attributeWhiteList[] = $name;
 
       return $this;
@@ -403,7 +405,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
       return $this;
    }
 
-   public function appendCssClass($class) {
+   public function appendCssClass(string $class) {
       $this->addAttribute('class', $class, ' ');
 
       return $this;

@@ -436,6 +436,8 @@ class TimeSelectorTag extends AbstractFormControl {
       if ($this->showSeconds !== false) {
          $this->getSecondsControl()->reset();
       }
+
+      return $this;
    }
 
 }

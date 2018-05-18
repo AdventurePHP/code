@@ -249,6 +249,8 @@ class FileUploadTag extends TextFieldTag {
 
    public function reset() {
       unset($_FILES[$this->getAttribute('name')]);
+
+      return $this;
    }
 
    /**

@@ -74,6 +74,7 @@ class FormSuccessDisplayTag extends AbstractFormControl {
 
    public function reset() {
       // nothing to do as success messages cannot be reset
+      return $this;
    }
 
 }

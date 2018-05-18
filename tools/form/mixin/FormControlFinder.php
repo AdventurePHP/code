@@ -46,7 +46,7 @@ trait FormControlFinder {
     * @return FormControl A reference on the form element.
     * @throws FormException In case the form element cannot be found.
     */
-   public function getFormElementByID($id) {
+   public function getFormElementByID(string $id) {
 
       if (count($this->children) > 0) {
          foreach ($this->children as &$child) {
@@ -89,7 +89,7 @@ trait FormControlFinder {
     * @return DynamicFormElementMarkerTag|DomNode The marker.
     * @throws FormException In case the marker cannot be found.
     */
-   public function getMarker($markerName) {
+   public function getMarker(string $markerName) {
       return $this->getFormElementByName($markerName);
    }
 
@@ -99,7 +99,7 @@ trait FormControlFinder {
     * @return FormControl A reference on the form element.
     * @throws FormException In case the form element cannot be found.
     */
-   public function getFormElementByName($name) {
+   public function getFormElementByName(string $name) {
 
       if (count($this->children) > 0) {
          foreach ($this->children as &$child) {
@@ -142,7 +142,7 @@ trait FormControlFinder {
     * @return LanguageLabelTag The instance of the desired label.
     * @throws FormException In case no label can be found.
     */
-   public function getLabel($name) {
+   public function getLabel(string $name) {
       if (count($this->children) > 0) {
          foreach ($this->children as &$child) {
 
@@ -183,7 +183,7 @@ trait FormControlFinder {
     *
     * @return FormControl[] The list of form controls with the given name.
     */
-   public function getFormElementsByName($name) {
+   public function getFormElementsByName(string $name) {
       $elements = [];
       if (count($this->children) > 0) {
          foreach ($this->children as &$child) {
@@ -209,7 +209,7 @@ trait FormControlFinder {
     * @return FormControl[] A list of references on the form elements.
     * @throws FormException In case the form element cannot be found or desired tag is not registered.
     */
-   public function getFormElementsByTagName($tagName) {
+   public function getFormElementsByTagName(string $tagName) {
 
       /* @var $form HtmlFormTag */
       if ($this instanceof HtmlForm) {

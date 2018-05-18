@@ -219,6 +219,7 @@ class GetClientFormValidationTag extends AbstractFormControl {
 
    public function reset() {
       // nothing to do as client validation rule generation takes no user input
+      return $this;
    }
 
 }

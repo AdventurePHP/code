@@ -174,6 +174,8 @@ class SelectBoxGroupTag extends AbstractFormControl {
       foreach ($this->children as &$child) {
          $child->deleteAttribute('selected');
       }
+
+      return $this;
    }
 
    /**

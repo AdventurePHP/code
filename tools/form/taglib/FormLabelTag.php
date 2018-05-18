@@ -52,8 +52,8 @@ class FormLabelTag extends AbstractFormControl {
    public function transform() {
       if ($this->isVisible) {
          return '<label ' . $this->getSanitizedAttributesAsString($this->getAttributes()) . '>'
-         . $this->getContent()
-         . '</label>';
+               . $this->getContent()
+               . '</label>';
       }
 
       return '';
@@ -61,6 +61,7 @@ class FormLabelTag extends AbstractFormControl {
 
    public function reset() {
       // nothing to do as labels cannot be reset
+      return $this;
    }
 
 }

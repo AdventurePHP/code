@@ -95,6 +95,7 @@ class ValidationListenerTag extends AbstractFormControl implements ValidationLis
 
    public function reset() {
       // nothing to do as listener tags contain no user input
+      return $this;
    }
 
 }

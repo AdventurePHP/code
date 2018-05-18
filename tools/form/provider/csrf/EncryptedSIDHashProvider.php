@@ -42,7 +42,7 @@ class EncryptedSIDHashProvider extends APFObject implements CSRFHashProvider {
     * @version
     * Version 0.1, 29.10.2010
     */
-   public function generateHash($salt) {
+   public function generateHash(string $salt) {
       if (!defined('SID')) {
          session_start();
       }

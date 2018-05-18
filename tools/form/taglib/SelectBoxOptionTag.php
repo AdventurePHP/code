@@ -59,11 +59,13 @@ class SelectBoxOptionTag extends AbstractFormControl {
     */
    public function transform() {
       return '<option ' . $this->getSanitizedAttributesAsString($this->attributes) . '>'
-      . $this->content . '</option>';
+            . $this->content . '</option>';
    }
 
    public function reset() {
       $this->deleteAttribute('selected');
+
+      return $this;
    }
 
 }

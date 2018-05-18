@@ -199,6 +199,8 @@ class HtmlFormTag extends Document implements HtmlForm {
             $child->reset();
          }
       }
+
+      return $this;
    }
 
    /**
@@ -323,12 +325,16 @@ class HtmlFormTag extends Document implements HtmlForm {
     *
     * @param string $content The desired content
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 05.01.2007<br />
     */
    public function addFormContent($content) {
       $this->content .= $content;
+
+      return $this;
    }
 
    /**
@@ -337,6 +343,8 @@ class HtmlFormTag extends Document implements HtmlForm {
     * @param string $markerName the desired marker name
     * @param string $content the content to add
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 03.09.2008<br />
@@ -344,6 +352,8 @@ class HtmlFormTag extends Document implements HtmlForm {
     */
    public function addFormContentBeforeMarker($markerName, $content) {
       $this->getMarker($markerName)->addContentBefore($content);
+
+      return $this;
    }
 
    /**
@@ -352,6 +362,8 @@ class HtmlFormTag extends Document implements HtmlForm {
     * @param string $markerName the desired marker name
     * @param string $content the content to add
     *
+    * @return $this This instance for further usage.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 05.09.2008<br />
@@ -359,6 +371,8 @@ class HtmlFormTag extends Document implements HtmlForm {
     */
    public function addFormContentAfterMarker($markerName, $content) {
       $this->getMarker($markerName)->addContentAfter($content);
+
+      return $this;
    }
 
    /**
@@ -443,12 +457,16 @@ class HtmlFormTag extends Document implements HtmlForm {
 
    public function setAction($action) {
       $this->setAttribute(self::ACTION_ATTRIBUTE_NAME, $action);
+
+      return $this;
    }
 
    /**
     * Adds an additional attribute to the white list of the form.
     *
     * @param string $name The attribute which should be added to the white list.
+    *
+    * @return $this This instance for further usage.
     *
     * @since 2.0
     *
@@ -457,12 +475,16 @@ class HtmlFormTag extends Document implements HtmlForm {
     * Version 0.1, 21.07.2010<br />
     * Version 0.2, 08.06.2013 (Re-introduced white-list modification for form tag)<br />
     */
-   public function addAttributeToWhitelist($name) {
+   public function addAttributeToWhitelist(string $name) {
       $this->attributeWhiteList[] = $name;
+
+      return $this;
    }
 
    /**
     * Defines, whether the form should be transformed at the definition place.
+    *
+    * @return $this This instance for further usage.
     *
     * @author Christian Achatz
     * @version
@@ -470,6 +492,8 @@ class HtmlFormTag extends Document implements HtmlForm {
     */
    public function transformOnPlace() {
       $this->transformOnPlace = true;
+
+      return $this;
    }
 
    /**
