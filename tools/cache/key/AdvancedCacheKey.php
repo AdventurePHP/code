@@ -45,7 +45,7 @@ class AdvancedCacheKey extends SimpleCacheKey {
     * @version
     * Version 0.1, 06.08.2010<br />
     */
-   public function __construct($cacheKey, $cacheSubKey, $ttl = null) {
+   public function __construct(string $cacheKey = null, string $cacheSubKey = null, $ttl = null) {
       parent::__construct($cacheKey, $ttl);
       $this->subKey = $cacheSubKey;
    }

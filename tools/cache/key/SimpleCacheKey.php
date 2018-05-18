@@ -34,7 +34,7 @@ class SimpleCacheKey implements CacheKey {
    private $cacheKey;
    private $ttl;
 
-   public function __construct($cacheKey, $ttl = null) {
+   public function __construct(string $cacheKey = null, $ttl = null) {
       $this->cacheKey = $cacheKey;
       $this->ttl = $ttl;
    }
