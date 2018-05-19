@@ -48,7 +48,7 @@ class ErrorPageController extends BaseDocumentController {
       $model = Singleton::getInstance(ErrorPageViewModel::class);
 
       $errors = array_reverse(debug_backtrace());
-      $buffer = (string)'';
+      $buffer = '';
 
       $errorEntry = $this->getTemplate('ErrorEntry');
 

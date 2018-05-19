@@ -65,7 +65,7 @@ class StringAssistant {
 
       $content = trim($string);
 
-      $encodedContent = (string)'';
+      $encodedContent = '';
 
       for ($i = 0; $i < strlen($content); $i++) {
          $encodedContent .= '&#' . ord($content[$i]) . ';';
@@ -93,7 +93,7 @@ class StringAssistant {
 
       $characterBase = 'ABCDEFGHJKLMNPRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
 
-      $string = (string)'';
+      $string = '';
 
       while (strlen($string) < $length) {
          $string .= substr($characterBase, (rand() % (strlen($characterBase))), 1);

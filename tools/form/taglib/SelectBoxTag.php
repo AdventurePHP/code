@@ -349,7 +349,7 @@ class SelectBoxTag extends AbstractFormControl {
 
       // create html code
       if ($this->isVisible) {
-         $select = (string)'';
+         $select = '';
          $select .= '<select ' . $this->getSanitizedAttributesAsString($this->attributes) . '>';
 
          $this->transformChildren();

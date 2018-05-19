@@ -55,7 +55,7 @@ class CommentListingController extends CommentBaseDocumentController {
       // load the entries using the business component
       $entries = $m->loadEntries();
 
-      $buffer = (string)'';
+      $buffer = '';
       $template = $this->getTemplate('ArticleComment');
 
       $i = 1;
