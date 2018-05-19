@@ -39,7 +39,7 @@ class RoleListController extends UmgtBaseController {
       $roleList = $uM->getPagedRoleList();
 
       // display list
-      $buffer = (string) '';
+      $buffer = '';
       $template = $this->getTemplate('Role');
       foreach ($roleList as $role) {
 

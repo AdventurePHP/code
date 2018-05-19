@@ -159,7 +159,7 @@ class AdvancedPagerController extends BaseDocumentController {
 
          $entriesPerPageConfig = [5, 10, 15, 20];
          $entriesPerPage = $this->getRequest()->getParameter($countUrlParameterName, $entriesPerPage);
-         $buffer = (string) '';
+         $buffer = '';
 
          foreach ($entriesPerPageConfig as $count) {
 

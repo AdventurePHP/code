@@ -71,7 +71,7 @@ class WeatherController extends BaseDocumentController {
 
          // Display items of current channel
          $count = count($Channel);
-         $Buffer = (string) '';
+         $Buffer = '';
 
          for ($i = 0; $i < $count; $i++) {
 
@@ -143,7 +143,7 @@ class WeatherController extends BaseDocumentController {
             fwrite($Socket, $Query);
 
             // Fetch response
-            $response = (string) '';
+            $response = '';
             while (!feof($Socket)) {
                $response .= fgets($Socket, 128);
             }

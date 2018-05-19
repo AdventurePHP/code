@@ -41,7 +41,7 @@ class ProxyDetailsController extends UmgtBaseController {
 
       // load visibility permission list for the current permission
       $template = $this->getTemplate('listitem');
-      $buffer = (string) '';
+      $buffer = '';
       $list = $uM->loadUsersAndGroupsWithVisibilityDefinition($proxy);
 
       // sort list with respect to the display name of the current element

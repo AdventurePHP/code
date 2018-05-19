@@ -39,7 +39,7 @@ class GuestbookListController extends GuestbookBaseController {
       $entryList = $gS->loadPagedEntryList();
 
       $tmpl_entry = $this->getTemplate('entry');
-      $buffer = (string) '';
+      $buffer = '';
       foreach ($entryList as $entry) {
 
          $editor = $entry->getEditor();

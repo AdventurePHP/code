@@ -157,7 +157,7 @@ class SocialBookmarkBarManager extends APFObject {
                );
       }
 
-      $output = (string) '';
+      $output = '';
 
       for ($i = 0; $i < count($this->bookmarkServices); $i++) {
          $output .= $this->generateBookmarkEntry($this->bookmarkServices[$i]);

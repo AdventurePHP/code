@@ -68,7 +68,7 @@ class ProxyListController extends UmgtBaseController {
          $proxies = $uM->getPagedVisibilityDefinitionList();
       }
 
-      $buffer = (string) '';
+      $buffer = '';
       $template = $this->getTemplate('Proxy');
       foreach ($proxies as $proxy) {
 

@@ -38,7 +38,7 @@ class PermissionListController extends UmgtBaseController {
       $permissionList = $uM->getPagedPermissionList();
 
       // display list
-      $buffer = (string) '';
+      $buffer = '';
       $template = $this->getTemplate('Permission');
       foreach ($permissionList as $permission) {
          $template->setPlaceHolder('DisplayName', $permission->getDisplayName());

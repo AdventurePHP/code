@@ -36,7 +36,7 @@ class ProxyTypeListController extends UmgtBaseController {
 
       $uM = $this->getManager();
 
-      $buffer = (string) '';
+      $buffer = '';
       $template = $this->getTemplate('Type');
 
       $list = $uM->loadVisibilityDefinitionTypes();

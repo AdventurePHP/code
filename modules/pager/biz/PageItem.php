@@ -67,7 +67,7 @@ final class PageItem {
 
    public function __construct() {
       $this->page = (int) 0;
-      $this->link = (string) '';
+      $this->link = '';
       $this->isSelected = false;
       $this->entriesCount = (int) 0;
       $this->pageCount = (int) 0;

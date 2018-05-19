@@ -38,7 +38,7 @@ class GroupListController extends UmgtBaseController {
       $groups = $this->getManager()->getPagedGroupList();
 
       // display group list
-      $buffer = (string) '';
+      $buffer = '';
       $template = $this->getTemplate('Group');
 
       foreach ($groups as $group) {

@@ -228,7 +228,7 @@ class HtmlReport implements Report {
     */
    private function getMarkedUpProcessTimeClass($time) {
 
-      $class = (string) '';
+      $class = '';
       if ($time > $this->criticalTime) {
          $class .= 'warn';
       } else {
