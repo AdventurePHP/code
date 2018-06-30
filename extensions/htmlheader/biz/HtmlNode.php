@@ -103,18 +103,18 @@ abstract class HtmlNode extends Document implements HeaderNode {
     * @param string $url Optional url.
     * @param string $namespace Namespace of file
     * @param string $filename Name of file
-    * @param bool $fcaction Optional. Create link for FC-Action.
+    * @param bool $fcAction Optional. Create link for FC-Action.
     * @param string $type Filetype
     *
     * @return string elements' link.
     */
-   protected function buildFrontControllerLink($url, $namespace, $filename, $fcaction, $type) {
+   protected function buildFrontControllerLink($url, $namespace, $filename, $fcAction, $type) {
 
-      if ($fcaction === null) {
-         $fcaction = true;
+      if ($fcAction === null) {
+         $fcAction = true;
       }
 
-      if ($fcaction) {
+      if ($fcAction) {
          $UrlObj = ($url === null) ? Url::fromCurrent(true) : Url::fromString($url);
 
          return LinkGenerator::generateActionUrl($UrlObj, 'APF\extensions\htmlheader', 'JsCss', [

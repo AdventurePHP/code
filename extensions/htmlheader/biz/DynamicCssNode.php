@@ -36,15 +36,15 @@ class DynamicCssNode extends HtmlNode implements CssNode {
     * @param string $url Optional url.
     * @param string $namespace Namespace of file
     * @param string $filename Name of file (without .css)
-    * @param bool $fcaction Optional. Create link for FC-Action.
+    * @param bool $fcAction Optional. Create link for FC-Action.
     * @param string $media Optional css media definition (e.g. "print", "screen", or any other media query).
     */
-   public function __construct($url, $namespace, $filename, $fcaction = true, $media = null) {
+   public function __construct($url, $namespace, $filename, $fcAction = true, $media = null) {
       $this->setAttribute('href', $this->buildFrontControllerLink(
             $url,
             $namespace,
             $filename,
-            $fcaction,
+            $fcAction,
             'css'
       ));
       $this->setAttribute('rel', 'stylesheet');
