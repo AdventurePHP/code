@@ -59,7 +59,7 @@ final class Url {
     * @version
     * Version 0.1, 29.03.2011<br />
     */
-   public function __construct($scheme, $host, $port, $path, array $query = [], $anchor = null) {
+   public function __construct(string $scheme = null, string $host = null, int $port = null, string $path = null, array $query = [], string $anchor = null) {
       $this->scheme = $scheme;
       $this->host = $host;
       $this->port = $port;
@@ -80,7 +80,7 @@ final class Url {
     * @version
     * Version 0.1, 29.03.2011<br />
     */
-   public static function fromString($url) {
+   public static function fromString(string $url) {
 
       // the ugly "@" is only introduced to convert the E_WARNING into an exception
       $parts = @parse_url($url);
@@ -123,7 +123,7 @@ final class Url {
     * Version 0.1, 29.03.2011<br />
     * Version 0.2, 05.09.2015 (ID#258: support nested query parameters)<br />
     */
-   private static function getQueryParams($query) {
+   private static function getQueryParams(string $query = null) {
 
       // reverse resolve encoded ampersands
       $query = str_replace('&amp;', '&', $query);
@@ -152,7 +152,7 @@ final class Url {
     * Version 0.1, 29.03.2011<br />
     * Version 0.2, 09.03.2013 (Now uses standard PHP variables in stead of a Registry value to allow better url input filter manipulation)<br />
     */
-   public static function fromCurrent($absolute = false) {
+   public static function fromCurrent(bool $absolute = false) {
       return self::getRequestStatic()->getUrl($absolute);
    }
 
@@ -168,7 +168,7 @@ final class Url {
     * @version
     * Version 0.1, 07.09.2011<br />
     */
-   public static function fromReferrer($absolute = false) {
+   public static function fromReferrer(bool $absolute = false) {
       return self::getRequestStatic()->getReferrerUrl($absolute);
    }
 
@@ -187,7 +187,7 @@ final class Url {
     * @version
     * Version 0.1, 04.04.2011<br />
     */
-   public function setScheme($scheme) {
+   public function setScheme(string $scheme = null) {
       $this->scheme = $scheme;
 
       return $this;
@@ -208,7 +208,7 @@ final class Url {
     * @version
     * Version 0.1, 04.04.2011<br />
     */
-   public function setHost($host) {
+   public function setHost(string $host = null) {
       $this->host = $host;
 
       return $this;
@@ -229,7 +229,7 @@ final class Url {
     * @version
     * Version 0.1, 04.04.2011<br />
     */
-   public function setPort($port) {
+   public function setPort(int $port = null) {
       $this->port = $port;
 
       return $this;
@@ -250,7 +250,7 @@ final class Url {
     * @version
     * Version 0.1, 04.04.2011<br />
     */
-   public function setPath($path) {
+   public function setPath(string $path = null) {
       $this->path = $path;
 
       return $this;
@@ -280,7 +280,7 @@ final class Url {
     * @version
     * Version 0.1, 04.04.2011<br />
     */
-   public function setQuery(array $query) {
+   public function setQuery(array $query = null) {
       $this->query = $query;
 
       return $this;
@@ -301,7 +301,7 @@ final class Url {
     * @version
     * Version 0.1, 04.04.2011<br />
     */
-   public function setAnchor($anchor) {
+   public function setAnchor(string $anchor = null) {
       $this->anchor = $anchor;
 
       return $this;
@@ -319,7 +319,7 @@ final class Url {
     * @version
     * Version 0.1, 04.04.2011<br />
     */
-   public function getQueryParameter($name, $default = null) {
+   public function getQueryParameter(string $name, $default = null) {
       return isset($this->query[$name]) ? $this->query[$name] : $default;
    }
 
@@ -373,7 +373,7 @@ final class Url {
     * @version
     * Version 0.1, 04.04.2011<br />
     */
-   public function setQueryParameter($name, $value) {
+   public function setQueryParameter(string $name, $value) {
       $this->query[$name] = $value;
 
       return $this;

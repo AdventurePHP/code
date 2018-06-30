@@ -77,7 +77,7 @@ class WsdlObjectMapping extends APFObject {
     * @version
     * Version 0.1, 29.02.2012<br />
     */
-   public function __construct($wsdlType = null, $phpClassName = null) {
+   public function __construct(string $wsdlType = null, string $phpClassName = null) {
       $this->wsdlType = $wsdlType;
       $this->phpClassName = $phpClassName;
    }
@@ -87,7 +87,7 @@ class WsdlObjectMapping extends APFObject {
     *
     * @return WsdlObjectMapping This object for further usage.
     */
-   public function setPhpClassName($phpClassName) {
+   public function setPhpClassName(string $phpClassName) {
       $this->phpClassName = $phpClassName;
 
       return $this;
@@ -102,7 +102,7 @@ class WsdlObjectMapping extends APFObject {
     *
     * @return WsdlObjectMapping This object for further usage.
     */
-   public function setWsdlType($wsdlType) {
+   public function setWsdlType(string $wsdlType) {
       $this->wsdlType = $wsdlType;
 
       return $this;

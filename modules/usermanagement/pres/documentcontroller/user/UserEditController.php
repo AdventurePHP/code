@@ -146,7 +146,7 @@ class UserEditController extends UmgtBaseController {
 
    }
 
-   private function getMarkerClass(FormControl &$control) {
+   private function getMarkerClass(FormControl $control) {
       $marker = $control->getAttribute(AbstractFormValidator::$CUSTOM_MARKER_CLASS_ATTRIBUTE);
       if (empty($marker)) {
          $marker = AbstractFormValidator::$DEFAULT_MARKER_CLASS;

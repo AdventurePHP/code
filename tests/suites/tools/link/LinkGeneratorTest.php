@@ -47,7 +47,7 @@ class LinkGeneratorTest extends TestCase {
       );
    }
 
-   public function testUrlCreationFromString() {
+   public function testUrlCreationFromString1() {
       $scheme = 'https';
       $domain = 'www.domain.tld';
       $path = '/path/to/dir';
@@ -59,6 +59,23 @@ class LinkGeneratorTest extends TestCase {
       $this->assertEquals($domain, $url->getHost());
       $this->assertEquals($path, $url->getPath());
       $this->assertEquals($paramValue, $url->getQueryParameter($paramName));
+   }
+
+   public function testUrlCreationFromString2() {
+      $this->expectException(UrlFormatException::class);
+      Url::fromString('////');
+   }
+
+   public function testUrlCreationFromReferrer1() {
+      $this->expectException(UrlFormatException::class);
+      Url::fromReferrer();
+   }
+
+   public function testUrlCreationFromReferrer2() {
+      $_SERVER['HTTP_REFERER'] = '/foo';
+      $url = Url::fromReferrer();
+      $this->assertEquals('/foo', $url->getPath());
+      unset($_SERVER['HTTP_REFERER']);
    }
 
    public function testFrontControllerUrlGeneration() {
@@ -593,6 +610,16 @@ class LinkGeneratorTest extends TestCase {
       $scheme->setEncodeRfc3986(false);
       $link = $link = LinkGenerator::generateUrl($url, $scheme);
       $this->assertEquals('/?a[x]=1&a[y]=2&b[0]=1&b[1]=2&param name=param value', $link);
+   }
+
+   public function testResetQuery() {
+
+      $query = ['foo' => 'bar', 'bar' => 'baz'];
+      $url = new Url(null, null, null, null, $query);
+      $this->assertEquals($url->getQuery(), $query);
+
+      $url->resetQuery();
+      $this->assertEquals($url->getQuery(), []);
    }
 
 }

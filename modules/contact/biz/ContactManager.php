@@ -167,7 +167,7 @@ class ContactManager extends APFObject {
     * @version
     * Version 0.1, 19.10.2011<br />
     */
-   private function fillPlaceHolders($text, array $values = []) {
+   private function fillPlaceHolders(string $text, array $values = []) {
       foreach ($values as $key => $value) {
          $text = str_replace('{' . $key . '}', $value, $text);
       }
@@ -188,7 +188,7 @@ class ContactManager extends APFObject {
     * @version
     * Version 0.1, 19.10.2011<br />
     */
-   private function getEmailTemplateContent($namespace, $template) {
+   private function getEmailTemplateContent(string $namespace, string $template) {
       $loader = RootClassLoader::getLoaderByNamespace($namespace);
       $rootPath = $loader->getRootPath();
       $vendor = $loader->getVendorName();

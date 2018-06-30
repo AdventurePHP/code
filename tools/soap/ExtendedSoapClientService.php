@@ -72,18 +72,18 @@ class ExtendedSoapClientService extends APFObject {
          /**
           * Use UTF-8 encoding to be compatible with most of the services (e.g. JAVA services).
           */
-            'encoding'     => 'UTF-8',
+            'encoding' => 'UTF-8',
 
          /**
           * Setting the boolean trace option enables use of the methods SoapClient->__getLastRequest,
           * SoapClient->__getLastRequestHeaders, SoapClient->__getLastResponse and SoapClient->__getLastResponseHeaders.
           */
-            'trace'        => true,
+            'trace' => true,
 
          /**
           * The exceptions option is a boolean value defining whether soap errors throw exceptions of type SoapFault.
           */
-            'exceptions'   => true
+            'exceptions' => true
       ];
    }
 
@@ -193,7 +193,7 @@ class ExtendedSoapClientService extends APFObject {
     * <p/>
     * Please note that the object mapping feature of PHP's SOAP client implementation is
     * <strong>NOT</strong> working with this method. If you want to use it, please use the
-    * <em>executeRequest()</em> function.
+    * <em>__call()</em> function.
     *
     * @example
     * <code>
@@ -220,7 +220,7 @@ class ExtendedSoapClientService extends APFObject {
     * @version
     * Version 0.1, 26.01.2012<br />
     */
-   public function executeRequest($action, $request, $oneWay = null) {
+   public function executeRequest(string $action, string $request, bool $oneWay = null) {
 
       // lazily construct the client to be able to configure it by nice setter methods.
       $client = $this->getClient();
@@ -270,7 +270,7 @@ class ExtendedSoapClientService extends APFObject {
     * @version
     * Version 0.1, 26.01.2012<br />
     */
-   public function setLocation($location) {
+   public function setLocation(string $location) {
       $this->options['location'] = $location;
 
       // reconfiguration requires to create a new instance.
@@ -304,7 +304,7 @@ class ExtendedSoapClientService extends APFObject {
     * @version
     * Version 0.1, 26.01.2012<br />
     */
-   public function setWsdlUrl($wsdlUrl) {
+   public function setWsdlUrl(string $wsdlUrl) {
       $this->wsdlUrl = $wsdlUrl;
    }
 
@@ -319,7 +319,7 @@ class ExtendedSoapClientService extends APFObject {
     * @version
     * Version 0.1, 04.05.2012<br />
     */
-   public function setHttpAuthUsername($username) {
+   public function setHttpAuthUsername(string $username) {
       $this->options['login'] = $username;
 
       // reconfiguration requires to create a new instance.
@@ -339,7 +339,7 @@ class ExtendedSoapClientService extends APFObject {
     * @version
     * Version 0.1, 04.05.2012<br />
     */
-   public function setHttpAuthPassword($password) {
+   public function setHttpAuthPassword(string $password) {
       $this->options['password'] = $password;
 
       // reconfiguration requires to create a new instance.
@@ -414,7 +414,7 @@ class ExtendedSoapClientService extends APFObject {
     * @version
     * Version 0.1, 26.01.2012<br />
     */
-   public function setEncoding($encoding) {
+   public function setEncoding(string $encoding) {
       $this->options['encoding'] = $encoding;
 
       // reconfiguration requires to create a new instance.
@@ -559,7 +559,7 @@ class ExtendedSoapClientService extends APFObject {
     * @version
     * Version 0.1, 09.02.2012<br />
     */
-   public function setCookie($name, $value) {
+   public function setCookie(string $name, string $value) {
       $this->getClient()->__setCookie($name, $value);
    }
 
@@ -585,7 +585,7 @@ class ExtendedSoapClientService extends APFObject {
     * @version
     * Version 0.1, 29.08.2012<br />
     */
-   public function setProxyHost($host) {
+   public function setProxyHost(string $host) {
       $this->options['proxy_host'] = $host;
 
       // reconfiguration requires to create a new instance.
@@ -603,7 +603,7 @@ class ExtendedSoapClientService extends APFObject {
     * @version
     * Version 0.1, 29.08.2012<br />
     */
-   public function setProxyPort($port) {
+   public function setProxyPort(string $port) {
       $this->options['proxy_port'] = $port;
 
       // reconfiguration requires to create a new instance.
@@ -621,7 +621,7 @@ class ExtendedSoapClientService extends APFObject {
     * @version
     * Version 0.1, 29.08.2012<br />
     */
-   public function setProxyUsername($username) {
+   public function setProxyUsername(string $username) {
       $this->options['proxy_login'] = $username;
 
       // reconfiguration requires to create a new instance.
@@ -639,7 +639,7 @@ class ExtendedSoapClientService extends APFObject {
     * @version
     * Version 0.1, 29.08.2012<br />
     */
-   public function setProxyPassword($password) {
+   public function setProxyPassword(string $password) {
       $this->options['proxy_password'] = $password;
 
       // reconfiguration requires to create a new instance.
@@ -657,7 +657,7 @@ class ExtendedSoapClientService extends APFObject {
     * @version
     * Version 0.1, 29.08.2012<br />
     */
-   public function setUserAgent($userAgent) {
+   public function setUserAgent(string $userAgent) {
       $this->options['user_agent'] = $userAgent;
 
       // reconfiguration requires to create a new instance.

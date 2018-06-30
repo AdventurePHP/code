@@ -190,7 +190,7 @@ abstract class FilesystemItem extends APFObject {
     * @version Version 0.1, 01.05.2012
     */
    public function getParentFolder() {
-      return new Folder($this->getBasePath());
+      return (new Folder())->open($this->getBasePath());
    }
 
    /**

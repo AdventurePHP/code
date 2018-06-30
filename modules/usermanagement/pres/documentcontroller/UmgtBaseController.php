@@ -49,7 +49,7 @@ abstract class UmgtBaseController extends BaseDocumentController {
     * @version
     * Version 0.1, 26.12.2008<br />
     */
-   protected function generateLink($linkParams, $baseURL = null) {
+   protected function generateLink(array $linkParams = [], $baseURL = null) {
       if ($baseURL === null) {
          $baseURL = $this->getRequest()->getRequestUri();
       }

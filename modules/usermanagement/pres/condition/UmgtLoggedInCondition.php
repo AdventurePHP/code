@@ -31,7 +31,7 @@ use APF\modules\usermanagement\biz\model\UmgtUser;
  */
 class UmgtLoggedInCondition extends UserDependentContentConditionBase implements UserDependentContentCondition {
 
-   public function matches($conditionKey, UmgtUser $user = null) {
+   public function matches(string $conditionKey, UmgtUser $user = null) {
       return $user !== null;
    }
 

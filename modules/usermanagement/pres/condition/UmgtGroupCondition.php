@@ -33,7 +33,7 @@ use APF\modules\usermanagement\biz\model\UmgtUser;
  */
 class UmgtGroupCondition extends UserDependentContentConditionBase implements UserDependentContentCondition {
 
-   public function matches($conditionKey, UmgtUser $user = null) {
+   public function matches(string $conditionKey, UmgtUser $user = null) {
 
       if ($user === null) {
          return false;

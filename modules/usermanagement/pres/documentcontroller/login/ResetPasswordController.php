@@ -108,8 +108,6 @@ class ResetPasswordController extends BaseDocumentController {
             } elseif ($form->isSent() && !$form->isValid()) {
                // error message
                $form->setPlaceHolder('resetpw-error', $this->getTemplate('resetpw-error')->transformTemplate());
-            } else {
-               // nothing to do here
             }
 
             $form->transformOnPlace();

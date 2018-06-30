@@ -129,7 +129,7 @@ class LoginController extends BaseDocumentController {
     * @version
     * Version 0.1, 21.05.2011<br />
     */
-   private function loadUser($username, $password) {
+   private function loadUser(string $username, string $password) {
       /* @var $umgt UmgtManager */
       $umgt = $this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
 
@@ -151,7 +151,7 @@ class LoginController extends BaseDocumentController {
       }
    }
 
-   public function createAutoLogin($user) {
+   public function createAutoLogin(UmgtUser $user) {
       /* @var $umgt UmgtManager */
       $umgt = $this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
 

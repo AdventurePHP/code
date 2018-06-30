@@ -39,7 +39,7 @@ interface UserDependentContentCondition {
     *
     * @return boolean true in case the condition matches, false otherwise.
     */
-   public function matches($conditionKey, UmgtUser $user = null);
+   public function matches(string $conditionKey, UmgtUser $user = null);
 
    /**
     * @return string The condition key.

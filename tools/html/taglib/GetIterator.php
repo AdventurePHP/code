@@ -40,7 +40,7 @@ trait GetIterator {
     *
     * @return Iterator
     */
-   public function getIterator($name) {
+   public function getIterator(string $name) {
       /* @var $this DomNode */
       return $this->getChildNode('name', $name, Iterator::class);
    }

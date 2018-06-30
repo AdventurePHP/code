@@ -46,7 +46,7 @@ class ArticleCommentMapper extends APFObject {
     * @version
     * Version 0.1, 22.08.2007<br />
     */
-   public function loadArticleCommentByID($commentId) {
+   public function loadArticleCommentByID(string $commentId) {
 
       $SQL = $this->getConnection();
       $select = 'SELECT ArticleCommentID, Name, EMail, Comment, Date, Time

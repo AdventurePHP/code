@@ -99,7 +99,7 @@ class StreamMediaAction extends AbstractFrontControllerAction {
     *
     * @return bool True in case the given extension is allowed, false otherwise.
     */
-   private function isAllowedExtension(array $extensions, $extension) {
+   private function isAllowedExtension(array $extensions, string $extension) {
       $extension = strtolower($extension);
 
       return isset($extensions[$extension]);
@@ -111,7 +111,7 @@ class StreamMediaAction extends AbstractFrontControllerAction {
     *
     * @return string Desired mime type,
     */
-   private function getMimeType(array $extensions, $extension) {
+   private function getMimeType(array $extensions, string $extension) {
       $extension = strtolower($extension);
 
       return $extensions[$extension];
@@ -185,12 +185,12 @@ class StreamMediaAction extends AbstractFrontControllerAction {
          return $this->getExtensions();
       } catch (ConfigurationException $e) {
          return [
-               'png'  => 'image/png',
+               'png' => 'image/png',
                'jpeg' => 'image/jpg',
-               'jpg'  => 'image/jpg',
-               'gif'  => 'image/gif',
-               'css'  => 'text/css',
-               'js'   => 'text/javascript'
+               'jpg' => 'image/jpg',
+               'gif' => 'image/gif',
+               'css' => 'text/css',
+               'js' => 'text/javascript'
          ];
       }
    }
