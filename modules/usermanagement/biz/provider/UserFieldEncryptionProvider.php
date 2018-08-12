@@ -28,165 +28,62 @@ use APF\modules\usermanagement\biz\model\UmgtUser;
  * @author Ralf Schubert
  * @version
  * Version 1.0, 24.06.2013<br />
+ * Version 1.1, 12.08.2018 (ID#336: migrated from mcrypt to OpenSSL)<br />
  */
 class UserFieldEncryptionProvider {
 
+   /**
+    * @var array List of field names to be encrypted.
+    */
    public static $encryptedFieldNames = null;
+
+   /**
+    * @var string Encryption key to be configured by application.
+    */
    public static $encryptionConfigKey = null;
-   protected static $encryptionHardCodedKey = 'sjhdjhaDSAHKHSLdäASÖdo75&$/6923598(&)(3k;;';
-   protected static $encryptionConcatenatedKey = null;
-   protected static $encryptionIV = null;
-
 
    /**
-    * Concatenates all encryption key parts to the final key with correct length.
-    * If key is smaller then all key parts together, a new key will be generated,
-    * containing parts of each single key part.
-    *
-    * @param string $handler The mcrypt handler.
-    *
-    * @return String The final encryption/decryption key
+    * @var string Cipher method. Can be defined from the list of i.e. openssl_get_cipher_methods()
     */
-   protected static function getConcatenatedEncryptionKey($handler) {
-      if (self::$encryptionConcatenatedKey === null) {
-         $key = '';
-         $size = mcrypt_enc_get_key_size($handler);
-         $currentSize = 0;
-
-         $sizeHardcoded = strlen(self::$encryptionHardCodedKey);
-         $sizeConfig = strlen(self::$encryptionConfigKey);
-
-         if ($size >= ($sizeHardcoded + $sizeConfig)) {
-            $key = self::$encryptionHardCodedKey . self::$encryptionConfigKey;
-            while ($size > strlen($key)) {
-               $key .= $key;
-            }
-            if ($size < strlen($key)) {
-               $key = substr($key, 0, $size);
-            }
-         } else {
-
-            $posHardcoded = 0;
-            $posConfig = 0;
-
-            while ($currentSize < $size) {
-               if (($posHardcoded + 1) < $sizeHardcoded) {
-                  $key .= substr(self::$encryptionHardCodedKey, $posHardcoded, 1);
-                  $posHardcoded++;
-                  $currentSize++;
-               }
-               if ((($posConfig + 1) < $sizeConfig) && ($currentSize < $size)) {
-                  $key .= substr(self::$encryptionConfigKey, $posConfig, 1);
-                  $posConfig++;
-                  $currentSize++;
-               }
-            }
-         }
-
-         self::$encryptionConcatenatedKey = $key;
-      }
-
-      return self::$encryptionConcatenatedKey;
-   }
+   public static $cipherMethod = 'AES-128-CBC';
 
    /**
-    * Returns encryption handler and creates an IV (or uses cached one)
-    * For the IV the same parts are used as for the encryption key, but they are concatenated differently.
-    *
-    * @return type
+    * @const string Hard-coded encryption key to generate initialization vector.
     */
-   public static function getEncryptionHandler() {
-      $td = mcrypt_module_open('tripledes', '', 'ecb', '');
-      if (self::$encryptionIV === null) {
-         $ivSize = mcrypt_enc_get_iv_size($td);
-         $iv = self::$encryptionConfigKey . self::$encryptionHardCodedKey;
-         while (strlen($iv) < $ivSize) {
-            $iv .= $iv;
-         }
-         $iv = substr($iv, 0, $ivSize);
-         self::$encryptionIV = $iv;
-      }
-
-      return $td;
-   }
-
-   /**
-    * Closes the encryption handler
-    *
-    * @param type $handler
-    */
-   protected static function closeEncryptionhandler($handler) {
-      mcrypt_module_close($handler);
-      self::$encryptionIV = null;
-   }
+   const HARD_CODED_ENCRYPTION_KEY = 'sjhdjhaDSAHKHSLdäASÖdo75&$/6923598(&)(3k;;';
 
    /**
     * Encrypts the given value.
-    * If encryption handler is provided it will be used. Otherwise
-    * one will be generated.
     *
-    * @param String $value Plain value which should be encrypted
-    * @param type $encryptionHandler
-    *
-    * @return String encrypted value
+    * @param string $string Plain value which should be encrypted.
+    * @return string Encrypted value.
     */
-   public static function encrypt($value, $encryptionHandler = null) {
+   public static function encrypt($string) {
 
-      if (empty($value)) {
-         return $value;
+      if (empty($string)) {
+         return '';
       }
 
-      $closeHandler = false;
-      if ($encryptionHandler === null) {
-         $encryptionHandler = self::getEncryptionHandler();
-         $closeHandler = true;
-      }
-
-      mcrypt_generic_init($encryptionHandler, self::getConcatenatedEncryptionKey($encryptionHandler), self::$encryptionIV);
-      $crypted = base64_encode(mcrypt_generic($encryptionHandler, $value));
-      mcrypt_generic_deinit($encryptionHandler);
-
-      if ($closeHandler) {
-         self::closeEncryptionhandler($encryptionHandler);
-      }
-
-      return $crypted;
+      return self::encryptOpenSSL($string);
    }
 
    /**
-    * Decrypts the given encrypted value
+    * Decrypts the given encrypted value.
     *
-    * @param String $crypted Encrypted value which should be decrypted.
-    * @param type $encryptionHandler
-    *
-    * @return String The decrypted plain value
+    * @param string $string Encrypted value which should be decrypted.
+    * @return string The decrypted plain value.
     */
-   public static function decrypt($crypted, $encryptionHandler = null) {
+   public static function decrypt($string) {
 
-      if (empty($crypted)) {
-         return $crypted;
+      if (empty($string)) {
+         return '';
       }
 
-      $closeHandler = false;
-      if ($encryptionHandler === null) {
-         $encryptionHandler = self::getEncryptionHandler();
-         $closeHandler = true;
-      }
-
-      mcrypt_generic_init($encryptionHandler, self::getConcatenatedEncryptionKey($encryptionHandler), self::$encryptionIV);
-      $plain = mdecrypt_generic($encryptionHandler, base64_decode($crypted));
-      mcrypt_generic_deinit($encryptionHandler);
-
-      if ($closeHandler) {
-         self::closeEncryptionhandler($encryptionHandler);
-      }
-      // the trim is needed, because sometimes there appear some
-      // invisible characters which lead to string comparison fails
-      return trim($plain);
+      return self::decryptOpenSSL($string);
    }
 
    /**
-    * Checks wether the given property is configured to be encrypted
+    * Checks whether the given property is configured to be encrypted
     *
     * @param String $propertyName
     *
@@ -209,14 +106,12 @@ class UserFieldEncryptionProvider {
       if (self::$encryptedFieldNames === null) {
          return;
       }
-      $encryptionHandler = self::getEncryptionHandler();
       $properties = $user->getProperties();
       foreach ($properties as $key => $value) {
          if (self::propertyHasEncryptionEnabled($key)) {
-            $user->setProperty($key, self::encrypt($value, $encryptionHandler));
+            $user->setProperty($key, self::encrypt($value));
          }
       }
-      self::closeEncryptionhandler($encryptionHandler);
    }
 
    /**
@@ -229,14 +124,56 @@ class UserFieldEncryptionProvider {
          return;
       }
 
-      $encryptionHandler = self::getEncryptionHandler();
       $properties = $user->getProperties();
       foreach ($properties as $key => $value) {
          if (self::propertyHasEncryptionEnabled($key)) {
-            $user->setProperty($key, self::decrypt($value, $encryptionHandler));
+            $user->setProperty($key, self::decrypt($value));
          }
       }
-      self::closeEncryptionhandler($encryptionHandler);
+   }
+
+   /**
+    * Generates an initialization vector (IV) for encryption and decryption.
+    *
+    * @param int $length Desired length of the initialization vector (IV).
+    * @return string The initialization vector (IV).
+    */
+   protected static function generateInitializationVector($length) {
+      $iv = self::$encryptionConfigKey . self::HARD_CODED_ENCRYPTION_KEY;
+      while (strlen($iv) < $length) {
+         $iv .= $iv;
+      }
+      return substr($iv, 0, $length);
+   }
+
+   protected static function encryptOpenSSL($value) {
+
+      $length = openssl_cipher_iv_length(self::$cipherMethod);
+      $iV = self::generateInitializationVector($length);
+
+      return base64_encode(
+            openssl_encrypt(
+                  $value,
+                  self::$cipherMethod,
+                  self::$encryptionConfigKey,
+                  OPENSSL_RAW_DATA,
+                  $iV
+            )
+      );
+   }
+
+   protected static function decryptOpenSSL($value) {
+
+      $length = openssl_cipher_iv_length(self::$cipherMethod);
+      $iV = self::generateInitializationVector($length);
+
+      return openssl_decrypt(
+            base64_decode($value),
+            self::$cipherMethod,
+            self::$encryptionConfigKey,
+            OPENSSL_RAW_DATA,
+            $iV
+      );
    }
 
 }
