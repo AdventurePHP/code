@@ -50,6 +50,11 @@ class BaseMapper extends APFObject {
    protected static $STORAGE_ENGINE_INDICATOR = 'StorageEngine';
 
    /**
+    * Indicates the identifier that can be used to activate table prefixed for object and relation tables.
+    */
+   const TABLE_PREFIX_INDICATOR = 'TablePrefix';
+
+   /**
     * Namespace, where the configuration files are located.
     *
     * @var string $configNamespace
@@ -352,11 +357,19 @@ class BaseMapper extends APFObject {
 
       // resolve standard properties, that derive from the definition
       // - table name:
-      $objectSection['Table'] = 'ent_' . strtolower($objectName);
+      $prefix = '';
+      if (isset($objectSection[self::TABLE_PREFIX_INDICATOR])) {
+         $prefix = strtolower($objectSection[self::TABLE_PREFIX_INDICATOR]) . '_';
+         unset($objectSection[self::TABLE_PREFIX_INDICATOR]);
+      }
+      $objectSection['Table'] = $prefix . 'ent_' . strtolower($objectName);
+
       // - name of the primary key
       $objectSection['ID'] = $objectName . 'ID';
+
       // remove the additional table definition
       unset($objectSection[self::$ADDITIONAL_INDICES_INDICATOR]);
+
       // remove the storage Engine definition
       unset($objectSection[self::$STORAGE_ENGINE_INDICATOR]);
 
@@ -433,10 +446,16 @@ class BaseMapper extends APFObject {
 
       // Resolve standard properties, that derive from the definition
       // - table name
+      $prefix = '';
+      if (isset($relationSection[self::TABLE_PREFIX_INDICATOR])) {
+         $prefix = strtolower($relationSection[self::TABLE_PREFIX_INDICATOR]) . '_';
+         unset($relationSection[self::TABLE_PREFIX_INDICATOR]);
+      }
+
       if ($relationSection['Type'] == 'COMPOSITION') {
-         $relationSection['Table'] = 'cmp_' . strtolower($relationName);
+         $relationSection['Table'] = $prefix . 'cmp_' . strtolower($relationName);
       } else {
-         $relationSection['Table'] = 'ass_' . strtolower($relationName);
+         $relationSection['Table'] = $prefix . 'ass_' . strtolower($relationName);
       }
 
       // - name of the primary key of the source object
