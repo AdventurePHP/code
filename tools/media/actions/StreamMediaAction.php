@@ -153,7 +153,7 @@ class StreamMediaAction extends AbstractFrontControllerAction {
     * Version 0.1, 18.07.2011<br />
     */
    private function getSanitizedFileBody() {
-      return preg_replace('/[^A-Za-z0-9\-_]/', '', $this->getParameters()->getParameter('filebody'));
+      return preg_replace('/[^A-Za-z0-9\-_\.]/', '', $this->getParameters()->getParameter('filebody'));
    }
 
    /**
