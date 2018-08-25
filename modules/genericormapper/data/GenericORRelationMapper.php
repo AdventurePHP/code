@@ -657,8 +657,7 @@ class GenericORRelationMapper extends GenericORMapper {
 
       // check if relation date fields are activated
       if (isset($this->relationTable[$relationName]['Timestamps']) && strcasecmp($this->relationTable[$relationName]['Timestamps'], 'TRUE') == 0) {
-         $uniqueRelationPrefix = md5(uniqid(mt_rand(), true));
-         $relationTimestamps = ', `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`CreationTimestamp` AS `' . $uniqueRelationPrefix . '_CreationTimestamp`';
+         $relationTimestamps = ', `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`CreationTimestamp` AS `' . GenericDomainObject::RELATION_CREATION_TIMESTAMP . '`';
       }
 
       // build statement
@@ -696,29 +695,7 @@ class GenericORRelationMapper extends GenericORMapper {
       }
 
       // load target object list
-      return $this->extractRelationTimestamps($this->loadObjectListByTextStatement($targetObjectName, $select), $uniqueRelationPrefix);
-   }
-
-   /**
-    * Extracts the timestamps for the relation from the given GDO<br />
-    *
-    * @param GenericDomainObject[] $objects The given list of objects.
-    * @param string $prefix The unique prefix.
-    *
-    * @return GenericORMapperDataObject[] List of the objects.
-    *
-    * @author Lutz Mahlstedt
-    * @version
-    * Version 0.1, 27.07.2012<br />
-    */
-   protected function extractRelationTimestamps(array $objects, $prefix) {
-      if ($prefix !== null) {
-         foreach ($objects AS &$object) {
-            $object->extractRelationTimestamps($prefix);
-         }
-      }
-
-      return $objects;
+      return $this->loadObjectListByTextStatement($targetObjectName, $select);
    }
 
    /**
@@ -1492,7 +1469,7 @@ class GenericORRelationMapper extends GenericORMapper {
             $this->dbDriver->executeTextStatement($select, $this->logStatements)
       );
 
-      return (int) $data[$countColumnName];
+      return (int)$data[$countColumnName];
    }
 
    /**

@@ -258,6 +258,10 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
             '         $this->$name = $value;' . self::EOL .
             '      }' . self::EOL .
             self::EOL .
+            '      if ($name == self::RELATION_CREATION_TIMESTAMP) {' . self::EOL .
+            '         $this->setRelationCreationTimestamp($value);' . self::EOL .
+            '      }' . self::EOL .
+            self::EOL .
             '      return $this;' . self::EOL .
             '   }' . self::EOL . self::EOL .
 
@@ -275,6 +279,9 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
             '      foreach ($properties as $key => $value) {' . self::EOL .
             '         if (in_array($key, $this->propertyNames)) {' . self::EOL .
             '            $this->$key = $value;' . self::EOL .
+            '         }' . self::EOL .
+            '         if ($key === self::RELATION_CREATION_TIMESTAMP) {' . self::EOL .
+            '            $this->setRelationCreationTimestamp($value);' . self::EOL .
             '         }' . self::EOL .
             '      }' . self::EOL .
             self::EOL .

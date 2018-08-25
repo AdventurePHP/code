@@ -71,6 +71,11 @@ class GenericDomainObject implements GenericORMapperDataObject {
    private $relationCreationTimestamp = null;
 
    /**
+    * @const string Relation timestamp property name indicator.
+    */
+   const RELATION_CREATION_TIMESTAMP = 'Relation_CreationTimestamp';
+
+   /**
     * Constructor of the generic domain object. Sets the object name if desired.
     *
     * @param string $objectName name of the domain object.
@@ -154,6 +159,11 @@ class GenericDomainObject implements GenericORMapperDataObject {
     */
    public function setProperty(string $name, $value) {
       $this->properties[$name] = $value;
+
+      // ID#337: extract relation creation timestamp if applicable.
+      if ($name === self::RELATION_CREATION_TIMESTAMP) {
+         $this->setRelationCreationTimestamp($value);
+      }
 
       return $this;
    }
@@ -562,22 +572,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
    /**
-    * Extract relation-timestamps
-    *
-    * @param string $prefix Creation timestamp prefix.
-    *
-    * @author Lutz Mahlstedt
-    * @version
-    * Version 0.1, 27.07.2012<br />
-    */
-   public function extractRelationTimestamps($prefix) {
-      $creationTimestamp = $prefix . '_CreationTimestamp';
-
-      $this->relationCreationTimestamp = $this->properties[$creationTimestamp];
-      $this->deleteProperty($creationTimestamp);
-   }
-
-   /**
     * Removes an attribute from the list.
     *
     * @param string $name The name of the property to delete.
@@ -605,6 +599,22 @@ class GenericDomainObject implements GenericORMapperDataObject {
     */
    public function getRelationCreationTimestamp() {
       return $this->relationCreationTimestamp;
+   }
+
+   /**
+    * Abstract method to set object's relation creation-timestamp.
+    *
+    * @param string $timestamp The creation timestamp of the relation the object is loaded with-
+    * @return string Creation-timestamp of the relation.
+    *
+    * @author Lutz Mahlstedt
+    * @version
+    * Version 0.1, 27.07.2012<br />
+    */
+   protected function setRelationCreationTimestamp(string $timestamp) {
+      $this->relationCreationTimestamp = $timestamp;
+
+      return $this;
    }
 
 }
