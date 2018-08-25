@@ -35,9 +35,10 @@ use InvalidArgumentException;
  * Caching and shrinking is supported, but must be configured.
  * <p/>
  * Enabling Java Script shrinking requires download and inclusion of
- * the <em>JsMin</em> library available under http://code.google.com/p/jsmin-php/.
- * Please include <em>JSMin.php</em> e.g. within your bootstrap file to
- * make the <em>JsMin</em> class available.
+ * the <em>JsMin</em> library available under https://github.com/rgrove/jsmin-php/blob/master/jsmin.php.
+ * <p/>
+ * Please include <em>jsmin</em> library into your project and add to
+ * auto loading.
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>, Christian Achatz
  * @version
@@ -72,7 +73,7 @@ class JsCssPackager extends APFObject {
       $serverCacheMinutes = $cfgPack->getValue('ServerCacheMinutes', 0);
 
       /* If ServerCacheMinutes is not 0, we use a file cache */
-      if ((int) $serverCacheMinutes !== 0) {
+      if ((int)$serverCacheMinutes !== 0) {
          /* @var $cMF CacheManagerFabric */
          $cMF = $this->getServiceObject(CacheManagerFabric::class);
          $cM = $cMF->getCacheManager('jscsspackager_cache');
@@ -312,7 +313,7 @@ class JsCssPackager extends APFObject {
     */
    public function getClientCachePeriod($name) {
       if (($CCP = $this->getPackageConfiguration()->getSection($name)->getValue('ClientCacheDays')) !== null) {
-         return (int) $CCP;
+         return (int)$CCP;
       }
 
       return 0;
