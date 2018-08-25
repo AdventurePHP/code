@@ -1,10 +1,10 @@
 #!/bin/bash
 ########################################################################################################################
-# APF 3.3 automatic code migration script                                                                              #
+# APF 4.0 automatic code migration script                                                                              #
 ########################################################################################################################
 
 echo "#############################################"
-echo "# APF 3.3 automatic code migration          #"
+echo "# APF 4.0 automatic code migration          #"
 echo "#############################################"
 echo
 
@@ -22,10 +22,6 @@ echo
 echo "#############################################"
 echo
 echo "Starting migration ..."
-
-# migrate API for form-to-model mapping
-echo "* Migrate form-to-model-mapping API..."
-$PHP_BINARY $PHP_SCRIPT_DIR/migrate_form_to_model_mapping.php
 
 echo
 echo "#############################################"
