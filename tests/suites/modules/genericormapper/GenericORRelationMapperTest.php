@@ -31,15 +31,8 @@ use PHPUnit\Framework\TestCase;
 class GenericORRelationMapperTest extends TestCase {
 
    /**
-    * Clean-up generated files.
+    * ID#337: Tests relation timestamp loading.
     */
-   public function tearDown() {
-      unlink(__DIR__ . '/Dad.php');
-      unlink(__DIR__ . '/DadBase.php');
-      unlink(__DIR__ . '/Son.php');
-      unlink(__DIR__ . '/SonBase.php');
-   }
-
    public function testRelationTimeStamps() {
 
       // Generate domain objects ///////////////////////////////////////////////////////////////////////////////////////
@@ -153,6 +146,12 @@ class GenericORRelationMapperTest extends TestCase {
       $this->assertEquals($objectId, $children[0]->getObjectId());
       $this->assertEquals($timestamp, $children[0]->getRelationCreationTimestamp());
 
+      // Clean up generated domain object files.
+      unlink(__DIR__ . '/Dad.php');
+      unlink(__DIR__ . '/DadBase.php');
+      unlink(__DIR__ . '/Son.php');
+      unlink(__DIR__ . '/SonBase.php');
+
    }
 
    /**
@@ -191,6 +190,48 @@ class GenericORRelationMapperTest extends TestCase {
                   $domainObjects
             ]
       ];
+   }
+
+   /**
+    * ID#122: test whether event method beforeDelete() is called according to timing model.
+    */
+   public function testEventMethodBeforeDelete() {
+
+      /* @var $object GenericDomainObject|MockObject */
+      $object = $this->getMockBuilder(GenericDomainObject::class)
+            ->setMethods(['beforeDelete'])
+            ->setConstructorArgs(['Dad'])
+            ->getMock();
+
+      $object->expects($this->once())
+            ->method('beforeDelete');
+
+      $id = 42;
+      $object->setObjectId($id);
+
+      /* @var $mapper GenericORRelationMapper|MockObject */
+      $mapper = $this->getMockBuilder(GenericORRelationMapper::class)
+            ->setMethods(['getConfiguration'])
+            ->getMock();
+
+      $mapper->method('getConfiguration')
+            ->willReturnMap($this->getConfigReturnMap());
+
+      $mapper->addMappingConfiguration('foo', 'bar');
+      $mapper->addRelationConfiguration('foo', 'bar');
+
+      /* @var $db MySQLiHandler|MockObject */
+      $db = $this->getMockBuilder(MySQLiHandler::class)
+            ->setMethods(['connect', 'fetchData', 'escapeValue', 'executeTextStatement', 'getNumRows'])
+            ->getMock();
+
+      $db->method('escapeValue')
+            ->willReturnArgument(0);
+
+      $mapper->setDbDriver($db);
+
+      $this->assertEquals($id, $mapper->deleteObject($object));
+
    }
 
 }

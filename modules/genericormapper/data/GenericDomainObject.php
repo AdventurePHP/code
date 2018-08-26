@@ -546,7 +546,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * Version 0.1, 15.01.2011<br />
     */
    public function beforeSave() {
-
    }
 
    /**
@@ -557,7 +556,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * Version 0.1, 15.01.2011<br />
     */
    public function afterSave() {
-
    }
 
    /**
@@ -568,7 +566,16 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * Version 0.1, 15.01.2011<br />
     */
    public function afterLoad() {
+   }
 
+   /**
+    * Implement event functions
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.09.2018<br />
+    */
+   public function beforeDelete() {
    }
 
    /**

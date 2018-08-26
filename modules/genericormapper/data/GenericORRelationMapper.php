@@ -969,6 +969,10 @@ class GenericORRelationMapper extends GenericORMapper {
          return null;
       }
 
+      // ID#122: call event method beforeDelete() to allow dependency/relation management.
+      $object->setDataComponent($this);
+      $object->beforeDelete();
+
       // 1. get compositions, where source or target object is the current object
       $objectName = $object->getObjectName();
       $objectID = $this->mappingTable[$objectName]['ID'];

@@ -80,7 +80,23 @@ interface GenericORMapperDataObject {
    public function &getRelatedObjects(string $relationName);
 
    /**
-    * @return GenericORMapperDataObject[]
+    * Returns an associative list of all related objects grouped by relation name.
+    * <p/>
+    * Example:
+    * <code>
+    * [
+    *    'Relation1' => [
+    *       $object1,
+    *       $object2,
+    *       $object3
+    *     ],
+    *    'Relation2' => [
+    *       $object4,
+    *     ]
+    * ]
+    * </code>
+    *
+    * @return GenericORMapperDataObject[][]
     */
    public function &getAllRelatedObjects();
 
@@ -118,5 +134,10 @@ interface GenericORMapperDataObject {
     * Will be called by GORM after object was loaded and properties are set.
     */
    public function afterLoad();
+
+   /**
+    * ID#122: Will be called by GORM before an object is deleted to i.e. clean up relations.
+    */
+   public function beforeDelete();
 
 }
