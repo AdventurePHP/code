@@ -35,15 +35,16 @@ use InvalidArgumentException;
  * Caching and shrinking is supported, but must be configured.
  * <p/>
  * Enabling Java Script shrinking requires download and inclusion of
- * the <em>JsMin</em> library available under https://github.com/rgrove/jsmin-php/blob/master/jsmin.php.
+ * the <em>JShrink</em> library available under https://github.com/tedivm/JShrink.
  * <p/>
- * Please include <em>jsmin</em> library into your project and add to
+ * Please include <em>jshrink</em> library into your project and add to
  * auto loading.
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>, Christian Achatz
  * @version
  * Version 1.0, 18.03.2010<br />
  * Version 1.1, 06.11.2013 (Removed inclusion of external JsMin library due to license issues described in ID#79)<br />
+ * Version 1.2, 30.08.2018 (Changed from JSMin to JShrink)<br />
  */
 class JsCssPackager extends APFObject {
 
@@ -200,7 +201,7 @@ class JsCssPackager extends APFObject {
    /**
     * Shrinks a string containing javascript.
     * <p/>
-    * Requires <em>JsMin</em> library. For details see class documentation or
+    * Requires <em>JShrink</em> library. For details see class documentation or
     * extension documentation.
     *
     * @param string $input The javascript which should be shrinked.
@@ -210,9 +211,10 @@ class JsCssPackager extends APFObject {
     * @author Ralf Schubert
     * @version
     * Version 1.0, 18.03.2010<br />
+    * Version 1.1, 30.08.2018 (Changed from JSMin to JShrink)<br />
     */
    protected function shrinkJs($input) {
-      return \JSMin::minify($input);
+      return \JShrink\Minifier::minify($input);
    }
 
    /**
