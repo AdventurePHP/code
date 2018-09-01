@@ -111,7 +111,7 @@ class RequestImpl implements Request {
    }
 
    public function getSessionId() {
-      return $this->getParameter($this->getSessionName());
+      return session_id();
    }
 
    /**

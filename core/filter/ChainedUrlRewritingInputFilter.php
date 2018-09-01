@@ -78,9 +78,6 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
 
       $request = $this->getRequest();
 
-      // extract the session id from $_REQUEST if existent to re-add it after filtering
-      $sessionId = $request->getSessionId();
-
       // initialize param to analyze
       $query = $request->getParameter(self::$REWRITE_QUERY_PARAM, '');
 
@@ -171,11 +168,6 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
       // re-add POST params
       $request->setParameters(array_merge($request->getParameters(), $postData));
       $request->setPostParameters($postData);
-
-      // add session id to the request again
-      if (!empty($sessionId)) {
-         $request->setParameter($request->getSessionName(), $sessionId);
-      }
 
       $t->stop($id);
 
