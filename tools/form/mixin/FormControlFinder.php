@@ -181,11 +181,14 @@ trait FormControlFinder {
    /**
     * @param string $name The name of the form elements to collect (e.g. for radio buttons).
     *
-    * @return FormControl[] The list of form controls with the given name.
+    * @return FormControl[] The list of form controls with the given name or an empty list.
     */
-   public function getFormElementsByName(string $name) {
+   public function getFormElementsByName(string $name): array {
+
       $elements = [];
+
       if (count($this->children) > 0) {
+
          foreach ($this->children as &$child) {
 
             // when we directly find something - get it!
@@ -198,6 +201,7 @@ trait FormControlFinder {
                $elements = array_merge($elements, $child->getFormElementsByName($name));
             }
          }
+
       }
 
       return $elements;
@@ -206,10 +210,9 @@ trait FormControlFinder {
    /**
     * @param string $tagName The tag name of the desired form element (e.g. "form:text").
     *
-    * @return FormControl[] A list of references on the form elements.
-    * @throws FormException In case the form element cannot be found or desired tag is not registered.
+    * @return FormControl[] A list of references on the form elements or an empty list.
     */
-   public function getFormElementsByTagName(string $tagName) {
+   public function getFormElementsByTagName(string $tagName): array {
 
       /* @var $form HtmlFormTag */
       if ($this instanceof HtmlForm) {
@@ -220,9 +223,10 @@ trait FormControlFinder {
 
       $tagClassName = $form->getTagClass($tagName);
 
+      $formElements = [];
+
       if (count($this->children) > 0) {
 
-         $formElements = [];
          foreach ($this->children as &$child) {
 
             // when we directly find something - get it!
@@ -236,35 +240,22 @@ trait FormControlFinder {
             }
          }
 
-         return $formElements;
       }
 
-      // display extended debug message in case no form elements were found
-      $parent = $form->getParent();
-      $docCon = get_class($parent->getDocumentController());
-      throw new FormException('[' . get_class($this) . '::getFormElementsByType()] No form elements of type "&lt;'
-            . $tagName . ' /&gt;" composed in ' . 'current form "' . $form->getAttribute('name') . '" in document controller "'
-            . $docCon . '"!', E_USER_ERROR);
+      return $formElements;
    }
 
    /**
     * @param string $class Name of the implementation class of the form elements to return.
     *
-    * @return FormControl[] A list of references on the form elements.
-    * @throws FormException In case the form element cannot be found or desired tag is not registered.
+    * @return FormControl[] A list of references on the form elements or an empty list.
     */
    public function getFormElementsByType(string $class): array {
 
-      /* @var $form HtmlFormTag */
-      if ($this instanceof HtmlForm) {
-         $form = $this;
-      } else {
-         $form = $this->getForm();
-      }
+      $formElements = [];
 
       if (count($this->children) > 0) {
 
-         $formElements = [];
          foreach ($this->children as &$child) {
 
             // when we directly find something - get it!
@@ -278,15 +269,9 @@ trait FormControlFinder {
             }
          }
 
-         return $formElements;
       }
 
-      // display extended debug message in case no form elements were found
-      $parent = $form->getParent();
-      $docCon = get_class($parent->getDocumentController());
-      throw new FormException('[' . get_class($this) . '::getFormElementsByType()] No form elements of type "'
-            . $class . '" composed in ' . 'current form "' . $form->getAttribute('name') . '" in document controller "'
-            . $docCon . '"!', E_USER_ERROR);
+      return $formElements;
    }
 
 }

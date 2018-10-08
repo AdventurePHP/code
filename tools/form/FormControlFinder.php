@@ -47,44 +47,47 @@ interface FormControlFinder {
    public function getFormElementByID(string $id);
 
    /**
-    * Returns a list of form controls with the given name.
+    * Returns a list of form controls with the given name. In case no tag is found, this
+    * method will return an empty list.
     *
     * @param string $name The name of the form elements to collect (e.g. for radio buttons).
     *
-    * @return FormControl[] The list of form controls with the given name.
+    * @return FormControl[] The list of form controls with the given name or an empty list.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 16.08.2010<br />
     */
-   public function getFormElementsByName(string $name);
+   public function getFormElementsByName(string $name): array;
 
    /**
-    * Returns a list of form elements addressed by their tag name.
+    * Returns a list of form elements addressed by their tag name. In case no tag is found, this
+    * method will return an empty list.
     *
     * @param string $tagName The tag name of the desired form element (e.g. "form:text").
     *
-    * @return FormControl[] A list of references on the form elements.
-    * @throws FormException In case the form element cannot be found or desired tag is not registered.
+    * @return FormControl[] A list of references on the form elements or an empty list.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 14.06.2008 (API change: do use this function instead of getFormElementsByType()!)<br />
     * Version 0.2, 12.12.2012 (Refactoring due to tag renaming)<br />
+    * Version 0.3, 08.10.2016 (ID#339: changes method signature to not throw exceptions to avoid issues finding nested elements)<br />
     */
-   public function getFormElementsByTagName(string $tagName);
+   public function getFormElementsByTagName(string $tagName): array;
 
    /**
-    * Returns a list of form elements addressed by their implementation class name.
+    * Returns a list of form elements addressed by their implementation class name. In case no tag is
+    * found, this method will return an empty list.
     *
     * @param string $class Name of the implementation class of the form elements to return.
     *
-    * @return FormControl[] A list of references on the form elements.
-    * @throws FormException In case the form element cannot be found or desired tag is not registered.
+    * @return FormControl[] A list of references on the form elements or an empty list.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 03.03.2018<br />
+    * Version 0.2, 08.10.2016 (ID#339: changes method signature to not throw exceptions to avoid issues finding nested elements)<br />
     */
    public function getFormElementsByType(string $class): array;
 
