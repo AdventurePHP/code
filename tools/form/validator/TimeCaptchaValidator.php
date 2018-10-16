@@ -20,6 +20,7 @@
  */
 namespace APF\tools\form\validator;
 
+use APF\tools\form\FormException;
 use APF\tools\form\taglib\TimeCaptchaTag;
 
 /**
@@ -49,6 +50,8 @@ class TimeCaptchaValidator extends TextFieldValidator {
     * @param string $input Empty string, because we have no html-definition
     *
     * @return boolean true, in case the control to validate is considered valid, false otherwise.
+    *
+    * @throws FormException
     *
     * @author Ralf Schubert
     * @version

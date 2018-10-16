@@ -36,7 +36,7 @@ class CaptchaValidator extends TextFieldValidator {
    /**
     * Checks the input of the captcha field.
     *
-    * @param string $input The input to validate.
+    * @param mixed $input The input to validate.
     *
     * @return boolean True, in case the control is valid, false otherwise.
     *
