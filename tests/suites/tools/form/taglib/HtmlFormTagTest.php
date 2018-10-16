@@ -463,11 +463,10 @@ class HtmlFormTagTest extends TestCase {
     * Tests API complies for non existing tags.
     */
    public function testGetFormElementsByTagName1() {
-      $this->expectException(FormException::class);
       $form = new HtmlFormTag();
       $doc = new Document();
       $form->setParent($doc);
-      $form->getFormElementsByTagName('html:placeholder');
+      $this->assertEmpty($form->getFormElementsByTagName('html:placeholder'));
    }
 
    /**
@@ -539,6 +538,31 @@ class HtmlFormTagTest extends TestCase {
       $this->assertEquals('foo-1', $actual[0]->getAttribute('id'));
       $this->assertEquals('foo-2', $actual[1]->getAttribute('id'));
       $this->assertEquals('foo-4', $actual[2]->getAttribute('id'));
+
+   }
+
+   /**
+    * ID#339: test handling or empty form groups.
+    */
+   public function testGetFormElementsByTagName4() {
+
+      $form = new HtmlFormTag();
+      $doc = new Document();
+      $form->setParent($doc);
+      $form->setContent('<form:group name="empty"></form:group>
+<form:button name="submit" value="submit" />');
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      $this->assertCount(2, $form->getChildren());
+
+      $actual = $form->getFormElementsByTagName('form:button');
+
+      $this->assertCount(1, $actual);
+
+      $this->assertInstanceOf(ButtonTag::class, $actual[0]);
+
+      $this->assertEquals('submit', $actual[0]->getAttribute('name'));
 
    }
 
@@ -662,10 +686,37 @@ class HtmlFormTagTest extends TestCase {
    }
 
    /**
+    * ID#339: test handling or empty form groups.
+    */
+   public function testGetFormElementsByName4() {
+
+      $form = new HtmlFormTag();
+      $doc = new Document();
+      $form->setParent($doc);
+      $form->setContent('<form:group name="empty"></form:group>
+<form:radio id="radio-1" name="bar" value="1" />
+<form:radio id="radio-2" name="bar" value="1" />
+<form:button name="submit" value="submit" />');
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      $this->assertCount(4, $form->getChildren());
+
+      $actual = $form->getFormElementsByName('bar');
+
+      $this->assertCount(2, $actual);
+
+      foreach ($actual as $field) {
+         $this->assertInstanceOf(RadioButtonTag::class, $field);
+         $this->assertEquals('bar', $field->getAttribute('name'));
+      }
+
+   }
+
+   /**
     * Tests API complies for no elements found.
     */
    public function testGetFormElementsByType1() {
-      $this->expectException(FormException::class);
       $form = new HtmlFormTag();
       $doc = new Document();
       $form->setParent($doc);
@@ -717,6 +768,31 @@ class HtmlFormTagTest extends TestCase {
       $this->assertEquals('radio-2', $actual[2]->getAttribute('control'));
       $this->assertEquals('select-1', $actual[3]->getAttribute('control'));
       $this->assertEquals('text-3', $actual[4]->getAttribute('control'));
+
+   }
+
+   /**
+    * ID#339: test handling or empty form groups.
+    */
+   public function testGetFormElementsByType3() {
+
+      $form = new HtmlFormTag();
+      $doc = new Document();
+      $form->setParent($doc);
+      $form->setContent('<form:group name="empty"></form:group>
+<form:button name="submit" value="submit" />');
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      $this->assertCount(2, $form->getChildren());
+
+      $actual = $form->getFormElementsByType(ButtonTag::class);
+
+      $this->assertCount(1, $actual);
+
+      $this->assertInstanceOf(ButtonTag::class, $actual[0]);
+
+      $this->assertEquals('submit', $actual[0]->getAttribute('name'));
 
    }
 
