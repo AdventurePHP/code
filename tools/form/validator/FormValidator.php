@@ -51,7 +51,7 @@ interface FormValidator extends ApplicationContext {
    /**
     * Method, that is called to validate the element.
     *
-    * @param string $input The input to validate.
+    * @param mixed $input The input to validate.
     *
     * @return boolean True, in case the control is valid, false otherwise.
     *
