@@ -297,7 +297,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
    }
 
    /**
-    * Test interface complies for not-existing interface.
+    * Test interface complies for not-existing elements.
     */
    public function testFindById1() {
       $this->expectException(FormException::class);
@@ -355,7 +355,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
 
    /**
-    * Test interface complies for not-existing interface.
+    * Test interface complies for not-existing elements.
     */
    public function testGetLabel1() {
       $this->expectException(FormException::class);
@@ -416,6 +416,107 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
       $form->onAfterAppend();
 
       $actual = $form->getLabel('foo');
+      $this->assertNotNull($actual);
+      $this->assertInstanceOf(LanguageLabel::class, $actual);
+      $this->assertEquals('labels.ini', $actual->getAttribute('config'));
+
+   }
+
+   public function testGetFormElementByName1() {
+      $this->expectException(FormException::class);
+      $form = new HtmlFormTag();
+      $doc = new Document();
+      $form->setParent($doc);
+      $form->getFormElementByName('not-existing');
+   }
+
+   /**
+    * Test simple name selection.
+    */
+   public function testGetFormElementByName2() {
+
+      $form = new HtmlFormTag();
+      $doc = new Document();
+      $form->setParent($doc);
+      $form->setContent('<form:label name="foo1">Label</form:label>
+<html:getstring
+         name="foo2"
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.proxy.add-users-to-proxy.intro.text"/>
+<form:text name="foo3" />
+<form:button name="submit" value="submit" />');
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      $actual = $form->getFormElementByName('foo2');
+      $this->assertNotNull($actual);
+      $this->assertInstanceOf(LanguageLabel::class, $actual);
+      $this->assertEquals('labels.ini', $actual->getAttribute('config'));
+
+   }
+
+   /**
+    * Test name selection within nested elements.
+    */
+   public function testGetFormElementByName3() {
+
+      $form = new HtmlFormTag();
+      $doc = new Document();
+      $form->setParent($doc);
+      $form->setContent('<form:text name="bar1" />
+<form:group>
+   <form:label name="bar2">Other Label</form:label>
+   <form:group>
+      <form:label name="foo1">Label</form:label>
+      <html:getstring
+               name="foo2"
+               namespace="APF\modules\usermanagement\pres"
+               config="labels.ini"
+               entry="frontend.proxy.add-users-to-proxy.intro.text"/>
+   </form:group>
+</form:group>
+<form:button name="submit" value="submit" />');
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      $actual = $form->getFormElementByName('foo2');
+      $this->assertNotNull($actual);
+      $this->assertInstanceOf(LanguageLabel::class, $actual);
+      $this->assertEquals('labels.ini', $actual->getAttribute('config'));
+
+   }
+
+   /**
+    * Test name selection within nested elements and element not in form group.
+    */
+   public function testGetFormElementByName4() {
+
+      $form = new HtmlFormTag();
+      $doc = new Document();
+      $form->setParent($doc);
+      $form->setContent('<form:text name="bar1" />
+<form:group>
+   <form:label name="bar2">Other Label</form:label>
+   <form:group>
+      <form:label name="foo1">Label</form:label>
+      <html:getstring
+               name="foo2"
+               namespace="APF\modules\usermanagement\pres"
+               config="labels.ini"
+               entry="frontend.proxy.add-users-to-proxy.intro.text"/>
+   </form:group>
+</form:group>
+<html:getstring
+         name="foo3"
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.proxy.add-users-to-proxy.intro.text"/>
+<form:button name="submit" value="submit" />');
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      $actual = $form->getFormElementByName('foo3');
       $this->assertNotNull($actual);
       $this->assertInstanceOf(LanguageLabel::class, $actual);
       $this->assertEquals('labels.ini', $actual->getAttribute('config'));
