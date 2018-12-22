@@ -72,4 +72,32 @@ class TemplateTagTest extends \PHPUnit_Framework_TestCase {
       $template->getTemplate('testTemplateName');
    }
 
+   public function testGetLabel1() {
+      $template = new TemplateTag();
+      $template->setContent('<html:getstring name="foo" namespace="" config="" entry="" />');
+      $template->onParseTime();
+      $template->onAfterAppend();
+
+      $this->assertNotNull($template->getLabel('foo'));
+   }
+
+   public function testGetLabel2() {
+      $this->expectException(InvalidArgumentException::class);
+
+      $template = new TemplateTag();
+
+      $doc = new Document();
+      $template->setParent($doc);
+
+      $template->getLabel('foo');
+   }
+
+   public function testToString() {
+      $expected = 'foo';
+
+      $template = new TemplateTag();
+      $template->setContent($expected);
+
+      $this->assertEquals($expected, $template);
+   }
 }

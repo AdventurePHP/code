@@ -845,4 +845,10 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
    }
 
+   public function testGetTagClass() {
+      $this->expectException(FormException::class);
+      $form = new HtmlFormTag();
+      $form->getTagClass('not-existing:tag');
+   }
+
 }

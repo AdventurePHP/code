@@ -52,8 +52,7 @@ class TemplateTag extends Document implements Template {
          return $this->getChildNode('name', $name, LanguageLabel::class);
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[TemplateTag::getLabel()] No label found with name "' . $name
-               . '" composed in template with name "' . $this->getAttribute('name') . '" for document controller "'
-               . get_class($this->getParentObject()->getDocumentController()) . '"!', E_USER_ERROR, $e);
+               . '" composed in template with name "' . $this->getAttribute('name') . '"!', E_USER_ERROR, $e);
       }
    }
 
@@ -62,8 +61,7 @@ class TemplateTag extends Document implements Template {
          return $this->getChildNode('name', $name, HtmlForm::class);
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[TemplateTag::getForm()] No form found with name "' . $name
-               . '" composed in template with name "' . $this->getAttribute('name') . '" for document controller "'
-               . get_class($this->getParentObject()->getDocumentController()) . '"!', E_USER_ERROR, $e);
+               . '" composed in template with name "' . $this->getAttribute('name') . '"!', E_USER_ERROR, $e);
       }
    }
 
@@ -72,8 +70,7 @@ class TemplateTag extends Document implements Template {
          return $this->getChildNode('name', $name, Template::class);
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[TemplateTag::getTemplate()] No nested template found with name "' . $name
-               . '" composed in template with name "' . $this->getAttribute('name') . '" for document controller "'
-               . get_class($this->getParentObject()->getDocumentController()) . '"!', E_USER_ERROR, $e);
+               . '" composed in template with name "' . $this->getAttribute('name') . '"!', E_USER_ERROR, $e);
       }
    }
 
