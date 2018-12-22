@@ -74,11 +74,8 @@ trait FormControlFinder {
       } else {
          $form = $this->getForm();
       }
-      $parent = $form->getParent();
-      $docCon = $parent->getDocumentController() ? get_class($parent->getDocumentController()) : 'n/a';
       throw new FormException('[' . get_class($this) . '::getFormElementByID()] No form element with id "'
-            . $id . '" composed in current form "' . $form->getAttribute('name')
-            . '" in document controller "' . $docCon . '". Please double-check your taglib definitions '
+            . $id . '" composed in form "' . $form->getAttribute('name') . '". Please double-check your taglib definitions '
             . 'within this form (especially attributes, that are used for referencing other form '
             . 'controls)!', E_USER_ERROR);
    }
@@ -127,11 +124,8 @@ trait FormControlFinder {
       } else {
          $form = $this->getForm();
       }
-      $parent = $form->getParent();
-      $docCon = get_class($parent->getDocumentController());
       throw new FormException('[' . get_class($this) . '::getFormElementByName()] No form element with name "'
-            . $name . '" composed in current form "' . $form->getAttribute('name')
-            . '" in document controller "' . $docCon . '". Please double-check your taglib definitions '
+            . $name . '" composed in form "' . $form->getAttribute('name') . '". Please double-check your taglib definitions '
             . 'within this form (especially attributes, that are used for referencing other form '
             . 'controls)!', E_USER_ERROR);
    }
@@ -171,11 +165,8 @@ trait FormControlFinder {
       } else {
          $form = $this->getForm();
       }
-      $parent = $form->getParent();
-      $docCon = get_class($parent->getDocumentController());
       throw new FormException('[' . get_class($this) . '::getLabel()] No label found with name "' . $name
-            . '" composed in form with name "' . $form->getAttribute('name') . '" for document controller "'
-            . $docCon . '"!', E_USER_ERROR);
+            . '" composed in form "' . $form->getAttribute('name') . '"!', E_USER_ERROR);
    }
 
    /**
