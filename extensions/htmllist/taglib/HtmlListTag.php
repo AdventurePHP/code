@@ -124,12 +124,8 @@ class HtmlListTag extends Document {
       }
 
       // display extended debug message in case no list element was found
-      $parent = $this->getParent();
-      $grandParent = $parent->getParent();
-      $docCon = ($grandParent !== null) ? get_class($grandParent->getDocumentController()) : 'n/a';
-
-      throw new InvalidArgumentException('[HtmlListTag::getListById()] No list with id "' . $id
-            . '" in document controller "' . $docCon . '"!', E_USER_ERROR);
+      throw new InvalidArgumentException('[HtmlListTag::getListById()] No list with id "' . $id . '" found!',
+            E_USER_ERROR);
    }
 
 }

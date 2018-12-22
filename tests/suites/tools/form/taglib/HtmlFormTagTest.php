@@ -1074,4 +1074,10 @@ class HtmlFormTagTest extends TestCase {
 
    }
 
+   public function testGetTagClass() {
+      $this->expectException(FormException::class);
+      $form = new HtmlFormTag();
+      $form->getTagClass('not-existing:tag');
+   }
+
 }

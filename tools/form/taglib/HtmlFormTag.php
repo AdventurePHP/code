@@ -309,11 +309,8 @@ class HtmlFormTag extends Document implements HtmlForm {
 
       $class = $this->getTagLibClass($prefix, $name);
       if ($class === null) {
-         $parent = $this->getParent();
-         $documentController = $parent->getDocumentController() ? get_class($parent->getDocumentController()) : 'n/a';
          throw new FormException('[HtmlFormTag::getTagClass()] No tag with name "' . $tagName
-               . '" registered in form with name "' . $this->getAttribute('name') . '" in document controller '
-               . $documentController . '!', E_USER_ERROR);
+               . '" registered in form with name "' . $this->getAttribute('name') . '"!', E_USER_ERROR);
       }
 
       return $class;
