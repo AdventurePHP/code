@@ -230,11 +230,8 @@ trait FormControlFinder {
       }
 
       // display extended debug message in case no form elements were found
-      $parent = $form->getParentObject();
-      $docCon = get_class($parent->getDocumentController());
       throw new FormException('[' . get_class($this) . '::getFormElementsByType()] No form elements of type "&lt;'
-            . $tagName . ' /&gt;" composed in ' . 'current form "' . $form->getAttribute('name') . '" in document controller "'
-            . $docCon . '"!', E_USER_ERROR);
+            . $tagName . ' /&gt;" composed in ' . 'current form "' . $form->getAttribute('name') . '"!', E_USER_ERROR);
    }
 
 }
