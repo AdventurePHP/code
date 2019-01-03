@@ -54,7 +54,7 @@ class Html5WeekFieldTagTest extends TestCase {
    public function testPreFilling() {
 
       // test presetting w/ value in request
-      $today = new DateTime('now');
+      $today = new DateTime('2018-10-1');
       $_REQUEST = ['foo' => $today->format(Html5WeekFieldTag::WEEK_FORMAT_PATTERN)];
 
       $tag = new Html5WeekFieldTag();
@@ -97,7 +97,7 @@ class Html5WeekFieldTagTest extends TestCase {
 
       $tag = new Html5WeekFieldTag();
 
-      $today = new DateTime('now');
+      $today = new DateTime('2018-10-1');
 
       // test explicit methods
       $tag->setWeek($today);
