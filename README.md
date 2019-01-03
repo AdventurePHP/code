@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/AdventurePHP/code.svg?branch=master)](https://travis-ci.com/AdventurePHP/code)
+
 Purpose
 =======
 
