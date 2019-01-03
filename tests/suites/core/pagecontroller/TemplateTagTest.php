@@ -87,7 +87,7 @@ class TemplateTagTest extends \PHPUnit_Framework_TestCase {
       $template = new TemplateTag();
 
       $doc = new Document();
-      $template->setParent($doc);
+      $template->setParentObject($doc);
 
       $template->getLabel('foo');
    }

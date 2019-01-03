@@ -426,7 +426,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
       $this->expectException(FormException::class);
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParent($doc);
+      $form->setParentObject($doc);
       $form->getFormElementByName('not-existing');
    }
 
@@ -437,7 +437,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParent($doc);
+      $form->setParentObject($doc);
       $form->setContent('<form:label name="foo1">Label</form:label>
 <html:getstring
          name="foo2"
@@ -463,7 +463,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParent($doc);
+      $form->setParentObject($doc);
       $form->setContent('<form:text name="bar1" />
 <form:group>
    <form:label name="bar2">Other Label</form:label>
@@ -494,7 +494,7 @@ class HtmlFormTagTest extends \PHPUnit_Framework_TestCase {
 
       $form = new HtmlFormTag();
       $doc = new Document();
-      $form->setParent($doc);
+      $form->setParentObject($doc);
       $form->setContent('<form:text name="bar1" />
 <form:group>
    <form:label name="bar2">Other Label</form:label>
