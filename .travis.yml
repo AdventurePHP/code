@@ -2,4 +2,4 @@ language: php
 php:
   - '7.0'
   - '7.1'
-script: phpunit --bootstrap AdventurePHP/code/tests/lib/core/bootstrap.php --configuration AdventurePHP/code/tests/phpunit.dist.xml AdventurePHP/code/tests/
+script: phpunit --bootstrap ./tests/lib/core/bootstrap.php --configuration ./tests/phpunit.dist.xml tests/
