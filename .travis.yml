@@ -2,4 +2,5 @@ language: php
 php:
   - '7.0'
   - '7.1'
+before_install: echo "extension=apcu.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/apcu.ini
 script: phpunit --bootstrap ./tests/lib/core/bootstrap.php --configuration ./tests/phpunit.dist.xml tests/
