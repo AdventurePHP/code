@@ -751,17 +751,23 @@ class FormValidationTest extends TestCase {
 
    }
 
-   public function _testListenerInErrorTag() {
-      $_POST['send'] = 'send';
+   /**
+    * ID#341: Allow usage of <form:listener /> tags within <form:error /> tags to specify explicit error messages.
+    */
+   public function testListenerInErrorTag() {
+
+      $_GET = [];
+      $_POST = ['send' => 'GO'];
 
       $expected = 'Error in field &quot;name&quot;!';
+      $message = 'An error occurred:';
 
       $form = new HtmlFormTag();
       $form->setAttribute('name', 'foo');
       $form->setContent('
 <form:error>
    <p>
-      An error occurred:
+      ' . $message . '
    </p>
    <form:listener control="name">
        <p>' . $expected . '</p>
@@ -777,7 +783,10 @@ class FormValidationTest extends TestCase {
       $form->onParseTime();
       $form->onAfterAppend();
       $form->isValid();
-      $this->assertContains($expected, $form->transformForm());
+
+      $html = $form->transformForm();
+      $this->assertContains($message, $html);
+      $this->assertContains($expected, $html);
    }
 
 }
