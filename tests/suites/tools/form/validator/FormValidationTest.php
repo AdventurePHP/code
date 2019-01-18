@@ -751,4 +751,33 @@ class FormValidationTest extends TestCase {
 
    }
 
+   public function _testListenerInErrorTag() {
+      $_POST['send'] = 'send';
+
+      $expected = 'Error in field &quot;name&quot;!';
+
+      $form = new HtmlFormTag();
+      $form->setAttribute('name', 'foo');
+      $form->setContent('
+<form:error>
+   <p>
+      An error occurred:
+   </p>
+   <form:listener control="name">
+       <p>' . $expected . '</p>
+   </form:listener>
+</form:error>
+<form:text name="name" />
+<form:button name="send" value="send" />
+<form:addvalidator
+      class="APF\tools\form\validator\TextLengthValidator"
+      button="send"
+      control="name"
+   />');
+      $form->onParseTime();
+      $form->onAfterAppend();
+      $form->isValid();
+      $this->assertContains($expected, $form->transformForm());
+   }
+
 }
