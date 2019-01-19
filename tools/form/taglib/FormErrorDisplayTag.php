@@ -86,7 +86,7 @@ class FormErrorDisplayTag extends FormGroupTag {
 
    public function isSent() {
       // nothing to do as error display tags has no sent state
-      return true;
+      return false;
    }
 
    public function hide() {
