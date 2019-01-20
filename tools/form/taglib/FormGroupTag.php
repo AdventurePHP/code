@@ -48,15 +48,14 @@ class FormGroupTag extends AbstractFormControl implements FormElementGroup {
    }
 
    public function isValid() {
+      $result = true;
       foreach ($this->children as &$child) {
          if ($child instanceof FormControl) {
-            if ($child->isValid() === false) {
-               return false;
-            }
+            $result = $child->isValid() && $result;            
          }
       }
 
-      return true;
+      return $result;
    }
 
    public function isSent() {
