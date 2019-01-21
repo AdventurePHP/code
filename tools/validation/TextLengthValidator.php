@@ -71,7 +71,7 @@ class TextLengthValidator implements Validator {
       $this->mode = $mode;
    }
 
-   public function isValid($subject) {
+   public function isValid(string $subject = '') {
 
       // mode strict needs trim() on $input
       if ($this->mode === self::MODE_STRICT) {
@@ -80,11 +80,11 @@ class TextLengthValidator implements Validator {
 
       // the max length being null, the text may contain an infinite number of characters
       if ($this->maxLength === 0) {
-         if (!empty($subject) && strlen($subject) >= $this->minLength) {
+         if (strlen($subject) >= $this->minLength) {
             return true;
          }
       } else {
-         if (!empty($subject) && strlen($subject) >= $this->minLength && strlen($subject) <= $this->maxLength) {
+         if (strlen($subject) >= $this->minLength && strlen($subject) <= $this->maxLength) {
             return true;
          }
       }
