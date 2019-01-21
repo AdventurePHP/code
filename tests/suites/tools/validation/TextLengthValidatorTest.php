@@ -33,6 +33,13 @@ class TextLengthValidatorTest extends TestCase {
       $this->assertFalse($validator->isValid('DJ'));
       $this->assertFalse($validator->isValid(''));
       $this->assertFalse($validator->isValid(null));
+
+      $validator = new TextLengthValidator(1, 0);
+      $this->assertTrue($validator->isValid('D'));
+      $this->assertTrue($validator->isValid('0'));
+
+      $this->assertFalse($validator->isValid(''));
+      $this->assertFalse($validator->isValid(NULL));
    }
 
    public function testTestMaxLength() {

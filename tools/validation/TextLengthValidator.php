@@ -80,11 +80,11 @@ class TextLengthValidator implements Validator {
 
       // the max length being null, the text may contain an infinite number of characters
       if ($this->maxLength === 0) {
-         if (!empty($subject) && strlen($subject) >= $this->minLength) {
+         if ((isset($subject) && $subject !== '') && strlen($subject) >= $this->minLength) {
             return true;
          }
       } else {
-         if (!empty($subject) && strlen($subject) >= $this->minLength && strlen($subject) <= $this->maxLength) {
+         if ((isset($subject) && $subject !== '') && strlen($subject) >= $this->minLength && strlen($subject) <= $this->maxLength) {
             return true;
          }
       }
