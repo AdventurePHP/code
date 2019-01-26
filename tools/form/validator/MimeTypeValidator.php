@@ -65,6 +65,8 @@ class MimeTypeValidator extends TextFieldValidator {
             return true;
          }
 
+         return false;
+
       }
 
       return ($this->getUploadRequeired()) ? FALSE : TRUE;
