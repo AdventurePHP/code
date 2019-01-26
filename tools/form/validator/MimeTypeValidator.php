@@ -21,6 +21,7 @@
 namespace APF\tools\form\validator;
 
 use APF\tools\form\taglib\FileUploadTag;
+use GWPORTAL\pres\controller\frontend\content\faq\FaqListController;
 
 /**
  * Implements a simple validator, that checks the uploaded file
@@ -33,6 +34,8 @@ use APF\tools\form\taglib\FileUploadTag;
 class MimeTypeValidator extends TextFieldValidator {
 
    private static $ACCEPTS_ATTRIBUTE_NAME = 'accepts';
+   private static $UPLOAD_DUTY            = 'true';
+   private static $UPLOAD_REQUIRED        = 'uploadrequired';
 
    /**
     * Validates the file control attached to.
@@ -64,8 +67,21 @@ class MimeTypeValidator extends TextFieldValidator {
 
       }
 
-      return false;
+      return ($this->getUploadRequeired()) ? FALSE : TRUE;
 
+   }
+
+   /**
+    * Is a file upload required
+    * @return bool
+    */
+   private function getUploadRequeired() {
+      $uploadRequired = $this->control->getAttribute(self::$UPLOAD_REQUIRED);
+      if (empty($uploadRequired)) {
+         return TRUE;
+      }
+
+      return (strtolower($uploadRequired) == 'false') ? FALSE : TRUE;
    }
 
    /**

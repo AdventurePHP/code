@@ -33,8 +33,9 @@ use APF\tools\validation\NumberScopeValidator as NumberScopeValidatorImpl;
  */
 class FileSizeValidator extends TextFieldValidator {
 
-   private static $MAX_ALLOWED_SIZE_ATTRIBUTE_NAME = 'maxsize';
+   private static $MAX_ALLOWED_SIZE_ATTRIBUTE_NAME  = 'maxsize';
    private static $MIN_REQUIRED_SIZE_ATTRIBUTE_NAME = 'minsize';
+   private static $UPLOAD_REQUIRED                  = 'uploadrequired';
 
    /**
     * Validates the file control attached to.
@@ -67,7 +68,20 @@ class FileSizeValidator extends TextFieldValidator {
          return $validator->isValid($size);
       }
 
-      return false;
+      return ($this->getUploadRequeired()) ? FALSE : TRUE;
+   }
+
+   /**
+    * Is a file upload required
+    * @return bool
+    */
+   private function getUploadRequeired() {
+      $uploadRequired = $this->control->getAttribute(self::$UPLOAD_REQUIRED);
+      if (empty($uploadRequired)) {
+         return TRUE;
+      }
+
+      return (strtolower($uploadRequired) == 'false') ? FALSE : TRUE;
    }
 
    /**
