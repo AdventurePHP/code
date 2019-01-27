@@ -3,7 +3,7 @@
   "description": "Adventure PHP Framework (APF)",
   "homepage": "https://github.com/AdventurePHP/code",
   "license": "LGPL-3.0-or-later",
-  "version": "4.0",
+  "version": "4.1",
   "type": "library",
   "support": {
     "issues": "https://adventure-php-framework.org/tracker",
