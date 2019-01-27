@@ -55,7 +55,7 @@ class MessageTest extends TestCase {
             $message->getContent()
       );
       $this->assertEquals(
-            'plain/text; charset=' . Registry::retrieve('APF\core', 'Charset'),
+            'text/plain; charset=' . Registry::retrieve('APF\core', 'Charset'),
             $message->getContentType()
       );
    }
@@ -184,7 +184,7 @@ class MessageTest extends TestCase {
       $this->assertEquals('From: ' . $sender . PHP_EOL
             . 'CC: ' . $sender . PHP_EOL
             . 'BCC: ' . $sender . PHP_EOL
-            . 'Content-Type: plain/text; charset=UTF-8' . PHP_EOL
+            . 'Content-Type: text/plain; charset=UTF-8' . PHP_EOL
             . 'Return-Path: ' . $sender->getEmail() . PHP_EOL
             . 'X-Priority: 3' . PHP_EOL
             . 'MIME-Version: 1.0' . PHP_EOL
