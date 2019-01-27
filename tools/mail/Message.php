@@ -87,7 +87,7 @@ class Message {
       $this->subject = $subject;
       $this->content = $content;
 
-      $this->contentType = 'plain/text; charset=' . Registry::retrieve('APF\core', 'Charset');
+      $this->contentType = 'text/plain; charset=' . Registry::retrieve('APF\core', 'Charset');
    }
 
    /**
