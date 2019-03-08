@@ -20,8 +20,6 @@
  */
 namespace APF\tools\media\actions;
 
-session_cache_limiter('none');
-
 use APF\core\configuration\ConfigurationException;
 use APF\core\frontcontroller\AbstractFrontControllerAction;
 use APF\core\http\HeaderImpl;
@@ -78,6 +76,8 @@ class StreamMediaAction extends AbstractFrontControllerAction {
 
             $expiresDate = date('D, d M Y H:i:s \G\M\T', time() + $delta);
             $response->setHeader(new HeaderImpl('Expires', '' . $expiresDate));
+
+            session_cache_limiter('none');
 
             $response->send(false);
 
