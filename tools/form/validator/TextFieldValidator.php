@@ -112,7 +112,7 @@ abstract class TextFieldValidator extends AbstractFormValidator {
       /* @var $listeners ValidationListenerTag[] */
       $listeners = $form->getFormElementsByType(ValidationListener::class);
       $count = count($listeners);
-      $controlName = $control->getAttribute('name');
+      $controlName = $this->getControlName($control);
       $validatorName = $this->getValidatorName();
 
       for ($i = 0; $i < $count; $i++) {
@@ -139,11 +139,23 @@ abstract class TextFieldValidator extends AbstractFormValidator {
     * Version 0.1, 12.02.2010<br />
     */
    protected function getValidatorName() {
-      if ($this->type === self::$SPECIAL_VALIDATOR_INDICATOR) {
+      if ($this->type === self::$SPECIAL_VALIDATOR_INDICATOR || $this->type === self::$SINGLE_VALIDATOR_INDICATOR) {
          return get_class($this);
       }
 
       return null;
+   }
+
+   /**git checkout feature
+    * @param FormControl $control
+    * @return string Indicates the control name of the listener to notify.
+    */
+   protected function getControlName(FormControl &$control) {
+      if ($this->type === self::$SINGLE_VALIDATOR_INDICATOR) {
+         return NULL;
+      }
+
+      return $control->getAttribute('name');
    }
 
 }
