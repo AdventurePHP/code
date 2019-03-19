@@ -77,8 +77,6 @@ class StreamMediaAction extends AbstractFrontControllerAction {
             $expiresDate = date('D, d M Y H:i:s \G\M\T', time() + $delta);
             $response->setHeader(new HeaderImpl('Expires', '' . $expiresDate));
 
-            session_cache_limiter('none');
-
             $response->send(false);
 
             @readfile($filePath);
