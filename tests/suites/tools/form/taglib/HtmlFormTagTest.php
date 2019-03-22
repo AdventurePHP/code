@@ -41,6 +41,8 @@ use ReflectionProperty;
 
 class HtmlFormTagTest extends TestCase {
 
+   const LISTENER_ERROR_MESSAGE = 'Fields must be filled with 3 to 16 characters!';
+
    /**
     * Tests form which is not sent.
     */
@@ -1078,6 +1080,118 @@ class HtmlFormTagTest extends TestCase {
       $this->expectException(FormException::class);
       $form = new HtmlFormTag();
       $form->getTagClass('not-existing:tag');
+   }
+
+   /**
+    * ID#347: test simple single-field listener for single control.
+    */
+   public function testValidationListener1() {
+
+      $_POST = ['submit' => 'submit'];
+      $_REQUEST = [];
+
+      $form = new HtmlFormTag();
+
+      // inject parent object to make recursive selection work
+      $doc = new Document();
+      $form->setParent($doc);
+
+      $form->setAttribute('name', 'foo');
+      $form->setContent('<form:listener control="first-name">' . self::LISTENER_ERROR_MESSAGE . '</form:listener>
+<form:text name="first-name" />
+<form:button name="submit" value="submit"/>
+<form:addvalidator class="APF\tools\form\validator\TextLengthValidator" button="submit" control="first-name"/>');
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      $this->assertFalse($form->isValid());
+
+      $html = $form->transformForm();
+
+      $this->assertContains(self::LISTENER_ERROR_MESSAGE, $html);
+      $this->assertEquals(1, substr_count($html, self::LISTENER_ERROR_MESSAGE));
+   }
+
+   /**
+    * ID#347: test single-field listener setup using different messages per validator.
+    */
+   public function testValidationListener2() {
+
+      $_POST = ['submit' => 'submit'];
+      $_REQUEST = [];
+
+      $form = new HtmlFormTag();
+
+      // inject parent object to make recursive selection work
+      $doc = new Document();
+      $form->setParent($doc);
+
+      $form->setAttribute('name', 'foo');
+      $form->setContent('<form:listener control="e-mail" validator="APF\tools\form\validator\TextLengthValidator">' . self::LISTENER_ERROR_MESSAGE . '</form:listener>
+<form:listener control="e-mail" validator="APF\tools\form\validator\EMailValidator">' . self::LISTENER_ERROR_MESSAGE . '</form:listener>
+<form:text name="e-mail" />
+<form:button name="submit" value="submit"/>
+<form:addvalidator class="APF\tools\form\validator\EMailValidator" button="submit" control="e-mail" type="special"/>');
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      $this->assertFalse($form->isValid());
+
+      $html = $form->transformForm();
+
+      $this->assertContains(self::LISTENER_ERROR_MESSAGE, $html);
+      $this->assertEquals(1, substr_count($html, self::LISTENER_ERROR_MESSAGE));
+   }
+
+   /**
+    * ID#347: test multi-field listener setup with simple and specific validator setup. At the same time, test
+    * usage of listeners within &lt;form:error /&gt; tags.
+    */
+   public function testValidationListener3() {
+
+      $_POST = ['submit' => 'submit'];
+      $_REQUEST = [];
+
+      $form = new HtmlFormTag();
+
+      // inject parent object to make recursive selection work
+      $doc = new Document();
+      $form->setParent($doc);
+
+      $genericErrorMessage = 'Invalid e-mail!';
+      $syntaxInvalidErrorMessage = 'Syntax of e-mail invalid!';
+
+      $form->setAttribute('name', 'foo');
+      $form->setContent('<form:error>
+   <form:listener validator="APF\tools\form\validator\TextLengthValidator">' . self::LISTENER_ERROR_MESSAGE . '</form:listener>
+   <form:listener control="e-mail">' . $genericErrorMessage . '</form:listener>
+   <form:listener control="e-mail" validator="APF\tools\form\validator\EMailValidator">' . $syntaxInvalidErrorMessage . '</form:listener>
+</form:error>
+<form:text name="first-name" />
+<form:text name="last-name" />
+<form:text name="e-mail" />
+<form:button name="submit" value="submit"/>
+<form:addvalidator class="APF\tools\form\validator\TextLengthValidator" button="submit" control="first-name|last-name" type="generic"/>
+<form:addvalidator class="APF\tools\form\validator\TextLengthValidator" button="submit" control="e-mail" />
+<form:addvalidator class="APF\tools\form\validator\EMailValidator" button="submit" control="e-mail" type="special"/>');
+      $form->onParseTime();
+      $form->onAfterAppend();
+
+      $this->assertFalse($form->isValid());
+
+      $html = $form->transformForm();
+
+      // generic text length validator should trigger listener bound to the TextLengthValidator
+      $this->assertContains(self::LISTENER_ERROR_MESSAGE, $html);
+      $this->assertEquals(1, substr_count($html, self::LISTENER_ERROR_MESSAGE));
+
+      // "normal" text length validator on e-mail field should trigger standard field-based listener
+      $this->assertContains($genericErrorMessage, $html);
+      $this->assertEquals(1, substr_count($html, $genericErrorMessage));
+
+      // "special" e-mail validator on e-mail field should trigger special validator-based listener
+      $this->assertContains($syntaxInvalidErrorMessage, $html);
+      $this->assertEquals(1, substr_count($html, $syntaxInvalidErrorMessage));
    }
 
 }

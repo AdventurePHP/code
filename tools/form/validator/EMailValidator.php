@@ -33,9 +33,7 @@ use APF\tools\validation\EMailValidator as EMailValidatorImpl;
 class EMailValidator extends TextFieldValidator {
 
    public function validate($input) {
-      $validator = new EMailValidatorImpl();
-
-      return $validator->isValid($input);
+      return (new EMailValidatorImpl())->isValid($input);
    }
 
 }
