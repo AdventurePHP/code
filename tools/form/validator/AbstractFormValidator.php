@@ -65,13 +65,13 @@ abstract class AbstractFormValidator extends APFObject implements FormValidator 
    protected static $SPECIAL_VALIDATOR_INDICATOR = 'special';
 
    /**
-    * Check Validation ONLY by validator attribute
+    * Indicates that a single listener can be notified by the same validator for multiple form controls.
     *
-    * @var string $SINGLE_VALIDATOR_INDICATOR
+    * @var string $GENERIC_VALIDATOR_INDICATOR
     *
     * @since 4.1
     */
-   protected static $SINGLE_VALIDATOR_INDICATOR = 'single';
+   protected static $GENERIC_VALIDATOR_INDICATOR = 'generic';
 
    /**
     * Includes a reference on the control to validate.

@@ -120,6 +120,8 @@ abstract class TextFieldValidator extends AbstractFormValidator {
          // by the XmlParser. Thus, we can set the validator name to null to
          // indicate, that we want a "normal" listener (=no special listener) to be
          // notified!
+         // ID#347: Value "null" for form control indicates that a single listener
+         // can be notified by the same validator for multiple form controls.
          if ($listeners[$i]->getAttribute('control') === $controlName
                && $listeners[$i]->getAttribute('validator') === $validatorName
          ) {
@@ -139,20 +141,22 @@ abstract class TextFieldValidator extends AbstractFormValidator {
     * Version 0.1, 12.02.2010<br />
     */
    protected function getValidatorName() {
-      if ($this->type === self::$SPECIAL_VALIDATOR_INDICATOR || $this->type === self::$SINGLE_VALIDATOR_INDICATOR) {
+      if ($this->type === self::$SPECIAL_VALIDATOR_INDICATOR || $this->type === self::$GENERIC_VALIDATOR_INDICATOR) {
          return get_class($this);
       }
 
       return null;
    }
 
-   /**git checkout feature
+   /**
+    * Evaluates the name of the form control to be used during listener notification.
+    *
     * @param FormControl $control
     * @return string Indicates the control name of the listener to notify.
     */
-   protected function getControlName(FormControl &$control) {
-      if ($this->type === self::$SINGLE_VALIDATOR_INDICATOR) {
-         return NULL;
+   protected function getControlName(FormControl $control) {
+      if ($this->type === self::$GENERIC_VALIDATOR_INDICATOR) {
+         return null;
       }
 
       return $control->getAttribute('name');
